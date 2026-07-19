@@ -64,14 +64,14 @@ describe("buildCliAgentSystemPrompt", () => {
 
   it("uses cwd, not bootstrap workspace, for CLI workspace guidance", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw-agent",
+      workspaceDir: "/tmp/operator-agent",
       cwd: "/tmp/task-repo",
       tools: [],
       modelDisplay: "test/model",
     });
 
     expect(prompt).toContain("Working directory: /tmp/task-repo");
-    expect(prompt).not.toContain("Working directory: /tmp/openclaw-agent");
+    expect(prompt).not.toContain("Working directory: /tmp/operator-agent");
   });
 
   it("renders the Bootstrap Pending gate for full bootstrap mode", () => {
@@ -131,7 +131,7 @@ describe("buildCliAgentSystemPrompt", () => {
         },
         {
           text: "Operator-only command guidance.",
-          surfaces: ["openclaw_main"],
+          surfaces: ["operator_main"],
         },
       ],
       handler: async () => ({ text: "ok" }),

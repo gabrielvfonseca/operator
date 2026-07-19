@@ -1,6 +1,6 @@
 import { executeSqliteQueryTakeFirstSync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
-import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
+import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import type { SessionEntry } from "./types.js";
 
 type SessionProvenanceRow = {

@@ -1,19 +1,19 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct ArtifactBuildInfoTests {
     @Test func `preserves full provenance and formats compact UTC values`() {
         let commit = "ABCDEF0123456789ABCDEF0123456789ABCDEF01"
         let info = ArtifactBuildInfo(
             infoDictionary: [
-                "OpenClawCanonicalVersion": "2026.7.10",
+                "OperatorCanonicalVersion": "2026.7.10",
                 "CFBundleShortVersionString": "2026.7.9",
                 "CFBundleVersion": "42",
-                "OpenClawGitCommit": commit,
-                "OpenClawBuildTimestamp": "2026-01-01T00:30:00.123Z",
+                "OperatorGitCommit": commit,
+                "OperatorBuildTimestamp": "2026-01-01T00:30:00.123Z",
             ],
-            versionKeys: ["OpenClawCanonicalVersion", "CFBundleShortVersionString"])
+            versionKeys: ["OperatorCanonicalVersion", "CFBundleShortVersionString"])
 
         #expect(info.versionDisplay == "2026.7.10 (42)")
         #expect(info.gitCommit == commit.lowercased())
@@ -28,8 +28,8 @@ struct ArtifactBuildInfoTests {
         let info = ArtifactBuildInfo(infoDictionary: [
             "CFBundleShortVersionString": "1.2.3",
             "CFBundleVersion": "1.2.3",
-            "OpenClawGitCommit": "abc123",
-            "OpenClawBuildTimestamp": "not-a-date",
+            "OperatorGitCommit": "abc123",
+            "OperatorBuildTimestamp": "not-a-date",
         ])
 
         #expect(info.versionDisplay == "1.2.3")
@@ -45,8 +45,8 @@ struct ArtifactBuildInfoTests {
     @Test func `rejects non UTC timestamps and non ASCII commit digits`() {
         let info = ArtifactBuildInfo(infoDictionary: [
             "CFBundleShortVersionString": "1.2.3",
-            "OpenClawGitCommit": String(repeating: "Ａ", count: 40),
-            "OpenClawBuildTimestamp": "2026-07-10T12:34:56+00:00",
+            "OperatorGitCommit": String(repeating: "Ａ", count: 40),
+            "OperatorBuildTimestamp": "2026-07-10T12:34:56+00:00",
         ])
 
         #expect(info.gitCommit == nil)
@@ -56,11 +56,11 @@ struct ArtifactBuildInfoTests {
     @Test func `rejects impossible calendar dates and accepts short fractions`() {
         let invalid = ArtifactBuildInfo(infoDictionary: [
             "CFBundleShortVersionString": "1.2.3",
-            "OpenClawBuildTimestamp": "2026-02-30T12:34:56Z",
+            "OperatorBuildTimestamp": "2026-02-30T12:34:56Z",
         ])
         let valid = ArtifactBuildInfo(infoDictionary: [
             "CFBundleShortVersionString": "1.2.3",
-            "OpenClawBuildTimestamp": "2026-07-10T12:34:56.7Z",
+            "OperatorBuildTimestamp": "2026-07-10T12:34:56.7Z",
         ])
 
         #expect(invalid.buildTimestamp == nil)
@@ -72,7 +72,7 @@ struct ArtifactBuildInfoTests {
         let commit = "abcdef0123456789abcdef0123456789abcdef01"
         let info = ArtifactBuildInfo(infoDictionary: [
             "CFBundleShortVersionString": "2026.7.10",
-            "OpenClawGitCommit": commit,
+            "OperatorGitCommit": commit,
         ])
 
         #expect(info.shortCommit == "abcdef012345")

@@ -5,7 +5,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { ChatType } from "../channels/chat-type.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {

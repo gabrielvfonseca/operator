@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { STREAM_ERROR_FALLBACK_TEXT } from "../agents/stream-message-shared.js";
 import {
   getHeartbeatToolNotificationText,

@@ -5,8 +5,8 @@ Official Operator provider plugin for Qianfan.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/qianfan-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/qianfan-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/qianfan> for setup and configuration.
+See <https://docs.operator.ai/providers/qianfan> for setup and configuration.

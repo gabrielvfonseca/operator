@@ -27,12 +27,12 @@ function createPrompter(confirmValue = false) {
 
 function createDeps(shell: "zsh" | "bash" | "fish" | "powershell" = "zsh") {
   const deps: NonNullable<Parameters<typeof setupWizardShellCompletion>[0]["deps"]> = {
-    resolveCliName: () => "openclaw",
+    resolveCliName: () => "@gabrielvfonseca/operator",
     checkShellCompletionStatus: vi.fn(async (_binName: string) => ({
       shell,
       profileInstalled: false,
       cacheExists: false,
-      cachePath: `/tmp/openclaw.${shell === "powershell" ? "ps1" : shell}`,
+      cachePath: `/tmp/operator.${shell === "powershell" ? "ps1" : shell}`,
       usesSlowPattern: false,
     })),
     ensureCompletionCacheExists: vi.fn(async (_binName: string) => true),
@@ -49,10 +49,10 @@ describe("setupWizardShellCompletion", () => {
     await setupWizardShellCompletion({ flow: "quickstart", prompter, deps });
 
     expect(prompter.confirm).not.toHaveBeenCalled();
-    expect(deps.ensureCompletionCacheExists).toHaveBeenCalledWith("openclaw", {
+    expect(deps.ensureCompletionCacheExists).toHaveBeenCalledWith("@gabrielvfonseca/operator", {
       generationMode: "full",
     });
-    expect(deps.installCompletion).toHaveBeenCalledWith("zsh", true, "openclaw");
+    expect(deps.installCompletion).toHaveBeenCalledWith("zsh", true, "@gabrielvfonseca/operator");
     expect(prompter.note).toHaveBeenCalled();
   });
 
@@ -113,7 +113,11 @@ describe("setupWizardShellCompletion", () => {
 
       await setupWizardShellCompletion({ flow: "quickstart", prompter, deps });
 
-      expect(deps.installCompletion).toHaveBeenCalledWith("powershell", true, "openclaw");
+      expect(deps.installCompletion).toHaveBeenCalledWith(
+        "powershell",
+        true,
+        "@gabrielvfonseca/operator",
+      );
       expect(prompter.note).toHaveBeenCalledWith(
         "Shell completion installed. Restart your shell or run: . '/Users/ada/.config/powershell/Microsoft.PowerShell_profile.ps1'",
         "Shell completion",

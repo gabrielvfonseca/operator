@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 // Sanitizes command text before it is displayed in approval prompts.
 import {
   computeSensitiveRedactionBitmap,

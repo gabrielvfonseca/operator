@@ -1,11 +1,11 @@
 // Discord plugin module implements thread session close behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   listSessionEntries,
   patchSessionEntry,
   resolveStorePath,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 /**
  * Marks every session entry in the store whose key contains {@link threadId}

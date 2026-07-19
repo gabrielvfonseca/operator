@@ -6,14 +6,14 @@ import {
   resolveSessionAgentIds,
   resolveUserPath,
   type FastModeAutoProgressState,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { resolveAgentDir } from "openclaw/plugin-sdk/agent-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { resolveAgentDir } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import {
   createDiagnosticTraceContextFromActiveScope,
   freezeDiagnosticTraceContext,
   resolveDiagnosticModelContentCapturePolicy,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
-import { loadExecApprovals } from "openclaw/plugin-sdk/exec-approvals-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
+import { loadExecApprovals } from "@gabrielvfonseca/operator/plugin-sdk/exec-approvals-runtime";
 import {
   resolveCodexAppServerForModelProvider,
   resolveCodexAppServerForOperatorToolPolicy,

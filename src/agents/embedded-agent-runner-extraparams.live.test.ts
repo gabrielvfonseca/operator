@@ -1,6 +1,6 @@
 // Live verification for extra-params behavior against provider APIs.
-import type { Model } from "openclaw/plugin-sdk/llm";
-import { streamSimple } from "openclaw/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { streamSimple } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import { applyExtraParamsToAgent } from "./embedded-agent-runner/extra-params.js";

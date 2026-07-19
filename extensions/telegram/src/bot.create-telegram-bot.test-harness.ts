@@ -1,10 +1,13 @@
 // Telegram plugin module implements bot.create telegram bot harness behavior.
 import { existsSync, readdirSync, rmSync } from "node:fs";
 import path from "node:path";
-import { buildChannelInboundEventContext } from "openclaw/plugin-sdk/channel-inbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MockFn } from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { GetReplyOptions, MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+import { buildChannelInboundEventContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MockFn } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type {
+  GetReplyOptions,
+  MsgContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { beforeEach, vi } from "vitest";
 import type { TelegramBotDeps } from "./bot-deps.js";
 
@@ -44,7 +47,7 @@ const { sessionStorePath } = vi.hoisted(() => {
       : (process.env.TMPDIR ?? "/tmp");
   const separator = process.platform === "win32" ? "\\" : "/";
   return {
-    sessionStorePath: `${tempRoot.replace(/[\\/]+$/u, "")}${separator}openclaw-telegram-${
+    sessionStorePath: `${tempRoot.replace(/[\\/]+$/u, "")}${separator}operator-telegram-${
       process.pid
     }-${process.env.VITEST_POOL_ID ?? "0"}.json`,
   };
@@ -344,7 +347,7 @@ const grammySpies = vi.hoisted(() => ({
   setMessageReactionSpy: vi.fn(async () => undefined) as AnyAsyncMock,
   setMyCommandsSpy: vi.fn(async () => undefined) as AnyAsyncMock,
   getMeSpy: vi.fn(async () => ({
-    username: "openclaw_bot",
+    username: "operator_bot",
     has_topics_enabled: true,
   })) as AnyAsyncMock,
   getChatSpy: vi.fn(async () => undefined) as AnyAsyncMock,
@@ -569,7 +572,7 @@ function makeTelegramMessageCtx(params: {
         ? {}
         : { message_thread_id: params.messageThreadId }),
     },
-    me: { username: "openclaw_bot" },
+    me: { username: "operator_bot" },
     getFile: async () => ({ download: async () => new Uint8Array() }),
   };
 }
@@ -701,7 +704,7 @@ beforeEach(() => {
   getChatSpy.mockResolvedValue(undefined);
   grammySpies.getMeSpy.mockReset();
   grammySpies.getMeSpy.mockResolvedValue({
-    username: "openclaw_bot",
+    username: "operator_bot",
     has_topics_enabled: true,
   });
   editMessageTextSpy.mockReset();

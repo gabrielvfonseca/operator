@@ -1,6 +1,6 @@
 // Whatsapp plugin module implements action runtime target auth behavior.
-import { ToolAuthorizationError } from "openclaw/plugin-sdk/channel-actions";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { ToolAuthorizationError } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import { resolveWhatsAppOutboundTarget } from "./resolve-outbound-target.js";
 

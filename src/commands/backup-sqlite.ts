@@ -9,8 +9,8 @@ import type {
   SnapshotRef,
   SnapshotSummary,
 } from "../snapshot/snapshot-provider.js";
-import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.paths.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorAgentSqlitePath } from "../state/openclaw-agent-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { resolveUserPath, shortenHomePath } from "../utils.js";
 
 type BackupSqliteCreateOptions = {

@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { registerWorkspaceGatewayMethods } from "./src/gateway.js";
 import { createWidgetHttpRouteHandler, WIDGETS_ROUTE_PREFIX } from "./src/http-route.js";
 import { WorkspaceStore } from "./src/store.js";

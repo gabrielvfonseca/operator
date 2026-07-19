@@ -45,10 +45,10 @@ struct PushBuildConfig {
     let proofPolicy: PushProofPolicy
 
     static let current = PushBuildConfig()
-    static let openClawHostedRelayHost = "ios-push-relay.openclaw.ai"
-    static let openClawSandboxRelayHost = "ios-push-relay-sandbox.openclaw.ai"
+    static let openClawHostedRelayHost = "ios-push-relay.operator.ai"
+    static let openClawSandboxRelayHost = "ios-push-relay-sandbox.operator.ai"
 
-    var usesOpenClawHostedRelay: Bool {
+    var usesOperatorHostedRelay: Bool {
         guard self.transport == .relay, self.distribution == .official else { return false }
         guard let relayBaseURL = self.relayBaseURL,
               let components = URLComponents(url: relayBaseURL, resolvingAgainstBaseURL: false)
@@ -73,11 +73,11 @@ struct PushBuildConfig {
     private init(readValue: (String) -> Any?) {
         self.mode = Self.readEnum(
             readValue: readValue,
-            key: "OpenClawPushMode",
+            key: "OperatorPushMode",
             fallback: .localSandbox)
         let relayBaseURLOverride = Self.readURL(
             readValue: readValue,
-            key: "OpenClawPushRelayBaseURL")
+            key: "OperatorPushRelayBaseURL")
         switch self.mode {
         case .localSandbox:
             self.transport = .direct

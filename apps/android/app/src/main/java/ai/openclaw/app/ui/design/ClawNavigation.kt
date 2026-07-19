@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

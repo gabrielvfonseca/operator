@@ -1,5 +1,5 @@
 // Policy doctor checks and findings for gateway exposure policy.
-import type { HealthCheck, HealthFinding } from "openclaw/plugin-sdk/health";
+import type { HealthCheck, HealthFinding } from "@gabrielvfonseca/operator/plugin-sdk/health";
 import type { PolicyEvidence } from "../../policy-state.js";
 import { repairPolicyAutomaticNarrower } from "../automatic-repairs.js";
 import { CHECK_IDS } from "../check-ids.js";
@@ -400,8 +400,8 @@ function gatewayNodeCommandFindings(
         message: `Gateway node command '${command}' is denied by policy but not denied by Operator config.`,
         source: "policy",
         path: "openclaw config",
-        ocPath: "oc://openclaw.config/gateway/nodes/denyCommands",
-        target: "oc://openclaw.config/gateway/nodes/denyCommands",
+        ocPath: "oc://operator.config/gateway/nodes/denyCommands",
+        target: "oc://operator.config/gateway/nodes/denyCommands",
         requirement: `oc://${policyDocName}/gateway/nodes/denyCommands`,
         fixHint: `Add '${command}' to gateway.nodes.denyCommands or update policy after review.`,
       };

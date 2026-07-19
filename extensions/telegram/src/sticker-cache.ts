@@ -1,20 +1,20 @@
 // Telegram plugin module implements sticker cache behavior.
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/agent-runtime";
-import type { ModelCatalogEntry } from "openclaw/plugin-sdk/agent-runtime";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { ModelCatalogEntry } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import {
   findModelInCatalog,
   loadModelCatalog,
   modelSupportsVision,
-} from "openclaw/plugin-sdk/agent-runtime";
-import { resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveAutoImageModel } from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { resolveDefaultModelForAgent } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveAutoImageModel } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   resolveAutoMediaKeyProviders,
   resolveDefaultMediaModel,
-} from "openclaw/plugin-sdk/media-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { getTelegramRuntime } from "./runtime.js";
 export {
   cacheSticker,

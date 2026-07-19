@@ -748,7 +748,7 @@ describe("loadOperatorPlugins", () => {
             body: memoryPluginBody("memory-lancedb"),
           });
           return withStateDir((stateDir) => {
-            const globalDir = path.join(stateDir, "node_modules", "@operator", "memory-lancedb");
+            const globalDir = path.join(stateDir, "node_modules", "@openclaw", "memory-lancedb");
             mkdirSafe(globalDir);
             const globalPlugin = writePlugin({
               id: "memory-lancedb",
@@ -775,7 +775,7 @@ describe("loadOperatorPlugins", () => {
               path.join(globalDir, "package.json"),
               JSON.stringify(
                 {
-                  name: "@operator/memory-lancedb",
+                  name: "@gabrielvfonseca/memory-lancedb",
                   version: "2026.5.12-beta.1",
                   operator: { extensions: ["./index.cjs"] },
                 },
@@ -797,8 +797,8 @@ describe("loadOperatorPlugins", () => {
                   installs: {
                     "memory-lancedb": {
                       source: "npm",
-                      spec: "@operator/memory-lancedb",
-                      resolvedName: "@operator/memory-lancedb",
+                      spec: "@gabrielvfonseca/memory-lancedb",
+                      resolvedName: "@gabrielvfonseca/memory-lancedb",
                       resolvedVersion: "2026.5.12-beta.1",
                       installPath: globalDir,
                     },
@@ -1036,8 +1036,8 @@ describe("loadOperatorPlugins", () => {
     expect(openAllowWarning).toBeDefined();
     expect(openAllowWarning).toContain('"warn-open-allow-remediation"');
     expect(openAllowWarning).toContain('"plugins": { "allow": [');
-    expect(openAllowWarning).toContain("operator plugins list --enabled --verbose");
-    expect(openAllowWarning).toContain("operator plugins inspect warn-open-allow-remediation");
+    expect(openAllowWarning).toContain("openclaw plugins list --enabled --verbose");
+    expect(openAllowWarning).toContain("openclaw plugins inspect warn-open-allow-remediation");
   });
 
   it("includes actionable plugins.allow remediation hints in the untracked-provenance warning", () => {
@@ -1071,7 +1071,7 @@ describe("loadOperatorPlugins", () => {
       );
       expect(untrackedWarning).toBeDefined();
       expect(untrackedWarning).toContain('"warn-untracked-remediation"');
-      expect(untrackedWarning).toContain("operator plugins inspect warn-untracked-remediation");
+      expect(untrackedWarning).toContain("openclaw plugins inspect warn-untracked-remediation");
       expect(untrackedWarning).toContain("reinstall from a trusted source");
 
       const diagnostic = registry.diagnostics.find(
@@ -1080,7 +1080,7 @@ describe("loadOperatorPlugins", () => {
           entry.message.includes("loaded without install/load-path provenance"),
       );
       expect(diagnostic?.message).toContain('"warn-untracked-remediation"');
-      expect(diagnostic?.message).toContain("operator plugins inspect warn-untracked-remediation");
+      expect(diagnostic?.message).toContain("openclaw plugins inspect warn-untracked-remediation");
       expect(diagnostic?.message).toContain("reinstall from a trusted source");
     });
   });
@@ -1112,8 +1112,8 @@ describe("loadOperatorPlugins", () => {
     expect(message).toContain("plugins.allow is empty");
     expect(message).toContain("(+2 more)");
     expect(message).not.toContain('"plugins": { "allow": [');
-    expect(message).toContain("operator plugins list --enabled --verbose");
-    expect(message).toContain("operator plugins inspect <id>");
+    expect(message).toContain("openclaw plugins list --enabled --verbose");
+    expect(message).toContain("openclaw plugins inspect <id>");
   });
 
   it("handles workspace-discovered plugins according to trust and precedence", () => {
@@ -1662,7 +1662,7 @@ describe("loadOperatorPlugins", () => {
       filename: "legacy-root-import.cjs",
       body: `module.exports = {
     id: "legacy-root-import",
-    configSchema: (require("operator/plugin-sdk").emptyPluginConfigSchema)(),
+    configSchema: (...
           register() {},
         };`,
     });
@@ -1688,7 +1688,7 @@ describe("loadOperatorPlugins", () => {
 
   it("supports legacy plugins subscribing to diagnostic events from the root sdk", async () => {
     useNoBundledPlugins();
-    const seenKey = "__operatorLegacyRootDiagnosticSeen";
+    const seenKey = "__openclawLegacyRootDiagnosticSeen";
     delete (globalThis as Record<string, unknown>)[seenKey];
 
     const plugin = writePlugin({
@@ -1696,9 +1696,9 @@ describe("loadOperatorPlugins", () => {
       filename: "legacy-root-diagnostic-listener.cjs",
       body: `module.exports = {
     id: "legacy-root-diagnostic-listener",
-    configSchema: (require("operator/plugin-sdk").emptyPluginConfigSchema)(),
+    configSchema: (...
     register() {
-      const { onDiagnosticEvent } = require("operator/plugin-sdk");
+      const { onDiagnosticEvent } = ...
       if (typeof onDiagnosticEvent !== "function") {
         throw new Error("missing onDiagnosticEvent root export");
       }

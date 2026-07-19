@@ -13,25 +13,28 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   parseFfprobeCodecAndSampleRate,
   runFfmpeg,
   runFfprobe,
-} from "openclaw/plugin-sdk/media-runtime";
-import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS } from "openclaw/plugin-sdk/media-runtime";
-import { unlinkIfExists } from "openclaw/plugin-sdk/media-runtime";
-import { parseStrictFiniteNumber } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { unlinkIfExists } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { parseStrictFiniteNumber } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { writeExternalFileWithinRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { DiscordError, RateLimitError, type RequestClient } from "./internal/discord.js";
 import { readDiscordMessage, readRetryAfter } from "./internal/rest-errors.js";
 import { DISCORD_ATTACHMENT_TOTAL_TIMEOUT_MS } from "./monitor/timeouts.js";

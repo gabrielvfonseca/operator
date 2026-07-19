@@ -1,8 +1,8 @@
 ---
-summary: "Use DeepInfra's unified API to access the most popular open source and frontier models in OpenClaw"
+summary: "Use DeepInfra's unified API to access the most popular open source and frontier models in Operator"
 read_when:
   - You want a single API key for the top open source LLMs
-  - You want to run models via DeepInfra's API in OpenClaw
+  - You want to run models via DeepInfra's API in Operator
 title: "DeepInfra"
 ---
 
@@ -13,8 +13,8 @@ it by switching the base URL.
 ## Install plugin
 
 ```bash
-openclaw plugins install @operator/deepinfra-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/deepinfra-provider
+operator gateway restart
 ```
 
 ## Get an API key
@@ -25,7 +25,7 @@ openclaw gateway restart
 ## CLI setup
 
 ```bash
-openclaw onboard --deepinfra-api-key <key>
+operator onboard --deepinfra-api-key <key>
 ```
 
 Or set the environment variable:
@@ -54,7 +54,7 @@ live from `https://api.deepinfra.com/v1/openai/models?sort_by=openclaw&filter=wi
 once `DEEPINFRA_API_KEY` is configured. Other surfaces use the static
 defaults below until they move onto the same live catalog.
 
-| Surface                  | Default model                                                                                         | OpenClaw config/tool                                     |
+| Surface                  | Default model                                                                                         | Operator config/tool                                     |
 | ------------------------ | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | Chat / model provider    | first chat-tagged entry from live catalog (static fallback `deepseek-ai/DeepSeek-V4-Flash`)           | `agents.defaults.model`                                  |
 | Image generation/editing | first `image-gen`-tagged entry from live catalog (static fallback `black-forest-labs/FLUX-1-schnell`) | `image_generate`, `agents.defaults.imageGenerationModel` |
@@ -65,13 +65,13 @@ defaults below until they move onto the same live catalog.
 | Memory embeddings        | `BAAI/bge-m3`                                                                                         | `agents.defaults.memorySearch.provider: "deepinfra"`     |
 
 DeepInfra also exposes reranking, classification, object-detection, and other
-native model types. OpenClaw has no provider contract for those categories
+native model types. Operator has no provider contract for those categories
 yet, so this plugin does not register them.
 
 ## Available models
 
-OpenClaw discovers DeepInfra models dynamically once a key is configured. Use
-`/models deepinfra` or `openclaw models list --provider deepinfra` to see the
+Operator discovers DeepInfra models dynamically once a key is configured. Use
+`/models deepinfra` or `operator models list --provider deepinfra` to see the
 current list.
 
 Any model on [deepinfra.com](https://deepinfra.com/) works with the

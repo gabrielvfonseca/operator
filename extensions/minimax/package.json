@@ -1,13 +1,13 @@
 {
-  "name": "@operator/minimax-provider",
+  "name": "@gabrielvfonseca/minimax-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator MiniMax provider and OAuth plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

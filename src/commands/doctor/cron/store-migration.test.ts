@@ -1,5 +1,5 @@
 // Cron store migration tests cover doctor migration of persisted cron stores.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { resolveAgentHarnessPolicy } from "../../../agents/harness/policy.js";
 import { legacyCodexProviderIdentityKey } from "../shared/codex-route-model-ref.js";
@@ -229,7 +229,7 @@ describe("normalizeStoredCronJobs", () => {
         agents: {
           defaults: {
             models: {
-              "openai/gpt-5.6-sol": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-5.6-sol": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },
@@ -271,7 +271,7 @@ describe("normalizeStoredCronJobs", () => {
               id: "primary",
               default: true,
               models: {
-                "openai/gpt-5.6-sol": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.6-sol": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           ],
@@ -288,7 +288,7 @@ describe("normalizeStoredCronJobs", () => {
     });
 
     expect(rewritePlan.warnings.join("\n")).toContain(
-      'Retained agents.list.primary.models.openai/gpt-5.6-sol.agentRuntime.id="openclaw"',
+      'Retained agents.list.primary.models.openai/gpt-5.6-sol.agentRuntime.id="@gabrielvfonseca/operator"',
     );
     const job = expectDefined(jobs[0], "job test invariant");
     expect((job.payload as Record<string, unknown>).model).toBe("codex/gpt-5.6-sol");
@@ -322,7 +322,7 @@ describe("normalizeStoredCronJobs", () => {
               id: "primary",
               default: true,
               models: {
-                "openai/gpt-5.6-sol": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.6-sol": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           ],

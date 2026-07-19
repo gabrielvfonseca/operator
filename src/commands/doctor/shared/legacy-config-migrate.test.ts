@@ -1,6 +1,6 @@
 // Legacy config migration tests cover generic doctor repair of old config layouts.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { findLegacyConfigIssues } from "../../../config/legacy.js";
 import type { OperatorConfig } from "../../../config/types.js";
@@ -78,7 +78,7 @@ describe("legacy memory search config migrate", () => {
       memorySearch: {
         provider: "openai",
         store: {
-          path: "/tmp/openclaw-memory-{agentId}.sqlite",
+          path: "/tmp/operator-memory-{agentId}.sqlite",
           vector: { enabled: false },
         },
       },
@@ -198,7 +198,7 @@ describe("legacy memory search config migrate", () => {
             models: [
               { id: "gpt-missing" },
               { id: "gpt-auto", agentRuntime: { id: "auto" } },
-              { id: "gpt-openclaw", agentRuntime: { id: "openclaw" } },
+              { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
             ],
           },
         },
@@ -208,7 +208,7 @@ describe("legacy memory search config migrate", () => {
     expect(res.config?.models?.providers?.openai?.models).toEqual([
       { id: "gpt-missing", agentRuntime: { id: "codex" } },
       { id: "gpt-auto", agentRuntime: { id: "codex" } },
-      { id: "gpt-openclaw", agentRuntime: { id: "openclaw" } },
+      { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
     ]);
     expect(res.config?.models?.providers).not.toHaveProperty("codex");
   });
@@ -221,7 +221,7 @@ describe("legacy memory search config migrate", () => {
           codex: {
             models: [
               { id: "gpt-auto", agentRuntime: { id: "auto" } },
-              { id: "gpt-openclaw", agentRuntime: { id: "openclaw" } },
+              { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
             ],
           },
         },
@@ -231,7 +231,7 @@ describe("legacy memory search config migrate", () => {
     expect(res.config?.models?.providers?.openai?.models).toEqual([
       { id: "text-embedding-3-small" },
       { id: "gpt-auto", agentRuntime: { id: "codex" } },
-      { id: "gpt-openclaw", agentRuntime: { id: "openclaw" } },
+      { id: "gpt-openclaw", agentRuntime: { id: "@gabrielvfonseca/operator" } },
     ]);
     expect(res.config?.models?.providers).not.toHaveProperty("codex");
   });
@@ -1898,7 +1898,7 @@ describe("legacy migrate sandbox scope aliases", () => {
         list: [
           {
             id: "reviewer",
-            agentRuntime: { fallback: "openclaw" },
+            agentRuntime: { fallback: "@gabrielvfonseca/operator" },
             embeddedHarness: {
               runtime: "codex",
               fallback: "none",
@@ -1981,7 +1981,7 @@ describe("legacy migrate sandbox scope aliases", () => {
           agentRuntime: { id: "claude-cli" },
           model: "anthropic/claude-opus-4-7",
           models: {
-            "anthropic/claude-opus-4-7": { agentRuntime: { id: "openclaw" } },
+            "anthropic/claude-opus-4-7": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
         },
       },
@@ -1993,7 +1993,7 @@ describe("legacy migrate sandbox scope aliases", () => {
     expect(res.config?.agents?.defaults).toEqual({
       model: "anthropic/claude-opus-4-7",
       models: {
-        "anthropic/claude-opus-4-7": { agentRuntime: { id: "openclaw" } },
+        "anthropic/claude-opus-4-7": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
       },
     });
   });
@@ -2086,7 +2086,7 @@ describe("legacy migrate sandbox scope aliases", () => {
       agents: {
         list: [
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             sandbox: {
               perSession: false,
             },

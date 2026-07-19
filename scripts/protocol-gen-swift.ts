@@ -1,4 +1,4 @@
-// Protocol Gen Swift script supports OpenClaw repository automation.
+// Protocol Gen Swift script supports Operator repository automation.
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -30,9 +30,9 @@ const outPaths = [
     repoRoot,
     "apps",
     "shared",
-    "OpenClawKit",
+    "OperatorKit",
     "Sources",
-    "OpenClawProtocol",
+    "OperatorProtocol",
     "GatewayModels.swift",
   ),
 ];

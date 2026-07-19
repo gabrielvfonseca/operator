@@ -1,4 +1,4 @@
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { createClaudeSessionNodeHostCommands } from "./session-catalog-node-commands.js";
 import { registerClaudeSessionCatalog } from "./session-catalog.js";
 

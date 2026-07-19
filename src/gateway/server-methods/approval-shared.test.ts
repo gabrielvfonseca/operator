@@ -1547,7 +1547,7 @@ describe("handlePendingApprovalRequest", () => {
   });
 
   it("sanitizes durable registration failures while retaining server diagnostics", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-register-failure-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-register-failure-"));
     const databasePath = path.join(tempDir, "state.sqlite");
     fs.mkdirSync(databasePath);
     const manager = new ExecApprovalManager({
@@ -1586,7 +1586,7 @@ describe("handlePendingApprovalRequest", () => {
 
   it("sanitizes a no-route storage failure while failing the waiter closed", async () => {
     hasApprovalTurnSourceRouteMock.mockReturnValueOnce(false);
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-route-failure-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-route-failure-"));
     const databasePath = path.join(tempDir, "state.sqlite");
     const manager = new ExecApprovalManager({
       approvalKind: "exec",
@@ -1640,7 +1640,7 @@ describe("handlePendingApprovalRequest", () => {
   });
 
   it("sanitizes durable resolve failures while failing the waiter closed", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-resolve-failure-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-resolve-failure-"));
     const databasePath = path.join(tempDir, "state.sqlite");
     const manager = new ExecApprovalManager({
       approvalKind: "exec",

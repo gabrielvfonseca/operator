@@ -1,7 +1,7 @@
 ---
-summary: "Symptom first troubleshooting hub for OpenClaw"
+summary: "Symptom first troubleshooting hub for Operator"
 read_when:
-  - OpenClaw is not working and you need the fastest path to a fix
+  - Operator is not working and you need the fastest path to a fix
   - You want a triage flow before diving into deep runbooks
 title: "General troubleshooting"
 ---
@@ -13,39 +13,39 @@ Triage front door. 2 minutes to a diagnosis, then jump to the deep page.
 Run this ladder in order:
 
 ```bash
-openclaw status
-openclaw status --all
-openclaw gateway probe
-openclaw gateway status
-openclaw doctor
-openclaw channels status --probe
-openclaw logs --follow
+operator status
+operator status --all
+operator gateway probe
+operator gateway status
+operator doctor
+operator channels status --probe
+operator logs --follow
 ```
 
 Good output, one line each:
 
-- `openclaw status` shows configured channels, no auth errors.
-- `openclaw status --all` produces a full, shareable report.
-- `openclaw gateway probe` shows `Reachable: yes`. `Capability: ...` is the
+- `operator status` shows configured channels, no auth errors.
+- `operator status --all` produces a full, shareable report.
+- `operator gateway probe` shows `Reachable: yes`. `Capability: ...` is the
   auth level the probe proved; `Read probe: limited - missing scope:
 operator.read` is degraded diagnostics, not a connect failure.
-- `openclaw gateway status` shows `Runtime: running`, `Connectivity probe:
+- `operator gateway status` shows `Runtime: running`, `Connectivity probe:
 ok`, and a plausible `Capability: ...`. Add `--require-rpc` to also require
   read-scope RPC proof.
-- `openclaw doctor` reports no blocking config/service errors.
-- `openclaw channels status --probe` returns live per-account transport state
+- `operator doctor` reports no blocking config/service errors.
+- `operator channels status --probe` returns live per-account transport state
   (`works` / `audit ok`) when the gateway is reachable; falls back to
   config-only summaries when it is not.
-- `openclaw logs --follow` shows steady activity, no repeating fatal errors.
+- `operator logs --follow` shows steady activity, no repeating fatal errors.
 
 ## Assistant feels limited or missing tools
 
 Check the effective tool profile:
 
 ```bash
-openclaw status
-openclaw status --all
-openclaw doctor
+operator status
+operator status --all
+operator doctor
 ```
 
 Common causes:
@@ -60,42 +60,42 @@ Common causes:
   for one agent.
 
 Change the profile, restart or reload the Gateway, then recheck with
-`openclaw status --all`. Full profile/group table: [Tool profiles](/gateway/config-tools#tool-profiles).
+`operator status --all`. Full profile/group table: [Tool profiles](/gateway/config-tools#tool-profiles).
 
 ## Anthropic long context 429
 
 `HTTP 429: rate_limit_error: Extra usage is required for long context requests`
 → [Anthropic 429 extra usage required for long context](/gateway/troubleshooting#anthropic-429-extra-usage-required-for-long-context).
 
-## Local OpenAI-compatible backend works directly but fails in OpenClaw
+## Local OpenAI-compatible backend works directly but fails in Operator
 
 Your local/self-hosted `/v1` backend answers direct `/v1/chat/completions`
-probes but fails on `openclaw infer model run` or normal agent turns:
+probes but fails on `operator infer model run` or normal agent turns:
 
 1. Error mentions `messages[].content` expecting a string: set
    `models.providers.<provider>.models[].compat.requiresStringContent: true`.
-2. Still fails only on OpenClaw agent turns: set
+2. Still fails only on Operator agent turns: set
    `models.providers.<provider>.models[].compat.supportsTools: false` and retry.
-3. Tiny direct calls work but larger OpenClaw prompts crash the backend: that
-   is an upstream model/server limit, not an OpenClaw bug. Continue in
+3. Tiny direct calls work but larger Operator prompts crash the backend: that
+   is an upstream model/server limit, not an Operator bug. Continue in
    [Local OpenAI-compatible backend passes direct probes but agent runs fail](/gateway/troubleshooting#local-openai-compatible-backend-passes-direct-probes-but-agent-runs-fail).
 
-## Plugin install fails with missing openclaw extensions
+## Plugin install fails with missing operator extensions
 
-`package.json missing openclaw.extensions` means the plugin package uses a
-shape OpenClaw no longer accepts.
+`package.json missing operator.extensions` means the plugin package uses a
+shape Operator no longer accepts.
 
 Fix in the plugin package:
 
-1. Add `openclaw.extensions` to `package.json`, pointing at built runtime
+1. Add `operator.extensions` to `package.json`, pointing at built runtime
    files (usually `./dist/index.js`).
-2. Republish, then run `openclaw plugins install <package>` again.
+2. Republish, then run `operator plugins install <package>` again.
 
 ```json
 {
-  "name": "@operator/my-plugin",
+  "name": "@gabrielvfonseca/my-plugin",
   "version": "1.2.3",
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./dist/index.js"]
   }
 }
@@ -109,14 +109,14 @@ Update finishes but plugins are stale, disabled, or show `blocked by install
 policy`, `install policy failed closed`, or `Disabled "<plugin>" after plugin
 update failure`: check `security.installPolicy`.
 
-Install policy runs on plugin installs and updates. `@operator/*` plugin
-versions normally move with the OpenClaw release, so an OpenClaw update can
+Install policy runs on plugin installs and updates. `@gabrielvfonseca/*` plugin
+versions normally move with the Operator release, so an Operator update can
 need a matching plugin update during post-update sync.
 
 Avoid these policy shapes unless you also maintain the matching upgrade rule:
 
-- Freezing OpenClaw-owned plugins to one exact old version (for example, only
-  `@operator/*@2026.5.3`).
+- Freezing Operator-owned plugins to one exact old version (for example, only
+  `@gabrielvfonseca/*@2026.5.3`).
 - Blocking by source kind alone (every npm, network, or `request.mode:
 "update"` request).
 - Treating the policy command as optional: when `security.installPolicy` is
@@ -125,7 +125,7 @@ Avoid these policy shapes unless you also maintain the matching upgrade rule:
 - Approving versions without checking the request's `openclawVersion` against
   plugin candidate metadata.
 
-Prefer rules that allow trusted `@operator/*` updates compatible with the
+Prefer rules that allow trusted `@gabrielvfonseca/*` updates compatible with the
 current host, instead of pinning one release forever. If you block npm by
 default, add a narrow exception for the plugin ids you use, and apply the same
 trust rule to `request.mode: "update"` as to installs.
@@ -133,25 +133,25 @@ trust rule to `request.mode: "update"` as to installs.
 Recovery:
 
 ```bash
-openclaw doctor --deep
-openclaw plugins update --all
-openclaw status --all
+operator doctor --deep
+operator plugins update --all
+operator status --all
 ```
 
 If the policy is intentionally strict, relax it for the trusted upgrade
-window, rerun `openclaw plugins update --all`, then restore the stricter rule.
+window, rerun `operator plugins update --all`, then restore the stricter rule.
 If update failure disabled a plugin, inspect before re-enabling:
 
 ```bash
-openclaw plugins inspect <plugin-id> --runtime --json
-openclaw plugins enable <plugin-id>
+operator plugins inspect <plugin-id> --runtime --json
+operator plugins enable <plugin-id>
 ```
 
 Reference: [Operator install policy](/tools/skills-config#operator-install-policy-securityinstallpolicy)
 
 ## Plugin present but blocked by suspicious ownership
 
-`openclaw doctor`, setup, or startup warnings show:
+`operator doctor`, setup, or startup warnings show:
 
 ```text
 blocked plugin candidate: suspicious ownership (... uid=1000, expected uid=0 or root)
@@ -160,21 +160,21 @@ plugin present but blocked
 
 The plugin files are owned by a different Unix user than the process loading
 them. Do not remove the plugin config; fix the file ownership, or run
-OpenClaw as the user that owns the state directory.
+Operator as the user that owns the state directory.
 
 Docker installs run as `node` (uid `1000`). Repair the host bind mounts:
 
 ```bash
-sudo chown -R 1000:1000 /path/to/openclaw-config /path/to/openclaw-workspace
-openclaw doctor --fix
+sudo chown -R 1000:1000 /path/to/operator-config /path/to/operator-workspace
+operator doctor --fix
 ```
 
-If you intentionally run OpenClaw as root, repair the managed plugin root
+If you intentionally run Operator as root, repair the managed plugin root
 instead:
 
 ```bash
-sudo chown -R root:root /path/to/openclaw-config/npm
-openclaw doctor --fix
+sudo chown -R root:root /path/to/operator-config/npm
+operator doctor --fix
 ```
 
 Deeper docs: [Blocked plugin path ownership](/tools/plugin#blocked-plugin-path-ownership), [Docker: Permissions and EACCES](/install/docker#shell-helpers-optional)
@@ -183,7 +183,7 @@ Deeper docs: [Blocked plugin path ownership](/tools/plugin#blocked-plugin-path-o
 
 ```mermaid
 flowchart TD
-  A[OpenClaw is not working] --> B{What breaks first}
+  A[Operator is not working] --> B{What breaks first}
   B --> C[No replies]
   B --> D[Dashboard or Control UI will not connect]
   B --> E[Gateway will not start or service not running]
@@ -204,11 +204,11 @@ flowchart TD
 <AccordionGroup>
   <Accordion title="No replies">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw channels status --probe
-    openclaw pairing list --channel <channel> [--account <id>]
-    openclaw logs --follow
+    operator status
+    operator gateway status
+    operator channels status --probe
+    operator pairing list --channel <channel> [--account <id>]
+    operator logs --follow
     ```
 
     Good output:
@@ -232,16 +232,16 @@ flowchart TD
 
   <Accordion title="Dashboard or Control UI will not connect">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    operator status
+    operator gateway status
+    operator logs --follow
+    operator doctor
+    operator channels status --probe
     ```
 
     Good output:
 
-    - `Dashboard: http://...` shown in `openclaw gateway status`
+    - `Dashboard: http://...` shown in `operator gateway status`
     - `Connectivity probe: ok`
     - `Capability: read-only`, `write-capable`, or `admin-capable`
     - No auth loop in logs
@@ -261,11 +261,11 @@ flowchart TD
 
   <Accordion title="Gateway will not start or service installed but not running">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    operator status
+    operator gateway status
+    operator logs --follow
+    operator doctor
+    operator channels status --probe
     ```
 
     Good output:
@@ -287,11 +287,11 @@ flowchart TD
 
   <Accordion title="Channel connects but messages do not flow">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    operator status
+    operator gateway status
+    operator logs --follow
+    operator doctor
+    operator channels status --probe
     ```
 
     Good output:
@@ -312,12 +312,12 @@ flowchart TD
 
   <Accordion title="Cron or heartbeat did not fire or did not deliver">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw cron status
-    openclaw cron list
-    openclaw cron runs --id <jobId> --limit 20
-    openclaw logs --follow
+    operator status
+    operator gateway status
+    operator cron status
+    operator cron list
+    operator cron runs --id <jobId> --limit 20
+    operator logs --follow
     ```
 
     Good output:
@@ -342,11 +342,11 @@ flowchart TD
 
   <Accordion title="Node is paired but tool fails camera canvas screen exec">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw nodes status
-    openclaw nodes describe --node <idOrNameOrIp>
-    openclaw logs --follow
+    operator status
+    operator gateway status
+    operator nodes status
+    operator nodes describe --node <idOrNameOrIp>
+    operator logs --follow
     ```
 
     Good output:
@@ -368,10 +368,10 @@ flowchart TD
 
   <Accordion title="Exec suddenly asks for approval">
     ```bash
-    openclaw config get tools.exec.host
-    openclaw config get tools.exec.security
-    openclaw config get tools.exec.ask
-    openclaw gateway restart
+    operator config get tools.exec.host
+    operator config get tools.exec.security
+    operator config get tools.exec.ask
+    operator gateway restart
     ```
 
     What changed:
@@ -388,10 +388,10 @@ flowchart TD
     Restore the current no-approval defaults:
 
     ```bash
-    openclaw config set tools.exec.host gateway
-    openclaw config set tools.exec.security full
-    openclaw config set tools.exec.ask off
-    openclaw gateway restart
+    operator config set tools.exec.host gateway
+    operator config set tools.exec.security full
+    operator config set tools.exec.ask off
+    operator gateway restart
     ```
 
     Safer alternatives:
@@ -413,11 +413,11 @@ flowchart TD
 
   <Accordion title="Browser tool fails">
     ```bash
-    openclaw status
-    openclaw gateway status
-    openclaw browser status
-    openclaw logs --follow
-    openclaw doctor
+    operator status
+    operator gateway status
+    operator browser status
+    operator logs --follow
+    operator doctor
     ```
 
     Good output:
@@ -435,7 +435,7 @@ flowchart TD
     - `No Chrome tabs found for profile="user"` → the Chrome MCP attach profile has no open local Chrome tabs.
     - `Remote CDP for profile "<name>" is not reachable` → configured remote CDP endpoint unreachable from this host.
     - `Browser attachOnly is enabled ... not reachable` → attach-only profile has no live CDP target.
-    - Stale viewport/dark-mode/locale/offline overrides on attach-only or remote CDP profiles → run `openclaw browser stop --browser-profile <name>` to close the control session and release emulation state without restarting the gateway.
+    - Stale viewport/dark-mode/locale/offline overrides on attach-only or remote CDP profiles → run `operator browser stop --browser-profile <name>` to close the control session and release emulation state without restarting the gateway.
 
     Deep pages: [Browser tool fails](/gateway/troubleshooting#browser-tool-fails), [Missing browser command or tool](/tools/browser#missing-browser-command-or-tool), [Browser: Linux troubleshooting](/tools/browser-linux-troubleshooting), [Browser: WSL2/Windows remote CDP troubleshooting](/tools/browser-wsl2-windows-remote-cdp-troubleshooting)
 

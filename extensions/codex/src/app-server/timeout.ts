@@ -2,7 +2,7 @@
  * Thin Codex app-server timeout adapter around Operator's shared security
  * runtime timeout helper.
  */
-import { withTimeout as withSharedTimeout } from "openclaw/plugin-sdk/security-runtime";
+import { withTimeout as withSharedTimeout } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 
 /** Awaits a promise with a Codex-specific timeout error message. */
 export async function withTimeout<T>(

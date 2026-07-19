@@ -1,4 +1,4 @@
-// Extension Package Boundary script supports OpenClaw repository automation.
+// Extension Package Boundary script supports Operator repository automation.
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, posix, resolve } from "node:path";
 import { privateLocalOnlyPluginSdkEntrypoints } from "./plugin-sdk-entries.mjs";
@@ -17,7 +17,7 @@ export const EXTENSION_PACKAGE_BOUNDARY_EXCLUDE = [
 const privateLocalOnlyPluginSdkPackageDtsPaths = Object.fromEntries(
   privateLocalOnlyPluginSdkEntrypoints.map((entrypoint) => [
     `openclaw/plugin-sdk/${entrypoint}`,
-    [`../sdks/plugin-sdk/dist/src/plugin-sdk/${entrypoint}.d.ts`],
+    [`../packages/plugin-sdk/dist/src/plugin-sdk/${entrypoint}.d.ts`],
   ]),
 ) as Record<string, readonly string[]>;
 
@@ -61,7 +61,7 @@ export const EXTENSION_PACKAGE_BOUNDARY_BASE_PATHS = {
   "openclaw/plugin-sdk/account-id": ["../dist/plugin-sdk/account-id.d.ts"],
   "openclaw/plugin-sdk/channel-entry-contract": ["../dist/plugin-sdk/channel-entry-contract.d.ts"],
   "openclaw/plugin-sdk/browser-maintenance": [
-    "../sdks/plugin-sdk/dist/extensions/browser/browser-maintenance.d.ts",
+    "../packages/plugin-sdk/dist/extensions/browser/browser-maintenance.d.ts",
   ],
   "openclaw/plugin-sdk/channel-secret-basic-runtime": [
     "../dist/plugin-sdk/channel-secret-basic-runtime.d.ts",
@@ -81,168 +81,204 @@ export const EXTENSION_PACKAGE_BOUNDARY_BASE_PATHS = {
   "openclaw/plugin-sdk/provider-entry": ["../dist/plugin-sdk/provider-entry.d.ts"],
   "openclaw/plugin-sdk/secret-ref-runtime": ["../dist/plugin-sdk/secret-ref-runtime.d.ts"],
   "openclaw/plugin-sdk/ssrf-runtime": ["../dist/plugin-sdk/ssrf-runtime.d.ts"],
-  "@operator/qa-channel/api.js": ["../dist/plugin-sdk/extensions/qa-channel/api.d.ts"],
-  "@operator/matrix/test-api.js": ["../dist/plugin-sdk/extensions/matrix/test-api.d.ts"],
-  "@operator/discord/api.js": ["../dist/plugin-sdk/extensions/discord/api.d.ts"],
-  "@operator/slack/api.js": ["../dist/plugin-sdk/extensions/slack/api.d.ts"],
-  "@operator/telegram/api.js": ["../dist/plugin-sdk/extensions/telegram/api.d.ts"],
-  "@operator/whatsapp/api.js": ["../dist/plugin-sdk/extensions/whatsapp/api.d.ts"],
-  "@operator/ai": ["../dist/plugin-sdk/packages/ai/src/index.d.ts"],
-  "@operator/ai/diagnostics": ["../dist/plugin-sdk/packages/ai/src/utils/diagnostics.d.ts"],
-  "@operator/ai/event-stream": ["../dist/plugin-sdk/packages/ai/src/utils/event-stream.d.ts"],
-  "@operator/ai/providers": ["../dist/plugin-sdk/packages/ai/src/providers.d.ts"],
-  "@operator/ai/types": ["../dist/plugin-sdk/packages/ai/src/types.d.ts"],
-  "@operator/ai/validation": ["../dist/plugin-sdk/packages/ai/src/validation.d.ts"],
-  "@operator/ai/internal/*": ["../dist/plugin-sdk/packages/ai/src/internal/*.d.ts"],
-  "@operator/llm-core": ["../dist/plugin-sdk/packages/llm-core/src/index.d.ts"],
-  "@operator/llm-core/diagnostics": [
+  "@gabrielvfonseca/qa-channel/api.js": ["../dist/plugin-sdk/extensions/qa-channel/api.d.ts"],
+  "@gabrielvfonseca/matrix/test-api.js": ["../dist/plugin-sdk/extensions/matrix/test-api.d.ts"],
+  "@gabrielvfonseca/discord/api.js": ["../dist/plugin-sdk/extensions/discord/api.d.ts"],
+  "@gabrielvfonseca/slack/api.js": ["../dist/plugin-sdk/extensions/slack/api.d.ts"],
+  "@gabrielvfonseca/telegram/api.js": ["../dist/plugin-sdk/extensions/telegram/api.d.ts"],
+  "@gabrielvfonseca/whatsapp/api.js": ["../dist/plugin-sdk/extensions/whatsapp/api.d.ts"],
+  "@gabrielvfonseca/ai": ["../dist/plugin-sdk/packages/ai/src/index.d.ts"],
+  "@gabrielvfonseca/ai/diagnostics": ["../dist/plugin-sdk/packages/ai/src/utils/diagnostics.d.ts"],
+  "@gabrielvfonseca/ai/event-stream": [
+    "../dist/plugin-sdk/packages/ai/src/utils/event-stream.d.ts",
+  ],
+  "@gabrielvfonseca/ai/providers": ["../dist/plugin-sdk/packages/ai/src/providers.d.ts"],
+  "@gabrielvfonseca/ai/types": ["../dist/plugin-sdk/packages/ai/src/types.d.ts"],
+  "@gabrielvfonseca/ai/validation": ["../dist/plugin-sdk/packages/ai/src/validation.d.ts"],
+  "@gabrielvfonseca/ai/internal/*": ["../dist/plugin-sdk/packages/ai/src/internal/*.d.ts"],
+  "@gabrielvfonseca/llm-core": ["../dist/plugin-sdk/packages/llm-core/src/index.d.ts"],
+  "@gabrielvfonseca/llm-core/diagnostics": [
     "../dist/plugin-sdk/packages/llm-core/src/utils/diagnostics.d.ts",
   ],
-  "@operator/llm-core/event-stream": [
+  "@gabrielvfonseca/llm-core/event-stream": [
     "../dist/plugin-sdk/packages/llm-core/src/utils/event-stream.d.ts",
   ],
-  "@operator/llm-core/types": ["../dist/plugin-sdk/packages/llm-core/src/types.d.ts"],
-  "@operator/llm-core/validation": ["../dist/plugin-sdk/packages/llm-core/src/validation.d.ts"],
-  "@operator/llm-core/*": ["../dist/plugin-sdk/packages/llm-core/src/*.d.ts"],
-  "@operator/model-catalog-core": ["../dist/plugin-sdk/packages/model-catalog-core/src/index.d.ts"],
-  "@operator/model-catalog-core/configured-model-refs": [
+  "@gabrielvfonseca/llm-core/types": ["../dist/plugin-sdk/packages/llm-core/src/types.d.ts"],
+  "@gabrielvfonseca/llm-core/validation": [
+    "../dist/plugin-sdk/packages/llm-core/src/validation.d.ts",
+  ],
+  "@gabrielvfonseca/llm-core/*": ["../dist/plugin-sdk/packages/llm-core/src/*.d.ts"],
+  "@gabrielvfonseca/model-catalog-core": [
+    "../dist/plugin-sdk/packages/model-catalog-core/src/index.d.ts",
+  ],
+  "@gabrielvfonseca/model-catalog-core/configured-model-refs": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/configured-model-refs.d.ts",
   ],
-  "@operator/model-catalog-core/model-catalog-refs": [
+  "@gabrielvfonseca/model-catalog-core/model-catalog-refs": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/model-catalog-refs.d.ts",
   ],
-  "@operator/model-catalog-core/model-catalog-normalize": [
+  "@gabrielvfonseca/model-catalog-core/model-catalog-normalize": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/model-catalog-normalize.d.ts",
   ],
-  "@operator/model-catalog-core/model-catalog-types": [
+  "@gabrielvfonseca/model-catalog-core/model-catalog-types": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/model-catalog-types.d.ts",
   ],
-  "@operator/model-catalog-core/provider-id": [
+  "@gabrielvfonseca/model-catalog-core/provider-id": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/provider-id.d.ts",
   ],
-  "@operator/model-catalog-core/provider-model-id-normalization": [
+  "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/provider-model-id-normalization.d.ts",
   ],
-  "@operator/model-catalog-core/provider-model-id-normalize": [
+  "@gabrielvfonseca/model-catalog-core/provider-model-id-normalize": [
     "../dist/plugin-sdk/packages/model-catalog-core/src/provider-model-id-normalize.d.ts",
   ],
-  "@operator/model-catalog-core/*": ["../dist/plugin-sdk/packages/model-catalog-core/src/*.d.ts"],
-  "@operator/markdown-core": ["../dist/plugin-sdk/packages/markdown-core/src/index.d.ts"],
-  "@operator/markdown-core/code-spans": [
+  "@gabrielvfonseca/model-catalog-core/*": [
+    "../dist/plugin-sdk/packages/model-catalog-core/src/*.d.ts",
+  ],
+  "@gabrielvfonseca/markdown-core": ["../dist/plugin-sdk/packages/markdown-core/src/index.d.ts"],
+  "@gabrielvfonseca/markdown-core/code-spans": [
     "../dist/plugin-sdk/packages/markdown-core/src/code-spans.d.ts",
   ],
-  "@operator/markdown-core/fences": ["../dist/plugin-sdk/packages/markdown-core/src/fences.d.ts"],
-  "@operator/markdown-core/frontmatter": [
+  "@gabrielvfonseca/markdown-core/fences": [
+    "../dist/plugin-sdk/packages/markdown-core/src/fences.d.ts",
+  ],
+  "@gabrielvfonseca/markdown-core/frontmatter": [
     "../dist/plugin-sdk/packages/markdown-core/src/frontmatter.d.ts",
   ],
-  "@operator/markdown-core/ir": ["../dist/plugin-sdk/packages/markdown-core/src/ir.d.ts"],
-  "@operator/markdown-core/render": ["../dist/plugin-sdk/packages/markdown-core/src/render.d.ts"],
-  "@operator/markdown-core/render-aware-chunking": [
+  "@gabrielvfonseca/markdown-core/ir": ["../dist/plugin-sdk/packages/markdown-core/src/ir.d.ts"],
+  "@gabrielvfonseca/markdown-core/render": [
+    "../dist/plugin-sdk/packages/markdown-core/src/render.d.ts",
+  ],
+  "@gabrielvfonseca/markdown-core/render-aware-chunking": [
     "../dist/plugin-sdk/packages/markdown-core/src/render-aware-chunking.d.ts",
   ],
-  "@operator/markdown-core/tables": ["../dist/plugin-sdk/packages/markdown-core/src/tables.d.ts"],
-  "@operator/markdown-core/types": ["../dist/plugin-sdk/packages/markdown-core/src/types.d.ts"],
-  "@operator/markdown-core/*": ["../dist/plugin-sdk/packages/markdown-core/src/*.d.ts"],
-  "@operator/media-generation-core": [
+  "@gabrielvfonseca/markdown-core/tables": [
+    "../dist/plugin-sdk/packages/markdown-core/src/tables.d.ts",
+  ],
+  "@gabrielvfonseca/markdown-core/types": [
+    "../dist/plugin-sdk/packages/markdown-core/src/types.d.ts",
+  ],
+  "@gabrielvfonseca/markdown-core/*": ["../dist/plugin-sdk/packages/markdown-core/src/*.d.ts"],
+  "@gabrielvfonseca/media-generation-core": [
     "../dist/plugin-sdk/packages/media-generation-core/src/index.d.ts",
   ],
-  "@operator/media-generation-core/capability-model-ref": [
+  "@gabrielvfonseca/media-generation-core/capability-model-ref": [
     "../dist/plugin-sdk/packages/media-generation-core/src/capability-model-ref.d.ts",
   ],
-  "@operator/media-generation-core/catalog": [
+  "@gabrielvfonseca/media-generation-core/catalog": [
     "../dist/plugin-sdk/packages/media-generation-core/src/catalog.d.ts",
   ],
-  "@operator/media-generation-core/model-ref": [
+  "@gabrielvfonseca/media-generation-core/model-ref": [
     "../dist/plugin-sdk/packages/media-generation-core/src/model-ref.d.ts",
   ],
-  "@operator/media-generation-core/normalization": [
+  "@gabrielvfonseca/media-generation-core/normalization": [
     "../dist/plugin-sdk/packages/media-generation-core/src/normalization.d.ts",
   ],
-  "@operator/media-generation-core/*": [
+  "@gabrielvfonseca/media-generation-core/*": [
     "../dist/plugin-sdk/packages/media-generation-core/src/*.d.ts",
   ],
-  "@operator/media-core": ["../dist/plugin-sdk/packages/media-core/src/index.d.ts"],
-  "@operator/media-core/base64": ["../dist/plugin-sdk/packages/media-core/src/base64.d.ts"],
-  "@operator/media-core/constants": ["../dist/plugin-sdk/packages/media-core/src/constants.d.ts"],
-  "@operator/media-core/content-length": [
+  "@gabrielvfonseca/media-core": ["../dist/plugin-sdk/packages/media-core/src/index.d.ts"],
+  "@gabrielvfonseca/media-core/base64": ["../dist/plugin-sdk/packages/media-core/src/base64.d.ts"],
+  "@gabrielvfonseca/media-core/constants": [
+    "../dist/plugin-sdk/packages/media-core/src/constants.d.ts",
+  ],
+  "@gabrielvfonseca/media-core/content-length": [
     "../dist/plugin-sdk/packages/media-core/src/content-length.d.ts",
   ],
-  "@operator/media-core/file-name": ["../dist/plugin-sdk/packages/media-core/src/file-name.d.ts"],
-  "@operator/media-core/inbound-path-policy": [
+  "@gabrielvfonseca/media-core/file-name": [
+    "../dist/plugin-sdk/packages/media-core/src/file-name.d.ts",
+  ],
+  "@gabrielvfonseca/media-core/inbound-path-policy": [
     "../dist/plugin-sdk/packages/media-core/src/inbound-path-policy.d.ts",
   ],
-  "@operator/media-core/inline-image-data-url": [
+  "@gabrielvfonseca/media-core/inline-image-data-url": [
     "../dist/plugin-sdk/packages/media-core/src/inline-image-data-url.d.ts",
   ],
-  "@operator/media-core/media-source-url": [
+  "@gabrielvfonseca/media-core/media-source-url": [
     "../dist/plugin-sdk/packages/media-core/src/media-source-url.d.ts",
   ],
-  "@operator/media-core/mime": ["../dist/plugin-sdk/packages/media-core/src/mime.d.ts"],
-  "@operator/media-core/read-byte-stream-with-limit": [
+  "@gabrielvfonseca/media-core/mime": ["../dist/plugin-sdk/packages/media-core/src/mime.d.ts"],
+  "@gabrielvfonseca/media-core/read-byte-stream-with-limit": [
     "../dist/plugin-sdk/packages/media-core/src/read-byte-stream-with-limit.d.ts",
   ],
-  "@operator/media-core/*": ["../dist/plugin-sdk/packages/media-core/src/*.d.ts"],
-  "@operator/normalization-core/record-coerce": [
+  "@gabrielvfonseca/media-core/*": ["../dist/plugin-sdk/packages/media-core/src/*.d.ts"],
+  "@gabrielvfonseca/normalization-core/record-coerce": [
     "../dist/plugin-sdk/packages/normalization-core/src/record-coerce.d.ts",
   ],
-  "@operator/normalization-core/string-coerce": [
+  "@gabrielvfonseca/normalization-core/string-coerce": [
     "../dist/plugin-sdk/packages/normalization-core/src/string-coerce.d.ts",
   ],
-  "@operator/normalization-core/*": ["../dist/plugin-sdk/packages/normalization-core/src/*.d.ts"],
-  "@operator/retry": ["../dist/plugin-sdk/packages/retry/src/index.d.ts"],
-  "@operator/workboard-contract": ["../packages/workboard-contract/src/index.ts"],
+  "@gabrielvfonseca/normalization-core/*": [
+    "../dist/plugin-sdk/packages/normalization-core/src/*.d.ts",
+  ],
+  "@gabrielvfonseca/retry": ["../dist/plugin-sdk/packages/retry/src/index.d.ts"],
+  "@gabrielvfonseca/workboard-contract": ["../packages/workboard-contract/src/index.ts"],
   ...buildPackageBoundaryDtsPaths({
-    packageName: "@operator/acp-core",
+    packageName: "@gabrielvfonseca/acp-core",
     packageDir: "acp-core",
   }),
-  "@operator/acp-core/*": ["../dist/plugin-sdk/packages/acp-core/src/*.d.ts"],
-  "@operator/terminal-core": ["../dist/plugin-sdk/packages/terminal-core/src/index.d.ts"],
-  "@operator/terminal-core/ansi": ["../dist/plugin-sdk/packages/terminal-core/src/ansi.d.ts"],
-  "@operator/terminal-core/decorative-emoji": [
+  "@gabrielvfonseca/acp-core/*": ["../dist/plugin-sdk/packages/acp-core/src/*.d.ts"],
+  "@gabrielvfonseca/terminal-core": ["../dist/plugin-sdk/packages/terminal-core/src/index.d.ts"],
+  "@gabrielvfonseca/terminal-core/ansi": [
+    "../dist/plugin-sdk/packages/terminal-core/src/ansi.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/decorative-emoji": [
     "../dist/plugin-sdk/packages/terminal-core/src/decorative-emoji.d.ts",
   ],
-  "@operator/terminal-core/health-style": [
+  "@gabrielvfonseca/terminal-core/health-style": [
     "../dist/plugin-sdk/packages/terminal-core/src/health-style.d.ts",
   ],
-  "@operator/terminal-core/links": ["../dist/plugin-sdk/packages/terminal-core/src/links.d.ts"],
-  "@operator/terminal-core/note": ["../dist/plugin-sdk/packages/terminal-core/src/note.d.ts"],
-  "@operator/terminal-core/osc-progress": [
+  "@gabrielvfonseca/terminal-core/links": [
+    "../dist/plugin-sdk/packages/terminal-core/src/links.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/note": [
+    "../dist/plugin-sdk/packages/terminal-core/src/note.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/osc-progress": [
     "../dist/plugin-sdk/packages/terminal-core/src/osc-progress.d.ts",
   ],
-  "@operator/terminal-core/palette": ["../dist/plugin-sdk/packages/terminal-core/src/palette.d.ts"],
-  "@operator/terminal-core/progress-line": [
+  "@gabrielvfonseca/terminal-core/palette": [
+    "../dist/plugin-sdk/packages/terminal-core/src/palette.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/progress-line": [
     "../dist/plugin-sdk/packages/terminal-core/src/progress-line.d.ts",
   ],
-  "@operator/terminal-core/prompt-select-styled": [
+  "@gabrielvfonseca/terminal-core/prompt-select-styled": [
     "../dist/plugin-sdk/packages/terminal-core/src/prompt-select-styled.d.ts",
   ],
-  "@operator/terminal-core/prompt-select-styled-params": [
+  "@gabrielvfonseca/terminal-core/prompt-select-styled-params": [
     "../dist/plugin-sdk/packages/terminal-core/src/prompt-select-styled-params.d.ts",
   ],
-  "@operator/terminal-core/prompt-style": [
+  "@gabrielvfonseca/terminal-core/prompt-style": [
     "../dist/plugin-sdk/packages/terminal-core/src/prompt-style.d.ts",
   ],
-  "@operator/terminal-core/restore": ["../dist/plugin-sdk/packages/terminal-core/src/restore.d.ts"],
-  "@operator/terminal-core/safe-text": [
+  "@gabrielvfonseca/terminal-core/restore": [
+    "../dist/plugin-sdk/packages/terminal-core/src/restore.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/safe-text": [
     "../dist/plugin-sdk/packages/terminal-core/src/safe-text.d.ts",
   ],
-  "@operator/terminal-core/stream-writer": [
+  "@gabrielvfonseca/terminal-core/stream-writer": [
     "../dist/plugin-sdk/packages/terminal-core/src/stream-writer.d.ts",
   ],
-  "@operator/terminal-core/table": ["../dist/plugin-sdk/packages/terminal-core/src/table.d.ts"],
-  "@operator/terminal-core/terminal-link": [
+  "@gabrielvfonseca/terminal-core/table": [
+    "../dist/plugin-sdk/packages/terminal-core/src/table.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/terminal-link": [
     "../dist/plugin-sdk/packages/terminal-core/src/terminal-link.d.ts",
   ],
-  "@operator/terminal-core/theme": ["../dist/plugin-sdk/packages/terminal-core/src/theme.d.ts"],
-  "@operator/terminal-core/*": ["../dist/plugin-sdk/packages/terminal-core/src/*.d.ts"],
-  "@operator/*.js": ["../sdks/plugin-sdk/dist/extensions/*.d.ts", "../extensions/*"],
-  "@operator/*": ["../sdks/plugin-sdk/dist/extensions/*", "../extensions/*"],
+  "@gabrielvfonseca/terminal-core/theme": [
+    "../dist/plugin-sdk/packages/terminal-core/src/theme.d.ts",
+  ],
+  "@gabrielvfonseca/terminal-core/*": ["../dist/plugin-sdk/packages/terminal-core/src/*.d.ts"],
+  "@gabrielvfonseca/*.js": ["../packages/plugin-sdk/dist/extensions/*.d.ts", "../extensions/*"],
+  "@gabrielvfonseca/*": ["../packages/plugin-sdk/dist/extensions/*", "../extensions/*"],
   "openclaw/plugin-sdk/qa-channel": ["../dist/plugin-sdk/src/plugin-sdk/qa-channel.d.ts"],
   "openclaw/plugin-sdk/qa-channel-protocol": [
     "../dist/plugin-sdk/src/plugin-sdk/qa-channel-protocol.d.ts",
   ],
   "openclaw/plugin-sdk/qa-runtime": ["../dist/plugin-sdk/src/plugin-sdk/qa-runtime.d.ts"],
-  "@operator/plugin-sdk/*": ["../dist/plugin-sdk/*.d.ts"],
+  "@gabrielvfonseca/plugin-sdk/*": ["../dist/plugin-sdk/*.d.ts"],
 } as const;
 
 function prefixExtensionPackageBoundaryPaths(
@@ -262,11 +298,11 @@ export const EXTENSION_PACKAGE_BOUNDARY_XAI_PATHS = {
     (({
       "openclaw/plugin-sdk/channel-secret-basic-runtime": _omitBasic,
       "openclaw/plugin-sdk/channel-secret-tts-runtime": _omitTts,
-      "@operator/matrix/test-api.js": _omitMatrix,
-      "@operator/discord/api.js": _omitDiscord,
-      "@operator/slack/api.js": _omitSlack,
-      "@operator/telegram/api.js": _omitTelegram,
-      "@operator/whatsapp/api.js": _omitWhatsApp,
+      "@gabrielvfonseca/matrix/test-api.js": _omitMatrix,
+      "@gabrielvfonseca/discord/api.js": _omitDiscord,
+      "@gabrielvfonseca/slack/api.js": _omitSlack,
+      "@gabrielvfonseca/telegram/api.js": _omitTelegram,
+      "@gabrielvfonseca/whatsapp/api.js": _omitWhatsApp,
       ...rest
     }) => rest)(EXTENSION_PACKAGE_BOUNDARY_BASE_PATHS),
     "../",
@@ -289,14 +325,14 @@ export const EXTENSION_PACKAGE_BOUNDARY_XAI_PATHS = {
   "openclaw/plugin-sdk/provider-web-search-contract": [
     "../../dist/plugin-sdk/provider-web-search-contract.d.ts",
   ],
-  "@operator/qa-channel/api.js": ["../../dist/plugin-sdk/extensions/qa-channel/api.d.ts"],
-  "@operator/*.js": ["../../sdks/plugin-sdk/dist/extensions/*.d.ts", "../*"],
-  "@operator/*": ["../*"],
-  "@operator/plugin-sdk/*": ["../../dist/plugin-sdk/*.d.ts"],
-  "@operator/anthropic-vertex/api.js": ["./.boundary-stubs/anthropic-vertex-api.d.ts"],
-  "@operator/ollama/api.js": ["./.boundary-stubs/ollama-api.d.ts"],
-  "@operator/ollama/runtime-api.js": ["./.boundary-stubs/ollama-runtime-api.d.ts"],
-  "@operator/speech-core/runtime-api.js": ["./.boundary-stubs/speech-core-runtime-api.d.ts"],
+  "@gabrielvfonseca/qa-channel/api.js": ["../../dist/plugin-sdk/extensions/qa-channel/api.d.ts"],
+  "@gabrielvfonseca/*.js": ["../../packages/plugin-sdk/dist/extensions/*.d.ts", "../*"],
+  "@gabrielvfonseca/*": ["../*"],
+  "@gabrielvfonseca/plugin-sdk/*": ["../../dist/plugin-sdk/*.d.ts"],
+  "@gabrielvfonseca/anthropic-vertex/api.js": ["./.boundary-stubs/anthropic-vertex-api.d.ts"],
+  "@gabrielvfonseca/ollama/api.js": ["./.boundary-stubs/ollama-api.d.ts"],
+  "@gabrielvfonseca/ollama/runtime-api.js": ["./.boundary-stubs/ollama-runtime-api.d.ts"],
+  "@gabrielvfonseca/speech-core/runtime-api.js": ["./.boundary-stubs/speech-core-runtime-api.d.ts"],
 } as const;
 
 type ExtensionPackageBoundaryTsConfigJson = {

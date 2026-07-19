@@ -1,10 +1,10 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createPluginStateKeyedStoreForTests,
   createPluginStateSyncKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createTelegramMessageCache, resolveTelegramMessageCacheScope } from "./message-cache.js";
 import { recordOutboundMessageForPromptContext } from "./outbound-message-context.js";
@@ -16,7 +16,7 @@ import {
 import type { TelegramRuntime } from "./runtime.types.js";
 
 const cfg = {
-  session: { store: "/tmp/openclaw-telegram-outbound-context-test.json" },
+  session: { store: "/tmp/operator-telegram-outbound-context-test.json" },
 } satisfies OperatorConfig;
 
 function installTelegramStateRuntimeForTest(): void {
@@ -80,7 +80,7 @@ describe("recordOutboundMessageForPromptContext", () => {
           is_bot: true,
           first_name: "Provisioning",
           last_name: "Placeholder",
-          username: "openclaw_bot",
+          username: "operator_bot",
         },
         message_id: 700,
         text: "Bot just replied",
@@ -92,13 +92,13 @@ describe("recordOutboundMessageForPromptContext", () => {
     expect(cached).toMatchObject({
       sender: "Configured Agent (you)",
       senderId: "999",
-      senderUsername: "openclaw_bot",
+      senderUsername: "operator_bot",
       sourceMessage: {
         from: {
           id: 999,
           is_bot: true,
           first_name: "Configured Agent (you)",
-          username: "openclaw_bot",
+          username: "operator_bot",
         },
       },
     });
@@ -149,7 +149,7 @@ describe("recordOutboundMessageForPromptContext", () => {
           id: 999,
           is_bot: true,
           first_name: "Telegram Bot Name",
-          username: "openclaw_bot",
+          username: "operator_bot",
         },
         message_id: 702,
         text: "Business reply",
@@ -163,7 +163,7 @@ describe("recordOutboundMessageForPromptContext", () => {
       senderId: "777",
       senderUsername: "business_account",
       sourceMessage: {
-        sender_business_bot: { id: 999, is_bot: true, username: "openclaw_bot" },
+        sender_business_bot: { id: 999, is_bot: true, username: "operator_bot" },
       },
     });
   });

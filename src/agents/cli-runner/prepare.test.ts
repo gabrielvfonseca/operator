@@ -3,14 +3,14 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
-import { expectDefined } from "@operator/normalization-core";
-import { CURRENT_SESSION_VERSION } from "openclaw/plugin-sdk/agent-sessions";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { CURRENT_SESSION_VERSION } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildGroupChatContext, buildGroupIntro } from "../../auto-reply/reply/groups.js";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { registerLegacyContextEngine } from "../../context-engine/legacy.registration.js";
 import {
   registerContextEngine,
@@ -123,13 +123,13 @@ function createTestMcpLoopbackServerConfig(port: number) {
   // substitution without starting the real MCP HTTP server.
   return {
     mcpServers: {
-      openclaw: {
+      operator: {
         type: "http",
         url: `http://127.0.0.1:${port}/mcp`,
         alwaysLoad: true,
         headers: {
           Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
-          "x-openclaw-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
+          "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
         },
       },
     },
@@ -236,7 +236,7 @@ function setCliBackendForPrepareTest(
 function createSessionFile() {
   // Prepare tests use canonical Operator session paths because several cases
   // assert that external or stale transcript paths are ignored.
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-cli-prepare-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-cli-prepare-"));
   sessionFileEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
   setTestEnvValue("OPERATOR_STATE_DIR", dir);
   const sessionFile = path.join(dir, "agents", "main", "sessions", "session-test.jsonl");
@@ -468,7 +468,7 @@ describe("prepareCliRunContext", () => {
   it("honors an explicit auth agent directory independently of session identity", async () => {
     const { dir, sessionFile } = createSessionFile();
     const modelOwnerAgentDir = path.join(dir, "ops-agent");
-    const systemAgentDir = path.join(dir, "openclaw-agent");
+    const systemAgentDir = path.join(dir, "operator-agent");
     const prepareExecution = vi.fn(async () => undefined);
     fs.mkdirSync(modelOwnerAgentDir, { recursive: true });
     cliBackendsTesting.setDepsForTest({
@@ -493,8 +493,8 @@ describe("prepareCliRunContext", () => {
     try {
       const context = await prepareCliRunContext({
         sessionId: "session-test",
-        sessionKey: "agent:openclaw:main",
-        agentId: "openclaw",
+        sessionKey: "agent:operator:main",
+        agentId: "@gabrielvfonseca/operator",
         sessionFile,
         workspaceDir: dir,
         agentDir: modelOwnerAgentDir,
@@ -508,7 +508,7 @@ describe("prepareCliRunContext", () => {
           agents: {
             list: [
               { id: "ops", default: true, agentDir: modelOwnerAgentDir },
-              { id: "openclaw", agentDir: systemAgentDir },
+              { id: "@gabrielvfonseca/operator", agentDir: systemAgentDir },
             ],
           },
         },
@@ -1110,8 +1110,8 @@ describe("prepareCliRunContext", () => {
         mcp?: { allowed?: string[] };
         mcpServers?: Record<string, { url?: string }>;
       };
-      expect(generatedSettings.mcp?.allowed).toEqual(["openclaw"]);
-      expect(generatedSettings.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:31783/mcp");
+      expect(generatedSettings.mcp?.allowed).toEqual(["@gabrielvfonseca/operator"]);
+      expect(generatedSettings.mcpServers?.operator?.url).toBe("http://127.0.0.1:31783/mcp");
       expect(context.preparedBackend.env?.GEMINI_CLI_SYSTEM_SETTINGS_PATH).toBe(
         profileSystemSettingsPath,
       );
@@ -1339,7 +1339,7 @@ describe("prepareCliRunContext", () => {
       expect(skillsCleanup).toHaveBeenCalledOnce();
       expect(fs.existsSync(skillsPluginDir)).toBe(false);
       expect(
-        fs.readdirSync(tempRoot).filter((entry) => entry.startsWith("openclaw-cli-mcp-")),
+        fs.readdirSync(tempRoot).filter((entry) => entry.startsWith("operator-cli-mcp-")),
       ).toEqual([]);
     } finally {
       tempEnvSnapshot.restore();
@@ -2313,7 +2313,7 @@ describe("prepareCliRunContext", () => {
 
   it("uses cwd for CLI system prompt workspace guidance", async () => {
     const { dir, sessionFile } = createSessionFile();
-    const taskDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-cli-task-"));
+    const taskDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-cli-task-"));
     try {
       const context = await prepareCliRunContext({
         sessionId: "session-test",
@@ -3577,12 +3577,12 @@ describe("prepareCliRunContext", () => {
         provider: "claude-cli",
         model: "test-model",
         timeoutMs: 1_000,
-        runId: "run-test-openclaw-mcp",
+        runId: "run-test-operator-mcp",
         config: createCliBackendConfig(),
         systemAgentTool: { surface: "cli" },
         cliToolAvailability: {
           native: [],
-          mcp: ["mcp__openclaw__openclaw"],
+          mcp: ["mcp__operator__openclaw"],
         },
       };
       const context = await prepareCliRunContext(params);
@@ -3600,7 +3600,7 @@ describe("prepareCliRunContext", () => {
       expect(resolveExecutionArgs).not.toHaveBeenCalled();
       expect(context.params.cliToolAvailability).toEqual({
         native: [],
-        mcp: ["mcp__openclaw__openclaw"],
+        mcp: ["mcp__operator__openclaw"],
       });
       const mcpConfigPath = expectDefined(
         args[args.indexOf("--mcp-config") + 1],
@@ -3609,9 +3609,9 @@ describe("prepareCliRunContext", () => {
       const raw = JSON.parse(fs.readFileSync(mcpConfigPath, "utf-8")) as {
         mcpServers?: Record<string, { env?: Record<string, string> }>;
       };
-      expect(Object.keys(raw.mcpServers ?? {})).toEqual(["openclaw"]);
-      expect(raw.mcpServers?.openclaw?.env).toMatchObject({
-        OPERATOR_TOOLS_MCP_TOOLS: "openclaw",
+      expect(Object.keys(raw.mcpServers ?? {})).toEqual(["@gabrielvfonseca/operator"]);
+      expect(raw.mcpServers?.operator?.env).toMatchObject({
+        OPERATOR_TOOLS_MCP_TOOLS: "@gabrielvfonseca/operator",
         OPERATOR_TOOLS_MCP_SYSTEM_AGENT_SURFACE: "cli",
       });
 
@@ -3937,14 +3937,14 @@ describe("prepareCliRunContext", () => {
 
       const context = await prepareCliRunContext({
         sessionId: "session-test",
-        sessionKey: "agent:openclaw:main",
+        sessionKey: "agent:operator:main",
         sessionFile,
         workspaceDir: dir,
         prompt: "approve the proposal",
         provider: "claude-cli",
         model: "opus",
         timeoutMs: 1_000,
-        runId: "run-openclaw-process-per-turn",
+        runId: "run-operator-process-per-turn",
         cliSessionBinding: { sessionId: "native-claude-sid" },
         config: createCliBackendConfig(),
         disableCliLiveSession: true,
@@ -4244,10 +4244,10 @@ describe("prepareCliRunContext", () => {
               description: "Read Gmail safely.",
               filePath: hostSkillPath,
               baseDir: hostSkillDir,
-              source: "openclaw-bundled",
+              source: "operator-bundled",
               sourceInfo: {
                 path: hostSkillPath,
-                source: "openclaw-bundled",
+                source: "operator-bundled",
                 scope: "project",
                 origin: "top-level",
                 baseDir: hostSkillDir,
@@ -4264,7 +4264,7 @@ describe("prepareCliRunContext", () => {
         workspaceDir: dir,
       });
       expect(context.systemPrompt).toContain(
-        "/workspace/.openclaw/sandbox-skills/skills/gog/SKILL.md",
+        "/workspace/.operator/sandbox-skills/skills/gog/SKILL.md",
       );
       expect(context.systemPrompt).not.toContain(hostSkillPath);
       expect(context.systemPromptReport.skills.promptChars).toBeGreaterThan(0);
@@ -4314,9 +4314,9 @@ describe("prepareCliRunContext", () => {
       });
       setCliRunnerPrepareTestDeps({
         prepareClaudeCliSkillsPlugin: vi.fn(async () => ({
-          args: ["--plugin-dir", path.join(dir, "openclaw-skills")],
+          args: ["--plugin-dir", path.join(dir, "operator-skills")],
           cleanup: vi.fn(async () => undefined),
-          pluginDir: path.join(dir, "openclaw-skills"),
+          pluginDir: path.join(dir, "operator-skills"),
         })),
       });
 
@@ -4366,7 +4366,7 @@ describe("prepareCliRunContext", () => {
       expect(context.systemPromptReport.skills.promptChars).toBe(0);
       expect(context.claudeSkillsPluginArgs).toEqual([
         "--plugin-dir",
-        path.join(dir, "openclaw-skills"),
+        path.join(dir, "operator-skills"),
       ]);
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });

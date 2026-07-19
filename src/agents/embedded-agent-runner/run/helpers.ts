@@ -172,7 +172,7 @@ export function isAssistantForModelRef(
 }
 
 function isEmbeddedHarnessProvider(provider: string): boolean {
-  return provider.trim().toLowerCase() === "operator";
+  return provider.trim().toLowerCase() === "@gabrielvfonseca/operator";
 }
 
 export function resolveReportedModelRef(params: {

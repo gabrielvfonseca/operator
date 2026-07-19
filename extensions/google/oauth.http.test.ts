@@ -2,7 +2,7 @@
 // token-exchange/identity calls.
 import http from "node:http";
 import type { AddressInfo } from "node:net";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TOKEN_URL } from "./oauth.shared.js";
 

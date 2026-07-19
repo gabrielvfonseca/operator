@@ -2,22 +2,22 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import OpenAI from "openai";
-import type { ResolvedTtsConfig } from "openclaw/plugin-sdk/agent-runtime";
-import { AuthStorage, ModelRegistry } from "openclaw/plugin-sdk/agent-sessions";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { encodePngRgba, fillPixel } from "openclaw/plugin-sdk/media-runtime";
+import type { ResolvedTtsConfig } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { AuthStorage, ModelRegistry } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { encodePngRgba, fillPixel } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { runRealtimeSttLiveTest } from "openclaw/plugin-sdk/provider-test-contracts";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { runRealtimeSttLiveTest } from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 import {
   isOverloadedErrorMessage,
   isServerErrorMessage,
   isTimeoutErrorMessage,
-} from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+import OpenAI from "openai";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 

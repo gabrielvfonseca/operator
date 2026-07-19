@@ -1,6 +1,6 @@
 // Discord tests cover monitor plugin behavior.
-import { danger } from "openclaw/plugin-sdk/runtime-env";
-import { typedCases } from "openclaw/plugin-sdk/test-fixtures";
+import { danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { typedCases } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ChannelType, type Guild } from "./internal/discord.js";
 import {
@@ -669,15 +669,15 @@ describe("discord group DM gating", () => {
   it("matches group DM allowlist", () => {
     expect(
       resolveGroupDmAllow({
-        channels: ["openclaw-dm"],
+        channels: ["operator-dm"],
         channelId: "1",
         channelName: "Operator DM",
-        channelSlug: "openclaw-dm",
+        channelSlug: "operator-dm",
       }),
     ).toBe(true);
     expect(
       resolveGroupDmAllow({
-        channels: ["openclaw-dm"],
+        channels: ["operator-dm"],
         channelId: "1",
         channelName: "Other",
         channelSlug: "other",

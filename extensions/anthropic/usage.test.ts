@@ -130,7 +130,7 @@ describe("Anthropic provider usage", () => {
       resolveOAuthToken: async () => ({ token: "oauth-token" }),
     });
     expect(result).toEqual({
-      token: 'openclaw:anthropic-admin:v1:{"token":"sk-ant-admin-explicit"}',
+      token: 'operator:anthropic-admin:v1:{"token":"sk-ant-admin-explicit"}',
     });
   });
 
@@ -143,7 +143,7 @@ describe("Anthropic provider usage", () => {
       resolveOAuthToken: async () => null,
     });
     expect(result).toEqual({
-      token: 'openclaw:anthropic-admin:v1:{"token":"sk-ant-admin-profile"}',
+      token: 'operator:anthropic-admin:v1:{"token":"sk-ant-admin-profile"}',
     });
   });
 
@@ -160,7 +160,7 @@ describe("Anthropic provider usage", () => {
       resolveOAuthToken: async () => ({ token: "oauth-token" }),
     });
     expect(result).toEqual({
-      token: 'openclaw:anthropic-admin:v1:{"token":"sk-ant-admin-billing"}',
+      token: 'operator:anthropic-admin:v1:{"token":"sk-ant-admin-billing"}',
     });
   });
 

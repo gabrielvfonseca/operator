@@ -1,5 +1,5 @@
 // Shared doctor dispatcher for channel plugin repair, warning, and compatibility adapters.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   getBundledChannelPlugin,
   getBundledChannelSetupPlugin,

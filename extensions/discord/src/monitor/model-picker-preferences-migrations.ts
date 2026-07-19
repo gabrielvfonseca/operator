@@ -2,10 +2,13 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import type { ChannelLegacyStateMigrationPlan } from "openclaw/plugin-sdk/channel-contract";
-import type { BundledChannelLegacyStateMigrationDetector } from "openclaw/plugin-sdk/channel-entry-contract";
-import { MAX_DATE_TIMESTAMP_MS, timestampMsToIsoString } from "openclaw/plugin-sdk/number-runtime";
-import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
+import type { ChannelLegacyStateMigrationPlan } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { BundledChannelLegacyStateMigrationDetector } from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
+import {
+  MAX_DATE_TIMESTAMP_MS,
+  timestampMsToIsoString,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   DISCORD_COMMAND_DEPLOY_HASH_MAX_ENTRIES,
   DISCORD_COMMAND_DEPLOY_HASH_NAMESPACE,

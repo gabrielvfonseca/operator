@@ -4,16 +4,16 @@ import {
   expectLifecyclePatch,
   expectPendingUntilAbort,
   startAccountAndTrackLifecycle,
-} from "openclaw/plugin-sdk/channel-test-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import {
   createPluginSetupWizardConfigure,
   createPluginSetupWizardStatus,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
-import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import type { ChannelAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 import {

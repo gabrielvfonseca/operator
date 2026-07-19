@@ -2,8 +2,8 @@
  * Shared Amazon Bedrock discovery helpers used by plugin runtime and config
  * consumers without pulling in the AWS discovery implementation.
  */
-import { resolveAwsSdkEnvVarName } from "openclaw/plugin-sdk/provider-auth-runtime";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
+import { resolveAwsSdkEnvVarName } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 
 /** Resolve the config auth marker that tells Operator to use AWS SDK credentials. */
 export function resolveBedrockConfigApiKey(

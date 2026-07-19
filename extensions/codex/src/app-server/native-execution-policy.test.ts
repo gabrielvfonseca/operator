@@ -1,5 +1,5 @@
 // Codex tests cover native execution policy plugin behavior.
-import type { getSessionEntry as getSessionEntryType } from "openclaw/plugin-sdk/session-store-runtime";
+import type { getSessionEntry as getSessionEntryType } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveCodexNativeExecutionPolicy } from "./native-execution-policy.js";
 

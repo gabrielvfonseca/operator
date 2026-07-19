@@ -1,10 +1,10 @@
 // Defines Zod schema fragments for per-agent runtime configuration.
-import { isRecord as isPlainRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord as isPlainRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { z } from "zod";
 import { splitSandboxBindSpec } from "../agents/sandbox/bind-spec.js";
 import { isSandboxHostPathAbsolute } from "../agents/sandbox/host-paths.js";
@@ -361,7 +361,7 @@ const CodexUserLocationSchema = z
   })
   .optional();
 
-const BLOCKED_WEB_SEARCH_KEYS_ISSUE_FIELD = "__operatorBlockedWebSearchKeys";
+const BLOCKED_WEB_SEARCH_KEYS_ISSUE_FIELD = "__openclawBlockedWebSearchKeys";
 
 const ToolsWebSearchSchema = z
   .preprocess(

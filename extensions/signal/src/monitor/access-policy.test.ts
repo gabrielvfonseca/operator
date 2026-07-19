@@ -1,5 +1,8 @@
 // Signal tests cover access policy plugin behavior.
-import type { AccessGroupsConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  AccessGroupsConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import { resolveSignalSender } from "../identity.js";
 import { handleSignalDirectMessageAccess, resolveSignalAccessState } from "./access-policy.js";

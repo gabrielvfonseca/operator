@@ -7,7 +7,7 @@ import { resolveDefaultAgentWorkspaceDir } from "./workspace.js";
 
 describe("DEFAULT_AGENT_WORKSPACE_DIR", () => {
   it("uses OPERATOR_HOME when resolving the default workspace dir", () => {
-    const home = path.join(path.sep, "srv", "openclaw-home");
+    const home = path.join(path.sep, "srv", "operator-home");
 
     const resolved = withEnv(
       {
@@ -19,16 +19,16 @@ describe("DEFAULT_AGENT_WORKSPACE_DIR", () => {
       () => resolveDefaultAgentWorkspaceDir(),
     );
 
-    expect(resolved).toBe(path.join(path.resolve(home), ".openclaw", "workspace"));
+    expect(resolved).toBe(path.join(path.resolve(home), ".operator", "workspace"));
   });
 
   it("uses OPERATOR_WORKSPACE_DIR before OPERATOR_HOME", () => {
-    const workspaceDir = path.join(path.sep, "srv", "openclaw-workspace");
+    const workspaceDir = path.join(path.sep, "srv", "operator-workspace");
 
     const resolved = withEnv(
       {
         OPERATOR_WORKSPACE_DIR: workspaceDir,
-        OPERATOR_HOME: path.join(path.sep, "srv", "openclaw-home"),
+        OPERATOR_HOME: path.join(path.sep, "srv", "operator-home"),
       },
       () => resolveDefaultAgentWorkspaceDir(),
     );

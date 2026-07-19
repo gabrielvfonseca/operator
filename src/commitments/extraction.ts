@@ -2,8 +2,8 @@
 import {
   asFiniteNumber,
   timestampMsToIsoString,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString as asString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString as asString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentConfig } from "../agents/agent-scope.js";
 import type { OperatorConfig } from "../config/config.js";
 import { parseAbsoluteTimeMs } from "../cron/parse.js";

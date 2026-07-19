@@ -31,7 +31,7 @@ vi.mock("./ports-lsof.js", () => ({
 vi.mock("../config/paths.js", () => ({
   resolveGatewayPort: (...args: unknown[]) => resolveGatewayPortMock(...args),
   resolveStateDir: (env: NodeJS.ProcessEnv = process.env) =>
-    env.OPERATOR_STATE_DIR ?? "/tmp/openclaw-state",
+    env.OPERATOR_STATE_DIR ?? "/tmp/operator-state",
 }));
 
 const { cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } =
@@ -79,7 +79,7 @@ describe.runIf(process.platform !== "win32")("findGatewayPidsOnPortSync", () => 
         `p${process.pid}`,
         "copenclaw",
         `p${gatewayPidA}`,
-        "copenclaw-gateway",
+        "coperator-gateway",
         `p${foreignPid}`,
         "cnode",
         `p${gatewayPidB}`,
@@ -125,7 +125,7 @@ describe.runIf(process.platform !== "win32")("cleanStaleGatewayProcessesSync", (
       .mockReturnValueOnce({
         error: undefined,
         status: 0,
-        stdout: [`p${stalePidA}`, "copenclaw", `p${stalePidB}`, "copenclaw-gateway"].join("\n"),
+        stdout: [`p${stalePidA}`, "copenclaw", `p${stalePidB}`, "coperator-gateway"].join("\n"),
       })
       .mockReturnValue({
         error: undefined,
@@ -217,8 +217,8 @@ describe("triggerOperatorRestart", () => {
           ok: true,
           method: "launchctl",
           tried: [
-            `launchctl kickstart -k gui/${uid}/ai.openclaw.gateway`,
-            `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.openclaw.gateway.plist`,
+            `launchctl kickstart -k gui/${uid}/ai.operator.gateway`,
+            `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.operator.gateway.plist`,
           ],
         });
       },
@@ -253,9 +253,9 @@ describe("triggerOperatorRestart", () => {
           ok: true,
           method: "launchctl",
           tried: [
-            `launchctl kickstart -k gui/${uid}/ai.openclaw.gateway`,
-            `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.openclaw.gateway.plist`,
-            `launchctl kickstart gui/${uid}/ai.openclaw.gateway`,
+            `launchctl kickstart -k gui/${uid}/ai.operator.gateway`,
+            `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.operator.gateway.plist`,
+            `launchctl kickstart gui/${uid}/ai.operator.gateway`,
           ],
         });
       },

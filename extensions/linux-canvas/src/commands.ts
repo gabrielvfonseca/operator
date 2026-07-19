@@ -1,4 +1,4 @@
-import type { OperatorPluginNodeHostCommand } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginNodeHostCommand } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { LinuxCanvasIpcClient, type LinuxCanvasIpcTransport } from "./ipc-client.js";
 import {
   linuxCanvasSocketExists,

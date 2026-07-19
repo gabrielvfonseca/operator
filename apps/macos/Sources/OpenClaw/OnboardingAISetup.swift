@@ -1,12 +1,12 @@
 import Foundation
 import Observation
-import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorKit
+import OperatorProtocol
 
 /// Structured "Connect your AI" onboarding step.
 ///
-/// Drives the gateway's `openclaw.setup.detect` / `openclaw.setup.activate`
+/// Drives the gateway's `operator.setup.detect` / `operator.setup.activate`
 /// RPCs: detect reusable AI access (CLI logins, provider credentials, and local model
 /// servers), live-test candidates in the detected order, and automatically fall
 /// through when one fails. Config is only written server-side after a
@@ -23,9 +23,9 @@ final class OnboardingAISetupModel {
         didSet {
             // Close-guard: quitting mid-test is confirmable, not silent.
             OnboardingController.shared.busyReason = if self.phase == .testing {
-                "OpenClaw is testing your AI connection."
+                "Operator is testing your AI connection."
             } else if self.activeAuthOption != nil {
-                "OpenClaw is completing provider sign-in."
+                "Operator is completing provider sign-in."
             } else {
                 nil
             }
@@ -42,7 +42,7 @@ final class OnboardingAISetupModel {
     private(set) var authBusy = false {
         didSet {
             if self.activeAuthOption != nil {
-                OnboardingController.shared.busyReason = "OpenClaw is completing provider sign-in."
+                OnboardingController.shared.busyReason = "Operator is completing provider sign-in."
             } else if self.phase != .testing {
                 OnboardingController.shared.busyReason = nil
             }
@@ -86,7 +86,7 @@ final class OnboardingAISetupModel {
     }
 
     /// Once setup starts changing inference, its successful result belongs to
-    /// OpenClaw rather than the existing-Gateway onboarding bypass.
+    /// Operator rather than the existing-Gateway onboarding bypass.
     var ownsInferenceTransition: Bool {
         (self.phase == .detecting && !self.configuredGatewayProbeUnavailable) ||
             self.phase == .testing || self.manualTesting || self.authBusy || self.connected ||
@@ -336,7 +336,7 @@ final class OnboardingAISetupModel {
             else {
                 self.phase = .ready
                 self.detectError = Self.transportFailure(
-                    "Secure storage is unavailable, so OpenClaw cannot verify which Gateway completed AI setup.")
+                    "Secure storage is unavailable, so Operator cannot verify which Gateway completed AI setup.")
                 return .notConnected
             }
             guard activationOwner.routeFingerprint == currentFingerprint else {
@@ -369,7 +369,7 @@ final class OnboardingAISetupModel {
         }
         do {
             let data = try await gateway.request(
-                method: "openclaw.setup.verify",
+                method: "operator.setup.verify",
                 params: [:],
                 timeoutMs: 150_000,
                 ifCurrentServerLease: lease)
@@ -665,7 +665,7 @@ extension OnboardingAISetupModel {
             let lease = try await gateway.acquireServerLease()
             guard self.isCurrentAttempt(context), !Task.isCancelled else { return }
             let data = try await gateway.request(
-                method: "openclaw.setup.detect",
+                method: "operator.setup.detect",
                 params: [:],
                 timeoutMs: 20000,
                 ifCurrentServerLease: lease)
@@ -839,7 +839,7 @@ extension OnboardingAISetupModel {
             ifCurrentServerLease: lease)
         else {
             self.statuses[kind] = .failed(Self.transportFailure(
-                "Secure storage is unavailable, so OpenClaw cannot safely resume this AI setup."))
+                "Secure storage is unavailable, so Operator cannot safely resume this AI setup."))
             self.phase = .ready
             return
         }
@@ -873,7 +873,7 @@ extension OnboardingAISetupModel {
         }
         do {
             let data = try await gateway.request(
-                method: "openclaw.setup.activate",
+                method: "operator.setup.activate",
                 params: params,
                 timeoutMs: requestTimeoutMs,
                 ifCurrentServerLease: lease)
@@ -1018,7 +1018,7 @@ extension OnboardingAISetupModel {
               activationOwner.routeFingerprint
         else { return false }
         guard let detectData = try? await gateway.request(
-            method: "openclaw.setup.detect",
+            method: "operator.setup.detect",
             params: [:],
             timeoutMs: Double(timeoutMs),
             ifCurrentServerLease: serverLease),
@@ -1032,7 +1032,7 @@ extension OnboardingAISetupModel {
                 after: detection.persistedActivationState)
         else { return false }
         guard let verifyData = try? await gateway.request(
-            method: "openclaw.setup.verify",
+            method: "operator.setup.verify",
             params: [:],
             timeoutMs: Double(timeoutMs),
             ifCurrentServerLease: serverLease),
@@ -1078,7 +1078,7 @@ extension OnboardingAISetupModel {
         Task {
             do {
                 let data = try await self.gateway.request(
-                    method: "openclaw.setup.auth.start",
+                    method: "operator.setup.auth.start",
                     params: [
                         "sessionId": AnyCodable(authSessionID),
                         "authChoice": AnyCodable(option.id),
@@ -1302,7 +1302,7 @@ extension OnboardingAISetupModel {
             lease = replacement
         }
         guard let data = try? await gateway.request(
-            method: "openclaw.setup.detect",
+            method: "operator.setup.detect",
             params: [:],
             timeoutMs: 10000,
             ifCurrentServerLease: lease),
@@ -1393,7 +1393,7 @@ extension OnboardingAISetupModel {
             ifCurrentServerLease: lease)
         else {
             self.manualError = Self.transportFailure(
-                "Secure storage is unavailable, so OpenClaw cannot safely resume this AI setup.")
+                "Secure storage is unavailable, so Operator cannot safely resume this AI setup.")
             return
         }
         guard self.isCurrentAttempt(context), !Task.isCancelled else { return }
@@ -1421,7 +1421,7 @@ extension OnboardingAISetupModel {
         }
         do {
             let data = try await gateway.request(
-                method: "openclaw.setup.activate",
+                method: "operator.setup.activate",
                 params: [
                     "kind": AnyCodable("api-key"),
                     "authChoice": AnyCodable(provider.id),
@@ -1556,8 +1556,8 @@ private enum OnboardingAISetupError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .providerCatalogUnavailable:
-            "The Gateway is running an older OpenClaw version that doesn’t provide the " +
-                "supported provider list. Update OpenClaw on the gateway, then try again."
+            "The Gateway is running an older Operator version that doesn’t provide the " +
+                "supported provider list. Update Operator on the gateway, then try again."
         }
     }
 }

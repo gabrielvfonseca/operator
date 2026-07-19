@@ -59,18 +59,18 @@ const MEMORY_HOST_SDK_EXPORTS = [
   "./status",
 ] as const;
 const MEMORY_HOST_SDK_ALLOWED_CORE_BRIDGE_FILES = [
-  "packages/memory-host-sdk/src/host/openclaw-runtime-auth.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-network.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-sqlite.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-auth.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-network.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-sqlite.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime.ts",
 ] as const;
 const MEMORY_HOST_SDK_RUNTIME_ADAPTER_FILES = [
-  "packages/memory-host-sdk/src/host/openclaw-runtime-agent.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-cli.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-config.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-io.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-memory.ts",
-  "packages/memory-host-sdk/src/host/openclaw-runtime-session.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-agent.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-cli.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-config.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-io.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-memory.ts",
+  "packages/memory-host-sdk/src/host/operator-runtime-session.ts",
 ] as const;
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- Test helper lets assertions ascribe JSON file shape.
@@ -129,7 +129,7 @@ function collectCoreReferenceFiles(relativeDir: string): string[] {
 function collectOperatorRuntimeDirectImportFiles(relativeDir: string): string[] {
   return collectCodeFiles(relativeDir).filter((file) => {
     const source = fs.readFileSync(resolve(REPO_ROOT, file), "utf8");
-    return source.includes('"./openclaw-runtime.js"');
+    return source.includes('"./operator-runtime.js"');
   });
 }
 
@@ -170,7 +170,7 @@ describe("opt-in extension package boundaries", () => {
       expect(tsconfig.exclude).toEqual([...EXTENSION_PACKAGE_BOUNDARY_EXCLUDE]);
 
       const packageJson = readExtensionPackageBoundaryPackageJson(extensionName, REPO_ROOT);
-      expect(packageJson.devDependencies?.["@operator/plugin-sdk"]).toBe("workspace:*");
+      expect(packageJson.devDependencies?.["@gabrielvfonseca/plugin-sdk"]).toBe("workspace:*");
     }
   });
 
@@ -190,7 +190,7 @@ describe("opt-in extension package boundaries", () => {
   });
 
   it("keeps plugin-sdk package types generated from the package build, not a hand-maintained types bridge", () => {
-    const tsconfig = readJsonFile<TsConfigJson>("sdks/plugin-sdk/tsconfig.json");
+    const tsconfig = readJsonFile<TsConfigJson>("packages/plugin-sdk/tsconfig.json");
     expect(tsconfig.extends).toBe("../../tsconfig.json");
     expect(tsconfig.compilerOptions?.declaration).toBe(true);
     expect(tsconfig.compilerOptions?.emitDeclarationOnly).toBe(true);
@@ -212,8 +212,8 @@ describe("opt-in extension package boundaries", () => {
       "../../src/types/**/*.d.ts",
     ]);
 
-    const packageJson = readJsonFile<PackageJson>("sdks/plugin-sdk/package.json");
-    expect(packageJson.name).toBe("@operator/plugin-sdk");
+    const packageJson = readJsonFile<PackageJson>("packages/plugin-sdk/package.json");
+    expect(packageJson.name).toBe("@gabrielvfonseca/plugin-sdk");
     expect(packageJson.exports?.["./account-id"]?.types).toBe(
       "./dist/src/plugin-sdk/account-id.d.ts",
     );
@@ -295,7 +295,7 @@ describe("opt-in extension package boundaries", () => {
       "./dist/src/plugin-sdk/text-runtime.d.ts",
     );
     expect(packageJson.exports?.["./zod"]?.types).toBe("./dist/src/plugin-sdk/zod.d.ts");
-    expect(fs.existsSync(resolve(REPO_ROOT, "sdks/plugin-sdk/types/plugin-entry.d.ts"))).toBe(
+    expect(fs.existsSync(resolve(REPO_ROOT, "packages/plugin-sdk/types/plugin-entry.d.ts"))).toBe(
       false,
     );
   });
@@ -304,7 +304,7 @@ describe("opt-in extension package boundaries", () => {
     const packageJson = readJsonFile<PackageJson>("packages/memory-host-sdk/package.json");
     const packageExports = packageJson.exports as unknown as Record<string, string>;
 
-    expect(packageJson.name).toBe("@operator/memory-host-sdk");
+    expect(packageJson.name).toBe("@gabrielvfonseca/memory-host-sdk");
     expect(packageJson.version).toBe("0.0.0-private");
     expect(packageJson.private).toBe(true);
     expect(packageJson.type).toBe("module");

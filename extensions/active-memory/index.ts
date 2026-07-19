@@ -1,9 +1,12 @@
 /**
  * Active Memory plugin entry. Runtime behavior lives in focused sibling modules.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveLivePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import {
+  definePluginEntry,
+  type OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   hasDeprecatedModelFallbackPolicy,
   isMissingRegisteredMemoryToolsError,

@@ -1,5 +1,5 @@
 // Nextcloud Talk plugin module implements replay guard behavior.
-import { createClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
+import { createClaimableDedupe } from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
 
 export const NEXTCLOUD_TALK_PLUGIN_ID = "nextcloud-talk";
 export const NEXTCLOUD_TALK_REPLAY_DEDUPE_NAMESPACE_PREFIX = "replay-dedupe";

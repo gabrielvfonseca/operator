@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
 extension ChannelsStore {
     func loadConfigSchema(force: Bool = false) async {
@@ -111,7 +111,7 @@ extension ChannelsStore {
         guard force || !self.configDirty else { return }
 
         self.configStatus = snap.valid == false
-            ? "Config invalid; fix it in ~/.openclaw/openclaw.json."
+            ? "Config invalid; fix it in ~/.operator/operator.json."
             : nil
         self.configRoot = snap.config?.mapValues { $0.foundationValue } ?? [:]
         self.configDraft = cloneConfigValue(self.configRoot) as? [String: Any] ?? self.configRoot
@@ -261,7 +261,7 @@ extension ChannelsStore {
     }
 
     private func currentConfigCacheSourceKey() -> String {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let settings = CommandResolver.connectionSettings(configRoot: root)
         let env = ProcessInfo.processInfo.environment
         return [
@@ -272,8 +272,8 @@ extension ChannelsStore {
             "cli:\(settings.cliPath)",
             "port:\(GatewayEnvironment.gatewayPort())",
             "gateway:\(Self.configFingerprint(root["gateway"]))",
-            "token:\(Self.configFingerprint(env["OPENCLAW_GATEWAY_TOKEN"]))",
-            "password:\(Self.configFingerprint(env["OPENCLAW_GATEWAY_PASSWORD"]))",
+            "token:\(Self.configFingerprint(env["OPERATOR_GATEWAY_TOKEN"]))",
+            "password:\(Self.configFingerprint(env["OPERATOR_GATEWAY_PASSWORD"]))",
         ].joined(separator: "|")
     }
 

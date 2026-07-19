@@ -1,6 +1,10 @@
 // Whatsapp tests cover login plugin behavior.
 import { EventEmitter } from "node:events";
-import { resetLogger, setLoggerOverride, success } from "openclaw/plugin-sdk/runtime-env";
+import {
+  resetLogger,
+  setLoggerOverride,
+  success,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("./session.js", async () => {

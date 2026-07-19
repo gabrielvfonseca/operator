@@ -69,8 +69,13 @@ describe("install security scan official bypass", () => {
     const result = await scanBundleInstallSourceRuntime({
       logger: {},
       pluginId: "openclaw/kitchen-sink",
-      sourceDir: "/tmp/openclaw-bundled-plugin",
-      source: { kind: "bundled", authority: "openclaw", mutable: false, network: false },
+      sourceDir: "/tmp/operator-bundled-plugin",
+      source: {
+        kind: "bundled",
+        authority: "@gabrielvfonseca/operator",
+        mutable: false,
+        network: false,
+      },
     });
 
     expect(result).toBeUndefined();
@@ -80,8 +85,8 @@ describe("install security scan official bypass", () => {
   it("bypasses plugin install friction for official ClawHub sources", async () => {
     const result = await scanBundleInstallSourceRuntime({
       logger: {},
-      pluginId: "@operator/matrix",
-      sourceDir: "/tmp/openclaw-official-clawhub-plugin",
+      pluginId: "@gabrielvfonseca/matrix",
+      sourceDir: "/tmp/operator-official-clawhub-plugin",
       source: { kind: "clawhub", authority: "official", mutable: false, network: true },
     });
 
@@ -94,13 +99,18 @@ describe("install security scan official bypass", () => {
       installId: "node",
       logger: {},
       origin: {
-        type: "openclaw-bundled",
+        type: "operator-bundled",
         skillName: "peekaboo",
         installId: "node",
       },
-      source: { kind: "bundled", authority: "openclaw", mutable: false, network: false },
+      source: {
+        kind: "bundled",
+        authority: "@gabrielvfonseca/operator",
+        mutable: false,
+        network: false,
+      },
       skillName: "peekaboo",
-      sourceDir: "/tmp/openclaw-bundled-skill/peekaboo",
+      sourceDir: "/tmp/operator-bundled-skill/peekaboo",
     });
 
     expect(result).toBeUndefined();
@@ -110,10 +120,10 @@ describe("install security scan official bypass", () => {
   it("runs only operator policy for official immutable npm sources", async () => {
     const result = await preflightPluginNpmInstallPolicyRuntime({
       logger: {},
-      packageName: "@operator/matrix",
-      requestedSpecifier: "@operator/matrix@latest",
+      packageName: "@gabrielvfonseca/matrix",
+      requestedSpecifier: "@gabrielvfonseca/matrix@latest",
       source: { kind: "npm", authority: "official", mutable: false, network: true },
-      sourcePath: "/tmp/openclaw-official-npm",
+      sourcePath: "/tmp/operator-official-npm",
       sourcePathKind: "directory",
     });
 
@@ -131,8 +141,8 @@ describe("install security scan official bypass", () => {
 
     const result = await scanBundleInstallSourceRuntime({
       logger: {},
-      pluginId: "@operator/matrix",
-      sourceDir: "/tmp/openclaw-official-clawhub-plugin",
+      pluginId: "@gabrielvfonseca/matrix",
+      sourceDir: "/tmp/operator-official-clawhub-plugin",
       source: { kind: "clawhub", authority: "official", mutable: false, network: true },
     });
 

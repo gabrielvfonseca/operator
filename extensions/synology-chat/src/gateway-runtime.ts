@@ -1,6 +1,9 @@
 // Synology Chat plugin module implements gateway runtime behavior.
-import { DEFAULT_ACCOUNT_ID, type OperatorConfig } from "openclaw/plugin-sdk/account-resolution";
-import { registerPluginHttpRoute } from "openclaw/plugin-sdk/webhook-ingress";
+import {
+  DEFAULT_ACCOUNT_ID,
+  type OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { registerPluginHttpRoute } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { dispatchSynologyChatInboundEvent } from "./inbound-event.js";
 import type { ResolvedSynologyChatAccount } from "./types.js";

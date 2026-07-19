@@ -1,10 +1,10 @@
 // Session action contract tests cover plugin session action metadata and execution contracts.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   createPluginRegistryFixture,
   registerTestPlugin,
-} from "openclaw/plugin-sdk/plugin-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { APPROVALS_SCOPE, READ_SCOPE, WRITE_SCOPE } from "../../gateway/operator-scopes.js";
 import { handleGatewayRequest } from "../../gateway/server-methods.js";

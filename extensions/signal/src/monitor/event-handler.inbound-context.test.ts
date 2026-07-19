@@ -1,7 +1,7 @@
 // Signal tests cover event handler.inbound context plugin behavior.
-import { expectChannelInboundContextContract as expectInboundContextContract } from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+import { expectChannelInboundContextContract as expectInboundContextContract } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SignalReactionMessage } from "./event-handler.types.js";
 vi.useRealTimers();

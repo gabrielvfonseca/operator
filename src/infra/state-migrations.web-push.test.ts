@@ -37,7 +37,7 @@ describe("legacy Web Push Doctor migration", () => {
   });
 
   function useStateDir(): string {
-    const stateDir = tempDirs.make("openclaw-web-push-migration-");
+    const stateDir = tempDirs.make("operator-web-push-migration-");
     envSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     return stateDir;
@@ -59,7 +59,7 @@ describe("legacy Web Push Doctor migration", () => {
       ...createWebPushVapidKeyPair(
         "legacy-public-key",
         "legacy-private-key",
-        "https://openclaw.ai",
+        "https://operator.ai",
       ),
       ...overrides,
     };
@@ -227,7 +227,7 @@ describe("legacy Web Push Doctor migration", () => {
     });
 
     expect(result.warnings).toEqual([]);
-    expect(fs.existsSync(path.join(stateDir, "state", "openclaw.sqlite"))).toBe(true);
+    expect(fs.existsSync(path.join(stateDir, "state", "operator.sqlite"))).toBe(true);
     expect(fs.existsSync(subscriptionsPath!)).toBe(false);
   });
 
@@ -365,7 +365,7 @@ describe("legacy Web Push Doctor migration", () => {
     const canonical = subscription({ keys: { p256dh: "canonical", auth: "canonical" } });
     seedSubscription(hashWebPushEndpoint(canonical.endpoint), canonical);
     seedVapid(
-      createWebPushVapidKeyPair("canonical-public", "canonical-private", "https://openclaw.ai"),
+      createWebPushVapidKeyPair("canonical-public", "canonical-private", "https://operator.ai"),
     );
     const paths = await writeLegacyState({
       stateDir,
@@ -390,7 +390,7 @@ describe("legacy Web Push Doctor migration", () => {
   it("rolls back subscription changes when only VAPID conflicts", async () => {
     const stateDir = useStateDir();
     seedVapid(
-      createWebPushVapidKeyPair("canonical-public", "canonical-private", "https://openclaw.ai"),
+      createWebPushVapidKeyPair("canonical-public", "canonical-private", "https://operator.ai"),
     );
     await writeLegacyState({
       stateDir,
@@ -516,7 +516,7 @@ describe("legacy Web Push Doctor migration", () => {
       return;
     }
     const stateDir = useStateDir();
-    const outside = tempDirs.make("openclaw-web-push-outside-");
+    const outside = tempDirs.make("operator-web-push-outside-");
     const legacy = subscription();
     const sourcePath = path.join(outside, "web-push-subscriptions.json");
     await fsp.writeFile(

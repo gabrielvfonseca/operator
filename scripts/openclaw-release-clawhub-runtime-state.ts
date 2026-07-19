@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-import { buildOpenClawReleaseClawHubRuntimeState } from "./lib/openclaw-release-clawhub-plan.ts";
+import { buildOperatorReleaseClawHubRuntimeState } from "./lib/operator-release-clawhub-plan.ts";
 
 function parseBoolean(value: string, label: string): boolean {
   if (value === "true") {
@@ -83,7 +83,7 @@ function parseArgs(argv: string[]) {
 }
 
 try {
-  const state = buildOpenClawReleaseClawHubRuntimeState(parseArgs(process.argv.slice(2)));
+  const state = buildOperatorReleaseClawHubRuntimeState(parseArgs(process.argv.slice(2)));
   process.stdout.write(`${JSON.stringify(state, null, 2)}\n`);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);

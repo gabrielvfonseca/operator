@@ -599,7 +599,7 @@ describe("getReplyFromConfig message hooks", () => {
   it("stages remote iMessage media before media understanding", async () => {
     const order: string[] = [];
     const remotePath = "/Users/demo/Library/Messages/Attachments/ab/cd/photo.jpg";
-    const stagedPath = "/tmp/openclaw-remote-cache/photo.jpg";
+    const stagedPath = "/tmp/operator-remote-cache/photo.jpg";
     vi.mocked(stageSandboxMediaMock).mockImplementationOnce(async (params) => {
       order.push("stage");
       params.ctx.MediaPath = stagedPath;

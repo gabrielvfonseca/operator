@@ -2,7 +2,7 @@
 // sentinels, and hand off managed-service restarts when needed.
 import { randomUUID } from "node:crypto";
 import os from "node:os";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   validateUpdateRunParams,
   validateUpdateStatusParams,
@@ -12,7 +12,7 @@ import { readConfigFileSnapshot } from "../../config/config.js";
 import { extractDeliveryInfo } from "../../config/sessions.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { GATEWAY_SERVICE_KIND, GATEWAY_SERVICE_MARKER } from "../../daemon/constants.js";
-import { resolveOperatorPackageRoot } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../../infra/openclaw-root.js";
 import { readPackageVersion } from "../../infra/package-json.js";
 import { type RestartSentinelPayload, writeRestartSentinel } from "../../infra/restart-sentinel.js";
 import {
@@ -346,7 +346,7 @@ export const updateHandlers: GatewayRequestHandlers = {
           allowGatewayServiceRepair: false,
           allowGatewayActivation: false,
         });
-        // The CLI `operator update` resumes post-core plugin convergence after a
+        // The CLI `openclaw update` resumes post-core plugin convergence after a
         // git/source core update; the RPC path did not, leaving official managed
         // plugins stale on the new core. Run the finalizer here to match.
         const finalizeOutcome = await runPostCoreFinalizeAfterGatewayUpdate({

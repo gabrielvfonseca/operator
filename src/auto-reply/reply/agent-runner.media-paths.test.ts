@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { EmbeddedAgentQueueMessageOutcome } from "../../agents/embedded-agent-runner/runs.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import type { TemplateContext } from "../templating.js";
 import type { FollowupRun, QueueSettings } from "./queue.js";
 import {
@@ -685,7 +685,7 @@ describe("runReplyAgent media path normalization", () => {
   });
 
   it("passes current inbound media paths as native Operator images", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-native-agent-media-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-native-agent-media-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "photo.png");
     await writeFile(
@@ -737,7 +737,7 @@ describe("runReplyAgent media path normalization", () => {
   });
 
   it("does not pass recent history images as unlabeled native Operator images", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-native-agent-history-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-native-agent-history-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "recent.png");
     await writeFile(
@@ -791,7 +791,7 @@ describe("runReplyAgent media path normalization", () => {
   });
 
   it("falls back to prompt refs instead of forwarding partial current media", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-native-agent-partial-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-native-agent-partial-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "present.png");
     await writeFile(

@@ -1,6 +1,6 @@
 /** Recovery helpers for stale ACP persistent session ids and early runtime exits. */
-import { resolveSessionIdentityFromMeta } from "@operator/acp-core/runtime/session-identity";
-import type { AcpRuntime } from "@operator/acp-core/runtime/types";
+import { resolveSessionIdentityFromMeta } from "@gabrielvfonseca/acp-core/runtime/session-identity";
+import type { AcpRuntime } from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import { formatErrorMessage, toErrorObject } from "../../infra/errors.js";

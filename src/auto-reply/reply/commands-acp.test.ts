@@ -1236,7 +1236,7 @@ describe("/acp command", () => {
       backendSessionId: "acpx-2",
     });
 
-    const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-"));
+    const workspace = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-"));
     try {
       const cfg = {
         ...baseCfg,

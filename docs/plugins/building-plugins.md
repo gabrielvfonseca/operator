@@ -1,23 +1,23 @@
 ---
-summary: "Create your first OpenClaw plugin in minutes"
+summary: "Create your first Operator plugin in minutes"
 title: "Building plugins"
 sidebarTitle: "Getting Started"
 doc-schema-version: 1
 read_when:
-  - You want to create a new OpenClaw plugin
+  - You want to create a new Operator plugin
   - You need a quick-start for plugin development
   - You are choosing between channel, provider, CLI backend, tool, or hook docs
 ---
 
-Plugins extend OpenClaw without changing core. A plugin can add a messaging
+Plugins extend Operator without changing core. A plugin can add a messaging
 channel, model provider, local CLI backend, agent tool, hook, media provider,
 or another plugin-owned capability.
 
-You do not need to add an external plugin to the OpenClaw repository. Publish
+You do not need to add an external plugin to the Operator repository. Publish
 the package to [ClawHub](/clawhub) and users install it with:
 
 ```bash
-openclaw plugins install clawhub:<package-name>
+operator plugins install clawhub:<package-name>
 ```
 
 Bare package specs still install from npm during the launch cutover. Use the
@@ -28,20 +28,20 @@ Bare package specs still install from npm during the launch cutover. Use the
 - Node 22.22.3+, Node 24.15+, or Node 25.9+, and `npm` or `pnpm`.
 - TypeScript ESM modules.
 - For in-repo bundled plugin work, clone the repository and run `pnpm install`.
-  Source-checkout plugin development is pnpm-only because OpenClaw discovers
+  Source-checkout plugin development is pnpm-only because Operator discovers
   bundled plugins from `extensions/*` workspace packages.
 
 ## Choose the plugin shape
 
 <CardGroup cols={2}>
   <Card title="Channel plugin" icon="messages-square" href="/plugins/sdk-channel-plugins">
-    Connect OpenClaw to a messaging platform.
+    Connect Operator to a messaging platform.
   </Card>
   <Card title="Provider plugin" icon="cpu" href="/plugins/sdk-provider-plugins">
     Add a model, media, search, fetch, speech, or realtime provider.
   </Card>
   <Card title="CLI backend plugin" icon="terminal" href="/plugins/cli-backend-plugins">
-    Run a local AI CLI through OpenClaw model fallback.
+    Run a local AI CLI through Operator model fallback.
   </Card>
   <Card title="Tool plugin" icon="wrench" href="/plugins/tool-plugins">
     Register agent tools.
@@ -60,16 +60,16 @@ local proof.
 
 ```json package.json
 {
-  "name": "@myorg/openclaw-my-plugin",
+  "name": "@myorg/operator-my-plugin",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
     "typebox": "1.1.39"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.24-beta.2"
+    "@gabrielvfonseca/operator": ">=2026.3.24-beta.2"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./index.ts"],
     "compat": {
       "pluginApi": ">=2026.3.24-beta.2",
@@ -83,11 +83,11 @@ local proof.
 }
 ```
 
-```json openclaw.plugin.json
+```json operator.plugin.json
 {
   "id": "my-plugin",
   "name": "My Plugin",
-  "description": "Adds a custom tool to OpenClaw",
+  "description": "Adds a custom tool to Operator",
   "contracts": {
     "tools": ["my_tool"]
   },
@@ -108,7 +108,7 @@ local proof.
     point contract.
 
     Every plugin needs a manifest, even with no config. Runtime tools must
-    appear in `contracts.tools` so OpenClaw can discover ownership without
+    appear in `contracts.tools` so Operator can discover ownership without
     eagerly loading every plugin runtime. Set `activation.onStartup`
     intentionally; this example loads on Gateway startup.
 
@@ -131,7 +131,7 @@ local proof.
     export default definePluginEntry({
       id: "my-plugin",
       name: "My Plugin",
-      description: "Adds a custom tool to OpenClaw",
+      description: "Adds a custom tool to Operator",
       register(api) {
         api.registerTool({
           name: "my_tool",
@@ -156,13 +156,13 @@ local proof.
     For an installed or external plugin, inspect the loaded runtime:
 
     ```bash
-    openclaw plugins inspect my-plugin --runtime --json
+    operator plugins inspect my-plugin --runtime --json
     ```
 
     If the plugin registers a CLI command, run that command too and confirm
-    output, for example `openclaw demo-plugin ping`.
+    output, for example `operator demo-plugin ping`.
 
-    For a bundled plugin in this repository, OpenClaw discovers source-checkout
+    For a bundled plugin in this repository, Operator discovers source-checkout
     plugin packages from the `extensions/*` workspace. Run the closest targeted
     test:
 
@@ -176,7 +176,7 @@ local proof.
   <Step title="Test the package install">
     Before publishing a package-ready plugin, test the same install shape users
     will get. First add a build step, point runtime entries such as
-    `openclaw.extensions` at built JavaScript like `./dist/index.js`, and make
+    `operator.extensions` at built JavaScript like `./dist/index.js`, and make
     sure `npm pack` includes that `dist/` output. TypeScript source entries are
     only for source checkouts and local development paths.
 
@@ -184,11 +184,11 @@ local proof.
 
     ```bash
     npm pack --pack-destination /tmp
-    openclaw plugins install npm-pack:/tmp/<plugin-package>.tgz --force
-    openclaw plugins inspect my-plugin --runtime --json
+    operator plugins install npm-pack:/tmp/<plugin-package>.tgz --force
+    operator plugins inspect my-plugin --runtime --json
     ```
 
-    `npm-pack:` uses OpenClaw's managed per-plugin npm project, so it catches
+    `npm-pack:` uses Operator's managed per-plugin npm project, so it catches
     runtime dependency mistakes that source checkout testing can hide. It proves
     the package and dependency shape, not catalog-linked official trust.
     Runtime imports must be in `dependencies` or `optionalDependencies`;
@@ -222,7 +222,7 @@ local proof.
     Install the published package through ClawHub:
 
     ```bash
-    openclaw plugins install clawhub:your-org/your-plugin
+    operator plugins install clawhub:your-org/your-plugin
     ```
 
   </Step>
@@ -233,7 +233,7 @@ local proof.
 ## Registering tools
 
 Tools can be required or optional. Required tools are always available when the
-plugin is enabled. Optional tools need explicit user opt-in before OpenClaw
+plugin is enabled. Optional tools need explicit user opt-in before Operator
 loads the owning plugin runtime.
 
 Tool factories receive trusted runtime context, including `deliveryContext`,
@@ -296,13 +296,13 @@ Tool factories receive a runtime-supplied context object. Use `ctx.activeModel`
 when a tool needs to log, display, or adapt to the active model for the current
 turn; it can include `provider`, `modelId`, and `modelRef`. Treat it as
 informational runtime metadata, not a security boundary against the local
-operator, installed plugin code, or a modified OpenClaw runtime. Sensitive
+operator, installed plugin code, or a modified Operator runtime. Sensitive
 local tools should still require an explicit plugin or operator opt-in and
 fail closed when active-model metadata is missing or unsuitable.
 
 The manifest declares ownership and discovery; execution still calls the live
 registered tool implementation. Keep `toolMetadata.<tool>.optional: true`
-aligned with `api.registerTool(..., { optional: true })` so OpenClaw can avoid
+aligned with `api.registerTool(..., { optional: true })` so Operator can avoid
 loading that plugin runtime until the tool is explicitly allowlisted.
 
 ## Import conventions
@@ -337,7 +337,7 @@ For the full import map, see [Plugin SDK overview](/plugins/sdk-overview).
 ## Pre-submission checklist
 
 <Check>**package.json** has correct `openclaw` metadata</Check>
-<Check>**openclaw.plugin.json** manifest is present and valid</Check>
+<Check>**operator.plugin.json** manifest is present and valid</Check>
 <Check>Entry point uses `defineChannelPluginEntry` or `definePluginEntry`</Check>
 <Check>All imports use focused `plugin-sdk/<subpath>` paths</Check>
 <Check>Internal imports use local modules, not SDK self-imports</Check>
@@ -346,7 +346,7 @@ For the full import map, see [Plugin SDK overview](/plugins/sdk-overview).
 
 ## Test against beta releases
 
-1. Watch [openclaw/openclaw](https://github.com/openclaw/openclaw/releases) releases (`Watch` > `Releases`). Beta tags look like `v2026.3.N-beta.1`. You can also follow [@openclaw](https://x.com/openclaw) on X for release announcements.
+1. Watch [openclaw/openclaw](https://github.com/gabrielvfonseca/operator/releases) releases (`Watch` > `Releases`). Beta tags look like `v2026.3.N-beta.1`. You can also follow [@openclaw](https://x.com/openclaw) on X for release announcements.
 2. Test your plugin against the beta tag as soon as it appears. The window before stable is typically only a few hours.
 3. Post in your plugin's thread in the `plugin-forum` Discord channel ([discord.gg/clawd](https://discord.gg/clawd)) after testing, with either `all good` or what broke. Create a thread if you do not have one yet.
 4. If something breaks, open or update an issue titled `Beta blocker: <plugin-name> - <summary>` and apply the `beta-blocker` label. Link the issue in your thread.

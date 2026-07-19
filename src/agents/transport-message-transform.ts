@@ -1,4 +1,4 @@
-import { resolveModelBoundThinkingReplayMode } from "@operator/ai/internal/anthropic";
+import { resolveModelBoundThinkingReplayMode } from "@gabrielvfonseca/ai/internal/anthropic";
 /**
  * Normalizes transcript messages before provider transport replay. It drops
  * unsafe failed turns, maps tool-call ids across model boundaries, and fills

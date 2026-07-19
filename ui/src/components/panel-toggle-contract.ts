@@ -1,5 +1,5 @@
-export const TERMINAL_PANEL_TOGGLE_EVENT = "openclaw:terminal-toggle";
-export const BROWSER_PANEL_TOGGLE_EVENT = "openclaw:browser-toggle";
+export const TERMINAL_PANEL_TOGGLE_EVENT = "operator:terminal-toggle";
+export const BROWSER_PANEL_TOGGLE_EVENT = "operator:browser-toggle";
 
 export type TerminalPanelToggleDetail = {
   dock?: "bottom" | "right";

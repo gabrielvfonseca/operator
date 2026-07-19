@@ -2,7 +2,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { MsgContext } from "../../auto-reply/templating.js";
 import { normalizeChatType } from "../../channels/chat-type.js";
 import { resolveConversationLabel } from "../../channels/conversation-label.js";

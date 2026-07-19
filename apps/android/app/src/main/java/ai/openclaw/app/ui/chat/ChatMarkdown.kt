@@ -1,13 +1,13 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.mobileAccent
-import ai.openclaw.app.ui.mobileCallout
-import ai.openclaw.app.ui.mobileCaption1
-import ai.openclaw.app.ui.mobileCodeBg
-import ai.openclaw.app.ui.mobileCodeText
-import ai.openclaw.app.ui.mobileTextSecondary
+import ai.operator.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.mobileAccent
+import ai.operator.app.ui.mobileCallout
+import ai.operator.app.ui.mobileCaption1
+import ai.operator.app.ui.mobileCodeBg
+import ai.operator.app.ui.mobileCodeText
+import ai.operator.app.ui.mobileTextSecondary
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

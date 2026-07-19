@@ -1,5 +1,5 @@
 // Slack tests cover shared plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { setSlackChannelAllowlist } from "./setup-shared.js";
 import { createSlackPluginBase, slackConfigAdapter } from "./shared.js";
@@ -67,12 +67,12 @@ describe("slackConfigAdapter", () => {
         providers: {
           slack_bot: {
             source: "file",
-            path: "/tmp/openclaw-missing-slack-bot-token",
+            path: "/tmp/operator-missing-slack-bot-token",
             mode: "singleValue",
           },
           slack_app: {
             source: "file",
-            path: "/tmp/openclaw-missing-slack-app-token",
+            path: "/tmp/operator-missing-slack-app-token",
             mode: "singleValue",
           },
         },

@@ -147,7 +147,7 @@ describe("registerSubCliCommands", () => {
   });
 
   it("registers the primary placeholder plus completion and dispatches", async () => {
-    const program = createRegisteredProgram(["node", "openclaw", "acp"]);
+    const program = createRegisteredProgram(["node", "@gabrielvfonseca/operator", "acp"]);
 
     expect(program.commands.map((cmd) => cmd.name())).toEqual(["acp", "completion"]);
 
@@ -158,7 +158,7 @@ describe("registerSubCliCommands", () => {
   });
 
   it("registers placeholders for all subcommands when no primary", () => {
-    const program = createRegisteredProgram(["node", "openclaw"]);
+    const program = createRegisteredProgram(["node", "@gabrielvfonseca/operator"]);
 
     const names = program.commands.map((cmd) => cmd.name());
     expect(names).toContain("acp");
@@ -171,13 +171,16 @@ describe("registerSubCliCommands", () => {
   it("omits the qa placeholder when the private qa cli is disabled", () => {
     delete process.env.OPERATOR_ENABLE_PRIVATE_QA_CLI;
 
-    const program = createRegisteredProgram(["node", "openclaw"]);
+    const program = createRegisteredProgram(["node", "@gabrielvfonseca/operator"]);
 
     expect(program.commands.map((cmd) => cmd.name())).not.toContain("qa");
   });
 
   it("re-parses argv for lazy subcommands", async () => {
-    const program = createRegisteredProgram(["node", "openclaw", "nodes", "list"], "openclaw");
+    const program = createRegisteredProgram(
+      ["node", "@gabrielvfonseca/operator", "nodes", "list"],
+      "@gabrielvfonseca/operator",
+    );
 
     expect(program.commands.map((cmd) => cmd.name())).toEqual(["nodes", "completion"]);
 
@@ -186,7 +189,7 @@ describe("registerSubCliCommands", () => {
     expect(registerNodesCli).toHaveBeenCalledTimes(1);
     expect(registerNodesCli).toHaveBeenCalledWith(expect.any(Command), [
       "node",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "nodes",
       "list",
     ]);
@@ -194,7 +197,10 @@ describe("registerSubCliCommands", () => {
   });
 
   it("registers the infer placeholder and dispatches through the capability registrar", async () => {
-    const program = createRegisteredProgram(["node", "openclaw", "infer"], "openclaw");
+    const program = createRegisteredProgram(
+      ["node", "@gabrielvfonseca/operator", "infer"],
+      "@gabrielvfonseca/operator",
+    );
 
     expect(program.commands.map((cmd) => cmd.name())).toEqual(["infer", "completion"]);
 
@@ -205,7 +211,10 @@ describe("registerSubCliCommands", () => {
   });
 
   it("registers the exec-approvals placeholder and dispatches through the approvals registrar", async () => {
-    const program = createRegisteredProgram(["node", "openclaw", "exec-approvals"], "openclaw");
+    const program = createRegisteredProgram(
+      ["node", "@gabrielvfonseca/operator", "exec-approvals"],
+      "@gabrielvfonseca/operator",
+    );
 
     expect(program.commands.map((cmd) => cmd.name())).toEqual(["exec-approvals", "completion"]);
 
@@ -216,7 +225,10 @@ describe("registerSubCliCommands", () => {
   });
 
   it("replaces placeholder when registering a subcommand by name", async () => {
-    const program = createRegisteredProgram(["node", "openclaw", "acp", "--help"], "openclaw");
+    const program = createRegisteredProgram(
+      ["node", "@gabrielvfonseca/operator", "acp", "--help"],
+      "@gabrielvfonseca/operator",
+    );
 
     await registerSubCliByName(program, "acp");
 
@@ -229,9 +241,9 @@ describe("registerSubCliCommands", () => {
   });
 
   it("registers only the gateway run surface for gateway startup", async () => {
-    const argv = ["node", "openclaw", "gateway", "--force"];
+    const argv = ["node", "@gabrielvfonseca/operator", "gateway", "--force"];
     process.argv = argv;
-    const program = new Command().name("openclaw");
+    const program = new Command().name("@gabrielvfonseca/operator");
 
     await registerSubCliByName(program, "gateway", argv);
 
@@ -242,9 +254,9 @@ describe("registerSubCliCommands", () => {
   });
 
   it("keeps the full gateway CLI for non-run gateway subcommands", async () => {
-    const argv = ["node", "openclaw", "gateway", "call", "health"];
+    const argv = ["node", "@gabrielvfonseca/operator", "gateway", "call", "health"];
     process.argv = argv;
-    const program = new Command().name("openclaw");
+    const program = new Command().name("@gabrielvfonseca/operator");
 
     await registerSubCliByName(program, "gateway", argv);
 
@@ -253,8 +265,8 @@ describe("registerSubCliCommands", () => {
   });
 
   it("passes completion context to channel registration", async () => {
-    const argv = ["node", "openclaw", "completion", "--write-state"];
-    const program = new Command().name("openclaw");
+    const argv = ["node", "@gabrielvfonseca/operator", "completion", "--write-state"];
+    const program = new Command().name("@gabrielvfonseca/operator");
 
     await registerSubCliByName(program, "channels", argv, { purpose: "completion" });
 
@@ -273,8 +285,8 @@ describe("registerSubCliCommands", () => {
     ["plugins doctor", ["plugins", "doctor"]],
     ["plugins --help", ["plugins", "--help"]],
   ])("does not preload plugin CLI registrations for builtin %s", async (_label, args) => {
-    process.argv = ["node", "openclaw", ...args];
-    const program = new Command().name("openclaw");
+    process.argv = ["node", "@gabrielvfonseca/operator", ...args];
+    const program = new Command().name("@gabrielvfonseca/operator");
 
     await registerSubCliByName(program, "plugins");
 
@@ -283,8 +295,8 @@ describe("registerSubCliCommands", () => {
   });
 
   it("does not preload plugin CLI registrations for bare plugin parent help", async () => {
-    process.argv = ["node", "openclaw", "plugins"];
-    const program = new Command().name("openclaw");
+    process.argv = ["node", "@gabrielvfonseca/operator", "plugins"];
+    const program = new Command().name("@gabrielvfonseca/operator");
 
     await registerSubCliByName(program, "plugins");
 

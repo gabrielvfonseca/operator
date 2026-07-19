@@ -2,8 +2,8 @@
  * Blocks direct Codex app-server requests that would bypass Operator sandbox or
  * node-exec routing guarantees.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveSandboxRuntimeStatus } from "openclaw/plugin-sdk/sandbox";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveSandboxRuntimeStatus } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import {
   formatCodexNativeNodeExecBlock,
   resolveCodexNativeExecutionPolicy,
@@ -12,7 +12,7 @@ import {
 type DirectMethodPolicy =
   | "allowed-control-plane"
   | "blocked-native-bypass"
-  | "requires-openclaw-environment";
+  | "requires-operator-environment";
 
 const DIRECT_METHOD_POLICIES = new Map<string, DirectMethodPolicy>([
   ["account/rateLimits/read", "allowed-control-plane"],
@@ -40,7 +40,7 @@ const DIRECT_METHOD_POLICIES = new Map<string, DirectMethodPolicy>([
   ["thread/name/set", "allowed-control-plane"],
   ["thread/read", "allowed-control-plane"],
   ["thread/rollback", "allowed-control-plane"],
-  ["thread/start", "requires-openclaw-environment"],
+  ["thread/start", "requires-operator-environment"],
   ["thread/unarchive", "allowed-control-plane"],
   ["thread/unsubscribe", "allowed-control-plane"],
   ["turn/interrupt", "allowed-control-plane"],
@@ -116,7 +116,7 @@ export function resolveCodexAppServerDirectSandboxBypassBlock(params: {
     return undefined;
   }
   if (
-    policy === "requires-openclaw-environment" &&
+    policy === "requires-operator-environment" &&
     hasOperatorSandboxEnvironmentSelection(params.requestParams)
   ) {
     return undefined;
@@ -182,7 +182,7 @@ function hasOperatorSandboxEnvironmentSelection(value: unknown): boolean {
       const environment = entry as { environmentId?: unknown; cwd?: unknown };
       return (
         typeof environment.environmentId === "string" &&
-        environment.environmentId.startsWith("openclaw-sandbox-") &&
+        environment.environmentId.startsWith("operator-sandbox-") &&
         typeof environment.cwd === "string" &&
         environment.cwd.trim().length > 0
       );

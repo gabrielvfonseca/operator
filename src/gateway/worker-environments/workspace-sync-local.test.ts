@@ -21,7 +21,7 @@ async function waitForFile(filePath: string): Promise<void> {
 
 describe("runLocalCommandToFile", () => {
   it("force-kills a command that ignores abort termination", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-sync-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-sync-"));
     const outputPath = path.join(root, "output");
     const readyPath = path.join(root, "ready");
     const controller = new AbortController();

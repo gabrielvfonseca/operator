@@ -2,8 +2,8 @@
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { createFeishuClient } from "./client.js";
 import type { ResolvedFeishuAccount } from "./types.js";
 

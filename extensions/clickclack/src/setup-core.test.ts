@@ -1,7 +1,7 @@
 // ClickClack tests cover non-interactive setup validation and config writes.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createNonExitingRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createNonExitingRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
 
 const verifyClickClackAccountAfterSetup = vi.hoisted(() => vi.fn());

@@ -1,6 +1,6 @@
 // Volcengine provider module implements model/runtime integration.
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { DOUBAO_CODING_MODEL_CATALOG, DOUBAO_MODEL_CATALOG } from "./models.js";
 import manifest from "./operator.plugin.json" with { type: "json" };
 

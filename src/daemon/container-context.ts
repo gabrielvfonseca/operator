@@ -1,5 +1,5 @@
 /** Detects whether a daemon was launched by Operator's container-aware service wrapper. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Resolves the daemon container hint exposed by managed service environments. */
 export function resolveDaemonContainerContext(

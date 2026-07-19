@@ -1,33 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "openclaw-official-external-plugins",
+  "id": "operator-official-external-plugins",
   "generatedAt": "2026-06-22T00:00:00.000Z",
   "sequence": 1,
-  "description": "Bundled fallback feed for official external OpenClaw plugins.",
+  "description": "Bundled fallback feed for official external Operator plugins.",
   "entries": [
     {
-      "name": "@operator/acpx",
-      "description": "OpenClaw ACP runtime backend",
+      "name": "@gabrielvfonseca/acpx",
+      "description": "Operator ACP runtime backend",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "acpx",
           "label": "ACPX Runtime"
         },
         "install": {
-          "npmSpec": "@operator/acpx",
+          "npmSpec": "@gabrielvfonseca/acpx",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@operator/brave-plugin",
-      "description": "OpenClaw Brave plugin",
+      "name": "@gabrielvfonseca/brave-plugin",
+      "description": "Operator Brave plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "brave",
           "label": "Brave"
@@ -42,13 +42,13 @@
             "envVars": ["BRAVE_API_KEY"],
             "placeholder": "BSA...",
             "signupUrl": "https://api-dashboard.search.brave.com/app/keys",
-            "docsUrl": "https://docs.openclaw.ai/tools/brave-search",
+            "docsUrl": "https://docs.operator.ai/tools/brave-search",
             "credentialPath": "plugins.entries.brave.config.webSearch.apiKey",
             "autoDetectOrder": 10
           }
         ],
         "install": {
-          "npmSpec": "@operator/brave-plugin",
+          "npmSpec": "@gabrielvfonseca/brave-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10",
           "allowInvalidConfigRecovery": true
@@ -56,65 +56,65 @@
       }
     },
     {
-      "name": "@operator/copilot",
-      "description": "OpenClaw GitHub Copilot agent runtime plugin",
+      "name": "@gabrielvfonseca/copilot",
+      "description": "Operator GitHub Copilot agent runtime plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "copilot",
           "label": "GitHub Copilot agent runtime"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/copilot",
-          "npmSpec": "@operator/copilot",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/copilot",
+          "npmSpec": "@gabrielvfonseca/copilot",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.28"
         }
       }
     },
     {
-      "name": "@operator/diagnostics-otel",
-      "description": "OpenClaw diagnostics OpenTelemetry exporter",
+      "name": "@gabrielvfonseca/diagnostics-otel",
+      "description": "Operator diagnostics OpenTelemetry exporter",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "diagnostics-otel",
           "label": "Diagnostics OpenTelemetry"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/diagnostics-otel",
-          "npmSpec": "@operator/diagnostics-otel",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/diagnostics-otel",
+          "npmSpec": "@gabrielvfonseca/diagnostics-otel",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@operator/diagnostics-prometheus",
-      "description": "OpenClaw diagnostics Prometheus exporter",
+      "name": "@gabrielvfonseca/diagnostics-prometheus",
+      "description": "Operator diagnostics Prometheus exporter",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "diagnostics-prometheus",
           "label": "Diagnostics Prometheus"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/diagnostics-prometheus",
-          "npmSpec": "@operator/diagnostics-prometheus",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/diagnostics-prometheus",
+          "npmSpec": "@gabrielvfonseca/diagnostics-prometheus",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@operator/diffs",
-      "description": "OpenClaw diff viewer plugin",
+      "name": "@gabrielvfonseca/diffs",
+      "description": "Operator diff viewer plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "diffs",
           "label": "Diffs"
@@ -124,37 +124,37 @@
           "order": 40
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/diffs",
-          "npmSpec": "@operator/diffs",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/diffs",
+          "npmSpec": "@gabrielvfonseca/diffs",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.30"
         }
       }
     },
     {
-      "name": "@operator/diffs-language-pack",
-      "description": "OpenClaw diffs viewer syntax highlighting language pack",
+      "name": "@gabrielvfonseca/diffs-language-pack",
+      "description": "Operator diffs viewer syntax highlighting language pack",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "diffs-language-pack",
           "label": "Diff Viewer Language Pack"
         },
         "install": {
-          "npmSpec": "@operator/diffs-language-pack",
-          "clawhubSpec": "clawhub:@operator/diffs-language-pack",
+          "npmSpec": "@gabrielvfonseca/diffs-language-pack",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/diffs-language-pack",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.27"
         }
       }
     },
     {
-      "name": "@operator/exa-plugin",
-      "description": "OpenClaw Exa plugin.",
+      "name": "@gabrielvfonseca/exa-plugin",
+      "description": "Operator Exa plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "exa",
           "label": "Exa"
@@ -178,25 +178,25 @@
             ],
             "placeholder": "exa-...",
             "signupUrl": "https://exa.ai/",
-            "docsUrl": "https://docs.openclaw.ai/tools/web",
+            "docsUrl": "https://docs.operator.ai/tools/web",
             "credentialPath": "plugins.entries.exa.config.webSearch.apiKey",
             "autoDetectOrder": 65
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/exa-plugin",
-          "npmSpec": "@operator/exa-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/exa-plugin",
+          "npmSpec": "@gabrielvfonseca/exa-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/firecrawl-plugin",
-      "description": "OpenClaw Firecrawl plugin.",
+      "name": "@gabrielvfonseca/firecrawl-plugin",
+      "description": "Operator Firecrawl plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "firecrawl",
           "label": "Firecrawl"
@@ -228,7 +228,7 @@
             ],
             "placeholder": "fc-...",
             "signupUrl": "https://www.firecrawl.dev/",
-            "docsUrl": "https://docs.openclaw.ai/tools/firecrawl",
+            "docsUrl": "https://docs.operator.ai/tools/firecrawl",
             "credentialPath": "plugins.entries.firecrawl.config.webSearch.apiKey",
             "autoDetectOrder": 60
           },
@@ -243,41 +243,41 @@
             "envVars": [],
             "placeholder": "(no key needed)",
             "signupUrl": "https://www.firecrawl.dev/",
-            "docsUrl": "https://docs.openclaw.ai/tools/firecrawl",
+            "docsUrl": "https://docs.operator.ai/tools/firecrawl",
             "credentialPath": ""
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/firecrawl-plugin",
-          "npmSpec": "@operator/firecrawl-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/firecrawl-plugin",
+          "npmSpec": "@gabrielvfonseca/firecrawl-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/google-meet",
-      "description": "OpenClaw Google Meet participant plugin",
+      "name": "@gabrielvfonseca/google-meet",
+      "description": "Operator Google Meet participant plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "google-meet",
           "label": "Google Meet"
         },
         "install": {
-          "npmSpec": "@operator/google-meet",
+          "npmSpec": "@gabrielvfonseca/google-meet",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.20"
         }
       }
     },
     {
-      "name": "@operator/gradium-speech",
-      "description": "OpenClaw Gradium speech plugin.",
+      "name": "@gabrielvfonseca/gradium-speech",
+      "description": "Operator Gradium speech plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "gradium",
           "label": "Gradium"
@@ -288,19 +288,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/gradium-speech",
-          "npmSpec": "@operator/gradium-speech",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/gradium-speech",
+          "npmSpec": "@gabrielvfonseca/gradium-speech",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/inworld-speech",
-      "description": "OpenClaw Inworld speech plugin.",
+      "name": "@gabrielvfonseca/inworld-speech",
+      "description": "Operator Inworld speech plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "inworld",
           "label": "Inworld"
@@ -311,19 +311,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/inworld-speech",
-          "npmSpec": "@operator/inworld-speech",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/inworld-speech",
+          "npmSpec": "@gabrielvfonseca/inworld-speech",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/lobster",
+      "name": "@gabrielvfonseca/lobster",
       "description": "Lobster workflow tool plugin (typed pipelines + resumable approvals)",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "lobster",
           "label": "Lobster"
@@ -333,19 +333,19 @@
           "order": 50
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/lobster",
-          "npmSpec": "@operator/lobster",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/lobster",
+          "npmSpec": "@gabrielvfonseca/lobster",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@operator/memory-lancedb",
-      "description": "OpenClaw LanceDB-backed long-term memory plugin with auto-recall/capture",
+      "name": "@gabrielvfonseca/memory-lancedb",
+      "description": "Operator LanceDB-backed long-term memory plugin with auto-recall/capture",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "memory-lancedb",
           "label": "Memory LanceDB"
@@ -355,19 +355,19 @@
           "order": 70
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/memory-lancedb",
-          "npmSpec": "@operator/memory-lancedb",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/memory-lancedb",
+          "npmSpec": "@gabrielvfonseca/memory-lancedb",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.31"
         }
       }
     },
     {
-      "name": "@operator/llama-cpp-provider",
-      "description": "OpenClaw llama.cpp embedding provider plugin",
+      "name": "@gabrielvfonseca/llama-cpp-provider",
+      "description": "Operator llama.cpp embedding provider plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "llama-cpp",
           "label": "llama.cpp Provider"
@@ -376,35 +376,35 @@
           "embeddingProviders": ["local"]
         },
         "install": {
-          "npmSpec": "@operator/llama-cpp-provider",
+          "npmSpec": "@gabrielvfonseca/llama-cpp-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.2"
         }
       }
     },
     {
-      "name": "@operator/openshell-sandbox",
-      "description": "OpenClaw OpenShell sandbox backend",
+      "name": "@gabrielvfonseca/openshell-sandbox",
+      "description": "Operator OpenShell sandbox backend",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "openshell",
           "label": "OpenShell Sandbox"
         },
         "install": {
-          "npmSpec": "@operator/openshell-sandbox",
+          "npmSpec": "@gabrielvfonseca/openshell-sandbox",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.12-beta.1"
         }
       }
     },
     {
-      "name": "@operator/parallel-plugin",
-      "description": "OpenClaw Parallel web search plugin.",
+      "name": "@gabrielvfonseca/parallel-plugin",
+      "description": "Operator Parallel web search plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "parallel",
           "label": "Parallel"
@@ -429,7 +429,7 @@
             ],
             "placeholder": "par-...",
             "signupUrl": "https://platform.parallel.ai",
-            "docsUrl": "https://docs.openclaw.ai/tools/parallel-search",
+            "docsUrl": "https://docs.operator.ai/tools/parallel-search",
             "credentialPath": "plugins.entries.parallel.config.webSearch.apiKey",
             "autoDetectOrder": 75
           },
@@ -444,24 +444,24 @@
             "envVars": [],
             "placeholder": "(no key needed)",
             "signupUrl": "https://parallel.ai",
-            "docsUrl": "https://docs.openclaw.ai/tools/parallel-search",
+            "docsUrl": "https://docs.operator.ai/tools/parallel-search",
             "credentialPath": ""
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/parallel-plugin",
-          "npmSpec": "@operator/parallel-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/parallel-plugin",
+          "npmSpec": "@gabrielvfonseca/parallel-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/perplexity-plugin",
-      "description": "OpenClaw Perplexity plugin.",
+      "name": "@gabrielvfonseca/perplexity-plugin",
+      "description": "Operator Perplexity plugin.",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "perplexity",
           "label": "Perplexity"
@@ -486,43 +486,43 @@
             ],
             "placeholder": "pplx-...",
             "signupUrl": "https://www.perplexity.ai/settings/api",
-            "docsUrl": "https://docs.openclaw.ai/perplexity",
+            "docsUrl": "https://docs.operator.ai/perplexity",
             "credentialPath": "plugins.entries.perplexity.config.webSearch.apiKey",
             "autoDetectOrder": 50
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/perplexity-plugin",
-          "npmSpec": "@operator/perplexity-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/perplexity-plugin",
+          "npmSpec": "@gabrielvfonseca/perplexity-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/pixverse-provider",
-      "description": "OpenClaw PixVerse video generation provider plugin",
+      "name": "@gabrielvfonseca/pixverse-provider",
+      "description": "Operator PixVerse video generation provider plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "pixverse",
           "label": "PixVerse"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/pixverse-provider",
-          "npmSpec": "@operator/pixverse-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/pixverse-provider",
+          "npmSpec": "@gabrielvfonseca/pixverse-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.26"
         }
       }
     },
     {
-      "name": "@operator/searxng-plugin",
-      "description": "OpenClaw SearXNG plugin",
+      "name": "@gabrielvfonseca/searxng-plugin",
+      "description": "Operator SearXNG plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "searxng",
           "label": "SearXNG"
@@ -547,14 +547,14 @@
             ],
             "placeholder": "http://localhost:8080",
             "signupUrl": "https://docs.searxng.org/",
-            "docsUrl": "https://docs.openclaw.ai/tools/searxng-search",
+            "docsUrl": "https://docs.operator.ai/tools/searxng-search",
             "credentialPath": "plugins.entries.searxng.config.webSearch.baseUrl",
             "autoDetectOrder": 200
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/searxng-plugin",
-          "npmSpec": "@operator/searxng-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/searxng-plugin",
+          "npmSpec": "@gabrielvfonseca/searxng-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -562,11 +562,11 @@
       }
     },
     {
-      "name": "@operator/tavily-plugin",
-      "description": "OpenClaw Tavily plugin",
+      "name": "@gabrielvfonseca/tavily-plugin",
+      "description": "Operator Tavily plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "tavily",
           "label": "Tavily"
@@ -594,14 +594,14 @@
             ],
             "placeholder": "tvly-...",
             "signupUrl": "https://tavily.com/",
-            "docsUrl": "https://docs.openclaw.ai/tools/tavily",
+            "docsUrl": "https://docs.operator.ai/tools/tavily",
             "credentialPath": "plugins.entries.tavily.config.webSearch.apiKey",
             "autoDetectOrder": 70
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/tavily-plugin",
-          "npmSpec": "@operator/tavily-plugin",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/tavily-plugin",
+          "npmSpec": "@gabrielvfonseca/tavily-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -609,11 +609,11 @@
       }
     },
     {
-      "name": "@operator/tokenjuice",
-      "description": "OpenClaw tokenjuice exec output compaction plugin",
+      "name": "@gabrielvfonseca/tokenjuice",
+      "description": "Operator tokenjuice exec output compaction plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "tokenjuice",
           "label": "Tokenjuice"
@@ -623,25 +623,25 @@
           "order": 60
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/tokenjuice",
-          "npmSpec": "@operator/tokenjuice",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/tokenjuice",
+          "npmSpec": "@gabrielvfonseca/tokenjuice",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.28"
         }
       }
     },
     {
-      "name": "@operator/voice-call",
-      "description": "OpenClaw voice-call plugin",
+      "name": "@gabrielvfonseca/voice-call",
+      "description": "Operator voice-call plugin",
       "source": "official",
       "kind": "plugin",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "voice-call",
           "label": "Voice Call"
         },
         "install": {
-          "npmSpec": "@operator/voice-call",
+          "npmSpec": "@gabrielvfonseca/voice-call",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }

@@ -2,8 +2,8 @@
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { isLiveTestEnabled } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 
@@ -50,7 +50,7 @@ describe.skipIf(!LIVE || !VYDRA_API_KEY)("vydra live", () => {
       model: LIVE_IMAGE_MODEL,
       prompt: "Create a minimal flat orange square centered on a white background.",
       cfg: { plugins: { enabled: true } } as never,
-      agentDir: "/tmp/openclaw-live-vydra-image",
+      agentDir: "/tmp/operator-live-vydra-image",
     });
 
     expect(result.images.length).toBeGreaterThan(0);
@@ -87,7 +87,7 @@ describe.skipIf(!LIVE || !VYDRA_API_KEY)("vydra live", () => {
         prompt:
           "A tiny paper diorama city at sunrise with slow cinematic camera motion and no text.",
         cfg: { plugins: { enabled: true } } as never,
-        agentDir: "/tmp/openclaw-live-vydra-video",
+        agentDir: "/tmp/operator-live-vydra-video",
       });
 
       expect(result.videos.length).toBeGreaterThan(0);
@@ -107,7 +107,7 @@ describe.skipIf(!LIVE || !VYDRA_API_KEY)("vydra live", () => {
         model: "kling",
         prompt: "Animate the scene with subtle camera drift and soft cloud motion.",
         cfg: { plugins: { enabled: true } } as never,
-        agentDir: "/tmp/openclaw-live-vydra-kling",
+        agentDir: "/tmp/operator-live-vydra-kling",
         inputImages: [{ url: LIVE_KLING_IMAGE_URL }],
         timeoutMs: VYDRA_KLING_TIMEOUT_MS,
       });

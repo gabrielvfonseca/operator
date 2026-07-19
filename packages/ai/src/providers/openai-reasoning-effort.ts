@@ -3,11 +3,11 @@
  * expose different accepted effort enums, so callers map requested values here
  * before constructing provider payloads.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 
 export type OpenAIReasoningEffort =
   | "none"

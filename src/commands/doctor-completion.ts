@@ -17,7 +17,7 @@ import {
 } from "../cli/completion-runtime.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { isErrno } from "../infra/errors.js";
-import { resolveOperatorPackageRoot } from "../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../infra/openclaw-root.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
@@ -117,13 +117,13 @@ export type ShellCompletionStatus = {
   profileInstalled: boolean;
   cacheExists: boolean;
   cachePath: string;
-  /** True if profile uses slow dynamic pattern like `source <(operator completion ...)` */
+  /** True if profile uses slow dynamic pattern like `source <(openclaw completion ...)` */
   usesSlowPattern: boolean;
 };
 
 /** Check the status of shell completion for the current shell. */
 export async function checkShellCompletionStatus(
-  binName = "operator",
+  binName = "@gabrielvfonseca/operator",
   options: ShellCompletionStatusOptions = {},
 ): Promise<ShellCompletionStatus> {
   const shell = options.shell ?? resolveShellFromEnv();
@@ -154,7 +154,7 @@ export function shellCompletionStatusToHealthFindings(
         severity: "info",
         message: `Your ${status.shell} profile uses slow dynamic completion (source <(...)).`,
         path: pathLocal,
-        fixHint: "Run `operator doctor --fix` to upgrade to cached completion.",
+        fixHint: "Run `openclaw doctor --fix` to upgrade to cached completion.",
       },
     ];
   }
@@ -165,7 +165,7 @@ export function shellCompletionStatusToHealthFindings(
         severity: "info",
         message: `Shell completion is configured in your ${status.shell} profile but the cache is missing.`,
         path: pathLocal,
-        fixHint: `Run \`operator completion --write-state\` or \`operator doctor --fix\` to regenerate ${status.cachePath}.`,
+        fixHint: `Run \`openclaw completion --write-state\` or \`openclaw doctor --fix\` to regenerate ${status.cachePath}.`,
       },
     ];
   }

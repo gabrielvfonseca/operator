@@ -1,10 +1,10 @@
 // Discord tests cover thread title.generate plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   completeWithPreparedSimpleCompletionModel,
   extractAssistantText,
   prepareSimpleCompletionModelForAgent,
-} from "openclaw/plugin-sdk/simple-completion-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/simple-completion-runtime";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { EMPTY_DISCORD_TEST_CONFIG } from "../test-support/config.js";
 
@@ -58,7 +58,7 @@ beforeEach(() => {
     selection: {
       provider: "anthropic",
       modelId: "claude-sonnet-4-6",
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
     },
     model: {
       provider: "anthropic",
@@ -117,7 +117,7 @@ describe("generateThreadTitle", () => {
         provider: "openrouter",
         modelId: "anthropic/claude-sonnet-4-5",
         profileId: "work",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
       model: {
         provider: "openrouter",
@@ -191,7 +191,7 @@ describe("generateThreadTitle", () => {
       selection: {
         provider: "anthropic",
         modelId: "claude-sonnet-4-6",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
     } as Awaited<ReturnType<typeof prepareSimpleCompletionModelForAgent>>);
 
@@ -269,7 +269,7 @@ describe("generateThreadTitle", () => {
       selection: {
         provider: "anthropic",
         modelId: "claude-haiku-4-5",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
       model: {
         provider: "anthropic",

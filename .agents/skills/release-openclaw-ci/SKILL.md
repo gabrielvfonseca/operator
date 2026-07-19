@@ -1,11 +1,11 @@
 ---
-name: release-openclaw-ci
-description: "Run, watch, debug, and summarize OpenClaw full release CI, release checks, live provider gates, install/update proofs, and release-secret preflights."
+name: release-operator-ci
+description: "Run, watch, debug, and summarize Operator full release CI, release checks, live provider gates, install/update proofs, and release-secret preflights."
 ---
 
-# OpenClaw Release CI
+# Operator Release CI
 
-Use this with `$release-openclaw-maintainer` and `$openclaw-testing` when a release candidate needs full validation, install/update proof, live provider checks, or CI recovery.
+Use this with `$release-operator-maintainer` and `$operator-testing` when a release candidate needs full validation, install/update proof, live provider checks, or CI recovery.
 
 ## Guardrails
 
@@ -56,7 +56,7 @@ Use this with `$release-openclaw-maintainer` and `$openclaw-testing` when a rele
 - Reused Testboxes are provenance-gated after their first successful run.
   Source-only edits may reuse the lease; base, dependency, wrapper, or Testbox
   workflow drift requires a fresh lease. Do not set
-  `OPENCLAW_TESTBOX_ALLOW_STALE=1` for release evidence.
+  `OPERATOR_TESTBOX_ALLOW_STALE=1` for release evidence.
 - For a committed release candidate, warm the box with
   `blacksmith testbox warmup ... --ref <candidate-branch-or-sha>`. Do not rely
   on source sync to overlay committed branch changes onto the workflow's
@@ -91,7 +91,7 @@ workflow SHA before watching or recovering Full Release Validation.
 Before full release validation:
 
 ```bash
-node .agents/skills/release-openclaw-ci/scripts/verify-provider-secrets.mjs --required openai,anthropic,fireworks
+node .agents/skills/release-operator-ci/scripts/verify-provider-secrets.mjs --required openai,anthropic,fireworks
 gh api rate_limit --jq '.resources.core'
 git status --short --branch
 git rev-parse HEAD
@@ -110,8 +110,8 @@ Start product performance evidence as early as the Code SHA exists, in
 parallel with other release work:
 
 ```bash
-gh workflow run openclaw-performance.yml \
-  --repo openclaw/openclaw \
+gh workflow run operator-performance.yml \
+  --repo openclaw/operator \
   --ref main \
   -f target_ref=<code-sha> \
   -f profile=release \
@@ -166,7 +166,7 @@ for stable/correction versions. Pass `release_profile=full` only when the
 operator explicitly asks for the broad advisory provider/media matrix. Stable
 and full profiles force the release soak; the beta profile may opt in with
 `run_release_soak=true`. Use narrow `rerun_group` after focused fixes.
-Publish with `openclaw-release-publish.yml` using `release_profile=from-validation`
+Publish with `operator-release-publish.yml` using `release_profile=from-validation`
 unless a maintainer intentionally wants to cross-check a specific profile; the
 publish workflow reads the effective profile from the full-validation manifest.
 
@@ -191,7 +191,7 @@ Stop watchers before ending the turn or switching strategy.
 1. Confirm parent SHA and child run IDs.
 2. List failed jobs only:
    ```bash
-   gh run view <child-run-id> --repo openclaw/openclaw --json jobs \
+   gh run view <child-run-id> --repo openclaw/operator --json jobs \
      --jq '.jobs[] | select(.conclusion=="failure" or .conclusion=="timed_out" or .conclusion=="cancelled") | [.databaseId,.name,.conclusion,.url] | @tsv'
    ```
 3. Fetch one failed job log. If rate-limited, note reset time and avoid more REST calls.
@@ -221,7 +221,7 @@ Stop watchers before ending the turn or switching strategy.
    refresh the PR head from `main` and use the new head SHA; let normal CI run
    before considering another fallback.
    From the PR head branch, dispatch the explicit exact-SHA fallback:
-   `gh workflow run ci.yml --repo openclaw/openclaw --ref <pr-head-branch> -f
+   `gh workflow run ci.yml --repo openclaw/operator --ref <pr-head-branch> -f
 target_ref=<full-pr-sha> -f pull_request_number=<pr-number> -f
 include_android=true -f release_gate=true`.
    It runs on GitHub-hosted runners and is accepted only when its run title is

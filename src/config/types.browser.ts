@@ -11,10 +11,10 @@ export type BrowserProfileConfig = {
   /** Extra Chrome MCP arguments for existing-session profiles. */
   mcpArgs?: string[];
   /**
-   * Profile driver (default: operator). "extension" attaches to the user's
+   * Profile driver (default: openclaw). "extension" attaches to the user's
    * signed-in browser through the Operator Chrome extension relay.
    */
-  driver?: "operator" | "clawd" | "existing-session" | "extension";
+  driver?: "@gabrielvfonseca/operator" | "clawd" | "existing-session" | "extension";
   /** If true, launch this profile in headless mode. Falls back to browser.headless. */
   headless?: boolean;
   /** Browser executable path for this profile. Falls back to browser.executablePath. */
@@ -70,7 +70,7 @@ export type BrowserConfig = {
   localCdpReadyTimeoutMs?: number;
   /** Default browser act timeout (ms). Default: 60000. */
   actionTimeoutMs?: number;
-  /** Accent color for the operator browser profile (hex). Default: #FF4500 */
+  /** Accent color for the openclaw browser profile (hex). Default: #FF4500 */
   color?: string;
   /** Override the browser executable path (all platforms). */
   executablePath?: string;

@@ -2,7 +2,7 @@
 import {
   resolveIntegerOption,
   resolveNonNegativeIntegerOption,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 
 export type ScopedExpiringIdCache<TScope extends string | number, TId extends string | number> = {
   /** Records an id for a scope at the provided timestamp or current time. */

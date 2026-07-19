@@ -1,16 +1,16 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.NativeStringResources
-import ai.openclaw.app.i18n.joinedNativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
-import ai.openclaw.app.i18n.verbatimText
-import ai.openclaw.app.node.NodePresenceAliveBeacon
-import ai.openclaw.app.ui.chat.contextMeterThinkingLabel
-import ai.openclaw.app.ui.formatApprovalDuration
-import ai.openclaw.app.ui.formatCronWake
-import ai.openclaw.app.ui.formatUsageUpdated
-import ai.openclaw.app.ui.skillWorkshopStatusLabel
+import ai.operator.app.i18n.NativeStringResources
+import ai.operator.app.i18n.joinedNativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
+import ai.operator.app.i18n.verbatimText
+import ai.operator.app.node.NodePresenceAliveBeacon
+import ai.operator.app.ui.chat.contextMeterThinkingLabel
+import ai.operator.app.ui.formatApprovalDuration
+import ai.operator.app.ui.formatCronWake
+import ai.operator.app.ui.formatUsageUpdated
+import ai.operator.app.ui.skillWorkshopStatusLabel
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.LocaleListCompat
@@ -120,7 +120,7 @@ class AppLanguageTest {
   @Test
   fun systemSubtitleReportsTheActualSystemLocale() {
     assertEquals("Follow Android · en-US", appLanguageRowSubtitle(AppLanguage.System, "en-US"))
-    assertEquals("OpenClaw translations · ja", appLanguageRowSubtitle(AppLanguage.Japanese, "en-US"))
+    assertEquals("Operator translations · ja", appLanguageRowSubtitle(AppLanguage.Japanese, "en-US"))
   }
 
   @Test

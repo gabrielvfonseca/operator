@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeMessageChannel } from "./message-channel.js";
 
 export type ConversationTargetParams = {

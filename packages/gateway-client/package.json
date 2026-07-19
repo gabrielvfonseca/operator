@@ -1,5 +1,5 @@
 {
-  "name": "@operator/gateway-client",
+  "name": "@gabrielvfonseca/gateway-client",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -34,9 +34,9 @@
     "build": "tsdown src/index.ts src/browser.ts src/readiness.ts src/timeouts.ts --no-config --platform node --format esm --dts --out-dir dist --clean"
   },
   "dependencies": {
-    "@operator/gateway-protocol": "workspace:*",
-    "@operator/net-policy": "workspace:*",
-    "@operator/retry": "workspace:*",
+    "@gabrielvfonseca/gateway-protocol": "workspace:*",
+    "@gabrielvfonseca/net-policy": "workspace:*",
+    "@gabrielvfonseca/retry": "workspace:*",
     "ws": "8.21.0"
   }
 }

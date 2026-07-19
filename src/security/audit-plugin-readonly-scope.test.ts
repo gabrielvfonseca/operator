@@ -1,5 +1,5 @@
 // Verifies plugin readonly-scope audit findings.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 
@@ -45,8 +45,8 @@ function createAuditOptions(params: {
     includeChannelSecurity: true,
     deep: false,
     deepTimeoutMs: 5000,
-    stateDir: "/tmp/operator-test-state",
-    configPath: "/tmp/openclaw-test-config.json",
+    stateDir: "/tmp/openclaw-test-state",
+    configPath: "/tmp/operator-test-config.json",
     plugins: params.plugins,
     loadPluginSecurityCollectors: true,
     configSnapshot: null,
@@ -193,8 +193,8 @@ describe("security audit read-only plugin scope", () => {
       env: {},
       includeFilesystem: false,
       includeChannelSecurity: false,
-      stateDir: "/tmp/operator-test-state",
-      configPath: "/tmp/openclaw-test-config.json",
+      stateDir: "/tmp/openclaw-test-state",
+      configPath: "/tmp/operator-test-config.json",
     });
 
     expect(getActivePluginRegistryMock).not.toHaveBeenCalled();

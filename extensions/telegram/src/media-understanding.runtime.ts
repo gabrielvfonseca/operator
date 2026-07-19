@@ -2,7 +2,7 @@
 import {
   describeImageWithModel as describeImageWithModelImpl,
   transcribeFirstAudio as transcribeFirstAudioImpl,
-} from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 
 type DescribeImageWithModel =
   typeof import("openclaw/plugin-sdk/media-runtime").describeImageWithModel;

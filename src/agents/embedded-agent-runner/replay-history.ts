@@ -18,7 +18,7 @@ import {
   hasInterSessionUserProvenance,
   normalizeInputProvenance,
 } from "../../sessions/input-provenance.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-openclaw-assistant.js";
 import { stripStaleAssistantUsageBeforeLatestCompaction } from "../compaction-usage.js";
 import {
   downgradeOpenAIFunctionCallReasoningPairs,

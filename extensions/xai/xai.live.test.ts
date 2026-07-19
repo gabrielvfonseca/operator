@@ -2,26 +2,26 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { encodePngRgba, fillPixel } from "openclaw/plugin-sdk/media-runtime";
-import type { OperatorPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { encodePngRgba, fillPixel } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import type { OperatorPluginToolFactory } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import {
   createCapturedPluginRegistration,
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   expectOperatorLiveTranscriptMarker,
   runRealtimeSttLiveTest,
-} from "openclaw/plugin-sdk/provider-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import {
   REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,
   type RealtimeVoiceBridge,
   type RealtimeVoiceBridgeEvent,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { isBillingErrorMessage } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { isBillingErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { createCodeExecutionTool } from "./code-execution.js";
 import plugin from "./index.js";
@@ -527,11 +527,11 @@ describeLive("xai plugin live", () => {
       },
       audioFormat: REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,
       instructions:
-        "Reply briefly to spoken input. When a text message asks to call the live probe, call openclaw_live_probe. After a tool result, say its marker exactly.",
+        "Reply briefly to spoken input. When a text message asks to call the live probe, call operator_live_probe. After a tool result, say its marker exactly.",
       tools: [
         {
           type: "function",
-          name: "openclaw_live_probe",
+          name: "operator_live_probe",
           description: "Return the live validation marker.",
           parameters: {
             type: "object",
@@ -688,9 +688,9 @@ describeLive("xai plugin live", () => {
         finalUserTranscripts.slice(userTranscriptsBeforeBargeIn).join(" ").toLowerCase(),
       ).toMatch(/stop|interrupt/);
 
-      bridge.sendUserMessage?.("Call openclaw_live_probe now with token bluebird.");
+      bridge.sendUserMessage?.("Call operator_live_probe now with token bluebird.");
       await waitForXaiLive("realtime tool call", () => toolCalls.length > 0);
-      expect(toolCalls[0]?.name).toBe("openclaw_live_probe");
+      expect(toolCalls[0]?.name).toBe("operator_live_probe");
       await bridge.submitToolResult(toolCalls[0]?.callId ?? "", { marker });
       await waitForXaiLive("tool-result audio", () =>
         finalAssistantTranscripts.some((text) => text.includes(marker)),

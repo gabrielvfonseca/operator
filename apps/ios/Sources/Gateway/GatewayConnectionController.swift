@@ -1,8 +1,8 @@
 import Foundation
 import Network
 import Observation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 import SwiftUI
 
 typealias GatewayTCPReachabilityProbe = @Sendable (String, Int, Double, String) async -> Bool
@@ -172,7 +172,7 @@ final class GatewayConnectionController {
                 endpoint.host,
                 endpoint.port,
                 GatewaySetupRouteProbeBudget.tcpConnectTimeoutSeconds,
-                "ai.openclaw.gateway.setup-route-\(index)")
+                "ai.operator.gateway.setup-route-\(index)")
             if reachable {
                 return link.selectingEndpoint(endpoint)
             }
@@ -578,7 +578,7 @@ final class GatewayConnectionController {
                 }
                 await appModel.purgeChatTranscriptCache(gatewayID: stableID)
             } else if let databaseURL = NodeAppModel.chatTranscriptCacheDatabaseURL(gatewayID: stableID) {
-                OpenClawChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
+                OperatorChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
             }
         }
         self.pendingForgetCleanups[stableIDKey] = (cleanupID, cleanupTask)

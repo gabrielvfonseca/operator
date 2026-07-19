@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "OpenClaw",
+  "name": "Operator",
   "description": "Self-hosted gateway that connects Discord, Google Chat, iMessage, Matrix, Microsoft Teams, Signal, Slack, Telegram, WhatsApp, Zalo, and more to AI coding agents. Run one Gateway process on your own machine and message your AI assistant from anywhere.",
   "theme": "mint",
   "icons": {
@@ -36,12 +36,12 @@
     "links": [
       {
         "label": "GitHub",
-        "href": "https://github.com/openclaw/openclaw",
+        "href": "https://github.com/gabrielvfonseca/operator",
         "icon": "github"
       },
       {
         "label": "Releases",
-        "href": "https://github.com/openclaw/openclaw/releases",
+        "href": "https://github.com/gabrielvfonseca/operator/releases",
         "icon": "package"
       },
       {
@@ -73,11 +73,11 @@
       "destination": "/plugins/reference/qa-lab"
     },
     {
-      "source": "/concepts/openclaw-sdk",
+      "source": "/concepts/operator-sdk",
       "destination": "/gateway/external-apps"
     },
     {
-      "source": "/reference/openclaw-sdk-api-design",
+      "source": "/reference/operator-sdk-api-design",
       "destination": "/gateway/external-apps"
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "source": "/pi-dev",
-      "destination": "/openclaw-agent-runtime"
+      "destination": "/operator-agent-runtime"
     },
     {
       "source": "/providers/modelstudio",
@@ -345,7 +345,7 @@
       "destination": "/channels/zalo"
     },
     {
-      "source": "/channels/openclaw-zaloclawbot",
+      "source": "/channels/operator-zaloclawbot",
       "destination": "/channels/zaloclawbot"
     },
     {
@@ -549,7 +549,7 @@
       "destination": "/channels/telegram"
     },
     {
-      "source": "/channels/openclaw-weixin",
+      "source": "/channels/operator-weixin",
       "destination": "/channels/wechat"
     },
     {
@@ -1124,7 +1124,7 @@
                 "group": "Advanced setup",
                 "pages": [
                   "start/setup",
-                  "openclaw-agent-runtime"
+                  "operator-agent-runtime"
                 ]
               }
             ]
@@ -1935,7 +1935,7 @@
                   "reference/wizard",
                   "reference/token-use",
                   "reference/secretref-credential-surface",
-                  "reference/openclaw-ai",
+                  "reference/operator-ai",
                   "reference/prompt-caching",
                   "reference/api-usage-costs",
                   "reference/transcript-hygiene",

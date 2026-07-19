@@ -1,17 +1,20 @@
 // Tlon plugin module implements channel behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import { createHybridChannelConfigAdapter } from "openclaw/plugin-sdk/channel-config-helpers";
-import { createChatChannelPlugin, type ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "openclaw/plugin-sdk/channel-outbound";
-import { createRuntimeOutboundDelegates } from "openclaw/plugin-sdk/channel-outbound";
-import type { ChannelOutboundAdapter } from "openclaw/plugin-sdk/channel-send-result";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { createHybridChannelConfigAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import {
+  createChatChannelPlugin,
+  type ChannelPlugin,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createRuntimeOutboundDelegates } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { ChannelOutboundAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { tlonChannelConfigSchema } from "./config-schema.js";
 import { tlonDoctor } from "./doctor.js";
 import { resolveTlonOutboundSessionRoute } from "./session-route.js";

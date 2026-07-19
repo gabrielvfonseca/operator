@@ -2,9 +2,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
-import { resolveSecretPlanTargetByPath } from "openclaw/plugin-sdk/secret-ref-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { resolveSecretPlanTargetByPath } from "@gabrielvfonseca/operator/plugin-sdk/secret-ref-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { parseVaultSecretId } from "../vault-secret-id.js";
 
 type CommandLike = {
@@ -275,7 +275,7 @@ function parseTargetSpecifier(value: string): {
     return { agentId, path: targetPath };
   }
   return {
-    path: value.startsWith("openclaw:") ? value.slice("openclaw:".length) : value,
+    path: value.startsWith("operator:") ? value.slice("operator:".length) : value,
   };
 }
 
@@ -295,7 +295,7 @@ function createConfigSecretTarget(params: {
     throw new Error(`Invalid --target config path: ${params.path}`);
   }
   const resolved = resolveSecretPlanTargetByPath({
-    configFile: params.agentId ? "auth-profiles.json" : "openclaw.json",
+    configFile: params.agentId ? "auth-profiles.json" : "operator.json",
     pathSegments,
   });
   if (!resolved) {
@@ -337,7 +337,7 @@ function parseConfigTargetMappings(values: string[] | undefined): ConfigTargetSe
     const separator = value.indexOf("=");
     if (separator <= 0 || separator === value.length - 1) {
       throw new Error(
-        `Invalid --target value "${value}". Use <openclaw-config-path>=<vault-secret-id>.`,
+        `Invalid --target value "${value}". Use <operator-config-path>=<vault-secret-id>.`,
       );
     }
     const target = parseTargetSpecifier(value.slice(0, separator).trim());
@@ -384,7 +384,7 @@ function assertNoDuplicatePlanTargets(targets: SecretsPlanTarget[]): void {
   for (const target of targets) {
     const key = target.agentId
       ? `auth-profiles:${target.agentId}:${target.path}`
-      : `openclaw:${target.path}`;
+      : `operator:${target.path}`;
     if (seen.has(key)) {
       throw new Error(`Duplicate secret target path in Vault setup: ${target.path}`);
     }
@@ -524,7 +524,7 @@ async function runSetup(options: SetupOptions): Promise<void> {
   });
   const planPath =
     normalizeOptionalString(options.planOut) ??
-    path.join(resolvePreferredOperatorTmpDir(), `openclaw-vault-secrets-${process.pid}.json`);
+    path.join(resolvePreferredOperatorTmpDir(), `operator-vault-secrets-${process.pid}.json`);
   await fs.writeFile(planPath, `${JSON.stringify(plan, null, 2)}\n`, "utf8");
   writeLine(`Plan written to ${planPath}`);
   writeLine(`Targets: ${plan.targets.length}`);

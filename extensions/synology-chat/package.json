@@ -1,16 +1,16 @@
 {
-  "name": "@operator/synology-chat",
+  "name": "@gabrielvfonseca/synology-chat",
   "version": "2026.7.2",
   "description": "Synology Chat channel plugin for Operator channels and direct messages.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -25,7 +25,7 @@
       "order": 90
     },
     "install": {
-      "npmSpec": "@operator/synology-chat",
+      "npmSpec": "@gabrielvfonseca/synology-chat",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },

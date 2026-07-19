@@ -3,7 +3,7 @@
  *
  * Reads persisted session store state to recover spawn depth and parent lineage across restarts.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStorePath } from "../config/sessions/paths.js";
 import { listSessionEntries } from "../config/sessions/session-accessor.js";
 import type { OperatorConfig } from "../config/types.operator.js";

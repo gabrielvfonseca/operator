@@ -1,9 +1,9 @@
 import crypto from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Readable } from "node:stream";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 type OperatorPluginHttpRouteParams = Parameters<OperatorPluginApi["registerHttpRoute"]>[0];
@@ -13,7 +13,7 @@ const issueDeviceBootstrapToken = vi.hoisted(() =>
 );
 const resolveTelegramMiniAppUrls = vi.hoisted(() =>
   vi.fn(async () => ({
-    pageUrl: "https://host.tailnet.ts.net/__openclaw_tg_miniapp/",
+    pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
     controlUiUrl: "https://host.tailnet.ts.net/openclaw",
     gatewayUrl: "wss://host.tailnet.ts.net",
   })),
@@ -120,7 +120,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     const res = await callRoute({
       route,
       method: "GET",
-      url: "/__openclaw_tg_miniapp/?accountId=ops",
+      url: "/__operator_tg_miniapp/?accountId=ops",
     });
 
     expect(res.statusCode).toBe(200);
@@ -134,7 +134,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     const res = await callRoute({
       route,
       method: "POST",
-      url: "/__openclaw_tg_miniapp/auth",
+      url: "/__operator_tg_miniapp/auth",
       contentType: "application/json; charset=utf-8",
       body: JSON.stringify({
         initData: signedInitData("123456", "success"),
@@ -163,7 +163,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     await callRoute({
       route,
       method: "POST",
-      url: "/__openclaw_tg_miniapp/auth",
+      url: "/__operator_tg_miniapp/auth",
       contentType: "application/json",
       body: JSON.stringify({ initData }),
       ip: "203.0.113.20",
@@ -171,7 +171,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     const replay = await callRoute({
       route,
       method: "POST",
-      url: "/__openclaw_tg_miniapp/auth",
+      url: "/__operator_tg_miniapp/auth",
       contentType: "application/json",
       body: JSON.stringify({ initData }),
       ip: "203.0.113.20",
@@ -190,7 +190,7 @@ describe("registerTelegramMiniAppRoutes", () => {
       callRoute({
         route,
         method: "POST",
-        url: "/__openclaw_tg_miniapp/auth",
+        url: "/__operator_tg_miniapp/auth",
         contentType: "application/json",
         body: JSON.stringify({ initData }),
         ip: "203.0.113.21",
@@ -198,7 +198,7 @@ describe("registerTelegramMiniAppRoutes", () => {
       callRoute({
         route,
         method: "POST",
-        url: "/__openclaw_tg_miniapp/auth",
+        url: "/__operator_tg_miniapp/auth",
         contentType: "application/json",
         body: JSON.stringify({ initData }),
         ip: "203.0.113.22",
@@ -214,7 +214,7 @@ describe("registerTelegramMiniAppRoutes", () => {
     const res = await callRoute({
       route,
       method: "POST",
-      url: "/__openclaw_tg_miniapp/auth",
+      url: "/__operator_tg_miniapp/auth",
       contentType: "application/json",
       body: JSON.stringify({ initData: signedInitData("123456", "non-owner") }),
       ip: "203.0.113.30",
@@ -231,7 +231,7 @@ describe("registerTelegramMiniAppRoutes", () => {
       last = await callRoute({
         route,
         method: "POST",
-        url: "/__openclaw_tg_miniapp/auth",
+        url: "/__operator_tg_miniapp/auth",
         contentType: "application/json",
         body: JSON.stringify({ initData: signedInitData("123456", `rate-${i}`) }),
         ip: "203.0.113.40",

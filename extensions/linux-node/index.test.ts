@@ -2,7 +2,7 @@ import type {
   OperatorPluginApi,
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 

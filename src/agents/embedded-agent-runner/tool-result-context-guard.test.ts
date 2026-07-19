@@ -1,8 +1,8 @@
 // Tool-result context guard tests cover live replay truncation, mid-turn
 // prechecks, and context-engine loop hooks for oversized tool outputs.
 
-import { expectDefined } from "@operator/normalization-core";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it, vi } from "vitest";
 import type { ContextEngine, ContextEngineRuntimeSettings } from "../../context-engine/types.js";
 import { sanitizeToolUseResultPairing } from "../session-transcript-repair.js";
@@ -751,7 +751,7 @@ describe("installContextEngineLoopHook", () => {
       agentId: "main",
       sessionId,
       sessionKey,
-      storePath: "/tmp/state/openclaw.sqlite",
+      storePath: "/tmp/state/operator.sqlite",
     };
     installContextEngineLoopHook({
       agent,

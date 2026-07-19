@@ -1,7 +1,7 @@
 ---
-summary: "How OpenClaw validates update paths, package migrations, and plugin install/update behavior"
+summary: "How Operator validates update paths, package migrations, and plugin install/update behavior"
 read_when:
-  - Changing OpenClaw update, doctor, package acceptance, or plugin install behavior
+  - Changing Operator update, doctor, package acceptance, or plugin install behavior
   - Preparing or approving a release candidate
   - Debugging package update, plugin dependency cleanup, or plugin install regressions
 title: "Testing: updates and plugins"
@@ -22,7 +22,7 @@ keys and network-touching suites, see [Testing live](/help/testing-live).
 - A user can move from an older published package to the candidate package
   without losing config, agents, sessions, workspaces, plugin allowlists, or
   channel config.
-- `openclaw doctor --fix --non-interactive` owns legacy cleanup and repair
+- `operator doctor --fix --non-interactive` owns legacy cleanup and repair
   paths. Startup should not grow hidden compatibility migrations for stale
   plugin state.
 - Plugin installs work from local directories, git repos, npm packages, and the
@@ -88,24 +88,24 @@ Important lanes:
   moving-ref updates, npm registry installs with hoisted transitive
   dependencies, npm update no-ops, malformed npm package metadata rejection,
   local ClawHub fixture installs and update no-ops, marketplace update behavior,
-  and Claude-bundle enable/inspect. Set `OPENCLAW_PLUGINS_E2E_CLAWHUB=0` to
+  and Claude-bundle enable/inspect. Set `OPERATOR_PLUGINS_E2E_CLAWHUB=0` to
   keep the ClawHub block hermetic/offline.
 - `test:docker:plugin-lifecycle-matrix` installs the candidate package in a bare
   container, runs an npm plugin through install, inspect, disable, enable,
   explicit upgrade, explicit downgrade, and uninstall after deleting the plugin
   code. It logs RSS and CPU metrics per phase.
 - `test:docker:plugin-update` validates that an unchanged installed plugin does
-  not reinstall or lose install metadata during `openclaw plugins update`.
+  not reinstall or lose install metadata during `operator plugins update`.
 - `test:docker:upgrade-survivor` installs the candidate tarball over a dirty
   old-user fixture, runs package update plus non-interactive doctor, then starts
   a loopback Gateway and checks state preservation.
 - `test:docker:published-upgrade-survivor` first installs a published baseline,
-  configures it through a baked `openclaw config set` recipe, updates it to the
+  configures it through a baked `operator config set` recipe, updates it to the
   candidate tarball, runs doctor, checks legacy cleanup, starts the Gateway, and
   probes `/healthz`, `/readyz`, and RPC status.
 - `test:docker:update-restart-auth` installs the candidate package, starts a
   managed token-auth Gateway, unsets caller gateway auth env for
-  `openclaw update --yes --json`, and requires the candidate update command to
+  `operator update --yes --json`, and requires the candidate update command to
   restart the Gateway before the normal probes.
 - `test:docker:update-migration` is the cleanup-heavy published-update lane. It
   starts from a configured Discord/Telegram-style user state, runs baseline
@@ -117,19 +117,19 @@ Important lanes:
 Useful published-upgrade survivor variants:
 
 ```bash
-OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@2026.4.23 \
-OPENCLAW_UPGRADE_SURVIVOR_SCENARIO=versioned-runtime-deps \
+OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@2026.4.23 \
+OPERATOR_UPGRADE_SURVIVOR_SCENARIO=versioned-runtime-deps \
 pnpm test:docker:published-upgrade-survivor
 
-OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@latest \
-OPENCLAW_UPGRADE_SURVIVOR_SCENARIO=bootstrap-persona \
+OPERATOR_UPGRADE_SURVIVOR_BASELINE_SPEC=openclaw@latest \
+OPERATOR_UPGRADE_SURVIVOR_SCENARIO=bootstrap-persona \
 pnpm test:docker:published-upgrade-survivor
 ```
 
-Available scenarios: `base`, `acpx-openclaw-tools-bridge`, `feishu-channel`,
+Available scenarios: `base`, `acpx-operator-tools-bridge`, `feishu-channel`,
 `bootstrap-persona`, `channel-post-core-restore`, `plugin-deps-cleanup`,
 `configured-plugin-installs`, `stale-source-plugin-shadow`, `tilde-log-path`,
-and `versioned-runtime-deps`. In aggregate runs, `OPENCLAW_UPGRADE_SURVIVOR_SCENARIOS=reported-issues`
+and `versioned-runtime-deps`. In aggregate runs, `OPERATOR_UPGRADE_SURVIVOR_SCENARIOS=reported-issues`
 (alias `far-reaching`) expands to all scenarios, including the
 configured-plugin install migration.
 
@@ -169,7 +169,7 @@ Candidate sources:
   in `.github/package-trusted-sources.json`. Use this for enterprise/private
   mirrors instead of weakening `source=url` with an input-level allow-private
   switch. Bearer auth, when configured by policy, uses the fixed
-  `OPENCLAW_TRUSTED_PACKAGE_TOKEN` secret.
+  `OPERATOR_TRUSTED_PACKAGE_TOKEN` secret.
 - `source=artifact`: reuse a tarball uploaded by another Actions run.
 
 Full Release Validation uses `source=artifact` by default, built from the
@@ -197,7 +197,7 @@ tolerance, stale plugin dependency cleanup, offline plugin coverage, plugin
 update behavior, and Telegram package QA on the same resolved artifact without
 making the default release package gate walk every published release.
 
-`last-stable-4` resolves to the four latest stable npm-published OpenClaw
+`last-stable-4` resolves to the four latest stable npm-published Operator
 releases. Release package acceptance pins `2026.4.23` as the first plugin-update
 compatibility boundary, `2026.5.2` as a plugin-architecture churn boundary, and
 `2026.4.15` as an older 2026.4.1x published-update baseline; the resolver

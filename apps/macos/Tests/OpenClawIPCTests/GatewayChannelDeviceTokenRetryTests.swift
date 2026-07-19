@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 extension NSLock {
     fileprivate func withDeviceRetryLock<T>(_ body: () -> T) -> T {
@@ -128,9 +128,9 @@ struct GatewayChannelDeviceTokenRetryTests {
                         caps: [],
                         commands: [],
                         permissions: [:],
-                        clientId: "openclaw-macos-test",
+                        clientId: "operator-macos-test",
                         clientMode: "ui",
-                        clientDisplayName: "OpenClaw Test",
+                        clientDisplayName: "Operator Test",
                         deviceAuthGatewayID: gatewayID))
                 try await channel.connect()
                 let generation = try #require(await channel.currentConnectionGeneration())
@@ -189,7 +189,7 @@ struct GatewayChannelDeviceTokenRetryTests {
                 caps: [],
                 commands: [],
                 permissions: [:],
-                clientId: "openclaw-ios-test",
+                clientId: "operator-ios-test",
                 clientMode: "ui",
                 clientDisplayName: "iOS Test",
                 includeDeviceIdentity: true)

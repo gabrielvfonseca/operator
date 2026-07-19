@@ -1,10 +1,10 @@
 // Sms plugin module implements webhook behavior.
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createFixedWindowRateLimiter,
   resolveRequestClientIp,
-} from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { dispatchSmsInboundEvent, type SmsChannelRuntime } from "./inbound.js";
 import {
   buildTwilioInboundMessage,

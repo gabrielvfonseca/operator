@@ -124,7 +124,7 @@ describe("registerCodexSessionCli", () => {
         },
         {
           catalogId: "codex",
-          search: "openclaw",
+          search: "@gabrielvfonseca/operator",
           limitPerHost: 25,
           hostIds: ["node:devbox"],
           cursors: { "node:devbox": "node-next" },

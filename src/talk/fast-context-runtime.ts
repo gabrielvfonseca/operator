@@ -5,8 +5,8 @@
  * context without launching a full agent consult; otherwise callers may fall
  * back to the normal consult flow.
  */
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { getActiveMemorySearchManager } from "../plugins/memory-runtime.js";

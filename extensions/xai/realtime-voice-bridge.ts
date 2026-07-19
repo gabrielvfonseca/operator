@@ -3,11 +3,11 @@ import {
   captureWsEvent,
   createDebugProxyWebSocketAgent,
   resolveDebugProxySettings,
-} from "openclaw/plugin-sdk/proxy-capture";
+} from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
 import type {
   RealtimeVoiceBridge,
   RealtimeVoiceToolResultOptions,
-} from "openclaw/plugin-sdk/realtime-voice";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
 import WebSocket from "ws";
 import {
   XAI_REALTIME_BASE_RECONNECT_DELAY_MS,

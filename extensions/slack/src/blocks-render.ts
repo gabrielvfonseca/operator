@@ -1,11 +1,9 @@
-// Slack plugin module implements blocks render behavior.
-import type { Block, KnownBlock } from "@slack/web-api";
-import { parseExecApprovalCommandText } from "openclaw/plugin-sdk/approval-reply-runtime";
+import { parseExecApprovalCommandText } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 import {
   reduceInteractiveReply,
   resolveMessagePresentationButtonAction,
   resolveMessagePresentationOptionAction,
-} from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import type {
   InteractiveReply,
   MessagePresentation,
@@ -13,9 +11,11 @@ import type {
   MessagePresentationButtonsBlock,
   MessagePresentationChartBlock,
   MessagePresentationSelectBlock,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { chunkTextForOutbound } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { chunkTextForOutbound } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+// Slack plugin module implements blocks render behavior.
+import type { Block, KnownBlock } from "@slack/web-api";
 import { encodeSlackApprovalAction } from "./approval-actions.js";
 import {
   buildSlackDataTableBlock,
@@ -209,11 +209,11 @@ export function resolveSlackBlockOffsets(blocks?: readonly SlackBlock[]): SlackB
     }
     buttonIndexOffset = Math.max(
       buttonIndexOffset,
-      readSlackOperatorBlockIndex(blockId, "openclaw_reply_buttons_") ?? 0,
+      readSlackOperatorBlockIndex(blockId, "operator_reply_buttons_") ?? 0,
     );
     selectIndexOffset = Math.max(
       selectIndexOffset,
-      readSlackOperatorBlockIndex(blockId, "openclaw_reply_select_") ?? 0,
+      readSlackOperatorBlockIndex(blockId, "operator_reply_select_") ?? 0,
     );
   }
   return {
@@ -292,7 +292,7 @@ export function buildSlackInteractiveBlocks(
       }
       state.blocks.push({
         type: "actions",
-        block_id: `openclaw_reply_buttons_${++state.buttonIndex}`,
+        block_id: `operator_reply_buttons_${++state.buttonIndex}`,
         elements,
       });
       return state;
@@ -310,7 +310,7 @@ export function buildSlackInteractiveBlocks(
     }
     state.blocks.push({
       type: "actions",
-      block_id: `openclaw_reply_select_${++state.selectIndex}`,
+      block_id: `operator_reply_select_${++state.selectIndex}`,
       elements: [
         {
           type: "static_select",
@@ -497,7 +497,7 @@ function buildSlackPresentationButtonBlock(
   return elements.length > 0
     ? {
         type: "actions",
-        block_id: `openclaw_reply_buttons_${buttonIndex}`,
+        block_id: `operator_reply_buttons_${buttonIndex}`,
         elements,
       }
     : undefined;
@@ -613,7 +613,7 @@ function buildSlackPresentationSelectBlock(
   return options.length > 0 && optionKinds.size === 1
     ? {
         type: "actions",
-        block_id: `openclaw_reply_select_${selectIndex}`,
+        block_id: `operator_reply_select_${selectIndex}`,
         elements: [
           {
             type: "static_select",

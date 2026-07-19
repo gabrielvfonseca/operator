@@ -1,6 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import { parseInlineDirectives, sanitizeReplyDirectiveId } from "../../utils/directive-tags.js";
 import { sanitizeAssistantDisplayText } from "./chat-assistant-content.js";

@@ -5,14 +5,14 @@
  */
 import { spawn } from "node:child_process";
 import os from "node:os";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import type { Result } from "@operator/normalization-core/result";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import type { Result } from "@gabrielvfonseca/normalization-core/result";
 import {
   normalizeStringEntries,
   uniqueStrings,
   uniqueValues,
-} from "@operator/normalization-core/string-normalization";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { Type } from "typebox";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getPluginToolMeta, type PluginToolMcpMeta } from "../plugins/tools.js";
@@ -56,7 +56,7 @@ const MAX_TOOL_SCHEMA_DIRECTORY_PROMPT_CHARS = 18_000;
 const TOOL_DIRECTORY_IDENTIFIER_RE = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$/u;
 
 type ToolSearchMode = "code" | "tools" | "directory";
-type CatalogSource = "operator" | "mcp" | "client";
+type CatalogSource = "@gabrielvfonseca/operator" | "mcp" | "client";
 type CatalogTool = AnyAgentTool | ToolDefinition;
 type CatalogVisibilityOptions = {
   includeMcp?: boolean;
@@ -250,7 +250,7 @@ function settleBridge(message) {
 }
 
 function buildModelScriptSource(code) {
-  return "(async (operator, console) => {\n" + code + "\n})(operator, console)";
+  return "(async (openclaw, console) => {\n" + code + "\n})(openclaw, console)";
 }
 
 function buildControllerSource() {
@@ -304,7 +304,7 @@ function buildControllerSource() {
     "  warn: (...items) => logs.push(items.map(formatLogItem)),\n" +
     "  error: (...items) => logs.push(items.map(formatLogItem)),\n" +
     "});\n" +
-    "const operator = Object.freeze({\n" +
+    "const openclaw = Object.freeze({\n" +
     "  tools: Object.freeze({\n" +
     "    search: (query, options) => bridge('search', [query, options]),\n" +
     "    describe: (id) => bridge('describe', [id]),\n" +
@@ -312,7 +312,7 @@ function buildControllerSource() {
     "  }),\n" +
     "});\n" +
     "return Object.freeze({\n" +
-    "  operator,\n" +
+    "  openclaw,\n" +
     "  console,\n" +
     "  isBridgeIdle,\n" +
     "  waitForBridgeIdle,\n" +
@@ -667,9 +667,9 @@ function classifyTool(tool: CatalogTool): {
     return { source: "mcp", sourceName: pluginId };
   }
   if (pluginId) {
-    return { source: "operator", sourceName: pluginId };
+    return { source: "@gabrielvfonseca/operator", sourceName: pluginId };
   }
-  return { source: "operator", sourceName: "core" };
+  return { source: "@gabrielvfonseca/operator", sourceName: "core" };
 }
 
 function makeCatalogId(tool: CatalogTool, source: CatalogSource, sourceName?: string): string {
@@ -1167,7 +1167,7 @@ function formatToolDirectoryIdentifier(value: string | undefined): string | unde
 }
 
 function formatToolDirectoryEntry(entry: ReturnType<typeof compactEntry>): string | undefined {
-  if (entry.source !== "operator") {
+  if (entry.source !== "@gabrielvfonseca/operator") {
     return undefined;
   }
   const name = formatToolDirectoryIdentifier(entry.name);
@@ -1817,7 +1817,7 @@ export class ToolSearchRuntime {
     } catch {
       return false;
     }
-    if (entry.source !== "operator") {
+    if (entry.source !== "@gabrielvfonseca/operator") {
       return false;
     }
     const pluginMeta = getPluginToolMeta(entry.tool as Parameters<typeof getPluginToolMeta>[0]);

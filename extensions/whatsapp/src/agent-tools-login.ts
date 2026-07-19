@@ -2,8 +2,8 @@
 import {
   optionalPositiveIntegerSchema,
   readPositiveIntegerParam,
-} from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelAgentTool } from "openclaw/plugin-sdk/channel-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelAgentTool } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import { Type } from "typebox";
 import { startWebLoginWithQr, waitForWebLogin } from "../login-qr-api.js";
 

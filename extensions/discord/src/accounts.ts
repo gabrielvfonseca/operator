@@ -3,17 +3,17 @@ import {
   createAccountActionGate,
   createAccountListHelpers,
   resolveMergedAccountConfig,
-} from "openclaw/plugin-sdk/account-helpers";
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 import {
   mapAllowFromEntries,
   normalizeChannelDmPolicy,
   resolveChannelDmAllowFrom,
   resolveChannelDmPolicy,
   type ChannelDmPolicy,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { resolveAccountEntry } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import { resolveAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { DiscordAccountConfig, DiscordActionConfig, OperatorConfig } from "./runtime-api.js";
 import { selectDiscordRuntimeConfig } from "./runtime-config.js";
 import { resolveDiscordToken, type DiscordCredentialStatus } from "./token.js";

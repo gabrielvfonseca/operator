@@ -5,8 +5,8 @@ Official Operator provider plugin for DeepInfra.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/deepinfra-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/deepinfra-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/deepinfra> for setup and configuration.
+See <https://docs.operator.ai/providers/deepinfra> for setup and configuration.

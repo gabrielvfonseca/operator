@@ -1,6 +1,6 @@
 // Gateway chat display sanitizer.
 // Removes Operator-only envelopes before messages are shown in UI/RPC results.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   stripInternalMetadataForDisplay,
   stripUserEnvelopeForDisplay,

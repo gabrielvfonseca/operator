@@ -1,15 +1,15 @@
 // Dispatches reply turns through ACP runtimes and projects their events.
-import { formatAcpRuntimeErrorText } from "@operator/acp-core/runtime/error-text";
-import { resolveAcpThreadSessionDetailLines } from "@operator/acp-core/runtime/session-identifiers";
+import { formatAcpRuntimeErrorText } from "@gabrielvfonseca/acp-core/runtime/error-text";
+import { resolveAcpThreadSessionDetailLines } from "@gabrielvfonseca/acp-core/runtime/session-identifiers";
 import {
   isSessionIdentityPending,
   resolveSessionIdentityFromMeta,
-} from "@operator/acp-core/runtime/session-identity";
+} from "@gabrielvfonseca/acp-core/runtime/session-identity";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { AcpTurnAttachment } from "../../acp/control-plane/manager.types.js";
 import { resolveAcpAgentPolicyError, resolveAcpDispatchPolicyError } from "../../acp/policy.js";
 import { AcpRuntimeError, toAcpRuntimeError } from "../../acp/runtime/errors.js";

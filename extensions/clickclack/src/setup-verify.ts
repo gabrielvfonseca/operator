@@ -1,8 +1,8 @@
 // ClickClack plugin module implements shared setup connection verification.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/setup";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { hasConfiguredSecretInput } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { resolveClickClackAccount } from "./accounts.js";
 import { createClickClackClient } from "./http-client.js";
 import { resolveWorkspaceId } from "./resolve.js";

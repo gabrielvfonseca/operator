@@ -1,5 +1,5 @@
 // Normalizes parameter keys while preserving user-visible whitespace where needed.
-import { lowercasePreservingWhitespace } from "@operator/normalization-core/string-coerce";
+import { lowercasePreservingWhitespace } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 function toSnakeCaseKey(key: string): string {
   const snakeKey = key

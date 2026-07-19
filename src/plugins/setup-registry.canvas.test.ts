@@ -1,7 +1,7 @@
 // Covers canvas setup entries in the plugin setup registry.
 import path from "node:path";
 import { describe, expect, test } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { runPluginSetupConfigMigrations } from "./setup-registry.js";
 
 describe("Canvas setup config migration", () => {

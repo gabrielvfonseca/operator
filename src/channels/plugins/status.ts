@@ -3,7 +3,7 @@
  *
  * Combines plugin status hooks, account inspection, and safe account field projection.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { inspectChannelAccount } from "../account-inspection.js";
 import {

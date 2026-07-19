@@ -2,11 +2,11 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   normalizeUniqueStringEntries,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   normalizeCommandDescriptorName,
   sanitizeCommandDescriptorDescription,
@@ -42,14 +42,14 @@ function isOfficialCodexPluginRecord(
   if (record.id !== "codex" || record.origin !== "global") {
     return false;
   }
-  if (record.packageName === "@operator/codex") {
+  if (record.packageName === "@gabrielvfonseca/codex") {
     return true;
   }
   const sourcePath = path
     .normalize(record.rootDir ?? record.source)
     .split(path.sep)
     .join("/");
-  return sourcePath.includes("/node_modules/@operator/codex");
+  return sourcePath.includes("/node_modules/@gabrielvfonseca/codex");
 }
 
 function canClaimReservedCommandOwnership(

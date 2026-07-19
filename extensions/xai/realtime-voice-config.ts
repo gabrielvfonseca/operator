@@ -1,18 +1,18 @@
 import {
   isProviderAuthProfileConfigured,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import type {
   RealtimeVoiceBridgeCreateRequest,
   RealtimeVoiceProviderConfig,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   asFiniteNumber,
   normalizeOptionalString,
   parseBooleanValue as readBoolean,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { XAI_BASE_URL } from "./model-definitions.js";
 
 type XaiRealtimeVoice = "eve" | "ara" | "rex" | "sal" | "leo";

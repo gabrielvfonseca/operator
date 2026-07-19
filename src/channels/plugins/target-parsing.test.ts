@@ -1,6 +1,6 @@
 // Target parsing tests cover channel target syntax parsing and validation.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   channelRouteTargetsMatchExact,

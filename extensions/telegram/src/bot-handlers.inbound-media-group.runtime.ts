@@ -1,19 +1,19 @@
-// Telegram media-group buffering and mention-aware album dispatch.
-import type { Message } from "grammy/types";
 import {
   buildMentionRegexes,
   implicitMentionKindWhen,
   matchesMentionWithExplicit,
   resolveInboundMentionDecision,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-detection";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { hasControlCommand } from "@gabrielvfonseca/operator/plugin-sdk/command-detection";
 import type {
   OperatorConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
-import { danger, warn } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
+import { danger, warn } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram media-group buffering and mention-aware album dispatch.
+import type { Message } from "grammy/types";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import { firstDefined, type NormalizedAllowFrom } from "./bot-access.js";
 import { isRecoverableMediaGroupError } from "./bot-handlers.media.js";

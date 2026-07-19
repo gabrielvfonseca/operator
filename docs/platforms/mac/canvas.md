@@ -15,14 +15,14 @@ surfaces.
 
 Canvas state is stored under Application Support:
 
-- `~/Library/Application Support/OpenClaw/canvas/<session>/...`
+- `~/Library/Application Support/Operator/canvas/<session>/...`
 
 The Canvas panel serves those files via a custom URL scheme,
-`openclaw-canvas://<session>/<path>`:
+`operator-canvas://<session>/<path>`:
 
-- `openclaw-canvas://main/` -> `<canvasRoot>/main/index.html`
-- `openclaw-canvas://main/assets/app.css` -> `<canvasRoot>/main/assets/app.css`
-- `openclaw-canvas://main/widgets/todo/` -> `<canvasRoot>/main/widgets/todo/index.html`
+- `operator-canvas://main/` -> `<canvasRoot>/main/index.html`
+- `operator-canvas://main/assets/app.css` -> `<canvasRoot>/main/assets/app.css`
+- `operator-canvas://main/widgets/todo/` -> `<canvasRoot>/main/widgets/todo/index.html`
 
 If no `index.html` exists at the root, the app shows a built-in scaffold page.
 
@@ -43,17 +43,17 @@ panel, navigate to a path or URL, evaluate JavaScript, and capture a
 snapshot image:
 
 ```bash
-openclaw nodes canvas present --node <id>
-openclaw nodes canvas navigate --node <id> "/"
-openclaw nodes canvas eval --node <id> --js "document.title"
-openclaw nodes canvas snapshot --node <id>
+operator nodes canvas present --node <id>
+operator nodes canvas navigate --node <id> "/"
+operator nodes canvas eval --node <id> --js "document.title"
+operator nodes canvas snapshot --node <id>
 ```
 
 `canvas.navigate` accepts local canvas paths, `http(s)` URLs, and `file://`
 URLs. Passing `"/"` shows the local scaffold or `index.html`.
 
-Gateway-hosted targets under `/__openclaw__/canvas/` and
-`/__openclaw__/a2ui/` are resolved through the node session's current scoped
+Gateway-hosted targets under `/__operator__/canvas/` and
+`/__operator__/a2ui/` are resolved through the node session's current scoped
 Canvas URL. The app refreshes that short-lived capability before navigation;
 you do not need to construct or copy a capability URL yourself.
 
@@ -64,7 +64,7 @@ panel. When the Gateway advertises a Canvas host, the macOS app auto-navigates
 to the A2UI host page on first open.
 
 The advertised URL is capability-scoped, for example
-`http://<gateway-host>:18789/__openclaw__/cap/<token>/__openclaw__/a2ui/?platform=macos`.
+`http://<gateway-host>:18789/__operator__/cap/<token>/__operator__/a2ui/?platform=macos`.
 Treat it as ephemeral credentials, not a stable link.
 
 ### A2UI commands (v0.8)
@@ -79,21 +79,21 @@ cat > /tmp/a2ui-v0.8.jsonl <<'EOFA2'
 {"beginRendering":{"surfaceId":"main","root":"root"}}
 EOFA2
 
-openclaw nodes canvas a2ui push --jsonl /tmp/a2ui-v0.8.jsonl --node <id>
+operator nodes canvas a2ui push --jsonl /tmp/a2ui-v0.8.jsonl --node <id>
 ```
 
 Quick smoke test:
 
 ```bash
-openclaw nodes canvas a2ui push --node <id> --text "Hello from A2UI"
+operator nodes canvas a2ui push --node <id> --text "Hello from A2UI"
 ```
 
 ## Triggering agent runs from Canvas
 
-Canvas can trigger new agent runs via `openclaw://agent?...` deep links:
+Canvas can trigger new agent runs via `operator://agent?...` deep links:
 
 ```js
-window.location.href = "openclaw://agent?message=Review%20this%20design";
+window.location.href = "operator://agent?message=Review%20this%20design";
 ```
 
 Supported query parameters:

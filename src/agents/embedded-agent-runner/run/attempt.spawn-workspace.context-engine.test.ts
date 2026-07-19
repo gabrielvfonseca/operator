@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { HEARTBEAT_TRANSCRIPT_PROMPT } from "../../../auto-reply/heartbeat.js";
 import {
@@ -652,7 +652,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       },
     });
 
-    expect(observedOptions.at(-1)?.openclawCodeModeToolSurface).toBe(true);
+    expect(observedOptions.at(-1)?.operatorCodeModeToolSurface).toBe(true);
     expect(payloads.at(-1)?.tools).toEqual([
       { type: "function", name: "exec" },
       { type: "function", name: "wait" },
@@ -879,12 +879,12 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expectFields(
       findRecord(
         requireRecords(seen.messages, "seen messages"),
-        (message) => message.customType === "openclaw.runtime-context",
+        (message) => message.customType === "operator.runtime-context",
         "runtime context message",
       ),
       {
         role: "custom",
-        customType: "openclaw.runtime-context",
+        customType: "operator.runtime-context",
         display: false,
       },
     );
@@ -1200,7 +1200,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   });
 
   it("rebuilds skill prompt inputs from the sandbox workspace for non-rw sandbox runs", async () => {
-    const sandboxWorkspace = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sandbox-skills-"));
+    const sandboxWorkspace = await fs.mkdtemp(path.join(os.tmpdir(), "operator-sandbox-skills-"));
     tempPaths.push(sandboxWorkspace);
     hoisted.resolveSandboxContextMock.mockResolvedValue({
       enabled: true,
@@ -1215,22 +1215,22 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       attemptOverrides: {
         skillsSnapshot: {
           prompt:
-            "<available_skills><skill><location>~/.openclaw/skills/smaug/SKILL.md</location></skill></available_skills>",
+            "<available_skills><skill><location>~/.operator/skills/smaug/SKILL.md</location></skill></available_skills>",
           skills: [{ name: "smaug" }],
           resolvedSkills: [
             {
               name: "smaug",
               description: "Host copy",
               disableModelInvocation: false,
-              filePath: "/Users/alice/.openclaw/skills/smaug/SKILL.md",
-              baseDir: "/Users/alice/.openclaw/skills/smaug",
-              source: "openclaw-workspace",
+              filePath: "/Users/alice/.operator/skills/smaug/SKILL.md",
+              baseDir: "/Users/alice/.operator/skills/smaug",
+              source: "operator-workspace",
               sourceInfo: {
-                path: "/Users/alice/.openclaw/skills/smaug/SKILL.md",
-                source: "openclaw-workspace",
+                path: "/Users/alice/.operator/skills/smaug/SKILL.md",
+                source: "operator-workspace",
                 scope: "project",
                 origin: "top-level",
-                baseDir: "/Users/alice/.openclaw/skills/smaug",
+                baseDir: "/Users/alice/.operator/skills/smaug",
               },
             },
           ],
@@ -1721,7 +1721,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(result.finalPromptText).toBe(seen.prompt);
     const runtimeContext = findRecord(
       requireRecords(seen.messages, "seen messages"),
-      (message) => message.customType === "openclaw.runtime-context",
+      (message) => message.customType === "operator.runtime-context",
       "runtime context message",
     );
     expect(runtimeContext.content).toContain("secret runtime context");
@@ -1735,13 +1735,13 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       bootstrapFiles: [
         {
           name: "AGENTS.md",
-          path: "/tmp/openclaw-warning-workspace/AGENTS.md",
+          path: "/tmp/operator-warning-workspace/AGENTS.md",
           content: "A".repeat(200),
           missing: false,
         },
       ],
       contextFiles: [
-        { path: "/tmp/openclaw-warning-workspace/AGENTS.md", content: "A".repeat(20) },
+        { path: "/tmp/operator-warning-workspace/AGENTS.md", content: "A".repeat(20) },
       ],
     });
 
@@ -1786,14 +1786,14 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       bootstrapFiles: [
         {
           name: "BOOTSTRAP.md",
-          path: "/tmp/openclaw-bootstrap-workspace/BOOTSTRAP.md",
+          path: "/tmp/operator-bootstrap-workspace/BOOTSTRAP.md",
           content: "Ask who I am.",
           missing: false,
         },
       ],
       contextFiles: [
         {
-          path: "/tmp/openclaw-bootstrap-workspace/BOOTSTRAP.md",
+          path: "/tmp/operator-bootstrap-workspace/BOOTSTRAP.md",
           content: "Ask who I am.",
         },
       ],
@@ -1829,14 +1829,14 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(promptInput.bootstrapMode).toBe("full");
     expect(promptInput.contextFiles).toEqual([
       {
-        path: "/tmp/openclaw-bootstrap-workspace/BOOTSTRAP.md",
+        path: "/tmp/operator-bootstrap-workspace/BOOTSTRAP.md",
         content: "Ask who I am.",
       },
     ]);
   });
 
   it("includes hook-adjusted bootstrap files preloaded before routing", async () => {
-    const workspaceDir = "/tmp/openclaw-hook-workspace";
+    const workspaceDir = "/tmp/operator-hook-workspace";
     hoisted.resolveBootstrapFilesForRunMock.mockResolvedValueOnce([
       {
         name: "BOOTSTRAP.md",
@@ -1963,7 +1963,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(result.finalPromptText).toBe(seenPrompt);
     const runtimeContext = findRecord(
       requireRecords(seenMessages, "seen messages"),
-      (message) => message.customType === "openclaw.runtime-context",
+      (message) => message.customType === "operator.runtime-context",
       "runtime context message",
     );
     expect(runtimeContext.content).toContain(
@@ -2050,7 +2050,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(JSON.stringify(seen.modelMessages)).not.toContain("secret runtime context");
     const runtimeContext = findRecord(
       requireRecords(seen.messages, "seen messages"),
-      (message) => message.customType === "openclaw.runtime-context",
+      (message) => message.customType === "operator.runtime-context",
       "runtime context message",
     );
     expect(seen.systemPrompt).not.toContain("[Inter-session message]");
@@ -2160,7 +2160,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     const contextCompiled = trajectoryEvents.find((event) => event.type === "context.compiled");
     const runtimeContext = findRecord(
       requireRecords(seenMessages, "seen messages"),
-      (message) => message.customType === "openclaw.runtime-context",
+      (message) => message.customType === "operator.runtime-context",
       "runtime context message",
     );
     expect(runtimeContext.content).toContain("internal heartbeat event");
@@ -2274,7 +2274,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(seenPrompt).not.toContain("dynamic hook tail");
     const roomRuntimeContext = findRecord(
       requireRecords(seenMessages, "seen messages"),
-      (message) => message.customType === "openclaw.runtime-context",
+      (message) => message.customType === "operator.runtime-context",
       "runtime context message",
     );
     expect(roomRuntimeContext.content).toContain("inbound_event_kind: room_event");
@@ -2858,7 +2858,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   });
 
   it("uses SQLite transcript messages for bootstrap without treating the marker as a file", async () => {
-    const storeDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ctx-engine-sqlite-"));
+    const storeDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ctx-engine-sqlite-"));
     tempPaths.push(storeDir);
     const storePath = path.join(storeDir, "sessions.json");
     const created = await createSessionEntryWithTranscript(
@@ -3492,7 +3492,7 @@ describe("runEmbeddedAttempt tool-result guard budget wiring", () => {
       content: "durable current turn",
       idempotencyKey: "restart-safe-run:user",
       timestamp: 1,
-      __openclaw: { senderId: "alice-id", senderName: "Alice" },
+      __operator: { senderId: "alice-id", senderName: "Alice" },
     };
     const recorder = createUserTurnTranscriptRecorder({
       message: admittedMessage,

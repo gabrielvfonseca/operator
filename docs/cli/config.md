@@ -1,21 +1,21 @@
 ---
-summary: "CLI reference for `openclaw config` (get/set/patch/unset/file/schema/validate)"
+summary: "CLI reference for `operator config` (get/set/patch/unset/file/schema/validate)"
 read_when:
   - You want to read or edit config non-interactively
 title: "Config"
 sidebarTitle: "Config"
 ---
 
-Non-interactive helpers for `openclaw.json`: get/set/patch/unset a value by path, print the schema, validate, or print the active file path. Run `openclaw config` with no subcommand to open the same guided wizard as `openclaw configure`.
+Non-interactive helpers for `operator.json`: get/set/patch/unset a value by path, print the schema, validate, or print the active file path. Run `operator config` with no subcommand to open the same guided wizard as `operator configure`.
 
 <Note>
-When `OPENCLAW_NIX_MODE=1`, OpenClaw treats `openclaw.json` as immutable. Read-only commands (`config get`, `config file`, `config schema`, `config validate`) still work; config writers refuse. Edit the Nix source for the install instead; for the first-party nix-openclaw distribution, use the [nix-openclaw Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) and set values under `programs.openclaw.config` or `instances.<name>.config`.
+When `OPERATOR_NIX_MODE=1`, Operator treats `operator.json` as immutable. Read-only commands (`config get`, `config file`, `config schema`, `config validate`) still work; config writers refuse. Edit the Nix source for the install instead; for the first-party nix-operator distribution, use the [nix-operator Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) and set values under `programs.operator.config` or `instances.<name>.config`.
 </Note>
 
 ## Root options
 
 <ParamField path="--section <section>" type="string">
-  Repeatable guided-setup section filter when you run `openclaw config` without a subcommand.
+  Repeatable guided-setup section filter when you run `operator config` without a subcommand.
 </ParamField>
 
 Guided sections: `workspace`, `model`, `web`, `gateway`, `daemon`, `channels`, `plugins`, `skills`, `health`.
@@ -23,23 +23,23 @@ Guided sections: `workspace`, `model`, `web`, `gateway`, `daemon`, `channels`, `
 ## Examples
 
 ```bash
-openclaw config file
-openclaw config --section model
-openclaw config --section gateway --section daemon
-openclaw config schema
-openclaw config get browser.executablePath
-openclaw config set browser.executablePath "/usr/bin/google-chrome"
-openclaw config set browser.profiles.work.executablePath "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-openclaw config set agents.defaults.heartbeat.every "2h"
-openclaw config set 'agents.list[0].tools.exec.node' "node-id-or-name"
-openclaw config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
-openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
-openclaw config set secrets.providers.vaultfile --provider-source file --provider-path /etc/openclaw/secrets.json --provider-mode json
-openclaw config patch --file ./openclaw.patch.json5 --dry-run
-openclaw config unset plugins.entries.brave.config.webSearch.apiKey
-openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
-openclaw config validate
-openclaw config validate --json
+operator config file
+operator config --section model
+operator config --section gateway --section daemon
+operator config schema
+operator config get browser.executablePath
+operator config set browser.executablePath "/usr/bin/google-chrome"
+operator config set browser.profiles.work.executablePath "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+operator config set agents.defaults.heartbeat.every "2h"
+operator config set 'agents.list[0].tools.exec.node' "node-id-or-name"
+operator config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
+operator config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
+operator config set secrets.providers.vaultfile --provider-source file --provider-path /etc/openclaw/secrets.json --provider-mode json
+operator config patch --file ./operator.patch.json5 --dry-run
+operator config unset plugins.entries.brave.config.webSearch.apiKey
+operator config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
+operator config validate
+operator config validate --json
 ```
 
 ### Paths
@@ -47,10 +47,10 @@ openclaw config validate --json
 Dot or bracket notation. Quote bracket paths in shell examples so zsh does not glob-expand `[0]`:
 
 ```bash
-openclaw config get agents.defaults.workspace
-openclaw config get 'agents.list[0].id'
-openclaw config get agents.list
-openclaw config set 'agents.list[1].tools.exec.node' "node-id-or-name"
+operator config get agents.defaults.workspace
+operator config get 'agents.list[0].id'
+operator config get agents.list
+operator config set 'agents.list[1].tools.exec.node' "node-id-or-name"
 ```
 
 ### `config get`
@@ -58,17 +58,17 @@ openclaw config set 'agents.list[1].tools.exec.node' "node-id-or-name"
 Reads a value from the redacted config snapshot (secrets never print). `--json` prints the raw value as JSON; otherwise strings/numbers/booleans print bare and objects/arrays print as formatted JSON.
 
 ```bash
-openclaw config get browser.executablePath
-openclaw config get agents.defaults.model --json
+operator config get browser.executablePath
+operator config get agents.defaults.model --json
 ```
 
 ### `config file`
 
-Prints the active config file path, resolved from `OPENCLAW_CONFIG_PATH` or the default location. The path names a regular file, not a symlink; see [Write safety](#write-safety).
+Prints the active config file path, resolved from `OPERATOR_CONFIG_PATH` or the default location. The path names a regular file, not a symlink; see [Write safety](#write-safety).
 
 ### `config schema`
 
-Prints the generated JSON schema for `openclaw.json` to stdout.
+Prints the generated JSON schema for `operator.json` to stdout.
 
 <AccordionGroup>
   <Accordion title="What it includes">
@@ -86,8 +86,8 @@ Prints the generated JSON schema for `openclaw.json` to stdout.
 </AccordionGroup>
 
 ```bash
-openclaw config schema
-openclaw config schema > openclaw.schema.json
+operator config schema
+operator config schema > operator.schema.json
 ```
 
 ### `config validate`
@@ -95,12 +95,12 @@ openclaw config schema > openclaw.schema.json
 Validates the current config against the active schema without starting the gateway.
 
 ```bash
-openclaw config validate
-openclaw config validate --json
+operator config validate
+operator config validate --json
 ```
 
 <Note>
-If validation is already failing, start with `openclaw configure` or `openclaw doctor --fix`. `openclaw chat` does not bypass the invalid-config guard.
+If validation is already failing, start with `operator configure` or `operator doctor --fix`. `operator chat` does not bypass the invalid-config guard.
 </Note>
 
 ## Values
@@ -108,9 +108,9 @@ If validation is already failing, start with `openclaw configure` or `openclaw d
 Values parse as JSON5 when possible; otherwise they are treated as raw strings. Use `--strict-json` to require standard JSON with no string fallback (JSON5-only syntax such as comments, trailing commas, or unquoted keys is then rejected). `--json` is a legacy alias for `--strict-json` on `config set`.
 
 ```bash
-openclaw config set agents.defaults.heartbeat.every "0m"
-openclaw config set gateway.port 19001 --strict-json
-openclaw config set channels.whatsapp.groups '["*"]' --strict-json
+operator config set agents.defaults.heartbeat.every "0m"
+operator config set gateway.port 19001 --strict-json
+operator config set channels.whatsapp.groups '["*"]' --strict-json
 ```
 
 `config get <path> --json` prints the raw value as JSON instead of terminal-formatted text.
@@ -122,8 +122,8 @@ Object assignment replaces the target path by default. Protected paths that comm
 Use `--merge` when adding entries to those maps:
 
 ```bash
-openclaw config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
-openclaw config set models.providers.ollama.models '[{"id":"llama3.2","name":"Llama 3.2"}]' --strict-json --merge
+operator config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
+operator config set models.providers.ollama.models '[{"id":"llama3.2","name":"Llama 3.2"}]' --strict-json --merge
 ```
 
 Use `--replace` only when the provided value should intentionally become the complete target value.
@@ -133,12 +133,12 @@ Use `--replace` only when the provided value should intentionally become the com
 <Tabs>
   <Tab title="Value mode">
     ```bash
-    openclaw config set <path> <value>
+    operator config set <path> <value>
     ```
   </Tab>
   <Tab title="SecretRef builder mode">
     ```bash
-    openclaw config set channels.discord.token \
+    operator config set channels.discord.token \
       --ref-provider default \
       --ref-source env \
       --ref-id DISCORD_BOT_TOKEN
@@ -148,9 +148,9 @@ Use `--replace` only when the provided value should intentionally become the com
     Targets `secrets.providers.<alias>` paths only:
 
     ```bash
-    openclaw config set secrets.providers.vault \
+    operator config set secrets.providers.vault \
       --provider-source exec \
-      --provider-command /usr/local/bin/openclaw-vault \
+      --provider-command /usr/local/bin/operator-vault \
       --provider-arg read \
       --provider-arg openai/api-key \
       --provider-timeout-ms 5000
@@ -159,7 +159,7 @@ Use `--replace` only when the provided value should intentionally become the com
   </Tab>
   <Tab title="Batch mode">
     ```bash
-    openclaw config set --batch-json '[
+    operator config set --batch-json '[
       {
         "path": "secrets.providers.default",
         "provider": { "source": "env" }
@@ -172,7 +172,7 @@ Use `--replace` only when the provided value should intentionally become the com
     ```
 
     ```bash
-    openclaw config set --batch-file ./config-set.batch.json --dry-run
+    operator config set --batch-file ./config-set.batch.json --dry-run
     ```
 
   </Tab>
@@ -187,11 +187,11 @@ Batch parsing always uses the batch payload (`--batch-json`/`--batch-file`) as t
 JSON path/value mode also works for SecretRefs and providers directly:
 
 ```bash
-openclaw config set channels.discord.token \
+operator config set channels.discord.token \
   '{"source":"env","provider":"default","id":"DISCORD_BOT_TOKEN"}' \
   --strict-json
 
-openclaw config set secrets.providers.vaultfile \
+operator config set secrets.providers.vaultfile \
   '{"source":"file","path":"/etc/openclaw/secrets.json","mode":"json"}' \
   --strict-json
 ```
@@ -235,9 +235,9 @@ Provider builder targets must use `secrets.providers.<alias>` as the path.
 Hardened exec provider example:
 
 ```bash
-openclaw config set secrets.providers.vault \
+operator config set secrets.providers.vault \
   --provider-source exec \
-  --provider-command /usr/local/bin/openclaw-vault \
+  --provider-command /usr/local/bin/operator-vault \
   --provider-arg read \
   --provider-arg openai/api-key \
   --provider-json-only \
@@ -251,15 +251,15 @@ openclaw config set secrets.providers.vault \
 Paste or pipe a config-shaped JSON5 patch instead of running many path-based `config set` commands. Objects merge recursively; arrays and scalar values replace the target; `null` deletes the target path.
 
 ```bash
-openclaw config patch --file ./openclaw.patch.json5 --dry-run
-openclaw config patch --file ./openclaw.patch.json5
+operator config patch --file ./operator.patch.json5 --dry-run
+operator config patch --file ./operator.patch.json5
 ```
 
 Pipe a patch over stdin for remote setup scripts:
 
 ```bash
-ssh user@gateway-host 'openclaw config patch --stdin --dry-run' < ./openclaw.patch.json5
-ssh user@gateway-host 'openclaw config patch --stdin' < ./openclaw.patch.json5
+ssh user@gateway-host 'operator config patch --stdin --dry-run' < ./operator.patch.json5
+ssh user@gateway-host 'operator config patch --stdin' < ./operator.patch.json5
 ```
 
 Example patch:
@@ -297,24 +297,24 @@ Example patch:
 Use `--replace-path <path>` when one object or array must become exactly the provided value instead of being recursively patched:
 
 ```bash
-openclaw config patch --file ./discord.patch.json5 --replace-path 'channels.discord.guilds["123"].channels'
+operator config patch --file ./discord.patch.json5 --replace-path 'channels.discord.guilds["123"].channels'
 ```
 
 `--dry-run` runs schema and SecretRef resolvability checks without writing. Exec-backed SecretRefs are skipped by default during dry-run; add `--allow-exec` when you intentionally want dry-run to execute provider commands.
 
 ## Dry run
 
-`--dry-run` validates changes without writing `openclaw.json`. Available on `config set`, `config patch`, and `config unset`.
+`--dry-run` validates changes without writing `operator.json`. Available on `config set`, `config patch`, and `config unset`.
 
 ```bash
-openclaw config set channels.discord.token \
+operator config set channels.discord.token \
   --ref-provider default \
   --ref-source env \
   --ref-id DISCORD_BOT_TOKEN \
   --dry-run \
   --json
 
-openclaw config set channels.discord.token \
+operator config set channels.discord.token \
   --ref-provider vault \
   --ref-source exec \
   --ref-id discord/token \
@@ -373,7 +373,7 @@ openclaw config set channels.discord.token \
     {
       "ok": true,
       "operations": 1,
-      "configPath": "~/.openclaw/openclaw.json",
+      "configPath": "~/.operator/operator.json",
       "inputModes": ["builder"],
       "checks": {
         "schema": false,
@@ -390,7 +390,7 @@ openclaw config set channels.discord.token \
     {
       "ok": false,
       "operations": 1,
-      "configPath": "~/.openclaw/openclaw.json",
+      "configPath": "~/.operator/operator.json",
       "inputModes": ["builder"],
       "checks": {
         "schema": false,
@@ -436,49 +436,49 @@ Writes to `plugins.entries` (or any subpath) always require a restart, since the
 
 ## Write safety
 
-`openclaw config set` and other OpenClaw-owned config writers validate the full post-change config before committing it to disk. If the new payload fails schema validation or looks like a destructive clobber, the active config is left alone and the rejected payload is saved beside it as `openclaw.json.rejected.*`.
+`operator config set` and other Operator-owned config writers validate the full post-change config before committing it to disk. If the new payload fails schema validation or looks like a destructive clobber, the active config is left alone and the rejected payload is saved beside it as `operator.json.rejected.*`.
 
-OpenClaw-owned writes reserialize JSON5 as standard JSON. When the source contains comments, the writer warns immediately before removing them; use a direct editor when preserving comments matters.
+Operator-owned writes reserialize JSON5 as standard JSON. When the source contains comments, the writer warns immediately before removing them; use a direct editor when preserving comments matters.
 
 <Warning>
-The active config path must be a regular file. Symlinked `openclaw.json` layouts are unsupported for writes; use `OPENCLAW_CONFIG_PATH` to point directly at the real file instead.
+The active config path must be a regular file. Symlinked `operator.json` layouts are unsupported for writes; use `OPERATOR_CONFIG_PATH` to point directly at the real file instead.
 </Warning>
 
 Prefer CLI writes for small edits:
 
 ```bash
-openclaw config set gateway.reload.mode hybrid --dry-run
-openclaw config set gateway.reload.mode hybrid
-openclaw config validate
+operator config set gateway.reload.mode hybrid --dry-run
+operator config set gateway.reload.mode hybrid
+operator config validate
 ```
 
 If a write is rejected, inspect the saved payload and fix the full config shape:
 
 ```bash
-CONFIG="$(openclaw config file)"
+CONFIG="$(operator config file)"
 ls -lt "$CONFIG".rejected.* 2>/dev/null | head
-openclaw config validate
+operator config validate
 ```
 
-Direct editor writes are still allowed, but the running Gateway treats them as untrusted until they validate. Invalid direct edits fail startup or are skipped by hot reload; Gateway does not rewrite `openclaw.json`. Run `openclaw doctor --fix` to repair prefixed/clobbered config or restore the last-known-good copy. See [Gateway troubleshooting](/gateway/troubleshooting#gateway-rejected-invalid-config).
+Direct editor writes are still allowed, but the running Gateway treats them as untrusted until they validate. Invalid direct edits fail startup or are skipped by hot reload; Gateway does not rewrite `operator.json`. Run `operator doctor --fix` to repair prefixed/clobbered config or restore the last-known-good copy. See [Gateway troubleshooting](/gateway/troubleshooting#gateway-rejected-invalid-config).
 
 Whole-file recovery is reserved for doctor repair. Plugin schema changes or `minHostVersion` skew stay loud instead of rolling back unrelated user settings such as models, providers, auth profiles, channels, gateway exposure, tools, memory, browser, or cron config.
 
 ## Repair loop
 
-After `openclaw config validate` passes, use the local TUI to have an embedded agent compare the active config against the docs while you validate each change from the same terminal:
+After `operator config validate` passes, use the local TUI to have an embedded agent compare the active config against the docs while you validate each change from the same terminal:
 
 ```bash
-openclaw chat
+operator chat
 ```
 
 Inside the TUI, a leading `!` runs a literal local shell command (after a one-time per-session confirmation prompt):
 
 ```text
-!openclaw config file
-!openclaw docs gateway auth token secretref
-!openclaw config validate
-!openclaw doctor
+!operator config file
+!operator docs gateway auth token secretref
+!operator config validate
+!operator doctor
 ```
 
 <Steps>
@@ -486,13 +486,13 @@ Inside the TUI, a leading `!` runs a literal local shell command (after a one-ti
     Ask the agent to compare your current config with the relevant docs page and suggest the smallest fix.
   </Step>
   <Step title="Apply targeted edits">
-    Apply targeted edits with `openclaw config set` or `openclaw configure`.
+    Apply targeted edits with `operator config set` or `operator configure`.
   </Step>
   <Step title="Re-validate">
-    Rerun `openclaw config validate` after each change.
+    Rerun `operator config validate` after each change.
   </Step>
   <Step title="Doctor for runtime issues">
-    If validation passes but the runtime is still unhealthy, run `openclaw doctor` or `openclaw doctor --fix` for migration and repair help.
+    If validation passes but the runtime is still unhealthy, run `operator doctor` or `operator doctor --fix` for migration and repair help.
   </Step>
 </Steps>
 

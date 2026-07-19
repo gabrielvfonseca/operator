@@ -1,6 +1,6 @@
 // Msteams plugin module implements feedback reflection prompt behavior.
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 
 /** Max chars of the thumbed-down response to include in the reflection prompt. */
 const MAX_RESPONSE_CHARS = 500;

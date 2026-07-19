@@ -1,20 +1,20 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
-@testable import OpenClawKit
-@testable import OpenClawMacCLI
+@testable import Operator
+@testable import OperatorKit
+@testable import OperatorMacCLI
 
 private func makeGatewayGenerationSnapshot(version: String) -> HelloOk {
     HelloOk(
         type: "hello-ok",
         _protocol: 3,
-        server: ["version": OpenClawProtocol.AnyCodable(version)],
+        server: ["version": OperatorProtocol.AnyCodable(version)],
         features: [:],
         snapshot: Snapshot(
             presence: [],
-            health: OpenClawProtocol.AnyCodable([String: OpenClawProtocol.AnyCodable]()),
+            health: OperatorProtocol.AnyCodable([String: OperatorProtocol.AnyCodable]()),
             stateversion: StateVersion(presence: 0, health: 0),
             uptimems: 0,
             configpath: nil,
@@ -685,7 +685,7 @@ private func makeTestGatewayConnection() -> (GatewayConnection, FakeWebSocketSes
 
     @Test func `routing identity decodes agent and contract from one response`() throws {
         let data = Data(#"{"defaultId":"Work","mainKey":"Primary","scope":"global","agents":[]}"#.utf8)
-        let identity = try OpenClawChatGatewayPayloadCodec.decodeSessionRoutingIdentity(data)
+        let identity = try OperatorChatGatewayPayloadCodec.decodeSessionRoutingIdentity(data)
 
         #expect(identity.defaultAgentID == "work")
         #expect(identity.contract == "global|primary|work")

@@ -1,11 +1,11 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.chat.ChatCacheDatabase
-import ai.openclaw.app.chat.RoomChatCommandOutbox
-import ai.openclaw.app.gateway.DeviceAuthStore
-import ai.openclaw.app.gateway.DeviceIdentityStore
-import ai.openclaw.app.i18n.NativeStringResources
-import ai.openclaw.app.i18n.notifyNativeLocaleChanged
+import ai.operator.app.chat.ChatCacheDatabase
+import ai.operator.app.chat.RoomChatCommandOutbox
+import ai.operator.app.gateway.DeviceAuthStore
+import ai.operator.app.gateway.DeviceIdentityStore
+import ai.operator.app.i18n.NativeStringResources
+import ai.operator.app.i18n.notifyNativeLocaleChanged
 import android.app.Application
 import android.content.res.Configuration
 import android.os.StrictMode

@@ -1,9 +1,9 @@
 /**
  * Resolves CLI runtime aliases to provider/model auth labels and execution ids.
  */
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   isCliRuntimeModelBackendForProvider,
@@ -234,7 +234,7 @@ export function resolveCliRuntimeExecutionProvider(params: {
 }): string | undefined {
   const provider = normalizeProviderId(params.provider);
   const { runtime, matchedProvider } = resolveConfiguredRuntime({ ...params, provider });
-  if (runtime === "operator") {
+  if (runtime === "@gabrielvfonseca/operator") {
     return undefined;
   }
   if (!runtime || runtime === "auto") {

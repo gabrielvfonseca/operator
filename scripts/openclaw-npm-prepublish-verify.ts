@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// Openclaw Npm Prepublish Verify script supports OpenClaw repository automation.
+// Openclaw Npm Prepublish Verify script supports Operator repository automation.
 
 import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -13,20 +13,20 @@ import {
   collectInstalledPackageErrors,
   normalizeInstalledBinaryVersion,
   resolveInstalledBinaryCommandInvocation,
-} from "./openclaw-npm-postpublish-verify.ts";
-import { resolveNpmCommandInvocation } from "./openclaw-npm-release-check.ts";
+} from "./operator-npm-postpublish-verify.ts";
+import { resolveNpmCommandInvocation } from "./operator-npm-release-check.ts";
 import {
-  assertPreparedOpenClawNpmShrinkwrap,
+  assertPreparedOperatorNpmShrinkwrap,
   npmTarballIntegrity,
   readTarballJson,
-} from "./prepare-openclaw-npm-shrinkwrap.ts";
+} from "./prepare-operator-npm-shrinkwrap.ts";
 import { buildCmdExeCommandLine, resolveWindowsCmdExePath } from "./windows-cmd-helpers.mjs";
 
 type InstalledPackageJson = {
   version?: string;
 };
 
-type OpenClawNpmPrepublishVerifyArgs =
+type OperatorNpmPrepublishVerifyArgs =
   | {
       expectedVersion?: string;
       dependencyTarballPaths: string[];
@@ -41,12 +41,12 @@ type OpenClawNpmPrepublishVerifyArgs =
     };
 
 export function openClawNpmPrepublishVerifyUsage(): string {
-  return "Usage: node --import tsx scripts/openclaw-npm-prepublish-verify.ts <tarball.tgz> [expected-version] [dependency.tgz ...]";
+  return "Usage: node --import tsx scripts/operator-npm-prepublish-verify.ts <tarball.tgz> [expected-version] [dependency.tgz ...]";
 }
 
-export function parseOpenClawNpmPrepublishVerifyArgs(
+export function parseOperatorNpmPrepublishVerifyArgs(
   argv: readonly string[],
-): OpenClawNpmPrepublishVerifyArgs {
+): OperatorNpmPrepublishVerifyArgs {
   const args = argv[0] === "--" ? argv.slice(1) : argv;
   const tarballPath = args[0]?.trim() ?? "";
   if (tarballPath === "--help" || tarballPath === "-h") {
@@ -92,13 +92,13 @@ function npmExec(args: string[], cwd: string): string {
 }
 
 function main(argv = process.argv.slice(2)): void {
-  const args = parseOpenClawNpmPrepublishVerifyArgs(argv);
+  const args = parseOperatorNpmPrepublishVerifyArgs(argv);
   if (args.help) {
     console.log(openClawNpmPrepublishVerifyUsage());
     return;
   }
 
-  const workingDir = mkdtempSync(join(tmpdir(), "openclaw-prepublish-"));
+  const workingDir = mkdtempSync(join(tmpdir(), "operator-prepublish-"));
   const prefixDir = join(workingDir, "prefix");
   try {
     let binaryInvocation: NpmVerifyCommandInvocation;
@@ -107,7 +107,7 @@ function main(argv = process.argv.slice(2)): void {
       const aiTarballPath = realpathSync(
         expectDefined(args.dependencyTarballPaths[0], "prepared dependency tarball"),
       );
-      assertPreparedOpenClawNpmShrinkwrap({
+      assertPreparedOperatorNpmShrinkwrap({
         aiIntegrity: npmTarballIntegrity(aiTarballPath),
         aiManifest: readTarballJson(aiTarballPath, "package/package.json"),
         rootManifest: readTarballJson(args.tarballPath, "package/package.json"),
@@ -120,8 +120,8 @@ function main(argv = process.argv.slice(2)): void {
           {
             private: true,
             dependencies: {
-              "@operator/ai": pathToFileURL(aiTarballPath).href,
-              openclaw: pathToFileURL(realpathSync(args.tarballPath)).href,
+              "@gabrielvfonseca/ai": pathToFileURL(aiTarballPath).href,
+              operator: pathToFileURL(realpathSync(args.tarballPath)).href,
             },
           },
           null,
@@ -129,12 +129,12 @@ function main(argv = process.argv.slice(2)): void {
         )}\n`,
       );
       npmExec(["install", "--prefix", prefixDir, "--no-fund", "--no-audit"], workingDir);
-      packageRoot = join(prefixDir, "node_modules", "openclaw");
+      packageRoot = join(prefixDir, "node_modules", "@gabrielvfonseca/operator");
       const binaryPath = join(
         prefixDir,
         "node_modules",
         ".bin",
-        process.platform === "win32" ? "openclaw.cmd" : "openclaw",
+        process.platform === "win32" ? "operator.cmd" : "@gabrielvfonseca/operator",
       );
       binaryInvocation =
         process.platform === "win32"
@@ -159,7 +159,7 @@ function main(argv = process.argv.slice(2)): void {
         workingDir,
       );
       const globalRoot = npmExec(["root", "-g", "--prefix", prefixDir], workingDir);
-      packageRoot = join(globalRoot, "openclaw");
+      packageRoot = join(globalRoot, "@gabrielvfonseca/operator");
       binaryInvocation = resolveInstalledBinaryCommandInvocation(prefixDir, ["--version"]);
     }
     const pkg = JSON.parse(
@@ -184,7 +184,7 @@ function main(argv = process.argv.slice(2)): void {
       throw new Error(`prepared tarball install failed:\n- ${errors.join("\n- ")}`);
     }
     console.log(
-      `openclaw-npm-prepublish-verify: prepared tarball install OK (${resolvedExpectedVersion}).`,
+      `operator-npm-prepublish-verify: prepared tarball install OK (${resolvedExpectedVersion}).`,
     );
   } finally {
     rmSync(workingDir, { force: true, recursive: true });
@@ -196,7 +196,7 @@ if (entrypoint !== null && import.meta.url === entrypoint) {
   try {
     main();
   } catch (error) {
-    console.error(`openclaw-npm-prepublish-verify: ${formatErrorMessage(error)}`);
+    console.error(`operator-npm-prepublish-verify: ${formatErrorMessage(error)}`);
     process.exitCode = 1;
   }
 }

@@ -4,7 +4,7 @@
  * Hash mode uses a dedicated prompt-display secret so auth material is never reused for owner redaction.
  */
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 type OwnerDisplaySetting = {

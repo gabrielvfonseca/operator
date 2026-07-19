@@ -9,9 +9,9 @@ export default defineConfig({
     pool: resolveDefaultVitestPool(),
     testTimeout: 120_000,
     include: [
-      "src/**/*.node.test.ts",
-      "src/pages/chat/chat-responsive.browser.test.ts",
-      "src/pages/sessions/view.browser.test.ts",
+      "tests/**/*.node.test.ts",
+      "tests/pages/chat/chat-responsive.browser.test.ts",
+      "tests/pages/sessions/view.browser.test.ts",
     ],
     environment: "node",
   },

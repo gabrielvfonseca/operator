@@ -1,23 +1,23 @@
 ---
-summary: "Step-by-step guide to building a model provider plugin for OpenClaw"
+summary: "Step-by-step guide to building a model provider plugin for Operator"
 title: "Building provider plugins"
 sidebarTitle: "Provider plugins"
 read_when:
   - You are building a new model provider plugin
-  - You want to add an OpenAI-compatible proxy or custom LLM to OpenClaw
+  - You want to add an OpenAI-compatible proxy or custom LLM to Operator
   - You need to understand provider auth, catalogs, and runtime hooks
 ---
 
-Build a provider plugin to add a model provider (LLM) to OpenClaw: a model
+Build a provider plugin to add a model provider (LLM) to Operator: a model
 catalog, API-key auth, and dynamic model resolution.
 
 <Info>
-  New to OpenClaw plugins? Read [Getting Started](/plugins/building-plugins)
+  New to Operator plugins? Read [Getting Started](/plugins/building-plugins)
   first for package structure and manifest setup.
 </Info>
 
 <Tip>
-  Provider plugins add models to OpenClaw's normal inference loop. If the
+  Provider plugins add models to Operator's normal inference loop. If the
   model must run through a native agent daemon that owns threads, compaction,
   or tool events, pair the provider with an [agent
   harness](/plugins/sdk-agent-harness) instead of putting daemon protocol
@@ -33,10 +33,10 @@ catalog, API-key auth, and dynamic model resolution.
     <CodeGroup>
     ```json package.json
     {
-      "name": "@myorg/openclaw-acme-ai",
+      "name": "@myorg/operator-acme-ai",
       "version": "1.0.0",
       "type": "module",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "extensions": ["./index.ts"],
         "providers": ["acme-ai"],
         "compat": {
@@ -51,7 +51,7 @@ catalog, API-key auth, and dynamic model resolution.
     }
     ```
 
-    ```json openclaw.plugin.json
+    ```json operator.plugin.json
     {
       "id": "acme-ai",
       "name": "Acme AI",
@@ -92,15 +92,15 @@ catalog, API-key auth, and dynamic model resolution.
     ```
     </CodeGroup>
 
-    `setup.providers[].envVars` lets OpenClaw detect credentials without
+    `setup.providers[].envVars` lets Operator detect credentials without
     loading your plugin runtime. Add `providerAuthAliases` when a provider
     variant should reuse another provider id's auth. `modelSupport` is
-    optional and lets OpenClaw auto-load your provider plugin from shorthand
-    model ids like `acme-large` before runtime hooks exist. `openclaw.compat`
-    and `openclaw.build` in `package.json` are required for ClawHub
-    publishing (`openclaw.compat.pluginApi` and `openclaw.build.openclawVersion`
+    optional and lets Operator auto-load your provider plugin from shorthand
+    model ids like `acme-large` before runtime hooks exist. `operator.compat`
+    and `operator.build` in `package.json` are required for ClawHub
+    publishing (`operator.compat.pluginApi` and `operator.build.operatorVersion`
     are the two required fields; `minGatewayVersion` falls back to
-    `openclaw.install.minHostVersion` when omitted).
+    `operator.install.minHostVersion` when omitted).
 
   </Step>
 
@@ -199,11 +199,11 @@ catalog, API-key auth, and dynamic model resolution.
     `registerModelCatalogProvider` is the newer control-plane catalog surface
     for list/help/picker UI, covering `text`, `voice`, `image_generation`,
     `video_generation`, and `music_generation` rows. Keep vendor endpoint
-    calls and response mapping in the plugin; OpenClaw owns the shared row
+    calls and response mapping in the plugin; Operator owns the shared row
     shape, source labels, and help rendering.
 
     That is a working provider. Users can now run
-    `openclaw onboard --acme-ai-api-key <key>` and select
+    `operator onboard --acme-ai-api-key <key>` and select
     `acme-ai/acme-large` as their model.
 
     ### Live model discovery
@@ -213,7 +213,7 @@ catalog, API-key auth, and dynamic model resolution.
     `openclaw/plugin-sdk/provider-catalog-live-runtime` for the shared fetch
     lifecycle. The helper gives you guarded HTTP fetches, provider-auth headers,
     structured HTTP errors, TTL caching, and static fallback behavior without
-    putting provider policy in OpenClaw core.
+    putting provider policy in Operator core.
 
     Use `buildLiveModelProviderConfig` when the live API only tells you which
     provider-owned static catalog rows are currently available:
@@ -305,7 +305,7 @@ catalog, API-key auth, and dynamic model resolution.
     ```
 
     Use `getCachedLiveProviderModelRows` when the provider API returns richer
-    metadata and the plugin needs to project rows into OpenClaw model
+    metadata and the plugin needs to project rows into Operator model
     definitions itself:
 
     ```typescript index.ts
@@ -343,7 +343,7 @@ catalog, API-key auth, and dynamic model resolution.
     upstream response is not an OpenAI-compatible `{ data: [{ id, object }] }`
     shape.
 
-    If the upstream provider uses different control tokens than OpenClaw, add a
+    If the upstream provider uses different control tokens than Operator, add a
     small bidirectional text transform instead of replacing the stream path:
 
     ```typescript
@@ -363,7 +363,7 @@ catalog, API-key auth, and dynamic model resolution.
 
     `input` rewrites the final system prompt and text message content before
     transport. `output` rewrites assistant text deltas and final text before
-    OpenClaw parses its own control markers or channel delivery.
+    Operator parses its own control markers or channel delivery.
 
     For bundled providers that only register one text provider with API-key
     auth plus a single catalog-backed runtime, prefer the narrower
@@ -407,11 +407,11 @@ catalog, API-key auth, and dynamic model resolution.
     });
     ```
 
-    `buildProvider` is the live catalog path used when OpenClaw can resolve real
+    `buildProvider` is the live catalog path used when Operator can resolve real
     provider auth. It may perform provider-specific discovery. Use
     `buildStaticProvider` only for offline rows that are safe to show before auth
     is configured; it must not require credentials or make network requests.
-    OpenClaw's `models list --all` display currently executes static catalogs
+    Operator's `models list --all` display currently executes static catalogs
     only for bundled provider plugins, with an empty config, empty env, and no
     agent/workspace paths.
 
@@ -522,14 +522,14 @@ catalog, API-key auth, and dynamic model resolution.
 
       For Gemini-family providers, keep the reasoning-output mode aligned with
       the transport. Direct Google Gemini API providers should use `native`
-      reasoning output so OpenClaw consumes native thought parts without adding
+      reasoning output so Operator consumes native thought parts without adding
       `<think>` / `<final>` prompt directives. Text-only Gemini CLI-style
       backends that parse a final JSON/text response can keep the shared
       `google-gemini` tagged contract.
 
-      Some stream helpers stay provider-local on purpose. `@operator/anthropic-provider` keeps `wrapAnthropicProviderStream`, `resolveAnthropicBetas`, `resolveAnthropicFastMode`, `resolveAnthropicServiceTier`, and the lower-level Anthropic wrapper builders in its own public `api.ts` / `contract-api.ts` seam because they encode Claude OAuth beta handling and `context1m` gating. The xAI plugin similarly keeps native xAI Responses shaping in its own `wrapStreamFn` (`/fast` aliases, default `tool_stream`, unsupported strict-tool cleanup, xAI-specific reasoning-payload removal).
+      Some stream helpers stay provider-local on purpose. `@gabrielvfonseca/anthropic-provider` keeps `wrapAnthropicProviderStream`, `resolveAnthropicBetas`, `resolveAnthropicFastMode`, `resolveAnthropicServiceTier`, and the lower-level Anthropic wrapper builders in its own public `api.ts` / `contract-api.ts` seam because they encode Claude OAuth beta handling and `context1m` gating. The xAI plugin similarly keeps native xAI Responses shaping in its own `wrapStreamFn` (`/fast` aliases, default `tool_stream`, unsupported strict-tool cleanup, xAI-specific reasoning-payload removal).
 
-      The same package-root pattern also backs `@operator/openai-provider` (provider builders, default-model helpers, realtime provider builders) and `@operator/openrouter-provider` (provider builder plus onboarding/config helpers).
+      The same package-root pattern also backs `@gabrielvfonseca/openai-provider` (provider builders, default-model helpers, realtime provider builders) and `@gabrielvfonseca/openrouter-provider` (provider builder plus onboarding/config helpers).
     </Accordion>
 
     <Tabs>
@@ -606,12 +606,12 @@ catalog, API-key auth, and dynamic model resolution.
         non-secret plan metadata from the resolved profile into
         `fetchUsageSnapshot`). Return
         `{ handled: true }` only when the provider has definitively handled usage
-        auth but has no usable usage token, and OpenClaw must skip generic
+        auth but has no usable usage token, and Operator must skip generic
         API-key/OAuth fallback. Return `null` or `undefined` when the provider did
-        not handle the request and OpenClaw should continue with generic fallback.
+        not handle the request and Operator should continue with generic fallback.
 
         Declare the provider id in `contracts.usageProviders`. When that manifest
-        contract and **both** hooks are present, OpenClaw automatically includes
+        contract and **both** hooks are present, Operator automatically includes
         the provider in usage collection without loading unrelated provider
         plugins. No core allowlist update is required.
         `fetchUsageSnapshot` returns the shared provider-neutral shape:
@@ -626,17 +626,17 @@ catalog, API-key auth, and dynamic model resolution.
         Keep currency semantics exact. A provider credit is not USD unless the
         upstream contract says so. A plugin that implements only
         `fetchUsageSnapshot` remains available for explicit/synthetic callers but
-        is not auto-discovered, because OpenClaw cannot resolve its usage credential.
+        is not auto-discovered, because Operator cannot resolve its usage credential.
       </Tab>
     </Tabs>
 
     <Accordion title="Common provider hooks">
-      OpenClaw calls hooks in roughly this order for model/provider plugins.
+      Operator calls hooks in roughly this order for model/provider plugins.
       Most providers only use 2-3. This is not the full `ProviderPlugin`
       contract - see [Internals: Provider Runtime
       Hooks](/plugins/architecture-internals#provider-runtime-hooks) for the
       complete, currently-accurate hook list and fallback notes.
-      Compatibility-only provider fields that OpenClaw no longer calls, such as
+      Compatibility-only provider fields that Operator no longer calls, such as
       `ProviderPlugin.capabilities` and `suppressBuiltInModel`, are not listed
       here.
 
@@ -701,7 +701,7 @@ catalog, API-key auth, and dynamic model resolution.
 
     A provider plugin can register embeddings, speech, realtime transcription,
     realtime voice, media understanding, image generation, video generation,
-    web fetch, and web search alongside text inference. OpenClaw classifies this as a
+    web fetch, and web search alongside text inference. Operator classifies this as a
     **hybrid-capability** plugin - the recommended pattern for company plugins
     (one plugin per vendor). See
     [Internals: Capability Ownership](/plugins/architecture#capability-ownership-model).
@@ -840,7 +840,7 @@ catalog, API-key auth, and dynamic model resolution.
         confirming a final result or clearing the linked run; reject it when
         submission fails.
         Set `supportsToolResultSuppression: false` when the provider cannot
-        honor `options.suppressResponse`. OpenClaw then avoids suppression for
+        honor `options.suppressResponse`. Operator then avoids suppression for
         internal forced-consult and cancellation results, and rejects direct
         suppressed-result requests instead of silently starting a response.
         Consumers of `createRealtimeVoiceBridgeSession` may likewise return a
@@ -848,7 +848,7 @@ catalog, API-key auth, and dynamic model resolution.
         to the session's `onError` callback.
         Set `handlesInputAudioBargeIn` only when provider VAD confirms an
         interruption by calling `onClearAudio("barge-in")`. Providers that omit
-        the flag use OpenClaw's local input-audio fallback detection.
+        the flag use Operator's local input-audio fallback detection.
       </Tab>
       <Tab title="Media understanding">
         ```typescript
@@ -862,7 +862,7 @@ catalog, API-key auth, and dynamic model resolution.
 
         Local or self-hosted media providers that intentionally do not require
         credentials can expose `resolveAuth` and return `kind: "none"`.
-        OpenClaw still keeps the normal auth gate for providers that do not
+        Operator still keeps the normal auth gate for providers that do not
         explicitly opt in. Existing providers can keep reading `req.apiKey`;
         new providers should prefer `req.auth`.
 
@@ -1080,8 +1080,8 @@ folder, not a plugin package - do not use it here.
 
 ```
 <bundled-plugin-root>/acme-ai/
-├── package.json              # openclaw.providers metadata
-├── openclaw.plugin.json      # Manifest with provider auth metadata
+├── package.json              # operator.providers metadata
+├── operator.plugin.json      # Manifest with provider auth metadata
 ├── index.ts                  # definePluginEntry + registerProvider
 └── src/
     ├── provider.test.ts      # Tests

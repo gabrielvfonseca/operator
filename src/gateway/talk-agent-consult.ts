@@ -1,7 +1,7 @@
 // Gateway Talk realtime agent-consult bridge.
 // Starts chat.send runs that answer realtime Talk tool calls.
 import { randomUUID } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   ErrorCodes,
   errorShape,

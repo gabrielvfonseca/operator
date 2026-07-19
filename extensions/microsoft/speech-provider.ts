@@ -1,31 +1,39 @@
 // Microsoft provider module implements model/runtime integration.
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { isVoiceCompatibleAudio } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import {
+  assertOkOrThrowProviderError,
+  readProviderJsonResponse,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  captureHttpExchange,
+  isDebugProxyGlobalFetchPatchInstalled,
+} from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
+import type {
+  SpeechProviderConfig,
+  SpeechProviderPlugin,
+  SpeechVoiceOption,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
+import {
+  asBoolean,
+  asFiniteNumber,
+  asObject,
+  trimToUndefined,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
+import {
+  fetchWithSsrFGuard,
+  ssrfPolicyFromHttpBaseUrlAllowedHostname,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import {
+  tempWorkspace,
+  resolvePreferredOperatorTmpDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   CHROMIUM_FULL_VERSION,
   TRUSTED_CLIENT_TOKEN,
   generateSecMsGecToken,
 } from "node-edge-tts/dist/drm.js";
-import { isVoiceCompatibleAudio } from "openclaw/plugin-sdk/media-runtime";
-import {
-  assertOkOrThrowProviderError,
-  readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import {
-  captureHttpExchange,
-  isDebugProxyGlobalFetchPatchInstalled,
-} from "openclaw/plugin-sdk/proxy-capture";
-import type {
-  SpeechProviderConfig,
-  SpeechProviderPlugin,
-  SpeechVoiceOption,
-} from "openclaw/plugin-sdk/speech";
-import { asBoolean, asFiniteNumber, asObject, trimToUndefined } from "openclaw/plugin-sdk/speech";
-import {
-  fetchWithSsrFGuard,
-  ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "openclaw/plugin-sdk/ssrf-runtime";
-import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { edgeTTS, inferEdgeExtension } from "./tts.js";
 
 const DEFAULT_EDGE_VOICE = "en-US-MichelleNeural";

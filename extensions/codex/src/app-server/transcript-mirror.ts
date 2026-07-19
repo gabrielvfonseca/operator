@@ -7,15 +7,15 @@ import {
   type AgentMessage,
   type EmbeddedRunAttemptParams,
   type EmbeddedRunAttemptResult,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { AssistantMessage, Usage } from "openclaw/plugin-sdk/llm";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { AssistantMessage, Usage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import {
   publishSessionTranscriptUpdateByIdentity,
   withSessionTranscriptWriteLock,
   type SessionTranscriptTargetParams,
   type SessionTranscriptWriteLockParams,
-} from "openclaw/plugin-sdk/session-transcript-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { CodexThread, JsonValue } from "./protocol.js";
 import {
   attachCodexMirrorIdentity,
@@ -328,7 +328,7 @@ function attachCodexMirrorOrigin(message: AgentMessage): AgentMessage {
       : {};
   return {
     ...record,
-    __openclaw: { ...baseMeta, [MIRROR_ORIGIN_META_KEY]: CODEX_APP_SERVER_MIRROR_ORIGIN },
+    __operator: { ...baseMeta, [MIRROR_ORIGIN_META_KEY]: CODEX_APP_SERVER_MIRROR_ORIGIN },
   } as unknown as AgentMessage;
 }
 

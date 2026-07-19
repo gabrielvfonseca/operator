@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import type { ProviderWrapStreamFnContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { ProviderWrapStreamFnContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { prepareClawRouterRequestModel } from "./provider-catalog.js";
 
 const ENV_API_KEY_MARKER = "CLAWROUTER_API_KEY";
@@ -94,7 +94,7 @@ function withClawRouterHeaders(
       next[name] = value;
     }
   }
-  setHeaderDefault(next, CLIENT_HEADER, "openclaw");
+  setHeaderDefault(next, CLIENT_HEADER, "@gabrielvfonseca/operator");
   setHeaderDefault(next, AGENT_HEADER, sanitizeAttributionValue(params.agentId));
   setHeaderDefault(next, SESSION_HEADER, sanitizeAttributionValue(params.sessionId));
   setHeaderDefault(next, REQUEST_ID_HEADER, sanitizeRequestId(params.requestId));

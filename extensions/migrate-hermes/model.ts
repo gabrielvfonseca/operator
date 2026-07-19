@@ -3,8 +3,11 @@ import {
   resolveAgentEffectiveModelPrimary,
   resolveDefaultAgentId,
   setAgentEffectiveModelPrimary,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { MigrationItem, MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type {
+  MigrationItem,
+  MigrationProviderContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { readString } from "./helpers.js";
 import {
   HERMES_REASON_ALREADY_CONFIGURED,

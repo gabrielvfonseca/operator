@@ -5,7 +5,7 @@
  */
 import { realpathSync } from "node:fs";
 import { resolve } from "node:path";
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 
 const fileMutationQueue = new KeyedAsyncQueue();
 

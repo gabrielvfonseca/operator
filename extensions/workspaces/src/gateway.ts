@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { rememberWorkspaceBroadcast } from "./broadcast.js";
 import { resolveBinding, type ResolveBindingOptions } from "./data-read.js";
 import { snapshotApprovedWidget } from "./manifest.js";

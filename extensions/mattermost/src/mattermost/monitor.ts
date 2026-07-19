@@ -2,18 +2,18 @@
 import {
   buildChannelProgressDraftLineForEntry,
   createChannelProgressDraftCompositor,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { isLoopbackHost } from "openclaw/plugin-sdk/gateway-runtime";
-import { resolveInboundLastRouteSessionKey } from "openclaw/plugin-sdk/routing";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/security-runtime";
-import { isPrivateNetworkOptInEnabled } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { isLoopbackHost } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { resolveInboundLastRouteSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { isPrivateNetworkOptInEnabled } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeTrimmedStringList,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { getMattermostRuntime } from "../runtime.js";
 import { resolveMattermostAccount, resolveMattermostReplyToMode } from "./accounts.js";
 import {

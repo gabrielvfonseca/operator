@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => {
     startOptions: vi.fn(async (startOptions) => startOptions),
   };
   const providerAuth = {
-    agentDir: vi.fn(() => "/tmp/openclaw-agent"),
+    agentDir: vi.fn(() => "/tmp/operator-agent"),
   };
   return { authBridge, managedBinary, providerAuth };
 });

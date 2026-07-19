@@ -2,15 +2,15 @@
 import {
   isExplicitCommandTurn,
   type CommandTurnContext,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   maybeResolveTextAlias,
   normalizeCommandBody,
-} from "openclaw/plugin-sdk/command-auth-native";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 import {
   isAbortRequestText,
   isBtwRequestText,
-} from "openclaw/plugin-sdk/command-primitives-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-primitives-runtime";
 import { isTelegramReadOnlyControlLaneText } from "./sequential-key.js";
 
 type TelegramReplyFenceState = {
@@ -26,7 +26,7 @@ type TelegramReplyFenceKey = {
 };
 
 // Newer accepted turns and authorized aborts can arrive ahead of older same-session reply work.
-const TELEGRAM_REPLY_FENCE_STATE_KEY = Symbol.for("openclaw.telegram.replyFenceState");
+const TELEGRAM_REPLY_FENCE_STATE_KEY = Symbol.for("operator.telegram.replyFenceState");
 
 function getTelegramReplyFenceState(): {
   byKey: Map<string, TelegramReplyFenceState>;

@@ -4,7 +4,7 @@
  * Twitch chat doesn't support markdown formatting, so we strip it before sending.
  * Based on Operator's markdownToText in src/agents/tools/web-fetch-utils.ts.
  */
-import { chunkTextForOutbound } from "openclaw/plugin-sdk/text-chunking";
+import { chunkTextForOutbound } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 
 /**
  * Strip markdown formatting from text for Twitch compatibility.

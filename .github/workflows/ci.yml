@@ -52,8 +52,8 @@ permissions:
 run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.dispatch_id != '' && format('CI {0}', inputs.dispatch_id) || (github.event_name == 'workflow_dispatch' && inputs.release_gate && format('CI release gate {0}', inputs.target_ref) || 'CI') }}
 
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && format('{0}-manual-v1-{1}', github.workflow, github.run_id) || (github.event_name == 'pull_request' && format('{0}-v7-{1}', github.workflow, github.event.pull_request.number) || (github.repository == 'openclaw/openclaw' && format('{0}-v7-{1}', github.workflow, github.ref) || format('{0}-v7-{1}-{2}', github.workflow, github.ref, github.sha))) }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.repository == 'openclaw/openclaw' && github.ref == 'refs/heads/main') }}
+  group: ${{ github.event_name == 'workflow_dispatch' && format('{0}-manual-v1-{1}', github.workflow, github.run_id) || (github.event_name == 'pull_request' && format('{0}-v7-{1}', github.workflow, github.event.pull_request.number) || (github.repository == 'gabrielvfonseca/operator' && format('{0}-v7-{1}', github.workflow, github.ref) || format('{0}-v7-{1}-{2}', github.workflow, github.ref, github.sha))) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.repository == 'gabrielvfonseca/operator' && github.ref == 'refs/heads/main') }}
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -67,16 +67,16 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     env:
-      OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS: "90"
+      OPERATOR_MAIN_CI_DEBOUNCE_SECONDS: "90"
     steps:
       - name: Debounce canonical main pushes
-        if: github.event_name == 'push' && github.repository == 'openclaw/openclaw' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.repository == 'gabrielvfonseca/operator' && github.ref == 'refs/heads/main'
         run: |
           set -euo pipefail
-          echo "Waiting ${OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS}s for a superseding main push before Blacksmith admission"
-          sleep "${OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS}"
+          echo "Waiting ${OPERATOR_MAIN_CI_DEBOUNCE_SECONDS}s for a superseding main push before Blacksmith admission"
+          sleep "${OPERATOR_MAIN_CI_DEBOUNCE_SECONDS}"
       - name: Admit non-main CI runs immediately
-        if: github.event_name != 'push' || github.repository != 'openclaw/openclaw' || github.ref != 'refs/heads/main'
+        if: github.event_name != 'push' || github.repository != 'gabrielvfonseca/operator' || github.ref != 'refs/heads/main'
         run: echo "No canonical main debounce required"
 
   # Preflight: establish routing truth and job matrices once, then let real
@@ -86,7 +86,7 @@ jobs:
       contents: read
     needs: [runner-admission]
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     outputs:
       checkout_revision: ${{ steps.checkout_ref.outputs.sha }}
@@ -267,7 +267,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ ! "$HISTORICAL_TARGET_TAG" =~ ^v[0-9]{4}\.[0-9]+\.[0-9]+(-(alpha|beta)\.[0-9]+)?$ ]]; then
-            echo "historical_target_tag must be a canonical OpenClaw release tag." >&2
+            echo "historical_target_tag must be a canonical Operator release tag." >&2
             exit 1
           fi
           tag_ref="refs/tags/${HISTORICAL_TARGET_TAG}"
@@ -291,7 +291,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ ! "$RELEASE_CANDIDATE_REF" =~ ^(release/[0-9]{4}\.[0-9]+\.[0-9]+|extended-stable/[0-9]{4}\.[0-9]+\.33)$ ]]; then
-            echo "release_candidate_ref must be a canonical OpenClaw release branch." >&2
+            echo "release_candidate_ref must be a canonical Operator release branch." >&2
             exit 1
           fi
           remote="$(git remote get-url origin)"
@@ -334,42 +334,42 @@ jobs:
       - name: Build CI manifest
         id: manifest
         env:
-          OPENCLAW_CI_DOCS_ONLY: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.docs_scope.outputs.docs_only }}
-          OPENCLAW_CI_DOCS_CHANGED: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.docs_scope.outputs.docs_changed }}
-          OPENCLAW_CI_RUN_NODE: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_node || 'false' }}
-          OPENCLAW_CI_RUN_MACOS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_macos || 'false' }}
-          OPENCLAW_CI_RUN_IOS_BUILD: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ios_build || 'false' }}
-          OPENCLAW_CI_RUN_ANDROID: ${{ github.event_name == 'workflow_dispatch' && (inputs.release_gate || inputs.include_android) && 'true' || steps.changed_scope.outputs.run_android || 'false' }}
-          OPENCLAW_CI_RUN_WINDOWS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_windows || 'false' }}
-          OPENCLAW_CI_RUN_NODE_FAST_ONLY: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_only || 'false' }}
-          OPENCLAW_CI_RUN_NODE_FAST_PLUGIN_CONTRACTS: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_plugin_contracts || 'false' }}
-          OPENCLAW_CI_RUN_NODE_FAST_CI_ROUTING: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_ci_routing || 'false' }}
-          OPENCLAW_CI_RUN_SKILLS_PYTHON: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_skills_python || 'false' }}
-          OPENCLAW_CI_RUN_CONTROL_UI_I18N: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_control_ui_i18n || 'false' }}
-          OPENCLAW_CI_RUN_UI_TESTS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ui_tests || 'false' }}
-          OPENCLAW_CI_RUN_NATIVE_I18N: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_native_i18n || 'false' }}
-          OPENCLAW_CI_CHANGED_PATHS_JSON: ${{ steps.changed_scope.outputs.changed_paths_json || 'null' }}
-          OPENCLAW_CI_CHECKOUT_REVISION: ${{ steps.checkout_ref.outputs.sha }}
-          OPENCLAW_CI_HISTORICAL_TARGET: ${{ steps.historical_target.outputs.eligible || 'false' }}
-          OPENCLAW_CI_RELEASE_CANDIDATE_TARGET: ${{ steps.release_candidate_target.outputs.eligible || 'false' }}
-          OPENCLAW_CI_WORKFLOW_REVISION: ${{ github.sha }}
-          OPENCLAW_CI_REPOSITORY: ${{ github.repository }}
-          OPENCLAW_CI_EVENT_NAME: ${{ github.event_name }}
+          OPERATOR_CI_DOCS_ONLY: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.docs_scope.outputs.docs_only }}
+          OPERATOR_CI_DOCS_CHANGED: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.docs_scope.outputs.docs_changed }}
+          OPERATOR_CI_RUN_NODE: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_node || 'false' }}
+          OPERATOR_CI_RUN_MACOS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_macos || 'false' }}
+          OPERATOR_CI_RUN_IOS_BUILD: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ios_build || 'false' }}
+          OPERATOR_CI_RUN_ANDROID: ${{ github.event_name == 'workflow_dispatch' && (inputs.release_gate || inputs.include_android) && 'true' || steps.changed_scope.outputs.run_android || 'false' }}
+          OPERATOR_CI_RUN_WINDOWS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_windows || 'false' }}
+          OPERATOR_CI_RUN_NODE_FAST_ONLY: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_only || 'false' }}
+          OPERATOR_CI_RUN_NODE_FAST_PLUGIN_CONTRACTS: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_plugin_contracts || 'false' }}
+          OPERATOR_CI_RUN_NODE_FAST_CI_ROUTING: ${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_ci_routing || 'false' }}
+          OPERATOR_CI_RUN_SKILLS_PYTHON: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_skills_python || 'false' }}
+          OPERATOR_CI_RUN_CONTROL_UI_I18N: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_control_ui_i18n || 'false' }}
+          OPERATOR_CI_RUN_UI_TESTS: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ui_tests || 'false' }}
+          OPERATOR_CI_RUN_NATIVE_I18N: ${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_native_i18n || 'false' }}
+          OPERATOR_CI_CHANGED_PATHS_JSON: ${{ steps.changed_scope.outputs.changed_paths_json || 'null' }}
+          OPERATOR_CI_CHECKOUT_REVISION: ${{ steps.checkout_ref.outputs.sha }}
+          OPERATOR_CI_HISTORICAL_TARGET: ${{ steps.historical_target.outputs.eligible || 'false' }}
+          OPERATOR_CI_RELEASE_CANDIDATE_TARGET: ${{ steps.release_candidate_target.outputs.eligible || 'false' }}
+          OPERATOR_CI_WORKFLOW_REVISION: ${{ github.sha }}
+          OPERATOR_CI_REPOSITORY: ${{ github.repository }}
+          OPERATOR_CI_EVENT_NAME: ${{ github.event_name }}
         run: |
           node --input-type=module <<'EOF'
           import { appendFileSync, existsSync, readFileSync } from "node:fs";
 
-          const eventName = process.env.OPENCLAW_CI_EVENT_NAME ?? "";
-          const checkoutRevision = process.env.OPENCLAW_CI_CHECKOUT_REVISION ?? "";
-          const workflowRevision = process.env.OPENCLAW_CI_WORKFLOW_REVISION ?? "";
-          const historicalTargetApproved = process.env.OPENCLAW_CI_HISTORICAL_TARGET === "true";
+          const eventName = process.env.OPERATOR_CI_EVENT_NAME ?? "";
+          const checkoutRevision = process.env.OPERATOR_CI_CHECKOUT_REVISION ?? "";
+          const workflowRevision = process.env.OPERATOR_CI_WORKFLOW_REVISION ?? "";
+          const historicalTargetApproved = process.env.OPERATOR_CI_HISTORICAL_TARGET === "true";
           const historicalTarget =
             eventName === "workflow_dispatch" &&
             historicalTargetApproved &&
             checkoutRevision !== workflowRevision;
           const releaseCandidateTarget =
             eventName === "workflow_dispatch" &&
-            process.env.OPENCLAW_CI_RELEASE_CANDIDATE_TARGET === "true" &&
+            process.env.OPERATOR_CI_RELEASE_CANDIDATE_TARGET === "true" &&
             checkoutRevision !== workflowRevision;
           const compatibilityTarget = historicalTarget || releaseCandidateTarget;
           const frozenTarget =
@@ -438,10 +438,10 @@ jobs:
           const outputPath = process.env.GITHUB_OUTPUT;
           const packageScripts = JSON.parse(readFileSync("package.json", "utf8")).scripts ?? {};
           const hasPackageScript = (name) => typeof packageScripts[name] === "string";
-          const isCanonicalRepository = process.env.OPENCLAW_CI_REPOSITORY === "openclaw/openclaw";
+          const isCanonicalRepository = process.env.OPERATOR_CI_REPOSITORY === "gabrielvfonseca/operator";
           const changedPaths = (() => {
             try {
-              const value = JSON.parse(process.env.OPENCLAW_CI_CHANGED_PATHS_JSON ?? "null");
+              const value = JSON.parse(process.env.OPERATOR_CI_CHANGED_PATHS_JSON ?? "null");
               return Array.isArray(value) && value.every((path) => typeof path === "string")
                 ? value
                 : null;
@@ -449,19 +449,19 @@ jobs:
               return null;
             }
           })();
-          const docsOnly = parseBoolean(process.env.OPENCLAW_CI_DOCS_ONLY);
-          const docsChanged = parseBoolean(process.env.OPENCLAW_CI_DOCS_CHANGED);
-          const runNode = parseBoolean(process.env.OPENCLAW_CI_RUN_NODE) && !docsOnly;
+          const docsOnly = parseBoolean(process.env.OPERATOR_CI_DOCS_ONLY);
+          const docsChanged = parseBoolean(process.env.OPERATOR_CI_DOCS_CHANGED);
+          const runNode = parseBoolean(process.env.OPERATOR_CI_RUN_NODE) && !docsOnly;
           const runNodeFastOnly =
-            runNode && parseBoolean(process.env.OPENCLAW_CI_RUN_NODE_FAST_ONLY);
+            runNode && parseBoolean(process.env.OPERATOR_CI_RUN_NODE_FAST_ONLY);
           const runNodeFull = runNode && !runNodeFastOnly;
           const runNodeFastPluginContracts =
-            runNode && parseBoolean(process.env.OPENCLAW_CI_RUN_NODE_FAST_PLUGIN_CONTRACTS);
+            runNode && parseBoolean(process.env.OPERATOR_CI_RUN_NODE_FAST_PLUGIN_CONTRACTS);
           const runNodeFastCiRouting =
-            runNode && parseBoolean(process.env.OPENCLAW_CI_RUN_NODE_FAST_CI_ROUTING);
+            runNode && parseBoolean(process.env.OPERATOR_CI_RUN_NODE_FAST_CI_ROUTING);
           const runPluginContractShards = runNodeFull || runNodeFastPluginContracts;
           const runMacos =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_MACOS) && !docsOnly && isCanonicalRepository;
+            parseBoolean(process.env.OPERATOR_CI_RUN_MACOS) && !docsOnly && isCanonicalRepository;
           const supportsCurrentMacosSwiftCi =
             existsSync("scripts/install-swift-tools.sh") &&
             existsSync("scripts/lint-swift.sh") &&
@@ -469,29 +469,29 @@ jobs:
           const supportsIosBuild = hasPackageScript("ios:build");
           const supportsCurrentIosCi = supportsIosBuild && supportsCurrentMacosSwiftCi;
           const runIosBuild =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_IOS_BUILD) &&
+            parseBoolean(process.env.OPERATOR_CI_RUN_IOS_BUILD) &&
             !docsOnly &&
             isCanonicalRepository &&
             (!frozenTarget ||
               supportsCurrentIosCi ||
               (releaseCandidateTarget && supportsIosBuild));
           const runAndroid =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_ANDROID) && !docsOnly && isCanonicalRepository;
+            parseBoolean(process.env.OPERATOR_CI_RUN_ANDROID) && !docsOnly && isCanonicalRepository;
           const runWindows =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_WINDOWS) &&
+            parseBoolean(process.env.OPERATOR_CI_RUN_WINDOWS) &&
             !docsOnly &&
             !runNodeFastOnly &&
             isCanonicalRepository;
-          const runSkillsPython = parseBoolean(process.env.OPENCLAW_CI_RUN_SKILLS_PYTHON) && !docsOnly;
+          const runSkillsPython = parseBoolean(process.env.OPERATOR_CI_RUN_SKILLS_PYTHON) && !docsOnly;
           const runControlUiI18n =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_CONTROL_UI_I18N) && !docsOnly;
-          const runUiTests = parseBoolean(process.env.OPENCLAW_CI_RUN_UI_TESTS) && !docsOnly;
+            parseBoolean(process.env.OPERATOR_CI_RUN_CONTROL_UI_I18N) && !docsOnly;
+          const runUiTests = parseBoolean(process.env.OPERATOR_CI_RUN_UI_TESTS) && !docsOnly;
           const supportsNativeI18n =
             hasPackageScript("native:i18n:check") &&
             hasPackageScript("android:i18n:check") &&
             hasPackageScript("apple:i18n:check");
           const runNativeI18n =
-            parseBoolean(process.env.OPENCLAW_CI_RUN_NATIVE_I18N) &&
+            parseBoolean(process.env.OPERATOR_CI_RUN_NATIVE_I18N) &&
             !docsOnly &&
             (!frozenTarget || supportsNativeI18n);
           const targetWorkflow = existsSync(".github/workflows/ci.yml")
@@ -846,7 +846,7 @@ jobs:
         run: |
           set -euo pipefail
           source .github/actions/setup-pnpm-store-cache/ensure-node.sh
-          openclaw_ensure_node "$REQUESTED_NODE_VERSION"
+          operator_ensure_node "$REQUESTED_NODE_VERSION"
 
       - name: Audit production dependencies
         run: node scripts/pre-commit/pnpm-audit-prod.mjs --audit-level=high
@@ -858,7 +858,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: needs.preflight.outputs.run_node == 'true' || needs.preflight.outputs.run_check_docs == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     steps:
       - &linux_node_checkout_step
@@ -920,7 +920,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: needs.preflight.outputs.run_build_artifacts == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     outputs:
       channels-result: ${{ steps.built_artifact_checks.outputs['channels-result'] }}
@@ -987,10 +987,10 @@ jobs:
           retention-days: 1
 
       - name: Smoke test CLI launcher help
-        run: node openclaw.mjs --help
+        run: node operator.mjs --help
 
       - name: Smoke test CLI launcher status json
-        run: node openclaw.mjs status --json --timeout 1
+        run: node operator.mjs status --json --timeout 1
 
       - name: Smoke test built bundled plugin singleton
         run: pnpm test:build:singleton
@@ -1000,7 +1000,7 @@ jobs:
         env:
           # GitHub-hosted Linux reports a higher RSS baseline than Blacksmith for
           # the same built CLI. Keep the tighter Blacksmith regression ceiling.
-          OPENCLAW_STARTUP_MEMORY_PLUGINS_LIST_MB: ${{ runner.environment == 'github-hosted' && '425' || '400' }}
+          OPERATOR_STARTUP_MEMORY_PLUGINS_LIST_MB: ${{ runner.environment == 'github-hosted' && '425' || '400' }}
         run: |
           set +e
           pnpm test:startup:memory
@@ -1053,14 +1053,14 @@ jobs:
           if [ "$RUN_CHANNELS" = "true" ]; then
             start_check "channels" env \
               NODE_OPTIONS=--max-old-space-size=8192 \
-              OPENCLAW_VITEST_MAX_WORKERS=1 \
+              OPERATOR_VITEST_MAX_WORKERS=1 \
               pnpm test:channels
           fi
 
           if [ "$RUN_CORE_SUPPORT_BOUNDARY" = "true" ]; then
             start_check "core-support-boundary" env \
               NODE_OPTIONS=--max-old-space-size=8192 \
-              OPENCLAW_VITEST_MAX_WORKERS=2 \
+              OPERATOR_VITEST_MAX_WORKERS=2 \
               node scripts/run-vitest.mjs run --config test/vitest/vitest.full-core-support-boundary.config.ts
           fi
 
@@ -1135,7 +1135,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_native_i18n == 'true' }}
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -1164,7 +1164,7 @@ jobs:
     name: checks-ui
     needs: [preflight]
     if: needs.preflight.outputs.run_ui_tests == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     env:
       COMPATIBILITY_TARGET: ${{ needs.preflight.outputs.compatibility_target }}
@@ -1210,7 +1210,7 @@ jobs:
     # Locale refresh runs separately on main and nightly. Keep drift visible on
     # automatic runs without blocking unrelated work; release CI stays strict.
     continue-on-error: ${{ github.event_name != 'workflow_dispatch' }}
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 10
     steps:
       - *linux_node_checkout_step
@@ -1230,7 +1230,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_fast_core == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1296,7 +1296,7 @@ jobs:
       - name: Run ${{ matrix.task }} (${{ matrix.runtime }})
         env:
           GH_TOKEN: ${{ matrix.task == 'max-lines-ratchet' && github.token || '' }}
-          OPENCLAW_TEST_PROJECTS_PARALLEL: 3
+          OPERATOR_TEST_PROJECTS_PARALLEL: 3
           RATCHET_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           RATCHET_EVENT_BASE_SHA: ${{ github.event_name == 'push' && github.event.before || '' }}
           RATCHET_MANUAL_TARGET_SHA: ${{ github.event_name == 'workflow_dispatch' && !inputs.release_gate && needs.preflight.outputs.checkout_revision || '' }}
@@ -1381,7 +1381,7 @@ jobs:
               fi
               ;;
             bun-launcher)
-              OPENCLAW_TEST_BUN_LAUNCHER=1 pnpm test test/openclaw-launcher.e2e.test.ts
+              OPERATOR_TEST_BUN_LAUNCHER=1 pnpm test test/operator-launcher.e2e.test.ts
               ;;
             *)
               echo "Unsupported checks-fast task: $TASK" >&2
@@ -1395,7 +1395,7 @@ jobs:
     name: QA Smoke CI (${{ matrix.name }})
     needs: [preflight]
     if: needs.preflight.outputs.run_qa_smoke_ci == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1423,14 +1423,14 @@ jobs:
           install-bun: "false"
 
       - name: Set up Blacksmith Docker layer cache
-        if: ${{ matrix.docker_cache == true && github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') }}
+        if: ${{ matrix.docker_cache == true && github.event_name != 'workflow_dispatch' && github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') }}
         uses: useblacksmith/setup-docker-builder@ab5c1da94f53f5cd75c1038092aa276dddfccbba # v1
         with:
           max-cache-size-mb: 800000
 
       - name: Build QA smoke runtime
         env:
-          OPENCLAW_BUILD_PRIVATE_QA: "1"
+          OPERATOR_BUILD_PRIVATE_QA: "1"
           NODE_OPTIONS: --max-old-space-size=8192
         run: |
           node scripts/build-all.mjs qaRuntime
@@ -1438,29 +1438,29 @@ jobs:
           package_args=(
             --skip-build
             --output-dir .artifacts/qa-e2e/smoke-ci-package
-            --output-name openclaw-current.tgz
+            --output-name operator-current.tgz
           )
-          if grep -Fq -- '--allow-unreleased-changelog' scripts/package-openclaw-for-docker.mjs; then
+          if grep -Fq -- '--allow-unreleased-changelog' scripts/package-operator-for-docker.mjs; then
             package_args=(--allow-unreleased-changelog "${package_args[@]}")
           fi
-          node scripts/package-openclaw-for-docker.mjs "${package_args[@]}"
+          node scripts/package-operator-for-docker.mjs "${package_args[@]}"
 
       - name: Run smoke profile part
         env:
           PROFILE_PART: ${{ matrix.lane }}
           PROFILE_PART_SLUG: ${{ matrix.slug }}
-          OPENCLAW_QA_SUITE_WORKER_START_STAGGER_MS: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && '0' || '1500' }}
+          OPERATOR_QA_SUITE_WORKER_START_STAGGER_MS: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'gabrielvfonseca/operator' && '0' || '1500' }}
         shell: bash
         run: |
           set -euo pipefail
           output_dir=".artifacts/qa-e2e/smoke-ci-profile-${PROFILE_PART_SLUG}"
-          export OPENCLAW_BUILD_PRIVATE_QA=1
-          export OPENCLAW_ENABLE_PRIVATE_QA_CLI=1
-          export OPENCLAW_DISABLE_BUNDLED_PLUGINS=0
-          export OPENCLAW_QA_REDACT_PUBLIC_METADATA=1
-          export OPENCLAW_QA_TRANSPORT_READY_TIMEOUT_MS=180000
+          export OPERATOR_BUILD_PRIVATE_QA=1
+          export OPERATOR_ENABLE_PRIVATE_QA_CLI=1
+          export OPERATOR_DISABLE_BUNDLED_PLUGINS=0
+          export OPERATOR_QA_REDACT_PUBLIC_METADATA=1
+          export OPERATOR_QA_TRANSPORT_READY_TIMEOUT_MS=180000
           export NODE_OPTIONS=--max-old-space-size=16384
-          export OPENCLAW_CURRENT_PACKAGE_TGZ="$PWD/.artifacts/qa-e2e/smoke-ci-package/openclaw-current.tgz"
+          export OPERATOR_CURRENT_PACKAGE_TGZ="$PWD/.artifacts/qa-e2e/smoke-ci-package/operator-current.tgz"
           PROFILE_RUNS_TSV="$(
             node --import tsx --input-type=module <<'EOF'
           const smokePlan = await import("./extensions/qa-lab/src/ci-smoke-plan.ts");
@@ -1550,7 +1550,7 @@ jobs:
             for scenario_id in "${scenario_ids[@]}"; do
               scenario_args+=(--scenario "$scenario_id")
             done
-            timeout --signal=TERM --kill-after=15s 10m node openclaw.mjs qa run \
+            timeout --signal=TERM --kill-after=15s 10m node operator.mjs qa run \
               --repo-root . \
               --qa-profile smoke-ci \
               --concurrency 10 \
@@ -1578,7 +1578,7 @@ jobs:
     name: ${{ matrix.checkName }}
     needs: [preflight]
     if: needs.preflight.outputs.run_plugin_contracts_shards == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1593,7 +1593,7 @@ jobs:
 
       - name: Run plugin contract shard
         env:
-          OPENCLAW_CONTRACT_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
+          OPERATOR_CONTRACT_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
         shell: bash
         run: |
           set -euo pipefail
@@ -1601,14 +1601,14 @@ jobs:
           INCLUDE_FILE="$include_file" node --input-type=module <<'EOF'
           import { writeFileSync } from "node:fs";
 
-          const includePatterns = JSON.parse(process.env.OPENCLAW_CONTRACT_INCLUDE_PATTERNS_JSON ?? "[]");
+          const includePatterns = JSON.parse(process.env.OPERATOR_CONTRACT_INCLUDE_PATTERNS_JSON ?? "[]");
           if (!Array.isArray(includePatterns) || includePatterns.length === 0) {
             console.error("Missing plugin contract include patterns");
             process.exit(1);
           }
           writeFileSync(process.env.INCLUDE_FILE, JSON.stringify(includePatterns), "utf8");
           EOF
-          OPENCLAW_VITEST_INCLUDE_FILE="$include_file" pnpm test:contracts:plugins
+          OPERATOR_VITEST_INCLUDE_FILE="$include_file" pnpm test:contracts:plugins
 
   checks-fast-channel-contracts-shard:
     permissions:
@@ -1616,7 +1616,7 @@ jobs:
     name: ${{ matrix.checkName }}
     needs: [preflight]
     if: needs.preflight.outputs.run_channel_contracts_shards == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1631,7 +1631,7 @@ jobs:
 
       - name: Run channel contract shard
         env:
-          OPENCLAW_CONTRACT_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
+          OPERATOR_CONTRACT_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
         shell: bash
         run: |
           set -euo pipefail
@@ -1639,14 +1639,14 @@ jobs:
           INCLUDE_FILE="$include_file" node --input-type=module <<'EOF'
           import { writeFileSync } from "node:fs";
 
-          const includePatterns = JSON.parse(process.env.OPENCLAW_CONTRACT_INCLUDE_PATTERNS_JSON ?? "[]");
+          const includePatterns = JSON.parse(process.env.OPERATOR_CONTRACT_INCLUDE_PATTERNS_JSON ?? "[]");
           if (!Array.isArray(includePatterns) || includePatterns.length === 0) {
             console.error("Missing channel contract include patterns");
             process.exit(1);
           }
           writeFileSync(process.env.INCLUDE_FILE, JSON.stringify(includePatterns), "utf8");
           EOF
-          OPENCLAW_VITEST_INCLUDE_FILE="$include_file" pnpm test:contracts:channels
+          OPERATOR_VITEST_INCLUDE_FILE="$include_file" pnpm test:contracts:channels
 
   checks-node-compat:
     permissions:
@@ -1654,7 +1654,7 @@ jobs:
     name: checks-node-compat-node22
     needs: [preflight]
     if: needs.preflight.outputs.run_build_artifacts == 'true' && github.event_name == 'workflow_dispatch'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 60
     steps:
       - *linux_node_checkout_step
@@ -1665,7 +1665,7 @@ jobs:
           install-bun: "false"
 
       - name: Configure Node test resources
-        run: echo "OPENCLAW_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
+        run: echo "OPERATOR_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
 
       - name: Run Node 22 compatibility
         env:
@@ -1673,8 +1673,8 @@ jobs:
         run: |
           pnpm build
           pnpm ui:build
-          node openclaw.mjs --help
-          node openclaw.mjs status --json --timeout 1
+          node operator.mjs --help
+          node operator.mjs status --json --timeout 1
           pnpm test:build:singleton
 
   checks-node-core-test-nondist-shard:
@@ -1683,7 +1683,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_node_core_nondist == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
     timeout-minutes: ${{ matrix.timeout_minutes || 60 }}
     strategy:
       fail-fast: false
@@ -1701,8 +1701,8 @@ jobs:
           # Blacksmith same-repo runs clone dependencies from a sticky disk.
           # Fork PRs must keep actions/cache: sticky snapshots are writable,
           # repository-global state and must never be produced by fork code.
-          sticky-disk: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'true' || 'false' }}
-          use-actions-cache: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'false' || 'true' }}
+          sticky-disk: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'true' || 'false' }}
+          use-actions-cache: ${{ github.event_name != 'workflow_dispatch' && github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'false' || 'true' }}
 
       - name: Setup Go for docs i18n
         if: matrix.requires_go == true
@@ -1718,7 +1718,7 @@ jobs:
         run: test "$(go env GOVERSION)" = "go1.25.12"
 
       - name: Configure Node test resources
-        run: echo "OPENCLAW_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
+        run: echo "OPERATOR_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
 
       - name: Run Node test shard
         # actionlint 1.7.11 lacks GitHub's current job.workflow_* fields. Serialize the
@@ -1726,15 +1726,15 @@ jobs:
         env:
           JOB_CONTEXT_JSON: ${{ toJSON(job) }}
           NODE_OPTIONS: --max-old-space-size=8192
-          OPENCLAW_NODE_TEST_GROUPS_JSON: ${{ toJson(matrix.groups || null) }}
-          OPENCLAW_NODE_TEST_CONFIGS_JSON: ${{ toJson(matrix.configs) }}
-          OPENCLAW_NODE_TEST_ENV_JSON: ${{ toJson(matrix.env) }}
-          OPENCLAW_NODE_TEST_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
-          OPENCLAW_NODE_TEST_TARGETS_JSON: ${{ toJson(matrix.targets) }}
-          OPENCLAW_VITEST_SHARD_NAME: ${{ matrix.shard_name }}
-          OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "300000"
-          OPENCLAW_VITEST_NO_OUTPUT_RETRY: "1"
-          OPENCLAW_NODE_TEST_PLAN_CONCURRENCY: ${{ matrix.plan_concurrency }}
+          OPERATOR_NODE_TEST_GROUPS_JSON: ${{ toJson(matrix.groups || null) }}
+          OPERATOR_NODE_TEST_CONFIGS_JSON: ${{ toJson(matrix.configs) }}
+          OPERATOR_NODE_TEST_ENV_JSON: ${{ toJson(matrix.env) }}
+          OPERATOR_NODE_TEST_INCLUDE_PATTERNS_JSON: ${{ toJson(matrix.includePatterns) }}
+          OPERATOR_NODE_TEST_TARGETS_JSON: ${{ toJson(matrix.targets) }}
+          OPERATOR_VITEST_SHARD_NAME: ${{ matrix.shard_name }}
+          OPERATOR_VITEST_NO_OUTPUT_TIMEOUT_MS: "300000"
+          OPERATOR_VITEST_NO_OUTPUT_RETRY: "1"
+          OPERATOR_NODE_TEST_PLAN_CONCURRENCY: ${{ matrix.plan_concurrency }}
         shell: bash
         run: |
           set -euo pipefail
@@ -1753,7 +1753,7 @@ jobs:
               echo "invalid job workflow SHA: $job_workflow_sha" >&2
               exit 1
             fi
-            harness_root="${RUNNER_TEMP}/openclaw-ci-shard-runner"
+            harness_root="${RUNNER_TEMP}/operator-ci-shard-runner"
             workflow_remote="https://github.com/${job_workflow_repository}.git"
             git fetch --no-tags --depth=1 "$workflow_remote" "$job_workflow_sha"
             for file in \
@@ -1774,7 +1774,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_check == 'true' }}
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1815,7 +1815,7 @@ jobs:
         env:
           HISTORICAL_TARGET: ${{ needs.preflight.outputs.compatibility_target }}
           FORMAT_CHECK: ${{ needs.preflight.outputs.run_format_check }}
-          OPENCLAW_LOCAL_CHECK: "0"
+          OPERATOR_LOCAL_CHECK: "0"
           TASK: ${{ matrix.task }}
           PR_BASE_SHA: ${{ github.event_name == 'pull_request' && needs.preflight.outputs.diff_base_revision || '' }}
         shell: bash
@@ -1903,7 +1903,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_check_additional == 'true' }}
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && (matrix.runner || 'blacksmith-4vcpu-ubuntu-2404') || 'ubuntu-24.04') }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -2008,9 +2008,9 @@ jobs:
       - name: Run additional check shard
         env:
           ADDITIONAL_CHECK_GROUP: ${{ matrix.group }}
-          OPENCLAW_ADDITIONAL_BOUNDARY_SHARD: ${{ matrix.boundary_shard || '' }}
-          OPENCLAW_ADDITIONAL_BOUNDARY_CONCURRENCY: 4
-          OPENCLAW_EXTENSION_BOUNDARY_CONCURRENCY: 6
+          OPERATOR_ADDITIONAL_BOUNDARY_SHARD: ${{ matrix.boundary_shard || '' }}
+          OPERATOR_ADDITIONAL_BOUNDARY_CONCURRENCY: 4
+          OPERATOR_EXTENSION_BOUNDARY_CONCURRENCY: 6
         shell: bash
         run: |
           set -euo pipefail
@@ -2101,7 +2101,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: needs.preflight.outputs.run_check_docs == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     steps:
       - *linux_node_checkout_step
@@ -2158,7 +2158,7 @@ jobs:
 
       - name: Check docs
         env:
-          OPENCLAW_DOCS_SYNC_CLAWHUB_REPO: ${{ github.workspace }}/clawhub-source
+          OPERATOR_DOCS_SYNC_CLAWHUB_REPO: ${{ github.workspace }}/clawhub-source
         run: pnpm check:docs
 
   skills-python:
@@ -2166,7 +2166,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: needs.preflight.outputs.run_skills_python_job == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -2221,13 +2221,13 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_windows == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'windows-2025' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && (matrix.runner || 'blacksmith-8vcpu-windows-2025') || 'windows-2025') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'windows-2025' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && (matrix.runner || 'blacksmith-8vcpu-windows-2025') || 'windows-2025') }}
     timeout-minutes: 60
     env:
       NODE_OPTIONS: --max-old-space-size=8192
       # Keep total concurrency predictable on the smaller Windows runner.
-      OPENCLAW_VITEST_MAX_WORKERS: 1
-      OPENCLAW_TEST_SKIP_FULL_EXTENSIONS_SHARD: 1
+      OPERATOR_VITEST_MAX_WORKERS: 1
+      OPERATOR_TEST_SKIP_FULL_EXTENSIONS_SHARD: 1
     defaults:
       run:
         shell: bash
@@ -2310,7 +2310,7 @@ jobs:
         run: |
           set -euo pipefail
           source .github/actions/setup-pnpm-store-cache/ensure-node.sh
-          openclaw_ensure_node "$REQUESTED_NODE_VERSION"
+          operator_ensure_node "$REQUESTED_NODE_VERSION"
 
       - name: Setup pnpm
         uses: ./.github/actions/setup-pnpm-store-cache
@@ -2367,7 +2367,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_macos_node == 'true' }}
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-15' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-6vcpu-macos-15' || 'macos-15') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-15' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-6vcpu-macos-15' || 'macos-15') }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -2383,7 +2383,7 @@ jobs:
       - name: TS tests (macOS)
         env:
           NODE_OPTIONS: --max-old-space-size=4096
-          OPENCLAW_VITEST_MAX_WORKERS: 2
+          OPERATOR_VITEST_MAX_WORKERS: 2
           TASK: ${{ matrix.task }}
         shell: bash
         run: |
@@ -2406,7 +2406,7 @@ jobs:
     name: "macos-swift"
     needs: [preflight]
     if: needs.preflight.outputs.run_macos_swift == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-26' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-12vcpu-macos-26' || 'macos-26') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-26' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-12vcpu-macos-26' || 'macos-26') }}
     timeout-minutes: 20
     env:
       HISTORICAL_TARGET: ${{ needs.preflight.outputs.compatibility_target }}
@@ -2416,7 +2416,7 @@ jobs:
       - name: Install XcodeGen / SwiftLint / SwiftFormat
         run: |
           if [[ -x ./scripts/install-xcodegen.sh && -x ./scripts/install-swift-tools.sh ]]; then
-            swift_tools_dir="$RUNNER_TEMP/openclaw-swift-tools"
+            swift_tools_dir="$RUNNER_TEMP/operator-swift-tools"
             ./scripts/install-xcodegen.sh "$swift_tools_dir"
             ./scripts/install-swift-tools.sh "$swift_tools_dir"
             echo "$swift_tools_dir" >> "$GITHUB_PATH"
@@ -2444,7 +2444,7 @@ jobs:
                 ;;
             esac
             swiftformat_archive="$RUNNER_TEMP/swiftformat-$swiftformat_version.zip"
-            swift_tools_dir="$RUNNER_TEMP/openclaw-legacy-swift-tools"
+            swift_tools_dir="$RUNNER_TEMP/operator-legacy-swift-tools"
             curl --fail --location --silent --show-error \
               --connect-timeout 10 --max-time 120 \
               --retry 3 --retry-max-time 120 \
@@ -2486,7 +2486,7 @@ jobs:
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: apps/macos/.build
-          key: ${{ runner.os }}-swift-build-v3-${{ steps.swift-toolchain.outputs.key }}-${{ hashFiles('apps/macos/Package.swift', 'apps/macos/Package.resolved', 'apps/macos/Sources/**', 'apps/macos/Tests/**', 'apps/shared/OpenClawKit/Package.swift', 'apps/shared/OpenClawKit/Sources/**', 'apps/swabble/Package.swift', 'apps/swabble/Sources/**') }}
+          key: ${{ runner.os }}-swift-build-v3-${{ steps.swift-toolchain.outputs.key }}-${{ hashFiles('apps/macos/Package.swift', 'apps/macos/Package.resolved', 'apps/macos/Sources/**', 'apps/macos/Tests/**', 'apps/shared/OperatorKit/Package.swift', 'apps/shared/OperatorKit/Sources/**', 'apps/swabble/Package.swift', 'apps/swabble/Sources/**') }}
           restore-keys: |
             ${{ runner.os }}-swift-build-v3-${{ steps.swift-toolchain.outputs.key }}-
 
@@ -2509,12 +2509,12 @@ jobs:
           set -euo pipefail
           # Exact source-hash cache hits already match these inputs; checkout
           # mtimes are the only reason SwiftPM rebuilds cached products.
-          find apps/macos/Sources apps/macos/Tests apps/shared/OpenClawKit/Sources apps/swabble/Sources apps/macos/.build/checkouts \
+          find apps/macos/Sources apps/macos/Tests apps/shared/OperatorKit/Sources apps/swabble/Sources apps/macos/.build/checkouts \
             -type f -exec touch -t 200001010000 {} +
           touch -t 200001010000 \
             apps/macos/Package.swift \
             apps/macos/Package.resolved \
-            apps/shared/OpenClawKit/Package.swift \
+            apps/shared/OperatorKit/Package.swift \
             apps/swabble/Package.swift
 
       - name: Show toolchain
@@ -2531,7 +2531,7 @@ jobs:
           elif [[ "$HISTORICAL_TARGET" == "true" ]]; then
             # Frozen release targets before the shared wrappers used these commands directly.
             swiftlint lint --config config/swiftlint.yml
-            swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/OpenClawProtocol,**/HostEnvSecurityPolicy.generated.swift'
+            swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/OperatorProtocol,**/HostEnvSecurityPolicy.generated.swift'
           else
             echo "Current CI targets must provide the Swift lint and format wrappers." >&2
             exit 1
@@ -2544,7 +2544,7 @@ jobs:
             # The macOS lane validates the desktop app build; the CLI product is
             # intentionally left to its own narrower surfaces instead of making
             # this lane rebuild the whole package graph.
-            if swift build --package-path apps/macos --product OpenClaw --configuration release; then
+            if swift build --package-path apps/macos --product Operator --configuration release; then
               exit 0
             fi
             if [[ "$attempt" -eq 3 ]]; then
@@ -2558,20 +2558,20 @@ jobs:
           done
           exit 1
 
-      - name: OpenClawKit Talk-trait opt-out (no ElevenLabsKit when default traits disabled)
+      - name: OperatorKit Talk-trait opt-out (no ElevenLabsKit when default traits disabled)
         run: |
           set -euo pipefail
-          # Guard: chat-only consumers build OpenClawKit with the Talk trait
+          # Guard: chat-only consumers build OperatorKit with the Talk trait
           # disabled and must NOT link ElevenLabsKit. Assert that future sources
-          # under OpenClawKit cannot silently reintroduce an unconditional
+          # under OperatorKit cannot silently reintroduce an unconditional
           # ElevenLabsKit dependency while the manifest still looks correct.
-          deps="$(swift package --package-path apps/shared/OpenClawKit show-dependencies --disable-default-traits)"
+          deps="$(swift package --package-path apps/shared/OperatorKit show-dependencies --disable-default-traits)"
           echo "$deps"
           if grep -qi 'elevenlabs' <<<"$deps"; then
             echo "::error::ElevenLabsKit resolved with the Talk trait disabled; keep it gated behind the Talk trait."
             exit 1
           fi
-          swift build --package-path apps/shared/OpenClawKit --target OpenClawKit --disable-default-traits
+          swift build --package-path apps/shared/OperatorKit --target OperatorKit --disable-default-traits
 
       - name: Swift test
         run: |
@@ -2591,7 +2591,7 @@ jobs:
     name: "ios-build"
     needs: [preflight]
     if: needs.preflight.outputs.run_ios_build == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-26' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-12vcpu-macos-26' || 'macos-26') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'macos-26' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-12vcpu-macos-26' || 'macos-26') }}
     timeout-minutes: 45
     env:
       HISTORICAL_TARGET: ${{ needs.preflight.outputs.compatibility_target }}
@@ -2623,7 +2623,7 @@ jobs:
       - name: Install iOS Swift tooling
         run: |
           if [[ -x ./scripts/install-xcodegen.sh && -x ./scripts/install-swift-tools.sh ]]; then
-            swift_tools_dir="$RUNNER_TEMP/openclaw-swift-tools"
+            swift_tools_dir="$RUNNER_TEMP/operator-swift-tools"
             ./scripts/install-xcodegen.sh "$swift_tools_dir"
             ./scripts/install-swift-tools.sh "$swift_tools_dir"
             echo "$swift_tools_dir" >> "$GITHUB_PATH"
@@ -2651,7 +2651,7 @@ jobs:
                 ;;
             esac
             swiftformat_archive="$RUNNER_TEMP/swiftformat-$swiftformat_version.zip"
-            swift_tools_dir="$RUNNER_TEMP/openclaw-legacy-swift-tools"
+            swift_tools_dir="$RUNNER_TEMP/operator-legacy-swift-tools"
             curl --fail --location --silent --show-error \
               --connect-timeout 10 --max-time 120 \
               --retry 3 --retry-max-time 120 \
@@ -2695,7 +2695,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_android_job == 'true'
-    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'openclaw/openclaw' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'openclaw/openclaw') && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
+    runs-on: ${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || (github.repository == 'gabrielvfonseca/operator' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == 'gabrielvfonseca/operator') && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04') }}
     timeout-minutes: 20
     strategy:
       fail-fast: false

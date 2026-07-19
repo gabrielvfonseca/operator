@@ -1,4 +1,7 @@
-import type { WorkboardAutomation, WorkboardWorkspaceAccess } from "@operator/workboard-contract";
+import type {
+  WorkboardAutomation,
+  WorkboardWorkspaceAccess,
+} from "@gabrielvfonseca/workboard-contract";
 // Workboard automation helpers normalize trusted host-issued workspace provenance.
 import type { WorkboardLinkedCreateInput } from "./store-inputs.js";
 import { normalizeAutomation, normalizeBoundedString } from "./store-normalizers.js";

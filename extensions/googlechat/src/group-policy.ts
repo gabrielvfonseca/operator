@@ -2,8 +2,8 @@ import {
   buildChannelGroupsScopeTree,
   resolveScopeRequireMention,
   type ScopeTree,
-} from "openclaw/plugin-sdk/channel-policy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 
 type GroupContext = { cfg: OperatorConfig; accountId?: string | null; groupId?: string | null };
 

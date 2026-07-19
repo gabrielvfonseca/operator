@@ -1,8 +1,8 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.OpenClawTheme
-import ai.openclaw.app.ui.RootScreen
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.OperatorTheme
+import ai.operator.app.ui.RootScreen
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
@@ -76,12 +76,12 @@ class MainActivity : AppCompatActivity() {
 
       val currentViewModel = activeViewModel
       if (currentViewModel == null) {
-        OpenClawTheme {
+        OperatorTheme {
           StartupSurface()
         }
       } else {
         val appearanceThemeMode by currentViewModel.appearanceThemeMode.collectAsState()
-        OpenClawTheme(themeMode = appearanceThemeMode) {
+        OperatorTheme(themeMode = appearanceThemeMode) {
           RootScreen(viewModel = currentViewModel)
         }
       }

@@ -3,8 +3,8 @@ import {
   installChannelActionsContractSuite,
   installChannelSetupContractSuite,
   installChannelStatusContractSuite,
-} from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect } from "vitest";
 import { mattermostPlugin, mattermostSetupPlugin } from "../channel-plugin-api.js";
 

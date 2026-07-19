@@ -1,13 +1,13 @@
 {
   "entries": [
     {
-      "name": "@wecom/wecom-openclaw-plugin",
-      "description": "OpenClaw WeCom channel plugin by the Tencent WeCom team.",
+      "name": "@wecom/wecom-operator-plugin",
+      "description": "Operator WeCom channel plugin by the Tencent WeCom team.",
       "source": "external",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
-          "id": "wecom-openclaw-plugin",
+          "id": "wecom-operator-plugin",
           "label": "WeCom"
         },
         "contracts": {
@@ -35,20 +35,20 @@
           }
         },
         "install": {
-          "npmSpec": "@wecom/wecom-openclaw-plugin@2026.5.7",
+          "npmSpec": "@wecom/wecom-operator-plugin@2026.5.7",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-TCkP9as00WfEhgFWG8YL/rcmaWGIshAki2HQh83nTRccGfVBCoGjrEboTTqq3yDmK9koWTV11zi8u8A4dNtvug=="
         }
       }
     },
     {
-      "name": "openclaw-plugin-yuanbao",
-      "description": "OpenClaw Yuanbao channel plugin by the Tencent Yuanbao team.",
+      "name": "operator-plugin-yuanbao",
+      "description": "Operator Yuanbao channel plugin by the Tencent Yuanbao team.",
       "source": "external",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
-          "id": "openclaw-plugin-yuanbao",
+          "id": "operator-plugin-yuanbao",
           "label": "Yuanbao"
         },
         "contracts": {
@@ -76,24 +76,24 @@
           }
         },
         "install": {
-          "npmSpec": "openclaw-plugin-yuanbao@2.15.0",
+          "npmSpec": "operator-plugin-yuanbao@2.15.0",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-3GD+mf3EjTSUTOAREjTHAyp/deXdpgqB+q+xE0b19Qtat4ADhUV1mHDwFkVCRqTCBY5ATFKtKcipoDejqFj/+w=="
         }
       }
     },
     {
-      "name": "@tencent-weixin/openclaw-weixin",
-      "description": "OpenClaw Weixin channel plugin by the Tencent Weixin team.",
+      "name": "@tencent-weixin/operator-weixin",
+      "description": "Operator Weixin channel plugin by the Tencent Weixin team.",
       "source": "external",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
-          "id": "openclaw-weixin",
+          "id": "operator-weixin",
           "label": "Weixin"
         },
         "channel": {
-          "id": "openclaw-weixin",
+          "id": "operator-weixin",
           "label": "Weixin",
           "selectionLabel": "Weixin（微信）",
           "detailLabel": "Weixin",
@@ -104,7 +104,7 @@
           "order": 75
         },
         "channelConfigs": {
-          "openclaw-weixin": {
+          "operator-weixin": {
             "label": "Weixin",
             "description": "Personal WeChat conversation channel.",
             "schema": {
@@ -114,7 +114,7 @@
           }
         },
         "install": {
-          "npmSpec": "@tencent-weixin/openclaw-weixin@2.4.6",
+          "npmSpec": "@tencent-weixin/operator-weixin@2.4.6",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-qw9k3PLTiMWGNjjsknHgcTManH1w4j+Ji1ArWIaYLKCq3aFRsVwcqnPi127bvOoVMJGW4dbyJ8NECEMgoO+iRw==",
           "minHostVersion": ">=2026.5.12"
@@ -122,17 +122,17 @@
       }
     },
     {
-      "name": "@zalo-platforms/openclaw-zaloclawbot",
-      "description": "OpenClaw Zalo ClawBot channel plugin by the Zalo Platforms team.",
+      "name": "@zalo-platforms/operator-zaloclawbot",
+      "description": "Operator Zalo ClawBot channel plugin by the Zalo Platforms team.",
       "source": "external",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
-          "id": "openclaw-zaloclawbot",
+          "id": "operator-zaloclawbot",
           "label": "Zalo ClawBot"
         },
         "channel": {
-          "id": "openclaw-zaloclawbot",
+          "id": "operator-zaloclawbot",
           "label": "Zalo ClawBot",
           "selectionLabel": "Zalo ClawBot (QR)",
           "detailLabel": "Zalo ClawBot",
@@ -143,7 +143,7 @@
           "order": 82
         },
         "channelConfigs": {
-          "openclaw-zaloclawbot": {
+          "operator-zaloclawbot": {
             "label": "Zalo ClawBot",
             "description": "Personal Zalo assistant — QR-onboarded, owner-bound.",
             "schema": {
@@ -153,7 +153,7 @@
           }
         },
         "install": {
-          "npmSpec": "@zalo-platforms/openclaw-zaloclawbot@0.1.4",
+          "npmSpec": "@zalo-platforms/operator-zaloclawbot@0.1.4",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-5IxZriHJYACLLGqkCPPsTP9tas62kXEOFqTFAFMdunAM3SPhIJwVFRp0WvoP/m7L2PX85weD0g8LOtxM93VDYg==",
           "minHostVersion": ">=2026.4.10"
@@ -161,11 +161,11 @@
       }
     },
     {
-      "name": "@operator/clickclack",
-      "description": "OpenClaw ClickClack channel plugin",
+      "name": "@gabrielvfonseca/clickclack",
+      "description": "Operator ClickClack channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "clickclack",
           "label": "ClickClack",
@@ -187,8 +187,8 @@
           }
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/clickclack",
-          "npmSpec": "@operator/clickclack",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/clickclack",
+          "npmSpec": "@gabrielvfonseca/clickclack",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -196,11 +196,11 @@
       }
     },
     {
-      "name": "@operator/discord",
-      "description": "OpenClaw Discord channel plugin",
+      "name": "@gabrielvfonseca/discord",
+      "description": "Operator Discord channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "discord",
           "label": "Discord",
@@ -214,7 +214,7 @@
           "preferSessionLookupForAnnounceTarget": true
         },
         "install": {
-          "npmSpec": "@operator/discord",
+          "npmSpec": "@gabrielvfonseca/discord",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10",
           "allowInvalidConfigRecovery": true
@@ -222,11 +222,11 @@
       }
     },
     {
-      "name": "@operator/feishu",
-      "description": "OpenClaw Feishu/Lark channel plugin",
+      "name": "@gabrielvfonseca/feishu",
+      "description": "Operator Feishu/Lark channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "feishu",
           "label": "Feishu",
@@ -239,18 +239,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/feishu",
+          "npmSpec": "@gabrielvfonseca/feishu",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.29"
         }
       }
     },
     {
-      "name": "@operator/googlechat",
-      "description": "OpenClaw Google Chat channel plugin",
+      "name": "@gabrielvfonseca/googlechat",
+      "description": "Operator Google Chat channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "googlechat",
           "label": "Google Chat",
@@ -289,18 +289,18 @@
           ]
         },
         "install": {
-          "npmSpec": "@operator/googlechat",
+          "npmSpec": "@gabrielvfonseca/googlechat",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/irc",
-      "description": "OpenClaw IRC channel plugin",
+      "name": "@gabrielvfonseca/irc",
+      "description": "Operator IRC channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "irc",
           "label": "IRC",
@@ -327,8 +327,8 @@
           "systemImage": "network"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/irc",
-          "npmSpec": "@operator/irc",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/irc",
+          "npmSpec": "@gabrielvfonseca/irc",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -336,11 +336,11 @@
       }
     },
     {
-      "name": "@operator/line",
-      "description": "OpenClaw LINE channel plugin",
+      "name": "@gabrielvfonseca/line",
+      "description": "Operator LINE channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "line",
           "label": "LINE",
@@ -354,18 +354,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/line",
+          "npmSpec": "@gabrielvfonseca/line",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/mattermost",
-      "description": "OpenClaw Mattermost channel plugin",
+      "name": "@gabrielvfonseca/mattermost",
+      "description": "Operator Mattermost channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "mattermost",
           "label": "Mattermost",
@@ -380,8 +380,8 @@
           "order": 65
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/mattermost",
-          "npmSpec": "@operator/mattermost",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/mattermost",
+          "npmSpec": "@gabrielvfonseca/mattermost",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -389,11 +389,11 @@
       }
     },
     {
-      "name": "@operator/matrix",
-      "description": "OpenClaw Matrix channel plugin",
+      "name": "@gabrielvfonseca/matrix",
+      "description": "Operator Matrix channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "matrix",
           "label": "Matrix",
@@ -434,8 +434,8 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/matrix",
-          "npmSpec": "@operator/matrix",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/matrix",
+          "npmSpec": "@gabrielvfonseca/matrix",
           "defaultChoice": "clawhub",
           "minHostVersion": ">=2026.4.10",
           "allowInvalidConfigRecovery": true
@@ -443,11 +443,11 @@
       }
     },
     {
-      "name": "@operator/msteams",
-      "description": "OpenClaw Microsoft Teams channel plugin",
+      "name": "@gabrielvfonseca/msteams",
+      "description": "Operator Microsoft Teams channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "msteams",
           "label": "Microsoft Teams",
@@ -459,18 +459,18 @@
           "order": 60
         },
         "install": {
-          "npmSpec": "@operator/msteams",
+          "npmSpec": "@gabrielvfonseca/msteams",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/nextcloud-talk",
-      "description": "OpenClaw Nextcloud Talk channel plugin",
+      "name": "@gabrielvfonseca/nextcloud-talk",
+      "description": "Operator Nextcloud Talk channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "nextcloud-talk",
           "label": "Nextcloud Talk",
@@ -483,18 +483,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/nextcloud-talk",
+          "npmSpec": "@gabrielvfonseca/nextcloud-talk",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/nostr",
-      "description": "OpenClaw Nostr channel plugin for NIP-04 encrypted DMs",
+      "name": "@gabrielvfonseca/nostr",
+      "description": "Operator Nostr channel plugin for NIP-04 encrypted DMs",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "nostr",
           "label": "Nostr",
@@ -506,18 +506,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/nostr",
+          "npmSpec": "@gabrielvfonseca/nostr",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/qqbot",
-      "description": "OpenClaw QQ Bot channel plugin",
+      "name": "@gabrielvfonseca/qqbot",
+      "description": "Operator QQ Bot channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "qqbot",
           "label": "QQ Bot",
@@ -529,18 +529,18 @@
           "systemImage": "bubble.left.and.bubble.right"
         },
         "install": {
-          "npmSpec": "@operator/qqbot",
+          "npmSpec": "@gabrielvfonseca/qqbot",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/signal",
-      "description": "OpenClaw Signal channel plugin",
+      "name": "@gabrielvfonseca/signal",
+      "description": "Operator Signal channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "signal",
           "label": "Signal",
@@ -567,8 +567,8 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/signal",
-          "npmSpec": "@operator/signal",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/signal",
+          "npmSpec": "@gabrielvfonseca/signal",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -576,11 +576,11 @@
       }
     },
     {
-      "name": "@operator/slack",
-      "description": "OpenClaw Slack channel plugin",
+      "name": "@gabrielvfonseca/slack",
+      "description": "Operator Slack channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "slack",
           "label": "Slack",
@@ -603,7 +603,7 @@
           }
         },
         "install": {
-          "npmSpec": "@operator/slack",
+          "npmSpec": "@gabrielvfonseca/slack",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.12-beta.1",
           "allowInvalidConfigRecovery": true
@@ -611,11 +611,11 @@
       }
     },
     {
-      "name": "@operator/sms",
-      "description": "OpenClaw SMS channel plugin for Twilio text messages.",
+      "name": "@gabrielvfonseca/sms",
+      "description": "Operator SMS channel plugin for Twilio text messages.",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "sms",
           "label": "SMS",
@@ -638,8 +638,8 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/sms",
-          "npmSpec": "@operator/sms",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/sms",
+          "npmSpec": "@gabrielvfonseca/sms",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9",
           "allowInvalidConfigRecovery": true
@@ -647,33 +647,33 @@
       }
     },
     {
-      "name": "@operator/synology-chat",
-      "description": "Synology Chat channel plugin for OpenClaw",
+      "name": "@gabrielvfonseca/synology-chat",
+      "description": "Synology Chat channel plugin for Operator",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "synology-chat",
           "label": "Synology Chat",
           "selectionLabel": "Synology Chat (Webhook)",
           "docsPath": "/channels/synology-chat",
           "docsLabel": "synology-chat",
-          "blurb": "Connect your Synology NAS Chat to OpenClaw with full agent capabilities.",
+          "blurb": "Connect your Synology NAS Chat to Operator with full agent capabilities.",
           "order": 90
         },
         "install": {
-          "npmSpec": "@operator/synology-chat",
+          "npmSpec": "@gabrielvfonseca/synology-chat",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/raft",
-      "description": "OpenClaw Raft channel plugin",
+      "name": "@gabrielvfonseca/raft",
+      "description": "Operator Raft channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "raft",
           "label": "Raft",
@@ -712,18 +712,18 @@
           }
         },
         "install": {
-          "npmSpec": "@operator/raft",
+          "npmSpec": "@gabrielvfonseca/raft",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/tlon",
-      "description": "OpenClaw Tlon/Urbit channel plugin",
+      "name": "@gabrielvfonseca/tlon",
+      "description": "Operator Tlon/Urbit channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "tlon",
           "label": "Tlon",
@@ -735,18 +735,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/tlon",
+          "npmSpec": "@gabrielvfonseca/tlon",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/twitch",
-      "description": "OpenClaw Twitch channel plugin",
+      "name": "@gabrielvfonseca/twitch",
+      "description": "Operator Twitch channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "twitch",
           "label": "Twitch",
@@ -756,18 +756,18 @@
           "aliases": ["twitch-chat"]
         },
         "install": {
-          "npmSpec": "@operator/twitch",
+          "npmSpec": "@gabrielvfonseca/twitch",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/whatsapp",
-      "description": "OpenClaw WhatsApp channel plugin",
+      "name": "@gabrielvfonseca/whatsapp",
+      "description": "Operator WhatsApp channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "whatsapp",
           "label": "WhatsApp",
@@ -779,19 +779,19 @@
           "systemImage": "message"
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/whatsapp",
-          "npmSpec": "@operator/whatsapp",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/whatsapp",
+          "npmSpec": "@gabrielvfonseca/whatsapp",
           "defaultChoice": "clawhub",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@operator/zalo",
-      "description": "OpenClaw Zalo channel plugin",
+      "name": "@gabrielvfonseca/zalo",
+      "description": "Operator Zalo channel plugin",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "zalo",
           "label": "Zalo",
@@ -804,18 +804,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@operator/zalo",
+          "npmSpec": "@gabrielvfonseca/zalo",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@operator/zalouser",
-      "description": "OpenClaw Zalo Personal Account plugin via native zca-js integration",
+      "name": "@gabrielvfonseca/zalouser",
+      "description": "Operator Zalo Personal Account plugin via native zca-js integration",
       "source": "official",
       "kind": "channel",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "channel": {
           "id": "zalouser",
           "label": "Zalo Personal",
@@ -828,7 +828,7 @@
           "quickstartAllowFrom": false
         },
         "install": {
-          "npmSpec": "@operator/zalouser",
+          "npmSpec": "@gabrielvfonseca/zalouser",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }

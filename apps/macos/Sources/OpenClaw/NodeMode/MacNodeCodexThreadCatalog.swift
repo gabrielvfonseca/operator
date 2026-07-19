@@ -92,8 +92,8 @@ enum MacNodeCodexThreadCatalog {
     }
 
     private static let defaultArguments = ["app-server", "--listen", "stdio://"]
-    private static let commandEnvironmentKey = "OPENCLAW_CODEX_APP_SERVER_BIN"
-    private static let argumentsEnvironmentKey = "OPENCLAW_CODEX_APP_SERVER_ARGS"
+    private static let commandEnvironmentKey = "OPERATOR_CODEX_APP_SERVER_BIN"
+    private static let argumentsEnvironmentKey = "OPERATOR_CODEX_APP_SERVER_ARGS"
     private static let pluginConfigKeys = Set([
         "codexDynamicToolsLoading",
         "codexDynamicToolsExclude",
@@ -175,13 +175,13 @@ enum MacNodeCodexThreadCatalog {
 
     static func list(paramsJSON: String?) async throws -> String {
         try await self.list(paramsJSON: paramsJSON) {
-            OpenClawConfigFile.loadDict()
+            OperatorConfigFile.loadDict()
         }
     }
 
     static func turns(paramsJSON: String?) async throws -> String {
         let params = try decodeTurnParams(paramsJSON)
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         guard self.shouldAdvertise(root: root) else {
             throw CatalogError.catalogDisabled
         }
@@ -291,8 +291,8 @@ enum MacNodeCodexThreadCatalog {
     }
 
     static func shouldAdvertise(root: [String: Any]? = nil) -> Bool {
-        let root = root ?? OpenClawConfigFile.loadDict()
-        guard OpenClawConfigFile.configuredBundledPluginAllowed(
+        let root = root ?? OperatorConfigFile.loadDict()
+        guard OperatorConfigFile.configuredBundledPluginAllowed(
             MacNodeCodexThreadCatalogContract.pluginId,
             root: root)
         else { return false }
@@ -421,7 +421,7 @@ extension MacNodeCodexThreadCatalog {
         defaultUserMacOSBetaAppExecutable: String = MacNodeCodexThreadCatalog.defaultUserMacOSBetaAppExecutable) throws
         -> ResolvedInvocation
     {
-        let root = root ?? OpenClawConfigFile.loadDict()
+        let root = root ?? OperatorConfigFile.loadDict()
         let appServer = try self.configuredPlugin(root: root)?.appServer
         guard self.supportsConfiguredTransport(appServer) else {
             throw CatalogError.unsupportedAppServerTransport
@@ -482,7 +482,7 @@ extension MacNodeCodexThreadCatalog {
     }
 
     private static func configuredPlugin(root: [String: Any]) throws -> ConfiguredPlugin? {
-        guard let entry = OpenClawConfigFile.pluginEntry(
+        guard let entry = OperatorConfigFile.pluginEntry(
             MacNodeCodexThreadCatalogContract.pluginId,
             root: root)
         else { return nil }
@@ -1222,7 +1222,7 @@ private final class CodexAppServerThreadRequestSession: @unchecked Sendable {
     private let stdinPipe = Pipe()
     private let stdoutPipe = Pipe()
     private let stderrPipe = Pipe()
-    private let queue = DispatchQueue(label: "ai.openclaw.codex-thread-catalog")
+    private let queue = DispatchQueue(label: "ai.operator.codex-thread-catalog")
     private let requestData: Data
     private let timeoutSeconds: Double
     private let maxLineBytes: Int
@@ -1425,8 +1425,8 @@ private final class CodexAppServerThreadRequestSession: @unchecked Sendable {
             "method": "initialize",
             "params": [
                 "clientInfo": [
-                    "name": "openclaw_macos",
-                    "title": "OpenClaw macOS Node",
+                    "name": "operator_macos",
+                    "title": "Operator macOS Node",
                     "version": GatewayEnvironment.appVersionString() ?? "unknown",
                 ],
                 "capabilities": ["experimentalApi": true],

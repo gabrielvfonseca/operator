@@ -1,11 +1,11 @@
-// Telegram plugin module implements delivery.replies behavior.
-import { type Bot, GrammyError, InputFile } from "grammy";
-import type { Message } from "grammy/types";
 import {
   createOutboundPayloadPlan,
   projectOutboundPayloadPlanForDelivery,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { MarkdownTableMode, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type {
+  MarkdownTableMode,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   buildCanonicalSentMessageHookContext,
   createInternalHookEvent,
@@ -14,22 +14,28 @@ import {
   toPluginMessageContext,
   toPluginMessageSentEvent,
   triggerInternalHook,
-} from "openclaw/plugin-sdk/hook-runtime";
-import type { ReplyPayloadDelivery } from "openclaw/plugin-sdk/interactive-runtime";
-import { normalizeMessagePresentation } from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import type { ReplyPayloadDelivery } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { normalizeMessagePresentation } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import {
   buildOutboundMediaLoadOptions,
   isGifMedia,
   kindFromMime,
   probeVideoDimensions,
-} from "openclaw/plugin-sdk/media-runtime";
-import { getGlobalHookRunner } from "openclaw/plugin-sdk/plugin-runtime";
-import { chunkMarkdownTextWithMode, type ChunkMode } from "openclaw/plugin-sdk/reply-chunking";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
-import { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { getGlobalHookRunner } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import {
+  chunkMarkdownTextWithMode,
+  type ChunkMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { loadWebMedia } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
+// Telegram plugin module implements delivery.replies behavior.
+import { type Bot, GrammyError, InputFile } from "grammy";
+import type { Message } from "grammy/types";
 import { resolveTelegramInlineButtons, type TelegramInlineButtons } from "../button-types.js";
 import { splitTelegramCaption } from "../caption.js";
 import {

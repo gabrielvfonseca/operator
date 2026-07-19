@@ -1,5 +1,5 @@
 // Provider entry contracts define provider plugin hooks, model catalogs, and runtime adapters.
-import type { UnifiedModelCatalogEntry } from "@operator/model-catalog-core/model-catalog-types";
+import type { UnifiedModelCatalogEntry } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import {
   normalizeStringEntries,
   uniqueStrings,

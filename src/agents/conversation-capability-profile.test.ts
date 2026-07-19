@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { INTERNAL_MESSAGE_CHANNEL } from "../utils/message-channel.js";
 import { resolveConversationCapabilityProfile } from "./conversation-capability-profile.js";
 
@@ -28,9 +28,9 @@ describe("resolveConversationCapabilityProfile", () => {
       modelProvider: "openai",
       modelId: "gpt-5.5",
       modelApi: "responses",
-      workspaceDir: "/tmp/openclaw-direct-profile",
-      cwd: "/tmp/openclaw-direct-profile/task",
-      agentDir: "/tmp/openclaw-agent-direct-profile",
+      workspaceDir: "/tmp/operator-direct-profile",
+      cwd: "/tmp/operator-direct-profile/task",
+      agentDir: "/tmp/operator-agent-direct-profile",
       skillsSnapshot: {
         prompt: "",
         skills: [{ name: "ops" }],
@@ -46,9 +46,9 @@ describe("resolveConversationCapabilityProfile", () => {
       api: "responses",
     });
     expect(profile.workspace).toMatchObject({
-      workspaceRoot: "/tmp/openclaw-direct-profile",
-      runtimeRoot: "/tmp/openclaw-direct-profile/task",
-      instructionRoot: "/tmp/openclaw-agent-direct-profile",
+      workspaceRoot: "/tmp/operator-direct-profile",
+      runtimeRoot: "/tmp/operator-direct-profile/task",
+      instructionRoot: "/tmp/operator-agent-direct-profile",
     });
     expect(profile.skills.snapshot?.skills).toEqual([{ name: "ops" }]);
   });
@@ -159,7 +159,7 @@ describe("resolveConversationCapabilityProfile", () => {
       senderId: "alice",
       modelProvider: "openai",
       modelId: "gpt-5.5",
-      workspaceDir: "/tmp/openclaw-shared-profile",
+      workspaceDir: "/tmp/operator-shared-profile",
     });
 
     expect(profile.conversation.scope).toBe("shared");
@@ -217,7 +217,7 @@ describe("resolveConversationCapabilityProfile", () => {
   });
 
   it("keeps inherited subagent grants out of explicit overrides", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-capability-profile-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-capability-profile-"));
     const storePath = path.join(tempDir, "sessions.json");
     const sessionKey = "agent:main:subagent:limited";
     await replaceSessionEntry({ storePath, sessionKey }, {

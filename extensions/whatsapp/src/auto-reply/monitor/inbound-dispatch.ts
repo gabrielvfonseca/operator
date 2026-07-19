@@ -2,20 +2,20 @@
 import {
   DEFAULT_TIMING,
   type StatusReactionController,
-} from "openclaw/plugin-sdk/channel-feedback";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
 import {
   buildChannelInboundEventContext,
   type CommandFacts,
   toInboundMediaFacts,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { hasVisibleInboundReplyDispatch } from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { hasVisibleInboundReplyDispatch } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   deliverInboundReplyWithMessageSendContext,
   resolveChannelStreamingBlockEnabled,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { buildInboundHistoryFromEntries } from "openclaw/plugin-sdk/reply-history";
-import type { FinalizedMsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { buildInboundHistoryFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import type { FinalizedMsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { requireWhatsAppInboundAdmission } from "../../inbound/admission.js";
 import type { AdmittedWebInboundMessage } from "../../inbound/types.js";
 import {

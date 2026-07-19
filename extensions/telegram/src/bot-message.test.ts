@@ -1,5 +1,5 @@
 // Telegram tests cover bot message plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import type { TelegramMessageProcessingResult } from "./bot-processing-outcome.js";
@@ -147,7 +147,7 @@ describe("telegram bot message processor", () => {
         ChatType: "direct",
         RawBody: "hello there",
       },
-      primaryCtx: { me: { username: "openclaw_bot" } },
+      primaryCtx: { me: { username: "operator_bot" } },
       route: { sessionKey: "agent:main:main" },
       sendTyping: vi.fn().mockResolvedValue(undefined),
       ...context,
@@ -171,7 +171,7 @@ describe("telegram bot message processor", () => {
       requireInvocationOrder(dispatchTelegramMessage.mock, "message dispatch invocation"),
     );
     expect(telegramInboundInfo).toHaveBeenCalledWith(
-      "Inbound message telegram:123 -> @openclaw_bot (direct, 11 chars)",
+      "Inbound message telegram:123 -> @operator_bot (direct, 11 chars)",
     );
   });
 
@@ -300,7 +300,7 @@ describe("telegram bot message processor", () => {
     ).resolves.toEqual({ kind: "completed" });
 
     expect(telegramInboundInfo).toHaveBeenCalledWith(
-      "Inbound message telegram:group:-100 -> @openclaw_bot (group, image/jpeg, 13 chars)",
+      "Inbound message telegram:group:-100 -> @operator_bot (group, image/jpeg, 13 chars)",
     );
   });
 

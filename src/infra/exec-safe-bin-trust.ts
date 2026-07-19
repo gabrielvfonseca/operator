@@ -5,7 +5,7 @@ import {
   normalizeSortedUniqueStringEntries,
   sortUniqueStrings,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 
 // Keep defaults to OS-managed immutable bins only.
 // User/package-manager bins must be opted in via tools.exec.safeBinTrustedDirs.

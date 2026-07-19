@@ -50,7 +50,7 @@ describe("Codex agent harness supports()", () => {
           api: "openai-responses",
           baseUrl: "https://api.openai.com/v1",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
       }),
     ).toEqual({ supported: true, priority: 100 });
@@ -117,7 +117,7 @@ describe("Codex agent harness supports()", () => {
             ? "https://api.openai.com/v1"
             : "https://chatgpt.com/backend-api/codex",
         requestTransportOverrides: "none",
-        runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         preparedAuth,
       },
     });
@@ -135,7 +135,7 @@ describe("Codex agent harness supports()", () => {
         api: "openai-responses",
         baseUrl: "https://relay.example.test/v1",
         requestTransportOverrides: "none" as const,
-        runtimePolicy: { compatibleIds: ["openclaw"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
       },
     },
     {
@@ -144,7 +144,7 @@ describe("Codex agent harness supports()", () => {
         api: "openai-completions",
         baseUrl: "https://api.openai.com/v1",
         requestTransportOverrides: "none" as const,
-        runtimePolicy: { compatibleIds: ["openclaw"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
       },
     },
     {
@@ -153,7 +153,7 @@ describe("Codex agent harness supports()", () => {
         api: "openai-responses",
         baseUrl: "http://api.openai.com/v1",
         requestTransportOverrides: "none" as const,
-        runtimePolicy: { compatibleIds: ["openclaw"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
       },
     },
   ])("rejects a $name that Codex cannot reproduce", ({ modelProvider }) => {
@@ -174,7 +174,7 @@ describe("Codex agent harness supports()", () => {
         api: "openai-responses",
         baseUrl: "https://api.openai.com/v1",
         requestTransportOverrides: "present",
-        runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         preparedAuth: { source: "harness" },
       },
     });
@@ -261,7 +261,7 @@ describe("Codex agent harness reset()", () => {
 
 describe("Codex agent harness dispose()", () => {
   it("uses the preloaded shared-client lifecycle seam", async () => {
-    const sharedDisposer = Symbol.for("openclaw.codexAppServerClientDisposer");
+    const sharedDisposer = Symbol.for("operator.codexAppServerClientDisposer");
     const state = globalThis as typeof globalThis & {
       [sharedDisposer]?: () => Promise<void>;
     };

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/operator-test-state.js";
+} from "../../test-utils/openclaw-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { callGatewayHandler } from "./skills.test-helpers.js";
 
@@ -72,13 +72,13 @@ describe("skills proposal gateway handlers", () => {
   beforeEach(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-skills-proposals-gateway-state-",
+      prefix: "operator-skills-proposals-gateway-state-",
     });
     mocks.chatSend.mockReset();
     mocks.chatSend.mockImplementation(async ({ respond }) => {
       respond(true, { runId: "run-skill-workshop-revision", status: "started" }, undefined);
     });
-    mocks.workspaceDir = await tempDirs.make("openclaw-skills-proposals-gateway-");
+    mocks.workspaceDir = await tempDirs.make("operator-skills-proposals-gateway-");
     stateDir = testState.stateDir;
   });
 
@@ -168,7 +168,7 @@ describe("skills proposal gateway handlers", () => {
     expect(first.ok).toBe(true);
     const firstCreated = first.response as { record: { id: string } };
 
-    const secondWorkspaceDir = await tempDirs.make("openclaw-skills-proposals-gateway-second-");
+    const secondWorkspaceDir = await tempDirs.make("operator-skills-proposals-gateway-second-");
     mocks.workspaceDir = secondWorkspaceDir;
     const second = await callHandler("skills.proposals.create", {
       name: "Second Gateway Skill",
@@ -215,7 +215,7 @@ describe("skills proposal gateway handlers", () => {
     expect(status).toMatchObject({
       ok: true,
       response: {
-        schema: "openclaw.skill-workshop.history-scan.v1",
+        schema: "operator.skill-workshop.history-scan.v1",
         hasScanned: false,
         reviewedSessions: 0,
         ideasFound: 0,

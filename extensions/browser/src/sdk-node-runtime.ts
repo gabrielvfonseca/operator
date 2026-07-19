@@ -14,20 +14,20 @@ export {
   resolveGatewayAuth,
   resolveNodeCommandAllowlist,
   safeParseJson,
-} from "openclaw/plugin-sdk/gateway-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 export type {
   GatewayRequestHandlers,
   GatewayRpcOpts,
   NodeSession,
-} from "openclaw/plugin-sdk/gateway-runtime";
-export { runCommandWithRuntime } from "openclaw/plugin-sdk/cli-runtime";
-export type { OperatorPluginService } from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+export { runCommandWithRuntime } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+export type { OperatorPluginService } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 export {
   startLazyPluginServiceModule,
   type LazyPluginServiceHandle,
-} from "openclaw/plugin-sdk/plugin-runtime";
-export { defaultRuntime } from "openclaw/plugin-sdk/runtime-env";
-import { clampTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+export { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { clampTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 
 function normalizeTimeoutMs(timeoutMs: number | undefined): number | undefined {
   return clampTimerTimeoutMs(timeoutMs);

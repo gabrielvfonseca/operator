@@ -2,10 +2,10 @@
 import {
   createChannelIngressResolver,
   defineStableChannelIngressIdentity,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { upsertChannelPairingRequest } from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingChallengeIssuer } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { upsertChannelPairingRequest } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   formatSignalSenderId,
   looksLikeUuid,

@@ -1,10 +1,10 @@
 import Darwin
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
 extension Notification.Name {
-    static let openclawNodeHostWorkerFailed = Notification.Name("openclaw.node-host-worker.failed")
+    static let openclawNodeHostWorkerFailed = Notification.Name("operator.node-host-worker.failed")
 }
 
 struct MacNodeHostManifest: Equatable, Sendable {
@@ -48,9 +48,9 @@ final class MacNodeHostWorker: MacNodeHostWorking, @unchecked Sendable {
         }
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "node-host-worker")
-    private let queue = DispatchQueue(label: "ai.openclaw.node-host-worker")
-    private let writerQueue = DispatchQueue(label: "ai.openclaw.node-host-worker.writer")
+    private let logger = Logger(subsystem: "ai.operator", category: "node-host-worker")
+    private let queue = DispatchQueue(label: "ai.operator.node-host-worker")
+    private let writerQueue = DispatchQueue(label: "ai.operator.node-host-worker.writer")
     private let session: GatewayNodeSession
     private let startupTimeout: TimeInterval
     private let onUnexpectedExit: @Sendable () -> Void
@@ -299,8 +299,8 @@ final class MacNodeHostWorker: MacNodeHostWorking, @unchecked Sendable {
         process.arguments = Array(command.dropFirst())
         var environment = ProcessInfo.processInfo.environment
         environment["PATH"] = CommandResolver.preferredPaths().joined(separator: ":")
-        environment["OPENCLAW_NODE_EXEC_HOST"] = "app"
-        environment["OPENCLAW_NODE_EXEC_FALLBACK"] = "0"
+        environment["OPERATOR_NODE_EXEC_HOST"] = "app"
+        environment["OPERATOR_NODE_EXEC_FALLBACK"] = "0"
         process.environment = environment
         process.standardInput = stdinPipe
         process.standardOutput = stdoutPipe
@@ -667,8 +667,8 @@ final class MacNodeHostWorker: MacNodeHostWorking, @unchecked Sendable {
         let payload = result["payload"].map(AnyCodable.init)
         let payloadJSON = result["payloadJSON"] as? String
         let rawError = result["error"] as? [String: Any]
-        let code = OpenClawNodeErrorCode(rawValue: rawError?["code"] as? String ?? "UNAVAILABLE") ?? .unavailable
-        let error = ok ? nil : OpenClawNodeError(
+        let code = OperatorNodeErrorCode(rawValue: rawError?["code"] as? String ?? "UNAVAILABLE") ?? .unavailable
+        let error = ok ? nil : OperatorNodeError(
             code: code,
             message: rawError?["message"] as? String ?? "UNAVAILABLE: node-host worker failed")
         return BridgeInvokeResponse(id: id, ok: ok, payload: payload, payloadJSON: payloadJSON, error: error)
@@ -678,7 +678,7 @@ final class MacNodeHostWorker: MacNodeHostWorking, @unchecked Sendable {
         BridgeInvokeResponse(
             id: id,
             ok: false,
-            error: OpenClawNodeError(code: .unavailable, message: message))
+            error: OperatorNodeError(code: .unavailable, message: message))
     }
 
     private static func paramsJSON(_ object: [String: Any]) -> String? {

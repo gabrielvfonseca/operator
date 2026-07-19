@@ -1,10 +1,10 @@
-import { deriveDurableFinalDeliveryRequirements } from "openclaw/plugin-sdk/channel-outbound";
+import { deriveDurableFinalDeliveryRequirements } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 /**
  * Converts authorized ClickClack messages into Operator agent/model replies and
  * routes resulting outbound text back to ClickClack.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { resolveClickClackInboundAccess, type ClickClackInboundAccess } from "./access.js";
 import { createClickClackActivityPublisher, type ClickClackActivityPublisher } from "./activity.js";
 import { createClickClackClient } from "./http-client.js";

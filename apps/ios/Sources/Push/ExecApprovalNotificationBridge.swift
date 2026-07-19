@@ -60,8 +60,8 @@ struct ExecApprovalNotificationPrompt: Codable, Equatable, Hashable {
 enum ExecApprovalNotificationBridge {
     static let requestedKind = "exec.approval.requested"
     static let resolvedKind = "exec.approval.resolved"
-    static let categoryIdentifier = "openclaw.exec-approval"
-    static let reviewActionIdentifier = "openclaw.exec-approval.review"
+    static let categoryIdentifier = "operator.exec-approval"
+    static let reviewActionIdentifier = "operator.exec-approval.review"
 
     // A disjoint top-level namespace prevents encoded v2 identifiers from aliasing
     // arbitrary owner/id combinations created by the legacy dotted format.
@@ -196,10 +196,10 @@ enum ExecApprovalNotificationBridge {
     }
 
     private static func openClawPayload(userInfo: [AnyHashable: Any]) -> [String: Any]? {
-        if let payload = userInfo["openclaw"] as? [String: Any] {
+        if let payload = userInfo["@gabrielvfonseca/operator"] as? [String: Any] {
             return payload
         }
-        if let payload = userInfo["openclaw"] as? [AnyHashable: Any] {
+        if let payload = userInfo["@gabrielvfonseca/operator"] as? [AnyHashable: Any] {
             return payload.reduce(into: [String: Any]()) { partialResult, pair in
                 guard let key = pair.key as? String else { return }
                 partialResult[key] = pair.value

@@ -1,6 +1,9 @@
 // Xai plugin module implements web search shared behavior.
-import { readProviderJsonObjectResponse } from "openclaw/plugin-sdk/provider-http";
-import { postTrustedWebToolsJson, wrapWebContent } from "openclaw/plugin-sdk/provider-web-search";
+import { readProviderJsonObjectResponse } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  postTrustedWebToolsJson,
+  wrapWebContent,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import { XAI_DEFAULT_MODEL_ID } from "../model-definitions.js";
 import { normalizeXaiModelId } from "../model-id.js";
 import {

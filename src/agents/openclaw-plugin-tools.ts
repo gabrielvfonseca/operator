@@ -12,7 +12,7 @@ import { createNodePluginTools } from "./node-plugin-tools.js";
 import {
   resolveOperatorPluginToolInputs,
   type OperatorPluginToolOptions,
-} from "./operator-tools.plugin-context.js";
+} from "./openclaw-tools.plugin-context.js";
 import { applyPluginToolDeliveryDefaults } from "./plugin-tool-delivery-defaults.js";
 import { resolveAgentRuntimeToolConfig } from "./tool-runtime-config.js";
 import type { AnyAgentTool } from "./tools/common.js";

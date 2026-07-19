@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { Command } from "commander";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWikiCli } from "./cli.js";
@@ -27,7 +27,7 @@ let caseIndex = 0;
 let stdoutWriteMock: ReturnType<typeof vi.fn>;
 
 function resolveLegacyImportRunRecordPath(vaultRoot: string, runId: string): string {
-  return path.join(vaultRoot, ".openclaw-wiki", "import-runs", `${runId}.json`);
+  return path.join(vaultRoot, ".operator-wiki", "import-runs", `${runId}.json`);
 }
 
 describe("memory-wiki cli", () => {
@@ -440,9 +440,9 @@ Orders join to [customers](/tables/customers.md).
         body: `# Alpha
 
 ## Notes
-<!-- openclaw:human:start -->
+<!-- operator:human:start -->
 cli note
-<!-- openclaw:human:end -->
+<!-- operator:human:end -->
 `,
       }),
       "utf8",

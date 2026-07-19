@@ -1,10 +1,10 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.ChatSessionEntry
-import ai.openclaw.app.chat.ChatThinkingLevelOption
-import ai.openclaw.app.chat.ChatThinkingLevelSelection
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.chat.ChatSessionEntry
+import ai.operator.app.chat.ChatThinkingLevelOption
+import ai.operator.app.chat.ChatThinkingLevelSelection
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.resolveNativeText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -18,7 +18,7 @@ class ChatContextMeterTest {
     assertTrue(starterPrompts.all { it.subtitle is NativeText.Resource })
     assertTrue(starterPrompts.all { it.message is NativeText.Resource })
     assertEquals(
-      "Catch me up on my recent OpenClaw sessions and suggest next steps.",
+      "Catch me up on my recent Operator sessions and suggest next steps.",
       starterPrompts.first().message.resolveNativeText(),
     )
   }

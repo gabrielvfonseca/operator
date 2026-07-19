@@ -1,6 +1,6 @@
 // Gateway probe auth resolver.
 // Adapts gateway credential precedence for local/remote reachability checks.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveGatewayCredentialsWithSecretInputs } from "./credentials-secret-inputs.js";
 import {

@@ -1,7 +1,7 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.i18n.resolveNativeText
-import ai.openclaw.app.i18n.verbatimText
+import ai.operator.app.i18n.resolveNativeText
+import ai.operator.app.i18n.verbatimText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import org.junit.Assert.assertEquals
@@ -61,7 +61,7 @@ class CommandPaletteLogicTest {
       CommandItem(
         action = CommandAction.Voice,
         title = verbatimText("Démarrer la voix"),
-        subtitle = verbatimText("Parler avec OpenClaw"),
+        subtitle = verbatimText("Parler avec Operator"),
         icon = Icons.Outlined.ChatBubbleOutline,
         onClick = { calls += CommandAction.Voice },
       )

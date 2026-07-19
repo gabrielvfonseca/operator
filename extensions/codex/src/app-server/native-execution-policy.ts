@@ -2,9 +2,12 @@
  * Resolves whether Codex app-server native execution can own shell/file work,
  * or whether Operator must keep exec/process on a configured node host.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveSandboxRuntimeStatus } from "openclaw/plugin-sdk/sandbox";
-import { getSessionEntry, type SessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveSandboxRuntimeStatus } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import {
+  getSessionEntry,
+  type SessionEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 
 type ExecHost = "sandbox" | "gateway" | "node";
 type ExecTarget = "auto" | ExecHost;

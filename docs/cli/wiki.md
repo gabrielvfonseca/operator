@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `openclaw wiki` (memory-wiki vault status, search, compile, lint, apply, bridge, ChatGPT import, and Obsidian helpers)"
+summary: "CLI reference for `operator wiki` (memory-wiki vault status, search, compile, lint, apply, bridge, ChatGPT import, and Obsidian helpers)"
 read_when:
   - You want to use the memory-wiki CLI
-  - You are documenting or changing `openclaw wiki`
+  - You are documenting or changing `operator wiki`
 title: "Wiki"
 ---
 
-# `openclaw wiki`
+# `operator wiki`
 
 Inspect and maintain the `memory-wiki` vault. Provided by the bundled `memory-wiki` plugin.
 
@@ -15,36 +15,36 @@ Related: [Memory Wiki plugin](/plugins/memory-wiki), [Memory Overview](/concepts
 ## Common commands
 
 ```bash
-openclaw wiki status
-openclaw wiki doctor
-openclaw wiki init
-openclaw wiki ingest ./notes/alpha.md
-openclaw wiki okf import ./knowledge-catalog/okf/bundles/ga4
-openclaw wiki compile
-openclaw wiki lint
-openclaw wiki search "alpha"
-openclaw wiki search "who should I ask about Teams?" --mode route-question
-openclaw wiki get entity.alpha --from 1 --lines 80
+operator wiki status
+operator wiki doctor
+operator wiki init
+operator wiki ingest ./notes/alpha.md
+operator wiki okf import ./knowledge-catalog/okf/bundles/ga4
+operator wiki compile
+operator wiki lint
+operator wiki search "alpha"
+operator wiki search "who should I ask about Teams?" --mode route-question
+operator wiki get entity.alpha --from 1 --lines 80
 
-openclaw wiki apply synthesis "Alpha Summary" \
+operator wiki apply synthesis "Alpha Summary" \
   --body "Short synthesis body" \
   --source-id source.alpha
 
-openclaw wiki apply metadata entity.alpha \
+operator wiki apply metadata entity.alpha \
   --source-id source.alpha \
   --status review \
   --question "Still active?"
 
-openclaw wiki bridge import
-openclaw wiki unsafe-local import
-openclaw wiki chatgpt import --export ./chatgpt-export --dry-run
-openclaw wiki chatgpt rollback <run-id>
+operator wiki bridge import
+operator wiki unsafe-local import
+operator wiki chatgpt import --export ./chatgpt-export --dry-run
+operator wiki chatgpt rollback <run-id>
 
-openclaw wiki obsidian status
-openclaw wiki obsidian search "alpha"
-openclaw wiki obsidian open syntheses/alpha-summary.md
-openclaw wiki obsidian command workspace:quick-switcher
-openclaw wiki obsidian daily
+operator wiki obsidian status
+operator wiki obsidian search "alpha"
+operator wiki obsidian open syntheses/alpha-summary.md
+operator wiki obsidian command workspace:quick-switcher
+operator wiki obsidian daily
 ```
 
 ## Agent selection
@@ -53,9 +53,9 @@ When `plugins.entries.memory-wiki.config.vault.scope` is `agent`, select the
 vault with the top-level `--agent <id>` option:
 
 ```bash
-openclaw wiki --agent support status
-openclaw wiki --agent support search "refund policy"
-openclaw wiki --agent marketing ingest ./campaign-notes.md
+operator wiki --agent support status
+operator wiki --agent support search "refund policy"
+operator wiki --agent marketing ingest ./campaign-notes.md
 ```
 
 In a setup with multiple configured agents, `--agent` is required for CLI
@@ -112,18 +112,18 @@ Imported pages are flattened under `concepts/` so existing wiki compile, search,
 Examples:
 
 ```bash
-openclaw wiki okf import ./bundles/ga4
-openclaw wiki okf import ./bundles/ga4 --json
-openclaw wiki search "BigQuery Table" --mode source-evidence --json
-openclaw wiki get <path-from-json-result>
+operator wiki okf import ./bundles/ga4
+operator wiki okf import ./bundles/ga4 --json
+operator wiki search "BigQuery Table" --mode source-evidence --json
+operator wiki get <path-from-json-result>
 ```
 
 ### `wiki compile`
 
 Rebuild indexes, related blocks, dashboards, and compiled digests. Writes stable machine-facing artifacts under:
 
-- `.openclaw-wiki/cache/agent-digest.json`
-- `.openclaw-wiki/cache/claims.jsonl`
+- `.operator-wiki/cache/agent-digest.json`
+- `.operator-wiki/cache/claims.jsonl`
 
 If `render.createDashboards` is enabled, compile also refreshes report pages.
 
@@ -148,7 +148,7 @@ Search wiki content. Behavior depends on config:
 - `search.corpus`: `wiki`, `memory`, or `all`
 - `--mode`: `auto`, `find-person`, `route-question`, `source-evidence`, or `raw-claim`
 
-Use `wiki search` for wiki-specific ranking and provenance. For one broad shared recall pass, prefer `openclaw memory search` when the active memory plugin exposes shared search.
+Use `wiki search` for wiki-specific ranking and provenance. For one broad shared recall pass, prefer `operator memory search` when the active memory plugin exposes shared search.
 
 Search modes:
 
@@ -160,10 +160,10 @@ Search modes:
 Examples:
 
 ```bash
-openclaw wiki search "bgroux" --mode find-person
-openclaw wiki search "who knows Teams rollout?" --mode route-question
-openclaw wiki search "maintainer-whois" --mode source-evidence
-openclaw wiki search "strong route Teams" --mode raw-claim --json
+operator wiki search "bgroux" --mode find-person
+operator wiki search "who knows Teams rollout?" --mode route-question
+operator wiki search "maintainer-whois" --mode source-evidence
+operator wiki search "strong route Teams" --mode raw-claim --json
 ```
 
 Text output includes `Claim:` and `Evidence:` lines when a result matches a structured claim. JSON output additionally exposes `matchedClaimId`, `matchedClaimStatus`, `matchedClaimConfidence`, `evidenceKinds`, and `evidenceSourceIds` for agent-side drilldown.
@@ -173,8 +173,8 @@ Text output includes `Claim:` and `Evidence:` lines when a result matches a stru
 Read a wiki page by id or relative path.
 
 ```bash
-openclaw wiki get entity.alpha
-openclaw wiki get syntheses/alpha-summary.md --from 1 --lines 80
+operator wiki get entity.alpha
+operator wiki get syntheses/alpha-summary.md --from 1 --lines 80
 ```
 
 ### `wiki apply`
@@ -201,8 +201,8 @@ Import from explicitly configured local paths (`unsafeLocal.paths`) in `unsafe-l
 Import a ChatGPT export into draft wiki source pages.
 
 ```bash
-openclaw wiki chatgpt import --export ./chatgpt-export
-openclaw wiki chatgpt import --export ./conversations.json --dry-run
+operator wiki chatgpt import --export ./chatgpt-export
+operator wiki chatgpt import --export ./conversations.json --dry-run
 ```
 
 | Flag              | Default    | Description                                                   |
@@ -236,7 +236,7 @@ available.
 
 ## Configuration tie-ins
 
-`openclaw wiki` behavior is shaped by:
+`operator wiki` behavior is shaped by:
 
 - `plugins.entries.memory-wiki.config.vaultMode`
 - `plugins.entries.memory-wiki.config.vault.scope`

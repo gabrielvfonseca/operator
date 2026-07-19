@@ -104,7 +104,7 @@ const legacyStorePatterns = [
   /\b(?:reply-cache|sent-echoes|events|claims)\.jsonl\b/u,
   /\bplugin-state\/state\.sqlite\b/u,
   /\btasks\/(?:runs\.sqlite|flows\/registry\.sqlite)\b/u,
-  /\bopenclaw-state\.sqlite\b/u,
+  /\boperator-state\.sqlite\b/u,
 ];
 
 const allowedRuntimeMigrationPaths = [
@@ -7658,7 +7658,7 @@ export function collectDatabaseFirstLegacyStoreViolations(
       }
       return property.value === explicitUndefinedLegacyObjectPropertyValue
         ? ts.factory.createIdentifier("undefined")
-        : ts.factory.createStringLiteral("state/openclaw.sqlite");
+        : ts.factory.createStringLiteral("state/operator.sqlite");
     }
     return lookupKnownLegacyObjectLiteral(unwrapped.text)
       ? ts.factory.createIdentifier("undefined")

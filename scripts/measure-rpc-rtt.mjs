@@ -31,7 +31,7 @@ function usage() {
   return [
     "Usage: node --import tsx scripts/measure-rpc-rtt.mjs",
     "  --output-dir <dir>",
-    "  [--repo-root <openclaw-repo>]",
+    "  [--repo-root <operator-repo>]",
     "  [--iterations <count>]",
     "  [--methods <comma-separated-methods>]",
     "  [--help, -h]",
@@ -285,12 +285,12 @@ async function defaultOpen(filePath, flags) {
   return await fs.open(filePath, flags);
 }
 
-function resolveOpenClawLaunchArgs(repoRoot, sourceEntryExists = existsSync) {
+function resolveOperatorLaunchArgs(repoRoot, sourceEntryExists = existsSync) {
   const sourceEntry = path.join(repoRoot, "src", "entry.ts");
   if (sourceEntryExists(sourceEntry)) {
     return ["--import", "tsx", sourceEntry];
   }
-  return [path.join(repoRoot, "openclaw.mjs")];
+  return [path.join(repoRoot, "operator.mjs")];
 }
 
 /**
@@ -518,7 +518,7 @@ export async function startGateway({
   }
 
   let child;
-  const launcherArgs = resolveOpenClawLaunchArgs(repoRoot, sourceEntryExists);
+  const launcherArgs = resolveOperatorLaunchArgs(repoRoot, sourceEntryExists);
   try {
     child = spawnImpl(
       process.execPath,
@@ -541,14 +541,14 @@ export async function startGateway({
           XDG_CONFIG_HOME: path.join(tempRoot, "xdg-config"),
           XDG_DATA_HOME: path.join(tempRoot, "xdg-data"),
           XDG_CACHE_HOME: path.join(tempRoot, "xdg-cache"),
-          OPENCLAW_CONFIG_PATH: configPath,
-          OPENCLAW_STATE_DIR: path.join(tempRoot, "state"),
-          OPENCLAW_GATEWAY_TOKEN: token,
-          OPENCLAW_SKIP_BROWSER_CONTROL_SERVER: "1",
-          OPENCLAW_SKIP_GMAIL_WATCHER: "1",
-          OPENCLAW_SKIP_CANVAS_HOST: "1",
-          OPENCLAW_NO_RESPAWN: "1",
-          OPENCLAW_TEST_FAST: "1",
+          OPERATOR_CONFIG_PATH: configPath,
+          OPERATOR_STATE_DIR: path.join(tempRoot, "state"),
+          OPERATOR_GATEWAY_TOKEN: token,
+          OPERATOR_SKIP_BROWSER_CONTROL_SERVER: "1",
+          OPERATOR_SKIP_GMAIL_WATCHER: "1",
+          OPERATOR_SKIP_CANVAS_HOST: "1",
+          OPERATOR_NO_RESPAWN: "1",
+          OPERATOR_TEST_FAST: "1",
         },
         stdio: ["ignore", stdout.fd, stderr.fd],
       },
@@ -882,14 +882,14 @@ async function main() {
     process.stdout.write(`${usage()}\n`);
     return;
   }
-  const repoRoot = path.resolve(args.repoRoot ?? process.env.OPENCLAW_REPO_ROOT ?? process.cwd());
+  const repoRoot = path.resolve(args.repoRoot ?? process.env.OPERATOR_REPO_ROOT ?? process.cwd());
   const outputDir = path.resolve(args.outputDir);
   await fs.mkdir(outputDir, { recursive: true });
   const tempRoot = await fs.mkdtemp(path.join(outputDir, "..", ".rpc-rtt-"));
   const startedAt = new Date();
   const token = `rpc-rtt-${randomUUID()}`;
   const port = await getFreePort();
-  const configPath = path.join(tempRoot, "openclaw.json");
+  const configPath = path.join(tempRoot, "operator.json");
   const stdoutPath = path.join(tempRoot, "gateway.stdout.log");
   const stderrPath = path.join(tempRoot, "gateway.stderr.log");
   let gatewayChild;
@@ -930,8 +930,8 @@ async function main() {
     removeGatewayParentCleanup = installGatewayParentCleanup(gatewayChild);
     await waitForGatewayReady({ child: gatewayChild, port, stderrPath });
 
-    const requireFromOpenClaw = createRequire(path.join(repoRoot, "package.json"));
-    const WebSocket = requireFromOpenClaw("ws");
+    const requireFromOperator = createRequire(path.join(repoRoot, "package.json"));
+    const WebSocket = requireFromOperator("ws");
     const protocol = await import(
       pathToFileURL(path.join(repoRoot, "packages/gateway-protocol/src/version.ts")).href
     );
@@ -945,14 +945,14 @@ async function main() {
         maxProtocol: protocol.PROTOCOL_VERSION,
         client: {
           id: "gateway-client",
-          displayName: "openclaw-rtt rpc probe",
+          displayName: "operator-rtt rpc probe",
           version: "rtt",
           platform: process.platform,
           mode: "backend",
-          instanceId: `openclaw-rtt-rpc-${randomUUID()}`,
+          instanceId: `operator-rtt-rpc-${randomUUID()}`,
         },
         locale: "en-US",
-        userAgent: "openclaw-rtt-rpc",
+        userAgent: "operator-rtt-rpc",
         role: "operator",
         scopes: ["operator.admin"],
         caps: [],

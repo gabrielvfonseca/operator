@@ -4,4 +4,4 @@ export {
   definePluginEntry,
   type AnyAgentTool,
   type OperatorPluginApi,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";

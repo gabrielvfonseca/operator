@@ -1,7 +1,7 @@
 import {
   createWebSearchProviderContractFields,
   type WebSearchProviderPlugin,
-} from "openclaw/plugin-sdk/provider-web-search-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search-contract";
 
 export function createCodexWebSearchProviderBase(): Omit<WebSearchProviderPlugin, "createTool"> {
   return {
@@ -13,7 +13,7 @@ export function createCodexWebSearchProviderBase(): Omit<WebSearchProviderPlugin
     envVars: [],
     placeholder: "(uses Codex sign-in)",
     signupUrl: "https://chatgpt.com/codex",
-    docsUrl: "https://docs.openclaw.ai/tools/web",
+    docsUrl: "https://docs.operator.ai/tools/web",
     autoDetectOrder: 900,
     credentialPath: "",
     ...createWebSearchProviderContractFields({

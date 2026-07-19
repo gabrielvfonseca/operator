@@ -1,5 +1,5 @@
 {
-  "name": "@operator/speech-core",
+  "name": "@gabrielvfonseca/speech-core",
   "version": "2026.5.31",
   "private": true,
   "description": "Operator speech runtime package",
@@ -29,6 +29,6 @@
     }
   },
   "dependencies": {
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*"
   }
 }

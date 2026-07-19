@@ -1,6 +1,6 @@
 // Shared target resolution applies plugin defaults, allowlists, prefixes, and
 // fallback errors for direct and loaded-channel send paths.
-import { mapAllowFromEntries } from "operator/plugin-sdk/channel-config-helpers";
+import { mapAllowFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
 import type { ChannelOutboundTargetMode } from "../../channels/plugins/types.public.js";
 import { formatCliCommand } from "../../cli/command-format.js";
@@ -30,7 +30,7 @@ type ResolveOutboundTargetParams = {
 
 function buildWebChatDeliveryError(): Error {
   return new Error(
-    `Delivering to WebChat is not supported via \`${formatCliCommand("operator agent")}\`; use WhatsApp/Telegram or run with --deliver=false.`,
+    `Delivering to WebChat is not supported via \`${formatCliCommand("openclaw agent")}\`; use WhatsApp/Telegram or run with --deliver=false.`,
   );
 }
 

@@ -11,8 +11,8 @@ Adds web search provider support.
 
 ## Distribution
 
-- Package: `@operator/exa-plugin`
-- Install route: npm; ClawHub: `clawhub:@operator/exa-plugin`
+- Package: `@gabrielvfonseca/exa-plugin`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/exa-plugin`
 
 ## Surface
 

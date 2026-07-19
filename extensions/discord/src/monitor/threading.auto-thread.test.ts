@@ -1,5 +1,5 @@
 // Discord tests cover threading.auto thread plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { ChannelType } from "../internal/discord.js";
 import { EMPTY_DISCORD_TEST_CONFIG } from "../test-support/config.js";
@@ -230,7 +230,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
       createBaseParams({
         baseText: "Need help with deploy rollout",
         combinedBody: "Need help with deploy rollout",
-        channelName: "openclaw",
+        channelName: "@gabrielvfonseca/operator",
         channelDescription: "Operator development coordination and release planning",
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
         cfg,
@@ -242,7 +242,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
     await flushAsyncWork();
     expectGeneratedTitleField("agentId", "main");
     expectGeneratedTitleField("messageText", "Need help with deploy rollout");
-    expectGeneratedTitleField("channelName", "openclaw");
+    expectGeneratedTitleField("channelName", "@gabrielvfonseca/operator");
     expectGeneratedTitleField(
       "channelDescription",
       "Operator development coordination and release planning",

@@ -1,6 +1,6 @@
 // Builds provider install catalog entries from plugin metadata.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   loadOperatorProviderIndex,
   type OperatorProviderIndexProvider,

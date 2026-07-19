@@ -1,6 +1,6 @@
 // Configure daemon tests cover daemon install prompts, progress labels, and runtime install calls.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { maybeInstallDaemon } from "./configure.daemon.js";
 
@@ -89,7 +89,7 @@ describe("maybeInstallDaemon", () => {
       warnings: [],
     });
     buildGatewayInstallPlan.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {},
     });

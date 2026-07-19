@@ -1,6 +1,6 @@
 // Qqbot tests cover channel-api tool behavior.
 
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../../../test-support/streaming-error-response.js";
 

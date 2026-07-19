@@ -1,7 +1,7 @@
 // Manages device pairing requests, approvals, and token issuance.
 import { randomUUID } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeDeviceAuthScopes } from "../shared/device-auth.js";
 import {
   resolveDeviceProfileRoleScopes,

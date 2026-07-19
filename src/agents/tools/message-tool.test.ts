@@ -1941,7 +1941,7 @@ describe("message tool loop detection action runner proof", () => {
               id: "loop-room",
               chatType: "channel",
             },
-            senderId: "openclaw",
+            senderId: "@gabrielvfonseca/operator",
             text: "same visible reply",
             timestamp: 1_800_000_000_000 + callIndex,
           },

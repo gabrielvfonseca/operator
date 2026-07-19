@@ -1,5 +1,5 @@
 // Whatsapp tests cover inbound configured ACP binding route materialization.
-import type { ConfiguredBindingRouteResult } from "openclaw/plugin-sdk/conversation-binding-runtime";
+import type { ConfiguredBindingRouteResult } from "@gabrielvfonseca/operator/plugin-sdk/conversation-binding-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const processMessageMock = vi.hoisted(() => vi.fn());

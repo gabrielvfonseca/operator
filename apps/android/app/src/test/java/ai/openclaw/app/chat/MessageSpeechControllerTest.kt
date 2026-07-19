@@ -1,8 +1,8 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.voice.TalkAudioPlaying
-import ai.openclaw.app.voice.TalkSpeakAudio
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.voice.TalkAudioPlaying
+import ai.operator.app.voice.TalkSpeakAudio
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle

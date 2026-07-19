@@ -1,12 +1,12 @@
-import { isConfiguredContextSizeOverflowError } from "@operator/ai/internal/runtime";
+import { isConfiguredContextSizeOverflowError } from "@gabrielvfonseca/ai/internal/runtime";
 /**
  * Classifies provider/runtime failures and formats assistant-facing error text.
  */
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AssistantMessage } from "../../llm/types.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";

@@ -1,10 +1,10 @@
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 // Line plugin module implements send behavior.
 import { messagingApi } from "@line/bot-sdk";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { resolveLineAccount } from "./accounts.js";
 import { messageAction } from "./actions.js";
 import { resolveLineChannelAccessToken } from "./channel-access-token.js";

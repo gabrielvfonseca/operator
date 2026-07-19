@@ -1,4 +1,4 @@
-import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
+import { finiteSecondsToTimerSafeMilliseconds } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { runCommandWithTimeout } from "../process/exec.js";
 import {
   buildCronCommandSummary,

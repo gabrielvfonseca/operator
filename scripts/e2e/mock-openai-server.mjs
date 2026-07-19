@@ -15,8 +15,8 @@ import {
 const port =
   process.env.MOCK_PORT != null
     ? readTcpPortEnv("MOCK_PORT")
-    : readTcpPortEnv("OPENCLAW_MOCK_OPENAI_PORT");
-const successMarker = process.env.SUCCESS_MARKER ?? "OPENCLAW_E2E_OK";
+    : readTcpPortEnv("OPERATOR_MOCK_OPENAI_PORT");
+const successMarker = process.env.SUCCESS_MARKER ?? "OPERATOR_E2E_OK";
 const requestLog = process.env.MOCK_REQUEST_LOG;
 
 function responseEvents(text) {
@@ -196,7 +196,7 @@ function writeImageGeneration(res) {
 }
 
 function resolveResponseText(bodyText) {
-  const matches = Array.from(bodyText.matchAll(/\bOPENCLAW_E2E_[A-Z0-9]+(?:_[A-Z0-9]+)*\b/gu));
+  const matches = Array.from(bodyText.matchAll(/\bOPERATOR_E2E_[A-Z0-9]+(?:_[A-Z0-9]+)*\b/gu));
   return matches.at(-1)?.[0] ?? successMarker;
 }
 
@@ -299,7 +299,7 @@ const server = http.createServer((req, res) => {
     if (req.method === "GET" && url.pathname === "/v1/models") {
       writeJson(res, 200, {
         object: "list",
-        data: [{ id: "gpt-5.6-luna", object: "model", owned_by: "openclaw-e2e" }],
+        data: [{ id: "gpt-5.6-luna", object: "model", owned_by: "operator-e2e" }],
       });
       return;
     }

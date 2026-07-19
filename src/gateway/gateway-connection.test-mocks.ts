@@ -9,7 +9,7 @@ type TestMock<TArgs extends unknown[] = unknown[], TResult = unknown> = Mock<
 export const loadConfigMock: TestMock = vi.fn();
 export const resolveGatewayPortMock: TestMock = vi.fn();
 export const resolveStateDirMock: TestMock<[NodeJS.ProcessEnv], string> = vi.fn(
-  (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/operator",
+  (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/openclaw",
 );
 export const resolveConfigPathMock: TestMock<[NodeJS.ProcessEnv, string], string> = vi.fn(
   (env: NodeJS.ProcessEnv, stateDir: string) =>

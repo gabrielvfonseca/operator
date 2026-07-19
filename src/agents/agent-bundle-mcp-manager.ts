@@ -1,5 +1,5 @@
 /** Session MCP runtime manager: get-or-create and requester-scoped install orchestration. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   createCombinedSessionMcpRuntime,
   isCombinedSessionMcpRuntime,

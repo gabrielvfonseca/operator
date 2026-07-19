@@ -569,7 +569,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     expect(event?.messageId).toBeTypeOf("string");
     expect(message?.role).toBe("assistant");
     expect(message?.api).toBe(OPERATOR_TRANSCRIPT_ARTIFACT_API);
-    expect(message?.provider).toBe("openclaw");
+    expect(message?.provider).toBe("@gabrielvfonseca/operator");
     expect(message?.model).toBe("delivery-mirror");
     expect(message?.content).toEqual([{ type: "text", text: "Hello from delivery mirror!" }]);
     emitSpy.mockRestore();
@@ -802,7 +802,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         entry.message ? [entry.message] : [],
       ) as Array<{ openclawDeliveryMirror?: unknown }>;
       expect(messages).toHaveLength(2);
-      expect(messages[0]?.openclawDeliveryMirror).toEqual({
+      expect(messages[0]?.operatorDeliveryMirror).toEqual({
         kind: "channel-final",
         sourceMessageId: "message-1",
       });
@@ -892,7 +892,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       const mirrors = events
         .map((event) => (event as { message?: Record<string, unknown> }).message)
         .filter((message): message is Record<string, unknown> =>
-          Boolean(message?.openclawDeliveryMirror),
+          Boolean(message?.operatorDeliveryMirror),
         );
       expect(mirrors).toHaveLength(2);
       expect(mirrors[0]).toMatchObject({
@@ -905,7 +905,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
           sourceMessageId: "message-1",
         },
       });
-      expect(mirrors[1]?.openclawDeliveryMirror).toEqual({
+      expect(mirrors[1]?.operatorDeliveryMirror).toEqual({
         kind: "channel-final-suppressed",
         reason: "stale-foreground",
         sourceMessageId: "message-2",
@@ -1160,7 +1160,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       storePath: fixture.storePath(),
       message: createExactAssistantMessage({
         text: "Injected transcript text",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "gateway-injected",
       }),
     });
@@ -1211,7 +1211,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     expect(tailAssistantText?.text).toBe("Tail delivery mirror");
   });
 
-  it("scans past trailing non-assistant entries (e.g. openclaw.cache-ttl) to find the latest assistant text", async () => {
+  it("scans past trailing non-assistant entries (e.g. operator.cache-ttl) to find the latest assistant text", async () => {
     // Regression for openclaw/openclaw#83427: the cache-ttl custom entry was
     // emitted after the canonical assistant turn, and the tail reader returned
     // undefined on the first non-assistant line, so the gap-fill check in
@@ -1235,7 +1235,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
 
     const cacheTtlEntry = `${JSON.stringify({
       type: "custom",
-      customType: "openclaw.cache-ttl",
+      customType: "operator.cache-ttl",
       timestamp: new Date().toISOString(),
       data: {
         provider: "anthropic",
@@ -1361,7 +1361,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
           id: "delivery-mirror",
           message: {
             ...createExactAssistantMessage({
-              provider: "openclaw",
+              provider: "@gabrielvfonseca/operator",
               model: "delivery-mirror",
               text: "delivery mirror text",
             }),
@@ -1421,7 +1421,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       }>;
       expect(messages).toHaveLength(3);
       expect(messages[2]?.api).toBe(OPERATOR_TRANSCRIPT_ARTIFACT_API);
-      expect(messages[2]?.provider).toBe("openclaw");
+      expect(messages[2]?.provider).toBe("@gabrielvfonseca/operator");
       expect(messages[2]?.model).toBe("delivery-mirror");
       expect(messages[2]?.content?.[0]?.text).toBe("Repeated answer");
     }
@@ -1621,7 +1621,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
             textSignature: JSON.stringify({ v: 1, id: "item_final", phase: "final_answer" }),
           },
         ],
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
       }),
     });
@@ -1869,7 +1869,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
           updateMode: "none",
           message: createExactAssistantMessage({
             text: "Mirrored reply",
-            provider: "openclaw",
+            provider: "@gabrielvfonseca/operator",
             model: "delivery-mirror",
           }),
         }),
@@ -1901,7 +1901,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       updateMode: "file-only",
       message: createExactAssistantMessage({
         text: "Done.",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
       }),
     });
@@ -2322,7 +2322,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       transcriptPath: sessionFile,
       message: {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: "second side delivery",
       },
@@ -2422,7 +2422,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
       transcriptPath: sessionFile,
       message: {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: "second side delivery",
       },

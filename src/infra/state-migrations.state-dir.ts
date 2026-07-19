@@ -339,7 +339,7 @@ export async function autoMigrateLegacyTaskStateSidecars(params: {
   const notices: string[] = [];
   if (detectedExecApprovals.hasLegacy && !crossStateDirImports) {
     notices.push(
-      `Exec approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`operator doctor --fix\` to import them.`,
+      `Exec approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`openclaw doctor --fix\` to import them.`,
     );
   }
   const changes = [...result.changes, ...execApprovals.changes];

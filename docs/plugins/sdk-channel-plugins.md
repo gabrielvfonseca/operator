@@ -1,18 +1,18 @@
 ---
-summary: "Step-by-step guide to building a messaging channel plugin for OpenClaw"
+summary: "Step-by-step guide to building a messaging channel plugin for Operator"
 title: "Building channel plugins"
 sidebarTitle: "Channel Plugins"
 read_when:
   - You are building a new messaging channel plugin
-  - You want to connect OpenClaw to a messaging platform
+  - You want to connect Operator to a messaging platform
   - You need to understand the ChannelPlugin adapter surface
 ---
 
-This guide builds a channel plugin that connects OpenClaw to a messaging
+This guide builds a channel plugin that connects Operator to a messaging
 platform: DM security, pairing, reply threading, and outbound messaging.
 
 <Info>
-  New to OpenClaw plugins? Read [Getting Started](/plugins/building-plugins)
+  New to Operator plugins? Read [Getting Started](/plugins/building-plugins)
   first for package structure and manifest setup.
 </Info>
 
@@ -374,7 +374,7 @@ plugin manifest with `channelEnvVars`. Keep channel runtime `envVars` or local
 constants for operator-facing copy only.
 
 If your channel can appear in `status`, `channels list`, `channels status`, or
-SecretRef scans before the plugin runtime starts, add `openclaw.setupEntry` in
+SecretRef scans before the plugin runtime starts, add `operator.setupEntry` in
 `package.json`. That entrypoint should be safe to import in read-only command
 paths and should return the channel metadata, setup-safe config adapter,
 status adapter, and channel secret target metadata needed for those
@@ -522,29 +522,29 @@ unrelated inbound runtime helpers.
   <a id="step-1-package-and-manifest"></a>
   <Step title="Package and manifest">
     Create the standard plugin files. The `channels` field in
-    `openclaw.plugin.json` (not a `kind` field) is what marks a manifest as
+    `operator.plugin.json` (not a `kind` field) is what marks a manifest as
     owning a channel. For the full package-metadata surface, see
-    [Plugin Setup and Config](/plugins/sdk-setup#openclaw-channel):
+    [Plugin Setup and Config](/plugins/sdk-setup#operator-channel):
 
     <CodeGroup>
     ```json package.json
     {
-      "name": "@myorg/openclaw-acme-chat",
+      "name": "@myorg/operator-acme-chat",
       "version": "1.0.0",
       "type": "module",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "extensions": ["./index.ts"],
         "setupEntry": "./setup-entry.ts",
         "channel": {
           "id": "acme-chat",
           "label": "Acme Chat",
-          "blurb": "Connect OpenClaw to Acme Chat."
+          "blurb": "Connect Operator to Acme Chat."
         }
       }
     }
     ```
 
-    ```json openclaw.plugin.json
+    ```json operator.plugin.json
     {
       "id": "acme-chat",
       "channels": ["acme-chat"],
@@ -601,7 +601,7 @@ unrelated inbound runtime helpers.
       createChatChannelPlugin,
       createChannelPluginBase,
     } from "openclaw/plugin-sdk/channel-core";
-    import type { OpenClawConfig } from "openclaw/plugin-sdk/channel-core";
+    import type { OperatorConfig } from "openclaw/plugin-sdk/channel-core";
     import { acmeChatApi } from "./client.js"; // your platform API client
 
     type ResolvedAccount = {
@@ -612,7 +612,7 @@ unrelated inbound runtime helpers.
     };
 
     function resolveAccount(
-      cfg: OpenClawConfig,
+      cfg: OperatorConfig,
       accountId?: string | null,
     ): ResolvedAccount {
       const section = (cfg.channels as Record<string, any>)?.["acme-chat"];
@@ -763,7 +763,7 @@ unrelated inbound runtime helpers.
     });
     ```
 
-    Put channel-owned CLI descriptors in `registerCliMetadata(...)` so OpenClaw
+    Put channel-owned CLI descriptors in `registerCliMetadata(...)` so Operator
     can show them in root help without activating the full channel runtime,
     while normal full loads still pick up the same descriptors for real command
     registration. Keep `registerFull(...)` for runtime-only work.
@@ -787,7 +787,7 @@ unrelated inbound runtime helpers.
     export default defineSetupPluginEntry(acmeChatPlugin);
     ```
 
-    OpenClaw loads this instead of the full entry when the channel is disabled
+    Operator loads this instead of the full entry when the channel is disabled
     or unconfigured. It avoids pulling in heavy runtime code during setup flows.
     See [Setup and Config](/plugins/sdk-setup#setup-entry) for details.
 
@@ -800,7 +800,7 @@ unrelated inbound runtime helpers.
 
   <Step title="Handle inbound messages">
     Your plugin needs to receive messages from the platform and forward them to
-    OpenClaw. The typical pattern is a webhook that verifies the request and
+    Operator. The typical pattern is a webhook that verifies the request and
     dispatches it through your channel's inbound handler:
 
     ```typescript
@@ -811,7 +811,7 @@ unrelated inbound runtime helpers.
         handler: async (req, res) => {
           const event = parseWebhookPayload(req);
 
-          // Your inbound handler dispatches the message to OpenClaw.
+          // Your inbound handler dispatches the message to Operator.
           // The exact wiring depends on your platform SDK -
           // see a real example in the bundled Microsoft Teams or Google Chat plugin package.
           await handleAcmeChatInbound(api, event);
@@ -881,8 +881,8 @@ Write colocated tests in `src/channel.test.ts`:
 
 ```text
 <bundled-plugin-root>/acme-chat/
-├── package.json              # openclaw.channel metadata
-├── openclaw.plugin.json      # Manifest with config schema
+├── package.json              # operator.channel metadata
+├── operator.plugin.json      # Manifest with config schema
 ├── index.ts                  # defineChannelPluginEntry
 ├── setup-entry.ts            # defineSetupPluginEntry
 ├── api.ts                    # Public exports (optional)

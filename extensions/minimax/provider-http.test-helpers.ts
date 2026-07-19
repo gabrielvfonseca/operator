@@ -5,7 +5,7 @@ import type {
   fetchProviderOperationResponse,
   fetchWithTimeoutGuarded,
   resolveProviderHttpRequestConfig,
-} from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import { afterEach, vi, type Mock } from "vitest";
 
 type ResolveProviderHttpRequestConfigParams = Parameters<

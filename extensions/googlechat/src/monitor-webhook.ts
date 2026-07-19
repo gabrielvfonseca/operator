@@ -1,17 +1,17 @@
 // Googlechat plugin module implements monitor webhook behavior.
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   normalizeWebhookPath,
   resolveRequestClientIp,
   type FixedWindowRateLimiter,
-} from "openclaw/plugin-sdk/webhook-ingress";
-import type { WebhookInFlightLimiter } from "openclaw/plugin-sdk/webhook-request-guards";
-import { readJsonWebhookBodyOrReject } from "openclaw/plugin-sdk/webhook-request-guards";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
+import type { WebhookInFlightLimiter } from "@gabrielvfonseca/operator/plugin-sdk/webhook-request-guards";
+import { readJsonWebhookBodyOrReject } from "@gabrielvfonseca/operator/plugin-sdk/webhook-request-guards";
 import {
   resolveWebhookTargetWithAuthOrReject,
   withResolvedWebhookRequestPipeline,
-} from "openclaw/plugin-sdk/webhook-targets";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-targets";
 import { verifyGoogleChatRequest } from "./auth.js";
 import type { WebhookTarget } from "./monitor-types.js";
 import type {

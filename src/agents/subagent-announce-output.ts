@@ -3,7 +3,7 @@
  *
  * Reads child session output, detects waiting states, and formats completion findings for announcements.
  */
-import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
+import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { isSilentReplyText, SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { formatDurationCompact } from "../infra/format-time/format-duration.js";
 import { buildAgentRunTerminalOutcomeFromWaitResult } from "./agent-run-terminal-outcome.js";

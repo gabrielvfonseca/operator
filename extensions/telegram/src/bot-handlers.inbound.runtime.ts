@@ -1,13 +1,13 @@
-// Telegram inbound buffering, media resolution, and message dispatch.
-import type { Message } from "grammy/types";
-import { isAbortRequestText } from "openclaw/plugin-sdk/command-primitives-runtime";
+import { isAbortRequestText } from "@gabrielvfonseca/operator/plugin-sdk/command-primitives-runtime";
 import type {
   DmPolicy,
   OperatorConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram inbound buffering, media resolution, and message dispatch.
+import type { Message } from "grammy/types";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import {

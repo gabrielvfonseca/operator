@@ -5,8 +5,8 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { resolveBootstrapWarningSignaturesSeen } from "../../agents/bootstrap-budget.js";
 import { estimateMessagesTokens } from "../../agents/compaction.js";
 import { classifyCompactionReason } from "../../agents/embedded-agent-runner/compact-reasons.js";

@@ -53,7 +53,7 @@ function createAuditRecordBase(configPath: string, argv?: string[]) {
 
 function createRenameAuditRecord(home: string) {
   return finalizeConfigWriteAuditRecord({
-    base: createAuditRecordBase(path.join(home, ".openclaw", "openclaw.json")),
+    base: createAuditRecordBase(path.join(home, ".operator", "operator.json")),
     result: "rename",
     nextMetadata: {
       dev: "12",
@@ -67,7 +67,7 @@ function createRenameAuditRecord(home: string) {
 }
 
 function readAuditLog(home: string): unknown[] {
-  const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+  const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
   return fs
     .readFileSync(auditPath, "utf-8")
     .trim()
@@ -83,7 +83,7 @@ function requireAuditRecord(value: unknown): Record<string, unknown> {
 }
 
 describe("config io audit helpers", () => {
-  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-config-audit-" });
+  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "operator-config-audit-" });
 
   beforeAll(async () => {
     await suiteRootTracker.setup();
@@ -103,26 +103,26 @@ describe("config io audit helpers", () => {
       } as NodeJS.ProcessEnv,
       () => home,
     );
-    expect(auditPath).toBe(path.join(home, ".openclaw", "logs", "config-audit.jsonl"));
+    expect(auditPath).toBe(path.join(home, ".operator", "logs", "config-audit.jsonl"));
     expect(auditPath.startsWith(path.resolve("undefined"))).toBe(false);
   });
 
   it("formats overwrite warnings with hash transition and backup path", () => {
     expect(
       formatConfigOverwriteLogMessage({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         previousHash: "prev-hash",
         nextHash: "next-hash",
         changedPathCount: 3,
       }),
     ).toBe(
-      "Config overwrite: /tmp/openclaw.json (sha256 prev-hash -> next-hash, backup=/tmp/openclaw.json.bak, changedPaths=3)",
+      "Config overwrite: /tmp/operator.json (sha256 prev-hash -> next-hash, backup=/tmp/operator.json.bak, changedPaths=3)",
     );
   });
 
   it("captures watch markers and next stat metadata for successful writes", () => {
     const base = createConfigWriteAuditRecordBase({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       env: {
         OPERATOR_WATCH_MODE: "1",
         OPERATOR_WATCH_SESSION: "watch-session-1",
@@ -152,7 +152,7 @@ describe("config io audit helpers", () => {
         pid: 101,
         ppid: 99,
         cwd: "/work",
-        argv: ["node", "openclaw"],
+        argv: ["node", "@gabrielvfonseca/operator"],
         execArgv: ["--loader"],
       },
     });
@@ -180,7 +180,7 @@ describe("config io audit helpers", () => {
   });
 
   it("drops next-file metadata and preserves error details for failed writes", () => {
-    const base = createAuditRecordBase("/tmp/openclaw.json");
+    const base = createAuditRecordBase("/tmp/operator.json");
     const err = Object.assign(new Error("disk full"), { code: "ENOSPC" });
     const record = finalizeConfigWriteAuditRecord({
       base,
@@ -219,7 +219,7 @@ describe("config io audit helpers", () => {
     const home = await suiteRootTracker.make("append-redacted");
     const record = finalizeConfigWriteAuditRecord({
       base: {
-        ...createAuditRecordBase(path.join(home, ".openclaw", "openclaw.json")),
+        ...createAuditRecordBase(path.join(home, ".operator", "operator.json")),
         suspicious: [
           "provider returned ya29.fake-access-token-with-enough-length",
           "plugin returned AIzaSyD-very-real-looking-google-api-key-123",
@@ -237,7 +237,7 @@ describe("config io audit helpers", () => {
     });
 
     const raw = fs.readFileSync(
-      path.join(home, ".openclaw", "logs", "config-audit.jsonl"),
+      path.join(home, ".operator", "logs", "config-audit.jsonl"),
       "utf-8",
     );
     expect(raw).not.toContain("AIzaSyD-very-real-looking");
@@ -248,7 +248,7 @@ describe("config io audit helpers", () => {
   it("caps caller-supplied processInfo argv at 8 entries before redaction", () => {
     const longArgv = [
       "node",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "--api-key",
       "secret",
       "--port",
@@ -259,7 +259,7 @@ describe("config io audit helpers", () => {
       "this-must-not-land-in-audit-1234567890",
     ];
     const base = createConfigWriteAuditRecordBase({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       env: {} as NodeJS.ProcessEnv,
       existsBefore: true,
       previousHash: "prev",
@@ -296,7 +296,7 @@ describe("config io audit helpers", () => {
 
   it("redacts processInfo.argv when explicitly supplied to createConfigWriteAuditRecordBase", () => {
     const base = createConfigWriteAuditRecordBase({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       env: {} as NodeJS.ProcessEnv,
       existsBefore: true,
       previousHash: "prev",
@@ -322,41 +322,41 @@ describe("config io audit helpers", () => {
         pid: 1,
         ppid: 1,
         cwd: "/work",
-        argv: ["node", "openclaw", "--token", "leaked-but-not-anymore-12345"],
+        argv: ["node", "@gabrielvfonseca/operator", "--token", "leaked-but-not-anymore-12345"],
         execArgv: [],
       },
     });
-    expect(base.argv).toEqual(["node", "openclaw", "--token", "***"]);
+    expect(base.argv).toEqual(["node", "@gabrielvfonseca/operator", "--token", "***"]);
   });
 
   it.each([
     {
       name: "inline known secret",
-      argv: ["openclaw", "--token=fake", "--port=8080"],
-      expected: ["openclaw", "--token=***", "--port=8080"],
+      argv: ["@gabrielvfonseca/operator", "--token=fake", "--port=8080"],
+      expected: ["@gabrielvfonseca/operator", "--token=***", "--port=8080"],
     },
     {
       name: "custom credential suffix",
-      argv: ["openclaw", "--tenant-credential", "fake", "--bind", "lan"],
-      expected: ["openclaw", "--tenant-credential", "***", "--bind", "lan"],
+      argv: ["@gabrielvfonseca/operator", "--tenant-credential", "fake", "--bind", "lan"],
+      expected: ["@gabrielvfonseca/operator", "--tenant-credential", "***", "--bind", "lan"],
     },
     {
       name: "underscore key suffix",
-      argv: ["openclaw", "--provider_api_key", "fake"],
-      expected: ["openclaw", "--provider_api_key", "***"],
+      argv: ["@gabrielvfonseca/operator", "--provider_api_key", "fake"],
+      expected: ["@gabrielvfonseca/operator", "--provider_api_key", "***"],
     },
     {
       name: "dash-leading secret value",
-      argv: ["openclaw", "--password", "-fake"],
-      expected: ["openclaw", "--password", "***"],
+      argv: ["@gabrielvfonseca/operator", "--password", "-fake"],
+      expected: ["@gabrielvfonseca/operator", "--password", "***"],
     },
     {
       name: "secret flag without a value",
-      argv: ["openclaw", "--token"],
-      expected: ["openclaw", "--token"],
+      argv: ["@gabrielvfonseca/operator", "--token"],
+      expected: ["@gabrielvfonseca/operator", "--token"],
     },
   ])("redacts $name in persisted audit process info", ({ argv, expected }) => {
-    expect(createAuditRecordBase("/tmp/openclaw.json", argv).argv).toEqual(expected);
+    expect(createAuditRecordBase("/tmp/operator.json", argv).argv).toEqual(expected);
   });
 
   it("also accepts flattened audit record params from legacy call sites", async () => {
@@ -380,19 +380,19 @@ describe("config io audit helpers", () => {
 
   it("rewrites historical config-audit entries through redactConfigAuditArgv and preserves 0600 mode", async () => {
     const home = await suiteRootTracker.make("scrub-historical");
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     fs.mkdirSync(path.dirname(auditPath), { recursive: true, mode: 0o700 });
     const unredactedRecord = {
       ts: "2026-05-02T00:03:48.471Z",
       source: "config-io",
       event: "config.write",
-      configPath: path.join(home, ".openclaw", "openclaw.json"),
+      configPath: path.join(home, ".operator", "operator.json"),
       pid: 1590563,
       ppid: 1590548,
       cwd: home,
       argv: [
         "/usr/bin/node",
-        "/usr/local/bin/openclaw.mjs",
+        "/usr/local/bin/operator.mjs",
         "config",
         "set",
         "channels.slack.botToken",
@@ -406,11 +406,11 @@ describe("config io audit helpers", () => {
       ts: "2026-05-08T12:00:00.000Z",
       source: "config-io",
       event: "config.write",
-      configPath: path.join(home, ".openclaw", "openclaw.json"),
+      configPath: path.join(home, ".operator", "operator.json"),
       pid: 1,
       ppid: 1,
       cwd: home,
-      argv: ["/usr/bin/node", "/usr/local/bin/openclaw.mjs", "config", "set", "ui.theme", "dark"],
+      argv: ["/usr/bin/node", "/usr/local/bin/operator.mjs", "config", "set", "ui.theme", "dark"],
       execArgv: ["--disable-warning=ExperimentalWarning"],
       suspicious: [],
       result: "rename",
@@ -461,18 +461,18 @@ describe("config io audit helpers", () => {
       homedir: () => home,
     });
     expect(result).toEqual({ scanned: 0, rewritten: 0, skipped: 0, aborted: false });
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     expect(fs.existsSync(auditPath)).toBe(false);
   });
 
   it("preserves malformed lines verbatim and counts them as skipped", async () => {
     const home = await suiteRootTracker.make("scrub-malformed");
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     fs.mkdirSync(path.dirname(auditPath), { recursive: true, mode: 0o700 });
     const malformed = "{this is not valid json";
     const validUnredacted = {
       ts: "2026-05-02T00:03:48.471Z",
-      argv: ["node", "openclaw.mjs", "config", "set", "x", "xoxb-bad-token-1234567890abcdef"],
+      argv: ["node", "operator.mjs", "config", "set", "x", "xoxb-bad-token-1234567890abcdef"],
     };
     fs.writeFileSync(auditPath, `${malformed}\n${JSON.stringify(validUnredacted)}\n`, {
       encoding: "utf-8",
@@ -493,13 +493,13 @@ describe("config io audit helpers", () => {
 
   it("does not write when dryRun is true even if records would change", async () => {
     const home = await suiteRootTracker.make("scrub-dryrun");
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     fs.mkdirSync(path.dirname(auditPath), { recursive: true, mode: 0o700 });
     const unredacted = {
       ts: "2026-05-02T00:03:48.471Z",
       argv: [
         "node",
-        "openclaw.mjs",
+        "operator.mjs",
         "config",
         "set",
         "channels.slack.appToken",
@@ -525,13 +525,13 @@ describe("config io audit helpers", () => {
 
   it("aborts without overwriting when the audit log was appended to mid-scrub", async () => {
     const home = await suiteRootTracker.make("scrub-race-abort");
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     fs.mkdirSync(path.dirname(auditPath), { recursive: true, mode: 0o700 });
     const unredacted = {
       ts: "2026-05-02T00:03:48.471Z",
       argv: [
         "node",
-        "openclaw.mjs",
+        "operator.mjs",
         "config",
         "set",
         "channels.slack.botToken",
@@ -574,13 +574,13 @@ describe("config io audit helpers", () => {
 
   it("aborts without overwriting when the audit log is appended to after temp write", async () => {
     const home = await suiteRootTracker.make("scrub-race-after-temp-write");
-    const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+    const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
     fs.mkdirSync(path.dirname(auditPath), { recursive: true, mode: 0o700 });
     const unredacted = {
       ts: "2026-05-02T00:03:48.471Z",
       argv: [
         "node",
-        "openclaw.mjs",
+        "operator.mjs",
         "config",
         "set",
         "channels.slack.botToken",
@@ -590,7 +590,7 @@ describe("config io audit helpers", () => {
     };
     const appended = {
       ts: "2026-05-02T00:04:00.000Z",
-      argv: ["node", "openclaw.mjs", "config", "set", "theme", "dark"],
+      argv: ["node", "operator.mjs", "config", "set", "theme", "dark"],
       execArgv: [],
     };
     const original = `${JSON.stringify(unredacted)}\n`;

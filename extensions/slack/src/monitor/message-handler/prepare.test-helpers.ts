@@ -1,12 +1,12 @@
 // Slack helper module supports prepare helpers behavior.
 import fs from "node:fs";
 import path from "node:path";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createPluginRuntimeMock } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import type { App } from "@slack/bolt";
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createPluginRuntimeMock } from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 import type { ResolvedSlackAccount } from "../../accounts.js";
 import type { SlackChannelConfigEntries } from "../channel-config.js";
 import { createSlackMonitorContext } from "../context.js";
@@ -56,7 +56,7 @@ export function createInboundSlackTestContext(params: {
     threadRequireExplicitMention: params.threadRequireExplicitMention ?? false,
     slashCommand: {
       enabled: false,
-      name: "openclaw",
+      name: "@gabrielvfonseca/operator",
       sessionPrefix: "slack:slash",
       ephemeral: true,
     },

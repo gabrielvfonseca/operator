@@ -1,6 +1,6 @@
 /** Loads plugin CLI registrations lazily for the command tree and plugin-owned subcommands. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { collectUniqueCommandDescriptors } from "../cli/program/command-descriptor-utils.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveManifestActivationPluginIds } from "./activation-planner.js";

@@ -11,8 +11,8 @@ Adds media understanding provider support.
 
 ## Distribution
 
-- Package: `@operator/senseaudio-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/senseaudio-provider`
+- Install route: included in Operator
 
 ## Surface
 

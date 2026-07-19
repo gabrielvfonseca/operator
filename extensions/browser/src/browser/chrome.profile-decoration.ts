@@ -6,7 +6,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { loadJsonFile, saveJsonFile } from "openclaw/plugin-sdk/json-store";
+import { loadJsonFile, saveJsonFile } from "@gabrielvfonseca/operator/plugin-sdk/json-store";
 import {
   DEFAULT_OPERATOR_BROWSER_COLOR,
   DEFAULT_OPERATOR_BROWSER_PROFILE_NAME,
@@ -15,7 +15,7 @@ import {
 const CHROME_NETWORK_PREDICTION_DISABLED = 2;
 
 function decoratedMarkerPath(userDataDir: string) {
-  return path.join(userDataDir, ".openclaw-profile-decorated");
+  return path.join(userDataDir, ".operator-profile-decorated");
 }
 
 function safeReadJson(filePath: string): Record<string, unknown> | null {
@@ -122,7 +122,7 @@ export function isProfileDecorated(
 /** Return whether this profile was initialized with Chromium's automation keychain. */
 export function usesOperatorMockKeychain(userDataDir: string): boolean {
   const localState = safeReadJson(path.join(userDataDir, "Local State"));
-  return readDefaultProfileInfo(localState)?.openclaw_mock_keychain === true;
+  return readDefaultProfileInfo(localState)?.operator_mock_keychain === true;
 }
 
 /** Disable Chromium network prediction in an Operator-managed Chrome profile. */
@@ -158,7 +158,7 @@ export function decorateOperatorProfile(
   if (opts?.mockKeychain) {
     // Chrome preserves extra fields in this per-profile dictionary. Recording
     // the key source here keeps later launches on the same encryption backend.
-    setDeep(localState, ["profile", "info_cache", "Default", "openclaw_mock_keychain"], true);
+    setDeep(localState, ["profile", "info_cache", "Default", "operator_mock_keychain"], true);
   }
   // Color keys are best-effort (Chrome changes these frequently).
   setDeep(localState, ["profile", "info_cache", "Default", "profile_color"], desiredColor);

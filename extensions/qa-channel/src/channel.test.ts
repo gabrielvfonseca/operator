@@ -1,17 +1,17 @@
 // Qa Channel tests cover channel plugin behavior.
 import path from "node:path";
-import { verifyChannelMessageAdapterCapabilityProofs } from "openclaw/plugin-sdk/channel-outbound";
+import { verifyChannelMessageAdapterCapabilityProofs } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   createPluginRuntimeMock,
   createStartAccountContext,
-} from "openclaw/plugin-sdk/channel-test-helpers";
-import type { PluginRuntime } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import {
   createTestRegistry,
   resetPluginRuntimeStateForTest,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { extractToolPayload } from "openclaw/plugin-sdk/tool-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { extractToolPayload } from "@gabrielvfonseca/operator/plugin-sdk/tool-payload";
 import { afterEach, describe, expect, it } from "vitest";
 import { createQaBusState, startQaBusServer } from "../../qa-lab/bus-api.js";
 import { qaChannelPlugin, setQaChannelRuntime } from "../api.js";
@@ -187,7 +187,7 @@ function createQaChannelConfig(params: { baseUrl: string; allowFrom?: string[] }
     channels: {
       "qa-channel": {
         baseUrl: params.baseUrl,
-        botUserId: "openclaw",
+        botUserId: "@gabrielvfonseca/operator",
         botDisplayName: "Operator QA",
         allowFrom: params.allowFrom,
       },

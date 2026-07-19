@@ -4,7 +4,7 @@ import os from "node:os";
 import nodePath from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { DoctorPrompter } from "../commands/doctor-prompter.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { CORE_HEALTH_CHECKS } from "./doctor-core-checks.js";
 import "./doctor-tool-result-cap-advice.js";
 import { resolveDoctorContributionHealthChecks } from "./doctor-health-contributions.js";
@@ -67,7 +67,7 @@ const mocks = vi.hoisted(() => ({
       checkId: "core/doctor/legacy-plugin-manifests",
       severity: "warning" as const,
       message: `Plugin manifest ${migration.pluginId} uses legacy top-level capability keys.`,
-      path: "/tmp/openclaw-plugin/openclaw.plugin.json",
+      path: "/tmp/operator-plugin/operator.plugin.json",
       target: migration.pluginId,
       requirement: "contracts-capability-keys",
     }),
@@ -75,7 +75,7 @@ const mocks = vi.hoisted(() => ({
   maybeRepairLegacyPluginManifestContracts: vi.fn().mockResolvedValue(undefined),
   detectLegacyClawdBrowserProfileResidue: vi.fn(),
   maybeArchiveLegacyClawdBrowserProfileResidue: vi.fn(),
-  resolveAgentWorkspaceDir: vi.fn(() => "/tmp/openclaw-workspace"),
+  resolveAgentWorkspaceDir: vi.fn(() => "/tmp/operator-workspace"),
   resolveDefaultAgentId: vi.fn(() => "default"),
   resolveAgentContextLimits: vi.fn(
     (cfg: { agents?: { defaults?: { contextLimits?: unknown } } }) =>
@@ -355,7 +355,7 @@ vi.mock("../version.js", async () => ({
 }));
 
 vi.mock("../config/config.js", () => ({
-  CONFIG_PATH: "/tmp/fake-openclaw.json",
+  CONFIG_PATH: "/tmp/fake-operator.json",
   replaceConfigFile: mocks.replaceConfigFile,
   readConfigFileSnapshot: mocks.readConfigFileSnapshot,
 }));
@@ -442,7 +442,7 @@ vi.mock("../utils.js", async (importOriginal) => {
   return {
     ...actual,
     isRecord: mocks.isRecord,
-    resolveConfigDir: vi.fn(() => "/tmp/openclaw-config"),
+    resolveConfigDir: vi.fn(() => "/tmp/operator-config"),
     resolveUserPath: vi.fn((value: string) => value),
     shortenHomePath: mocks.shortenHomePath,
   };
@@ -607,7 +607,7 @@ describe("doctor health contributions", () => {
       warnings: [],
     });
     mocks.resolveAgentWorkspaceDir.mockReset();
-    mocks.resolveAgentWorkspaceDir.mockReturnValue("/tmp/openclaw-workspace");
+    mocks.resolveAgentWorkspaceDir.mockReturnValue("/tmp/operator-workspace");
     mocks.resolveDefaultAgentId.mockReset();
     mocks.resolveDefaultAgentId.mockReturnValue("default");
     mocks.resolveAgentContextLimits.mockReset();
@@ -716,14 +716,14 @@ describe("doctor health contributions", () => {
     expect(check.defaultEnabled).toBe(false);
 
     const migration = {
-      manifestPath: "/tmp/openclaw-plugin/openclaw.plugin.json",
+      manifestPath: "/tmp/operator-plugin/operator.plugin.json",
       pluginId: "legacy-plugin",
       nextRaw: {},
       changeLines: ["- moved tools to contracts.tools"],
     };
     mocks.collectLegacyPluginManifestContractMigrations.mockReturnValueOnce([migration]);
     const ctx = {
-      cfg: { plugins: { load: { paths: ["/tmp/openclaw-plugin"] } } },
+      cfg: { plugins: { load: { paths: ["/tmp/operator-plugin"] } } },
       mode: "lint" as const,
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
     };
@@ -787,7 +787,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as Parameters<(typeof contribution)["run"]>[0];
 
@@ -835,7 +835,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: cfg,
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as Parameters<(typeof contribution)["run"]>[0];
 
@@ -880,7 +880,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: cfg,
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as Parameters<(typeof contribution)["run"]>[0];
 
@@ -955,7 +955,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {
         OPERATOR_UPDATE_IN_PROGRESS: "1",
         OPERATOR_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE: "1",
@@ -1300,7 +1300,7 @@ describe("doctor health contributions", () => {
     expect(heartbeatTemplateCheck).toBeDefined();
 
     const ctx = {
-      cfg: { agents: { defaults: { workspace: "/tmp/openclaw-workspace" } } },
+      cfg: { agents: { defaults: { workspace: "/tmp/operator-workspace" } } },
       mode: "lint",
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
     } as const;
@@ -1317,7 +1317,7 @@ describe("doctor health contributions", () => {
         checkId: "core/doctor/heartbeat-template",
         severity: "warning",
         message: "HEARTBEAT.md contains an older heartbeat documentation template.",
-        path: "/tmp/openclaw-workspace/HEARTBEAT.md",
+        path: "/tmp/operator-workspace/HEARTBEAT.md",
         requirement: "legacy-template",
       },
     ]);
@@ -1901,7 +1901,7 @@ describe("doctor health contributions", () => {
 
   it("keeps legacy plugin dependency lint opt-in and read-only", async () => {
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
-    const tempDir = fs.mkdtempSync(nodePath.join(os.tmpdir(), "openclaw-legacy-plugin-deps-lint-"));
+    const tempDir = fs.mkdtempSync(nodePath.join(os.tmpdir(), "operator-legacy-plugin-deps-lint-"));
     const stateDir = nodePath.join(tempDir, "state");
     const legacyRuntimeRoot = nodePath.join(stateDir, "plugin-runtime-deps");
     fs.mkdirSync(legacyRuntimeRoot, { recursive: true });
@@ -2086,7 +2086,7 @@ describe("doctor health contributions", () => {
         }),
       ],
     });
-    expect(mocks.collectWorkspaceBackupTip).toHaveBeenCalledWith("/tmp/openclaw-workspace");
+    expect(mocks.collectWorkspaceBackupTip).toHaveBeenCalledWith("/tmp/operator-workspace");
   });
 
   it("keeps disk space opt-in for default lint selection", async () => {
@@ -2114,8 +2114,8 @@ describe("doctor health contributions", () => {
       {
         checkId: "core/doctor/disk-space",
         severity: "warning",
-        message: "Low disk space: 300 MB free on the partition containing ~/.openclaw.",
-        path: "/home/test/.openclaw",
+        message: "Low disk space: 300 MB free on the partition containing ~/.operator.",
+        path: "/home/test/.operator",
         requirement: "low-free-space",
       },
     ]);
@@ -2296,7 +2296,7 @@ describe("doctor health contributions", () => {
     expect(cronStoreCheck).toBeDefined();
 
     const ctx = {
-      cfg: { cron: { store: "/tmp/openclaw-cron/jobs.json" } },
+      cfg: { cron: { store: "/tmp/operator-cron/jobs.json" } },
       mode: "lint",
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
     } as const;
@@ -2313,7 +2313,7 @@ describe("doctor health contributions", () => {
         checkId: "core/doctor/legacy-cron-store",
         severity: "warning",
         message: "Legacy JSON cron store was found.",
-        path: "/tmp/openclaw-cron/jobs.json",
+        path: "/tmp/operator-cron/jobs.json",
         requirement: "legacy-cron-store",
       },
     ]);
@@ -2499,7 +2499,7 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
@@ -2546,15 +2546,15 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
 
     expect(mocks.runDoctorHealthRepairs).toHaveBeenCalledWith(
       expect.objectContaining({
-        cwd: "/tmp/openclaw-workspace",
-        configPath: "/tmp/fake-openclaw.json",
+        cwd: "/tmp/operator-workspace",
+        configPath: "/tmp/fake-operator.json",
       }),
       {
         checks: contribution.healthChecks,
@@ -2579,7 +2579,7 @@ describe("doctor health contributions", () => {
           checkId: "core/doctor/test-structured-findings",
           severity: "warning",
           message: "structured finding needs attention",
-          path: "openclaw.json",
+          path: "operator.json",
           line: 12,
           fixHint: "run openclaw doctor --fix",
         },
@@ -2606,13 +2606,13 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(false),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
 
     expect(ctx.runtime.log).toHaveBeenCalledWith(
-      "[warning] core/doctor/test-structured-findings openclaw.json:12 - structured finding needs attention",
+      "[warning] core/doctor/test-structured-findings operator.json:12 - structured finding needs attention",
     );
     expect(ctx.runtime.log).toHaveBeenCalledWith("  fix: run openclaw doctor --fix");
   });
@@ -2635,13 +2635,13 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(false),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
 
     expect(mocks.runDoctorHealthRepairs).toHaveBeenCalledWith(
-      expect.objectContaining({ cwd: "/tmp/openclaw-workspace" }),
+      expect.objectContaining({ cwd: "/tmp/operator-workspace" }),
       {
         checks: contribution.healthChecks,
         dryRun: true,
@@ -2697,7 +2697,7 @@ describe("doctor health contributions", () => {
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
     await contribution.run(ctx);
@@ -2727,7 +2727,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2752,7 +2752,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2776,7 +2776,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2812,7 +2812,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2855,7 +2855,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
     } as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2893,7 +2893,7 @@ describe("doctor health contributions", () => {
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
       options: {},
       cfgForPersistence: {},
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       env: {},
       healthOk: true,
     } as Parameters<(typeof contribution)["run"]>[0];
@@ -2945,7 +2945,7 @@ describe("doctor health contributions", () => {
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
         options: {},
         cfgForPersistence: {},
-        configPath: "/tmp/fake-openclaw.json",
+        configPath: "/tmp/fake-operator.json",
         env: {},
       } as unknown as Parameters<(typeof contribution)["run"]>[0];
 
@@ -2981,7 +2981,7 @@ describe("doctor health contributions", () => {
         cfg: {},
         mode: "lint" as const,
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-        configPath: "/tmp/fake-openclaw.json",
+        configPath: "/tmp/fake-operator.json",
       };
 
       await expect(runDoctorLintChecks(ctx, { checks: [check] })).resolves.toMatchObject({
@@ -3000,7 +3000,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/fake-openclaw.json",
+            configPath: "/tmp/fake-operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3010,7 +3010,7 @@ describe("doctor health contributions", () => {
         findings: [
           expect.objectContaining({
             checkId: "core/doctor/write-config",
-            path: "/tmp/fake-openclaw.json",
+            path: "/tmp/fake-operator.json",
             requirement: "mutable-config-write-path",
           }),
         ],
@@ -3018,7 +3018,7 @@ describe("doctor health contributions", () => {
     });
 
     it("skips a read-only existing config when its directory is writable", async () => {
-      const configPath = "/tmp/openclaw-home/openclaw.json";
+      const configPath = "/tmp/operator-home/operator.json";
       vi.spyOn(fs, "existsSync").mockImplementation((path) => path === configPath);
       vi.spyOn(fs, "statSync").mockReturnValue({
         isDirectory: () => true,
@@ -3039,13 +3039,13 @@ describe("doctor health contributions", () => {
         findings: [],
       });
       expect(accessSpy).toHaveBeenCalledWith(
-        "/tmp/openclaw-home",
+        "/tmp/operator-home",
         fs.constants.W_OK | fs.constants.X_OK,
       );
     });
 
     it("reports an unwritable config directory for an existing config", async () => {
-      const configPath = "/tmp/openclaw-home/openclaw.json";
+      const configPath = "/tmp/operator-home/operator.json";
       vi.spyOn(fs, "existsSync").mockImplementation((path) => path === configPath);
       vi.spyOn(fs, "statSync").mockReturnValue({
         isDirectory: () => true,
@@ -3068,7 +3068,7 @@ describe("doctor health contributions", () => {
         findings: [
           expect.objectContaining({
             checkId: "core/doctor/write-config",
-            path: "/tmp/openclaw-home",
+            path: "/tmp/operator-home",
             target: configPath,
             requirement: "writable-config-directory",
           }),
@@ -3086,7 +3086,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/openclaw-home/openclaw.json",
+            configPath: "/tmp/operator-home/operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3108,7 +3108,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/openclaw-home/openclaw.json",
+            configPath: "/tmp/operator-home/operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3117,7 +3117,7 @@ describe("doctor health contributions", () => {
           expect.objectContaining({
             checkId: "core/doctor/write-config",
             path: "/tmp",
-            target: "/tmp/openclaw-home",
+            target: "/tmp/operator-home",
             requirement: "writable-config-directory",
           }),
         ],
@@ -3138,7 +3138,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/openclaw-home/openclaw.json",
+            configPath: "/tmp/operator-home/operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3147,7 +3147,7 @@ describe("doctor health contributions", () => {
           expect.objectContaining({
             checkId: "core/doctor/write-config",
             path: "/tmp",
-            target: "/tmp/openclaw-home",
+            target: "/tmp/operator-home",
             requirement: "writable-config-directory",
           }),
         ],
@@ -3155,7 +3155,7 @@ describe("doctor health contributions", () => {
     });
 
     it("reports an existing file that blocks the config directory path", async () => {
-      vi.spyOn(fs, "existsSync").mockImplementation((path) => path === "/tmp/openclaw-home");
+      vi.spyOn(fs, "existsSync").mockImplementation((path) => path === "/tmp/operator-home");
       vi.spyOn(fs, "statSync").mockReturnValue({
         isDirectory: () => false,
       } as fs.Stats);
@@ -3167,7 +3167,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/openclaw-home/openclaw.json",
+            configPath: "/tmp/operator-home/operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3175,8 +3175,8 @@ describe("doctor health contributions", () => {
         findings: [
           expect.objectContaining({
             checkId: "core/doctor/write-config",
-            path: "/tmp/openclaw-home",
-            target: "/tmp/openclaw-home",
+            path: "/tmp/operator-home",
+            target: "/tmp/operator-home",
             requirement: "config-directory-path",
           }),
         ],
@@ -3187,7 +3187,7 @@ describe("doctor health contributions", () => {
     it("reports a dangling symlink that blocks the config directory path", async () => {
       vi.spyOn(fs, "existsSync").mockImplementation((path) => path === "/tmp");
       vi.spyOn(fs, "lstatSync").mockImplementation((path) => {
-        if (path === "/tmp/openclaw-home") {
+        if (path === "/tmp/operator-home") {
           return { isDirectory: () => false } as fs.Stats;
         }
         throw Object.assign(new Error("ENOENT"), { code: "ENOENT" });
@@ -3203,7 +3203,7 @@ describe("doctor health contributions", () => {
             cfg: {},
             mode: "lint" as const,
             runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
-            configPath: "/tmp/openclaw-home/openclaw.json",
+            configPath: "/tmp/operator-home/operator.json",
           },
           { checks: [check], onlyIds: ["core/doctor/write-config"] },
         ),
@@ -3211,8 +3211,8 @@ describe("doctor health contributions", () => {
         findings: [
           expect.objectContaining({
             checkId: "core/doctor/write-config",
-            path: "/tmp/openclaw-home",
-            target: "/tmp/openclaw-home",
+            path: "/tmp/operator-home",
+            target: "/tmp/operator-home",
             requirement: "config-directory-path",
           }),
         ],
@@ -3244,7 +3244,7 @@ describe("doctor health contributions", () => {
         shouldWriteConfig: true,
         skipPluginValidationOnWrite: true,
       },
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       sourceConfigValid: true,
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
@@ -3282,7 +3282,7 @@ describe("doctor health contributions", () => {
       cfg,
       cfgForPersistence: cfg,
       configResult: { cfg, shouldWriteConfig: false },
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       sourceConfigValid: true,
       prompter: buildDoctorPrompter(false),
       runtime,
@@ -3306,7 +3306,7 @@ describe("doctor health contributions", () => {
         shouldRepairCronCodexModelRefsAfterConfigWrite: true,
         blockedCodexModelIdentities: ["codex\u0000gpt-5.6-sol"],
       },
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       sourceConfigValid: true,
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
@@ -3331,7 +3331,7 @@ describe("doctor health contributions", () => {
         shouldRepairCronCodexModelRefsAfterConfigWrite: true,
         blockedCodexModelIdentities: ["codex\u0000gpt-5.6-sol"],
       },
-      configPath: "/tmp/fake-openclaw.json",
+      configPath: "/tmp/fake-operator.json",
       sourceConfigValid: true,
       prompter: buildDoctorPrompter(true),
       runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
@@ -3369,7 +3369,7 @@ describe("doctor health contributions", () => {
           shouldWriteConfig: true,
           skipPluginValidationOnWrite: false,
         },
-        configPath: "/tmp/fake-openclaw.json",
+        configPath: "/tmp/fake-operator.json",
         sourceConfigValid: true,
         prompter: buildDoctorPrompter(true),
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
@@ -3506,7 +3506,7 @@ describe("doctor health contributions", () => {
       await writeConfigContribution.run(ctx);
 
       expect(ctx.runtime.log).toHaveBeenCalledWith(
-        "Update changed config; pre-update backup: /tmp/fake-openclaw.json.pre-update",
+        "Update changed config; pre-update backup: /tmp/fake-operator.json.pre-update",
       );
     });
 
@@ -3517,7 +3517,7 @@ describe("doctor health contributions", () => {
         cfg: {},
         cfgForPersistence: {},
         configResult: { cfg: {} },
-        configPath: "/tmp/fake-openclaw.json",
+        configPath: "/tmp/fake-operator.json",
         sourceConfigValid: true,
         prompter: buildDoctorPrompter(true),
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },
@@ -3539,7 +3539,7 @@ describe("doctor health contributions", () => {
         cfg: {},
         cfgForPersistence: {},
         configResult: { cfg: {} },
-        configPath: "/tmp/fake-openclaw.json",
+        configPath: "/tmp/fake-operator.json",
         sourceConfigValid: true,
         prompter: buildDoctorPrompter(true),
         runtime: { log: vi.fn(), error: vi.fn(), exit: vi.fn() },

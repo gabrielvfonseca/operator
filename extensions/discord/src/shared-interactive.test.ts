@@ -1,5 +1,5 @@
 // Discord tests cover shared interactive plugin behavior.
-import { buildApprovalResolutionRef } from "openclaw/plugin-sdk/approval-reference-runtime";
+import { buildApprovalResolutionRef } from "@gabrielvfonseca/operator/plugin-sdk/approval-reference-runtime";
 import { describe, expect, it } from "vitest";
 import { parseExecApprovalData } from "./approval-custom-id.js";
 import { buildDiscordComponentMessage } from "./components.js";

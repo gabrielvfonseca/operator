@@ -1,9 +1,9 @@
+import type { SlackAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { requestHeartbeat } from "@gabrielvfonseca/operator/plugin-sdk/heartbeat-runtime";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
 // Slack plugin module polls selected participants and routes away-to-active transitions.
 import type { WebClient } from "@slack/web-api";
-import type { SlackAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { requestHeartbeat } from "openclaw/plugin-sdk/heartbeat-runtime";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
 import type { PreparedSlackMessage } from "./message-handler/types.js";
 
 export const SLACK_PRESENCE_GREETING_COOLDOWN_MS = 8 * 60 * 60 * 1000;

@@ -1,5 +1,5 @@
 /** Cancellation path for active ACP turns and idle runtime handles. */
-import type { AcpRuntime, AcpRuntimeHandle } from "@operator/acp-core/runtime/types";
+import type { AcpRuntime, AcpRuntimeHandle } from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type AcpRuntimeError,

@@ -1,8 +1,8 @@
 // Mattermost tests cover slash http.send config plugin behavior.
 import { ServerResponse, type IncomingMessage } from "node:http";
 import { PassThrough } from "node:stream";
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedMattermostAccount } from "./accounts.js";
 

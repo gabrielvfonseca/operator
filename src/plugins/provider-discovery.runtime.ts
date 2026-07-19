@@ -1,7 +1,7 @@
 // Runtime boundary for provider discovery through plugin entrypoints.
 import path from "node:path";
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { sortUniqueStrings } from "../../packages/normalization-core/src/string-normalization.js";
 import type { ModelDefinitionConfig, ModelProviderConfig } from "../config/types.models.js";
 import type { OperatorConfig } from "../config/types.operator.js";

@@ -1,12 +1,12 @@
 // Telegram plugin module owns dispatch-time session and transcript access.
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   appendAssistantMirrorMessageByIdentity,
   readLatestAssistantTextByIdentity,
-} from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import { resolveTelegramConfigReasoningDefault } from "./agent-config.js";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import type { TelegramMessageContext } from "./bot-message-context.js";

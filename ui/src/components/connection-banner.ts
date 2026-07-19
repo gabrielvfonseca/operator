@@ -3,7 +3,7 @@
 import { html, nothing } from "lit";
 import { property } from "lit/decorators.js";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomContentsElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomContentsElement } from "../lit/operator-element.ts";
 import { redactLoginFailureError } from "./login-gate.ts";
 
 type ConnectionBannerProps = {
@@ -29,7 +29,7 @@ function renderConnectionBanner(props: ConnectionBannerProps) {
   `;
 }
 
-class ConnectionBanner extends OpenClawLightDomContentsElement {
+class ConnectionBanner extends OperatorLightDomContentsElement {
   @property({ attribute: false }) props?: ConnectionBannerProps;
 
   override render() {
@@ -37,6 +37,6 @@ class ConnectionBanner extends OpenClawLightDomContentsElement {
   }
 }
 
-if (!customElements.get("openclaw-connection-banner")) {
-  customElements.define("openclaw-connection-banner", ConnectionBanner);
+if (!customElements.get("operator-connection-banner")) {
+  customElements.define("operator-connection-banner", ConnectionBanner);
 }

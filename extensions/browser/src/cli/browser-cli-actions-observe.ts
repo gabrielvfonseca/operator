@@ -1,8 +1,8 @@
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 /**
  * Browser CLI observation commands for console, PDF, and response bodies.
  */
 import type { Command } from "commander";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { runCommandWithRuntime } from "../core-api.js";
 import {
   BROWSER_TAB_REFERENCE_HELP,

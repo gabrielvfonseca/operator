@@ -52,7 +52,7 @@ public final class TalkBufferedAudioPlayer: NSObject {
         }
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "talk.tts")
+    private let logger = Logger(subsystem: "ai.operator", category: "talk.tts")
     private var player: AVAudioPlayer?
     private var playback: Playback?
     private var levelHandler: (@MainActor (Double?) -> Void)?

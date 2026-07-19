@@ -2,7 +2,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import { defaultRuntime } from "../../runtime.js";
 import { getNodesTheme, runNodesCommand } from "./cli-utils.js";

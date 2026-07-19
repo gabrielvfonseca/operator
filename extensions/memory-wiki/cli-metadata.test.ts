@@ -1,6 +1,6 @@
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 // Memory Wiki tests cover cli metadata plugin behavior.
 import { Command } from "commander";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({

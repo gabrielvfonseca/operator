@@ -2,9 +2,9 @@
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "openclaw/plugin-sdk/approval-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MessagePresentationAction } from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MessagePresentationAction } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { whatsappApprovalCapability } from "./approval-native.js";
 import { cacheInboundMessageMeta } from "./quoted-message.js";

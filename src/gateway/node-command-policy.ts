@@ -1,8 +1,8 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Gateway node command policy.
 // Computes per-platform allowlists from built-in, plugin, runtime, and config inputs.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   NODE_AGENT_CLI_CLAUDE_RUN_COMMAND,

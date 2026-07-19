@@ -1,4 +1,4 @@
-# @operator/llama-cpp-provider
+# @gabrielvfonseca/llama-cpp-provider
 
 Official llama.cpp embedding provider for Operator.
 
@@ -7,7 +7,7 @@ This plugin runs local GGUF embedding models through `node-llama-cpp`.
 ## Install
 
 ```bash
-openclaw plugins install @operator/llama-cpp-provider
+operator plugins install @gabrielvfonseca/llama-cpp-provider
 ```
 
 Restart the Gateway after installing or updating the plugin. Use Node 24 for
@@ -23,5 +23,5 @@ Face model URI, or HTTPS model URL.
 ## Package
 
 - Plugin id: `llama-cpp`
-- Package: `@operator/llama-cpp-provider`
+- Package: `@gabrielvfonseca/llama-cpp-provider`
 - Minimum Operator host: `2026.6.2`

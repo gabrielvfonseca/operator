@@ -1,18 +1,18 @@
-// Telegram plugin module implements monitor behavior.
-import type { RunOptions } from "@grammyjs/runner";
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-adapter-runtime";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { resolveAgentMaxConcurrent } from "openclaw/plugin-sdk/model-session-runtime";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-adapter-runtime";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { resolveAgentMaxConcurrent } from "@gabrielvfonseca/operator/plugin-sdk/model-session-runtime";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 import {
   registerUncaughtExceptionHandler,
   registerUnhandledRejectionHandler,
   waitForAbortSignal,
-} from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+// Telegram plugin module implements monitor behavior.
+import type { RunOptions } from "@grammyjs/runner";
 import { resolveTelegramAccount } from "./accounts.js";
 import { resolveTelegramAllowedUpdates } from "./allowed-updates.js";
 import { isTelegramExecApprovalHandlerConfigured } from "./exec-approvals.js";

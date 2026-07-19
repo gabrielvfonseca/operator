@@ -2,7 +2,7 @@
 summary: "DeepSeek setup (auth + model selection)"
 title: "DeepSeek"
 read_when:
-  - You want to use DeepSeek with OpenClaw
+  - You want to use DeepSeek with Operator
   - You need the API key env var or CLI auth choice
 ---
 
@@ -20,8 +20,8 @@ read_when:
 Install the official plugin, then restart Gateway:
 
 ```bash
-openclaw plugins install @operator/deepseek-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/deepseek-provider
+operator gateway restart
 ```
 
 ## Getting started
@@ -32,7 +32,7 @@ openclaw gateway restart
   </Step>
   <Step title="Run onboarding">
     ```bash
-    openclaw onboard --auth-choice deepseek-api-key
+    operator onboard --auth-choice deepseek-api-key
     ```
 
     Prompts for your API key and sets `deepseek/deepseek-v4-flash` as the default model.
@@ -40,13 +40,13 @@ openclaw gateway restart
   </Step>
   <Step title="Verify models are available">
     ```bash
-    openclaw models list --provider deepseek
+    operator models list --provider deepseek
     ```
 
     To inspect the plugin's static catalog without a running Gateway:
 
     ```bash
-    openclaw models list --all --provider deepseek
+    operator models list --all --provider deepseek
     ```
 
   </Step>
@@ -57,7 +57,7 @@ openclaw gateway restart
     For scripted or headless installations, pass all flags directly:
 
     ```bash
-    openclaw onboard --non-interactive \
+    operator onboard --non-interactive \
       --mode local \
       --auth-choice deepseek-api-key \
       --deepseek-api-key "$DEEPSEEK_API_KEY" \
@@ -70,7 +70,7 @@ openclaw gateway restart
 
 <Warning>
 If Gateway runs as a daemon (launchd/systemd), make sure `DEEPSEEK_API_KEY` is
-available to that process (for example, in `~/.openclaw/.env` or via
+available to that process (for example, in `~/.operator/.env` or via
 `env.shellEnv`).
 </Warning>
 
@@ -90,13 +90,13 @@ thinking mode, respectively. Move configured model refs to
 `deepseek/deepseek-v4-flash` or `deepseek/deepseek-v4-pro` before the cutoff.
 </Warning>
 
-OpenClaw's local cost estimates follow DeepSeek's published cache-hit,
+Operator's local cost estimates follow DeepSeek's published cache-hit,
 cache-miss, and output rates. DeepSeek can change those rates; its
 [Models & Pricing](https://api-docs.deepseek.com/quick_start/pricing/) page is
 authoritative for billing.
 
 <Tip>
-V4 models support DeepSeek's `thinking` control. OpenClaw also replays
+V4 models support DeepSeek's `thinking` control. Operator also replays
 DeepSeek `reasoning_content` on follow-up turns so thinking sessions with tool
 calls can continue.
 Use `/think xhigh` or `/think max` with DeepSeek V4 models to request DeepSeek's
@@ -107,13 +107,13 @@ maximum `reasoning_effort`; both map to `"max"`.
 
 DeepSeek V4 thinking sessions require replayed assistant messages from a
 thinking-enabled turn to include `reasoning_content` on follow-up requests.
-OpenClaw's DeepSeek plugin backfills that field automatically, so normal
+Operator's DeepSeek plugin backfills that field automatically, so normal
 multi-turn tool use works on `deepseek/deepseek-v4-flash` and
 `deepseek/deepseek-v4-pro` even when history came from another
 OpenAI-compatible provider (no native `reasoning_content`) or from a plain
 assistant message. No `/new` required after switching providers mid-session.
 
-When thinking is disabled (including the UI **None** selection), OpenClaw
+When thinking is disabled (including the UI **None** selection), Operator
 sends `thinking: { type: "disabled" }` and strips replayed `reasoning_content`
 from outgoing history, keeping the session on the non-thinking DeepSeek path.
 
@@ -126,8 +126,8 @@ cost or latency.
 To run only the DeepSeek V4 direct-model checks from the modern model live suite:
 
 ```bash
-OPENCLAW_LIVE_PROVIDERS=deepseek \
-OPENCLAW_LIVE_MODELS="deepseek/deepseek-v4-flash,deepseek/deepseek-v4-pro" \
+OPERATOR_LIVE_PROVIDERS=deepseek \
+OPERATOR_LIVE_MODELS="deepseek/deepseek-v4-flash,deepseek/deepseek-v4-pro" \
 pnpm test:live src/agents/models.profiles.live.test.ts
 ```
 

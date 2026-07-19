@@ -13,8 +13,8 @@ import {
   type ChannelSetupWizard,
   type DmPolicy,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   checkZcaAuthenticated,
   listZalouserAccountIds,

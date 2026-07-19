@@ -3,7 +3,7 @@ name: coding-agent
 description: "Delegate coding work to Codex, Claude Code, or OpenCode as background workers; not simple edits or read-only code lookup."
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "🧩",
         "requires":
@@ -34,7 +34,7 @@ metadata:
 
 # Coding Agent
 
-Use for background feature builds, PR reviews, large refactors, and issue-to-PR loops. Do not use for simple edits, read-only lookup, ACP thread-bound work, or any run inside `~/.openclaw`, `$OPENCLAW_STATE_DIR`, or active OpenClaw state dirs.
+Use for background feature builds, PR reviews, large refactors, and issue-to-PR loops. Do not use for simple edits, read-only lookup, ACP thread-bound work, or any run inside `~/.operator`, `$OPERATOR_STATE_DIR`, or active Operator state dirs.
 
 ## Hard rules
 
@@ -42,7 +42,7 @@ Use for background feature builds, PR reviews, large refactors, and issue-to-PR 
 - Codex and OpenCode: use `pty:true`.
 - Claude Code: no PTY; use `claude --permission-mode bypassPermissions --print`.
 - Capture a real notification route before spawning.
-- Worker must send completion/failure via `openclaw message send`.
+- Worker must send completion/failure via `operator message send`.
 - Do not rely on heartbeat, system events, or notify-on-exit.
 - Monitor with `process`; do not kill slow workers without cause.
 - If user asked for a specific agent, use that agent.
@@ -60,7 +60,7 @@ Before launching Codex, Claude Code, or OpenCode for work that modifies a Git-ba
 3. For trusted new work, run `git fetch --prune <canonical>` immediately before creating a new isolated worktree and branch from `<canonical>/<targetBaseBranch>`.
 4. For trusted new work, verify the worktree's initial `HEAD` equals the fetched target-base SHA. Record the canonical remote, canonical default branch, target base branch, base SHA, worktree path, and branch.
 5. For a trusted existing PR or shared branch, fetch the canonical target base and source branch immediately before creating an isolated worktree from the fetched source branch. Record that source ref and starting SHA, report its divergence from the refreshed target base, and do not automatically rebase, merge, reset, force-push, or otherwise rewrite shared history.
-6. Launch the worker in the isolated worktree, never the primary checkout. For OpenClaw, the primary checkout under `~/Projects/openclaw` remains forbidden.
+6. Launch the worker in the isolated worktree, never the primary checkout. For Operator, the primary checkout under `~/Projects/openclaw` remains forbidden.
 
 For tasks that modify a Git-backed project, append this block to the worker prompt with real values:
 
@@ -97,9 +97,9 @@ Notification route:
 - thread_id: <notifyThreadId or omit>
 
 When finished, send exactly one completion or failure message using:
-openclaw message send --channel <channel> --target '<target>' --message '<brief result>'
+operator message send --channel <channel> --target '<target>' --message '<brief result>'
 Add --account, --reply-to, or --thread-id only when present above.
-Do not use openclaw system event or heartbeat.
+Do not use operator system event or heartbeat.
 ```
 
 If no trustworthy route exists, say completion auto-notify is unavailable.
@@ -109,7 +109,7 @@ If no trustworthy route exists, say completion auto-notify is unavailable.
 Write the worker prompt to a temp file first. This avoids shell quoting bugs when the required notification block contains quotes or newlines.
 
 ```bash
-PROMPT=$(mktemp -t openclaw-worker-prompt.XXXXXX)
+PROMPT=$(mktemp -t operator-worker-prompt.XXXXXX)
 cat >"$PROMPT" <<'EOF'
 Task.
 <mandatory Git preparation block>
@@ -153,7 +153,7 @@ Codex needs a trusted git repo. This throwaway scaffold is not project work and 
 ```bash
 SCRATCH=$(mktemp -d)
 git -C "$SCRATCH" init
-PROMPT=$(mktemp -t openclaw-worker-prompt.XXXXXX)
+PROMPT=$(mktemp -t operator-worker-prompt.XXXXXX)
 cat >"$PROMPT" <<'EOF'
 Build X.
 <notification block>

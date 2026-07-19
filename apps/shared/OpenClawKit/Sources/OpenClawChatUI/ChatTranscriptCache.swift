@@ -5,15 +5,15 @@ import SQLite3
 import UIKit
 #endif
 
-private let cacheLogger = Logger(subsystem: "ai.openclaw", category: "OpenClawChatTranscriptCache")
+private let cacheLogger = Logger(subsystem: "ai.operator", category: "OperatorChatTranscriptCache")
 
 private final class OutboxChangeHub: @unchecked Sendable {
     private let lock = NSLock()
-    private var continuations: [UUID: AsyncStream<OpenClawChatOutboxChange>.Continuation] = [:]
+    private var continuations: [UUID: AsyncStream<OperatorChatOutboxChange>.Continuation] = [:]
 
-    func stream() -> AsyncStream<OpenClawChatOutboxChange> {
+    func stream() -> AsyncStream<OperatorChatOutboxChange> {
         let id = UUID()
-        let pair = AsyncStream<OpenClawChatOutboxChange>.makeStream()
+        let pair = AsyncStream<OperatorChatOutboxChange>.makeStream()
         self.lock.lock()
         self.continuations[id] = pair.continuation
         self.lock.unlock()
@@ -23,7 +23,7 @@ private final class OutboxChangeHub: @unchecked Sendable {
         return pair.stream
     }
 
-    func yield(_ change: OpenClawChatOutboxChange) {
+    func yield(_ change: OperatorChatOutboxChange) {
         self.lock.lock()
         let continuations = Array(self.continuations.values)
         self.lock.unlock()
@@ -90,9 +90,9 @@ private final class CanonicalMessageProofHub: @unchecked Sendable {
 /// Transcript rows are disposable, but the command outbox is persistent user
 /// state. Schema upgrades migrate the shared database; unknown or corrupt
 /// existing schemas fail closed without deleting queued commands.
-public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
-    OpenClawChatCanonicalTranscriptMerging,
-    OpenClawChatCommandOutbox
+public actor OperatorChatSQLiteTranscriptCache: OperatorChatTranscriptCache,
+    OperatorChatCanonicalTranscriptMerging,
+    OperatorChatCommandOutbox
 {
     /// Bounds keep the cache small: enough for a recently-used session picker
     /// and a full first screen of transcript, not a durable archive.
@@ -190,7 +190,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     /// before constructing a view model. Runtime writes stay actor-isolated.
     public nonisolated static func loadSessionRoutingIdentity(
         databaseURL: URL,
-        gatewayID: String) -> OpenClawChatSessionRoutingIdentity?
+        gatewayID: String) -> OperatorChatSessionRoutingIdentity?
     {
         var db: OpaquePointer?
         guard sqlite3_open_v2(databaseURL.path, &db, SQLITE_OPEN_READONLY | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK,
@@ -214,7 +214,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
               let mainSessionKey = sqlite3_column_text(statement, 1),
               let defaultAgentID = sqlite3_column_text(statement, 2)
         else { return nil }
-        return OpenClawChatSessionRoutingIdentity(
+        return OperatorChatSessionRoutingIdentity(
             scope: String(cString: scope),
             mainSessionKey: String(cString: mainSessionKey),
             defaultAgentID: String(cString: defaultAgentID))
@@ -229,9 +229,9 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
         }
     }
 
-    // MARK: - OpenClawChatTranscriptCache
+    // MARK: - OperatorChatTranscriptCache
 
-    public func loadSessions() async -> [OpenClawChatSessionEntry] {
+    public func loadSessions() async -> [OperatorChatSessionEntry] {
         guard !self.isRetired else { return [] }
         guard let db = await handle() else { return [] }
         guard let payload = selectPayload(
@@ -242,7 +242,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
             return []
         }
         guard let decoded = try? JSONDecoder().decode(
-            [OpenClawChatSessionEntry].self,
+            [OperatorChatSessionEntry].self,
             from: Data(payload.utf8))
         else {
             // Decode mismatch means a stale/foreign shape: drop the row silently.
@@ -252,11 +252,11 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
         return decoded
     }
 
-    public func loadTranscript(sessionKey: String) async -> [OpenClawChatMessage] {
+    public func loadTranscript(sessionKey: String) async -> [OperatorChatMessage] {
         await self.loadTranscript(sessionKey: sessionKey, agentID: nil)
     }
 
-    public func loadTranscript(sessionKey: String, agentID: String?) async -> [OpenClawChatMessage] {
+    public func loadTranscript(sessionKey: String, agentID: String?) async -> [OperatorChatMessage] {
         guard !self.isRetired else { return [] }
         guard let db = await handle() else { return [] }
         return self.readTranscript(db, sessionKey: sessionKey, agentID: agentID)
@@ -265,7 +265,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     private func readTranscript(
         _ db: OpaquePointer,
         sessionKey: String,
-        agentID: String?) -> [OpenClawChatMessage]
+        agentID: String?) -> [OperatorChatMessage]
     {
         let normalizedAgentID = Self.normalizedAgentID(agentID)
         guard let payload = selectPayload(
@@ -279,7 +279,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
             return []
         }
         guard let decoded = try? JSONDecoder().decode(
-            [OpenClawChatMessage].self,
+            [OperatorChatMessage].self,
             from: Data(payload.utf8))
         else {
             self.execute(
@@ -294,7 +294,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
         return decoded
     }
 
-    public func storeSessions(_ sessions: [OpenClawChatSessionEntry]) async {
+    public func storeSessions(_ sessions: [OperatorChatSessionEntry]) async {
         guard !self.isRetired else { return }
         guard let db = await handle() else { return }
         let bounded = Self.boundedSessions(sessions)
@@ -312,7 +312,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
             bindings: [self.gatewayID, payload, Date().timeIntervalSince1970])
     }
 
-    public func loadSessionRoutingIdentity() async -> OpenClawChatSessionRoutingIdentity? {
+    public func loadSessionRoutingIdentity() async -> OperatorChatSessionRoutingIdentity? {
         guard !self.isRetired, let db = await handle() else { return nil }
         var statement: OpaquePointer?
         let sql = """
@@ -327,13 +327,13 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
               let mainSessionKey = sqlite3_column_text(statement, 1),
               let defaultAgentID = sqlite3_column_text(statement, 2)
         else { return nil }
-        return OpenClawChatSessionRoutingIdentity(
+        return OperatorChatSessionRoutingIdentity(
             scope: String(cString: scope),
             mainSessionKey: String(cString: mainSessionKey),
             defaultAgentID: String(cString: defaultAgentID))
     }
 
-    public func storeSessionRoutingIdentity(_ identity: OpenClawChatSessionRoutingIdentity) async {
+    public func storeSessionRoutingIdentity(_ identity: OperatorChatSessionRoutingIdentity) async {
         guard !self.isRetired, let db = await handle() else { return }
         self.execute(
             db,
@@ -351,21 +351,21 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
             ])
     }
 
-    public func storeTranscript(sessionKey: String, messages: [OpenClawChatMessage]) async {
+    public func storeTranscript(sessionKey: String, messages: [OperatorChatMessage]) async {
         await self.storeTranscript(sessionKey: sessionKey, agentID: nil, messages: messages)
     }
 
     public func storeTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage]) async
+        messages: [OperatorChatMessage]) async
     {
         await self.writeTranscript(sessionKey: sessionKey, agentID: agentID, messages: messages)
     }
 
     public func storeCanonicalTranscript(
         sessionKey: String,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>) async
     {
         await self.storeCanonicalTranscript(
@@ -378,7 +378,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     public func storeCanonicalTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>) async
     {
         self.observeCanonicalMessageIdempotencyKeys(canonicalMessageIdempotencyKeys)
@@ -394,7 +394,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     public func mergeCanonicalTranscriptMessage(
         sessionKey: String,
         agentID: String?,
-        message: OpenClawChatMessage,
+        message: OperatorChatMessage,
         canonicalMessageIdempotencyKey: String) async
     {
         self.observeCanonicalMessageIdempotencyKeys([canonicalMessageIdempotencyKey])
@@ -431,7 +431,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     private func writeTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage]) async
+        messages: [OperatorChatMessage]) async
     {
         guard !self.isRetired else { return }
         guard let db = await handle() else { return }
@@ -442,7 +442,7 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
         _ db: OpaquePointer,
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage])
+        messages: [OperatorChatMessage])
     {
         let normalizedAgentID = Self.normalizedAgentID(agentID)
         let canceledKeys = self.canceledMessageKeysBySession[sessionKey] ?? []
@@ -492,14 +492,14 @@ public actor OpenClawChatSQLiteTranscriptCache: OpenClawChatTranscriptCache,
     }
 }
 
-extension OpenClawChatSQLiteTranscriptCache {
-    // MARK: - OpenClawChatCommandOutbox
+extension OperatorChatSQLiteTranscriptCache {
+    // MARK: - OperatorChatCommandOutbox
 
-    public nonisolated func changes() -> AsyncStream<OpenClawChatOutboxChange> {
+    public nonisolated func changes() -> AsyncStream<OperatorChatOutboxChange> {
         self.outboxChangeHub.stream()
     }
 
-    public func enqueueCommand(_ command: OpenClawChatOutboxCommand) async -> Bool {
+    public func enqueueCommand(_ command: OperatorChatOutboxCommand) async -> Bool {
         guard let attachmentByteCount = Self.attachmentByteCount(command.attachments),
               Self.canEnqueueAttachmentBytes(
                   commandBytes: attachmentByteCount,
@@ -561,11 +561,11 @@ extension OpenClawChatSQLiteTranscriptCache {
         return true
     }
 
-    public func loadCommands() async -> [OpenClawChatOutboxCommand] {
+    public func loadCommands() async -> [OperatorChatOutboxCommand] {
         await self.loadCommandsIfAvailable() ?? []
     }
 
-    public func loadCommandsIfAvailable() async -> [OpenClawChatOutboxCommand]? {
+    public func loadCommandsIfAvailable() async -> [OperatorChatOutboxCommand]? {
         guard !self.isRetired, let db = await handle() else { return nil }
         guard self.applyOutboxStaleness(db) else { return nil }
         return self.readCommands(db)
@@ -589,7 +589,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return recovered
     }
 
-    public func claimNextCommand() async -> OpenClawChatOutboxCommand? {
+    public func claimNextCommand() async -> OperatorChatOutboxCommand? {
         guard !self.isRetired, let db = await handle() else { return nil }
         guard self.execute(db, sql: "BEGIN IMMEDIATE", bindings: []) else { return nil }
         var committed = false
@@ -632,7 +632,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         await self.updateCommandStatus(id: id, status: "queued", retryCount: retryCount, lastError: lastError)
     }
 
-    public func markCommandAwaitingConfirmation(id: String) async -> OpenClawChatOutboxUpdateResult {
+    public func markCommandAwaitingConfirmation(id: String) async -> OperatorChatOutboxUpdateResult {
         guard !self.isRetired, let db = await handle() else {
             self.hasRecoveredInterruptedSends = false
             return .unavailable
@@ -656,7 +656,7 @@ extension OpenClawChatSQLiteTranscriptCache {
     public func markCommandFailedIfPresent(
         id: String,
         retryCount: Int,
-        lastError: String?) async -> OpenClawChatOutboxUpdateResult
+        lastError: String?) async -> OperatorChatOutboxUpdateResult
     {
         guard !self.isRetired, let db = await handle() else {
             self.hasRecoveredInterruptedSends = false
@@ -682,13 +682,13 @@ extension OpenClawChatSQLiteTranscriptCache {
         id: String,
         agentID: String?,
         deliverySessionKey: String,
-        routingContract: String) async -> OpenClawChatOutboxUpdateResult
+        routingContract: String) async -> OperatorChatOutboxUpdateResult
     {
         guard !self.isRetired, let db = await handle() else { return .unavailable }
         let normalizedAgentID = agentID?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? ""
         let normalizedDeliverySessionKey = deliverySessionKey.trimmingCharacters(in: .whitespacesAndNewlines)
         let normalizedRoutingContract = routingContract.trimmingCharacters(in: .whitespacesAndNewlines)
-        let allowsUntargetedAgent = normalizedRoutingContract == OpenClawChatOutboxCommand
+        let allowsUntargetedAgent = normalizedRoutingContract == OperatorChatOutboxCommand
             .legacyUnboundRoutingContract || normalizedDeliverySessionKey.lowercased() == "unknown"
         guard !normalizedAgentID.isEmpty || allowsUntargetedAgent,
               !normalizedDeliverySessionKey.isEmpty,
@@ -752,7 +752,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return committed ? .updated : .unavailable
     }
 
-    public func cancelCommand(id: String) async -> OpenClawChatOutboxUpdateResult {
+    public func cancelCommand(id: String) async -> OperatorChatOutboxUpdateResult {
         guard !self.isRetired, let db = await handle() else { return .unavailable }
         guard self.execute(db, sql: "BEGIN IMMEDIATE", bindings: []) else { return .unavailable }
         var committed = false
@@ -787,7 +787,7 @@ extension OpenClawChatSQLiteTranscriptCache {
             bindings: [self.gatewayID, id])
         else { return .unavailable }
         guard sqlite3_changes(db) > 0 else { return .unavailable }
-        let result: OpenClawChatOutboxUpdateResult
+        let result: OperatorChatOutboxUpdateResult
         do {
             let isProven = self.canonicalMessageProofHub.lockProofDecision(for: messageKey)
             defer { self.canonicalMessageProofHub.unlockProofDecision() }
@@ -820,7 +820,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return .updated
     }
 
-    public func confirmCommand(id: String) async -> OpenClawChatOutboxUpdateResult {
+    public func confirmCommand(id: String) async -> OperatorChatOutboxUpdateResult {
         guard !self.isRetired, let db = await handle() else { return .unavailable }
         guard self.execute(
             db,
@@ -832,7 +832,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return .updated
     }
 
-    private func emitOutboxChange(_ change: OpenClawChatOutboxChange) {
+    private func emitOutboxChange(_ change: OperatorChatOutboxChange) {
         self.outboxChangeHub.yield(change)
     }
 
@@ -876,18 +876,18 @@ extension OpenClawChatSQLiteTranscriptCache {
     }
 }
 
-extension OpenClawChatSQLiteTranscriptCache {
+extension OperatorChatSQLiteTranscriptCache {
     // MARK: - Cached shapes
 
     /// Text rows only in v1: strip attachment/binary payloads and tool
     /// arguments so the cache never persists base64 blobs or large payloads.
-    static func cacheableMessages(_ messages: [OpenClawChatMessage]) -> [OpenClawChatMessage] {
+    static func cacheableMessages(_ messages: [OperatorChatMessage]) -> [OperatorChatMessage] {
         messages.suffix(self.maxCachedMessagesPerSession).map { message in
-            OpenClawChatMessage(
+            OperatorChatMessage(
                 id: message.id,
                 role: message.role,
                 content: message.content.map { item in
-                    OpenClawChatMessageContent(
+                    OperatorChatMessageContent(
                         type: item.type,
                         text: item.text,
                         thinking: item.thinking,
@@ -910,7 +910,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         }
     }
 
-    static func boundedSessions(_ sessions: [OpenClawChatSessionEntry]) -> [OpenClawChatSessionEntry] {
+    static func boundedSessions(_ sessions: [OperatorChatSessionEntry]) -> [OperatorChatSessionEntry] {
         guard sessions.count > self.maxCachedSessions else { return sessions }
         return Array(
             sessions
@@ -934,7 +934,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return self.normalizedAgentID(agentID)
     }
 
-    private static func attachmentByteCount(_ attachments: [OpenClawChatOutboxAttachment]) -> Int? {
+    private static func attachmentByteCount(_ attachments: [OperatorChatOutboxAttachment]) -> Int? {
         var total = 0
         for attachment in attachments {
             let (next, overflow) = total.addingReportingOverflow(attachment.data.count)
@@ -1001,7 +1001,7 @@ extension OpenClawChatSQLiteTranscriptCache {
             return false
         }
         guard let decoded = try? JSONDecoder().decode(
-            [OpenClawChatMessage].self,
+            [OperatorChatMessage].self,
             from: Data(payload.utf8))
         else {
             return self.execute(
@@ -1397,7 +1397,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         return Int(sqlite3_column_int64(statement, 0))
     }
 
-    private func readCommands(_ db: OpaquePointer) -> [OpenClawChatOutboxCommand]? {
+    private func readCommands(_ db: OpaquePointer) -> [OperatorChatOutboxCommand]? {
         var statement: OpaquePointer?
         let sql = """
         SELECT client_uuid, session_key, delivery_session_key, routing_contract, agent_id,
@@ -1409,7 +1409,7 @@ extension OpenClawChatSQLiteTranscriptCache {
         defer { sqlite3_finalize(statement) }
         guard self.bind(statement, bindings: [self.gatewayID]) else { return nil }
 
-        var commands: [OpenClawChatOutboxCommand] = []
+        var commands: [OperatorChatOutboxCommand] = []
         var step = sqlite3_step(statement)
         while step == SQLITE_ROW {
             if let id = sqlite3_column_text(statement, 0),
@@ -1421,15 +1421,15 @@ extension OpenClawChatSQLiteTranscriptCache {
                 let agentID = sqlite3_column_text(statement, 4).map { String(cString: $0) }
                 let attachmentsPayload = sqlite3_column_text(statement, 6).map { String(cString: $0) } ?? "[]"
                 guard let attachments = try? JSONDecoder().decode(
-                    [OpenClawChatOutboxAttachment].self,
+                    [OperatorChatOutboxAttachment].self,
                     from: Data(attachmentsPayload.utf8))
                 else { return nil }
                 let thinking = sqlite3_column_text(statement, 7).map { String(cString: $0) } ?? ""
                 let statusRaw = sqlite3_column_text(statement, 9).map { String(cString: $0) } ?? ""
                 let lastError = sqlite3_column_text(statement, 11).map { String(cString: $0) } ?? ""
-                if let status = OpenClawChatOutboxCommand.Status(rawValue: statusRaw) {
+                if let status = OperatorChatOutboxCommand.Status(rawValue: statusRaw) {
                     commands.append(
-                        OpenClawChatOutboxCommand(
+                        OperatorChatOutboxCommand(
                             id: String(cString: id),
                             sessionKey: String(cString: sessionKey),
                             deliverySessionKey: deliverySessionKey,

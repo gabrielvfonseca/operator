@@ -1,4 +1,4 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 /** Shared Talk-mode timing defaults used by capture, parser, and UI fallback paths. */
 internal object TalkDefaults {

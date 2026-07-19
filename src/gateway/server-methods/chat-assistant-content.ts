@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   readPairingQrReplyChannelData,
   type ReplyPayload,

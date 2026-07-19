@@ -1,7 +1,7 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.i18n.NativeText
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.i18n.NativeText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -28,7 +28,7 @@ class SkillWorkshopAgentScopeRuntimeTest {
   fun clearPlainPrefs() {
     RuntimeEnvironment
       .getApplication()
-      .getSharedPreferences("openclaw.node", android.content.Context.MODE_PRIVATE)
+      .getSharedPreferences("operator.node", android.content.Context.MODE_PRIVATE)
       .edit()
       .clear()
       .commit()
@@ -193,7 +193,7 @@ class SkillWorkshopAgentScopeRuntimeTest {
     val app = RuntimeEnvironment.getApplication()
     val securePrefs =
       app.getSharedPreferences(
-        "openclaw.node.secure.test.${UUID.randomUUID()}",
+        "operator.node.secure.test.${UUID.randomUUID()}",
         android.content.Context.MODE_PRIVATE,
       )
     return NodeRuntime(app, SecurePrefs(app, securePrefsOverride = securePrefs))

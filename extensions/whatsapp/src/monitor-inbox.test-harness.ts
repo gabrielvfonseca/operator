@@ -3,7 +3,7 @@ import { EventEmitter } from "node:events";
 import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resetLogger, setLoggerOverride } from "openclaw/plugin-sdk/runtime-env";
+import { resetLogger, setLoggerOverride } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 import {
   loadConfigMock,
@@ -63,7 +63,7 @@ const pluginRuntimeMocks = vi.hoisted(() => {
   type StoreEntry = { key: string; value: unknown; createdAt: number };
   const stores = new Map<string, Map<string, StoreEntry>>();
   let nextRegisterIfAbsentError: Error | undefined;
-  let stateDir = `/tmp/openclaw-whatsapp-ingress-${Date.now()}-${Math.random()}`;
+  let stateDir = `/tmp/operator-whatsapp-ingress-${Date.now()}-${Math.random()}`;
 
   const openKeyedStore = vi.fn((options: { namespace: string }) => {
     let store = stores.get(options.namespace);
@@ -111,7 +111,7 @@ const pluginRuntimeMocks = vi.hoisted(() => {
       stores.clear();
       nextRegisterIfAbsentError = undefined;
       openKeyedStore.mockClear();
-      stateDir = `/tmp/openclaw-whatsapp-ingress-${Date.now()}-${Math.random()}`;
+      stateDir = `/tmp/operator-whatsapp-ingress-${Date.now()}-${Math.random()}`;
     },
   };
 });
@@ -404,7 +404,7 @@ export function installWebMonitorInboxUnitTestHooks(opts?: { authDir?: boolean }
     }
     resetWebInboundDedupe();
     if (createAuthDir) {
-      authDir = fsSync.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-"));
+      authDir = fsSync.mkdtempSync(path.join(os.tmpdir(), "operator-auth-"));
     } else {
       authDir = undefined;
     }

@@ -1,7 +1,7 @@
 // Renders chat canvas payloads into text and metadata for transcript output.
-import { expectDefined, safeParseJson } from "@operator/normalization-core";
-import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { expectDefined, safeParseJson } from "@gabrielvfonseca/normalization-core";
+import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { parseFenceSpans } from "../../packages/markdown-core/src/fences.js";
 
 // Extracts assistant-message canvas previews from tool JSON or markdown embed

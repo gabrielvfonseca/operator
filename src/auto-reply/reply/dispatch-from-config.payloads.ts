@@ -1,6 +1,6 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { RUN_STALE_TAKEOVER_MS } from "../../logging/diagnostic-run-activity.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
 import { shouldAttemptTtsPayload } from "../../tts/tts-config.js";

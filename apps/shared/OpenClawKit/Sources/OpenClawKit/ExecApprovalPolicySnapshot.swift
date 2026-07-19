@@ -1,7 +1,7 @@
 import Foundation
 
 /// Canonical persisted-policy snapshot carried with delayed exec authority.
-public struct OpenClawSystemRunApprovalPolicySnapshot: Codable, Sendable, Equatable {
+public struct OperatorSystemRunApprovalPolicySnapshot: Codable, Sendable, Equatable {
     public enum Security: String, Codable, Sendable, Hashable {
         case deny
         case allowlist

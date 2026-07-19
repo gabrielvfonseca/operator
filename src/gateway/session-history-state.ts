@@ -1,6 +1,6 @@
 // Gateway session-history projection state.
 // Tracks transcript sequence windows for paginated chat-history SSE updates.
-import { asPositiveSafeInteger } from "@operator/normalization-core/number-coercion";
+import { asPositiveSafeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   DEFAULT_CHAT_HISTORY_TEXT_MAX_CHARS,
   projectChatDisplayMessages,
@@ -23,7 +23,7 @@ type SessionHistoryTranscriptMeta = {
 };
 
 type SessionHistoryMessage = Record<string, unknown> & {
-  __operator?: SessionHistoryTranscriptMeta;
+  __openclaw?: SessionHistoryTranscriptMeta;
 };
 
 type PaginatedSessionHistory = {
@@ -114,7 +114,7 @@ function buildPaginatedSessionHistory(params: {
 }
 
 function resolveMessageSeq(message: SessionHistoryMessage | undefined): number | undefined {
-  return asPositiveSafeInteger(message?.["__operator"]?.seq);
+  return asPositiveSafeInteger(message?.["__openclaw"]?.seq);
 }
 
 function isMessageToolMirrorMessage(message: SessionHistoryMessage): boolean {

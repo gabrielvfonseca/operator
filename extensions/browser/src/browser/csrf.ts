@@ -1,3 +1,4 @@
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 /**
  * Browser mutation CSRF guard.
  *
@@ -5,7 +6,6 @@
  * contexts while allowing CLI, Gateway, and local service clients.
  */
 import type { NextFunction, Request, Response } from "express";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { isLoopbackHost } from "../gateway/net.js";
 
 function firstHeader(value: string | string[] | undefined): string {

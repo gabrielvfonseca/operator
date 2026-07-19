@@ -1,24 +1,24 @@
 // Imessage API module exposes the plugin public contract.
-import type { OperatorConfig as RuntimeApiOperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig as RuntimeApiOperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export {
   DEFAULT_ACCOUNT_ID,
   getChatChannelMeta,
   type ChannelPlugin,
-} from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
 export { buildChannelConfigSchema, IMessageConfigSchema } from "./config-api.js";
-export { PAIRING_APPROVED_MESSAGE } from "openclaw/plugin-sdk/channel-status";
+export { PAIRING_APPROVED_MESSAGE } from "@gabrielvfonseca/operator/plugin-sdk/channel-status";
 export {
   buildComputedAccountStatusSnapshot,
   collectStatusIssuesFromLastError,
-} from "openclaw/plugin-sdk/status-helpers";
-export { formatTrimmedAllowFromEntries } from "openclaw/plugin-sdk/channel-config-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+export { formatTrimmedAllowFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 export {
   resolveIMessageConfigAllowFrom,
   resolveIMessageConfigDefaultTo,
 } from "./src/config-accessors.js";
 export { looksLikeIMessageTargetId, normalizeIMessageMessagingTarget } from "./src/normalize.js";
-export { resolveChannelMediaMaxBytes } from "openclaw/plugin-sdk/media-runtime";
+export { resolveChannelMediaMaxBytes } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 export {
   resolveIMessageGroupRequireMention,
   resolveIMessageGroupToolPolicy,

@@ -23,10 +23,10 @@ function createFleetService(options: FleetServiceOptions = {}) {
 
 function fleetLabels(tenant = "acme", attemptId = TEST_ATTEMPT_ID): Record<string, string> {
   return {
-    "openclaw.fleet.tenant": tenant,
-    "openclaw.fleet.owner": cellOwnerId(path.join(root, "fleet", "cells", tenant)),
-    "openclaw.fleet.attempt": attemptId,
-    "openclaw.fleet.env-keys": "FEATURE",
+    "operator.fleet.tenant": tenant,
+    "operator.fleet.owner": cellOwnerId(path.join(root, "fleet", "cells", tenant)),
+    "operator.fleet.attempt": attemptId,
+    "operator.fleet.env-keys": "FEATURE",
   };
 }
 
@@ -162,7 +162,7 @@ function createContainerMock(
 describe("fleet service filesystem and removal", () => {
   let env: NodeJS.ProcessEnv;
 
-  const tempRoot = createSuiteTempRootTracker({ prefix: "openclaw-fleet-service-" });
+  const tempRoot = createSuiteTempRootTracker({ prefix: "operator-fleet-service-" });
 
   beforeEach(async () => {
     root = await tempRoot.setup();
@@ -215,9 +215,9 @@ describe("fleet service filesystem and removal", () => {
     reserveFleetCell(env, {
       tenantId: "escape",
       createdAtMs: 1000,
-      image: "ghcr.io/openclaw/openclaw:latest",
+      image: "ghcr.io/openclaw/operator:latest",
       runtime: "docker",
-      containerName: "openclaw-cell-escape",
+      containerName: "operator-cell-escape",
       dataDir: outside,
     });
     const service = createFleetService({ env, containers: containers.runtime });
@@ -246,7 +246,7 @@ describe("fleet service filesystem and removal", () => {
     );
 
     expect(containers.inspect).not.toHaveBeenCalled();
-    await expect(fs.stat(path.join(betaDir, "openclaw.json"))).resolves.toBeDefined();
+    await expect(fs.stat(path.join(betaDir, "operator.json"))).resolves.toBeDefined();
     expect(getFleetCell(env, "acme")).toBeDefined();
   });
 
@@ -257,11 +257,11 @@ describe("fleet service filesystem and removal", () => {
     await service.create({ tenant: "beta", gatewayToken: "token" });
     containers.inspect.mockResolvedValue(runningInspection({ state: "exited", running: false }));
     await service.remove({ tenant: "acme" });
-    const acmeConfig = path.join(root, "fleet", "cells", "acme", "openclaw.json");
-    const betaConfig = path.join(root, "fleet", "cells", "beta", "openclaw.json");
+    const acmeConfig = path.join(root, "fleet", "cells", "acme", "operator.json");
+    const betaConfig = path.join(root, "fleet", "cells", "beta", "operator.json");
     const betaBefore = await fs.readFile(betaConfig, "utf8");
     await fs.rm(acmeConfig);
-    await fs.symlink("../beta/openclaw.json", acmeConfig);
+    await fs.symlink("../beta/operator.json", acmeConfig);
     const runCount = containers.run.mock.calls.length;
     containers.inspect.mockResolvedValue(runningInspection({ state: "created", running: false }));
     const retryService = createFleetService({
@@ -276,7 +276,7 @@ describe("fleet service filesystem and removal", () => {
     );
 
     expect(containers.run).toHaveBeenCalledTimes(runCount + 1);
-    expect(containers.remove).toHaveBeenCalledWith("docker", "openclaw-cell-acme", true);
+    expect(containers.remove).toHaveBeenCalledWith("docker", "operator-cell-acme", true);
     expect(getFleetCell(env, "acme")).toBeUndefined();
     await expect(fs.readFile(betaConfig, "utf8")).resolves.toBe(betaBefore);
   });
@@ -287,7 +287,7 @@ describe("fleet service filesystem and removal", () => {
     await service.create({ tenant: "acme", gatewayToken: "token" });
     containers.inspect.mockResolvedValue(runningInspection({ state: "exited", running: false }));
     await service.remove({ tenant: "acme" });
-    const configPath = path.join(root, "fleet", "cells", "acme", "openclaw.json");
+    const configPath = path.join(root, "fleet", "cells", "acme", "operator.json");
     const configBefore = await fs.readFile(configPath, "utf8");
     const runCount = containers.run.mock.calls.length;
 
@@ -310,8 +310,8 @@ describe("fleet service filesystem and removal", () => {
       { tenant: "acme", action: "rm", dataPurged: true },
     );
 
-    expect(containers.remove).toHaveBeenCalledWith("docker", "openclaw-cell-acme", true);
-    expect(containers.removeNetwork).toHaveBeenCalledWith("docker", "openclaw-cell-acme-net");
+    expect(containers.remove).toHaveBeenCalledWith("docker", "operator-cell-acme", true);
+    expect(containers.removeNetwork).toHaveBeenCalledWith("docker", "operator-cell-acme-net");
     expect(getFleetCell(env, "acme")).toBeUndefined();
     await expect(fs.stat(path.join(root, "fleet", "cells", "acme"))).rejects.toMatchObject({
       code: "ENOENT",
@@ -329,7 +329,7 @@ describe("fleet service filesystem and removal", () => {
 
     await service.remove({ tenant: "acme", force: true });
 
-    expect(containers.remove).toHaveBeenCalledWith("docker", "openclaw-cell-acme", true);
+    expect(containers.remove).toHaveBeenCalledWith("docker", "operator-cell-acme", true);
   });
 
   it("retains state when network removal fails and completes on retry", async () => {
@@ -376,7 +376,7 @@ describe("fleet service filesystem and removal", () => {
       kind: "ok",
       labels: {
         ...fleetLabels(),
-        "openclaw.fleet.owner": "11111111111111111111111111111111",
+        "operator.fleet.owner": "11111111111111111111111111111111",
       },
       attachedContainers: [],
       internal: false,

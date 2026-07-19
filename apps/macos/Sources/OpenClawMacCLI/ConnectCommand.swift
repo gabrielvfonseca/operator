@@ -1,8 +1,8 @@
 import CryptoKit
 import Foundation
-import OpenClawDiscovery
-import OpenClawKit
-import OpenClawProtocol
+import OperatorDiscovery
+import OperatorKit
+import OperatorProtocol
 
 struct ConnectOptions {
     var url: String?
@@ -12,7 +12,7 @@ struct ConnectOptions {
     var timeoutMs: Int = 15000
     var json: Bool = false
     var probe: Bool = false
-    var clientId: String = "openclaw-macos"
+    var clientId: String = "operator-macos"
     var clientMode: String = "ui"
     var displayName: String?
     var role: String = "operator"
@@ -137,10 +137,10 @@ func runConnect(_ args: [String]) async {
     let opts = ConnectOptions.parse(args)
     if opts.help {
         print("""
-        openclaw-mac connect
+        operator-mac connect
 
         Usage:
-          openclaw-mac connect [--url <ws://host:port>] [--token <token>] [--password <password>]
+          operator-mac connect [--url <ws://host:port>] [--token <token>] [--password <password>]
                                [--mode <local|remote>] [--timeout <ms>] [--probe] [--json]
                                [--client-id <id>] [--client-mode <mode>] [--display-name <name>]
                                [--role <role>] [--scopes <a,b,c>]
@@ -153,7 +153,7 @@ func runConnect(_ args: [String]) async {
           --timeout <ms>     Request timeout (default: 15000)
           --probe            Force a fresh health probe
           --json             Emit JSON
-          --client-id <id>   Override client id (default: openclaw-macos)
+          --client-id <id>   Override client id (default: operator-macos)
           --client-mode <m>  Override client mode (default: ui)
           --display-name <n> Override display name
           --role <role>      Override role (default: operator)
@@ -166,7 +166,7 @@ func runConnect(_ args: [String]) async {
     let config = loadGatewayConfig()
     do {
         let endpoint = try resolveGatewayEndpoint(opts: opts, config: config)
-        let displayName = opts.displayName ?? Host.current().localizedName ?? "OpenClaw macOS Debug CLI"
+        let displayName = opts.displayName ?? Host.current().localizedName ?? "Operator macOS Debug CLI"
         let connectOptions = makeGatewayConnectOptions(
             opts: opts,
             endpoint: endpoint,
@@ -241,7 +241,7 @@ private func printConnectOutput(_ output: ConnectOutput, json: Bool) {
         return
     }
 
-    print("OpenClaw macOS Gateway Connect")
+    print("Operator macOS Gateway Connect")
     print("Status: \(output.status)")
     print("URL: \(output.url)")
     print("Mode: \(output.mode)")
@@ -403,7 +403,7 @@ func gatewayURLDeviceAuthOwner(_ url: URL, mode: String) -> String {
     let route = "\(mode.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())|\(endpoint)"
     let digest = SHA256.hash(data: Data(route.utf8))
     let fingerprint = digest.map { String(format: "%02x", $0) }.joined()
-    return "openclaw-mac-cli:route:\(fingerprint)"
+    return "operator-mac-cli:route:\(fingerprint)"
 }
 
 private func isSensitiveGatewayQueryItem(_ value: String) -> Bool {

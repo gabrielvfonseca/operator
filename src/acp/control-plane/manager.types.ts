@@ -7,7 +7,7 @@ import type {
   AcpRuntimePromptMode,
   AcpRuntimeSessionMode,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 import type {
   SessionAcpIdentity,
   AcpSessionRuntimeOptions,

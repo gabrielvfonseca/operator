@@ -1,11 +1,11 @@
-// Telegram helper module supports body helpers behavior.
-import type { Chat, Message, MessageOrigin, User } from "grammy/types";
-import type { NormalizedLocation } from "openclaw/plugin-sdk/channel-inbound";
+import type { NormalizedLocation } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Telegram helper module supports body helpers behavior.
+import type { Chat, Message, MessageOrigin, User } from "grammy/types";
 import { telegramHtmlToPlainTextFallback } from "../format.js";
 
 type TelegramMediaMessage = Pick<

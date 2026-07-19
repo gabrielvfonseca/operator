@@ -7,7 +7,7 @@
  */
 import { describe, expect, it, vi } from "vitest";
 import { getRuntimeAuthProfileStoreCredentialsRevision } from "../agents/auth-profiles/runtime-snapshots.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { GatewayPluginReloadResult } from "./server-reload-handlers.js";
 import { startManagedGatewayConfigReloader } from "./server-reload-handlers.js";
 
@@ -35,7 +35,7 @@ describe("startManagedGatewayConfigReloader hotReloadStatus plumbing", () => {
       initialConfig,
       initialCompareConfig: initialConfig,
       initialInternalWriteHash: null,
-      watchPath: "/tmp/openclaw.json",
+      watchPath: "/tmp/operator.json",
       readSnapshot: vi.fn() as never,
       promoteSnapshot: vi.fn(async () => true) as never,
       subscribeToWrites: vi.fn(() => () => {}) as never,

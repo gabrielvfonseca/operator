@@ -1,8 +1,8 @@
 import AppKit
 import Foundation
 import Observation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 import SwiftUI
 
 struct PostAppUpdateReceipt: Codable, Equatable {
@@ -199,7 +199,7 @@ final class PostUpdateModel {
     }
 
     var phase: Phase = .checking
-    var title = String(localized: "Finishing your OpenClaw update")
+    var title = String(localized: "Finishing your Operator update")
     var message = String(localized: "Checking the Mac app and Gateway…")
     var details: String?
 
@@ -210,7 +210,7 @@ final class PostUpdateModel {
         }
     }
 
-    var mood: OpenClawMascotMood {
+    var mood: OperatorMascotMood {
         switch self.phase {
         case .checking, .updating, .verifying, .notifying: .working
         case .complete: .celebrating
@@ -257,7 +257,7 @@ enum PostUpdateNotificationOutcome: Equatable {
 @MainActor
 final class PostUpdateController: NSObject, NSWindowDelegate {
     static let shared = PostUpdateController()
-    static let updateGuideURL = URL(string: "https://docs.openclaw.ai/install/updating")!
+    static let updateGuideURL = URL(string: "https://docs.operator.ai/install/updating")!
     static let discordURL = URL(string: "https://discord.gg/clawd")!
 
     private let model = PostUpdateModel()
@@ -308,7 +308,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
         }
         let hosting = NSHostingController(rootView: PostUpdateView(model: model))
         let window = NSWindow(contentViewController: hosting)
-        window.title = String(localized: "OpenClaw updated")
+        window.title = String(localized: "Operator updated")
         window.setContentSize(NSSize(width: 560, height: 600))
         window.styleMask = OnboardingController.windowStyleMask
         window.contentMinSize = NSSize(width: 560, height: 600)
@@ -327,7 +327,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
     private func run() {
         guard let receipt, task == nil else { return }
         self.model.phase = .checking
-        self.model.title = String(localized: "Finishing your OpenClaw update")
+        self.model.title = String(localized: "Finishing your Operator update")
         self.model.message = String(localized: "Checking the Mac app and Gateway…")
         self.model.details = nil
         self.window?.standardWindowButton(.closeButton)?.isEnabled = false
@@ -385,7 +385,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
         let ownsManagedRuntime = Self.ownsManagedRuntime(
             connectionMode: connectionMode,
             programArguments: runtimeProgramArguments,
-            gatewayUpdateChannel: OpenClawConfigFile.gatewayUpdateChannel(),
+            gatewayUpdateChannel: OperatorConfigFile.gatewayUpdateChannel(),
             installPolicy: CLIInstallPolicy.storedPolicy(),
             launchAgentWriteDisabled: GatewayLaunchAgentManager.isLaunchAgentWriteDisabled())
         let restartGateway = connectionMode == .local && !AppStateStore.shared.isPaused
@@ -437,7 +437,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
             guard installed else {
                 self.fail(
                     message: String(localized: "Gateway recovery failed."),
-                    details: String(localized: "The managed OpenClaw runtime could not be reinstalled."))
+                    details: String(localized: "The managed Operator runtime could not be reinstalled."))
                 return
             }
         }
@@ -493,36 +493,36 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
         self.model.phase = .complete
         self.model.title = String(localized: "Welcome back")
         self.model.message = connectionMode == .local
-            ? String(localized: "OpenClaw \(receipt.toVersion) and its Gateway are ready.")
-            : String(localized: "OpenClaw \(receipt.toVersion) and its Mac node runtime are ready.")
+            ? String(localized: "Operator \(receipt.toVersion) and its Gateway are ready.")
+            : String(localized: "Operator \(receipt.toVersion) and its Mac node runtime are ready.")
         self.model.details = switch (notification, notificationRetryScheduled) {
         case (.retryLater, true):
-            String(localized: "Your agent could not be notified yet. OpenClaw will retry after the next app launch.")
+            String(localized: "Your agent could not be notified yet. Operator will retry after the next app launch.")
         case (.retryLater, false):
             if connectionMode == .local {
                 String(
                     localized: """
-                    OpenClaw could not notify your agent automatically. \
+                    Operator could not notify your agent automatically. \
                     The app and Gateway update are complete.
                     """)
             } else {
                 String(
                     localized: """
-                    OpenClaw could not notify your agent automatically. \
+                    Operator could not notify your agent automatically. \
                     The app and Mac node update are complete.
                     """)
             }
         case (.deliveryUnconfirmed, _):
             String(
                 localized: """
-                OpenClaw could not confirm the agent notification. \
+                Operator could not confirm the agent notification. \
                 It will not retry, to avoid a duplicate welcome.
                 """)
         case (.skippedUnsupportedGateway, _):
             String(
-                localized: "The remote Gateway is older than this Mac app, so OpenClaw skipped the agent notification.")
+                localized: "The remote Gateway is older than this Mac app, so Operator skipped the agent notification.")
         case (.skippedWhilePaused, _):
-            String(localized: "The Gateway remains paused, so OpenClaw did not wake your agent.")
+            String(localized: "The Gateway remains paused, so Operator did not wake your agent.")
         default:
             nil
         }
@@ -590,7 +590,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
             self.fail(
                 message: String(localized: "The Gateway could not reconnect."),
                 details: String(
-                    localized: "OpenClaw installed the update but could not verify the Gateway connection."))
+                    localized: "Operator installed the update but could not verify the Gateway connection."))
             return false
         }
         return true
@@ -618,16 +618,16 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
         let session: PostUpdateSession
         do {
             guard let selected = try await Self.preferredNotificationSession(loadPage: { offset in
-                var params: [String: OpenClawKit.AnyCodable] = [
-                    "limit": OpenClawKit.AnyCodable(100),
-                    "includeGlobal": OpenClawKit.AnyCodable(false),
-                    "includeUnknown": OpenClawKit.AnyCodable(false),
-                    "configuredAgentsOnly": OpenClawKit.AnyCodable(true),
-                    "requireLastInteraction": OpenClawKit.AnyCodable(true),
-                    "sortBy": OpenClawKit.AnyCodable("lastInteractionAt"),
+                var params: [String: OperatorKit.AnyCodable] = [
+                    "limit": OperatorKit.AnyCodable(100),
+                    "includeGlobal": OperatorKit.AnyCodable(false),
+                    "includeUnknown": OperatorKit.AnyCodable(false),
+                    "configuredAgentsOnly": OperatorKit.AnyCodable(true),
+                    "requireLastInteraction": OperatorKit.AnyCodable(true),
+                    "sortBy": OperatorKit.AnyCodable("lastInteractionAt"),
                 ]
                 if offset > 0 {
-                    params["offset"] = OpenClawKit.AnyCodable(offset)
+                    params["offset"] = OperatorKit.AnyCodable(offset)
                 }
                 let data = try await GatewayConnection.shared.request(
                     method: "sessions.list",
@@ -642,7 +642,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
         }
 
         let text =
-            "OpenClaw updated to \(version). Briefly welcome the user back and say you are updated, " +
+            "Operator updated to \(version). Briefly welcome the user back and say you are updated, " +
             "then continue normally."
         self.receipt = PostAppUpdateReceiptStore.setNotificationInFlight(
             true,
@@ -651,9 +651,9 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
             _ = try await GatewayConnection.shared.request(
                 method: "system-event",
                 params: [
-                    "text": OpenClawKit.AnyCodable(text),
-                    "sessionKey": OpenClawKit.AnyCodable(session.key),
-                    "wake": OpenClawKit.AnyCodable(true),
+                    "text": OperatorKit.AnyCodable(text),
+                    "sessionKey": OperatorKit.AnyCodable(session.key),
+                    "wake": OperatorKit.AnyCodable(true),
                 ],
                 ifCurrentServerLease: serverLease)
             return .delivered
@@ -741,7 +741,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
     }
 
     static func notificationSendFailureOutcome(_ error: Error) -> PostUpdateNotificationOutcome {
-        if error is OpenClawChatTransportSendError || error is GatewayResponseError {
+        if error is OperatorChatTransportSendError || error is GatewayResponseError {
             return .retryLater
         }
         // The request may have committed before another transport failure was
@@ -798,7 +798,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
                 message: String(localized: "The Gateway could not be checked."),
                 details: String(
                     localized: """
-                    OpenClaw could not read the Gateway service ownership record. \
+                    Operator could not read the Gateway service ownership record. \
                     Retry after checking the Gateway LaunchAgent.
                     """))
         case .remote:
@@ -806,7 +806,7 @@ final class PostUpdateController: NSObject, NSWindowDelegate {
                 message: String(localized: "The Mac node could not be checked."),
                 details: String(
                     localized: """
-                    OpenClaw could not read the node service ownership record. \
+                    Operator could not read the node service ownership record. \
                     Retry after checking the node LaunchAgent.
                     """))
         case .unconfigured:
@@ -827,7 +827,7 @@ private struct PostUpdateView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            GlowingOpenClawIcon(size: 150, mood: self.model.mood)
+            GlowingOperatorIcon(size: 150, mood: self.model.mood)
                 .frame(height: 205)
 
             VStack(spacing: 18) {

@@ -15,7 +15,7 @@ const SESSION_KEY = "agent:main:cron:job-1";
 const tempDirs: string[] = [];
 
 function createStorePath(): string {
-  const dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-cron-latest-")));
+  const dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-cron-latest-")));
   tempDirs.push(dir);
   return path.join(dir, "sessions.json");
 }

@@ -1,10 +1,10 @@
 {
-  "name": "@operator/openshell-sandbox",
+  "name": "@gabrielvfonseca/openshell-sandbox",
   "version": "2026.7.2",
   "description": "Operator sandbox backend for the NVIDIA OpenShell CLI with mirrored local workspaces and SSH command execution.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -12,14 +12,14 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/openshell-sandbox",
+      "npmSpec": "@gabrielvfonseca/openshell-sandbox",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.12-beta.1"
     },

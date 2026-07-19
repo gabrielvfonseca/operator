@@ -1,10 +1,10 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import type { SessionCatalogProvider } from "openclaw/plugin-sdk/session-catalog";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import type { SessionCatalogProvider } from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { adoptedSourceKey } from "./session-catalog-adoption.js";
 import {
@@ -93,7 +93,7 @@ vi.mock("openclaw/plugin-sdk/node-host", async (importOriginal) => {
 });
 
 async function createHome(): Promise<string> {
-  const home = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-claude-catalog-"));
+  const home = await fs.mkdtemp(path.join(os.tmpdir(), "operator-claude-catalog-"));
   homes.push(home);
   return home;
 }
@@ -270,8 +270,8 @@ describe("Claude session catalog", () => {
     const createSessionEntry = vi.fn(async (params: Record<string, unknown>) => ({
       key: `agent:main:${String(params.key)}`,
       agentId: "main",
-      sessionId: "openclaw-adopted",
-      entry: { sessionId: "openclaw-adopted", updatedAt: Date.now() },
+      sessionId: "operator-adopted",
+      entry: { sessionId: "operator-adopted", updatedAt: Date.now() },
     }));
     let provider: SessionCatalogProvider | undefined;
     const api = {
@@ -388,7 +388,7 @@ describe("Claude session catalog", () => {
           {
             id: "research",
             models: {
-              "anthropic/claude-opus-4-8": { agentRuntime: { id: "openclaw" } },
+              "anthropic/claude-opus-4-8": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         ],
@@ -530,8 +530,8 @@ describe("Claude session catalog", () => {
     const createSessionEntry = vi.fn(async (params: Record<string, unknown>) => ({
       key: `agent:main:${String(params.key)}`,
       agentId: "main",
-      sessionId: "openclaw-adopted",
-      entry: { sessionId: "openclaw-adopted", updatedAt: Date.now() },
+      sessionId: "operator-adopted",
+      entry: { sessionId: "operator-adopted", updatedAt: Date.now() },
     }));
     let provider: SessionCatalogProvider | undefined;
     const api = {

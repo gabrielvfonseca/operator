@@ -1,7 +1,7 @@
 // Webhooks plugin module implements http behavior.
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { z } from "zod";
 import type { PluginRuntime } from "../api.js";
 import {
@@ -295,7 +295,7 @@ function extractSharedSecret(req: IncomingMessage): string {
   if (normalizeLowercaseStringOrEmpty(authHeader).startsWith("bearer ")) {
     return authHeader.slice("bearer ".length).trim();
   }
-  const sharedHeader = req.headers["x-openclaw-webhook-secret"];
+  const sharedHeader = req.headers["x-operator-webhook-secret"];
   return Array.isArray(sharedHeader) ? (sharedHeader[0] ?? "").trim() : (sharedHeader ?? "").trim();
 }
 

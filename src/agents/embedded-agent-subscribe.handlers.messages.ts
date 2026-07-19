@@ -2,10 +2,10 @@
  * Handles embedded-agent assistant message events, block replies, reasoning
  * streams, reply directives, and pending tool media attachment handoff.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { createInlineCodeState } from "../../packages/markdown-core/src/code-spans.js";
 import {
   parseReplyDirectives,
@@ -62,7 +62,10 @@ function isTranscriptOnlyOperatorAssistantMessage(message: AgentMessage | undefi
   }
   const provider = normalizeOptionalString(message.provider) ?? "";
   const model = normalizeOptionalString(message.model) ?? "";
-  return provider === "operator" && (model === "delivery-mirror" || model === "gateway-injected");
+  return (
+    provider === "@gabrielvfonseca/operator" &&
+    (model === "delivery-mirror" || model === "gateway-injected")
+  );
 }
 
 const RESPONSES_API_IDS = new Set([

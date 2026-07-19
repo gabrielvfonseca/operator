@@ -1,5 +1,5 @@
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { packageNameMatchesId } from "../infra/install-safe-path.js";
 import type { InstallPolicySource } from "../security/install-policy.js";

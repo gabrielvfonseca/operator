@@ -1,5 +1,5 @@
 {
-  "name": "@operator/google-plugin",
+  "name": "@gabrielvfonseca/google-plugin",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator Google plugin",
@@ -9,9 +9,9 @@
     "google-auth-library": "10.9.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

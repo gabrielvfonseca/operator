@@ -6,9 +6,9 @@ import {
   type ProviderAuthMethodNonInteractiveContext,
   type ProviderAuthResult,
   type ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
-import { CUSTOM_LOCAL_AUTH_MARKER } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { CUSTOM_LOCAL_AUTH_MARKER } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { lmstudioMemoryEmbeddingProviderAdapter } from "./memory-embedding-adapter.js";
 import {
   LMSTUDIO_DEFAULT_API_KEY_ENV_VAR,

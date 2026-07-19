@@ -1,7 +1,7 @@
+import { requestHeartbeat } from "@gabrielvfonseca/operator/plugin-sdk/heartbeat-runtime";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
 // Slack plugin module implements shortcut interaction behavior.
 import type { GlobalShortcut, MessageShortcut, SlackShortcutMiddlewareArgs } from "@slack/bolt";
-import { requestHeartbeat } from "openclaw/plugin-sdk/heartbeat-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
 import { authorizeSlackSystemEventSender } from "../auth.js";
 import type { SlackMonitorContext } from "../context.js";
 

@@ -2,12 +2,12 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   sortUniqueStrings,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import type { AuthProfileCredential, OAuthCredential } from "../agents/auth-profiles/types.js";
 import { resolveGpt5SystemPromptContribution } from "../agents/gpt5-prompt-overlay.js";

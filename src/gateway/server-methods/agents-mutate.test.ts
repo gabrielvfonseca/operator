@@ -1,7 +1,7 @@
 // Agent mutation tests cover create/update/delete handlers, safe workspace file
 // access, config preconditions, trash cleanup, and attestation handling.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { FsSafeError } from "../../infra/fs-safe.js";
 /* ------------------------------------------------------------------ */
@@ -67,7 +67,7 @@ const mocks = vi.hoisted(() => ({
   rootWrite: vi.fn(async (_params?: unknown) => {}),
 }));
 
-const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["openclaw", "crestodian"] as const; // reserved ids
+const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["@gabrielvfonseca/operator", "crestodian"] as const; // reserved ids
 
 vi.mock("../../config/config.js", async () => {
   const actual =

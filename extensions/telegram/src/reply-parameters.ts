@@ -1,7 +1,7 @@
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 // Telegram plugin module implements reply parameters behavior.
 import { GrammyError } from "grammy";
 import type { MessageEntity } from "grammy/types";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
 import { buildTelegramThreadParams, type TelegramThreadSpec } from "./bot/helpers.js";
 import { normalizeTelegramReplyToMessageId } from "./outbound-params.js";
 

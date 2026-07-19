@@ -596,7 +596,7 @@ describe("Discord model picker rendering", () => {
               "Use the Google Gemini CLI runtime selected by the effective harness policy.",
           },
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             label: "Operator Default",
             description: "Use the built-in Operator runtime.",
           },
@@ -649,7 +649,7 @@ describe("Discord model picker rendering", () => {
               "Use the Google Gemini CLI runtime selected by the effective harness policy.",
           },
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             label: "Operator Default",
             description: "Use the built-in Operator runtime.",
           },
@@ -985,7 +985,7 @@ describe("Discord model picker rendering", () => {
             description: "Use the OpenAI Codex runtime selected by the effective harness policy.",
           },
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             label: "Operator Default",
             description: "Use the built-in Operator runtime.",
           },
@@ -1013,9 +1013,10 @@ describe("Discord model picker rendering", () => {
       throw new Error("models view did not render a runtime select");
     }
     expect(runtimeSelect.options?.find((option) => option.value === "codex")?.default).toBe(true);
-    expect(runtimeSelect.options?.find((option) => option.value === "openclaw")?.default).toBe(
-      false,
-    );
+    expect(
+      runtimeSelect.options?.find((option) => option.value === "@gabrielvfonseca/operator")
+        ?.default,
+    ).toBe(false);
 
     const modelSelect = rows[2]?.components?.find(
       (component) => component.type === DISCORD_STRING_SELECT_COMPONENT_TYPE,
@@ -1045,7 +1046,7 @@ describe("Discord model picker rendering", () => {
             description: "Use the OpenAI Codex runtime selected by the effective harness policy.",
           },
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             label: "Operator Default",
             description: "Use the built-in Operator runtime.",
           },
@@ -1061,7 +1062,7 @@ describe("Discord model picker rendering", () => {
       currentModel: "openai/gpt-4.1",
       pendingModel: "openai/gpt-4o",
       pendingModelIndex: 2,
-      pendingRuntime: "openclaw",
+      pendingRuntime: "@gabrielvfonseca/operator",
     });
 
     const modelSelect = rows[2]?.components?.find(

@@ -185,7 +185,7 @@ beforeAll(async () => {
   const { SessionManager: LoadedSessionManager } =
     await import("openclaw/plugin-sdk/agent-sessions");
   SessionManager = LoadedSessionManager;
-  e2eWorkspace = await createEmbeddedAgentRunnerTestWorkspace("openclaw-embedded-agent-");
+  e2eWorkspace = await createEmbeddedAgentRunnerTestWorkspace("operator-embedded-agent-");
   ({ agentDir, workspaceDir } = e2eWorkspace);
 }, 180_000);
 
@@ -577,7 +577,7 @@ describe("runEmbeddedAgent", () => {
         defaults: {
           models: {
             "openai/mock-1": {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
           },
         },

@@ -1,9 +1,9 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Qqbot plugin module implements finalize behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import type { ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import type { ChannelSetupWizard } from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import { applyQQBotAccountConfig, resolveQQBotAccount } from "../config.js";
 
 type SetupPrompter = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0]["prompter"];
@@ -46,7 +46,7 @@ async function linkViaQrCode(params: {
   await params.beforePersistentEffect?.();
   try {
     const accounts: { appId: string; appSecret: string }[] = await connector.qrConnect({
-      source: "openclaw",
+      source: "@gabrielvfonseca/operator",
     });
 
     if (accounts.length === 0) {

@@ -1,9 +1,9 @@
 // Resolves and packages install sources for plugin installs.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   gt as gtSemver,
   satisfies as satisfiesSemver,
@@ -141,7 +141,7 @@ export async function resolveNpmSpecMetadata(params: { spec: string; timeoutMs?:
       "version",
       "dist.integrity",
       "dist.shasum",
-      "operator",
+      "@gabrielvfonseca/operator",
       "--json",
     ],
     {

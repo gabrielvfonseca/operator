@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   resolveAgentConfig,
   resolveAgentDir,

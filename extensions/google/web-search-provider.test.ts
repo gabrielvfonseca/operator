@@ -1,6 +1,6 @@
 // Google tests cover web search provider plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { withEnvAsync, withFetchPreconnect } from "openclaw/plugin-sdk/test-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { withEnvAsync, withFetchPreconnect } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createGeminiWebSearchProvider } from "./src/gemini-web-search-provider.js";
 
@@ -96,7 +96,7 @@ describe("google web search provider", () => {
       }
 
       await expect(tool.execute({ query: "Operator docs" })).resolves.toEqual({
-        docs: "https://docs.openclaw.ai/tools/web",
+        docs: "https://docs.operator.ai/tools/web",
         error: "missing_gemini_api_key",
         message:
           "web_search (gemini) needs an API key. Set GEMINI_API_KEY in the Gateway environment, configure plugins.entries.google.config.webSearch.apiKey, or reuse models.providers.google.apiKey. If you do not want to configure a search API key, use web_fetch for a specific URL or the browser tool for interactive pages.",
@@ -640,7 +640,7 @@ describe("google web search provider", () => {
         date_after: "2026-04-01",
       }),
     ).resolves.toEqual({
-      docs: "https://docs.openclaw.ai/tools/web",
+      docs: "https://docs.operator.ai/tools/web",
       error: "conflicting_time_filters",
       message:
         "freshness and date_after/date_before cannot be used together. Use either freshness (day/week/month/year) or a date range (date_after/date_before), not both.",

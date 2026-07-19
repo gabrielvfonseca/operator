@@ -2,8 +2,8 @@
  * Twitch setup wizard surface for CLI setup.
  */
 
-import { normalizeOptionalAccountId } from "openclaw/plugin-sdk/account-id";
-import { getChatChannelMeta, type ChannelPlugin } from "openclaw/plugin-sdk/core";
+import { normalizeOptionalAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { getChatChannelMeta, type ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import {
   formatDocsLink,
   type ChannelSetupAdapter,
@@ -13,8 +13,8 @@ import {
   type WizardPrompter,
   normalizeAccountId,
   createSetupTranslator,
-} from "openclaw/plugin-sdk/setup";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   DEFAULT_ACCOUNT_ID,
   getAccountConfig,

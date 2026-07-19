@@ -1,7 +1,7 @@
 import type { CancelNotification } from "@agentclientprotocol/sdk";
-import { createInMemorySessionStore } from "@operator/acp-core/session";
+import { createInMemorySessionStore } from "@gabrielvfonseca/acp-core/session";
 /** Tests ACP translator permission relay for Gateway exec approvals. */
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import type { EventFrame } from "../../packages/gateway-protocol/src/index.js";
 import type { GatewayClient } from "../gateway/client.js";

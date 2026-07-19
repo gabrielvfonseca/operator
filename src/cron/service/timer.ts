@@ -1,5 +1,5 @@
 /** Cron timer loop, execution, catch-up, and run-result state transitions. */
-import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
+import { resolveIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
 import pMap, { pMapSkip } from "p-map";
 import { resolveFailoverReasonFromError } from "../../agents/failover-error.js";
 import { resolveCronTriggerMinIntervalMs } from "../../config/cron-limits.js";
@@ -1300,7 +1300,7 @@ async function onAdmittedTimer(state: CronServiceState) {
     // We use MAX_TIMER_DELAY_MS as a fixed re-check interval to avoid a
     // zero-delay hot-loop when past-due jobs are waiting for the current
     // execution to finish.
-    // See: https://github.com/operator/operator/issues/12025
+    // See: https://github.com/openclaw/openclaw/issues/12025
     armRunningRecheckTimer(state);
     return;
   }

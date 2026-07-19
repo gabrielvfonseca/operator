@@ -1,5 +1,5 @@
 // Xiaomi plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import type {
   OperatorConfig,
   ProviderAuthContext,
@@ -8,7 +8,7 @@ import type {
   ProviderCatalogContext,
   ProviderAuthResult,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   applyAuthProfileConfig,
   buildApiKeyCredential,
@@ -18,12 +18,12 @@ import {
   type SecretInput,
   upsertAuthProfileWithLock,
   validateApiKeyInput,
-} from "openclaw/plugin-sdk/provider-auth-api-key";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
 import {
   applyModelCompatPatch,
   buildProviderReplayFamilyHooks,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { PROVIDER_LABELS } from "openclaw/plugin-sdk/provider-usage";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { PROVIDER_LABELS } from "@gabrielvfonseca/operator/plugin-sdk/provider-usage";
 import {
   applyXiaomiConfig,
   applyXiaomiTokenPlanConfig,

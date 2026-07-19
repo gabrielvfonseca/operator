@@ -1,7 +1,7 @@
 // Slack helper module supports monitor helpers behavior.
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
-import { resolveGlobalDedupeCache } from "openclaw/plugin-sdk/dedupe-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { resolveGlobalDedupeCache } from "@gabrielvfonseca/operator/plugin-sdk/dedupe-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { vi } from "vitest";
 import type { Mock } from "vitest";
 
@@ -56,7 +56,7 @@ const slackTestState: SlackTestState = vi.hoisted(() => ({
 }));
 
 const slackInboundDeliveryTestCache = resolveGlobalDedupeCache(
-  Symbol.for("openclaw.slackInboundDeliveries"),
+  Symbol.for("operator.slackInboundDeliveries"),
   {
     ttlMs: 24 * 60 * 60 * 1000,
     maxSize: 20_000,
@@ -290,7 +290,7 @@ vi.mock("./monitor/config.runtime.js", async () => {
     loadConfig: () => slackTestState.config,
     readSessionUpdatedAt: vi.fn(() => undefined),
     recordSessionMetaFromInbound: vi.fn().mockResolvedValue(undefined),
-    resolveStorePath: vi.fn(() => "/tmp/openclaw-sessions.json"),
+    resolveStorePath: vi.fn(() => "/tmp/operator-sessions.json"),
     updateLastRoute: (...args: unknown[]) => slackTestState.updateLastRouteMock(...args),
   };
 });

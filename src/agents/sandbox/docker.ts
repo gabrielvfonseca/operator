@@ -87,7 +87,7 @@ export async function execDockerRaw(
   return { stdout, stderr, code: exitCode };
 }
 
-import { markOperatorExecEnv } from "../../infra/operator-exec-env.js";
+import { markOperatorExecEnv } from "../../infra/openclaw-exec-env.js";
 import {
   computeSandboxConfigHash,
   SANDBOX_DOCKER_EXPLICIT_ENV_POLICY_EPOCH,

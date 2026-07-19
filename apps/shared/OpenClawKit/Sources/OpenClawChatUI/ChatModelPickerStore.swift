@@ -1,15 +1,15 @@
 import Foundation
 
 public struct ChatModelPickerSections: Sendable, Equatable {
-    public let pinned: [OpenClawChatModelChoice]
-    public let recent: [OpenClawChatModelChoice]
-    public let remaining: [OpenClawChatModelChoice]
+    public let pinned: [OperatorChatModelChoice]
+    public let recent: [OperatorChatModelChoice]
+    public let remaining: [OperatorChatModelChoice]
 }
 
 @MainActor
 public final class ChatModelPickerStore {
-    private static let favoritesKey = "openclaw.chat.modelFavorites"
-    private static let recentsKey = "openclaw.chat.modelRecents"
+    private static let favoritesKey = "operator.chat.modelFavorites"
+    private static let recentsKey = "operator.chat.modelRecents"
     private static let maxRecents = 5
 
     private let defaults: UserDefaults
@@ -38,7 +38,7 @@ public final class ChatModelPickerStore {
     }
 
     public func recordRecent(_ selectionID: String) {
-        guard !selectionID.isEmpty, selectionID != OpenClawChatViewModel.defaultModelSelectionID else { return }
+        guard !selectionID.isEmpty, selectionID != OperatorChatViewModel.defaultModelSelectionID else { return }
         self.recents = self.defaults.stringArray(forKey: Self.recentsKey) ?? []
         self.recents.removeAll { $0 == selectionID }
         self.recents.insert(selectionID, at: 0)
@@ -47,21 +47,21 @@ public final class ChatModelPickerStore {
     }
 
     static func sections(
-        choices: [OpenClawChatModelChoice],
+        choices: [OperatorChatModelChoice],
         favorites: [String],
         recents: [String]) -> ChatModelPickerSections
     {
-        var choicesByID: [String: OpenClawChatModelChoice] = [:]
+        var choicesByID: [String: OperatorChatModelChoice] = [:]
         for choice in choices where choicesByID[choice.selectionID] == nil {
             choicesByID[choice.selectionID] = choice
         }
 
         var included = Set<String>()
-        let pinned = favorites.compactMap { selectionID -> OpenClawChatModelChoice? in
+        let pinned = favorites.compactMap { selectionID -> OperatorChatModelChoice? in
             guard included.insert(selectionID).inserted else { return nil }
             return choicesByID[selectionID]
         }
-        let recent = recents.compactMap { selectionID -> OpenClawChatModelChoice? in
+        let recent = recents.compactMap { selectionID -> OperatorChatModelChoice? in
             guard included.insert(selectionID).inserted else { return nil }
             return choicesByID[selectionID]
         }

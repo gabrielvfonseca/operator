@@ -1,11 +1,11 @@
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { captureHttpExchange } from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 // Discord plugin module implements gateway metadata behavior.
 import type { APIGatewayBotInfo } from "discord-api-types/v10";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { captureHttpExchange } from "openclaw/plugin-sdk/proxy-capture";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
 import { Type } from "typebox";
 import { Check, Errors } from "typebox/value";
 import { isDiscordRateLimitResponseBody, summarizeDiscordResponseBody } from "../error-body.js";

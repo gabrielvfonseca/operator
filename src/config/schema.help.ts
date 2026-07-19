@@ -178,7 +178,7 @@ export const FIELD_HELP: Record<string, string> = {
   "gateway.tailscale.resetOnExit":
     "Resets Tailscale Serve/Funnel state on gateway exit to avoid stale published routes after shutdown. Keep enabled unless another controller manages publish lifecycle outside the gateway.",
   "gateway.tailscale.serviceName":
-    'Optional Tailscale Service name for Serve mode, such as "svc:operator". The value must use Tailscale\'s svc:<dns-label> format. When set, Operator passes it to tailscale serve --service and reports the derived Service URL.',
+    'Optional Tailscale Service name for Serve mode, such as "svc:openclaw". The value must use Tailscale\'s svc:<dns-label> format. When set, Operator passes it to tailscale serve --service and reports the derived Service URL.',
   "gateway.tailscale.preserveFunnel":
     "When mode='serve' and an externally configured Tailscale Funnel route already covers the gateway port, skip re-applying tailscale serve on startup. Lets operators keep Funnel exposure managed outside Operator without losing it across gateway restarts.",
   "gateway.remote":
@@ -370,7 +370,7 @@ export const FIELD_HELP: Record<string, string> = {
   "agents.list[].runtime.acp":
     "ACP runtime defaults for this agent when runtime.type=acp. Binding-level ACP overrides still take precedence per conversation.",
   "agents.list[].runtime.acp.agent":
-    "Optional ACP harness agent id to use for this Operator agent (for example codex, claude, cursor, gemini, operator).",
+    "Optional ACP harness agent id to use for this Operator agent (for example codex, claude, cursor, gemini, openclaw).",
   "agents.list[].runtime.acp.backend":
     "Optional ACP backend override for this agent's ACP sessions (falls back to global acp.backend).",
   "agents.list[].runtime.acp.mode":
@@ -432,7 +432,7 @@ export const FIELD_HELP: Record<string, string> = {
   "browser.profiles.*.mcpArgs":
     "Extra per-profile Chrome DevTools MCP arguments for existing-session attachment, such as --no-usage-statistics. Endpoint arguments here override the built-in auto-connect or browser URL selection.",
   "browser.profiles.*.driver":
-    'Per-profile browser driver mode. Use "operator" (or legacy "clawd") for CDP-based profiles, or use "existing-session" for Chrome DevTools MCP attachment on the selected host or browser node.',
+    'Per-profile browser driver mode. Use "@gabrielvfonseca/operator" (or legacy "clawd") for CDP-based profiles, or use "existing-session" for Chrome DevTools MCP attachment on the selected host or browser node.',
   "browser.profiles.*.executablePath":
     "Per-profile browser executable path for locally launched managed browser profiles. Overrides browser.executablePath and accepts paths starting with ~ for the OS home directory.",
   "browser.profiles.*.headless":
@@ -610,7 +610,7 @@ export const FIELD_HELP: Record<string, string> = {
   "agents.list[].sandbox.browser.cdpSourceRange":
     "Per-agent override for CDP source CIDR allowlist.",
   "gateway.controlUi.basePath":
-    "Optional URL prefix where the Control UI is served (e.g. /operator).",
+    "Optional URL prefix where the Control UI is served (e.g. /openclaw).",
   "gateway.controlUi.root":
     "Optional filesystem root for Control UI assets (defaults to dist/control-ui).",
   "gateway.controlUi.toolTitles":
@@ -682,10 +682,10 @@ export const FIELD_HELP: Record<string, string> = {
   "gateway.nodes.pairing.autoApproveCidrs":
     "Opt-in CIDR/IP allowlist for auto-approving first-time node-role device pairing with no requested scopes. Disabled when unset. Operator, browser, Control UI, and any role, scope, metadata, or public-key upgrade pairing still require manual approval.",
   "gateway.nodes.pairing.sshVerify":
-    "SSH-verified auto-approval for first-time node-role device pairing (default: enabled). The gateway SSHes back to the pairing host (BatchMode, strict host keys) and approves only when the remote `operator node identity` output matches the pending device key. Set false to disable SSH verification (independent of autoApproveCidrs, which stays active); for manual-only pairing also unset autoApproveCidrs. Pass an object to override user/identity/timeoutMs/cidrs.",
+    "SSH-verified auto-approval for first-time node-role device pairing (default: enabled). The gateway SSHes back to the pairing host (BatchMode, strict host keys) and approves only when the remote `openclaw node identity` output matches the pending device key. Set false to disable SSH verification (independent of autoApproveCidrs, which stays active); for manual-only pairing also unset autoApproveCidrs. Pass an object to override user/identity/timeoutMs/cidrs.",
   ...NODE_CAPABILITY_FIELD_HELP,
   "gateway.nodes.allowCommands":
-    "Extra node.invoke commands to allow beyond the gateway defaults (array of command strings). Enabling dangerous commands here is a security-sensitive override and is flagged by `operator security audit`.",
+    "Extra node.invoke commands to allow beyond the gateway defaults (array of command strings). Enabling dangerous commands here is a security-sensitive override and is flagged by `openclaw security audit`.",
   "gateway.nodes.denyCommands":
     "Node command names to block even if present in node claims or default allowlist (exact command-name matching only, e.g. `system.run`; does not inspect shell text inside that command).",
   nodeHost:
@@ -721,7 +721,7 @@ export const FIELD_HELP: Record<string, string> = {
   "audio.transcription":
     "Command-based transcription settings for converting audio files into text before agent handling. Keep a simple, deterministic command path here so failures are easy to diagnose in logs.",
   "audio.transcription.command":
-    'Executable + args used to transcribe audio (first token must be a safe binary/path), for example `["whisper-cli", "--model", "small", "{{MediaPath}}"]`. Deprecated `{input}` placeholders are migrated to `{{MediaPath}}` by `operator doctor --fix`.',
+    'Executable + args used to transcribe audio (first token must be a safe binary/path), for example `["whisper-cli", "--model", "small", "{{MediaPath}}"]`. Deprecated `{input}` placeholders are migrated to `{{MediaPath}}` by `openclaw doctor --fix`.',
   "audio.transcription.timeoutSeconds":
     "Maximum time allowed for the transcription command to finish before it is aborted. Increase this for longer recordings, and keep it tight in latency-sensitive deployments.",
   bindings:
@@ -1091,7 +1091,7 @@ export const FIELD_HELP: Record<string, string> = {
   "models.providers.*.agentRuntime":
     "Optional low-level agent runtime policy for this provider. Use provider/model runtime policy instead of agent-wide runtime pins; omitted/default lets Operator choose the runtime for the selected provider.",
   "models.providers.*.agentRuntime.id":
-    'Provider agent runtime id: "operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli". OpenAI on the official endpoint defaults to the Codex harness when omitted.',
+    'Provider agent runtime id: "@gabrielvfonseca/operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli". OpenAI on the official endpoint defaults to the Codex harness when omitted.',
   "models.providers.*.localService":
     "Optional on-demand local model server process for this provider. Operator probes healthUrl, starts the command when needed, waits for readiness, and then sends the model request.",
   "models.providers.*.localService.command":
@@ -1176,7 +1176,7 @@ export const FIELD_HELP: Record<string, string> = {
   "models.providers.*.models[].agentRuntime":
     "Optional low-level agent runtime policy for this specific model. Model runtime policy overrides the provider runtime policy.",
   "models.providers.*.models[].agentRuntime.id":
-    'Model agent runtime id: "operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
+    'Model agent runtime id: "@gabrielvfonseca/operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
   "models.providers.*.models[].mediaInput":
     "Optional model media capability metadata used by tools to choose conservative image compression defaults.",
   "models.providers.*.models[].mediaInput.image":
@@ -1271,7 +1271,7 @@ export const FIELD_HELP: Record<string, string> = {
   "agents.defaults.models.*.agentRuntime":
     "Optional per-model runtime policy for the default agent. Use this for model-specific runtime exceptions instead of setting a whole-agent runtime.",
   "agents.defaults.models.*.agentRuntime.id":
-    'Default-agent model runtime id: "operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
+    'Default-agent model runtime id: "@gabrielvfonseca/operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
   "agents.defaults.memorySearch":
     "Vector search over MEMORY.md and memory/*.md (per-agent overrides supported).",
   "agents.defaults.memorySearch.enabled":
@@ -1530,7 +1530,7 @@ export const FIELD_HELP: Record<string, string> = {
   "agents.list.*.models.*.agentRuntime":
     "Optional per-model runtime policy for this agent. Use this for agent-specific model exceptions instead of setting a whole-agent runtime.",
   "agents.list.*.models.*.agentRuntime.id":
-    'Per-agent model runtime id: "operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
+    'Per-agent model runtime id: "@gabrielvfonseca/operator", "auto", a registered plugin harness id such as "codex", or a supported CLI backend alias such as "claude-cli".',
   "agents.defaults.imageModel.primary":
     "Optional image model (provider/model) used when the primary model lacks image input.",
   "agents.defaults.imageModel.fallbacks": "Ordered fallback image models (provider/model).",
@@ -1820,13 +1820,13 @@ export const FIELD_HELP: Record<string, string> = {
   "cron.retry.retryOn":
     "Error types to retry: rate_limit, overloaded, network, timeout, server_error. Use to restrict which errors trigger retries; omit to retry all transient types.",
   "cron.webhook":
-    'Deprecated legacy fallback webhook URL used by `operator doctor --fix` to migrate old jobs with `notify=true`. Runtime delivery uses per-job `delivery.mode="webhook"` plus `delivery.to`, or `delivery.completionDestination` when preserving announce delivery.',
+    'Deprecated legacy fallback webhook URL used by `openclaw doctor --fix` to migrate old jobs with `notify=true`. Runtime delivery uses per-job `delivery.mode="webhook"` plus `delivery.to`, or `delivery.completionDestination` when preserving announce delivery.',
   "cron.webhookToken":
     "Bearer token attached to cron webhook POST deliveries when webhook mode is used. Prefer secret/env substitution and rotate this token regularly if shared webhook endpoints are internet-reachable.",
   "cron.sessionRetention":
     "Controls how long completed cron run sessions are kept before pruning (`24h`, `7d`, `1h30m`, or `false` to disable pruning; default: `24h`). Use shorter retention to reduce storage growth on high-frequency schedules.",
   worktrees:
-    "Managed worktree retention settings applied by hourly cleanup and manual `operator worktrees gc`. Keep defaults unless managed worktrees accumulate faster than idle cleanup reclaims them.",
+    "Managed worktree retention settings applied by hourly cleanup and manual `openclaw worktrees gc`. Keep defaults unless managed worktrees accumulate faster than idle cleanup reclaims them.",
   "worktrees.cleanup":
     "Retention limits for Operator-managed worktrees across all repositories. Cleanup snapshots and removes the least recently active session- and Workboard-owned worktrees first; manual, locked, and recently active worktrees are never limit-evicted.",
   "worktrees.cleanup.maxCount":

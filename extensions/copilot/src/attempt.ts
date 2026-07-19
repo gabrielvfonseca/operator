@@ -1,12 +1,11 @@
 // Copilot plugin module implements attempt behavior.
 import fsp from "node:fs/promises";
-import type { MessageOptions, SessionConfig, Tool as SdkTool } from "@github/copilot-sdk";
 import type {
   AgentHarnessAttemptParams,
   AgentHarnessAttemptResult,
   AgentMessage,
   SandboxContext,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   buildAgentHookContextChannelFields,
   detectAndLoadAgentHarnessPromptImages,
@@ -28,7 +27,8 @@ import {
   runAgentHarnessLlmOutputHook,
   clearActiveEmbeddedRun,
   setActiveEmbeddedRun,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { MessageOptions, SessionConfig, Tool as SdkTool } from "@github/copilot-sdk";
 import { createCopilotByokAuth, resolveCopilotAuth } from "./auth-bridge.js";
 import { createCopilotByokProxy } from "./byok-proxy.js";
 import {
@@ -87,7 +87,7 @@ export type CopilotSessionConfig = Pick<
 // NOTE(plugin-sdk-widening): AttemptParamsLike can be removed once
 // openclaw/plugin-sdk/agent-harness-runtime declares auth, messages,
 // onAssistantDelta, and initialReplayState.sdkSessionId fields. Tracked by
-// project openclaw-copilot-harness; reviewer-attempt-bridge note.
+// project operator-copilot-harness; reviewer-attempt-bridge note.
 
 type AttemptParamsLike = AgentHarnessAttemptParams & {
   auth?: {
@@ -365,7 +365,8 @@ export async function runCopilotAttempt(
   const input = params as AttemptParamsLike;
   const createToolBridge = deps.createToolBridge ?? createCopilotToolBridge;
   const hostSystemAgentActive =
-    deps.isHostScopedToolActive?.("openclaw") ?? isHostScopedAgentToolActive("openclaw");
+    deps.isHostScopedToolActive?.("@gabrielvfonseca/operator") ??
+    isHostScopedAgentToolActive("@gabrielvfonseca/operator");
   const ringZeroSystemAgentRun =
     hostSystemAgentActive && isSystemAgentOnlyToolAllowlist(input.toolsAllow);
   const messages = getMessagesSnapshotInput(input);
@@ -1456,7 +1457,9 @@ function buildCopilotAvailableTools(sdkTools: SdkTool[], includeAskUser: boolean
 }
 
 function isSystemAgentOnlyToolAllowlist(toolsAllow: readonly string[] | undefined): boolean {
-  return toolsAllow?.length === 1 && toolsAllow[0]?.trim().toLowerCase() === "openclaw";
+  return (
+    toolsAllow?.length === 1 && toolsAllow[0]?.trim().toLowerCase() === "@gabrielvfonseca/operator"
+  );
 }
 
 async function createMessageOptions(

@@ -77,7 +77,7 @@ describe("loadOperatorPlugins", () => {
         path.join(globalDir, "package.json"),
         JSON.stringify(
           {
-            name: "@operator/trusted-global-channel",
+            name: "@gabrielvfonseca/trusted-global-channel",
             version: "0.0.0-test",
             main: "./index.cjs",
             operator: {
@@ -190,7 +190,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-entry-test",
         label: "Setup Entry Test",
-        packageName: "@operator/setup-entry-test",
+        packageName: "@gabrielvfonseca/setup-entry-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup entry",
         configured: false,
@@ -220,7 +220,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-only-bundled-contract-test",
         label: "Setup Only Bundled Contract Test",
-        packageName: "@operator/setup-only-bundled-contract-test",
+        packageName: "@gabrielvfonseca/setup-only-bundled-contract-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup-only bundled contract",
         configured: false,
@@ -251,7 +251,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-test",
         label: "Setup Runtime Test",
-        packageName: "@operator/setup-runtime-test",
+        packageName: "@gabrielvfonseca/setup-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime",
         configured: false,
@@ -275,7 +275,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-test",
         label: "Setup Runtime Bundled Contract Test",
-        packageName: "@operator/setup-runtime-bundled-contract-test",
+        packageName: "@gabrielvfonseca/setup-runtime-bundled-contract-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract",
         configured: false,
@@ -300,7 +300,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-secrets-test",
         label: "Setup Runtime Bundled Contract Secrets Test",
-        packageName: "@operator/setup-runtime-bundled-contract-secrets-test",
+        packageName: "@gabrielvfonseca/setup-runtime-bundled-contract-secrets-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract secrets",
         configured: false,
@@ -327,7 +327,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-runtime-test",
         label: "Setup Runtime Bundled Contract Runtime Test",
-        packageName: "@operator/setup-runtime-bundled-contract-runtime-test",
+        packageName: "@gabrielvfonseca/setup-runtime-bundled-contract-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract runtime",
         configured: false,
@@ -354,7 +354,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-route-test",
         label: "Setup Runtime Bundled Route Test",
-        packageName: "@operator/setup-runtime-bundled-route-test",
+        packageName: "@gabrielvfonseca/setup-runtime-bundled-route-test",
         fullBlurb: "full entry should defer while configured",
         setupBlurb: "setup runtime route",
         configured: true,
@@ -389,7 +389,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-runtime-merge-test",
         label: "Setup Runtime Bundled Runtime Merge Test",
-        packageName: "@operator/setup-runtime-bundled-runtime-merge-test",
+        packageName: "@gabrielvfonseca/setup-runtime-bundled-runtime-merge-test",
         fullBlurb: "full runtime plugin",
         setupBlurb: "setup runtime override",
         configured: false,
@@ -417,7 +417,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-external-deferred-test",
         label: "Setup Runtime External Deferred Test",
-        packageName: "@operator/setup-runtime-external-deferred-test",
+        packageName: "@gabrielvfonseca/setup-runtime-external-deferred-test",
         fullBlurb: "full entry should defer while configured",
         setupBlurb: "setup runtime external deferred",
         configured: true,
@@ -451,7 +451,7 @@ describe("loadOperatorPlugins", () => {
       fixture: {
         id: "setup-runtime-not-preferred-test",
         label: "Setup Runtime Not Preferred Test",
-        packageName: "@operator/setup-runtime-not-preferred-test",
+        packageName: "@gabrielvfonseca/setup-runtime-not-preferred-test",
         fullBlurb: "full entry should still load without explicit startup opt-in",
         setupBlurb: "setup runtime not preferred",
         configured: true,
@@ -536,7 +536,7 @@ describe("loadOperatorPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-order-test",
       label: "Setup Runtime Order Test",
-      packageName: "@operator/setup-runtime-order-test",
+      packageName: "@gabrielvfonseca/setup-runtime-order-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -566,7 +566,7 @@ describe("loadOperatorPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-error-test",
       label: "Setup Runtime Error Test",
-      packageName: "@operator/setup-runtime-error-test",
+      packageName: "@gabrielvfonseca/setup-runtime-error-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -604,7 +604,7 @@ describe("loadOperatorPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-route-error-test",
       label: "Setup Runtime Route Error Test",
-      packageName: "@operator/setup-runtime-route-error-test",
+      packageName: "@gabrielvfonseca/setup-runtime-route-error-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime route",
       configured: true,
@@ -654,7 +654,7 @@ describe("loadOperatorPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-late-route-test",
       label: "Setup Runtime Late Route Test",
-      packageName: "@operator/setup-runtime-late-route-test",
+      packageName: "@gabrielvfonseca/setup-runtime-late-route-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime route",
       configured: true,
@@ -697,7 +697,7 @@ describe("loadOperatorPlugins", () => {
       id: "setup-runtime-mismatch-test",
       bundledFullEntryId: "wrong-runtime-id",
       label: "Setup Runtime Mismatch Test",
-      packageName: "@operator/setup-runtime-mismatch-test",
+      packageName: "@gabrielvfonseca/setup-runtime-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -732,7 +732,7 @@ describe("loadOperatorPlugins", () => {
       id: "setup-export-mismatch-test",
       bundledSetupEntryId: "wrong-setup-id",
       label: "Setup Export Mismatch Test",
-      packageName: "@operator/setup-export-mismatch-test",
+      packageName: "@gabrielvfonseca/setup-export-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -771,7 +771,7 @@ describe("loadOperatorPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/setup-entry-throws-test",
+          name: "@gabrielvfonseca/setup-entry-throws-test",
           operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
@@ -838,7 +838,7 @@ describe("loadOperatorPlugins", () => {
       path.join(brokenDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/setup-entry-throws-sibling-test",
+          name: "@gabrielvfonseca/setup-entry-throws-sibling-test",
           operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
@@ -936,7 +936,7 @@ describe("loadOperatorPlugins", () => {
       path.join(brokenDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/register-channel-throws-test",
+          name: "@gabrielvfonseca/register-channel-throws-test",
           operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",

@@ -1,6 +1,6 @@
 // Extracts channel metadata used by security audit findings.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { wrapExternalContent } from "./external-content.js";
 
 const DEFAULT_MAX_CHARS = 800;

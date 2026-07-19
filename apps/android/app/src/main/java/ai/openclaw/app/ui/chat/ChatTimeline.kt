@@ -1,8 +1,8 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.ChatMessage
-import ai.openclaw.app.chat.ChatOutboxItem
-import ai.openclaw.app.chat.ChatPendingToolCall
+import ai.operator.app.chat.ChatMessage
+import ai.operator.app.chat.ChatOutboxItem
+import ai.operator.app.chat.ChatPendingToolCall
 
 internal sealed class ChatTimelineItem {
   data class Message(

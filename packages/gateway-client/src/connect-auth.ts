@@ -1,9 +1,9 @@
-import type { ConnectParams } from "@operator/gateway-protocol";
+import type { ConnectParams } from "@gabrielvfonseca/gateway-protocol";
 import {
   ConnectErrorDetailCodes,
   readConnectErrorDetailCode,
   readConnectErrorRecoveryAdvice,
-} from "@operator/gateway-protocol/connect-error-details";
+} from "@gabrielvfonseca/gateway-protocol/connect-error-details";
 
 export type GatewayConnectAuthSelection = {
   authToken?: string;

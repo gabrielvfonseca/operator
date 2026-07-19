@@ -569,7 +569,7 @@ describe("sessions tools", () => {
   });
 
   it("derives mailbox previews only after agent visibility filtering", async () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sessions-list-preview-"));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sessions-list-preview-"));
     const storePath = path.join(tmpDir, "sessions.json");
     try {
       await upsertSessionEntry(
@@ -740,13 +740,13 @@ describe("sessions tools", () => {
             { role: "toolResult", content: [] },
             {
               role: "assistant",
-              provider: "openclaw",
+              provider: "@gabrielvfonseca/operator",
               model: "delivery-mirror",
               content: [{ type: "text", text: "mirrored" }],
             },
             {
               role: "assistant",
-              provider: "openclaw",
+              provider: "@gabrielvfonseca/operator",
               model: "gateway-injected",
               content: [{ type: "text", text: "injected" }],
             },
@@ -766,10 +766,10 @@ describe("sessions tools", () => {
     const details = result.details as { messages?: unknown[] };
     expect(details.messages).toHaveLength(3);
     expect(details.messages).toContainEqual(
-      expect.objectContaining({ provider: "openclaw", model: "gateway-injected" }),
+      expect.objectContaining({ provider: "@gabrielvfonseca/operator", model: "gateway-injected" }),
     );
     expect(details.messages).toContainEqual(
-      expect.objectContaining({ provider: "openclaw", model: "delivery-mirror" }),
+      expect.objectContaining({ provider: "@gabrielvfonseca/operator", model: "delivery-mirror" }),
     );
 
     const withTools = await tool.execute("call4", {
@@ -779,10 +779,10 @@ describe("sessions tools", () => {
     const withToolsDetails = withTools.details as { messages?: unknown[] };
     expect(withToolsDetails.messages).toHaveLength(4);
     expect(withToolsDetails.messages).toContainEqual(
-      expect.objectContaining({ provider: "openclaw", model: "delivery-mirror" }),
+      expect.objectContaining({ provider: "@gabrielvfonseca/operator", model: "delivery-mirror" }),
     );
     expect(withToolsDetails.messages).toContainEqual(
-      expect.objectContaining({ provider: "openclaw", model: "gateway-injected" }),
+      expect.objectContaining({ provider: "@gabrielvfonseca/operator", model: "gateway-injected" }),
     );
   });
 
@@ -868,7 +868,7 @@ describe("sessions tools", () => {
     expect((textBlock?.text ?? "").length <= 4015).toBe(true);
     const thinkingBlock = first?.content?.find((block) => block.type === "thinking");
     expect(thinkingBlock?.thinkingSignature).toBeUndefined();
-    expect(thinkingBlock?.openclawReasoningReplay).toBeUndefined();
+    expect(thinkingBlock?.operatorReasoningReplay).toBeUndefined();
   });
 
   it("sessions_history enforces a hard byte cap even when a single message is huge", async () => {

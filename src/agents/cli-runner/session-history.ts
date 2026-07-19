@@ -4,7 +4,7 @@
  */
 import fsp from "node:fs/promises";
 import path from "node:path";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   resolveSessionFilePath,
   resolveSessionFilePathOptions,

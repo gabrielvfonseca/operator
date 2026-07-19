@@ -87,11 +87,11 @@ enum GatewayTLSFirstUsePolicy {
 }
 
 public enum GatewayTLSStore {
-    private static let keychainService = "ai.openclaw.tls-pinning"
+    private static let keychainService = "ai.operator.tls-pinning"
     private static let keychainAccountPrefix = "fingerprint.v2."
 
     // Legacy UserDefaults location used before Keychain migration.
-    private static let legacySuiteName = "ai.openclaw.shared"
+    private static let legacySuiteName = "ai.operator.shared"
     private static let legacyKeyPrefix = "gateway.tls."
 
     public static func loadFingerprint(stableID: String) -> String? {

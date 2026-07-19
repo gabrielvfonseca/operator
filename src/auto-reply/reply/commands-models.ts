@@ -1,9 +1,9 @@
 // Implements model listing and provider catalog commands.
-import { parseStrictPositiveInteger } from "@operator/normalization-core/number-coercion";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   resolveAgentDir,
   resolveAgentWorkspaceDir,
@@ -97,7 +97,7 @@ function usesUnfilteredCatalogModels(
 function normalizeRuntimeChoiceId(runtime: string | undefined): string {
   const normalized = normalizeLowercaseStringOrEmpty(runtime);
   if (!normalized || normalized === "auto" || normalized === "default") {
-    return "operator";
+    return "@gabrielvfonseca/operator";
   }
   return normalized;
 }
@@ -114,7 +114,7 @@ function buildRuntimeChoice(params: {
     id,
     label,
     description:
-      id === "operator"
+      id === "@gabrielvfonseca/operator"
         ? "Use the built-in Operator runtime."
         : params.cli
           ? `Run ${params.provider} models through ${label}.`
@@ -377,7 +377,10 @@ export async function buildModelsProviderData(
         modelId: defaultModelId,
       }),
     ];
-    addRuntimeChoice(choices, buildRuntimeChoice({ cfg, provider, runtime: "operator" }));
+    addRuntimeChoice(
+      choices,
+      buildRuntimeChoice({ cfg, provider, runtime: "@gabrielvfonseca/operator" }),
+    );
     addRuntimeChoice(
       choices,
       buildRuntimeChoice({

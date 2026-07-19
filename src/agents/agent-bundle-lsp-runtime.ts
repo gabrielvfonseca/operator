@@ -1,6 +1,6 @@
 /** Session-scoped embedded LSP runtime and tool materialization for agent bundles. */
 import type { ChildProcess } from "node:child_process";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { createAbortError } from "../infra/abort-signal.js";
 import { logDebug, logWarn } from "../logger.js";

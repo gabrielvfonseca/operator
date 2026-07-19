@@ -2,13 +2,13 @@
  * Shared A2UI/Canvas host paths and live-reload injection helpers.
  */
 /** Hosted path prefix for bundled A2UI assets. */
-export const A2UI_PATH = "/__openclaw__/a2ui";
+export const A2UI_PATH = "/__operator__/a2ui";
 
 /** Hosted path prefix for Canvas document/static assets. */
-export const CANVAS_HOST_PATH = "/__openclaw__/canvas";
+export const CANVAS_HOST_PATH = "/__operator__/canvas";
 
 /** Hosted WebSocket path for Canvas live reload. */
-export const CANVAS_WS_PATH = "/__openclaw__/ws";
+export const CANVAS_WS_PATH = "/__operator__/ws";
 
 /** Returns whether a URL path targets the hosted A2UI asset surface. */
 export function isA2uiPath(pathname: string): boolean {
@@ -112,7 +112,7 @@ export function injectCanvasRuntime(html: string, options: { liveReload?: boolea
   }
 
   try {
-    const capMatch = String(location.pathname || "").match(/\\/__openclaw__\\/cap\\/([^/]+)(?:\\/|$)/);
+    const capMatch = String(location.pathname || "").match(/\\/__operator__\\/cap\\/([^/]+)(?:\\/|$)/);
     let pathCapability = "";
     try {
       pathCapability = capMatch?.[1] ? decodeURIComponent(capMatch[1]) : "";
@@ -140,8 +140,8 @@ export function injectCanvasRuntime(html: string, options: { liveReload?: boolea
 (() => {
   // Cross-platform action bridge helper.
   // Works on:
-  // - iOS: window.webkit.messageHandlers.openclawCanvasA2UIAction.postMessage(...)
-  // - Android: window.openclawCanvasA2UIAction.postMessage(...)
+  // - iOS: window.webkit.messageHandlers.operatorCanvasA2UIAction.postMessage(...)
+  // - Android: window.operatorCanvasA2UIAction.postMessage(...)
   const handlerNames = ["openclawCanvasA2UIAction"];
   function createActionId() {
     const crypto = globalThis.crypto;
@@ -180,8 +180,8 @@ export function injectCanvasRuntime(html: string, options: { liveReload?: boolea
   globalThis.Operator = globalThis.Operator ?? {};
   globalThis.Operator.postMessage = postToNode;
   globalThis.Operator.sendUserAction = sendUserAction;
-  globalThis.openclawPostMessage = postToNode;
-  globalThis.openclawSendUserAction = sendUserAction;
+  globalThis.operatorPostMessage = postToNode;
+  globalThis.operatorSendUserAction = sendUserAction;
 ${liveReloadSnippet}
 })();
 </script>

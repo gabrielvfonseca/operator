@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw CLI index: command list, global flags, and links to per-command pages"
+summary: "Operator CLI index: command list, global flags, and links to per-command pages"
 read_when:
   - Finding the right `openclaw` subcommand
   - Looking up global flags or output styling rules
@@ -12,10 +12,10 @@ the commands, global flags, and output styling rules that apply across the CLI.
 
 Setup commands by intent:
 
-- `openclaw setup` and `openclaw onboard` verify inference first, then start OpenClaw for Gateway, workspace, channels, skills, and health setup.
-- `openclaw setup --baseline` creates the baseline config and workspace without walking the guided onboarding flow.
-- `openclaw configure` changes targeted parts of an existing setup: model auth, gateway, channels, plugins, or skills.
-- `openclaw channels add` configures channel accounts after the baseline exists; run without flags for guided setup, or with channel-specific flags for scripts.
+- `operator setup` and `operator onboard` verify inference first, then start Operator for Gateway, workspace, channels, skills, and health setup.
+- `operator setup --baseline` creates the baseline config and workspace without walking the guided onboarding flow.
+- `operator configure` changes targeted parts of an existing setup: model auth, gateway, channels, plugins, or skills.
+- `operator channels add` configures channel accounts after the baseline exists; run without flags for guided setup, or with channel-specific flags for scripts.
 
 ## Command pages
 
@@ -40,12 +40,12 @@ Setup commands by intent:
 
 | Flag                    | Purpose                                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------------------------------- |
-| `--dev`                 | Isolate state under `~/.openclaw-dev`, default gateway port 19001, and shift derived ports              |
-| `--profile <name>`      | Isolate state under `~/.openclaw-<name>` (`OPENCLAW_STATE_DIR`/`OPENCLAW_CONFIG_PATH`)                  |
-| `--container <name>`    | Run the CLI inside a running Podman/Docker container named `<name>` (default: env `OPENCLAW_CONTAINER`) |
+| `--dev`                 | Isolate state under `~/.operator-dev`, default gateway port 19001, and shift derived ports              |
+| `--profile <name>`      | Isolate state under `~/.operator-<name>` (`OPERATOR_STATE_DIR`/`OPERATOR_CONFIG_PATH`)                  |
+| `--container <name>`    | Run the CLI inside a running Podman/Docker container named `<name>` (default: env `OPERATOR_CONTAINER`) |
 | `--log-level <level>`   | Override the global log level for file + console output                                                 |
 | `--no-color`            | Disable ANSI colors (`NO_COLOR=1` is also respected)                                                    |
-| `--update`              | Shorthand for [`openclaw update`](/cli/update); works for both source checkouts and package installs    |
+| `--update`              | Shorthand for [`operator update`](/cli/update); works for both source checkouts and package installs    |
 | `-V`, `--version`, `-v` | Print version and exit                                                                                  |
 
 ## Output modes
@@ -58,7 +58,7 @@ Setup commands by intent:
 
 ## Color palette
 
-OpenClaw uses a lobster palette for CLI output:
+Operator uses a lobster palette for CLI output:
 
 | Token          | Hex       | Used for                             |
 | -------------- | --------- | ------------------------------------ |
@@ -82,7 +82,7 @@ subcommands (for example under `skills`, `plugins`, and `wiki`) evolve
 independently; run `<command> --help` for the authoritative, current list.
 
 ```
-openclaw [--dev] [--profile <name>] <command>
+operator [--dev] [--profile <name>] <command>
   openclaw
   setup
   onboard
@@ -415,7 +415,7 @@ openclaw [--dev] [--profile <name>] <command>
 ```
 
 Plugins can add additional top-level commands, such as
-[`openclaw workboard`](/cli/workboard) or `openclaw voicecall`.
+[`operator workboard`](/cli/workboard) or `operator voicecall`.
 
 </Accordion>
 
@@ -432,7 +432,7 @@ Highlights:
 
 ## Usage tracking
 
-`openclaw status --usage` and the Control UI surface provider usage/quota when
+`operator status --usage` and the Control UI surface provider usage/quota when
 OAuth/API credentials are available. Data comes directly from provider usage
 endpoints and is normalized to `X% left`. Providers with current usage
 windows: Anthropic, Gemini CLI, GitHub Copilot, MiniMax, OpenAI Codex,

@@ -1,6 +1,6 @@
 // Gateway connection detail builder for CLI/user-facing target diagnostics.
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveConfigPath, resolveGatewayPort } from "../config/paths.js";
 import type { OperatorConfig } from "../config/types.js";
 import { isSecureWebSocketUrl } from "./net.js";
@@ -88,7 +88,7 @@ export function buildGatewayConnectionDetailsWithResolvers(
         allowPrivateWs
           ? undefined
           : "Break-glass (trusted private networks only): set OPERATOR_ALLOW_INSECURE_PRIVATE_WS=1",
-        "Doctor: operator doctor --fix",
+        "Doctor: openclaw doctor --fix",
         "Docs: https://docs.operator.ai/gateway/remote",
       ].join("\n"),
     );

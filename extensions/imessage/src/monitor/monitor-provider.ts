@@ -2,53 +2,73 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveHumanDelayConfig } from "openclaw/plugin-sdk/agent-runtime";
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-runtime";
-import { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
+import { resolveHumanDelayConfig } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { logTypingFailure } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
 import {
   createChannelInboundDebouncer,
   formatInboundMediaUnavailableText,
   resolveEnvelopeFormatOptions,
   runChannelInboundEvent,
   shouldDebounceTextInbound,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   deliverInboundReplyWithMessageSendContext,
   createChannelMessageReplyPipeline,
   resolveChannelStreamingBlockEnabled,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createChannelPairingChallengeIssuer } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
 import {
   readChannelAllowFromStore,
   upsertChannelPairingRequest,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { recordInboundSession } from "openclaw/plugin-sdk/conversation-runtime";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { normalizeScpRemoteHost } from "openclaw/plugin-sdk/host-runtime";
-import { isInboundPathAllowed, kindFromMime } from "openclaw/plugin-sdk/media-runtime";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import { resolveTextChunkLimit, type GetReplyOptions } from "openclaw/plugin-sdk/reply-runtime";
-import { dispatchInboundMessage } from "openclaw/plugin-sdk/reply-runtime";
-import { createReplyDispatcherWithTyping } from "openclaw/plugin-sdk/reply-runtime";
-import { settleReplyDispatcher } from "openclaw/plugin-sdk/reply-runtime";
-import { resolveInboundLastRouteSessionKey } from "openclaw/plugin-sdk/routing";
-import { getRuntimeConfig, type OperatorConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { danger, logVerbose, shouldLogVerbose, warn } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { recordInboundSession } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { normalizeScpRemoteHost } from "@gabrielvfonseca/operator/plugin-sdk/host-runtime";
+import {
+  isInboundPathAllowed,
+  kindFromMime,
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import {
+  DEFAULT_GROUP_HISTORY_LIMIT,
+  type HistoryEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import {
+  resolveTextChunkLimit,
+  type GetReplyOptions,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { dispatchInboundMessage } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { createReplyDispatcherWithTyping } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { settleReplyDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveInboundLastRouteSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import {
+  getRuntimeConfig,
+  type OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import {
+  danger,
+  logVerbose,
+  shouldLogVerbose,
+  warn,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   resolveOpenProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   getSessionEntry,
   readSessionUpdatedAt,
   resolveSendPolicy,
   resolveStorePath,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { sliceUtf16Safe, truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
-import { waitForTransportReady } from "openclaw/plugin-sdk/transport-ready-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import {
+  sliceUtf16Safe,
+  truncateUtf16Safe,
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import { waitForTransportReady } from "@gabrielvfonseca/operator/plugin-sdk/transport-ready-runtime";
 import { resolveIMessageAccount } from "../accounts.js";
 import { pollPendingIMessageApprovalReactions } from "../approval-reaction-poller.js";
 import { maybeResolveIMessageApprovalReaction } from "../approval-reactions.js";

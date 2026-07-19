@@ -1,4 +1,4 @@
-import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 type DiscordActivitiesConfigResolution =
   | {

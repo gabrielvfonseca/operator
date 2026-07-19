@@ -7,7 +7,7 @@ import { readPluginInstallIndex } from "../plugin-index-sqlite.mjs";
 const command = process.argv[2];
 const SCENARIOS = new Set([
   "base",
-  "acpx-openclaw-tools-bridge",
+  "acpx-operator-tools-bridge",
   "feishu-channel",
   "bootstrap-persona",
   "channel-post-core-restore",
@@ -104,7 +104,7 @@ function seedLegacySessionMetadata(stateDir) {
         resolvedSkills: [
           {
             name: "legacy-heavy-skill-cache",
-            filePath: "/tmp/openclaw-old-package/skills/legacy-heavy-skill-cache/SKILL.md",
+            filePath: "/tmp/operator-old-package/skills/legacy-heavy-skill-cache/SKILL.md",
           },
         ],
       },
@@ -139,17 +139,17 @@ function seedLegacySessionMetadata(stateDir) {
 }
 
 function getScenario() {
-  const scenario = process.env.OPENCLAW_UPGRADE_SURVIVOR_SCENARIO || "base";
+  const scenario = process.env.OPERATOR_UPGRADE_SURVIVOR_SCENARIO || "base";
   assert(SCENARIOS.has(scenario), `unknown upgrade survivor scenario: ${scenario}`);
   return scenario;
 }
 
 function getConfig() {
-  return readJson(requireEnv("OPENCLAW_CONFIG_PATH"));
+  return readJson(requireEnv("OPERATOR_CONFIG_PATH"));
 }
 
 function getCoverage() {
-  const file = process.env.OPENCLAW_UPGRADE_SURVIVOR_CONFIG_COVERAGE_JSON;
+  const file = process.env.OPERATOR_UPGRADE_SURVIVOR_CONFIG_COVERAGE_JSON;
   if (!file || !fs.existsSync(file)) {
     return null;
   }
@@ -172,8 +172,8 @@ function hasCoverage(coverage) {
 }
 
 function seedState() {
-  const stateDir = requireEnv("OPENCLAW_STATE_DIR");
-  const workspace = requireEnv("OPENCLAW_TEST_WORKSPACE_DIR");
+  const stateDir = requireEnv("OPERATOR_STATE_DIR");
+  const workspace = requireEnv("OPERATOR_TEST_WORKSPACE_DIR");
   const scenario = getScenario();
 
   write(
@@ -185,7 +185,7 @@ function seedState() {
       write(path.join(workspace, fileName), contents);
     }
   }
-  writeJson(path.join(workspace, ".openclaw", "workspace-state.json"), {
+  writeJson(path.join(workspace, ".operator", "workspace-state.json"), {
     version: 1,
     setupCompletedAt: "2026-04-01T00:00:00.000Z",
   });
@@ -198,7 +198,7 @@ function seedState() {
 
   const runtimeRoot = path.join(stateDir, "plugin-runtime-deps");
   for (const plugin of ["discord", "telegram", "whatsapp"]) {
-    writeJson(path.join(runtimeRoot, plugin, ".openclaw-runtime-deps-stamp.json"), {
+    writeJson(path.join(runtimeRoot, plugin, ".operator-runtime-deps-stamp.json"), {
       version: 0,
       plugin,
       stale: true,
@@ -207,7 +207,7 @@ function seedState() {
       path.join(
         runtimeRoot,
         plugin,
-        ".openclaw-runtime-deps-copy-stale",
+        ".operator-runtime-deps-copy-stale",
         "node_modules",
         "stale-sentinel",
         "package.json",
@@ -216,13 +216,13 @@ function seedState() {
     );
   }
   if (scenario === "versioned-runtime-deps") {
-    const version = process.env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_VERSION || "2026.4.24";
+    const version = process.env.OPERATOR_UPGRADE_SURVIVOR_BASELINE_VERSION || "2026.4.24";
     for (const plugin of ["discord", "feishu", "telegram", "whatsapp"]) {
       writeJson(
         path.join(
           runtimeRoot,
-          `openclaw-${version}-${plugin}`,
-          ".openclaw-runtime-deps-stamp.json",
+          `operator-${version}-${plugin}`,
+          ".operator-runtime-deps-stamp.json",
         ),
         {
           packageVersion: version,
@@ -233,7 +233,7 @@ function seedState() {
       write(
         path.join(
           runtimeRoot,
-          `openclaw-${version}-${plugin}`,
+          `operator-${version}-${plugin}`,
           "node_modules",
           "stale-sentinel",
           "package.json",
@@ -317,13 +317,13 @@ function assertConfigSurvived() {
     }
   }
 
-  if (hasCoverage(coverage) && acceptsIntent(coverage, "acpx-openclaw-tools-bridge")) {
+  if (hasCoverage(coverage) && acceptsIntent(coverage, "acpx-operator-tools-bridge")) {
     const pluginAllow = config.plugins?.allow ?? [];
     assert(pluginAllow.includes("acpx"), "ACPX plugin allow entry missing");
     assert(config.plugins?.entries?.acpx?.enabled === true, "ACPX plugin entry changed");
     assert(
       config.plugins?.entries?.acpx?.config?.openClawToolsMcpBridge === true,
-      "ACPX OpenClaw tools bridge config changed",
+      "ACPX Operator tools bridge config changed",
     );
   }
 
@@ -416,17 +416,17 @@ function assertConfigSurvived() {
 
   if (hasCoverage(coverage) && acceptsIntent(coverage, "logging")) {
     assert(
-      config.logging?.file === "~/openclaw-upgrade-survivor/gateway.jsonl",
+      config.logging?.file === "~/operator-upgrade-survivor/gateway.jsonl",
       "logging.file tilde path changed",
     );
   }
 }
 
 function assertStateSurvived() {
-  const stateDir = requireEnv("OPENCLAW_STATE_DIR");
-  const workspace = requireEnv("OPENCLAW_TEST_WORKSPACE_DIR");
+  const stateDir = requireEnv("OPERATOR_STATE_DIR");
+  const workspace = requireEnv("OPERATOR_TEST_WORKSPACE_DIR");
   const scenario = getScenario();
-  const stage = process.env.OPENCLAW_UPGRADE_SURVIVOR_ASSERT_STAGE || "survival";
+  const stage = process.env.OPERATOR_UPGRADE_SURVIVOR_ASSERT_STAGE || "survival";
   assert(fs.existsSync(path.join(workspace, "IDENTITY.md")), "workspace identity file missing");
   assert(
     fs.existsSync(path.join(stateDir, "agents", "main", "sessions", "legacy-session.json")),
@@ -466,10 +466,10 @@ function assertStateSurvived() {
     if (stage === "baseline") {
       return;
     }
-    const version = process.env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_VERSION || "2026.4.24";
+    const version = process.env.OPERATOR_UPGRADE_SURVIVOR_BASELINE_VERSION || "2026.4.24";
     const runtimeRoot = path.join(stateDir, "plugin-runtime-deps");
     const staleVersionedRoots = fs.existsSync(runtimeRoot)
-      ? fs.readdirSync(runtimeRoot).filter((entry) => entry.startsWith(`openclaw-${version}-`))
+      ? fs.readdirSync(runtimeRoot).filter((entry) => entry.startsWith(`operator-${version}-`))
       : [];
     assert(
       staleVersionedRoots.length === 0,
@@ -482,7 +482,7 @@ function assertSessionMetadataMigrated(stateDir) {
   const legacyStorePath = path.join(stateDir, "sessions", "sessions.json");
   const agentSessionsDir = path.join(stateDir, "agents", "main", "sessions");
   const targetStorePath = path.join(agentSessionsDir, "sessions.json");
-  const dbPath = path.join(stateDir, "agents", "main", "agent", "openclaw-agent.sqlite");
+  const dbPath = path.join(stateDir, "agents", "main", "agent", "operator-agent.sqlite");
   assert(
     !fs.existsSync(legacyStorePath),
     `legacy sessions.json survived migration: ${legacyStorePath}`,
@@ -548,7 +548,7 @@ function readMigratedSessionStore(stateDir, targetStorePath) {
     return readJson(targetStorePath);
   }
 
-  const dbPath = path.join(stateDir, "agents", "main", "agent", "openclaw-agent.sqlite");
+  const dbPath = path.join(stateDir, "agents", "main", "agent", "operator-agent.sqlite");
   assert(fs.existsSync(dbPath), `agent session store missing: ${targetStorePath} or ${dbPath}`);
 
   let db;
@@ -584,7 +584,7 @@ function readMigratedSessionStore(stateDir, targetStorePath) {
 }
 
 function readInstalledPluginIndex() {
-  const stateDir = requireEnv("OPENCLAW_STATE_DIR");
+  const stateDir = requireEnv("OPERATOR_STATE_DIR");
   const index = readPluginInstallIndex({ stateDir });
   assert(index.installRecords, "installed plugin index missing");
   return index;
@@ -621,7 +621,7 @@ function assertExternalPluginInstall(records, pluginId, packageName) {
     `configured external ${pluginId} package name changed: ${packageJson.name}`,
   );
   if (installedFromNpm) {
-    const stateDir = requireEnv("OPENCLAW_STATE_DIR");
+    const stateDir = requireEnv("OPERATOR_STATE_DIR");
     assert(
       isPathInsideManagedNpmProjectPackageRoot({ stateDir, installPath, packageName }),
       `configured external ${pluginId} npm install path outside managed npm project root: ${installPath}`,
@@ -636,7 +636,7 @@ function assertExternalPluginInstall(records, pluginId, packageName) {
     record.clawhubPackage === packageName,
     `configured external ${pluginId} ClawHub package changed: ${record.clawhubPackage}`,
   );
-  const extensionsRoot = path.join(requireEnv("OPENCLAW_STATE_DIR"), "extensions");
+  const extensionsRoot = path.join(requireEnv("OPERATOR_STATE_DIR"), "extensions");
   assert(
     isPathInside(extensionsRoot, installPath),
     `configured external ${pluginId} ClawHub install path outside managed extensions root: ${installPath}`,
@@ -645,7 +645,7 @@ function assertExternalPluginInstall(records, pluginId, packageName) {
 
 function assertConfiguredPluginInstalls() {
   const coverage = getCoverage();
-  const stage = process.env.OPENCLAW_UPGRADE_SURVIVOR_ASSERT_STAGE || "survival";
+  const stage = process.env.OPERATOR_UPGRADE_SURVIVOR_ASSERT_STAGE || "survival";
   if (!hasCoverage(coverage) || !acceptsIntent(coverage, "configured-plugin-installs")) {
     return;
   }
@@ -656,11 +656,11 @@ function assertConfiguredPluginInstalls() {
   const records = index.installRecords ?? {};
   assertOptionalConfiguredPluginIndex(records, index.plugins ?? [], {
     bundled: true,
-    packageName: "@operator/matrix",
+    packageName: "@gabrielvfonseca/matrix",
     pluginId: "matrix",
   });
   assertOptionalConfiguredPluginIndex(records, index.plugins ?? [], {
-    packageName: "@operator/brave-plugin",
+    packageName: "@gabrielvfonseca/brave-plugin",
     pluginId: "brave",
   });
   assert(!records.telegram, "internal telegram plugin should not be installed externally");

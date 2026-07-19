@@ -3,7 +3,7 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CliDeps } from "../cli/deps.types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { GatewayCronServiceContract } from "./server-cron-contract.js";
 import type { GatewayCronState } from "./server-cron.js";
 
@@ -38,7 +38,7 @@ describe("createLazyGatewayCronState", () => {
   });
 
   it("resolves its default store path from the prepared env", () => {
-    const stateRoot = "/tmp/openclaw-candidate-state";
+    const stateRoot = "/tmp/operator-candidate-state";
     const lazy = createLazyGatewayCronState({
       ...createParams(),
       env: { ...process.env, OPERATOR_STATE_DIR: stateRoot },
@@ -301,7 +301,7 @@ function createParams(overrides: Partial<OperatorConfig> = {}) {
 function createCronState(cron: GatewayCronServiceContract): GatewayCronState {
   return {
     cron,
-    storePath: "/tmp/openclaw-cron.json",
+    storePath: "/tmp/operator-cron.json",
     cronEnabled: true,
   } as GatewayCronState;
 }

@@ -1,10 +1,10 @@
 // Tavily plugin module implements tavily search tool behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import {
   jsonResult,
   readPositiveIntegerParam,
   readStringParam,
-} from "openclaw/plugin-sdk/provider-web-search";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import { Type } from "typebox";
 import { runTavilySearch } from "./tavily-client.js";
 import { resolveTavilyToolConfig, type TavilyToolConfigContext } from "./tavily-tool-config.js";

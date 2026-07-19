@@ -8,11 +8,11 @@ import {
   postNativeUpdate,
 } from "../app/native-link-routing.ts";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomContentsElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomContentsElement } from "../lit/operator-element.ts";
 import { getSafeLocalStorage } from "../local-storage.ts";
 import { icons } from "./icons.ts";
 
-const UPDATE_BANNER_DISMISS_KEY = "openclaw:control-ui:update-banner-dismissed:v1";
+const UPDATE_BANNER_DISMISS_KEY = "operator:control-ui:update-banner-dismissed:v1";
 
 type DismissedUpdate = {
   latestVersion: string;
@@ -52,7 +52,7 @@ function dismiss(update: UpdateAvailable): void {
   }
 }
 
-class SidebarUpdateCard extends OpenClawLightDomContentsElement {
+class SidebarUpdateCard extends OperatorLightDomContentsElement {
   @property({ attribute: false }) updateAvailable: UpdateAvailable | null = null;
   @property({ attribute: false }) updateRunning = false;
   @property({ attribute: false }) onUpdate: () => void = () => undefined;
@@ -142,6 +142,6 @@ class SidebarUpdateCard extends OpenClawLightDomContentsElement {
   }
 }
 
-if (!customElements.get("openclaw-sidebar-update-card")) {
-  customElements.define("openclaw-sidebar-update-card", SidebarUpdateCard);
+if (!customElements.get("operator-sidebar-update-card")) {
+  customElements.define("operator-sidebar-update-card", SidebarUpdateCard);
 }

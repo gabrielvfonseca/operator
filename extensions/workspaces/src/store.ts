@@ -25,8 +25,8 @@ import { DatabaseSync } from "node:sqlite";
 import {
   configureSqliteConnectionPragmas,
   migrateSqliteSchemaToStrict,
-} from "openclaw/plugin-sdk/plugin-state-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import { WidgetAssetTokens } from "./asset-tokens.js";
 import { DEFAULT_WORKSPACE } from "./default-workspace.js";
 import {

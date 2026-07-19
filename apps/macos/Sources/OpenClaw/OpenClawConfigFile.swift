@@ -1,10 +1,10 @@
 import CoreFoundation
 import CryptoKit
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
-enum OpenClawConfigFile {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "config")
+enum OperatorConfigFile {
+    private static let logger = Logger(subsystem: "ai.operator", category: "config")
     private static let configAuditFileName = "config-audit.jsonl"
     private static let fileLock = NSRecursiveLock()
     private nonisolated(unsafe) static var configHealthState: [String: Any] = [:]
@@ -22,11 +22,11 @@ enum OpenClawConfigFile {
     #endif
 
     static func url() -> URL {
-        OpenClawPaths.configURL
+        OperatorPaths.configURL
     }
 
     static func stateDirURL() -> URL {
-        OpenClawPaths.stateDirURL
+        OperatorPaths.stateDirURL
     }
 
     static func loadDict() -> [String: Any] {
@@ -213,7 +213,7 @@ enum OpenClawConfigFile {
     }
 }
 
-extension OpenClawConfigFile {
+extension OperatorConfigFile {
     private static func normalizedPluginConfigId(_ value: Any?) -> String? {
         guard let value = value as? String else { return nil }
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -852,7 +852,7 @@ extension OpenClawConfigFile {
     private static func appendConfigWriteAudit(_ fields: [String: Any]) {
         var record: [String: Any] = [
             "ts": ISO8601DateFormatter().string(from: Date()),
-            "source": "macos-openclaw-config-file",
+            "source": "macos-operator-config-file",
             "event": "config.write",
             "pid": ProcessInfo.processInfo.processIdentifier,
             "argv": Array(ProcessInfo.processInfo.arguments.prefix(8)),
@@ -888,7 +888,7 @@ extension OpenClawConfigFile {
     private static func appendConfigObserveAudit(_ fields: [String: Any]) {
         var record: [String: Any] = [
             "ts": ISO8601DateFormatter().string(from: Date()),
-            "source": "macos-openclaw-config-file",
+            "source": "macos-operator-config-file",
             "event": "config.observe",
             "pid": ProcessInfo.processInfo.processIdentifier,
             "argv": Array(ProcessInfo.processInfo.arguments.prefix(8)),

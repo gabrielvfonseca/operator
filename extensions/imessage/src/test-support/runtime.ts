@@ -4,20 +4,20 @@ import path from "node:path";
 import type {
   OpenKeyedStoreOptions,
   PluginStateSyncKeyedStore,
-} from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   createPluginStateSyncKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-store";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { vi } from "vitest";
 import { setIMessageRuntime } from "../runtime.js";
 
 function createIMessageTestEnv(): NodeJS.ProcessEnv {
   const stateDir = fs.mkdtempSync(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-imessage-state-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-imessage-state-"),
   );
   return { ...process.env, OPERATOR_STATE_DIR: stateDir };
 }

@@ -53,8 +53,8 @@ function makeRuntimeParitySummary(): QaRuntimeParitySuiteSummary {
           scenarioId: "approval-turn-tool-followthrough",
           drift: "none",
           cells: {
-            openclaw: {
-              runtime: "openclaw",
+            operator: {
+              runtime: "@gabrielvfonseca/operator",
               transcriptBytes: '{"role":"assistant"}\n',
               toolCalls: [{ tool: "read_file", argsHash: "a", resultHash: "r" }],
               finalText: "done",
@@ -83,8 +83,8 @@ function makeRuntimeParitySummary(): QaRuntimeParitySuiteSummary {
           drift: "tool-call-shape",
           driftDetails: "tool call 1 differs",
           cells: {
-            openclaw: {
-              runtime: "openclaw",
+            operator: {
+              runtime: "@gabrielvfonseca/operator",
               transcriptBytes: '{"role":"assistant"}\n',
               toolCalls: [{ tool: "read_file", argsHash: "a", resultHash: "r" }],
               finalText: "done",
@@ -113,7 +113,7 @@ function makeRuntimeParitySummary(): QaRuntimeParitySuiteSummary {
     run: {
       providerMode: "mock-openai",
       primaryModel: "openai/gpt-5.6-luna",
-      runtimePair: ["openclaw", "codex"],
+      runtimePair: ["@gabrielvfonseca/operator", "codex"],
     },
   };
 }
@@ -200,8 +200,8 @@ describe("qa agentic parity report", () => {
             scenarioId: "approval-turn-tool-followthrough",
             drift: "none",
             cells: {
-              openclaw: {
-                runtime: "openclaw",
+              operator: {
+                runtime: "@gabrielvfonseca/operator",
                 transcriptBytes: '{"role":"assistant"}\n',
                 toolCalls: [],
                 finalText: "done",
@@ -891,7 +891,7 @@ status=done`,
       comparedAt: "2026-05-10T00:00:00.000Z",
     });
 
-    expect(report.runtimePair).toEqual(["openclaw", "codex"]);
+    expect(report.runtimePair).toEqual(["@gabrielvfonseca/operator", "codex"]);
     expect(report.pass).toBe(true);
     expect(report.driftCounts.none).toBe(1);
     expect(report.driftCounts["tool-call-shape"]).toBe(1);
@@ -947,7 +947,7 @@ status=done`,
     if (!scenario?.runtimeParity) {
       throw new Error("runtime parity fixture missing");
     }
-    scenario.runtimeParity.cells.openclaw.usage = {
+    scenario.runtimeParity.cells.operator.usage = {
       inputTokens: 0,
       outputTokens: 0,
       totalTokens: 0,
@@ -985,7 +985,7 @@ status=done`,
       expectation: "not-applicable",
       reason: "Local fixture only; no assistant turn runs.",
     };
-    scenario.runtimeParity.cells.openclaw.usage = {
+    scenario.runtimeParity.cells.operator.usage = {
       inputTokens: 0,
       outputTokens: 0,
       totalTokens: 0,
@@ -1002,7 +1002,7 @@ status=done`,
     expect(report.pass).toBe(true);
     expect(report.failures).toEqual([]);
     expect(report.scenarios[0]?.status).toBe("pass");
-    expect(markdown).toContain("- openclaw: pass (1 tool calls, N/A tokens)");
+    expect(markdown).toContain("- operator: pass (1 tool calls, N/A tokens)");
     expect(markdown).toContain(
       "- assistant-message usage: N/A (Local fixture only; no assistant turn runs.)",
     );
@@ -1022,7 +1022,7 @@ status=done`,
       expectation: "not-applicable",
       reason: "Local fixture only; no assistant turn runs.",
     };
-    scenario.runtimeParity.cells.openclaw.usage.totalTokens = 0;
+    scenario.runtimeParity.cells.operator.usage.totalTokens = 0;
     scenario.runtimeParity.cells.codex.usage.totalTokens = 0;
     scenario.runtimeParity.cells.codex.runtimeErrorClass = "auth";
 
@@ -1044,7 +1044,7 @@ status=done`,
         },
         run: {
           providerMode: "live-frontier",
-          runtimePair: ["openclaw", "codex"],
+          runtimePair: ["@gabrielvfonseca/operator", "codex"],
         },
       },
       comparedAt: "2026-05-10T00:00:00.000Z",

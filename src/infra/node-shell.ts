@@ -1,5 +1,5 @@
 // Builds platform shell argv for Node-driven command execution.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 // Node shell command construction keeps platform shell flags centralized for
 // system.run and related command execution paths.

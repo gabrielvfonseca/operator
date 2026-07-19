@@ -1,11 +1,11 @@
 // Talk shared helpers build provider configs, launch options, tool schemas, and
 // room event broadcasts used by browser and gateway-owned Talk sessions.
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import {
   getVoiceProviderConfig,

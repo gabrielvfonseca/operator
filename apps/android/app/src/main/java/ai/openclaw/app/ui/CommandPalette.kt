@@ -1,22 +1,22 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayModelProviderSummary
-import ai.openclaw.app.GatewayModelSummary
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.currentAppLanguage
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
-import ai.openclaw.app.i18n.resolveNativeTextResource
-import ai.openclaw.app.i18n.verbatimText
-import ai.openclaw.app.ui.design.ClawEmptyState
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawPlainIconButton
-import ai.openclaw.app.ui.design.ClawScaffold
-import ai.openclaw.app.ui.design.ClawSeparatedColumn
-import ai.openclaw.app.ui.design.ClawTextField
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.GatewayModelProviderSummary
+import ai.operator.app.GatewayModelSummary
+import ai.operator.app.MainViewModel
+import ai.operator.app.currentAppLanguage
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
+import ai.operator.app.i18n.resolveNativeTextResource
+import ai.operator.app.i18n.verbatimText
+import ai.operator.app.ui.design.ClawEmptyState
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawPlainIconButton
+import ai.operator.app.ui.design.ClawScaffold
+import ai.operator.app.ui.design.ClawSeparatedColumn
+import ai.operator.app.ui.design.ClawTextField
+import ai.operator.app.ui.design.ClawTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -91,7 +91,7 @@ internal fun CommandPalette(
   val quickActions =
     listOf(
       CommandItem(CommandAction.Chat, nativeText("Open Chat"), nativeText("Start or continue a conversation"), Icons.Outlined.ChatBubbleOutline, onOpenChat),
-      CommandItem(CommandAction.Voice, nativeText("Start Voice"), nativeText("Talk or dictate with OpenClaw"), Icons.Outlined.MicNone, onOpenVoice),
+      CommandItem(CommandAction.Voice, nativeText("Start Voice"), nativeText("Talk or dictate with Operator"), Icons.Outlined.MicNone, onOpenVoice),
       CommandItem(CommandAction.Sessions, nativeText("Browse Sessions"), nativeText("Find previous conversations"), Icons.Outlined.AccessTime, onOpenSessions),
       CommandItem(CommandAction.Providers, nativeText("Providers & Models"), verbatimText(providerCommandSubtitle(isConnected, providers, models)), Icons.Outlined.Inventory2, onOpenProviders),
       CommandItem(CommandAction.Settings, nativeText("Settings"), nativeText("Gateway, voice, notifications, privacy"), Icons.Outlined.Settings, onOpenSettings),
@@ -132,7 +132,7 @@ internal fun CommandPalette(
           ClawTextField(
             value = query,
             onValueChange = { query = it },
-            placeholder = nativeString("Search OpenClaw"),
+            placeholder = nativeString("Search Operator"),
             modifier = Modifier.focusRequester(searchFocusRequester),
           )
         }
@@ -173,7 +173,7 @@ internal fun CommandPalette(
                   CommandSessionRow(
                     key = session.key,
                     title = commandSessionTitle(session.displayName),
-                    subtitle = if (pendingRunCount > 0) nativeString("Assistant working") else nativeString("OpenClaw session"),
+                    subtitle = if (pendingRunCount > 0) nativeString("Assistant working") else nativeString("Operator session"),
                     metadata = session.updatedAtMs?.let(::commandRelativeTime) ?: nativeString("now"),
                   )
                 },

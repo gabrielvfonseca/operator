@@ -2,8 +2,8 @@
 import { statSync, writeFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
-import { writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { writeExternalFileWithinRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type EdgeTTSClient = Pick<import("node-edge-tts").EdgeTTS, "ttsPromise">;
 

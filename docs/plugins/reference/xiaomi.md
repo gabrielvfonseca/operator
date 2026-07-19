@@ -1,5 +1,5 @@
 ---
-summary: "Adds Xiaomi, Xiaomi Token Plan model provider support to OpenClaw."
+summary: "Adds Xiaomi, Xiaomi Token Plan model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the xiaomi plugin
 title: "Xiaomi plugin"
@@ -7,12 +7,12 @@ title: "Xiaomi plugin"
 
 # Xiaomi plugin
 
-Adds Xiaomi, Xiaomi Token Plan model provider support to OpenClaw.
+Adds Xiaomi, Xiaomi Token Plan model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/xiaomi-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/xiaomi-provider`
+- Install route: included in Operator
 
 ## Surface
 

@@ -4,9 +4,9 @@ import { EventEmitter } from "node:events";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { resetPluginStateStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { CryptoEvent } from "matrix-js-sdk/lib/crypto-api/CryptoEvent.js";
 import type { DecryptionFailureCode as DecryptionFailureCodeValue } from "matrix-js-sdk/lib/crypto-api/index.js";
-import { resetPluginStateStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { installMatrixTestRuntime } from "../test-runtime.js";
 import { readMatrixRecoveryKeyStateForPath } from "./crypto-state-store.js";
@@ -780,7 +780,7 @@ describe("MatrixClient request hardening", () => {
   });
 
   it("wires the sync store into the SDK and flushes it on shutdown", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-matrix-sdk-store-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-matrix-sdk-store-"));
 
     try {
       const client = new MatrixClient("https://matrix.example.org", "token", {
@@ -1661,13 +1661,13 @@ describe("MatrixClient crypto bootstrapping", () => {
 
     const client = new MatrixClient("https://matrix.example.org", "token", {
       encryption: true,
-      cryptoDatabasePrefix: "openclaw-matrix-test",
+      cryptoDatabasePrefix: "operator-matrix-test",
     });
 
     await client.start();
 
     expect(matrixJsClient.initRustCrypto).toHaveBeenCalledWith({
-      cryptoDatabasePrefix: "openclaw-matrix-test",
+      cryptoDatabasePrefix: "operator-matrix-test",
     });
   });
 
@@ -2021,7 +2021,7 @@ describe("MatrixClient crypto bootstrapping", () => {
     const client = new MatrixClient("https://matrix.example.org", "token", {
       encryption: true,
       idbSnapshotPath: path.join(os.tmpdir(), "matrix-idb-interval.json"),
-      cryptoDatabasePrefix: "openclaw-matrix-interval",
+      cryptoDatabasePrefix: "operator-matrix-interval",
     });
 
     await client.start();

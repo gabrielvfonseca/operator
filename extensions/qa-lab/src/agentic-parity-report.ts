@@ -189,7 +189,7 @@ function scenarioHasRuntimeToolCallEvidence(scenario: QaParityReportScenario): b
   return (
     scenario.status === "pass" &&
     isRuntimeParityResultPass(parity) &&
-    parity.cells.openclaw.toolCalls.length > 0 &&
+    parity.cells.operator.toolCalls.length > 0 &&
     parity.cells.codex.toolCalls.length > 0
   );
 }
@@ -278,9 +278,9 @@ function isLiveProviderMode(providerMode: string | undefined) {
 
 function describeLiveUsageFailure(scenarioName: string, scenario: QaRuntimeParityScenarioReport) {
   const missing = [
-    scenario.openclawTokens > 0
+    scenario.operatorTokens > 0
       ? undefined
-      : `${scenario.openclawStatus === "pass" ? "openclaw" : "openclaw failed"}=0`,
+      : `${scenario.operatorStatus === "pass" ? "@gabrielvfonseca/operator" : "openclaw failed"}=0`,
     scenario.codexTokens > 0
       ? undefined
       : `${scenario.codexStatus === "pass" ? "codex" : "codex failed"}=0`,
@@ -297,7 +297,7 @@ function normalizeRuntimePair(
   if (pair?.[0] && pair?.[1]) {
     return pair;
   }
-  return ["openclaw", "codex"];
+  return ["@gabrielvfonseca/operator", "codex"];
 }
 
 function requiredCoverageStatus(
@@ -671,7 +671,7 @@ export function buildQaRuntimeParityReport(params: {
       } satisfies QaRuntimeParityScenarioReport;
     }
     driftCounts[parity.drift] += 1;
-    const openclawCell = parity.cells.openclaw;
+    const openclawCell = parity.cells.operator;
     const codexCell = parity.cells.codex;
     const openclawStatus = runtimeParityCellStatus(openclawCell);
     const codexStatus = runtimeParityCellStatus(codexCell);
@@ -768,13 +768,13 @@ export function renderQaRuntimeParityMarkdownReport(report: QaRuntimeParityRepor
   lines.push("## Scenario Comparison", "");
   for (const scenario of report.scenarios) {
     const usageNotApplicable = scenario.runtimeParityUsage.expectation === "not-applicable";
-    const openclawTokens = usageNotApplicable ? "N/A" : String(scenario.openclawTokens);
+    const openclawTokens = usageNotApplicable ? "N/A" : String(scenario.operatorTokens);
     const codexTokens = usageNotApplicable ? "N/A" : String(scenario.codexTokens);
     lines.push(`### ${scenario.name}`, "");
     lines.push(`- status: ${scenario.status}`);
     lines.push(`- drift: ${scenario.drift}`);
     lines.push(
-      `- openclaw: ${scenario.openclawStatus} (${scenario.openclawToolCalls} tool calls, ${openclawTokens} tokens)`,
+      `- operator: ${scenario.operatorStatus} (${scenario.operatorToolCalls} tool calls, ${openclawTokens} tokens)`,
     );
     lines.push(
       `- codex: ${scenario.codexStatus} (${scenario.codexToolCalls} tool calls, ${codexTokens} tokens)`,

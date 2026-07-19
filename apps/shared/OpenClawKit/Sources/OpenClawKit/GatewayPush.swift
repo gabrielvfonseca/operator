@@ -1,8 +1,8 @@
-import OpenClawProtocol
+import OperatorProtocol
 
 public enum GatewayServerCapability: String, CaseIterable, Sendable {
     case chatSendRoutingContract = "chat-send-routing-contract"
-    case systemAgentSetupModelRef = "openclaw-setup-model-ref"
+    case systemAgentSetupModelRef = "operator-setup-model-ref"
 }
 
 extension HelloOk {

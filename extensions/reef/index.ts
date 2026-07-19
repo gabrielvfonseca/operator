@@ -1,8 +1,8 @@
 import {
   defineBundledChannelEntry,
   type OperatorPluginApi,
-} from "openclaw/plugin-sdk/channel-entry-contract";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import { registerReefCliMetadata } from "./cli-metadata.js";
 
 const loadReefCommandsRuntime = createLazyRuntimeModule(() => import("./commands.runtime.js"));

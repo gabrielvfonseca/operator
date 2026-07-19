@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { captureFullEnv } from "../test-utils/env.js";
 import { getWindowsCmdExePath } from "./windows-install-roots.js";
@@ -13,7 +13,7 @@ const resolvePreferredOperatorTmpDirMock = vi.hoisted(() => vi.fn(() => os.tmpdi
 const resolveTaskScriptPathMock = vi.hoisted(() =>
   vi.fn((env: Record<string, string | undefined>) => {
     const home = env.USERPROFILE || env.HOME || os.homedir();
-    return path.join(home, ".openclaw", "gateway.cmd");
+    return path.join(home, ".operator", "gateway.cmd");
   }),
 );
 // Pin code page detection so hosts with CJK home paths cannot leak the real
@@ -29,7 +29,7 @@ vi.mock("node:child_process", async () => {
     },
   );
 });
-vi.mock("./tmp-openclaw-dir.js", () => ({
+vi.mock("./tmp-operator-dir.js", () => ({
   resolvePreferredOperatorTmpDir: () => resolvePreferredOperatorTmpDirMock(),
 }));
 vi.mock("../daemon/schtasks.js", () => ({
@@ -100,7 +100,7 @@ describe("relaunchGatewayScheduledTask", () => {
     resolveTaskScriptPathMock.mockReset();
     resolveTaskScriptPathMock.mockImplementation((env: Record<string, string | undefined>) => {
       const home = env.USERPROFILE || env.HOME || os.homedir();
-      return path.join(home, ".openclaw", "gateway.cmd");
+      return path.join(home, ".operator", "gateway.cmd");
     });
     resolveWindowsSystemEncodingMock.mockReset();
     resolveWindowsSystemEncodingMock.mockReturnValue(null);
@@ -240,7 +240,7 @@ describe("relaunchGatewayScheduledTask", () => {
   });
 
   it("includes startup fallback", () => {
-    const taskScriptDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-state-"));
+    const taskScriptDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-state-"));
     createdTmpDirs.add(taskScriptDir);
     const taskScriptPath = path.join(taskScriptDir, "gateway.cmd");
     fs.writeFileSync(taskScriptPath, "@echo off\r\nrem placeholder\r\n", "utf8");
@@ -292,7 +292,7 @@ describe("relaunchGatewayScheduledTask", () => {
       "[...createdScriptPaths][0] test invariant",
     );
     const raw = fs.readFileSync(scriptPath);
-    expect(raw.toString("latin1").startsWith("@rem openclaw-launcher-encoding=gbk\r\n")).toBe(true);
+    expect(raw.toString("latin1").startsWith("@rem operator-launcher-encoding=gbk\r\n")).toBe(true);
     // The old raw-UTF-8 writer would have kept the task name readable here.
     expect(raw.toString("utf8")).not.toContain("隆");
     const script = decodeWindowsLauncherScript({ buffer: raw });

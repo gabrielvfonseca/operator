@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Snapshot of how full the active session's context window is, derived from
 /// the newest usage-bearing message plus session/model metadata.
-public struct OpenClawChatContextUsage: Equatable, Sendable {
+public struct OperatorChatContextUsage: Equatable, Sendable {
     public let usedTokens: Int
     public let contextWindowTokens: Int?
     public let totalCost: Double?
@@ -22,10 +22,10 @@ enum ChatContextUsageCalculator {
     /// Prefers the newest per-run usage (fresh after every reply) and falls
     /// back to fresh server-side session totals when no message carries usage.
     static func usage(
-        messages: [OpenClawChatMessage],
-        sessionEntry: OpenClawChatSessionEntry?,
-        defaults: OpenClawChatSessionsDefaults?,
-        modelContextWindow: Int?) -> OpenClawChatContextUsage?
+        messages: [OperatorChatMessage],
+        sessionEntry: OperatorChatSessionEntry?,
+        defaults: OperatorChatSessionsDefaults?,
+        modelContextWindow: Int?) -> OperatorChatContextUsage?
     {
         let sessionTokens = sessionEntry?.totalTokensFresh == false ? nil : sessionEntry?.totalTokens
         let usedTokens = self.latestRunTokens(in: messages) ?? sessionTokens
@@ -33,7 +33,7 @@ enum ChatContextUsageCalculator {
         let contextWindow = self.positive(sessionEntry?.contextTokens)
             ?? self.positive(defaults?.contextTokens)
             ?? self.positive(modelContextWindow)
-        return OpenClawChatContextUsage(
+        return OperatorChatContextUsage(
             usedTokens: usedTokens,
             contextWindowTokens: contextWindow,
             totalCost: self.totalCost(in: messages))
@@ -41,7 +41,7 @@ enum ChatContextUsageCalculator {
 
     /// Context pressure comes from the latest run: its usage already counts
     /// the whole conversation the model saw, so runs are not summed.
-    private static func latestRunTokens(in messages: [OpenClawChatMessage]) -> Int? {
+    private static func latestRunTokens(in messages: [OperatorChatMessage]) -> Int? {
         for message in messages.reversed() {
             guard let usage = message.usage else { continue }
             if let total = usage.total, total > 0 {
@@ -57,7 +57,7 @@ enum ChatContextUsageCalculator {
         return nil
     }
 
-    private static func totalCost(in messages: [OpenClawChatMessage]) -> Double? {
+    private static func totalCost(in messages: [OperatorChatMessage]) -> Double? {
         let costs = messages.compactMap { $0.usage?.cost?.total }
         guard !costs.isEmpty else { return nil }
         return costs.reduce(0, +)
@@ -69,8 +69,8 @@ enum ChatContextUsageCalculator {
     }
 }
 
-extension OpenClawChatViewModel {
-    public var contextUsage: OpenClawChatContextUsage? {
+extension OperatorChatViewModel {
+    public var contextUsage: OperatorChatContextUsage? {
         let entry = self.sessions.first { $0.key == self.sessionKey } ??
             self.sessions.first {
                 self.matchesCurrentSessionKey(incoming: $0.key, current: self.sessionKey)
@@ -82,7 +82,7 @@ extension OpenClawChatViewModel {
             modelContextWindow: self.selectedModelContextWindow(sessionEntry: entry))
     }
 
-    private func selectedModelContextWindow(sessionEntry: OpenClawChatSessionEntry?) -> Int? {
+    private func selectedModelContextWindow(sessionEntry: OperatorChatSessionEntry?) -> Int? {
         let selection = self.modelSelectionID != Self.defaultModelSelectionID
             ? self.modelSelectionID
             : (sessionEntry?.model ?? self.sessionDefaults?.model)
@@ -105,7 +105,7 @@ struct ChatMessageUsagePresentation: Equatable {
     let pressure: Pressure
 
     static func make(
-        message: OpenClawChatMessage,
+        message: OperatorChatMessage,
         contextWindowTokens: Int?) -> ChatMessageUsagePresentation?
     {
         guard message.role.lowercased() == "assistant", let usage = message.usage else { return nil }
@@ -222,7 +222,7 @@ struct ChatMessageUsagePresentation: Equatable {
 /// Compact token ring for the window toolbar, mirroring the web UI's context
 /// gauge: ring fill and tint track pressure, the menu carries the details.
 struct ChatContextUsageIndicator: View {
-    let usage: OpenClawChatContextUsage
+    let usage: OperatorChatContextUsage
 
     var body: some View {
         HStack(spacing: 5) {
@@ -238,7 +238,7 @@ struct ChatContextUsageIndicator: View {
 
             if let percent = self.usage.percentUsed {
                 Text(Double(percent) / 100, format: .percent.precision(.fractionLength(0)))
-                    .font(OpenClawChatTypography.captionSemiBold)
+                    .font(OperatorChatTypography.captionSemiBold)
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
             }

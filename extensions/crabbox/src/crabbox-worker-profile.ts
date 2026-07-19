@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { WorkerProviderError, type WorkerProfile } from "openclaw/plugin-sdk/plugin-entry";
+import {
+  WorkerProviderError,
+  type WorkerProfile,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 const PROFILE_KEYS = new Set(["binary", "class", "idleTimeout", "provider", "setup", "ttl"]);
 const GO_DURATION_PATTERN = /^\+?(?:(?:\d+(?:\.\d*)?|\.\d+)(?:ns|us|µs|μs|ms|s|m|h))+$/u;
@@ -139,7 +142,7 @@ export function resolveCrabboxBinary(params: {
   const platform = params.platform ?? process.platform;
   const isExecutable =
     params.isExecutable ?? ((candidate) => defaultIsExecutable(candidate, platform));
-  const siblingBase = path.resolve(params.openclawRoot, "../crabbox/bin/crabbox");
+  const siblingBase = path.resolve(params.operatorRoot, "../crabbox/bin/crabbox");
   for (const candidate of binaryCandidates(siblingBase, platform)) {
     if (isExecutable(candidate)) {
       return candidate;
@@ -177,7 +180,7 @@ export function resolveOperatorRoot(pluginRoot: string | undefined): string {
 }
 
 export function operationSlug(operationId: string): string {
-  return `openclaw-${createHash("sha256").update(operationId).digest("hex").slice(0, 32)}`;
+  return `operator-${createHash("sha256").update(operationId).digest("hex").slice(0, 32)}`;
 }
 
 export function identityRefId(leaseId: string): string {

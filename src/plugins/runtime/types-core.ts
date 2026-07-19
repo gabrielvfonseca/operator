@@ -345,8 +345,8 @@ export type PluginRuntimeCore = {
   };
   media: {
     loadWebMedia: typeof import("../../media/web-media.js").loadWebMedia;
-    detectMime: typeof import("@operator/media-core/mime").detectMime;
-    mediaKindFromMime: typeof import("@operator/media-core/constants").mediaKindFromMime;
+    detectMime: typeof import("@gabrielvfonseca/media-core/mime").detectMime;
+    mediaKindFromMime: typeof import("@gabrielvfonseca/media-core/constants").mediaKindFromMime;
     isVoiceCompatibleAudio: typeof import("../../media/audio.js").isVoiceCompatibleAudio;
     getImageMetadata: typeof import("../../media/media-services.js").getImageMetadata;
     resizeToJpeg: typeof import("../../media/media-services.js").resizeToJpeg;
@@ -450,13 +450,13 @@ export type PluginRuntimeCore = {
   modelAuth: {
     /** Resolve auth for a model. Only provider/model, optional cfg, and workspaceDir are used. */
     getApiKeyForModel: (params: {
-      model: import("operator/plugin-sdk/llm").Model<import("operator/plugin-sdk/llm").Api>;
+      model: import("openclaw/plugin-sdk/llm").Model<import("openclaw/plugin-sdk/llm").Api>;
       cfg?: import("../../config/types.operator.js").OperatorConfig;
       workspaceDir?: string;
     }) => Promise<import("../../agents/model-auth-runtime-shared.js").ResolvedProviderAuth>;
     /** Resolve request-ready auth for a model, including provider runtime exchanges. */
     getRuntimeAuthForModel: (params: {
-      model: import("operator/plugin-sdk/llm").Model<import("operator/plugin-sdk/llm").Api>;
+      model: import("openclaw/plugin-sdk/llm").Model<import("openclaw/plugin-sdk/llm").Api>;
       cfg?: import("../../config/types.operator.js").OperatorConfig;
       workspaceDir?: string;
     }) => Promise<import("./model-auth-types.js").ResolvedProviderRuntimeAuth>;

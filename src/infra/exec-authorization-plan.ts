@@ -1,4 +1,4 @@
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { explainShellCommand } from "./command-explainer/extract.js";
 import type {
   CommandExplanation,

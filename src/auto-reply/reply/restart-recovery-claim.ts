@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   buildRestartRecoveryClaimCleanupPatch,
   hasRestartRecoverySourceClaim,

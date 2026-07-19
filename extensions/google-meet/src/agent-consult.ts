@@ -1,7 +1,10 @@
 // Google Meet plugin module implements agent consult behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type {
+  PluginRuntime,
+  RuntimeLogger,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import {
   buildRealtimeVoiceAgentConsultWorkingResponse,
   consultRealtimeVoiceAgent,
@@ -12,9 +15,9 @@ import {
   type RealtimeVoiceToolCallEvent,
   type RealtimeVoiceTool,
   type TalkEventInput,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { GoogleMeetConfig, GoogleMeetToolPolicy } from "./config.js";
 
 const GOOGLE_MEET_CONSULT_SYSTEM_PROMPT = [

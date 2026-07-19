@@ -8,16 +8,16 @@ import {
   normalizePromptCapabilityIds,
   normalizeStructuredPromptSection,
   SYSTEM_PROMPT_CACHE_BOUNDARY,
-} from "@operator/ai/internal/shared";
+} from "@gabrielvfonseca/ai/internal/shared";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   normalizeStringEntriesLower,
   normalizeUniqueStringEntries,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { SourceReplyDeliveryMode } from "../auto-reply/get-reply-options.types.js";
 import type { ReasoningLevel, ThinkLevel } from "../auto-reply/thinking.js";
 import { SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
@@ -28,7 +28,6 @@ import {
 } from "../channels/plugins/native-approval-prompt.js";
 import type { SubagentDelegationMode } from "../config/types.agent-defaults.js";
 import type { MemoryCitationsMode } from "../config/types.memory.js";
-import { buildMemoryPromptSection } from "../plugins/memory-state.js";
 import type { AgentPromptSurfaceKind } from "../plugins/types.js";
 import { parseCronRunScopeSuffix } from "../sessions/session-key-utils.js";
 import { listDeliverableMessageChannels } from "../utils/message-channel.js";
@@ -50,10 +49,6 @@ import {
   shouldRenderOperatorToolWorkflowHints,
 } from "./prompt-surface.js";
 import { sanitizeForPromptLiteral } from "./sanitize-for-prompt.js";
-import {
-  buildSkillWorkshopPromptSection,
-  SKILL_WORKSHOP_TOOL_NAME,
-} from "./skill-workshop-prompt.js";
 import type {
   ProviderSystemPromptContribution,
   ProviderSystemPromptSectionId,
@@ -280,43 +275,6 @@ function buildExecApprovalPromptGuidance(params: {
     return 'exec approval-pending: native card/buttons first. Plain /approve only when tool requires chat/manual approval; copy exact "Reply with:" command.';
   }
   return 'exec approval-pending: send exact /approve from "Reply with:"; never ask for another code.';
-}
-
-function buildSkillsSection(params: { skillsPrompt?: string; readToolName: string }) {
-  const trimmed = params.skillsPrompt?.trim();
-  if (!trimmed) {
-    return [];
-  }
-  return [
-    "## Skills",
-    `Scan <available_skills>. Clear match: read exact <location> with \`${params.readToolName}\`; obey.`,
-    "Changed <version>: re-read. Several: most specific. None: read none.",
-    "Up-front max one. Never invent paths.",
-    "External writes: batch safely; no tight loops; honor 429/Retry-After.",
-    trimmed,
-    "",
-  ];
-}
-
-function buildMemorySection(params: {
-  isMinimal: boolean;
-  includeMemorySection?: boolean;
-  availableTools: Set<string>;
-  citationsMode?: MemoryCitationsMode;
-  agentId?: string;
-  agentSessionKey?: string;
-  sandboxed?: boolean;
-}) {
-  if (params.isMinimal || params.includeMemorySection === false) {
-    return [];
-  }
-  return buildMemoryPromptSection({
-    availableTools: params.availableTools,
-    citationsMode: params.citationsMode,
-    agentId: params.agentId,
-    agentSessionKey: params.agentSessionKey,
-    sandboxed: params.sandboxed,
-  });
 }
 
 function buildAgentBootstrapSystemContext(params: {
@@ -612,7 +570,7 @@ function buildDocsSection(params: {
     "## Documentation",
     docsPath ? `Docs: ${docsPath}` : "Docs: https://docs.operator.ai",
     docsPath ? "Mirror: https://docs.operator.ai" : undefined,
-    sourcePath ? `Source: ${sourcePath}` : "Source: https://github.com/operator/operator",
+    sourcePath ? `Source: ${sourcePath}` : "Source: https://github.com/openclaw/openclaw",
     docsPath
       ? `Operator behavior questions: docs first via \`${params.readToolName}\`/local search. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.`
       : "Operator behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
@@ -620,7 +578,7 @@ function buildDocsSection(params: {
     sourcePath
       ? "If docs are silent/stale, say so and inspect local source."
       : "If docs are silent/stale, say so and inspect GitHub source.",
-    "Diagnosis: run `operator status` when possible; ask only if blocked.",
+    "Diagnosis: run `openclaw status` when possible; ask only if blocked.",
     "",
   ];
   return lines.filter((line): line is string => line !== undefined);
@@ -703,7 +661,6 @@ export function buildAgentSystemPrompt(params: {
   contextFiles?: EmbeddedContextFile[];
   bootstrapMode?: BootstrapMode;
   bootstrapTruncationNotice?: string;
-  skillsPrompt?: string;
   heartbeatPrompt?: string;
   docsPath?: string;
   sourcePath?: string;
@@ -755,8 +712,6 @@ export function buildAgentSystemPrompt(params: {
     level: "minimal" | "extensive";
     channel: string;
   };
-  includeMemorySection?: boolean;
-  memoryCitationsMode?: MemoryCitationsMode;
   promptContribution?: ProviderSystemPromptContribution;
 }) {
   const acpEnabled = params.acpEnabled === true;
@@ -821,7 +776,7 @@ export function buildAgentSystemPrompt(params: {
     "nodes",
     "cron",
     "message",
-    "operator",
+    "@gabrielvfonseca/operator",
     "gateway",
     "agents_list",
     "sessions_list",
@@ -890,7 +845,7 @@ export function buildAgentSystemPrompt(params: {
   });
 
   const hasGateway = availableTools.has("gateway");
-  const hasOperator = availableTools.has("operator");
+  const hasOperator = availableTools.has("@gabrielvfonseca/operator");
   const readToolName = resolveToolName("read");
   const execToolName = resolveToolName("exec");
   const processToolName = resolveToolName("process");
@@ -924,7 +879,6 @@ export function buildAgentSystemPrompt(params: {
     : undefined;
   const reasoningLevel = params.reasoningLevel ?? "off";
   const userTimezone = params.userTimezone?.trim();
-  const skillsPrompt = params.skillsPrompt?.trim();
   const heartbeatPrompt = params.heartbeatPrompt?.trim();
   const runtimeInfo = params.runtimeInfo;
   const modelIdentityLine = buildModelIdentityPromptLine(runtimeInfo?.model);
@@ -976,22 +930,6 @@ export function buildAgentSystemPrompt(params: {
     "Never copy self or change prompts/safety/tool policy unless user explicitly requests.",
     "",
   ];
-  const skillsSection = buildSkillsSection({
-    skillsPrompt,
-    readToolName,
-  });
-  const skillWorkshopSection = availableTools.has(SKILL_WORKSHOP_TOOL_NAME)
-    ? buildSkillWorkshopPromptSection()
-    : [];
-  const memorySection = buildMemorySection({
-    isMinimal,
-    includeMemorySection: params.includeMemorySection,
-    availableTools,
-    citationsMode: params.memoryCitationsMode,
-    agentId: params.runtimeInfo?.agentId,
-    agentSessionKey: params.runtimeInfo?.sessionKey,
-    sandboxed: params.sandboxInfo?.enabled === true,
-  });
   const docsSection = buildDocsSection({
     docsPath: params.docsPath,
     sourcePath: params.sourcePath,
@@ -1047,11 +985,7 @@ export function buildAgentSystemPrompt(params: {
     bootstrapSystemPromptSections,
     docsPath: params.docsPath,
     sourcePath: params.sourcePath,
-    skillsPrompt,
     modelAliasLines: params.modelAliasLines,
-    includeMemorySection: params.includeMemorySection,
-    memoryCitationsMode: params.memoryCitationsMode,
-    memorySection,
     acpEnabled,
     stableContextFiles: contextFiles.stable,
   });
@@ -1150,15 +1084,12 @@ export function buildAgentSystemPrompt(params: {
       "Do not invent commands.",
       ...(hasOperator
         ? [
-            "Config, channels, plugins, new agents, model/provider, updates: ask `operator`. Never write own config; Operator is system expert.",
+            "Config, channels, plugins, new agents, model/provider, updates: ask `openclaw`. Never write own config; Operator is system expert.",
           ]
         : [
             "Config read: `gateway` (`config.get|config.schema.lookup`). Write/restart unavailable; ask human.",
           ]),
       "",
-      ...skillsSection,
-      ...skillWorkshopSection,
-      ...memorySection,
       params.modelAliasLines && params.modelAliasLines.length > 0 && !isMinimal
         ? "## Model Aliases"
         : "",

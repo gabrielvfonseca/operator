@@ -1,7 +1,7 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { QaRunnerCliRegistration } from "@gabrielvfonseca/operator/plugin-sdk/qa-runner-runtime";
 // Qa Lab plugin module implements Slack live transport adapter behavior.
-import { createSlackWebClient, createSlackWriteClient } from "@operator/slack/api.js";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
+import { createSlackWebClient, createSlackWriteClient } from "@gabrielvfonseca/slack/api.js";
 import {
   acquireQaCredentialLease,
   startQaCredentialLeaseHeartbeat,

@@ -6,7 +6,7 @@ import path from "node:path";
 import type {
   CodexBundleMcpThreadConfig,
   EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { startCodexAttemptThread } from "./attempt-startup.js";
 import { isCodexAppServerStartupError } from "./attempt-timeouts.js";
@@ -45,7 +45,7 @@ type AttemptPaths = {
 const tempRoots = new Set<string>();
 
 function createAttemptPaths(): AttemptPaths {
-  const root = path.join(os.tmpdir(), `openclaw-codex-attempt-startup-${randomUUID()}`);
+  const root = path.join(os.tmpdir(), `operator-codex-attempt-startup-${randomUUID()}`);
   tempRoots.add(root);
   return {
     agentDir: path.join(root, "agent"),

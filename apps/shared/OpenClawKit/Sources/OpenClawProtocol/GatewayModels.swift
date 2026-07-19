@@ -251,7 +251,7 @@ public struct WorkerAdmissionHandshake: Codable, Sendable {
         protocolfeatures: [String])
     {
         self.bundlehash = bundlehash
-        self.openclawversion = openclawversion
+        self.operatorversion = openclawversion
         self.protocolfeatures = protocolfeatures
     }
 
@@ -2814,7 +2814,7 @@ public struct SessionCatalogSession: Codable, Sendable {
         self.cliversion = cliversion
         self.gitbranch = gitbranch
         self.archived = archived
-        self.openclawsessionkey = openclawsessionkey
+        self.operatorsessionkey = openclawsessionkey
         self.cancontinue = cancontinue
         self.canarchive = canarchive
         self.canopenterminal = canopenterminal

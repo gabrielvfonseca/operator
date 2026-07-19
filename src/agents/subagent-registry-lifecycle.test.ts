@@ -244,7 +244,7 @@ async function runNoReplyMirrorScenario(params: {
     messages: [
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: text,
         timestamp: params.timestamp,

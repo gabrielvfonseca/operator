@@ -3,12 +3,12 @@ import { isDeepStrictEqual } from "node:util";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { enqueueCommandInLane } from "../../process/command-queue.js";
 import { runWithGatewayIndependentRootWorkContinuation } from "../../process/gateway-work-admission.js";
 import { CommandLane } from "../../process/lanes.js";
 import { DEFAULT_AGENT_ID } from "../../routing/session-key.js";
-import { resolveOperatorStateSqlitePath } from "../../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../../state/openclaw-state-db.paths.js";
 import {
   clearCronJobActive,
   isCronActiveJobMarkerCurrent,

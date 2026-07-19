@@ -1,6 +1,6 @@
 // Googlechat tests cover monitor webhook plugin behavior.
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { FixedWindowRateLimiter } from "openclaw/plugin-sdk/webhook-ingress";
+import type { FixedWindowRateLimiter } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { WebhookTarget } from "./monitor-types.js";
 import type { GoogleChatEvent } from "./types.js";
@@ -317,7 +317,7 @@ describe("googlechat monitor webhook", () => {
         commonEventObject: {
           hostApp: "CHAT",
           parameters: {
-            openclaw_action: "approval",
+            operator_action: "approval",
             token: "token-1",
           },
         },
@@ -358,13 +358,13 @@ describe("googlechat monitor webhook", () => {
         eventTime: "2026-03-22T00:00:00.000Z",
         action: {
           parameters: [
-            { key: "openclaw_action", value: "approval" },
+            { key: "operator_action", value: "approval" },
             { key: "token", value: "token-1" },
           ],
         },
         commonEventObject: {
           parameters: {
-            openclaw_action: "approval",
+            operator_action: "approval",
             token: "token-1",
           },
         },

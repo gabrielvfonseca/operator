@@ -1,7 +1,7 @@
 // QA watchdog for shutting down orphaned gateway children and cleaning staged temp roots.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 
 const QA_PARENT_PID_ENV = "OPERATOR_QA_PARENT_PID";

@@ -2,7 +2,7 @@ import AppKit
 import CryptoKit
 import Darwin
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
 private let execApprovalsSocketTimeoutMs = 15000
@@ -128,7 +128,7 @@ struct ExecHostRequest: Codable {
     var sessionKey: String?
     var approvalDecision: ExecApprovalDecision?
     var approvalSource: String?
-    var policySnapshot: OpenClawSystemRunApprovalPolicySnapshot?
+    var policySnapshot: OperatorSystemRunApprovalPolicySnapshot?
 }
 
 private struct ExecHostRunResult: Codable {
@@ -1188,7 +1188,7 @@ private final class ExecApprovalsSocketServer: @unchecked Sendable {
         let lifecycleLease: ExecApprovalsSocketLifecycleLease
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals.socket")
+    private let logger = Logger(subsystem: "ai.operator", category: "exec-approvals.socket")
     private let socketPath: String
     private let token: String
     private let onPrompt: @Sendable (ExecApprovalPromptRequest) async -> ExecApprovalDecision?

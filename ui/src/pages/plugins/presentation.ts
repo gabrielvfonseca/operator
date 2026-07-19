@@ -1,6 +1,6 @@
 // Presentation data for the plugins catalog: bundled cover art, deterministic
 // fallback gradients, category shelving, and curated connector suggestions.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { inferControlUiPublicAssetPath } from "../../app/public-assets.ts";
 import { t } from "../../i18n/index.ts";
 
@@ -93,7 +93,6 @@ const PLUGIN_ART_SLUGS: ReadonlySet<string> = new Set([
   "matrix",
   "mattermost",
   "memory-core",
-  "memory-tiered",
   "memory-lancedb",
   "memory-wiki",
   "meta",

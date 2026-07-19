@@ -1,5 +1,5 @@
 /** Per-session async queue wrapper used by ACP manager operations. */
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 
 /** Per-session async queue that serializes ACP runtime operations and exposes queue depth. */
 export class SessionActorQueue {

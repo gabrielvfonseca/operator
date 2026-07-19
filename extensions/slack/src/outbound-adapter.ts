@@ -1,23 +1,23 @@
 // Slack plugin module implements outbound adapter behavior.
-import type { OutboundIdentity } from "openclaw/plugin-sdk/channel-outbound";
-import { resolveOutboundSendDep } from "openclaw/plugin-sdk/channel-outbound";
+import type { OutboundIdentity } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { resolveOutboundSendDep } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   attachChannelToResult,
   type ChannelOutboundAdapter,
   createAttachedChannelResultAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
 import {
   normalizeMessagePresentation,
   resolveInteractiveTextFallback,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   resolvePayloadMediaUrls,
   sendPayloadMediaSequenceAndFinalize,
   sendTextMediaPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveSlackAuthoredTextPlacement,
   type SlackAuthoredTextPlacement,

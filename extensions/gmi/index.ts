@@ -1,8 +1,8 @@
 // Gmi plugin entrypoint registers its Operator integration.
-import { readConfiguredProviderCatalogEntries } from "openclaw/plugin-sdk/provider-catalog-shared";
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-import { buildProviderToolCompatFamilyHooks } from "openclaw/plugin-sdk/provider-tools";
+import { readConfiguredProviderCatalogEntries } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { buildProviderToolCompatFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-tools";
 import { GMI_DEFAULT_MODEL_REF } from "./models.js";
 import { buildGmiProvider } from "./provider-catalog.js";
 

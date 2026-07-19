@@ -1,9 +1,9 @@
 // Migrate Claude provider module implements model/runtime integration.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import type { MigrationProviderContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 
 const tempRoots = new Set<string>();
 
@@ -16,7 +16,7 @@ const logger = {
 
 export async function makeTempRoot() {
   const root = await fs.mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-migrate-claude-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-migrate-claude-"),
   );
   tempRoots.add(root);
   return root;
@@ -59,7 +59,7 @@ export function makeConfigRuntime(
         const next = structuredClone(config);
         const result = await mutate(next, {
           snapshot: {
-            path: "/tmp/openclaw.json",
+            path: "/tmp/operator.json",
             exists: true,
             raw: "{}",
             parsed: {},

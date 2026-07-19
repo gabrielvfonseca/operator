@@ -15,13 +15,13 @@ import type {
   MatrixVerificationMethod,
   MatrixVerificationSummary,
   MessageEventContent,
-} from "@operator/matrix/test-api.js";
+} from "@gabrielvfonseca/matrix/test-api.js";
 import type {
   OpenKeyedStoreOptions,
   PluginStateEntry,
   PluginStateKeyedStore,
   PluginStateSyncKeyedStore,
-} from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import { buildMatrixQaMessageContent } from "./client-message-content.js";
 import {
   MATRIX_QA_E2EE_SYNC_FILTER,
@@ -33,7 +33,7 @@ import { findMatrixQaObservedEventMatch, normalizeMatrixQaObservedEvent } from "
 import type { MatrixQaObservedEvent } from "./events.js";
 import type { MatrixQaRoomEventWaitResult } from "./sync.js";
 
-type MatrixQaE2eeRuntime = typeof import("@operator/matrix/test-api.js");
+type MatrixQaE2eeRuntime = typeof import("@gabrielvfonseca/matrix/test-api.js");
 
 type MatrixQaE2eeClientParams = {
   accessToken: string;

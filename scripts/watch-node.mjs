@@ -25,7 +25,7 @@ const AUTO_DOCTOR_DISABLE_VALUES = new Set(["0", "false", "no", "off"]);
 // The source watcher cannot import the TypeScript owner; keep this literal
 // aligned with src/commands/doctor-invocation.ts.
 const DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV =
-  "OPENCLAW_DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS";
+  "OPERATOR_DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS";
 
 const buildRunnerArgs = (args) => [WATCH_NODE_RUNNER, ...args];
 const buildDoctorRunnerArgs = () => [WATCH_NODE_RUNNER, "doctor", "--fix", "--non-interactive"];
@@ -87,7 +87,7 @@ const shouldRunAutoDoctor = (deps, autoDoctorAttempted) =>
   !autoDoctorAttempted &&
   isGatewayWatchCommand(deps.args) &&
   !AUTO_DOCTOR_DISABLE_VALUES.has(
-    String(deps.env.OPENCLAW_GATEWAY_WATCH_AUTO_DOCTOR ?? "").toLowerCase(),
+    String(deps.env.OPERATOR_GATEWAY_WATCH_AUTO_DOCTOR ?? "").toLowerCase(),
   );
 
 const isProcessAlive = (pid, signalProcess) => {
@@ -287,13 +287,13 @@ export async function runWatchMain(params = {}) {
   const childEnv = { ...deps.env };
   const watchSession = `${deps.now()}-${deps.process.pid}`;
   const useChildProcessGroup = process.platform !== "win32" && deps.process.stdin?.isTTY !== true;
-  childEnv.OPENCLAW_WATCH_MODE = "1";
-  childEnv.OPENCLAW_WATCH_SESSION = watchSession;
+  childEnv.OPERATOR_WATCH_MODE = "1";
+  childEnv.OPERATOR_WATCH_SESSION = watchSession;
   // The watcher owns process restarts; keep SIGUSR1/config reloads in-process
   // so inherited launchd/systemd markers do not make the child exit and stall.
-  childEnv.OPENCLAW_NO_RESPAWN = "1";
+  childEnv.OPERATOR_NO_RESPAWN = "1";
   if (deps.args.length > 0) {
-    childEnv.OPENCLAW_WATCH_COMMAND = deps.args.join(" ");
+    childEnv.OPERATOR_WATCH_COMMAND = deps.args.join(" ");
   }
 
   return await new Promise((resolve, reject) => {

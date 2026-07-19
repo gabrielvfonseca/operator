@@ -7,8 +7,8 @@ import {
   createSseByteGuard,
   parseStreamingJson,
   type SseByteGuard,
-} from "@operator/ai/internal/runtime";
-import { resolvePositiveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/ai/internal/runtime";
+import { resolvePositiveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { readResponseWithLimit } from "../../infra/http-body.js";
 // Internal import for JSON parsing utility
 import type {

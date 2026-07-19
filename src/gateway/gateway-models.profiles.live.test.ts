@@ -11,13 +11,13 @@ import os from "node:os";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   clampThinkingLevel,
   type Api,
   type Model,
   type ModelThinkingLevel,
-} from "openclaw/plugin-sdk/llm";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, describe, expect, it } from "vitest";
 import { renderCatNoncePngBase64 } from "../../test/helpers/live-image-probe.js";
 import { discoverAuthStorage, discoverModels } from "../agents/agent-model-discovery.js";
@@ -138,10 +138,10 @@ const GATEWAY_LIVE_STRIP_SCAFFOLDING_MODEL_KEYS = new Set([
   "openai/gpt-5.4-pro",
 ]);
 const GATEWAY_LIVE_AGENT_ID = "dev";
-const GATEWAY_LIVE_CONFIG_TEST_WORKSPACE = path.join(os.tmpdir(), "openclaw-live-config-test");
+const GATEWAY_LIVE_CONFIG_TEST_WORKSPACE = path.join(os.tmpdir(), "operator-live-config-test");
 const GATEWAY_LIVE_CONFIG_TEST_AGENT_DIR = path.join(
   os.tmpdir(),
-  "openclaw-live-config-test-agent",
+  "operator-live-config-test-agent",
 );
 const GATEWAY_LIVE_EXEC_READ_NONCE_MISS_SKIP_MODEL_KEYS = new Set([
   "fireworks/accounts/fireworks/models/glm-5",
@@ -1835,7 +1835,7 @@ describe("buildLiveGatewayConfig", () => {
     });
 
     expect(cfg.agents?.defaults?.models?.["openai/gpt-5.5"]).toEqual({
-      agentRuntime: { id: "openclaw" },
+      agentRuntime: { id: "@gabrielvfonseca/operator" },
     });
   });
 
@@ -1973,7 +1973,7 @@ describe("buildLiveGatewayConfig", () => {
       deleteTestEnvValue("AWS_PROFILE");
       deleteTestEnvValue("AWS_CONFIG_FILE");
       deleteTestEnvValue("AWS_SHARED_CREDENTIALS_FILE");
-      setTestEnvValue("HOME", path.join(os.tmpdir(), `openclaw-empty-aws-home-${randomUUID()}`));
+      setTestEnvValue("HOME", path.join(os.tmpdir(), `operator-empty-aws-home-${randomUUID()}`));
 
       const cfg = buildLiveGatewayConfig({
         cfg: {},
@@ -2146,7 +2146,7 @@ describe("buildLiveGatewayConfig", () => {
       awsSharedCredentialsFile: process.env.AWS_SHARED_CREDENTIALS_FILE,
       home: process.env.HOME,
     };
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-bedrock-aws-home-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-bedrock-aws-home-"));
     try {
       const awsDir = path.join(tempHome, ".aws");
       await fs.mkdir(awsDir, { recursive: true });
@@ -2194,7 +2194,7 @@ describe("buildLiveGatewayConfig", () => {
       awsSharedCredentialsFile: process.env.AWS_SHARED_CREDENTIALS_FILE,
       home: process.env.HOME,
     };
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-bedrock-aws-home-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-bedrock-aws-home-"));
     try {
       const awsDir = path.join(tempHome, ".aws");
       await fs.mkdir(awsDir, { recursive: true });
@@ -2242,7 +2242,7 @@ describe("buildLiveGatewayConfig", () => {
       awsSharedCredentialsFile: process.env.AWS_SHARED_CREDENTIALS_FILE,
       home: process.env.HOME,
     };
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-bedrock-aws-home-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-bedrock-aws-home-"));
     try {
       const awsDir = path.join(tempHome, ".aws");
       await fs.mkdir(awsDir, { recursive: true });
@@ -4207,7 +4207,7 @@ function resolveGatewayLiveModelThinkingLevel(params: {
     context: {
       provider: model.provider,
       modelId: model.id,
-      agentRuntime: "openclaw",
+      agentRuntime: "@gabrielvfonseca/operator",
       reasoning: model.reasoning,
       compat: getProviderThinkingModelCompat(model),
     },
@@ -4385,7 +4385,7 @@ function buildLiveGatewayConfig(params: {
         models: Object.fromEntries(
           params.candidates.map((m) => [
             `${m.provider}/${m.id}`,
-            { agentRuntime: { id: "openclaw" as const } },
+            { agentRuntime: { id: "@gabrielvfonseca/operator" as const } },
           ]),
         ),
       },
@@ -4535,7 +4535,7 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
       lastGood: hostStore.lastGood ? { ...hostStore.lastGood } : undefined,
       usageStats: hostStore.usageStats ? { ...hostStore.usageStats } : undefined,
     });
-    const tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-state-"));
+    const tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-state-"));
     cleanupTempStateDir = tempStateDir;
     setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
     const tempAgentDir: string | undefined = path.join(
@@ -4554,9 +4554,9 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
 
     const workspaceDir = path.join(tempStateDir, "workspace-dev");
     await fs.mkdir(workspaceDir, { recursive: true });
-    await fs.mkdir(path.join(workspaceDir, ".openclaw"), { recursive: true });
+    await fs.mkdir(path.join(workspaceDir, ".operator"), { recursive: true });
     await fs.writeFile(
-      path.join(workspaceDir, ".openclaw", "workspace-state.json"),
+      path.join(workspaceDir, ".operator", "workspace-state.json"),
       `${JSON.stringify(
         {
           version: 1,
@@ -4571,7 +4571,7 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
     const nonceB = randomUUID();
     // Keep probe values out of the path: weak tool callers may echo the filename
     // instead of reading the file, turning nonceA into a false duplicate answer.
-    const toolProbePath = path.join(workspaceDir, ".openclaw-live-tool-probe.txt");
+    const toolProbePath = path.join(workspaceDir, ".operator-live-tool-probe.txt");
     cleanupToolProbePath = toolProbePath;
     await fs.writeFile(toolProbePath, `nonceA=${nonceA}\nnonceB=${nonceB}\n`);
 
@@ -4602,9 +4602,9 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
       liveAgentWorkspaceDir: workspaceDir,
       providerOverrides,
     });
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-"));
     cleanupTempDir = tempDir;
-    const tempConfigPath = path.join(tempDir, "openclaw.json");
+    const tempConfigPath = path.join(tempDir, "operator.json");
     await fs.writeFile(tempConfigPath, `${JSON.stringify(nextCfg, null, 2)}\n`);
     setTestEnvValue("OPERATOR_CONFIG_PATH", tempConfigPath);
 
@@ -5730,13 +5730,13 @@ describeLive("gateway live (dev agent, profile keys)", () => {
       }
 
       const agentId = GATEWAY_LIVE_AGENT_ID;
-      tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-zai-state-"));
+      tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-zai-state-"));
       setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
       const workspaceDir = path.join(tempStateDir, "workspace-dev");
       await fs.mkdir(workspaceDir, { recursive: true });
-      await fs.mkdir(path.join(workspaceDir, ".openclaw"), { recursive: true });
+      await fs.mkdir(path.join(workspaceDir, ".operator"), { recursive: true });
       await fs.writeFile(
-        path.join(workspaceDir, ".openclaw", "workspace-state.json"),
+        path.join(workspaceDir, ".operator", "workspace-state.json"),
         `${JSON.stringify(
           {
             version: 1,
@@ -5749,7 +5749,7 @@ describeLive("gateway live (dev agent, profile keys)", () => {
       const nonceA = randomUUID();
       const nonceB = randomUUID();
       // Match the broad probe: the filename must not reveal either expected value.
-      toolProbePath = path.join(workspaceDir, ".openclaw-live-zai-fallback.txt");
+      toolProbePath = path.join(workspaceDir, ".operator-live-zai-fallback.txt");
       await fs.writeFile(toolProbePath, `nonceA=${nonceA}\nnonceB=${nonceB}\n`);
 
       const sanitizedStore = sanitizeAuthProfileStoreForLiveGateway({
@@ -5773,8 +5773,8 @@ describeLive("gateway live (dev agent, profile keys)", () => {
         liveAgentDir: tempAgentDir,
         liveAgentWorkspaceDir: workspaceDir,
       });
-      tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-zai-"));
-      const tempConfigPath = path.join(tempDir, "openclaw.json");
+      tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-zai-"));
+      const tempConfigPath = path.join(tempDir, "operator.json");
       await fs.writeFile(tempConfigPath, `${JSON.stringify(nextCfg, null, 2)}\n`);
       setTestEnvValue("OPERATOR_CONFIG_PATH", tempConfigPath);
       clearRuntimeConfigSnapshot();

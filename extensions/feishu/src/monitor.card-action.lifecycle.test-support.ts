@@ -1,5 +1,5 @@
 // Feishu plugin module implements monitor.card action.lifecycle support behavior.
-import { createRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+import { createRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "./lifecycle.test-support.js";
 import { processedCardActions, resolvedCardActionChatTypes } from "./card-action-state.js";
@@ -147,7 +147,7 @@ describe("Feishu card-action lifecycle", () => {
     lastRuntime = createRuntimeEnv();
     processedCardActions.clear();
     resolvedCardActionChatTypes.clear();
-    setFeishuLifecycleStateDir("openclaw-feishu-card-action");
+    setFeishuLifecycleStateDir("operator-feishu-card-action");
 
     createFeishuReplyDispatcherMock.mockReturnValue(createFeishuLifecycleReplyDispatcher());
 

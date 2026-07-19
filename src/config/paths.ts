@@ -94,9 +94,9 @@ export function resolveStateDir(
 
 export function normalizeStateDirEnv(env: NodeJS.ProcessEnv = process.env): void {
   const effectiveHomedir = () => resolveRequiredHomeDir(env, envHomedir(env));
-  const operatorOverride = env.OPERATOR_STATE_DIR?.trim();
-  if (operatorOverride) {
-    env.OPERATOR_STATE_DIR = resolveUserPath(operatorOverride, env, effectiveHomedir);
+  const openclawOverride = env.OPERATOR_STATE_DIR?.trim();
+  if (openclawOverride) {
+    env.OPERATOR_STATE_DIR = resolveUserPath(openclawOverride, env, effectiveHomedir);
   }
 }
 
@@ -265,9 +265,9 @@ export function resolveDefaultConfigCandidates(
   }
 
   const candidates: string[] = [];
-  const operatorStateDir = env.OPERATOR_STATE_DIR?.trim();
-  if (operatorStateDir) {
-    const resolved = resolveUserPath(operatorStateDir, env, effectiveHomedir);
+  const openclawStateDir = env.OPERATOR_STATE_DIR?.trim();
+  if (openclawStateDir) {
+    const resolved = resolveUserPath(openclawStateDir, env, effectiveHomedir);
     candidates.push(path.join(resolved, CONFIG_FILENAME));
     candidates.push(...LEGACY_CONFIG_FILENAMES.map((name) => path.join(resolved, name)));
   }
@@ -289,7 +289,7 @@ export const DEFAULT_GATEWAY_PORT = 18789;
 export function resolveGatewayLockDir(tmpdir: () => string = os.tmpdir): string {
   const base = tmpdir();
   const uid = typeof process.getuid === "function" ? process.getuid() : undefined;
-  const suffix = uid != null ? `operator-${uid}` : "operator";
+  const suffix = uid != null ? `operator-${uid}` : "@gabrielvfonseca/operator";
   return path.join(base, suffix);
 }
 

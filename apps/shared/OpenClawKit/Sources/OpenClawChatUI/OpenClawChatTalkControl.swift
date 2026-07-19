@@ -1,4 +1,4 @@
-public struct OpenClawChatTalkControl {
+public struct OperatorChatTalkControl {
     public var isEnabled: Bool
     public var isListening: Bool
     public var isSpeaking: Bool

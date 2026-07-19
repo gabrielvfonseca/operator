@@ -1,12 +1,12 @@
-// Telegram plugin module defines message-dispatch contracts.
-import type { Bot } from "grammy";
 import type {
   OperatorConfig,
   ReplyToMode,
   TelegramAccountConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram plugin module defines message-dispatch contracts.
+import type { Bot } from "grammy";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import type { TelegramMessageContext } from "./bot-message-context.js";
 import type { SessionEntry } from "./bot-message-dispatch.runtime.js";

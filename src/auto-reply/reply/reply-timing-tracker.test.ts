@@ -1,6 +1,6 @@
 // Tests reply profiler flag detection and timing tracker output.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createReplyTimingTracker, isReplyProfilerEnabled } from "./reply-timing-tracker.js";
 
 describe("isReplyProfilerEnabled", () => {

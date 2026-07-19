@@ -1,9 +1,9 @@
 /** Publishes gateway/canvas/SSH records through one ciao-owned advertisement lifecycle. */
 import fs from "node:fs";
 import os from "node:os";
+import type { PluginLogger } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { isTruthyEnvValue } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { CiaoService } from "@homebridge/ciao";
-import type { PluginLogger } from "openclaw/plugin-sdk/plugin-entry";
-import { isTruthyEnvValue } from "openclaw/plugin-sdk/runtime-env";
 import { classifyCiaoProcessError } from "./ciao.js";
 import { formatBonjourError } from "./errors.js";
 
@@ -238,12 +238,15 @@ export async function startGatewayBonjourAdvertiser(
     cleanupUncaughtException = deps.registerUncaughtExceptionHandler(handleCiaoProcessError);
 
     const hostnameRaw =
-      process.env.OPERATOR_MDNS_HOSTNAME?.trim() || resolveSystemMdnsHostname() || "openclaw";
+      process.env.OPERATOR_MDNS_HOSTNAME?.trim() ||
+      resolveSystemMdnsHostname() ||
+      "@gabrielvfonseca/operator";
     const hostnameWithoutLocal = hostnameRaw.replace(/\.local$/i, "");
     const dotIndex = hostnameWithoutLocal.indexOf(".");
     const labelEnd = dotIndex === -1 ? hostnameWithoutLocal.length : dotIndex;
-    const hostnameLabel = hostnameWithoutLocal.slice(0, labelEnd).trim() || "openclaw";
-    const hostname = truncateToDnsLabel(hostnameLabel, "openclaw");
+    const hostnameLabel =
+      hostnameWithoutLocal.slice(0, labelEnd).trim() || "@gabrielvfonseca/operator";
+    const hostname = truncateToDnsLabel(hostnameLabel, "@gabrielvfonseca/operator");
     const instanceName =
       typeof opts.instanceName === "string" && opts.instanceName.trim()
         ? opts.instanceName.trim()
@@ -290,7 +293,7 @@ export async function startGatewayBonjourAdvertiser(
 
       const gateway = responder.createService({
         name: safeServiceName(instanceName),
-        type: "openclaw-gw",
+        type: "operator-gw",
         port: opts.gatewayPort,
         domain: "local",
         hostname,

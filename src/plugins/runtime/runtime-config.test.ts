@@ -1,6 +1,6 @@
 // Runtime config tests cover plugin runtime config normalization and lookup.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 const getRuntimeConfigMock = vi.fn();
 const mutateConfigFileMock = vi.fn();

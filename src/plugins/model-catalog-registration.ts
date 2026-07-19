@@ -2,7 +2,7 @@
 import type {
   UnifiedModelCatalogEntry,
   UnifiedModelCatalogSource,
-} from "@operator/model-catalog-core/model-catalog-types";
+} from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import {
   synthesizeMediaGenerationCatalogEntries,
   type MediaGenerationCatalogKind,

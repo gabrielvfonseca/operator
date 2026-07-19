@@ -16,22 +16,22 @@ describe("restart log conventions", () => {
     };
 
     expect(resolveGatewayLogPaths(env)).toEqual({
-      logDir: "/Users/test/.openclaw-work/logs",
-      stdoutPath: "/Users/test/.openclaw-work/logs/gateway.log",
-      stderrPath: "/Users/test/.openclaw-work/logs/gateway.err.log",
+      logDir: "/Users/test/.operator-work/logs",
+      stdoutPath: "/Users/test/.operator-work/logs/gateway.log",
+      stderrPath: "/Users/test/.operator-work/logs/gateway.err.log",
     });
     expect(resolveGatewayRestartLogPath(env)).toBe(
-      "/Users/test/.openclaw-work/logs/gateway-restart.log",
+      "/Users/test/.operator-work/logs/gateway-restart.log",
     );
   });
 
   it("honors OPERATOR_STATE_DIR for restart attempts", () => {
     const env = {
       HOME: "/Users/test",
-      OPERATOR_STATE_DIR: "/tmp/openclaw-state",
+      OPERATOR_STATE_DIR: "/tmp/operator-state",
     };
 
-    expect(resolveGatewayRestartLogPath(env)).toBe("/tmp/openclaw-state/logs/gateway-restart.log");
+    expect(resolveGatewayRestartLogPath(env)).toBe("/tmp/operator-state/logs/gateway-restart.log");
   });
 
   it("keeps macOS LaunchAgent stdout outside the state directory", () => {
@@ -69,9 +69,9 @@ describe("restart log conventions", () => {
     });
 
     expect(setup).toContain(
-      "if mkdir -p '/Users/test'\\''s/.openclaw/logs' 2>/dev/null && : >>'/Users/test'\\''s/.openclaw/logs/gateway-restart.log' 2>/dev/null; then",
+      "if mkdir -p '/Users/test'\\''s/.operator/logs' 2>/dev/null && : >>'/Users/test'\\''s/.operator/logs/gateway-restart.log' 2>/dev/null; then",
     );
-    expect(setup).toContain("exec >>'/Users/test'\\''s/.openclaw/logs/gateway-restart.log' 2>&1");
+    expect(setup).toContain("exec >>'/Users/test'\\''s/.operator/logs/gateway-restart.log' 2>&1");
   });
 
   it("renders CMD log setup with quoted paths", () => {
@@ -79,9 +79,9 @@ describe("restart log conventions", () => {
       USERPROFILE: "C:\\Users\\Test User",
     });
 
-    expect(setup.quotedLogPath).toBe('"C:\\Users\\Test User/.openclaw/logs/gateway-restart.log"');
+    expect(setup.quotedLogPath).toBe('"C:\\Users\\Test User/.operator/logs/gateway-restart.log"');
     expect(setup.lines).toContain(
-      'if not exist "C:\\Users\\Test User/.openclaw/logs" mkdir "C:\\Users\\Test User/.openclaw/logs" >nul 2>&1',
+      'if not exist "C:\\Users\\Test User/.operator/logs" mkdir "C:\\Users\\Test User/.operator/logs" >nul 2>&1',
     );
   });
 });

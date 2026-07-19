@@ -2,7 +2,7 @@
 import {
   hasOutboundReplyContent,
   isReasoningReplyPayload,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { getReplyPayloadMetadata } from "./reply-payload.js";
 import type { ReplyPayload } from "./types.js";
 

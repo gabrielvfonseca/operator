@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { verifyAgentRuntimeIdentityToken } from "../../gateway/agent-runtime-identity-token.js";
 import type { CallGatewayOptions } from "../../gateway/call.js";
@@ -63,7 +63,7 @@ function capturedGatewayCall(): CallGatewayOptions {
 
 describe("gateway tool defaults", () => {
   const envSnapshot = {
-    openclaw: process.env.OPERATOR_GATEWAY_TOKEN,
+    operator: process.env.OPERATOR_GATEWAY_TOKEN,
     gatewayUrl: process.env.OPERATOR_GATEWAY_URL,
   };
 
@@ -78,10 +78,10 @@ describe("gateway tool defaults", () => {
   });
 
   afterAll(() => {
-    if (envSnapshot.openclaw === undefined) {
+    if (envSnapshot.operator === undefined) {
       delete process.env.OPERATOR_GATEWAY_TOKEN;
     } else {
-      process.env.OPERATOR_GATEWAY_TOKEN = envSnapshot.openclaw;
+      process.env.OPERATOR_GATEWAY_TOKEN = envSnapshot.operator;
     }
     if (envSnapshot.gatewayUrl === undefined) {
       delete process.env.OPERATOR_GATEWAY_URL;

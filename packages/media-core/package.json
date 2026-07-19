@@ -1,5 +1,5 @@
 {
-  "name": "@operator/media-core",
+  "name": "@gabrielvfonseca/media-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -61,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@operator/normalization-core": "workspace:*",
+    "@gabrielvfonseca/normalization-core": "workspace:*",
     "file-type": "22.0.1"
   },
   "scripts": {

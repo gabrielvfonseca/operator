@@ -9,7 +9,7 @@ import type {
 } from "../app/exec-approval.ts";
 import "./modal-dialog.ts";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomContentsElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomContentsElement } from "../lit/operator-element.ts";
 
 const DEFAULT_EXEC_APPROVAL_DECISIONS = [
   "allow-once",
@@ -190,7 +190,7 @@ function renderExecApprovalPrompt(props: ExecApprovalProps) {
     }
   };
   return html`
-    <openclaw-modal-dialog label=${title} description=${remaining} @modal-cancel=${handleCancel}>
+    <operator-modal-dialog label=${title} description=${remaining} @modal-cancel=${handleCancel}>
       <div class="exec-approval-card">
         <div class="exec-approval-header">
           <div>
@@ -220,11 +220,11 @@ function renderExecApprovalPrompt(props: ExecApprovalProps) {
           )}
         </div>
       </div>
-    </openclaw-modal-dialog>
+    </operator-modal-dialog>
   `;
 }
 
-class ExecApproval extends OpenClawLightDomContentsElement {
+class ExecApproval extends OperatorLightDomContentsElement {
   @property({ attribute: false }) props?: ExecApprovalProps;
 
   override render() {
@@ -232,6 +232,6 @@ class ExecApproval extends OpenClawLightDomContentsElement {
   }
 }
 
-if (!customElements.get("openclaw-exec-approval")) {
-  customElements.define("openclaw-exec-approval", ExecApproval);
+if (!customElements.get("operator-exec-approval")) {
+  customElements.define("operator-exec-approval", ExecApproval);
 }

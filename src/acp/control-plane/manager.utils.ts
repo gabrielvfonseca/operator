@@ -1,6 +1,6 @@
 /** Shared ACP manager normalization, resolution, and error helpers. */
-import { ACP_ERROR_CODES, AcpRuntimeError } from "@operator/acp-core/runtime/errors";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { ACP_ERROR_CODES, AcpRuntimeError } from "@gabrielvfonseca/acp-core/runtime/errors";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   canonicalizeMainSessionAlias,
   resolveMainSessionKey,

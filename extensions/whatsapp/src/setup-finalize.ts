@@ -5,9 +5,9 @@ import {
   createSetupTranslator,
   type DmPolicy,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
-import type { ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
-import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import type { ChannelSetupWizard } from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { formatCliCommand, formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import {
   resolveDefaultWhatsAppAccountId,
   resolveWhatsAppAccount,

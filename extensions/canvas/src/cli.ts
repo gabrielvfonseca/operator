@@ -3,24 +3,24 @@
  */
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
-import type { Command } from "commander";
-import { runCommandWithRuntime, theme } from "openclaw/plugin-sdk/cli-runtime";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { runCommandWithRuntime, theme } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   callGatewayFromCli,
   resolveNodeFromNodeList,
   type NodeMatchCandidate,
-} from "openclaw/plugin-sdk/gateway-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 import {
   parseStrictFiniteNumber,
   parseStrictPositiveInteger,
-} from "openclaw/plugin-sdk/number-runtime";
-import { defaultRuntime } from "openclaw/plugin-sdk/runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { shortenHomePath } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { shortenHomePath } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import type { Command } from "commander";
 import { buildA2UITextJsonl, validateSupportedA2UIJsonl } from "./a2ui-jsonl.js";
 import { canvasSnapshotTempPath, parseCanvasSnapshotPayload } from "./cli-helpers.js";
 

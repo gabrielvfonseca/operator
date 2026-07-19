@@ -1,10 +1,10 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 // Line plugin module implements auto reply delivery behavior.
 import type { messagingApi } from "@line/bot-sdk";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveSendableOutboundReplyParts } from "openclaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import type { FlexContainer } from "./flex-templates.js";
 import type { ProcessedLineMessage } from "./markdown-to-line.js";
 import { hasLineSpecificMediaOptions } from "./outbound-media.js";

@@ -1,10 +1,10 @@
-// Slack plugin module implements resolve users behavior.
-import type { WebClient } from "@slack/web-api";
-import { resolveDirectoryAllowlistEntries } from "openclaw/plugin-sdk/directory-runtime";
+import { resolveDirectoryAllowlistEntries } from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Slack plugin module implements resolve users behavior.
+import type { WebClient } from "@slack/web-api";
 import { createSlackLookupClient } from "./client.js";
 import { collectSlackCursorPages } from "./cursor-pages.js";
 

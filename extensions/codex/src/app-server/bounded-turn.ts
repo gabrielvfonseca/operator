@@ -1,9 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { AuthProfileStore } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+import type { AuthProfileStore } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  resolvePreferredOperatorTmpDir,
+  withTempWorkspace,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { readCodexNotificationItem } from "./attempt-notifications.js";
 import type { CodexAppServerClient } from "./client.js";
 import { resolveCodexAppServerRuntimeOptions } from "./config.js";

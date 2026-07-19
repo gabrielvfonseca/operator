@@ -1,6 +1,6 @@
 // Tool invocation methods adapt gateway-visible tools to RPC callers with
 // protocol-shaped success, approval-required, validation, and error payloads.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

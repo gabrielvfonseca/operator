@@ -4,8 +4,8 @@ import { createCipheriv, createDecipheriv, hash } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { log } from "../../../agents/auth-profiles/constants.js";
 import { LEGACY_OAUTH_REF_PROVIDER } from "../../../agents/auth-profiles/legacy-oauth-ref.js";
 import type { LegacyOAuthRef } from "../../../agents/auth-profiles/legacy-oauth-ref.js";
@@ -188,7 +188,9 @@ function resolveLegacyOAuthSecretKeyFileCandidates(env: NodeJS.ProcessEnv): stri
   const home = env.HOME?.trim() || os.homedir();
   const root = env.XDG_CONFIG_HOME?.trim() || (home ? path.join(home, ".config") : undefined);
   return uniquePaths([
-    root ? path.join(root, "operator", LEGACY_OAUTH_SECRET_KEY_FILE_NAME) : undefined,
+    root
+      ? path.join(root, "@gabrielvfonseca/operator", LEGACY_OAUTH_SECRET_KEY_FILE_NAME)
+      : undefined,
     home
       ? path.join(home, ".operator-auth-profile-secrets", LEGACY_OAUTH_SECRET_KEY_FILE_NAME)
       : undefined,
@@ -342,7 +344,7 @@ function emitKeychainOnlyMigrationHintOnce(profileId: string): void {
   keychainOnlyMigrationHintEmitted = true;
   log.warn(
     "Legacy Codex OAuth credentials are stored only in macOS Keychain on this host. " +
-      "Headless paths cannot prompt for Keychain access; run `operator doctor --fix` " +
+      "Headless paths cannot prompt for Keychain access; run `openclaw doctor --fix` " +
       "from an interactive terminal to migrate them back to inline auth-profiles.json credentials.",
     { profileId },
   );

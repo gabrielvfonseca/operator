@@ -20,7 +20,7 @@ import {
  * Bug summary: For ACP-keyed sessions (e.g. `agent:copilot:acp:<uuid>`), the
  * `--json` listing reports the AGENT's configured model
  * (e.g. `model: "gpt-5.3-codex"`, `modelProvider: "microsoft-foundry"`) — but
- * those are the values the openclaw-agent-driven flow would have used. When
+ * those are the values the operator-agent-driven flow would have used. When
  * the same agent runs as an ACP child via `copilot --acp --stdio`, the actual
  * underlying model selection lives inside copilot CLI and is independent of
  * the agent's configured model. The listing happily reports the agent default
@@ -70,7 +70,7 @@ let originalStateDir: string | undefined;
 let tempStateDirs: string[] = [];
 
 function useTempStateDir(): string {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-acp-sessions-state-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-acp-sessions-state-"));
   tempStateDirs.push(stateDir);
   process.env.OPERATOR_STATE_DIR = stateDir;
   return stateDir;
@@ -135,7 +135,7 @@ function buildAcpBridgeSessionEntry(): SessionEntry {
 /**
  * Minimal non-ACP session entry, same shape as the ACP bridge entry. Used as the
  * GREEN-control case below. The agent default is the correct answer for
- * non-ACP sessions — those run through the openclaw-agent-driven flow that
+ * non-ACP sessions — those run through the operator-agent-driven flow that
  * actually uses the configured model.
  */
 function buildNonAcpSessionEntry(): SessionEntry {
@@ -170,7 +170,7 @@ describe("sessionsCommand model/modelProvider display for ACP sessions (catalog 
     // (key has the `:acp:` segment AND SQLite ACP metadata is present), but
     // `resolveSessionDisplayModelRef` ignores both and returns the agent
     // default. Operators relying on `sessions --json` model fields see the
-    // model the openclaw-agent-driven flow would have used, NOT what copilot
+    // model the operator-agent-driven flow would have used, NOT what copilot
     // actually selected internally when it ran via ACP.
     //
     // The discriminator the fix uses: `isAcpSessionKey(row.key)` AND
@@ -309,7 +309,7 @@ describe("sessionsCommand model/modelProvider display for ACP sessions (catalog 
   it("GREEN control: non-ACP session correctly reports the agent-configured model", async () => {
     // GREEN today. The same agent configuration drives a non-ACP session
     // (`agent:copilot:main`) — and for that session the agent-configured
-    // model IS the right answer because the openclaw-agent-driven flow
+    // model IS the right answer because the operator-agent-driven flow
     // actually runs that model. This control proves:
     //   1. The test infrastructure is exercising the real resolver path
     //      (not a mock that would silently pass either way).

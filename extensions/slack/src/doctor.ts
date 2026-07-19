@@ -1,7 +1,10 @@
 // Slack plugin module implements doctor behavior.
-import type { ChannelDoctorAdapter } from "openclaw/plugin-sdk/channel-contract";
-import { createDangerousNameMatchingMutableAllowlistWarningCollector } from "openclaw/plugin-sdk/channel-policy";
-import type { GroupPolicy, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ChannelDoctorAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createDangerousNameMatchingMutableAllowlistWarningCollector } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type {
+  GroupPolicy,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { listSlackAccountIds, mergeSlackAccountConfig } from "./accounts.js";
 import {
   legacyConfigRules as SLACK_LEGACY_CONFIG_RULES,

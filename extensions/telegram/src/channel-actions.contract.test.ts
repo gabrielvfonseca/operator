@@ -1,6 +1,6 @@
 // Telegram tests cover channel actions.contract plugin behavior.
-import { installChannelActionsContractSuite } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { installChannelActionsContractSuite } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { telegramPlugin } from "../api.js";
 

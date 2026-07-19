@@ -3,11 +3,11 @@ import { URL } from "node:url";
 import {
   parseStrictPositiveInteger,
   resolveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { GatewayConfig } from "../config/types.gateway.js";
 import {
   loadOrCreateProcessDeviceIdentity,

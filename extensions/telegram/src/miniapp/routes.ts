@@ -1,13 +1,16 @@
 // Telegram Mini App HTTP routes.
 import crypto from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   BOOTSTRAP_HANDOFF_OPERATOR_SCOPES,
   issueDeviceBootstrapToken,
-} from "openclaw/plugin-sdk/device-bootstrap";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/device-bootstrap";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { resolveTelegramAccount } from "../accounts.js";
 import { validateTelegramMiniAppInitData } from "./init-data.js";
 import { isTelegramMiniAppOwner } from "./owner.js";
@@ -32,7 +35,7 @@ export function registerTelegramMiniAppRoutes(api: OperatorPluginApi): void {
     match: "prefix",
     auth: "plugin",
     handler: async (req, res) => {
-      const url = new URL(req.url ?? "", "http://openclaw.local");
+      const url = new URL(req.url ?? "", "http://operator.local");
       if (url.pathname === TELEGRAM_MINIAPP_PATH_PREFIX) {
         await handlePage(req, res, url);
         return true;

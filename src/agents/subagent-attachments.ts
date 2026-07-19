@@ -6,7 +6,7 @@
 import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { privateFileStore } from "../infra/private-file-store.js";
 import { resolveAgentWorkspaceDir } from "./agent-scope.js";

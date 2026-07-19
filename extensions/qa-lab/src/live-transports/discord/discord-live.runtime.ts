@@ -7,13 +7,13 @@ import {
   DiscordApiError,
   handleDiscordMessageAction,
   requestDiscord,
-} from "@operator/discord/api.js";
-import { DEFAULT_EMOJIS } from "openclaw/plugin-sdk/channel-feedback";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { escapeHtml } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/discord/api.js";
+import { DEFAULT_EMOJIS } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { writeExternalFileWithinRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { escapeHtml } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { chromium } from "playwright-core";
 import { z } from "zod";
 import { startQaGatewayChild } from "../../gateway-child.js";

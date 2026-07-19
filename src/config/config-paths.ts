@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 // Resolves and classifies config paths for reads, writes, and metadata.
 import { isPlainObject } from "../utils.js";

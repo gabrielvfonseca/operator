@@ -50,7 +50,7 @@ describe("proxy cli runtime", () => {
   let tempDir = "";
 
   beforeEach(() => {
-    tempDir = mkdtempSync(path.join(os.tmpdir(), "openclaw-proxy-cli-runtime-"));
+    tempDir = mkdtempSync(path.join(os.tmpdir(), "operator-proxy-cli-runtime-"));
     process.env.OPERATOR_STATE_DIR = tempDir;
     process.env.OPERATOR_DEBUG_PROXY_CERT_DIR = path.join(tempDir, "certs");
     delete process.env.OPERATOR_DEBUG_PROXY_ENABLED;

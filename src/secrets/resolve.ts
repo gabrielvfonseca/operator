@@ -1,8 +1,8 @@
 /** Resolves SecretRef values from env, file, and exec secret providers. */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type {
   FileSecretProviderConfig,

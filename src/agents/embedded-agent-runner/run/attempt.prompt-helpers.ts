@@ -1,4 +1,4 @@
-import { prependSystemPromptAdditionAfterCacheBoundary } from "@operator/ai/internal/shared";
+import { prependSystemPromptAdditionAfterCacheBoundary } from "@gabrielvfonseca/ai/internal/shared";
 /**
  * Builds and repairs prompt inputs for embedded-agent attempts.
  */

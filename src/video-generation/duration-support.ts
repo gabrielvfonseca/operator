@@ -1,5 +1,5 @@
 // Video duration support helpers normalize supported generation durations.
-import { uniqueValues } from "@operator/normalization-core/string-normalization";
+import { uniqueValues } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveVideoGenerationModeCapabilities } from "./capabilities.js";
 import type { VideoGenerationProvider } from "./types.js";
 

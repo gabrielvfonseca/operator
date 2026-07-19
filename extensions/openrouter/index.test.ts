@@ -1,15 +1,15 @@
 // Openrouter tests cover index plugin behavior.
 import { readFileSync } from "node:fs";
-import { createAssistantMessageEventStream } from "openclaw/plugin-sdk/llm";
+import { createAssistantMessageEventStream } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import {
   registerProviderPlugin,
   registerSingleProviderPlugin,
   resolveProviderPluginChoice,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   expectPassthroughReplayPolicy,
   expectUnifiedModelCatalogProviderRegistration,
-} from "openclaw/plugin-sdk/provider-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import { describe, expect, it, vi } from "vitest";
 
 const { getOpenRouterModelCapabilitiesMock, loadOpenRouterModelCapabilitiesMock } = vi.hoisted(
@@ -72,7 +72,7 @@ type OpenRouterManifest = {
 };
 
 function readManifest(): OpenRouterManifest {
-  return JSON.parse(readFileSync(new URL("./openclaw.plugin.json", import.meta.url), "utf8"));
+  return JSON.parse(readFileSync(new URL("./operator.plugin.json", import.meta.url), "utf8"));
 }
 
 describe("openrouter provider hooks", () => {
@@ -780,7 +780,7 @@ describe("openrouter provider hooks", () => {
     const options = baseStreamFn.mock.calls[0]?.[2] as { headers?: HeadersInit } | undefined;
     const headers = new Headers(options?.headers);
     expect(headers.get("authorization")).toBe("Bearer or-test-key");
-    expect(headers.get("http-referer")).toBe("https://openclaw.ai");
+    expect(headers.get("http-referer")).toBe("https://operator.ai");
     expect(headers.get("x-openrouter-title")).toBe("Operator");
   });
 

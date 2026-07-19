@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawDiscovery
+import OperatorDiscovery
 import SwiftUI
 
 extension OnboardingView {

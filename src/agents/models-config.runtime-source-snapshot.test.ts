@@ -1,7 +1,7 @@
 // Verifies generated models.json preserves source secret markers from runtime snapshots.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createFixtureSuite } from "../test-utils/fixture-suite.js";
 import { NON_ENV_SECRETREF_MARKER } from "./model-auth-markers.js";
 import {
@@ -52,7 +52,7 @@ let ensureOperatorModelsJson: typeof import("./models-config.js").ensureOperator
 let resetModelsJsonReadyCacheForTest: typeof import("./models-config-state.test-support.js").resetModelsJsonReadyCacheForTest;
 let planOperatorModelsJsonWithDeps: typeof import("./models-config.plan.test-support.js").planOperatorModelsJsonWithDeps;
 let readGeneratedModelsJson: typeof import("./models-config.test-utils.js").readGeneratedModelsJson;
-const fixtureSuite = createFixtureSuite("openclaw-models-runtime-source-");
+const fixtureSuite = createFixtureSuite("operator-models-runtime-source-");
 
 beforeAll(async () => {
   await fixtureSuite.setup();
@@ -234,7 +234,7 @@ async function planGeneratedProviders(params: {
     {
       cfg: params.config,
       sourceConfigForSecrets: params.sourceConfigForSecrets,
-      agentDir: "/tmp/openclaw-models-plan",
+      agentDir: "/tmp/operator-models-plan",
       env: {},
       existingRaw: "",
       existingParsed: null,

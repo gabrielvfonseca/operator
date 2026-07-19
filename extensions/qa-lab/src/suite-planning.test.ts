@@ -29,7 +29,7 @@ function makePlaywrightQaSuiteTestScenario(id: string): ReturnType<typeof makeQa
     ...makeQaSuiteTestScenario(id),
     execution: {
       kind: "playwright",
-      path: `ui/src/e2e/${id}.e2e.test.ts`,
+      path: `ui/tests/e2e/${id}.e2e.test.ts`,
     },
   };
 }

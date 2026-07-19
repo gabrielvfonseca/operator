@@ -31,7 +31,7 @@ import {
   type AnthropicProjectedToolChoice,
   type AnthropicThinkingDisplay,
   type AnthropicToolProjection,
-} from "@operator/ai/internal/anthropic";
+} from "@gabrielvfonseca/ai/internal/anthropic";
 import {
   calculateCost,
   clampThinkingLevel,
@@ -39,19 +39,19 @@ import {
   getEnvApiKey,
   notifyLlmRequestActivity,
   parseStreamingJson,
-} from "@operator/ai/internal/runtime";
+} from "@gabrielvfonseca/ai/internal/runtime";
 import {
   describeToolResultMediaPlaceholder,
   extractToolResultBlockText,
   extractToolResultText,
   isImageWithMediaPayload,
-} from "@operator/ai/internal/shared";
+} from "@gabrielvfonseca/ai/internal/shared";
 /**
  * Native Anthropic Messages streaming transport.
  * Converts Operator contexts/tools into Anthropic payloads, streams SSE events
  * back into runtime output blocks, and applies provider request policy.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { createAbortError as createNamedAbortError } from "../infra/abort-signal.js";
 import { toErrorObject } from "../infra/errors.js";
 import { readResponseTextSnippet } from "../infra/http-body.js";

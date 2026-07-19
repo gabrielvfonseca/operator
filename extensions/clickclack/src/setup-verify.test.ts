@@ -1,5 +1,5 @@
 // ClickClack tests cover post-write connection verification and gateway guidance.
-import { createNonExitingRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+import { createNonExitingRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -62,7 +62,7 @@ describe("ClickClack post-write setup verification", () => {
     vi.unstubAllEnvs();
     mocks.callGatewayFromCli.mockReset().mockResolvedValue({ ok: true });
     mocks.createClient.mockReset();
-    mocks.me.mockReset().mockResolvedValue({ id: "usr_bot", handle: "openclaw" });
+    mocks.me.mockReset().mockResolvedValue({ id: "usr_bot", handle: "@gabrielvfonseca/operator" });
     mocks.resolveWorkspaceId.mockReset().mockResolvedValue("wsp_default");
     mocks.workspaces
       .mockReset()

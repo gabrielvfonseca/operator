@@ -1,7 +1,7 @@
 /**
  * Test harness mocks for embedded-run overflow compaction coverage.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { type Mock, vi } from "vitest";
 import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import type { ContextEngineSessionTarget } from "../../context-engine/types.js";

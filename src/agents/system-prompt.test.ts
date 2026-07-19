@@ -1,4 +1,4 @@
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
 // System prompt tests cover the main prompt facade, prompt-surface routing, and
 // user-visible sections for owners, tools, safety, skills, and subagents.
 import { describe, expect, it } from "vitest";
@@ -6,7 +6,6 @@ import { SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { typedCases } from "../test-utils/typed-cases.js";
 import { listDeliverableMessageChannels } from "../utils/message-channel.js";
 import { resolveAgentPromptSurfaceForSessionKey } from "./prompt-surface.js";
-import { buildSkillWorkshopPromptSection } from "./skill-workshop-prompt.js";
 import { buildSubagentSystemPrompt } from "./subagent-system-prompt.js";
 import { buildAgentSystemPrompt } from "./system-prompt.js";
 
@@ -14,8 +13,8 @@ describe("buildAgentSystemPrompt", () => {
   it("resolves helper session keys to scoped prompt surfaces", () => {
     expect(resolveAgentPromptSurfaceForSessionKey("agent:main:subagent:child")).toBe("subagent");
     expect(resolveAgentPromptSurfaceForSessionKey("agent:codex:acp:child")).toBe("acp_backend");
-    expect(resolveAgentPromptSurfaceForSessionKey("agent:main")).toBe("openclaw_main");
-    expect(resolveAgentPromptSurfaceForSessionKey(undefined)).toBe("openclaw_main");
+    expect(resolveAgentPromptSurfaceForSessionKey("agent:main")).toBe("operator_main");
+    expect(resolveAgentPromptSurfaceForSessionKey(undefined)).toBe("operator_main");
   });
 
   it("formats owner section for plain, hash, and missing owner lists", () => {
@@ -346,10 +345,10 @@ describe("buildAgentSystemPrompt", () => {
     expect(prompt).toContain("`[embed ...]`: Control UI/webchat only");
     expect(prompt).toContain('[embed ref="cv_123" title="Status" height="320" /]');
     expect(prompt).toContain(
-      '[embed url="/__openclaw__/canvas/documents/cv_123/index.html" title="Status" height="320" /]',
+      '[embed url="/__operator__/canvas/documents/cv_123/index.html" title="Status" height="320" /]',
     );
     expect(prompt).toContain("Never local/file:// or arbitrary URL");
-    expect(prompt).toContain("URL must start `/__openclaw__/canvas/`; else use `ref`");
+    expect(prompt).toContain("URL must start `/__operator__/canvas/`; else use `ref`");
     expect(prompt).toContain("Hosted root is profile-, not workspace-scoped");
     expect(prompt).not.toContain('[embed content_type="html" title="Status"]...[/embed]');
   });
@@ -570,7 +569,7 @@ describe("buildAgentSystemPrompt", () => {
       workspaceDir: "/tmp/work",
     });
 
-    expect(prompt).toContain("Docs: https://docs.openclaw.ai");
+    expect(prompt).toContain("Docs: https://docs.operator.ai");
     expect(prompt).toContain("Source: https://github.com/openclaw/openclaw");
     expect(prompt).toContain(
       "Operator behavior questions: docs mirror first when web exists. AGENTS/project/workspace/profile/memory = instructions/user memory, not product design truth.",
@@ -751,7 +750,7 @@ describe("buildAgentSystemPrompt", () => {
   it("delegates system changes when openclaw tool is present", () => {
     const prompt = buildAgentSystemPrompt({
       workspaceDir: "/tmp/openclaw",
-      toolNames: ["openclaw", "sessions_spawn"],
+      toolNames: ["@gabrielvfonseca/operator", "sessions_spawn"],
     });
 
     expect(prompt).toContain(
@@ -1430,7 +1429,7 @@ describe("buildAgentSystemPrompt", () => {
 
     expect(prompt).toContain("Working directory: /workspace");
     expect(prompt).toContain(
-      "File tools use host workspace /tmp/openclaw. exec uses container /workspace or relative workdir paths; never host paths.",
+      "File tools use host workspace /tmp/operator. exec uses container /workspace or relative workdir paths; never host paths.",
     );
     expect(prompt).toContain("Sandbox container workdir: /workspace");
     expect(prompt).toContain(

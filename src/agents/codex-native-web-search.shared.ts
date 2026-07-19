@@ -1,7 +1,7 @@
 /**
  * Shared config normalization for Codex native web search.
  */
-import { normalizeUniqueTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
 

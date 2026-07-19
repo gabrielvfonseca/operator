@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { GatewayBrowserClient } from "../../api/gateway.ts";
 import { requestSessionCreate } from "../sessions/index.ts";
 import {
@@ -38,7 +38,7 @@ const WORKBOARD_ENGINE_MODELS = {
 const WORKBOARD_SESSION_LABEL_MAX_CHARS = 512;
 
 function buildCardPrompt(card: WorkboardCard): string {
-  const lines = [`Work on this OpenClaw Workboard card: ${card.title}`];
+  const lines = [`Work on this Operator Workboard card: ${card.title}`];
   if (card.notes?.trim()) {
     lines.push("", card.notes.trim());
   }

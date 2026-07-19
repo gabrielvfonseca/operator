@@ -1,5 +1,5 @@
+import { asNullableRecord as asConfigRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { consume } from "@lit/context";
-import { asNullableRecord as asConfigRecord } from "@operator/normalization-core/record-coerce";
 import { html, nothing, type PropertyValues } from "lit";
 import { property, state } from "lit/decorators.js";
 import type { SystemInfoResult } from "../../../../packages/gateway-protocol/src/index.js";
@@ -28,7 +28,7 @@ import { renderSettingsSegmented } from "../../components/settings-ui.ts";
 import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
 import { i18n, isSupportedLocale, t, type Locale } from "../../i18n/index.ts";
 import { isMissingOperatorReadScopeError } from "../../lib/gateway-errors.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { PollController } from "../../lit/poll-controller.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import {
@@ -232,7 +232,7 @@ function applyTextScale(value: unknown) {
   );
 }
 
-export class ConfigPage extends OpenClawLightDomElement {
+export class ConfigPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -983,5 +983,5 @@ export class ConfigPage extends OpenClawLightDomElement {
   }
 }
 
-customElements.define("openclaw-config-page", ConfigPage);
+customElements.define("operator-config-page", ConfigPage);
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

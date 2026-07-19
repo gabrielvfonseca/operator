@@ -3,7 +3,7 @@ name: xurl
 description: "xurl CLI for authenticated X posts, replies, reads/search, DMs, media upload, followers, auth status, or raw v2 API calls."
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "🐦",
         "requires": { "bins": ["xurl"] },

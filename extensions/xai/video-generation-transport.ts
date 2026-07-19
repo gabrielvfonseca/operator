@@ -1,13 +1,13 @@
-import { extensionForMime } from "openclaw/plugin-sdk/media-mime";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
 import {
   assertOkOrThrowHttpError,
   executeProviderOperationWithRetry,
   fetchWithTimeoutGuarded,
   type ProviderOperationTimeoutMs,
-} from "openclaw/plugin-sdk/provider-http";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import type { GeneratedVideoAsset } from "openclaw/plugin-sdk/video-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import type { GeneratedVideoAsset } from "@gabrielvfonseca/operator/plugin-sdk/video-generation";
 
 export type XaiVideoRequestPolicy = {
   allowPrivateNetwork: boolean;

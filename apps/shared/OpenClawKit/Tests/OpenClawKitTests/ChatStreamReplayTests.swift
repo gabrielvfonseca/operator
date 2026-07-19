@@ -1,30 +1,30 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 // MARK: - Scripted transport
 
-/// Replays scripted gateway traffic against `OpenClawChatViewModel` with deterministic
+/// Replays scripted gateway traffic against `OperatorChatViewModel` with deterministic
 /// ordering: every event is yielded into a single FIFO `AsyncStream`, and the view model
 /// consumes that stream serially on the MainActor, so relative event order is exactly the
 /// scripted order. Tests never sleep for fixed intervals; each step awaits an observable
 /// view-model convergence point instead.
-private final class ScriptedChatTransport: @unchecked Sendable, OpenClawChatTransport {
+private final class ScriptedChatTransport: @unchecked Sendable, OperatorChatTransport {
     private actor State {
-        var history: OpenClawChatHistoryPayload
+        var history: OperatorChatHistoryPayload
         var historyRequestCount = 0
         var sentRunIds: [String] = []
 
-        init(history: OpenClawChatHistoryPayload) {
+        init(history: OperatorChatHistoryPayload) {
             self.history = history
         }
 
-        func setHistory(_ payload: OpenClawChatHistoryPayload) {
+        func setHistory(_ payload: OperatorChatHistoryPayload) {
             self.history = payload
         }
 
-        func recordHistoryRequest() -> OpenClawChatHistoryPayload {
+        func recordHistoryRequest() -> OperatorChatHistoryPayload {
             self.historyRequestCount += 1
             return self.history
         }
@@ -35,30 +35,30 @@ private final class ScriptedChatTransport: @unchecked Sendable, OpenClawChatTran
     }
 
     private let state: State
-    private let stream: AsyncStream<OpenClawChatTransportEvent>
-    private let continuation: AsyncStream<OpenClawChatTransportEvent>.Continuation
+    private let stream: AsyncStream<OperatorChatTransportEvent>
+    private let continuation: AsyncStream<OperatorChatTransportEvent>.Continuation
 
-    init(history: OpenClawChatHistoryPayload) {
+    init(history: OperatorChatHistoryPayload) {
         self.state = State(history: history)
-        var cont: AsyncStream<OpenClawChatTransportEvent>.Continuation!
+        var cont: AsyncStream<OperatorChatTransportEvent>.Continuation!
         self.stream = AsyncStream { c in
             cont = c
         }
         self.continuation = cont
     }
 
-    func events() -> AsyncStream<OpenClawChatTransportEvent> {
+    func events() -> AsyncStream<OperatorChatTransportEvent> {
         self.stream
     }
 
     /// Scripted history is mutable so reconnect scenarios can flip the durable
     /// transcript between requests, mirroring a gateway that finished the run
     /// while the client stream was down.
-    func setHistory(_ payload: OpenClawChatHistoryPayload) async {
+    func setHistory(_ payload: OperatorChatHistoryPayload) async {
         await self.state.setHistory(payload)
     }
 
-    func emit(_ event: OpenClawChatTransportEvent) {
+    func emit(_ event: OperatorChatTransportEvent) {
         self.continuation.yield(event)
     }
 
@@ -70,9 +70,9 @@ private final class ScriptedChatTransport: @unchecked Sendable, OpenClawChatTran
         await self.state.historyRequestCount
     }
 
-    // MARK: OpenClawChatTransport
+    // MARK: OperatorChatTransport
 
-    func requestHistory(sessionKey _: String) async throws -> OpenClawChatHistoryPayload {
+    func requestHistory(sessionKey _: String) async throws -> OperatorChatHistoryPayload {
         await self.state.recordHistoryRequest()
     }
 
@@ -81,24 +81,24 @@ private final class ScriptedChatTransport: @unchecked Sendable, OpenClawChatTran
         message _: String,
         thinking _: String,
         idempotencyKey: String,
-        attachments _: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+        attachments _: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
     {
         await self.state.recordSend(runId: idempotencyKey)
         // "pending" keeps the run open until scripted terminal events arrive,
         // which is the streaming path this harness exists to exercise.
-        return OpenClawChatSendResponse(runId: idempotencyKey, status: "pending")
+        return OperatorChatSendResponse(runId: idempotencyKey, status: "pending")
     }
 
-    func listModels() async throws -> [OpenClawChatModelChoice] {
+    func listModels() async throws -> [OperatorChatModelChoice] {
         []
     }
 
     func listSessions(
         limit _: Int?,
         search _: String?,
-        archived _: Bool) async throws -> OpenClawChatSessionsListResponse
+        archived _: Bool) async throws -> OperatorChatSessionsListResponse
     {
-        OpenClawChatSessionsListResponse(ts: nil, path: nil, count: 0, defaults: nil, sessions: [])
+        OperatorChatSessionsListResponse(ts: nil, path: nil, count: 0, defaults: nil, sessions: [])
     }
 
     func requestHealth(timeoutMs _: Int) async throws -> Bool {
@@ -110,9 +110,9 @@ private final class ScriptedChatTransport: @unchecked Sendable, OpenClawChatTran
 
 private func replayHistory(
     sessionId: String = "sess-replay",
-    messages: [AnyCodable] = []) -> OpenClawChatHistoryPayload
+    messages: [AnyCodable] = []) -> OperatorChatHistoryPayload
 {
-    OpenClawChatHistoryPayload(
+    OperatorChatHistoryPayload(
         sessionKey: "main",
         sessionId: sessionId,
         messages: messages,
@@ -120,7 +120,7 @@ private func replayHistory(
 }
 
 /// Raw history/event row shaped like the gateway JSON, including the persisted
-/// `__openclaw.idempotencyKey` metadata used for turn correlation.
+/// `__operator.idempotencyKey` metadata used for turn correlation.
 private func replayRawMessage(
     role: String,
     text: String,
@@ -142,12 +142,12 @@ private func replayDurableMessage(
     role: String,
     text: String,
     timestamp: Double,
-    idempotencyKey: String? = nil) -> OpenClawChatMessage
+    idempotencyKey: String? = nil) -> OperatorChatMessage
 {
-    OpenClawChatMessage(
+    OperatorChatMessage(
         role: role,
         content: [
-            OpenClawChatMessageContent(
+            OperatorChatMessageContent(
                 type: "text",
                 text: text,
                 mimeType: nil,
@@ -163,10 +163,10 @@ private func replaySessionMessageEvent(
     timestamp: Double,
     role: String = "assistant",
     idempotencyKey: String? = nil,
-    messageId: String) -> OpenClawChatTransportEvent
+    messageId: String) -> OperatorChatTransportEvent
 {
     .sessionMessage(
-        OpenClawSessionMessageEventPayload(
+        OperatorSessionMessageEventPayload(
             sessionKey: "main",
             message: replayDurableMessage(
                 role: role,
@@ -180,10 +180,10 @@ private func replaySessionMessageEvent(
 private func replayFinalEvent(
     runId: String,
     text: String,
-    timestamp: Double) -> OpenClawChatTransportEvent
+    timestamp: Double) -> OperatorChatTransportEvent
 {
     .chat(
-        OpenClawChatEventPayload(
+        OperatorChatEventPayload(
             runId: runId,
             sessionKey: "main",
             state: "final",
@@ -198,10 +198,10 @@ private func replayFinalEvent(
 private func replayAssistantDeltaEvent(
     runId: String,
     cumulativeText: String,
-    seq: Int) -> OpenClawChatTransportEvent
+    seq: Int) -> OperatorChatTransportEvent
 {
     .agent(
-        OpenClawAgentEventPayload(
+        OperatorAgentEventPayload(
             runId: runId,
             seq: seq,
             stream: "assistant",
@@ -226,14 +226,14 @@ private func cumulativePrefixes(of text: String, chunkLength: Int) -> [String] {
 
 private struct StreamReplayHarness {
     let transport: ScriptedChatTransport
-    let vm: OpenClawChatViewModel
+    let vm: OperatorChatViewModel
 
     static func bootstrapped(
-        initialHistory: OpenClawChatHistoryPayload = replayHistory()) async throws -> StreamReplayHarness
+        initialHistory: OperatorChatHistoryPayload = replayHistory()) async throws -> StreamReplayHarness
     {
         let transport = ScriptedChatTransport(history: initialHistory)
         let vm = await MainActor.run {
-            OpenClawChatViewModel(sessionKey: "main", transport: transport)
+            OperatorChatViewModel(sessionKey: "main", transport: transport)
         }
         await MainActor.run { vm.load() }
         let harness = StreamReplayHarness(transport: transport, vm: vm)
@@ -246,7 +246,7 @@ private struct StreamReplayHarness {
     /// Awaits an observable view-model state instead of sleeping a fixed interval.
     func converge(
         _ label: String,
-        _ condition: @escaping @MainActor @Sendable (OpenClawChatViewModel) -> Bool) async throws
+        _ condition: @escaping @MainActor @Sendable (OperatorChatViewModel) -> Bool) async throws
     {
         let vm = self.vm
         try await waitUntil(label) {
@@ -291,18 +291,18 @@ private struct StreamReplayHarness {
     }
 }
 
-extension OpenClawChatViewModel {
-    fileprivate var replayAssistantRows: [OpenClawChatMessage] {
+extension OperatorChatViewModel {
+    fileprivate var replayAssistantRows: [OperatorChatMessage] {
         self.messages.filter { $0.role == "assistant" }
     }
 
-    fileprivate func replayAssistantRows(text: String) -> [OpenClawChatMessage] {
+    fileprivate func replayAssistantRows(text: String) -> [OperatorChatMessage] {
         self.replayAssistantRows.filter { message in
             message.content.compactMap(\.text).joined() == text
         }
     }
 
-    fileprivate var replayUserRows: [OpenClawChatMessage] {
+    fileprivate var replayUserRows: [OperatorChatMessage] {
         self.messages.filter { $0.role == "user" }
     }
 }

@@ -30,7 +30,7 @@ describe("openclaw-tools: subagents scope isolation", () => {
     callGatewayMock.mockReset();
     storePath = path.join(
       os.tmpdir(),
-      `openclaw-subagents-scope-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+      `operator-subagents-scope-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
     );
     setSubagentsConfigOverride({
       session: createPerSenderSessionConfig({ store: storePath }),

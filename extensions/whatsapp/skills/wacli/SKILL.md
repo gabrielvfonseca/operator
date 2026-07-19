@@ -4,7 +4,7 @@ description: "Send third-party WhatsApp messages or sync/search WhatsApp history
 homepage: https://wacli.sh
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "📱",
         "requires": { "bins": ["wacli"] },

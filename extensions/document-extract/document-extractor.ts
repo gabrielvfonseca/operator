@@ -1,11 +1,11 @@
-// Document Extract plugin module implements document extractor behavior.
-import type { PdfDocument, PdfEngine, PdfImage } from "clawpdf";
 import type {
   DocumentExtractedImage,
   DocumentExtractionRequest,
   DocumentExtractionResult,
   DocumentExtractorPlugin,
-} from "openclaw/plugin-sdk/document-extractor";
+} from "@gabrielvfonseca/operator/plugin-sdk/document-extractor";
+// Document Extract plugin module implements document extractor behavior.
+import type { PdfDocument, PdfEngine, PdfImage } from "clawpdf";
 
 const MAX_EXTRACTED_TEXT_CHARS = 200_000;
 const MAX_RENDER_DIMENSION = 10_000;

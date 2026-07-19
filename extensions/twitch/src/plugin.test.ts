@@ -23,9 +23,9 @@ describe("twitchPlugin outbound session routing", () => {
       sessionKey: "agent:ops:twitch:group:openclaw",
       baseSessionKey: "agent:ops:twitch:group:openclaw",
       recipientSessionExact: true,
-      peer: { kind: "group", id: "openclaw" },
+      peer: { kind: "group", id: "@gabrielvfonseca/operator" },
       chatType: "group",
-      to: "openclaw",
+      to: "@gabrielvfonseca/operator",
     });
   });
 

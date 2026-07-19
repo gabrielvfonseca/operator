@@ -1,5 +1,5 @@
 // Normalizes plugin web-search configuration and defaults.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 type PluginWebSearchConfigCarrier = {
   plugins?: {

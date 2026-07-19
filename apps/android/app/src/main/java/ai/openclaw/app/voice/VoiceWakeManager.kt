@@ -1,8 +1,8 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
 import android.Manifest
 import android.content.Context
 import android.content.Intent

@@ -1,6 +1,6 @@
 // Verifies plugin loading needed before agent harness selection.
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 const mocks = vi.hoisted(() => ({
   ensurePluginRegistryLoaded: vi.fn(),
@@ -486,7 +486,7 @@ describe("ensureSelectedAgentHarnessPlugin", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },

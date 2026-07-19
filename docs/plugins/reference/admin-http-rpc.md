@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw admin HTTP RPC endpoint."
+summary: "Operator admin HTTP RPC endpoint."
 read_when:
   - You are installing, configuring, or auditing the admin-http-rpc plugin
 title: "Admin Http Rpc plugin"
@@ -7,12 +7,12 @@ title: "Admin Http Rpc plugin"
 
 # Admin Http Rpc plugin
 
-OpenClaw admin HTTP RPC endpoint.
+Operator admin HTTP RPC endpoint.
 
 ## Distribution
 
-- Package: `@operator/admin-http-rpc`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/admin-http-rpc`
+- Install route: included in Operator
 
 ## Surface
 

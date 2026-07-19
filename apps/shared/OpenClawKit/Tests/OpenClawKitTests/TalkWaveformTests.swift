@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
 import Testing
-@testable import OpenClawChatUI
-@testable import OpenClawKit
+@testable import OperatorChatUI
+@testable import OperatorKit
 
 struct TalkWaveformMathTests {
     @Test

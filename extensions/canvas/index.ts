@@ -4,10 +4,13 @@
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { Duplex } from "node:stream";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { definePluginEntry, type AnyAgentTool } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  definePluginEntry,
+  type AnyAgentTool,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { validateSupportedA2UIJsonl } from "./src/a2ui-jsonl.js";
 import { canvasConfigSchema, isCanvasHostEnabled } from "./src/config.js";
 import { A2UI_PATH, CANVAS_HOST_PATH, CANVAS_WS_PATH } from "./src/host/a2ui-shared.js";

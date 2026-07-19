@@ -5,7 +5,7 @@ import {
   isAcpSessionKey,
   isCronSessionKey,
   isSubagentSessionKey,
-} from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { getRuntimeConfig } from "../config/config.js";
 import { resolveBrowserConfig, type ResolvedBrowserTabCleanupConfig } from "./config.js";
 import { sweepTrackedBrowserTabs } from "./session-tab-registry.js";

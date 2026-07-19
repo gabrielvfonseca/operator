@@ -1,9 +1,9 @@
 // Msteams tests cover messenger plugin behavior.
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { SILENT_REPLY_TOKEN } from "openclaw/plugin-sdk/reply-chunking";
-import type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { SILENT_REPLY_TOKEN } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-store";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { StoredConversationReference } from "./conversation-store.js";
 const graphUploadMockState = vi.hoisted(() => ({

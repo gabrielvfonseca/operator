@@ -33,7 +33,7 @@ function manifest(id: string): PluginManifestRecord {
     origin: "bundled",
     rootDir: `/plugins/${id}`,
     source: `/plugins/${id}`,
-    manifestPath: `/plugins/${id}/openclaw.plugin.json`,
+    manifestPath: `/plugins/${id}/operator.plugin.json`,
   };
 }
 
@@ -339,7 +339,7 @@ describe("doctor stale plugin config helpers", () => {
         },
         list: [
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             heartbeat: {
               target: "missing-chat-plugin",
             },
@@ -400,7 +400,7 @@ describe("doctor stale plugin config helpers", () => {
         },
       },
       channels: {
-        "openclaw-weixin": {
+        "operator-weixin": {
           enabled: true,
         },
       },

@@ -6,8 +6,8 @@ This document answers common questions about Operator, its configuration, usage,
 
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Website:** https://operator.ai
-- **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **Discord:** https://discord.gg/operator
+- **X/Twitter:** [@gabfon_](https://x.com/gabfon_)
 
 ## General Questions
 
@@ -55,7 +55,7 @@ Yes! Operator is open-source and free to use. You can self-host it on your own d
 
 ```bash
 # For Docker deployments
-docker pull openclaw/operator:latest
+docker pull ghcr.io/gabrielvfonseca/operator:latest
 
 # For systemd services
 systemctl restart operator

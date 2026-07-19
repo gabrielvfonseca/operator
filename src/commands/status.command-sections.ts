@@ -1,7 +1,7 @@
 // Section-level value and row builders for the standard status report.
 // These helpers own compact operator text for agents, tasks, memory, health, sessions, and footers.
 
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   buildPairingConnectRecoveryTitle,
   describePairingConnectRequirement,
@@ -256,10 +256,10 @@ export function buildStatusSecurityAuditLines(params: {
     }
   }
   lines.push(
-    params.theme.muted(`Full report: ${params.formatCliCommand("operator security audit")}`),
+    params.theme.muted(`Full report: ${params.formatCliCommand("openclaw security audit")}`),
   );
   lines.push(
-    params.theme.muted(`Deep probe: ${params.formatCliCommand("operator security audit --deep")}`),
+    params.theme.muted(`Deep probe: ${params.formatCliCommand("openclaw security audit --deep")}`),
   );
   return lines;
 }
@@ -424,13 +424,13 @@ export function buildStatusFooterLines(params: {
     "Troubleshooting: https://docs.operator.ai/troubleshooting",
     ...(params.updateHint ? ["", params.warn(params.updateHint)] : []),
     "Next steps:",
-    `  Need to share?      ${params.formatCliCommand("operator status --all")}`,
-    `  Need to debug live? ${params.formatCliCommand("operator logs --follow")}`,
+    `  Need to share?      ${params.formatCliCommand("openclaw status --all")}`,
+    `  Need to debug live? ${params.formatCliCommand("openclaw logs --follow")}`,
     params.nodeOnlyGateway
-      ? `  Need node service?  ${params.formatCliCommand("operator node status")}`
+      ? `  Need node service?  ${params.formatCliCommand("openclaw node status")}`
       : params.gatewayReachable
-        ? `  Need to test channels? ${params.formatCliCommand("operator status --deep")}`
-        : `  Fix reachability first: ${params.formatCliCommand("operator gateway probe")}`,
+        ? `  Need to test channels? ${params.formatCliCommand("openclaw status --deep")}`
+        : `  Fix reachability first: ${params.formatCliCommand("openclaw gateway probe")}`,
   ];
 }
 
@@ -484,12 +484,12 @@ export function buildStatusPairingRecoveryLines(params: {
     ...(params.pairingRecovery.requestId
       ? [
           params.muted(
-            `Recovery: ${params.formatCliCommand(`operator devices approve ${params.pairingRecovery.requestId}`)}`,
+            `Recovery: ${params.formatCliCommand(`openclaw devices approve ${params.pairingRecovery.requestId}`)}`,
           ),
         ]
       : []),
-    params.muted(`Fallback: ${params.formatCliCommand("operator devices approve --latest")}`),
-    params.muted(`Inspect: ${params.formatCliCommand("operator devices list")}`),
+    params.muted(`Fallback: ${params.formatCliCommand("openclaw devices approve --latest")}`),
+    params.muted(`Inspect: ${params.formatCliCommand("openclaw devices list")}`),
   ];
 }
 

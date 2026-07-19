@@ -1,21 +1,24 @@
 // Imessage plugin module implements channel behavior.
-import { buildDmGroupAccountAllowlistAdapter } from "openclaw/plugin-sdk/allowlist-config-edit";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
+import { buildDmGroupAccountAllowlistAdapter } from "@gabrielvfonseca/operator/plugin-sdk/allowlist-config-edit";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { sanitizeForPlainText } from "openclaw/plugin-sdk/channel-outbound";
-import type { ChannelOutboundAdapter } from "openclaw/plugin-sdk/channel-send-result";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { buildOutboundBaseSessionKey, type RoutePeer } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { sanitizeForPlainText } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { ChannelOutboundAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import { buildPassiveProbedChannelStatusSummary } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  buildOutboundBaseSessionKey,
+  type RoutePeer,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import { resolveIMessageAccount, type ResolvedIMessageAccount } from "./accounts.js";
 import { imessageMessageActions } from "./actions.js";
 import {

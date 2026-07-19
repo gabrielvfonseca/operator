@@ -1,6 +1,6 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 
 extension GatewayConnection {
     func skillsStatus(on route: Route) async throws -> SkillsStatusReport {

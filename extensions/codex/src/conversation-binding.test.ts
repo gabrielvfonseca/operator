@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { ExecApprovalsFile } from "openclaw/plugin-sdk/exec-approvals-runtime";
-import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+import type { ExecApprovalsFile } from "@gabrielvfonseca/operator/plugin-sdk/exec-approvals-runtime";
+import { upsertSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const sharedClientMocks = vi.hoisted(() => ({
@@ -213,7 +213,7 @@ function mockCallArg(mock: ReturnType<typeof vi.fn>, callIndex = 0, argIndex = 0
 describe("codex conversation binding", () => {
   beforeEach(async () => {
     resetCodexTestBindingStore();
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-binding-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-binding-"));
   });
 
   afterEach(async () => {
@@ -2068,7 +2068,7 @@ describe("codex conversation binding", () => {
     await writeTestConversationBinding(sessionFile, {
       threadId: "thread-old",
       cwd: tempDir,
-      networkProxyProfileName: "openclaw-network-stale",
+      networkProxyProfileName: "operator-network-stale",
       networkProxyConfigFingerprint: "stale-proxy-config",
       conversationStartId: "start-1",
       conversationSourceTransferComplete: true,

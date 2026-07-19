@@ -2,7 +2,7 @@
  * Gateway server model catalog tests.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createDeferred } from "../test-utils/deferred.js";
 import type { GatewayModelChoice } from "./server-model-catalog.js";
 import {

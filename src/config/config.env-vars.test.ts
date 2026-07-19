@@ -457,7 +457,7 @@ describe("config env vars", () => {
         ZDOTDIR: undefined,
         OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: undefined,
         OPERATOR_INCLUDE_ROOTS: undefined,
-        openclaw_allow_older_binary_destructive_actions: undefined,
+        operator_allow_older_binary_destructive_actions: undefined,
         OPENROUTER_API_KEY: undefined,
       },
       async () => {
@@ -470,7 +470,7 @@ describe("config env vars", () => {
               ZDOTDIR: "/tmp/evil-zdotdir",
               OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS: "1",
               OPERATOR_INCLUDE_ROOTS: "/tmp/evil-include-root",
-              openclaw_allow_older_binary_destructive_actions: "1",
+              operator_allow_older_binary_destructive_actions: "1",
               OPENROUTER_API_KEY: "config-key",
             },
           },
@@ -482,7 +482,7 @@ describe("config env vars", () => {
         expect(entries.ZDOTDIR).toBeUndefined();
         expect(entries.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
         expect(entries.OPERATOR_INCLUDE_ROOTS).toBeUndefined();
-        expect(entries.openclaw_allow_older_binary_destructive_actions).toBeUndefined();
+        expect(entries.operator_allow_older_binary_destructive_actions).toBeUndefined();
         expect(entries.OPENROUTER_API_KEY).toBe("config-key");
 
         applyConfigEnvVars(config as OperatorConfig);
@@ -492,7 +492,7 @@ describe("config env vars", () => {
         expect(process.env.ZDOTDIR).toBeUndefined();
         expect(process.env.OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS).toBeUndefined();
         expect(process.env.OPERATOR_INCLUDE_ROOTS).toBeUndefined();
-        expect(process.env.openclaw_allow_older_binary_destructive_actions).toBeUndefined();
+        expect(process.env.operator_allow_older_binary_destructive_actions).toBeUndefined();
         expect(process.env.OPENROUTER_API_KEY).toBe("config-key");
       },
     );
@@ -561,7 +561,7 @@ describe("config env vars", () => {
     expect(entries.BRAVE_API_KEY).toBe("config-key");
   });
 
-  it("loads ${VAR} substitutions from ~/.openclaw/.env on repeated runtime loads", async () => {
+  it("loads ${VAR} substitutions from ~/.operator/.env on repeated runtime loads", async () => {
     await withTempHome(async (_home) => {
       await withEnvOverride({ BRAVE_API_KEY: undefined }, async () => {
         const stateDir = process.env.OPERATOR_STATE_DIR?.trim();

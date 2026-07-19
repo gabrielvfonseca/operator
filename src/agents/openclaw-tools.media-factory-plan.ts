@@ -3,7 +3,7 @@
  *
  * Combines config, tool policy, plugin capability metadata, and auth-profile availability before tool construction.
  */
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   resolveAgentModelFallbackValues,
   resolveAgentModelPrimaryValue,

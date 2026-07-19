@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 /// These cases cover optional `security=allowlist` behavior.
 struct ExecAllowlistTests {
@@ -138,12 +138,12 @@ struct ExecAllowlistTests {
     }
 
     @Test func `match normalizes macOS private var alias`() {
-        let entry = ExecAllowlistEntry(pattern: "/var/tmp/openclaw-tool")
+        let entry = ExecAllowlistEntry(pattern: "/var/tmp/operator-tool")
         let resolution = ExecCommandResolution(
-            rawExecutable: "/var/tmp/openclaw-tool",
-            resolvedPath: "/var/tmp/openclaw-tool",
-            resolvedRealPath: "/private/var/tmp/openclaw-tool",
-            executableName: "openclaw-tool",
+            rawExecutable: "/var/tmp/operator-tool",
+            resolvedPath: "/var/tmp/operator-tool",
+            resolvedRealPath: "/private/var/tmp/operator-tool",
+            executableName: "operator-tool",
             cwd: nil)
         #expect(ExecAllowlistMatcher.match(entries: [entry], resolution: resolution) != nil)
     }
@@ -263,7 +263,7 @@ struct ExecAllowlistTests {
 
     @Test func `direct PATH command binds to resolved executable`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-bind-path-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-bind-path-\(UUID().uuidString)", isDirectory: true)
             .resolvingSymlinksInPath()
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
@@ -286,7 +286,7 @@ struct ExecAllowlistTests {
 
     @Test func `symlink allowlist match and execution stay bound to canonical target`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-bind-symlink-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-bind-symlink-\(UUID().uuidString)", isDirectory: true)
             .resolvingSymlinksInPath()
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
@@ -563,10 +563,10 @@ struct ExecAllowlistTests {
     }
 
     @Test func `resolve for allowlist splits shell chains`() {
-        let command = ["/bin/sh", "-c", "echo allowlisted && /usr/bin/touch /tmp/openclaw-allowlist-test"]
+        let command = ["/bin/sh", "-c", "echo allowlisted && /usr/bin/touch /tmp/operator-allowlist-test"]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "echo allowlisted && /usr/bin/touch /tmp/openclaw-allowlist-test",
+            rawCommand: "echo allowlisted && /usr/bin/touch /tmp/operator-allowlist-test",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.count == 2)
@@ -675,8 +675,8 @@ struct ExecAllowlistTests {
     }
 
     @Test func `resolve for allowlist uses wrapper argv payload even with canonical raw command`() {
-        let command = ["/bin/sh", "-c", "echo allowlisted && /usr/bin/touch /tmp/openclaw-allowlist-test"]
-        let canonicalRaw = "/bin/sh -c \"echo allowlisted && /usr/bin/touch /tmp/openclaw-allowlist-test\""
+        let command = ["/bin/sh", "-c", "echo allowlisted && /usr/bin/touch /tmp/operator-allowlist-test"]
+        let canonicalRaw = "/bin/sh -c \"echo allowlisted && /usr/bin/touch /tmp/operator-allowlist-test\""
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
             rawCommand: canonicalRaw,
@@ -740,30 +740,30 @@ struct ExecAllowlistTests {
     }
 
     @Test func `resolve for allowlist fails closed on command substitution`() {
-        let command = ["/bin/sh", "-c", "echo $(/usr/bin/touch /tmp/openclaw-allowlist-test-subst)"]
+        let command = ["/bin/sh", "-c", "echo $(/usr/bin/touch /tmp/operator-allowlist-test-subst)"]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "echo $(/usr/bin/touch /tmp/openclaw-allowlist-test-subst)",
+            rawCommand: "echo $(/usr/bin/touch /tmp/operator-allowlist-test-subst)",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.isEmpty)
     }
 
     @Test func `resolve for allowlist fails closed on quoted command substitution`() {
-        let command = ["/bin/sh", "-c", "echo \"ok $(/usr/bin/touch /tmp/openclaw-allowlist-test-quoted-subst)\""]
+        let command = ["/bin/sh", "-c", "echo \"ok $(/usr/bin/touch /tmp/operator-allowlist-test-quoted-subst)\""]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "echo \"ok $(/usr/bin/touch /tmp/openclaw-allowlist-test-quoted-subst)\"",
+            rawCommand: "echo \"ok $(/usr/bin/touch /tmp/operator-allowlist-test-quoted-subst)\"",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.isEmpty)
     }
 
     @Test func `resolve for allowlist fails closed on line-continued command substitution`() {
-        let command = ["/bin/sh", "-c", "echo $\\\n(/usr/bin/touch /tmp/openclaw-allowlist-test-line-cont-subst)"]
+        let command = ["/bin/sh", "-c", "echo $\\\n(/usr/bin/touch /tmp/operator-allowlist-test-line-cont-subst)"]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "echo $\\\n(/usr/bin/touch /tmp/openclaw-allowlist-test-line-cont-subst)",
+            rawCommand: "echo $\\\n(/usr/bin/touch /tmp/operator-allowlist-test-line-cont-subst)",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.isEmpty)
@@ -773,11 +773,11 @@ struct ExecAllowlistTests {
         let command = [
             "/bin/sh",
             "-c",
-            "echo ok && $\\\n(/usr/bin/touch /tmp/openclaw-allowlist-test-chained-line-cont-subst)",
+            "echo ok && $\\\n(/usr/bin/touch /tmp/operator-allowlist-test-chained-line-cont-subst)",
         ]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "echo ok && $\\\n(/usr/bin/touch /tmp/openclaw-allowlist-test-chained-line-cont-subst)",
+            rawCommand: "echo ok && $\\\n(/usr/bin/touch /tmp/operator-allowlist-test-chained-line-cont-subst)",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.isEmpty)
@@ -848,7 +848,7 @@ struct ExecAllowlistTests {
             "/usr/bin/env",
             "/bin/sh",
             "-c",
-            "echo allowlisted && /usr/bin/touch /tmp/openclaw-allowlist-test",
+            "echo allowlisted && /usr/bin/touch /tmp/operator-allowlist-test",
         ]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
@@ -861,10 +861,10 @@ struct ExecAllowlistTests {
     }
 
     @Test func `resolve for allowlist unwraps env dispatch wrappers inside shell segments`() {
-        let command = ["/bin/sh", "-c", "env /usr/bin/touch /tmp/openclaw-allowlist-test"]
+        let command = ["/bin/sh", "-c", "env /usr/bin/touch /tmp/operator-allowlist-test"]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "env /usr/bin/touch /tmp/openclaw-allowlist-test",
+            rawCommand: "env /usr/bin/touch /tmp/operator-allowlist-test",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.count == 1)
@@ -873,10 +873,10 @@ struct ExecAllowlistTests {
     }
 
     @Test func `resolve for allowlist preserves env assignments inside shell segments`() {
-        let command = ["/bin/sh", "-c", "env FOO=bar /usr/bin/touch /tmp/openclaw-allowlist-test"]
+        let command = ["/bin/sh", "-c", "env FOO=bar /usr/bin/touch /tmp/operator-allowlist-test"]
         let resolutions = ExecCommandResolution.resolveForAllowlist(
             command: command,
-            rawCommand: "env FOO=bar /usr/bin/touch /tmp/openclaw-allowlist-test",
+            rawCommand: "env FOO=bar /usr/bin/touch /tmp/operator-allowlist-test",
             cwd: nil,
             env: ["PATH": "/usr/bin:/bin"])
         #expect(resolutions.count == 1)

@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 extension WebSocketTasking {
     /// Keep unit-test doubles resilient to protocol additions.

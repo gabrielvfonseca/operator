@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { html, nothing, type TemplateResult } from "lit";
 import type { ControlUiBuildInfo } from "../../build-info.ts";
 import { icons } from "../../components/icons.ts";
@@ -35,8 +35,8 @@ const SHORT_COMMIT_LENGTH = 12;
 // Docs-first where a docs page exists; GitHub/Discord match the native
 // macOS/iOS About screens (AboutSettings.swift, SettingsProTabSections.swift).
 const ABOUT_LINKS: ReadonlyArray<{ href: string; icon: TemplateResult; label: () => string }> = [
-  { href: "https://openclaw.ai", icon: icons.globe, label: () => t("aboutPage.linkWebsite") },
-  { href: "https://docs.openclaw.ai", icon: icons.book, label: () => t("aboutPage.linkDocs") },
+  { href: "https://operator.ai", icon: icons.globe, label: () => t("aboutPage.linkWebsite") },
+  { href: "https://docs.operator.ai", icon: icons.book, label: () => t("aboutPage.linkDocs") },
   {
     href: "https://github.com/openclaw/openclaw",
     icon: brandIcons.github,
@@ -48,7 +48,7 @@ const ABOUT_LINKS: ReadonlyArray<{ href: string; icon: TemplateResult; label: ()
     label: () => t("aboutPage.linkDiscord"),
   },
   {
-    href: "https://docs.openclaw.ai/releases",
+    href: "https://docs.operator.ai/releases",
     icon: icons.scrollText,
     label: () => t("aboutPage.linkChangelog"),
   },
@@ -105,7 +105,7 @@ function renderCommit(props: AboutProps) {
   return html`
     <span class="about-commit">
       <code dir="ltr" title=${commit}>${commit.slice(0, SHORT_COMMIT_LENGTH)}</code>
-      <openclaw-tooltip .content=${label}>
+      <operator-tooltip .content=${label}>
         <button
           type="button"
           class="btn btn--icon"
@@ -116,7 +116,7 @@ function renderCommit(props: AboutProps) {
         >
           <span aria-hidden="true">${props.copyState === "copied" ? icons.check : icons.copy}</span>
         </button>
-      </openclaw-tooltip>
+      </operator-tooltip>
       <span class="about-sr-only" role="status" aria-live="polite"
         >${copyStatus(props.copyState)}</span
       >

@@ -2,8 +2,8 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { root, type Root } from "@operator/fs-safe";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { root, type Root } from "@openclaw/fs-safe";
 import {
   LEGACY_NODE_HOST_CONFIG_CLAIM_SUFFIX,
   LEGACY_NODE_HOST_CONFIG_FILE,
@@ -11,8 +11,8 @@ import {
   type NodeHostConfig,
   type NodeHostGatewayConfig,
 } from "../node-host/config.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -553,7 +553,7 @@ export async function migrateLegacyNodeHostConfig(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy node-host state: ${detail}. Stop the Gateway and node host, then run \`operator doctor --fix\` again.`,
+        `Failed migrating legacy node-host state: ${detail}. Stop the Gateway and node host, then run \`openclaw doctor --fix\` again.`,
       ],
     };
   }

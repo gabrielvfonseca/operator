@@ -1,8 +1,8 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   PluginStateEntry,
   PluginStateKeyedStore,
-} from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import { DiscordActivitiesRuntime } from "./runtime.js";
 import { DiscordActivityStore } from "./store.js";
 

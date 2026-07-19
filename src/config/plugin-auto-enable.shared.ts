@@ -1,8 +1,8 @@
 // Shares plugin auto-enable detection across config and runtime code.
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { collectConfiguredAgentHarnessRuntimes } from "../agents/harness-runtimes.js";
 import {
   listPotentialConfiguredChannelPresenceSignals,

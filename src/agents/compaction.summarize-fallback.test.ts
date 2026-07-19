@@ -1,7 +1,7 @@
 // Covers final fallback behavior when model-backed summarization fails.
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
-import type { ExtensionContext } from "openclaw/plugin-sdk/agent-sessions";
-import type { UserMessage } from "openclaw/plugin-sdk/llm";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { ExtensionContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
+import type { UserMessage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { summarizeWithFallback } from "./compaction.test-support.js";
 

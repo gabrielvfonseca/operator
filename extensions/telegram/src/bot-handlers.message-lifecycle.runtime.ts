@@ -1,7 +1,7 @@
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Telegram dispatch dedupe, replay settlement, and synthetic-message helpers.
 import type { Message } from "grammy/types";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
 import type {
   TelegramAmbientTranscriptWatermark,
   TelegramMessageContextOptions,

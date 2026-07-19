@@ -3,7 +3,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 
 /** Returns an env override that points bundled plugin loading at source extensions. */
 export function resolvePrivateQaBundledPluginsEnv(

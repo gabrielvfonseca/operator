@@ -22,7 +22,7 @@ export MODEL_API_KEY=<key>
 ```
 
 ```json5
-// ~/.openclaw/openclaw.json
+// ~/.operator/operator.json
 {
   agents: {
     defaults: {

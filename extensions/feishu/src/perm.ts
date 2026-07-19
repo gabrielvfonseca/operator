@@ -1,6 +1,6 @@
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 // Feishu plugin module implements perm behavior.
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { jsonResult } from "openclaw/plugin-sdk/tool-results";
 import type { OperatorPluginApi } from "../runtime-api.js";
 import { listEnabledFeishuAccounts } from "./accounts.js";
 import { FeishuPermSchema, type FeishuPermParams } from "./perm-schema.js";

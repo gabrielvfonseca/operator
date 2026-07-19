@@ -1,6 +1,6 @@
 // Operator tests cover main rescue and audit command behavior.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import type { SystemAgentCommandDeps } from "./operations.js";
 import type { SystemAgentOverview } from "./overview.js";
@@ -20,7 +20,7 @@ const overview: SystemAgentOverview = {
   defaultAgentId: "main",
   defaultModel: "openai/gpt-5.5",
   agents: [{ id: "main", isDefault: true, model: "openai/gpt-5.5" }],
-  config: { path: "/tmp/openclaw.json", exists: true, valid: true, issues: [], hash: null },
+  config: { path: "/tmp/operator.json", exists: true, valid: true, issues: [], hash: null },
   tools: {
     codex: { command: "codex", found: false, error: "not found" },
     claude: { command: "claude", found: false, error: "not found" },
@@ -34,7 +34,7 @@ const overview: SystemAgentOverview = {
     error: "offline",
   },
   references: {
-    docsUrl: "https://docs.openclaw.ai",
+    docsUrl: "https://docs.operator.ai",
     sourceUrl: "https://github.com/openclaw/openclaw",
   },
 };
@@ -62,7 +62,7 @@ function configSnapshot(config: OperatorConfig) {
   return {
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "h",
     config,
     runtimeConfig: config,

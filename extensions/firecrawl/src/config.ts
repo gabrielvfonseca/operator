@@ -1,8 +1,11 @@
 // Firecrawl helper module supports config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { canResolveEnvSecretRefInReadOnlyPath } from "openclaw/plugin-sdk/extension-shared";
-import { resolvePositiveTimeoutSeconds } from "openclaw/plugin-sdk/provider-web-fetch";
-import { resolveSecretInputString, normalizeSecretInput } from "openclaw/plugin-sdk/secret-input";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { canResolveEnvSecretRefInReadOnlyPath } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { resolvePositiveTimeoutSeconds } from "@gabrielvfonseca/operator/plugin-sdk/provider-web-fetch";
+import {
+  resolveSecretInputString,
+  normalizeSecretInput,
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 
 export const DEFAULT_FIRECRAWL_BASE_URL = "https://api.firecrawl.dev";
 const DEFAULT_FIRECRAWL_SEARCH_TIMEOUT_SECONDS = 30;

@@ -1,29 +1,32 @@
 // TTS contract suites provide reusable text-to-speech plugin contract assertions.
-import type { OperatorConfig } from "operator/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createEmptyPluginRegistry,
   pluginRegistrationContractRegistry,
   setActivePluginRegistry,
-} from "operator/plugin-sdk/plugin-test-runtime";
-import type { ResolvedTtsConfig, SpeechProviderPlugin } from "operator/plugin-sdk/speech-core";
-import { withEnv, withEnvAsync } from "operator/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type {
+  ResolvedTtsConfig,
+  SpeechProviderPlugin,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import { withEnv, withEnvAsync } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AssistantMessage, Model } from "../../llm/types.js";
 import { resolveWorkspacePackagePublicModuleUrl } from "../../plugin-sdk/test-helpers/public-surface-loader.js";
 import { createLazyRuntimeModule } from "../../shared/lazy-runtime.js";
 
-type TtsRuntimeModule = typeof import("operator/plugin-sdk/tts-runtime");
-type TtsCoreModule = typeof import("operator/plugin-sdk/speech-core");
+type TtsRuntimeModule = typeof import("openclaw/plugin-sdk/tts-runtime");
+type TtsCoreModule = typeof import("openclaw/plugin-sdk/speech-core");
 type SummarizeTextDeps = NonNullable<Parameters<TtsCoreModule["summarizeText"]>[1]>;
 
 const speechCoreRuntimeApiModuleId = resolveWorkspacePackagePublicModuleUrl({
-  packageName: "@operator/speech-core",
+  packageName: "@gabrielvfonseca/speech-core",
   artifactBasename: "runtime-api.js",
 });
 
 let ttsRuntime: TtsRuntimeModule;
 let ttsRuntimeInitialized = false;
-let completeSimple: typeof import("operator/plugin-sdk/llm").completeSimple;
+let completeSimple: typeof import("openclaw/plugin-sdk/llm").completeSimple;
 let prepareSimpleCompletionModelMock: SummarizeTextDeps["prepareSimpleCompletionModel"];
 let requireApiKeyMock: SummarizeTextDeps["requireApiKey"];
 let summarizeTextCore: TtsCoreModule["summarizeText"];
@@ -67,7 +70,7 @@ async function withIsolatedSpeechProviderEnvAsync<T>(
   return await withEnvAsync(isolatedSpeechProviderEnv(overrides), fn);
 }
 
-vi.mock("operator/plugin-sdk/llm", () => {
+vi.mock("openclaw/plugin-sdk/llm", () => {
   const getApiProvider = vi.fn(() => undefined);
   return {
     completeSimple: vi.fn(),
@@ -416,7 +419,7 @@ const loadTtsRuntime = createLazyRuntimeModule(
   () => import(speechCoreRuntimeApiModuleId) as Promise<TtsRuntimeModule>,
 );
 
-const loadTtsCore = createLazyRuntimeModule(() => import("operator/plugin-sdk/speech-core"));
+const loadTtsCore = createLazyRuntimeModule(() => import("openclaw/plugin-sdk/speech-core"));
 
 function createPrepareSimpleCompletionModelMock(): SummarizeTextDeps["prepareSimpleCompletionModel"] {
   return vi.fn(async ({ provider, modelId }) => ({
@@ -490,7 +493,7 @@ function createResolvedSummarizationConfig(cfg: OperatorConfig): ResolvedTtsConf
 
 async function setupSummarizationMocks() {
   ({ summarizeText: summarizeTextCore } = await loadTtsCore());
-  ({ completeSimple } = await import("operator/plugin-sdk/llm"));
+  ({ completeSimple } = await import("openclaw/plugin-sdk/llm"));
   prepareSimpleCompletionModelMock = createPrepareSimpleCompletionModelMock();
   requireApiKeyMock = vi.fn() as SummarizeTextDeps["requireApiKey"];
   vi.mocked(completeSimple).mockResolvedValue(

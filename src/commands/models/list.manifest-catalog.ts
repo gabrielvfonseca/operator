@@ -1,6 +1,6 @@
-/** Manifest-backed model catalog row loaders for `operator models list`. */
-import { normalizeModelCatalogProviderId } from "@operator/model-catalog-core/model-catalog-refs";
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
+/** Manifest-backed model catalog row loaders for `openclaw models list`. */
+import { normalizeModelCatalogProviderId } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { planManifestModelCatalogRows } from "../../model-catalog/index.js";
 import { loadManifestMetadataSnapshot } from "../../plugins/manifest-contract-eligibility.js";

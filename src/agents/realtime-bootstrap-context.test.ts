@@ -3,13 +3,13 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveRealtimeBootstrapContextInstructions } from "./realtime-bootstrap-context.js";
 
 const tempDirs: string[] = [];
 
 async function makeWorkspace(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-realtime-bootstrap-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-realtime-bootstrap-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -51,7 +51,7 @@ describe("resolveRealtimeBootstrapContextInstructions", () => {
     expect(instructions).toContain("Warm and dry.");
     expect(instructions).not.toContain("AGENTS.md");
     expect(instructions).not.toContain("Do not load me here.");
-    expect(instructions).not.toContain("openclaw_agent_consult");
+    expect(instructions).not.toContain("operator_agent_consult");
     expect(instructions).not.toContain(workspaceDir);
   });
 

@@ -244,11 +244,11 @@ describe("model provider localService config", () => {
 describe("$schema key in config (#14998)", () => {
   it("accepts config with $schema string", () => {
     const result = OperatorSchema.safeParse({
-      $schema: "https://openclaw.ai/config.json",
+      $schema: "https://operator.ai/config.json",
     });
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.$schema).toBe("https://openclaw.ai/config.json");
+      expect(result.data.$schema).toBe("https://operator.ai/config.json");
     }
   });
 
@@ -272,11 +272,11 @@ describe("$schema key in config (#14998)", () => {
 
   it("preserves $schema through validateConfigObject round-trip", () => {
     const res = validateConfigObject({
-      $schema: "https://openclaw.ai/config.json",
+      $schema: "https://operator.ai/config.json",
     });
     expect(res.ok).toBe(true);
     if (res.ok) {
-      expect(res.config.$schema).toBe("https://openclaw.ai/config.json");
+      expect(res.config.$schema).toBe("https://operator.ai/config.json");
     }
   });
 });
@@ -1267,7 +1267,7 @@ describe("config paths", () => {
 describe("config strict validation", () => {
   it("rejects unknown fields", () => {
     const res = validateConfigObject({
-      agents: { list: [{ id: "openclaw" }] },
+      agents: { list: [{ id: "@gabrielvfonseca/operator" }] },
       customUnknownField: { nested: "value" },
     });
     expect(res.ok).toBe(false);
@@ -1441,7 +1441,7 @@ describe("config strict validation", () => {
           },
           list: [
             {
-              id: "openclaw",
+              id: "@gabrielvfonseca/operator",
               sandbox: {
                 perSession: false,
               },

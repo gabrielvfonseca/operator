@@ -6,8 +6,8 @@
 import {
   sanitizeInlineImageBase64,
   sanitizeInlineImageDataUrlForStorage,
-} from "@operator/media-core/inline-image-data-url";
-import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/media-core/inline-image-data-url";
+import { findNormalizedProviderValue } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { readLoggingConfig } from "../logging/config.js";
 import {
@@ -643,7 +643,7 @@ function redactTranscriptStructuredValue(
       (isOpenAIResponsesRoute(currentAssistantRoute) ||
         isCustomProviderRoute(currentAssistantRoute)) &&
       source.type === "thinking" &&
-      key === "operatorReasoningReplay"
+      key === "openclawReasoningReplay"
     ) {
       const sanitizedMetadata = sanitizeOpenAIReasoningReplayMetadata(item, currentAssistantRoute);
       if (sanitizedMetadata !== undefined) {

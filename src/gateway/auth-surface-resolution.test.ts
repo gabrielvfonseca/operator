@@ -2,7 +2,7 @@
 // surfaces that need browser or control-UI access.
 import { describe, expect, it } from "vitest";
 import type { GatewayRemoteConfig } from "../config/types.gateway.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveGatewayInteractiveSurfaceAuth } from "./auth-surface-resolution.js";
 
 function remoteGatewayConfig(remote?: GatewayRemoteConfig): OperatorConfig {

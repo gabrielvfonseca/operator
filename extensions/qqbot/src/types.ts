@@ -1,6 +1,6 @@
-import type { GroupToolPolicyConfig } from "openclaw/plugin-sdk/channel-policy";
+import type { GroupToolPolicyConfig } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 // Qqbot type declarations define plugin contracts.
-import type { SecretInput } from "openclaw/plugin-sdk/secret-input";
+import type { SecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type { QQBotDmPolicy, QQBotGroupPolicy } from "./engine/access/index.js";
 import type { QQBotGroupCommandLevel } from "./engine/config/group.js";
 

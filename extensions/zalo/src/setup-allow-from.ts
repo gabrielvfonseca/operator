@@ -7,7 +7,7 @@ import {
   type ChannelSetupDmPolicy,
   type ChannelSetupWizard,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { resolveDefaultZaloAccountId, resolveZaloAccount } from "./accounts.js";
 
 const t = createSetupTranslator();

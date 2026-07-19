@@ -1,6 +1,6 @@
 #if Talk
 import XCTest
-@testable import OpenClawKit
+@testable import OperatorKit
 
 final class ElevenLabsTTSValidationTests: XCTestCase {
     func testValidatedOutputFormatAllowsOnlyMp3Presets() {

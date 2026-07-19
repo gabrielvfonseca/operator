@@ -2,8 +2,8 @@
 // Loads plugin registries and builds fallback request context for non-WS paths.
 import { randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeModelRef, parseModelRef } from "../agents/model-selection.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import type { OperatorConfig } from "../config/types.operator.js";

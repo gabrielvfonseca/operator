@@ -664,7 +664,7 @@ describe("createModelSelectionState catalog loading", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -1199,7 +1199,7 @@ describe("createModelSelectionState respects session model override", () => {
   });
 
   it("adopts a concurrent valid model while repairing a stale override", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-repair-race-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-repair-race-"));
     const storePath = path.join(tempRoot, "sessions.json");
     const cfg = {
       agents: {
@@ -1259,7 +1259,7 @@ describe("createModelSelectionState respects session model override", () => {
   });
 
   it("rejects stale-model repair when the session rotates during persistence", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-repair-rotation-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-repair-rotation-"));
     const storePath = path.join(tempRoot, "sessions.json");
     const cfg = {
       agents: {

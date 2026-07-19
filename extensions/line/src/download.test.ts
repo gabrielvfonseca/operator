@@ -91,7 +91,7 @@ describe("downloadLineMedia", () => {
         }
         const buffer = Buffer.concat(chunksLocal);
         return {
-          path: `/home/user/.openclaw/media/${subdir ?? "unknown"}/saved-media`,
+          path: `/home/user/.operator/media/${subdir ?? "unknown"}/saved-media`,
           contentType: detectMockContentType(buffer, contentType),
           size: buffer.length,
         };
@@ -119,7 +119,7 @@ describe("downloadLineMedia", () => {
     expect(call[2]).toBe("inbound");
     expect(call[3]).toBe(10 * 1024 * 1024);
     expect(result).toEqual({
-      path: "/home/user/.openclaw/media/inbound/saved-media",
+      path: "/home/user/.operator/media/inbound/saved-media",
       contentType: "image/jpeg",
       size: jpeg.length,
     });

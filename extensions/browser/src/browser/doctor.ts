@@ -55,7 +55,7 @@ export function buildBrowserDoctorReport(params: {
     id: "profile",
     label: "Profile",
     status: "pass",
-    summary: `${status.profile ?? "openclaw"} via ${transport}`,
+    summary: `${status.profile ?? "@gabrielvfonseca/operator"} via ${transport}`,
   });
 
   if (transport === "chrome-mcp") {
@@ -184,7 +184,7 @@ export function buildBrowserDoctorReport(params: {
 
   return {
     ok: checks.every((check) => check.status !== "fail"),
-    profile: status.profile ?? "openclaw",
+    profile: status.profile ?? "@gabrielvfonseca/operator",
     transport,
     checks,
     status,

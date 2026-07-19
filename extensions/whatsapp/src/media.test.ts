@@ -2,16 +2,19 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { captureEnv } from "openclaw/plugin-sdk/test-env";
-import { mockPinnedHostnameResolution } from "openclaw/plugin-sdk/test-env";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { captureEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+import { mockPinnedHostnameResolution } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import {
   createGrayscaleAlphaPngBuffer,
   createSolidPngBuffer,
-} from "openclaw/plugin-sdk/test-fixtures";
-import { withMockedWindowsPlatform, withRestoredMocks } from "openclaw/plugin-sdk/test-node-mocks";
-import { optimizeImageToPng } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
+import {
+  withMockedWindowsPlatform,
+  withRestoredMocks,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-node-mocks";
+import { optimizeImageToPng } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   LocalMediaAccessError,
@@ -60,7 +63,7 @@ async function expectLocalMediaAccessCode(promise: Promise<unknown>, code: strin
 
 beforeAll(async () => {
   fixtureRoot = await fs.mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-media-test-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-media-test-"),
   );
   largeJpegBuffer = await fs.readFile("docs/assets/showcase/roof-camera-sky.jpg");
   largeJpegFile = await writeTempFile(largeJpegBuffer, ".jpg");
@@ -102,7 +105,7 @@ describe("web media loading", () => {
       path.parse(os.tmpdir()).root,
       "var",
       "lib",
-      "openclaw-media-state-test",
+      "operator-media-state-test",
     );
   });
 

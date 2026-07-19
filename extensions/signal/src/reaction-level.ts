@@ -1,10 +1,10 @@
 // Signal plugin module implements reaction level behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   resolveReactionLevel,
   type ReactionLevel,
   type ResolvedReactionLevel,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import { resolveSignalAccount } from "./accounts.js";
 
 export type SignalReactionLevel = ReactionLevel;

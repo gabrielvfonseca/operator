@@ -1,5 +1,5 @@
 // Memory Host SDK module implements batch http behavior.
-import { retryAsync } from "@operator/retry";
+import { retryAsync } from "@gabrielvfonseca/retry";
 import { postJson } from "./post-json.js";
 import type { SsrFPolicy } from "./ssrf-policy.js";
 

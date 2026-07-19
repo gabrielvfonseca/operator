@@ -28,7 +28,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-plugin-registry-migration", tempDirs);
+  return makeTrackedTempDir("operator-plugin-registry-migration", tempDirs);
 }
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -52,7 +52,7 @@ function createCandidate(
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "openclaw.plugin.json"),
+    path.join(rootDir, "operator.plugin.json"),
     JSON.stringify({
       id,
       name: id,

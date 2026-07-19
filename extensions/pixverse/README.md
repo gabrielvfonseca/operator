@@ -1,4 +1,4 @@
-# @operator/pixverse-provider
+# @gabrielvfonseca/pixverse-provider
 
 Official PixVerse video generation provider plugin for Operator.
 
@@ -7,7 +7,7 @@ This plugin registers PixVerse as a `video_generate` provider for text-to-video 
 ## Install
 
 ```bash
-openclaw plugins install @operator/pixverse-provider
+operator plugins install @gabrielvfonseca/pixverse-provider
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -18,10 +18,10 @@ Store your PixVerse API key in Operator config or expose the supported environme
 
 Full setup and model/provider examples:
 
-- https://docs.openclaw.ai/providers/pixverse
+- https://docs.operator.ai/providers/pixverse
 
 ## Package
 
 - Plugin id: `pixverse`
-- Package: `@operator/pixverse-provider`
+- Package: `@gabrielvfonseca/pixverse-provider`
 - Minimum Operator host: `2026.5.26`

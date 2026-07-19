@@ -1,5 +1,5 @@
 {
-  "name": "@operator/qa-channel",
+  "name": "@gabrielvfonseca/qa-channel",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator QA synthetic channel plugin",
@@ -15,18 +15,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],

@@ -190,8 +190,8 @@ vi.mock("../config/config.js", () => ({
       throw new Error(
         [
           "Config is managed by Nix (`OPERATOR_NIX_MODE=1`), so Operator treats operator.json as immutable.",
-          "Do not run setup, onboarding, operator update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
-          "Agent-first Nix setup: https://github.com/operator/nix-operator#quick-start",
+          "Do not run setup, onboarding, openclaw update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
+          "Agent-first Nix setup: https://github.com/openclaw/nix-openclaw#quick-start",
           "Operator Nix overview: https://docs.operator.ai/install/nix",
         ].join("\n"),
       );

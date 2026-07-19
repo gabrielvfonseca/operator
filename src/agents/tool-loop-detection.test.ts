@@ -1236,7 +1236,7 @@ describe("tool-loop-detection", () => {
               accountId: "default",
               direction: "outbound",
               conversation: { id: "loop-room", chatType: "channel" },
-              senderId: "openclaw",
+              senderId: "@gabrielvfonseca/operator",
               text: "hello",
               timestamp: 1_800_000_000_000 + i,
             },

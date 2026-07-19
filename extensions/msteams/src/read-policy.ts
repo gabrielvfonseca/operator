@@ -1,6 +1,6 @@
-import { ToolAuthorizationError } from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionContext } from "openclaw/plugin-sdk/channel-contract";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { ToolAuthorizationError } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelMessageActionContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { OperatorConfig } from "../runtime-api.js";
 import { isDangerousNameMatchingEnabled, resolveDefaultGroupPolicy } from "../runtime-api.js";
 import { listChannelsForTeamWithPageInfo, resolveGraphToken } from "./graph.js";
@@ -356,7 +356,7 @@ export async function assertMSTeamsTeamEnumerationAllowed(params: {
     cfg: teams,
     teamId: params.teamId,
     teamName: params.teamId,
-    conversationId: "__openclaw_all_channels__",
+    conversationId: "__operator_all_channels__",
     allowNameMatching: isDangerousNameMatchingEnabled(teams),
   });
   const stableTeamId = isStableGraphTeamId(params.teamId)
@@ -388,7 +388,7 @@ export async function assertMSTeamsTeamEnumerationAllowed(params: {
         allowed = resolveMSTeamsRouteConfig({
           cfg: teams,
           teamId: botFrameworkTeamKey,
-          conversationId: "__openclaw_all_channels__",
+          conversationId: "__operator_all_channels__",
         }).allowed;
       }
       if (!allowed && hasMutableChannelConfig(params.cfg)) {
@@ -400,7 +400,7 @@ export async function assertMSTeamsTeamEnumerationAllowed(params: {
         allowed = resolveMSTeamsRouteConfig({
           cfg: { ...teams, teams: resolved.teams },
           teamId: stableTeamId,
-          conversationId: "__openclaw_all_channels__",
+          conversationId: "__operator_all_channels__",
         }).allowed;
       }
     } catch {

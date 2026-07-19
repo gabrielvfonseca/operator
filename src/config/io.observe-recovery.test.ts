@@ -47,7 +47,7 @@ describe("config observe recovery", () => {
   }
 
   beforeAll(async () => {
-    fixtureRoot = await fsp.mkdtemp(path.join(os.tmpdir(), "openclaw-config-observe-recovery-"));
+    fixtureRoot = await fsp.mkdtemp(path.join(os.tmpdir(), "operator-config-observe-recovery-"));
   });
 
   afterAll(async () => {
@@ -175,7 +175,7 @@ describe("config observe recovery", () => {
     warn = vi.fn(),
     options: { env?: NodeJS.ProcessEnv; observe?: boolean } = {},
   ) {
-    const configPath = path.join(home, ".openclaw", "openclaw.json");
+    const configPath = path.join(home, ".operator", "operator.json");
     const error = vi.fn();
     return {
       configPath,
@@ -260,7 +260,7 @@ describe("config observe recovery", () => {
     auditPath: string;
     warn: ReturnType<typeof vi.fn>;
   } {
-    const configPath = path.join(home, ".openclaw", "openclaw.json");
+    const configPath = path.join(home, ".operator", "operator.json");
     return {
       deps: {
         fs,
@@ -270,7 +270,7 @@ describe("config observe recovery", () => {
         logger: { warn },
       },
       configPath,
-      auditPath: path.join(home, ".openclaw", "logs", "config-audit.jsonl"),
+      auditPath: path.join(home, ".operator", "logs", "config-audit.jsonl"),
       warn,
     };
   }
@@ -452,7 +452,7 @@ describe("config observe recovery", () => {
   it("read snapshots auto-restore tiny valid clobbers before recording them observed", async () => {
     await withSuiteHome(async (home) => {
       const { io, configPath, warn } = createTestConfigIO(home);
-      const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+      const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
       await seedConfigBackup(configPath, {
         ...recoverableTelegramConfig,
         channels: {
@@ -545,7 +545,7 @@ describe("config observe recovery", () => {
   it("does not auto-restore read snapshots when observation is disabled", async () => {
     await withSuiteHome(async (home) => {
       const { io, configPath } = createTestConfigIO(home, vi.fn(), { observe: false });
-      const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+      const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
       await seedConfigBackup(configPath, recoverableTelegramConfig);
       const clobbered = await writeConfigRaw(configPath, {
         meta: { lastTouchedVersion: "2026.5.28" },
@@ -563,7 +563,7 @@ describe("config observe recovery", () => {
   it("does not auto-restore include-authored roots from stale full-file backups", async () => {
     await withSuiteHome(async (home) => {
       const { io, configPath } = createTestConfigIO(home);
-      const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+      const auditPath = path.join(home, ".operator", "logs", "config-audit.jsonl");
       const includedConfig = {
         ...recoverableTelegramConfig,
         channels: {
@@ -1046,7 +1046,7 @@ describe("config observe recovery", () => {
         promoteConfigSnapshotToLastKnownGood({ deps, snapshot, logger: deps.logger }),
       ).resolves.toBe(true);
 
-      await expectPathMissing(path.join(home, ".openclaw", "logs", "config-health.json"));
+      await expectPathMissing(path.join(home, ".operator", "logs", "config-health.json"));
       const row = readConfigHealthRow(home, configPath);
       expect(row).toMatchObject({
         config_path: configPath,
@@ -1066,7 +1066,7 @@ describe("config observe recovery", () => {
 
       recoverClobberedUpdateChannelSync({ deps, configPath });
 
-      await expectPathMissing(path.join(home, ".openclaw", "logs", "config-health.json"));
+      await expectPathMissing(path.join(home, ".operator", "logs", "config-health.json"));
       const row = readConfigHealthRow(home, configPath);
       expect(row).toMatchObject({
         config_path: configPath,

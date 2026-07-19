@@ -1,6 +1,6 @@
 // Gateway test assertion helpers narrow unknown protocol payloads to records
 // and assert selected fields with useful labels.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { expect } from "vitest";
 
 export { isRecord };

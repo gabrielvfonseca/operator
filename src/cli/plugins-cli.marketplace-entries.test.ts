@@ -42,7 +42,7 @@ vi.mock("../plugins/official-external-plugin-catalog.js", async (importOriginal)
 });
 
 async function createTimelinePath(): Promise<string> {
-  const dir = await mkdtemp(path.join(tmpdir(), "openclaw-marketplace-entries-"));
+  const dir = await mkdtemp(path.join(tmpdir(), "operator-marketplace-entries-"));
   return path.join(dir, "timeline.jsonl");
 }
 
@@ -89,7 +89,7 @@ describe("plugins marketplace entries", () => {
           install: {
             candidates: [{ sourceRef: "acme-npm", package: "@acme/calendar", version: "1.2.3" }],
           },
-          openclaw: {
+          operator: {
             plugin: { id: "acme-calendar", label: "Acme Calendar" },
           },
         },
@@ -201,12 +201,12 @@ describe("plugins marketplace entries", () => {
       source: "bundled-fallback",
       entries: [
         {
-          name: "@operator/acpx",
-          openclaw: {
+          name: "@gabrielvfonseca/acpx",
+          operator: {
             plugin: { id: "acpx", label: "ACP" },
             install: {
-              clawhubSpec: "clawhub:@operator/acpx",
-              npmSpec: "@operator/acpx",
+              clawhubSpec: "clawhub:@gabrielvfonseca/acpx",
+              npmSpec: "@gabrielvfonseca/acpx",
               defaultChoice: "npm",
             },
           },
@@ -221,8 +221,8 @@ describe("plugins marketplace entries", () => {
     const output = mocks.defaultRuntime.log.mock.calls.map(([value]) => String(value)).join("\n");
     expect(output).toContain("bundled fallback");
     expect(output).toContain("acpx");
-    expect(output).toContain("@operator/acpx");
-    expect(output).not.toContain("clawhub:@operator/acpx");
+    expect(output).toContain("@gabrielvfonseca/acpx");
+    expect(output).not.toContain("clawhub:@gabrielvfonseca/acpx");
     expect(output).toContain("hosted catalog feed offline mode");
     expect(mocks.defaultRuntime.exit).not.toHaveBeenCalled();
   });
@@ -284,7 +284,7 @@ describe("plugins marketplace entries", () => {
       entries: [
         {
           name: "@acme/calendar",
-          openclaw: { plugin: { id: "acme-calendar", label: "Acme Calendar" } },
+          operator: { plugin: { id: "acme-calendar", label: "Acme Calendar" } },
         },
       ],
       feed: {

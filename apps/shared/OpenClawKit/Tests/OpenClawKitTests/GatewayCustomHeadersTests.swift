@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct GatewayCustomHeadersTests {
     @Test func `sanitized keeps operator proxy credential headers`() {

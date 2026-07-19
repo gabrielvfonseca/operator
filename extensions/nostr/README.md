@@ -1,4 +1,4 @@
-# @operator/nostr
+# @gabrielvfonseca/nostr
 
 Nostr DM channel plugin for Operator using NIP-04 encrypted direct messages.
 
@@ -13,7 +13,7 @@ This extension adds Nostr as a messaging channel to Operator. It enables your bo
 ## Installation
 
 ```bash
-openclaw plugins install @operator/nostr
+operator plugins install @gabrielvfonseca/nostr
 ```
 
 ## Quick Setup
@@ -94,7 +94,7 @@ processed unless approved.
 # Using strfry
 docker run -p 7777:7777 ghcr.io/hoytech/strfry
 
-# Configure openclaw to use local relay
+# Configure operator to use local relay
 "relays": ["ws://localhost:7777"]
 ```
 

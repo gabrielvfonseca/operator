@@ -1,21 +1,21 @@
 ---
-summary: "CLI reference for `openclaw reset` (reset local state/config)"
+summary: "CLI reference for `operator reset` (reset local state/config)"
 read_when:
   - You want to wipe local state while keeping the CLI installed
   - You want a dry-run of what would be removed
 title: "Reset"
 ---
 
-# `openclaw reset`
+# `operator reset`
 
 Reset local config/state (keeps the CLI installed).
 
 ```bash
-openclaw reset
-openclaw reset --dry-run
-openclaw reset --scope config --yes --non-interactive
-openclaw reset --scope config+creds+sessions --yes --non-interactive
-openclaw reset --scope full --yes --non-interactive
+operator reset
+operator reset --dry-run
+operator reset --scope config --yes --non-interactive
+operator reset --scope config+creds+sessions --yes --non-interactive
+operator reset --scope full --yes --non-interactive
 ```
 
 ## Options
@@ -37,10 +37,10 @@ openclaw reset --scope full --yes --non-interactive
 
 ## Notes
 
-- Run `openclaw backup create` first for a restorable snapshot before removing local state.
-- Without `--scope`, `openclaw reset` prompts interactively for the scope to remove.
+- Run `operator backup create` first for a restorable snapshot before removing local state.
+- Without `--scope`, `operator reset` prompts interactively for the scope to remove.
 - `--non-interactive` is only valid when both `--scope` and `--yes` are set.
-- `config+creds+sessions` and `full` print `Next: openclaw onboard --install-daemon` when done.
+- `config+creds+sessions` and `full` print `Next: operator onboard --install-daemon` when done.
 
 ## Related
 

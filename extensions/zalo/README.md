@@ -1,17 +1,17 @@
-# @operator/zalo
+# @gabrielvfonseca/zalo
 
 Zalo channel plugin for Operator (Bot API).
 
 ## Install (local checkout)
 
 ```bash
-openclaw plugins install ./path/to/local/zalo-plugin
+operator plugins install ./path/to/local/zalo-plugin
 ```
 
 ## Install (npm)
 
 ```bash
-openclaw plugins install @operator/zalo
+operator plugins install @gabrielvfonseca/zalo
 ```
 
 Onboarding: select Zalo and confirm the install prompt to fetch the plugin automatically.

@@ -3,7 +3,7 @@
  *
  * Adapts declarative wizard definitions into imperative setup adapters used by onboarding.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import { configureChannelAccessWithAllowlist } from "./setup-group-access-configure.js";

@@ -1,16 +1,16 @@
 // Whatsapp plugin module implements inbound policy behavior.
-import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
+import { resolveStableChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
 import {
   resolveChannelGroupPolicy,
   resolveChannelGroupRequireMention,
-} from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import type {
   ChannelGroupPolicy,
   DmPolicy,
   GroupPolicy,
   OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { resolveDefaultGroupPolicy } from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveDefaultGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import { resolveWhatsAppAccount, type ResolvedWhatsAppAccount } from "./accounts.js";
 import { getSelfIdentity, getSenderIdentity } from "./identity.js";
 import { requireWhatsAppInboundAdmission } from "./inbound/admission.js";

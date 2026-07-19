@@ -2,19 +2,25 @@
 import {
   optionalPositiveIntegerSchema,
   readPositiveIntegerParam,
-} from "openclaw/plugin-sdk/channel-actions";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   callGatewayFromCli,
   ErrorCodes,
   errorShape,
   type GatewayRequestHandlerOptions,
-} from "openclaw/plugin-sdk/gateway-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { normalizeAgentId, parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { jsonResult as json } from "openclaw/plugin-sdk/tool-results";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  definePluginEntry,
+  type OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  normalizeAgentId,
+  parseAgentSessionKey,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { jsonResult as json } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import { Type } from "typebox";
 import {
   buildGoogleMeetCalendarDayWindow,
@@ -200,7 +206,7 @@ const googleMeetConfigSchema = {
     },
     "realtime.agentId": {
       label: "Realtime Consult Agent",
-      help: 'Operator agent id used by openclaw_agent_consult. Defaults to "main".',
+      help: 'Operator agent id used by operator_agent_consult. Defaults to "main".',
       advanced: true,
     },
     "realtime.toolPolicy": {

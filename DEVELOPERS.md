@@ -6,8 +6,8 @@ This document provides comprehensive guidance for developers working on the Oper
 
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Website:** https://operator.ai
-- **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **Discord:** https://discord.gg/operator
+- **X/Twitter:** [@gabfon_](https://x.com/gabfon_)
 
 ## Development Setup
 
@@ -222,7 +222,7 @@ node scripts/check-test-helper-extension-import-boundary.mjs --json
 
 The plugin SDK provides runtime helpers and capabilities:
 
-- `openclaw/plugin-sdk/**` - Public API for plugin developers
+- `operator/plugin-sdk/**` - Public API for plugin developers
 - `src/plugin-sdk/**` - Runtime facades
 
 ### Plugin Bundling

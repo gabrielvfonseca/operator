@@ -1,7 +1,7 @@
 /**
  * Wraps stream functions with pre-call message transforms.
  */
-import type { StreamFn } from "operator/plugin-sdk/agent-core";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import type { AgentMessage } from "../../runtime/index.js";
 
 /**

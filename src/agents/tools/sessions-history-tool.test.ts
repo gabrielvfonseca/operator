@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { callGateway as gatewayCall } from "../../gateway/call.js";
 import { deleteTestEnvValue, setTestEnvValue } from "../../test-utils/env.js";
@@ -12,7 +12,7 @@ type CallGatewayRequest = Parameters<typeof gatewayCall>[0];
 type HistoryMessage = {
   role: string;
   content: string;
-  __openclaw: { seq: number };
+  __operator: { seq: number };
 };
 
 let createSessionsHistoryTool: typeof import("./sessions-history-tool.js").createSessionsHistoryTool;
@@ -78,7 +78,7 @@ function readMessageId(message: unknown): string | undefined {
 describe("sessions_history redaction", () => {
   beforeAll(async () => {
     previousConfigPath = process.env.OPERATOR_CONFIG_PATH;
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sessions-history-redact-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sessions-history-redact-"));
     useLoggingConfig("redaction-off.json", { redactSensitive: "off" });
     ({ createSessionsHistoryTool } = await import("./sessions-history-tool.js"));
   });
@@ -297,7 +297,7 @@ describe("sessions_history redaction", () => {
     const messages = Array.from({ length: 30 }, (_, index) => ({
       role: index % 2 === 0 ? "user" : "assistant",
       content: `message-${index + 1} ${"x".repeat(4_000)}`,
-      __openclaw: { id: `message-${index + 1}`, seq: index + 1 },
+      __operator: { id: `message-${index + 1}`, seq: index + 1 },
     }));
     const tool = createSessionsHistoryTool({
       config: {},
@@ -324,7 +324,7 @@ describe("sessions_history redaction", () => {
     const messages: HistoryMessage[] = Array.from({ length: 30 }, (_, index) => ({
       role: "assistant",
       content: `message-${index + 1} ${"x".repeat(10_000)}`,
-      __openclaw: { seq: index + 1 },
+      __operator: { seq: index + 1 },
     }));
     const tool = createSessionsHistoryTool({
       config: {},
@@ -365,9 +365,9 @@ describe("sessions_history redaction", () => {
       callGateway: async <T = Record<string, unknown>>(): Promise<T> =>
         ({
           messages: [
-            { role: "tool", content: "hidden", __openclaw: { seq: 6 } },
-            { role: "assistant", content: "visible", __openclaw: { seq: 7 } },
-            { role: "assistant", content: "latest", __openclaw: { seq: 8 } },
+            { role: "tool", content: "hidden", __operator: { seq: 6 } },
+            { role: "assistant", content: "visible", __operator: { seq: 7 } },
+            { role: "assistant", content: "latest", __operator: { seq: 8 } },
           ],
           offset: 0,
           nextOffset: 5,
@@ -380,8 +380,8 @@ describe("sessions_history redaction", () => {
     const details = readHistoryDetails(result);
 
     expect(details.messages).toEqual([
-      { role: "assistant", content: "visible", __openclaw: { seq: 7 } },
-      { role: "assistant", content: "latest", __openclaw: { seq: 8 } },
+      { role: "assistant", content: "visible", __operator: { seq: 7 } },
+      { role: "assistant", content: "latest", __operator: { seq: 8 } },
     ]);
     expect(details).toMatchObject({
       offset: 0,

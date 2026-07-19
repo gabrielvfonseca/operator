@@ -1,5 +1,5 @@
 // Slack plugin module implements setup surface behavior.
-import { adaptScopedAccountAccessor } from "openclaw/plugin-sdk/channel-config-helpers";
+import { adaptScopedAccountAccessor } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import {
   noteChannelLookupFailure,
   noteChannelLookupSummary,
@@ -9,13 +9,13 @@ import {
   parseMentionOrPrefixedId,
   promptLegacyChannelAllowFromForAccount,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/setup-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
 import type {
   ChannelSetupWizard,
   ChannelSetupWizardAllowFromEntry,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveDefaultSlackAccountId,
   resolveSlackAccount,

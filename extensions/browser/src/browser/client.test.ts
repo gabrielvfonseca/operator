@@ -1,5 +1,5 @@
 // Browser tests cover client plugin behavior.
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   browserAct,
@@ -253,7 +253,7 @@ describe("browser client", () => {
         if (url.includes("/doctor")) {
           return jsonResponse({
             ok: true,
-            profile: "openclaw",
+            profile: "@gabrielvfonseca/operator",
             transport: "cdp",
             checks: [],
             status: {
@@ -286,14 +286,14 @@ describe("browser client", () => {
 
     const doctorResult = await browserDoctor("http://127.0.0.1:18791");
     expect(doctorResult.ok).toBe(true);
-    expect(doctorResult.profile).toBe("openclaw");
+    expect(doctorResult.profile).toBe("@gabrielvfonseca/operator");
 
     const deepDoctorResult = await browserDoctor("http://127.0.0.1:18791", {
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
       deep: true,
     });
     expect(deepDoctorResult.ok).toBe(true);
-    expect(deepDoctorResult.profile).toBe("openclaw");
+    expect(deepDoctorResult.profile).toBe("@gabrielvfonseca/operator");
 
     await expect(browserTabs("http://127.0.0.1:18791")).resolves.toHaveLength(1);
     const openedTab = await browserOpenTab("http://127.0.0.1:18791", "https://example.com");
@@ -398,7 +398,7 @@ describe("browser client", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await browserCloseTabByRawTargetId("http://127.0.0.1:18791", "RAW_TARGET", {
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     });
 
     const [url, init] = fetchMock.mock.calls[0] ?? [];

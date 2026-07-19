@@ -1,9 +1,9 @@
 // Openai plugin module implements openai chatgpt oauth behavior.
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { ProviderAuthContext } from "openclaw/plugin-sdk/plugin-entry";
-import { ensureGlobalUndiciEnvProxyDispatcher } from "openclaw/plugin-sdk/runtime-env";
-import { formatCliCommand } from "openclaw/plugin-sdk/setup-tools";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { ProviderAuthContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { ensureGlobalUndiciEnvProxyDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import { loginOpenAICodex } from "./openai-chatgpt-oauth-flow.runtime.js";
 import {
   runOpenAIOAuthTlsPreflight,
@@ -12,7 +12,7 @@ import {
 import type { OAuthCredentials } from "./openai-chatgpt-oauth-types.runtime.js";
 
 const manualInputPromptMessage = "Paste the authorization code (or full redirect URL):";
-const openAICodexOAuthOriginator = "openclaw";
+const openAICodexOAuthOriginator = "@gabrielvfonseca/operator";
 const localManualFallbackDelayMs = 15_000;
 const localManualFallbackGraceMs = 1_000;
 type OpenAICodexOAuthFailureCode =
@@ -270,7 +270,7 @@ export async function loginOpenAICodexOAuth(params: {
     stopProgress("OpenAI OAuth failed");
     const rewrittenError = rewriteOpenAICodexOAuthError(err);
     runtime.error(String(rewrittenError));
-    await prompter.note("Trouble with OAuth? See https://docs.openclaw.ai/start/faq", "OAuth help");
+    await prompter.note("Trouble with OAuth? See https://docs.operator.ai/start/faq", "OAuth help");
     throw rewrittenError;
   } finally {
     markLoginSettled();

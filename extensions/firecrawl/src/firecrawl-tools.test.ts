@@ -1,6 +1,6 @@
 // Firecrawl tests cover firecrawl tools plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { mockPinnedHostnameResolution } from "openclaw/plugin-sdk/test-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { mockPinnedHostnameResolution } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 import {
@@ -219,7 +219,7 @@ describe("firecrawl tools", () => {
           url: "https://api.firecrawl.dev/v2/search",
           timeoutSeconds: 5,
           apiKey: "firecrawl-key",
-          body: { query: "openclaw" },
+          body: { query: "@gabrielvfonseca/operator" },
           errorLabel: "Firecrawl search",
         },
         async () => "ok",
@@ -249,7 +249,7 @@ describe("firecrawl tools", () => {
         url: "https://api.firecrawl.dev/v2/search",
         timeoutSeconds: 5,
         apiKey: "firecrawl-test-\r\nkey",
-        body: { query: "openclaw" },
+        body: { query: "@gabrielvfonseca/operator" },
         errorLabel: "Firecrawl search",
       },
       async () => "ok",
@@ -493,7 +493,7 @@ describe("firecrawl tools", () => {
           },
         },
       } as OperatorConfig,
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
       count: 25,
       excludeDomains: ["example.com"],
       tbs: "qdr:w",
@@ -502,7 +502,7 @@ describe("firecrawl tools", () => {
     });
 
     expect(capturedBody).toMatchObject({
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
       limit: 25,
       excludeDomains: ["example.com"],
       tbs: "qdr:w",
@@ -652,7 +652,7 @@ describe("firecrawl tools", () => {
 
   it("keeps the compare-helper fetch facade owned by the Firecrawl extension", async () => {
     await fetchFirecrawlContent({
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       apiKey: "firecrawl-key",
       baseUrl: "https://api.firecrawl.dev",
@@ -683,7 +683,7 @@ describe("firecrawl tools", () => {
           },
         },
       },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       maxChars: 1500,
       proxy: "stealth",
@@ -721,7 +721,7 @@ describe("firecrawl tools", () => {
     }
 
     await tool.execute({
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       maxChars: 1500,
       proxy: "stealth",
@@ -730,7 +730,7 @@ describe("firecrawl tools", () => {
 
     expect(runFirecrawlScrape).toHaveBeenCalledWith({
       cfg: { test: true },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       access: "keyless",
       maxChars: 1500,
@@ -749,20 +749,20 @@ describe("firecrawl tools", () => {
     }
 
     await tool.execute({
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       maxChars: "1500",
     });
 
     expect(runFirecrawlScrape).toHaveBeenCalledWith({
       cfg: { test: true },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       access: "keyless",
       maxChars: 1500,
     });
     await expect(
       tool.execute({
-        url: "https://docs.openclaw.ai",
+        url: "https://docs.operator.ai",
         maxChars: "1500.5",
       }),
     ).rejects.toThrow("maxChars must be a positive integer");
@@ -828,7 +828,7 @@ describe("firecrawl tools", () => {
     } as never);
 
     const result = await tool.execute("call-1", {
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       maxChars: 1500,
       onlyMainContent: false,
       maxAgeMs: 5000,
@@ -839,7 +839,7 @@ describe("firecrawl tools", () => {
 
     expect(runFirecrawlScrape).toHaveBeenCalledWith({
       cfg: { env: "test" },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       maxChars: 1500,
       onlyMainContent: false,
@@ -852,7 +852,7 @@ describe("firecrawl tools", () => {
     expect(details.ok).toBe(true);
     expect(details.params).toEqual({
       cfg: { env: "test" },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "markdown",
       maxChars: 1500,
       onlyMainContent: false,
@@ -891,19 +891,19 @@ describe("firecrawl tools", () => {
 
     await expect(
       scrapeTool.execute("call-scrape-max-chars", {
-        url: "https://docs.openclaw.ai",
+        url: "https://docs.operator.ai",
         maxChars: 1500.5,
       }),
     ).rejects.toThrow("maxChars must be a positive integer");
     await expect(
       scrapeTool.execute("call-scrape-max-age", {
-        url: "https://docs.openclaw.ai",
+        url: "https://docs.operator.ai",
         maxAgeMs: -1,
       }),
     ).rejects.toThrow("maxAgeMs must be a non-negative integer");
     await expect(
       scrapeTool.execute("call-scrape-timeout", {
-        url: "https://docs.openclaw.ai",
+        url: "https://docs.operator.ai",
         timeoutSeconds: 22.5,
       }),
     ).rejects.toThrow("timeoutSeconds must be a positive integer");
@@ -917,14 +917,14 @@ describe("firecrawl tools", () => {
     } as never);
 
     await tool.execute("call-2", {
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "text",
       proxy: "invalid",
     });
 
     expect(runFirecrawlScrape).toHaveBeenCalledWith({
       cfg: { env: "test" },
-      url: "https://docs.openclaw.ai",
+      url: "https://docs.operator.ai",
       extractMode: "text",
       maxChars: undefined,
       onlyMainContent: undefined,
@@ -1159,7 +1159,7 @@ describe("firecrawl tools", () => {
         url: "http://127.0.0.1:8787/v2/search",
         timeoutSeconds: 5,
         apiKey: "firecrawl-key",
-        body: { query: "openclaw" },
+        body: { query: "@gabrielvfonseca/operator" },
         errorLabel: "Firecrawl Search",
       },
       async (response) => (await response.json()) as Record<string, unknown>,

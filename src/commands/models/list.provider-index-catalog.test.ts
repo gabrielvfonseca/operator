@@ -1,6 +1,6 @@
 // Model provider index catalog tests cover model list catalog indexing and provider grouping.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { loadProviderIndexCatalogRowsForList } from "./list.provider-index-catalog.js";
 
 const baseConfig = {} satisfies OperatorConfig;

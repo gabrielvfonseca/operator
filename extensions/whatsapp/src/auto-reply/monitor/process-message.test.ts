@@ -140,7 +140,10 @@ vi.mock("./runtime-api.js", async (importOriginal) => {
   };
 });
 
-import { clearInternalHooks, registerInternalHook } from "openclaw/plugin-sdk/hook-runtime";
+import {
+  clearInternalHooks,
+  registerInternalHook,
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
 import { processMessage } from "./process-message.js";
 
 // ---------------------------------------------------------------------------

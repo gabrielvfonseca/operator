@@ -1,9 +1,9 @@
 import AppKit
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
-private let dashboardManagerLogger = Logger(subsystem: "ai.openclaw", category: "DashboardManager")
+private let dashboardManagerLogger = Logger(subsystem: "ai.operator", category: "DashboardManager")
 
 @MainActor
 final class DashboardManager {
@@ -48,7 +48,7 @@ final class DashboardManager {
         return CLIInstallPrompter.managedRepairGatesOpen(
             launchAgentUsesManagedCLI: CLIInstallPrompter.launchAgentUsesManagedCLI(
                 programArguments: GatewayLaunchAgentManager.launchdConfigSnapshot()?.programArguments ?? []),
-            gatewayUpdateChannel: OpenClawConfigFile.gatewayUpdateChannel(),
+            gatewayUpdateChannel: OperatorConfigFile.gatewayUpdateChannel(),
             installPolicy: CLIInstallPolicy.storedPolicy(),
             launchAgentWriteDisabled: GatewayLaunchAgentManager.isLaunchAgentWriteDisabled())
     }
@@ -329,7 +329,7 @@ final class DashboardManager {
     }
 
     private func immediateDashboardConfig(mode: AppState.ConnectionMode) -> GatewayConnection.Config? {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let resolution = GatewayRemoteConfig.resolveTransportResolution(root: root)
         if mode == .remote,
            resolution.transport == .direct,

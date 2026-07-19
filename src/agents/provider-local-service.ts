@@ -8,7 +8,7 @@ import path from "node:path";
 import {
   clampPositiveTimerTimeoutMs,
   resolvePositiveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { ModelProviderLocalServiceConfig } from "../config/types.models.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { toErrorObject } from "../infra/errors.js";

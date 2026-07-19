@@ -5,8 +5,8 @@ Official Operator provider plugin for Arcee AI.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/arcee-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/arcee-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/arcee> for setup and configuration.
+See <https://docs.operator.ai/providers/arcee> for setup and configuration.

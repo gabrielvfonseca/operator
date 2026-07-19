@@ -3,14 +3,14 @@
  * Adds local migration guidance for known legacy profiles before falling back
  * to provider plugin doctor copy.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { isSupportedGithubCopilotDomain } from "../../plugin-sdk/github-copilot-domain.js";
 import { buildProviderAuthDoctorHintWithPlugin } from "../../plugins/provider-runtime.runtime.js";
 import type { AuthProfileStore } from "./types.js";
 
 const QWEN_PORTAL_OAUTH_MIGRATION_HINT =
-  "Legacy Qwen Portal OAuth profiles are not refreshable. Re-authenticate with a current portal token: operator onboard --auth-choice qwen-oauth.";
+  "Legacy Qwen Portal OAuth profiles are not refreshable. Re-authenticate with a current portal token: openclaw onboard --auth-choice qwen-oauth.";
 
 function hasUnsupportedGithubCopilotEnterpriseDomain(
   store: AuthProfileStore,
@@ -59,7 +59,7 @@ async function formatAuthDoctorHintWithPluginBuilder(
     normalizedProvider === "github-copilot" &&
     hasUnsupportedGithubCopilotEnterpriseDomain(params.store, params.profileId)
   ) {
-    return "This GitHub Copilot OAuth profile has an unsupported enterprise domain and can no longer refresh. Remove the legacy profile before re-authenticating with a supported host (github.com or a *.ghe.com tenant): operator models auth login --provider github-copilot --force.";
+    return "This GitHub Copilot OAuth profile has an unsupported enterprise domain and can no longer refresh. Remove the legacy profile before re-authenticating with a supported host (github.com or a *.ghe.com tenant): openclaw models auth login --provider github-copilot --force.";
   }
 
   const pluginHint = await buildPluginHint({

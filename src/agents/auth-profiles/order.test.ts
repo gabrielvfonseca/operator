@@ -7,7 +7,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resetProviderAuthAliasMapCacheForTest } from "../provider-auth-aliases.test-support.js";
 import { saveAuthProfileStore } from "./store.js";
 import type { AuthProfileStore } from "./types.js";
@@ -429,7 +429,7 @@ describe("resolveAuthProfileOrder", () => {
           refresh: "",
           expires: 0,
           oauthRef: {
-            source: "openclaw-credentials",
+            source: "operator-credentials",
             provider: "openai-codex",
             id: "00000000000000000000000000000000",
           },
@@ -680,7 +680,7 @@ describe("resolveAuthProfileOrder", () => {
   });
 
   it("marks profile success with one canonical last-good and usage update", async () => {
-    const agentDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-auth-profile-success-"));
+    const agentDir = await mkdtemp(path.join(os.tmpdir(), "operator-auth-profile-success-"));
     try {
       const store: AuthProfileStore = {
         version: 1,

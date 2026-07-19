@@ -9,12 +9,12 @@ import { clearTimeout as clearNodeTimeout, setTimeout as setNodeTimeout } from "
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   normalizeTrimmedStringList,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveAuthProfileDatabaseFilePaths } from "../agents/auth-profiles/sqlite.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
@@ -417,7 +417,7 @@ export async function collectSandboxBrowserHashLabelFindings(params?: {
       detail:
         `Containers: ${missingHash.join(", ")}. ` +
         "These browser containers predate hash-based drift checks and may miss security remediations until recreated.",
-      remediation: `${formatCliCommand("operator sandbox recreate --browser --all")} (add --force to skip prompt).`,
+      remediation: `${formatCliCommand("openclaw sandbox recreate --browser --all")} (add --force to skip prompt).`,
     });
   }
 
@@ -429,7 +429,7 @@ export async function collectSandboxBrowserHashLabelFindings(params?: {
       detail:
         `Containers: ${staleEpoch.join(", ")}. ` +
         `Expected operator.browserConfigEpoch=${browserHashEpoch}.`,
-      remediation: `${formatCliCommand("operator sandbox recreate --browser --all")} (add --force to skip prompt).`,
+      remediation: `${formatCliCommand("openclaw sandbox recreate --browser --all")} (add --force to skip prompt).`,
     });
   }
 
@@ -442,7 +442,7 @@ export async function collectSandboxBrowserHashLabelFindings(params?: {
         `Containers: ${nonLoopbackPublished.join(", ")}. ` +
         "Sandbox browser observer/control ports should stay loopback-only to avoid unintended remote access.",
       remediation:
-        `${formatCliCommand("operator sandbox recreate --browser --all")} (add --force to skip prompt), ` +
+        `${formatCliCommand("openclaw sandbox recreate --browser --all")} (add --force to skip prompt), ` +
         "then verify published ports are bound to 127.0.0.1.",
     });
   }
@@ -742,7 +742,7 @@ export async function collectPluginsCodeSafetyFindings(params: {
         title: "Plugin extensions directory scan failed",
         detail: `Static code scan could not list extensions directory: ${String(err)}`,
         remediation:
-          "Check file permissions and plugin layout, then rerun `operator security audit --deep`.",
+          "Check file permissions and plugin layout, then rerun `openclaw security audit --deep`.",
       });
     },
   });
@@ -811,7 +811,7 @@ export async function collectPluginsCodeSafetyFindings(params: {
         title: `Plugin "${pluginName}" code scan failed`,
         detail: `Static code scan could not complete: ${String(err)}`,
         remediation:
-          "Check file permissions and plugin layout, then rerun `operator security audit --deep`.",
+          "Check file permissions and plugin layout, then rerun `openclaw security audit --deep`.",
       });
       return null;
     });
@@ -894,7 +894,7 @@ export async function collectInstalledSkillsCodeSafetyFindings(params: {
           title: `Skill "${skillName}" code scan failed`,
           detail: `Static code scan could not complete for ${skillDir}: ${String(err)}`,
           remediation:
-            "Check file permissions and skill layout, then rerun `operator security audit --deep`.",
+            "Check file permissions and skill layout, then rerun `openclaw security audit --deep`.",
         });
         return null;
       });

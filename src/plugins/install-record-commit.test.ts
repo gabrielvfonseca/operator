@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -48,7 +48,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     vi.clearAllMocks();
     mocks.loadInstalledPluginIndexInstallRecords.mockResolvedValue({});
     mocks.replaceConfigFile.mockImplementation(async (params: { nextConfig: OperatorConfig }) => ({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       previousHash: null,
       snapshot: {} as never,
       nextConfig: params.nextConfig,
@@ -279,7 +279,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("marks replaced managed npm generations when install records are committed", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const previousInstallPath = path.join(
       stateDir,
       "npm",
@@ -307,14 +307,14 @@ describe("commitConfigWithPendingPluginInstalls", () => {
           previousInstallRecords: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@1.0.0",
+              spec: "@gabrielvfonseca/codex@1.0.0",
               installPath: previousInstallPath,
             },
           },
           nextInstallRecords: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@2.0.0",
+              spec: "@gabrielvfonseca/codex@2.0.0",
               installPath: nextInstallPath,
             },
           },
@@ -329,8 +329,8 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("does not mark arbitrary npm paths outside the managed npm root", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
-    const outsideRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-outside-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
+    const outsideRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-outside-"));
     const previousInstallPath = path.join(
       outsideRoot,
       "npm",
@@ -358,14 +358,14 @@ describe("commitConfigWithPendingPluginInstalls", () => {
           previousInstallRecords: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@1.0.0",
+              spec: "@gabrielvfonseca/codex@1.0.0",
               installPath: previousInstallPath,
             },
           },
           nextInstallRecords: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@2.0.0",
+              spec: "@gabrielvfonseca/codex@2.0.0",
               installPath: nextInstallPath,
             },
           },
@@ -381,7 +381,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("marks replaced npm generations across install record id migrations", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const previousInstallPath = path.join(
       stateDir,
       "npm",
@@ -409,14 +409,14 @@ describe("commitConfigWithPendingPluginInstalls", () => {
           previousInstallRecords: {
             "voice-call": {
               source: "npm",
-              spec: "@operator/voice-call@1.0.0",
+              spec: "@gabrielvfonseca/voice-call@1.0.0",
               installPath: previousInstallPath,
             },
           },
           nextInstallRecords: {
-            "@operator/voice-call": {
+            "@gabrielvfonseca/voice-call": {
               source: "npm",
-              spec: "@operator/voice-call@2.0.0",
+              spec: "@gabrielvfonseca/voice-call@2.0.0",
               installPath: nextInstallPath,
             },
           },
@@ -431,7 +431,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("removes newly retained npm markers when the config commit rolls back", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const previousInstallPath = path.join(
       stateDir,
       "npm",
@@ -461,14 +461,14 @@ describe("commitConfigWithPendingPluginInstalls", () => {
             previousInstallRecords: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@1.0.0",
+                spec: "@gabrielvfonseca/codex@1.0.0",
                 installPath: previousInstallPath,
               },
             },
             nextInstallRecords: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@2.0.0",
+                spec: "@gabrielvfonseca/codex@2.0.0",
                 installPath: nextInstallPath,
               },
             },
@@ -484,7 +484,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("removes earlier retained markers when a later marker creation fails", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const firstPreviousInstallPath = path.join(
       stateDir,
       "npm",
@@ -526,7 +526,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
     fs.mkdirSync(secondPreviousInstallPath, { recursive: true });
     fs.mkdirSync(secondNextInstallPath, { recursive: true });
     fs.writeFileSync(
-      path.join(stateDir, "npm", "projects", "voice-call-v1", ".openclaw-retained-npm-installs"),
+      path.join(stateDir, "npm", "projects", "voice-call-v1", ".operator-retained-npm-installs"),
       "not a directory",
       "utf8",
     );
@@ -538,24 +538,24 @@ describe("commitConfigWithPendingPluginInstalls", () => {
             previousInstallRecords: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@1.0.0",
+                spec: "@gabrielvfonseca/codex@1.0.0",
                 installPath: firstPreviousInstallPath,
               },
               "voice-call": {
                 source: "npm",
-                spec: "@operator/voice-call@1.0.0",
+                spec: "@gabrielvfonseca/voice-call@1.0.0",
                 installPath: secondPreviousInstallPath,
               },
             },
             nextInstallRecords: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@2.0.0",
+                spec: "@gabrielvfonseca/codex@2.0.0",
                 installPath: firstNextInstallPath,
               },
               "voice-call": {
                 source: "npm",
-                spec: "@operator/voice-call@2.0.0",
+                spec: "@gabrielvfonseca/voice-call@2.0.0",
                 installPath: secondNextInstallPath,
               },
             },
@@ -571,7 +571,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("clears retained npm markers for active committed install records", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const installPath = path.join(
       stateDir,
       "npm",
@@ -596,7 +596,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
           nextInstallRecords: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@2.0.0",
+              spec: "@gabrielvfonseca/codex@2.0.0",
               installPath,
             },
           },
@@ -611,7 +611,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
   });
 
   it("restores cleared active npm markers when the config commit rolls back", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-record-commit-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-record-commit-"));
     const installPath = path.join(
       stateDir,
       "npm",
@@ -638,7 +638,7 @@ describe("commitConfigWithPendingPluginInstalls", () => {
             nextInstallRecords: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@2.0.0",
+                spec: "@gabrielvfonseca/codex@2.0.0",
                 installPath,
               },
             },

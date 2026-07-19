@@ -1,8 +1,8 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.gateway.GatewayRegistryEntry
-import ai.openclaw.app.gateway.GatewayRegistryEntryKind
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayRegistryEntry
+import ai.operator.app.gateway.GatewayRegistryEntryKind
 import android.content.Context
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -24,7 +24,7 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun setNotificationForwardingQuietHours_rejectsInvalidDraftsWithoutMutatingStoredValues() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
@@ -57,7 +57,7 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun setNotificationForwardingQuietHours_persistsValidDraftsAndEnabledState() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
@@ -78,7 +78,7 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun setNotificationForwardingQuietHours_disablesWithoutRevalidatingDrafts() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
@@ -106,7 +106,7 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun getNotificationForwardingPolicy_readsLatestQuietHoursImmediately() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
@@ -118,7 +118,7 @@ class SecurePrefsNotificationForwardingTest {
       ),
     )
 
-    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.openclaw.app")
+    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.operator.app")
 
     assertTrue(policy.quietHoursEnabled)
     assertEquals("21:15", policy.quietStart)
@@ -128,11 +128,11 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun notificationForwarding_defaultsDisabledForSaferPosture() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
-    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.openclaw.app")
+    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.operator.app")
 
     assertFalse(prefs.notificationForwardingEnabled.value)
     assertFalse(policy.enabled)
@@ -142,16 +142,16 @@ class SecurePrefsNotificationForwardingTest {
   @Test
   fun getNotificationForwardingPolicy_blocksOwnedPackagesInAllowlistMode() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("operator.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().commit()
 
     val prefs = testPrefs(context)
     prefs.setNotificationForwardingMode(NotificationPackageFilterMode.Allowlist)
-    prefs.setNotificationForwardingPackages(listOf("ai.openclaw.app", "com.whatsapp", "com.other.app"))
+    prefs.setNotificationForwardingPackages(listOf("ai.operator.app", "com.whatsapp", "com.other.app"))
 
-    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.openclaw.app")
+    val policy = prefs.getNotificationForwardingPolicy(appPackageName = "ai.operator.app")
 
-    assertFalse(policy.allowsPackage("ai.openclaw.app"))
+    assertFalse(policy.allowsPackage("ai.operator.app"))
     assertFalse(policy.allowsPackage("com.whatsapp"))
     assertTrue(policy.allowsPackage("com.other.app"))
   }
@@ -160,7 +160,7 @@ class SecurePrefsNotificationForwardingTest {
   fun notificationSessionKeyFollowsActiveGateway() {
     val context = RuntimeEnvironment.getApplication()
     context
-      .getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+      .getSharedPreferences("operator.node", Context.MODE_PRIVATE)
       .edit()
       .clear()
       .commit()
@@ -186,8 +186,8 @@ class SecurePrefsNotificationForwardingTest {
     prefs.setNotificationForwardingSessionKey("session-b")
 
     prefs.gatewayRegistry.setActive(gatewayA.stableId)
-    assertEquals("session-a", prefs.getNotificationForwardingPolicy("ai.openclaw.app").sessionKey)
+    assertEquals("session-a", prefs.getNotificationForwardingPolicy("ai.operator.app").sessionKey)
     prefs.gatewayRegistry.setActive(gatewayB.stableId)
-    assertEquals("session-b", prefs.getNotificationForwardingPolicy("ai.openclaw.app").sessionKey)
+    assertEquals("session-b", prefs.getNotificationForwardingPolicy("ai.operator.app").sessionKey)
   }
 }

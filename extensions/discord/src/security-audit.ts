@@ -1,12 +1,15 @@
 // Discord plugin module implements security audit behavior.
-import { coerceNativeSetting, normalizeAllowFromList } from "openclaw/plugin-sdk/channel-policy";
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
+import {
+  coerceNativeSetting,
+  normalizeAllowFromList,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { readChannelAllowFromStore } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
 import {
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "openclaw/plugin-sdk/native-command-config-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-config-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { ResolvedDiscordAccount } from "./accounts.js";
 import type { OperatorConfig } from "./runtime-api.js";
 import { isDiscordMutableAllowEntry } from "./security-doctor.js";
@@ -71,7 +74,7 @@ export async function collectDiscordSecurityAuditFindings(params: {
   addDiscordNameBasedEntries({
     target: discordNameBasedAllowEntries,
     values: storeAllowFrom,
-    source: "~/.openclaw/credentials/discord-allowFrom.json",
+    source: "~/.operator/credentials/discord-allowFrom.json",
   });
 
   const guildEntries = (discordCfg.guilds as Record<string, unknown> | undefined) ?? {};

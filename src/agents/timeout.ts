@@ -6,7 +6,7 @@
 import {
   clampTimerTimeoutMs,
   MAX_TIMER_TIMEOUT_MS,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 const DEFAULT_AGENT_TIMEOUT_SECONDS = 48 * 60 * 60;

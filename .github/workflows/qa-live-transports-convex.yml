@@ -122,10 +122,10 @@ concurrency:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   NODE_VERSION: "24.x"
-  OPENCLAW_CI_OPENAI_MODEL: ${{ vars.OPENCLAW_CI_OPENAI_MODEL || 'openai/gpt-5.6-luna' }}
-  OPENCLAW_CI_OPENAI_FALLBACK_MODEL: ${{ vars.OPENCLAW_CI_OPENAI_FALLBACK_MODEL || 'openai/gpt-5.4' }}
-  OPENCLAW_BUILD_PRIVATE_QA: "1"
-  OPENCLAW_ENABLE_PRIVATE_QA_CLI: "1"
+  OPERATOR_CI_OPENAI_MODEL: ${{ vars.OPERATOR_CI_OPENAI_MODEL || 'openai/gpt-5.6-luna' }}
+  OPERATOR_CI_OPENAI_FALLBACK_MODEL: ${{ vars.OPERATOR_CI_OPENAI_FALLBACK_MODEL || 'openai/gpt-5.4' }}
+  OPERATOR_BUILD_PRIVATE_QA: "1"
+  OPERATOR_ENABLE_PRIVATE_QA_CLI: "1"
 
 jobs:
   authorize_actor:
@@ -251,13 +251,13 @@ jobs:
     timeout-minutes: 30
     env:
       QA_PARITY_CONCURRENCY: "1"
-      OPENCLAW_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
+      OPERATOR_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
       OPENAI_API_KEY: ""
       ANTHROPIC_API_KEY: ""
-      OPENCLAW_LIVE_OPENAI_KEY: ""
-      OPENCLAW_LIVE_ANTHROPIC_KEY: ""
-      OPENCLAW_LIVE_GEMINI_KEY: ""
-      OPENCLAW_LIVE_SETUP_TOKEN_VALUE: ""
+      OPERATOR_LIVE_OPENAI_KEY: ""
+      OPERATOR_LIVE_ANTHROPIC_KEY: ""
+      OPERATOR_LIVE_GEMINI_KEY: ""
+      OPERATOR_LIVE_SETUP_TOKEN_VALUE: ""
     steps:
       - name: Checkout selected ref
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -279,17 +279,17 @@ jobs:
 
       - name: Run OpenAI candidate lane
         run: |
-          pnpm openclaw qa suite \
+          pnpm operator qa suite \
             --provider-mode mock-openai \
             --parity-pack agentic \
             --concurrency "${QA_PARITY_CONCURRENCY}" \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
             --alt-model openai/gpt-5.6-luna-alt \
             --output-dir .artifacts/qa-e2e/openai-candidate
 
       - name: Run Opus 4.8 lane
         run: |
-          pnpm openclaw qa suite \
+          pnpm operator qa suite \
             --provider-mode mock-openai \
             --parity-pack agentic \
             --concurrency "${QA_PARITY_CONCURRENCY}" \
@@ -299,11 +299,11 @@ jobs:
 
       - name: Generate parity report
         run: |
-          pnpm openclaw qa parity-report \
+          pnpm operator qa parity-report \
             --repo-root . \
             --candidate-summary .artifacts/qa-e2e/openai-candidate/qa-suite-summary.json \
             --baseline-summary .artifacts/qa-e2e/anthropic-baseline/qa-suite-summary.json \
-            --candidate-label "${OPENCLAW_CI_OPENAI_MODEL}" \
+            --candidate-label "${OPERATOR_CI_OPENAI_MODEL}" \
             --baseline-label anthropic/claude-opus-4-8 \
             --output-dir .artifacts/qa-e2e/parity
 
@@ -325,8 +325,8 @@ jobs:
     environment: qa-live-shared
     env:
       QA_PARITY_CONCURRENCY: "1"
-      OPENCLAW_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
-      OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
+      OPERATOR_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
+      OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
     steps:
       - name: Checkout selected ref
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -363,7 +363,7 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_LIVE_OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPERATOR_LIVE_OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           set -euo pipefail
 
@@ -372,14 +372,14 @@ jobs:
           mkdir -p "${output_dir}"
           printf 'Runtime token-efficiency lane started.\n' > "${output_dir}/runtime-lane-started.txt"
 
-          pnpm openclaw qa suite \
+          pnpm operator qa suite \
             --repo-root . \
             --provider-mode live-frontier \
             --runtime-parity-tier standard \
             --runtime-parity-tier live-only \
             --concurrency "${QA_PARITY_CONCURRENCY}" \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --runtime-pair openclaw,codex \
             --fast \
             --allow-failures \
@@ -391,7 +391,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          pnpm openclaw qa parity-report \
+          pnpm operator qa parity-report \
             --repo-root . \
             --runtime-axis \
             --token-efficiency \
@@ -455,11 +455,11 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ (inputs.expected_sha != '' && inputs.matrix_provider_mode == 'live-frontier' || inputs.expected_sha == '' && github.event_name != 'workflow_dispatch') && secrets.OPENAI_API_KEY || '' }}
           INPUT_MATRIX_PROFILE: ${{ inputs.expected_sha != '' && inputs.matrix_profile || github.event_name == 'workflow_dispatch' && inputs.matrix_profile || 'release' }}
-          MATRIX_ALTERNATE_MODEL: ${{ inputs.expected_sha != '' && inputs.matrix_alternate_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna-alt' || env.OPENCLAW_CI_OPENAI_FALLBACK_MODEL }}
+          MATRIX_ALTERNATE_MODEL: ${{ inputs.expected_sha != '' && inputs.matrix_alternate_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna-alt' || env.OPERATOR_CI_OPENAI_FALLBACK_MODEL }}
           MATRIX_ATTEMPTS: ${{ inputs.expected_sha != '' && inputs.matrix_attempts || 1 }}
-          MATRIX_PRIMARY_MODEL: ${{ inputs.expected_sha != '' && inputs.matrix_primary_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna' || env.OPENCLAW_CI_OPENAI_MODEL }}
+          MATRIX_PRIMARY_MODEL: ${{ inputs.expected_sha != '' && inputs.matrix_primary_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna' || env.OPERATOR_CI_OPENAI_MODEL }}
           MATRIX_PROVIDER_MODE: ${{ inputs.expected_sha != '' && inputs.matrix_provider_mode || github.event_name == 'workflow_dispatch' && 'mock-openai' || 'live-frontier' }}
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
         run: |
           set -euo pipefail
 
@@ -485,7 +485,7 @@ jobs:
             printf '%s\n' "${requested}"
           }
 
-          matrix_help="$(pnpm openclaw qa matrix --help 2>&1)"
+          matrix_help="$(pnpm operator qa matrix --help 2>&1)"
           matrix_profile="$(resolve_matrix_profile "${INPUT_MATRIX_PROFILE}" "${matrix_help}")"
           if [[ "${matrix_profile}" != "${INPUT_MATRIX_PROFILE}" ]]; then
             echo "Selected target does not support Matrix profile '${INPUT_MATRIX_PROFILE}'; using '${matrix_profile}'."
@@ -496,7 +496,7 @@ jobs:
 
           for attempt in $(seq 1 "${MATRIX_ATTEMPTS}"); do
             attempt_output_dir="${output_dir}/attempt-${attempt}"
-            if pnpm openclaw qa matrix \
+            if pnpm operator qa matrix \
               --repo-root . \
               --output-dir "${attempt_output_dir}" \
               --provider-mode "${MATRIX_PROVIDER_MODE}" \
@@ -600,19 +600,19 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
         run: |
           set -euo pipefail
 
           output_dir=".artifacts/qa-e2e/matrix-live-${{ matrix.profile }}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm openclaw qa matrix \
+          pnpm operator qa matrix \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --profile "${{ matrix.profile }}" \
             --fast
 
@@ -650,8 +650,8 @@ jobs:
         name: Validate required QA credential env
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}
-          OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}
+          OPERATOR_QA_CONVEX_SITE_URL: ${{ secrets.OPERATOR_QA_CONVEX_SITE_URL }}
+          OPERATOR_QA_CONVEX_SECRET_CI: ${{ secrets.OPERATOR_QA_CONVEX_SECRET_CI }}
         shell: bash
         run: |
           set -euo pipefail
@@ -665,8 +665,8 @@ jobs:
           }
 
           require_var OPENAI_API_KEY
-          require_var OPENCLAW_QA_CONVEX_SITE_URL
-          require_var OPENCLAW_QA_CONVEX_SECRET_CI
+          require_var OPERATOR_QA_CONVEX_SITE_URL
+          require_var OPERATOR_QA_CONVEX_SECRET_CI
 
       - name: Build private QA runtime
         env:
@@ -678,11 +678,11 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}
-          OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}
-          OPENCLAW_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
-          OPENCLAW_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
+          OPERATOR_QA_CONVEX_SITE_URL: ${{ secrets.OPERATOR_QA_CONVEX_SITE_URL }}
+          OPERATOR_QA_CONVEX_SECRET_CI: ${{ secrets.OPERATOR_QA_CONVEX_SECRET_CI }}
+          OPERATOR_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
           INPUT_SCENARIO: ${{ github.event_name == 'workflow_dispatch' && inputs.scenario || '' }}
         run: |
           set -euo pipefail
@@ -702,12 +702,12 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm openclaw qa telegram \
+          pnpm operator qa telegram \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --fast \
             --credential-source convex \
             --credential-role ci \
@@ -754,10 +754,10 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}
-          OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}
-          OPENCLAW_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_CONVEX_SITE_URL: ${{ secrets.OPERATOR_QA_CONVEX_SITE_URL }}
+          OPERATOR_QA_CONVEX_SECRET_CI: ${{ secrets.OPERATOR_QA_CONVEX_SECRET_CI }}
+          OPERATOR_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
           INPUT_SCENARIO: ${{ github.event_name == 'workflow_dispatch' && inputs.discord_scenario || '' }}
         run: |
           set -euo pipefail
@@ -777,12 +777,12 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm openclaw qa discord \
+          pnpm operator qa discord \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
             --model openai/gpt-5.6-luna \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --fast \
             --credential-source convex \
             --credential-role ci \
@@ -832,10 +832,10 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}
-          OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}
-          OPENCLAW_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_CONVEX_SITE_URL: ${{ secrets.OPERATOR_QA_CONVEX_SITE_URL }}
+          OPERATOR_QA_CONVEX_SECRET_CI: ${{ secrets.OPERATOR_QA_CONVEX_SECRET_CI }}
+          OPERATOR_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
           INPUT_SCENARIO: ${{ github.event_name == 'workflow_dispatch' && inputs.whatsapp_scenario || '' }}
         run: |
           set -euo pipefail
@@ -855,12 +855,12 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm openclaw qa whatsapp \
+          pnpm operator qa whatsapp \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --fast \
             --credential-source convex \
             --credential-role ci \
@@ -907,11 +907,11 @@ jobs:
         shell: bash
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}
-          OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}
-          OPENCLAW_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
-          OPENCLAW_QA_REDACT_PUBLIC_METADATA: "1"
-          OPENCLAW_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
+          OPERATOR_QA_CONVEX_SITE_URL: ${{ secrets.OPERATOR_QA_CONVEX_SITE_URL }}
+          OPERATOR_QA_CONVEX_SECRET_CI: ${{ secrets.OPERATOR_QA_CONVEX_SECRET_CI }}
+          OPERATOR_QA_CREDENTIAL_ACQUIRE_TIMEOUT_MS: "1800000"
+          OPERATOR_QA_REDACT_PUBLIC_METADATA: "1"
+          OPERATOR_QA_TRANSPORT_READY_TIMEOUT_MS: "180000"
           INPUT_SCENARIO: ${{ github.event_name == 'workflow_dispatch' && inputs.slack_scenario || '' }}
         run: |
           set -euo pipefail
@@ -931,12 +931,12 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm openclaw qa slack \
+          pnpm operator qa slack \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
-            --model "${OPENCLAW_CI_OPENAI_MODEL}" \
-            --alt-model "${OPENCLAW_CI_OPENAI_FALLBACK_MODEL}" \
+            --model "${OPERATOR_CI_OPENAI_MODEL}" \
+            --alt-model "${OPERATOR_CI_OPENAI_FALLBACK_MODEL}" \
             --fast \
             --credential-source convex \
             --credential-role ci \

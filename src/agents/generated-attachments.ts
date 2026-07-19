@@ -1,9 +1,9 @@
 /**
  * Formats generated attachment references for agent-visible output.
  */
-import { basenameFromAnyPath } from "@operator/media-core/file-name";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { basenameFromAnyPath } from "@gabrielvfonseca/media-core/file-name";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 // Shared helpers for generated media/file attachments returned by tools or
 // subagents. They normalize paths/URLs for prompt text and delivery routing.

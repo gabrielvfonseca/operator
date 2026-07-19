@@ -50,10 +50,10 @@ type InstallOperatorPluginSdkNativeResolverOptions = {
 
 const moduleWithResolver = Module as ModuleWithResolver;
 const nodeResolveFilenameProperty = "_resolveFilename" as const;
-const PLUGIN_SDK_PACKAGE_PREFIXES = ["operator/plugin-sdk", "@operator/plugin-sdk"] as const;
+const PLUGIN_SDK_PACKAGE_PREFIXES = ["openclaw/plugin-sdk", "@gabrielvfonseca/plugin-sdk"] as const;
 const INTERNAL_CORE_PACKAGE_ALIASES = [
   {
-    packageName: "@operator/markdown-core",
+    packageName: "@gabrielvfonseca/markdown-core",
     packageDir: "markdown-core",
     subpaths: [
       ["", "index.ts"],
@@ -71,7 +71,7 @@ const INTERNAL_CORE_PACKAGE_ALIASES = [
     // Mirrors packages/ai/package.json exports; dist file names do not follow
     // the src layout (dist/diagnostics.mjs <- src/utils/diagnostics.ts), so the
     // generic export-map derivation cannot be used here.
-    packageName: "@operator/ai",
+    packageName: "@gabrielvfonseca/ai",
     packageDir: "ai",
     subpaths: [
       ["", "index.ts"],
@@ -88,7 +88,7 @@ const INTERNAL_CORE_PACKAGE_ALIASES = [
     ],
   },
   {
-    packageName: "@operator/media-core",
+    packageName: "@gabrielvfonseca/media-core",
     packageDir: "media-core",
     subpaths: [
       ["", "index.ts"],
@@ -104,7 +104,7 @@ const INTERNAL_CORE_PACKAGE_ALIASES = [
     ],
   },
   {
-    packageName: "@operator/llm-core",
+    packageName: "@gabrielvfonseca/llm-core",
     packageDir: "llm-core",
     subpaths: [
       ["", "index.ts"],
@@ -191,10 +191,10 @@ function resolveLoaderPackageRootFromModulePath(modulePath: string): string {
           name?: unknown;
         };
         if (
-          packageJson.name === "operator" ||
+          packageJson.name === "@gabrielvfonseca/operator" ||
           (typeof packageJson.bin === "object" &&
             packageJson.bin !== null &&
-            typeof (packageJson.bin as { operator?: unknown }).operator === "string")
+            typeof (packageJson.bin as { openclaw?: unknown }).operator === "string")
         ) {
           return cursor;
         }
@@ -317,11 +317,11 @@ function listInternalCorePackageNativeAliases(
   const internalCorePackageAliases = [
     ...INTERNAL_CORE_PACKAGE_ALIASES,
     ...["normalization-core", "acp-core"].map((packageDir) => ({
-      packageName: `@operator/${packageDir}`,
+      packageName: `@gabrielvfonseca/${packageDir}`,
       packageDir,
       subpaths: listWorkspacePackageExportAliasEntries({
         packageRoot,
-        packageName: `@operator/${packageDir}`,
+        packageName: `@gabrielvfonseca/${packageDir}`,
         packageDir,
       }).map((entry) => [entry.subpath, entry.srcFile] as const),
     })),

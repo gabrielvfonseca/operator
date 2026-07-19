@@ -28,19 +28,22 @@ describe("resolveSandboxScript", () => {
     const repo = mkTmp(prefix);
     fs.mkdirSync(path.join(repo, "scripts"), { recursive: true });
     fs.writeFileSync(path.join(repo, scriptRel), "#!/bin/sh\n");
-    fs.writeFileSync(path.join(repo, "package.json"), JSON.stringify({ name: "openclaw" }));
+    fs.writeFileSync(
+      path.join(repo, "package.json"),
+      JSON.stringify({ name: "@gabrielvfonseca/operator" }),
+    );
     return repo;
   }
 
   it("follows a symlinked launcher to find scripts/ in the real repo", () => {
     // Repo checkout that actually contains scripts/sandbox-setup.sh ...
     const repo = mkRepo("ocsbx-repo-");
-    const entry = path.join(repo, "openclaw.mjs");
+    const entry = path.join(repo, "operator.mjs");
     fs.writeFileSync(entry, "");
 
     // ... reached only via a symlinked launcher in an unrelated bin dir (the npm/pnpm global case).
     const binDir = mkTmp("ocsbx-bin-");
-    const launcher = path.join(binDir, "openclaw");
+    const launcher = path.join(binDir, "@gabrielvfonseca/operator");
     fs.symlinkSync(entry, launcher);
 
     const result = resolveSandboxScript(scriptRel, { argv1: launcher, cwd: binDir });
@@ -53,7 +56,7 @@ describe("resolveSandboxScript", () => {
 
   it("still resolves a script relative to a non-symlinked launcher dir", () => {
     const repo = mkRepo("ocsbx-direct-");
-    const entry = path.join(repo, "openclaw.mjs");
+    const entry = path.join(repo, "operator.mjs");
     fs.writeFileSync(entry, "");
 
     const result = resolveSandboxScript(scriptRel, { argv1: entry, cwd: os.tmpdir() });
@@ -63,7 +66,7 @@ describe("resolveSandboxScript", () => {
 
   it("returns null when the script is unreachable from cwd or the launcher", () => {
     const binDir = mkTmp("ocsbx-none-");
-    const launcher = path.join(binDir, "openclaw");
+    const launcher = path.join(binDir, "@gabrielvfonseca/operator");
     fs.writeFileSync(launcher, "");
 
     expect(
@@ -91,8 +94,11 @@ describe("resolveSandboxScript", () => {
     // scripts/sandbox-setup.sh, because the npm files allowlist drops scripts/. It resolves from
     // argv1 before cwd, so stopping at the first root would miss the source checkout below.
     const installed = mkTmp("ocsbx-installed-");
-    fs.writeFileSync(path.join(installed, "package.json"), JSON.stringify({ name: "openclaw" }));
-    const entry = path.join(installed, "openclaw.mjs");
+    fs.writeFileSync(
+      path.join(installed, "package.json"),
+      JSON.stringify({ name: "@gabrielvfonseca/operator" }),
+    );
+    const entry = path.join(installed, "operator.mjs");
     fs.writeFileSync(entry, "");
 
     // Valid source checkout (cwd) that does contain the script.

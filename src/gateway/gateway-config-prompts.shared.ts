@@ -1,8 +1,8 @@
 // Gateway setup prompt shared constants.
 // Provides Tailscale copy and Control UI origin updates for CLI setup flows.
-import { isIpv6Address, parseCanonicalIpAddress } from "@operator/net-policy/ip";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { isIpv6Address, parseCanonicalIpAddress } from "@gabrielvfonseca/net-policy/ip";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getTailnetHostname } from "../infra/tailscale.js";
 

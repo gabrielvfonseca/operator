@@ -1,9 +1,9 @@
 // Manages APNs registration state and direct/relay push sending.
 import { createHash, createPrivateKey, sign as signJwt } from "node:crypto";
 import fs from "node:fs/promises";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { DeviceIdentity } from "./device-identity.js";
 import { formatErrorMessage, toErrorObject } from "./errors.js";
 import {

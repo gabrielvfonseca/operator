@@ -10,12 +10,18 @@
  * Separated from gateway.ts for testability and to keep handleMessage thin.
  */
 
-import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import { buildChannelInboundEventContext } from "openclaw/plugin-sdk/channel-inbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "openclaw/plugin-sdk/reply-chunking";
-import type { FinalizedMsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import {
+  resolveAgentWorkspaceDir,
+  resolveDefaultAgentId,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { buildChannelInboundEventContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  isSilentReplyPayloadText,
+  SILENT_REPLY_TOKEN,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import type { FinalizedMsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { createQQBotMarkdownChunker } from "../messaging/markdown-table-chunking.js";
 import {
   parseAndSendMediaTags,

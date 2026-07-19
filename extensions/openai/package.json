@@ -1,5 +1,5 @@
 {
-  "name": "@operator/openai-provider",
+  "name": "@gabrielvfonseca/openai-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator OpenAI provider plugins",
@@ -8,9 +8,9 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

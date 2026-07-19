@@ -1,11 +1,11 @@
 /** Reads ACP session status from the runtime and reconciles persisted identity metadata. */
-import { resolveSessionIdentityFromMeta } from "@operator/acp-core/runtime/session-identity";
+import { resolveSessionIdentityFromMeta } from "@gabrielvfonseca/acp-core/runtime/session-identity";
 import type {
   AcpRuntime,
   AcpRuntimeCapabilities,
   AcpRuntimeHandle,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { withAcpRuntimeErrorBoundary } from "../runtime/errors.js";
 import type {

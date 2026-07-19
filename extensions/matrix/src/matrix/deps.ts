@@ -2,9 +2,9 @@
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { runCommandWithTimeout } from "openclaw/plugin-sdk/process-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { runCommandWithTimeout } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
 
 const REQUIRED_MATRIX_PACKAGES = [
   "matrix-js-sdk",

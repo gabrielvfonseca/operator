@@ -1,6 +1,6 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import type { CodexThread } from "./app-server/protocol.js";
 import { createCodexCliNodeConversationBindingData } from "./conversation-binding-data.js";
 import { CODEX_CLI_SESSION_RESUME_COMMAND } from "./node-cli-sessions.js";

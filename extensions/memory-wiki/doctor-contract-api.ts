@@ -1,12 +1,12 @@
 // Memory Wiki doctor contract migrates shipped source-sync state.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   archiveLegacyStateSource,
   legacyStateFileExists,
   type PluginDoctorStateMigration,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import {
   resolveMemoryWikiAgentConfig,
   resolveMemoryWikiConfig,
@@ -14,7 +14,7 @@ import {
   type MemoryWikiPluginConfig,
 } from "./src/config.js";
 export { legacyConfigRules, normalizeCompatibilityConfig } from "./src/config-compat.js";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   countMemoryWikiImportRunStateRows,
   createMemoryWikiImportRunStateStore,

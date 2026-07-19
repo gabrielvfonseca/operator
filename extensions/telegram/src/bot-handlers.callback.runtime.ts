@@ -1,6 +1,6 @@
 // Telegram callback-query routing across approvals, plugin actions, selects, commands, and models.
-import { parseExecApprovalCommandText } from "openclaw/plugin-sdk/approval-reply-runtime";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import { parseExecApprovalCommandText } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import {
   hasTelegramApprovalCallbackPrefix,

@@ -9,10 +9,10 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
-import { isPrivateNetworkOptInEnabled } from "openclaw/plugin-sdk/ssrf-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { isPrivateNetworkOptInEnabled } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { ResolvedMattermostAccount } from "../mattermost/accounts.js";
 import { getMattermostRuntime } from "../runtime.js";
 import {

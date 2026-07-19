@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { executeSqliteQuerySync } from "../../infra/kysely-sync.js";
 import {
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import type { TranscriptEvent } from "./session-accessor.sqlite-contract.js";
 import {
   collectSessionEntryLookupKeys,

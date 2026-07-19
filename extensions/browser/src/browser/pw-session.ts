@@ -4,13 +4,13 @@
  * Manages CDP-backed Playwright connections, page lookup, observed dialogs,
  * console/network/page state, role refs, and safe navigation handling.
  */
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   isFutureDateTimestampMs,
   parseFiniteNumber,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type {
   Browser,
   BrowserContext,

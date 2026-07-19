@@ -1,19 +1,19 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.protocol.OpenClawCalendarCommand
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawCanvasA2UICommand
-import ai.openclaw.app.protocol.OpenClawCanvasCommand
-import ai.openclaw.app.protocol.OpenClawContactsCommand
-import ai.openclaw.app.protocol.OpenClawDeviceCommand
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawNotificationsCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
-import ai.openclaw.app.protocol.OpenClawSystemCommand
-import ai.openclaw.app.protocol.OpenClawTalkCommand
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.protocol.OperatorCalendarCommand
+import ai.operator.app.protocol.OperatorCallLogCommand
+import ai.operator.app.protocol.OperatorCameraCommand
+import ai.operator.app.protocol.OperatorCanvasA2UICommand
+import ai.operator.app.protocol.OperatorCanvasCommand
+import ai.operator.app.protocol.OperatorContactsCommand
+import ai.operator.app.protocol.OperatorDeviceCommand
+import ai.operator.app.protocol.OperatorLocationCommand
+import ai.operator.app.protocol.OperatorMotionCommand
+import ai.operator.app.protocol.OperatorNotificationsCommand
+import ai.operator.app.protocol.OperatorSmsCommand
+import ai.operator.app.protocol.OperatorSystemCommand
+import ai.operator.app.protocol.OperatorTalkCommand
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -116,7 +116,7 @@ class InvokeDispatcher(
     }
     availabilityError(spec.availability)?.let { return it }
 
-    if (command.startsWith(OpenClawCanvasCommand.NamespacePrefix)) {
+    if (command.startsWith(OperatorCanvasCommand.NamespacePrefix)) {
       // GatewaySession may deliver invokes concurrently. Canvas presentation, navigation, and
       // A2UI evaluation share one WebView and must observe command arrival order.
       return canvasCommandMutex.withLock { dispatchInvoke(command, paramsJson) }
@@ -128,10 +128,10 @@ class InvokeDispatcher(
     command: String,
     paramsJson: String?,
   ): GatewaySession.InvokeResult {
-    // Command strings come from OpenClawProtocolConstants; the registry above owns advertised availability.
+    // Command strings come from OperatorProtocolConstants; the registry above owns advertised availability.
     return when (command) {
       // Canvas commands
-      OpenClawCanvasCommand.Present.rawValue -> {
+      OperatorCanvasCommand.Present.rawValue -> {
         val url = CanvasController.parseNavigateUrl(paramsJson)
         withCanvasAvailable {
           check(canvas.showAndAwaitHost()) { "canvas host unavailable" }
@@ -139,11 +139,11 @@ class InvokeDispatcher(
           GatewaySession.InvokeResult.ok(null)
         }
       }
-      OpenClawCanvasCommand.Hide.rawValue -> {
+      OperatorCanvasCommand.Hide.rawValue -> {
         canvas.hide()
         GatewaySession.InvokeResult.ok(null)
       }
-      OpenClawCanvasCommand.Navigate.rawValue -> {
+      OperatorCanvasCommand.Navigate.rawValue -> {
         val url = CanvasController.parseNavigateUrl(paramsJson)
         withCanvasAvailable {
           check(canvas.showAndAwaitHost()) { "canvas host unavailable" }
@@ -151,7 +151,7 @@ class InvokeDispatcher(
           GatewaySession.InvokeResult.ok(null)
         }
       }
-      OpenClawCanvasCommand.Eval.rawValue -> {
+      OperatorCanvasCommand.Eval.rawValue -> {
         val js =
           CanvasController.parseEvalJs(paramsJson)
             ?: return GatewaySession.InvokeResult.error(
@@ -163,7 +163,7 @@ class InvokeDispatcher(
           GatewaySession.InvokeResult.ok("""{"result":${result.toJsonString()}}""")
         }
       }
-      OpenClawCanvasCommand.Snapshot.rawValue -> {
+      OperatorCanvasCommand.Snapshot.rawValue -> {
         val snapshotParams = CanvasController.parseSnapshotParams(paramsJson)
         withCanvasAvailable {
           val base64 =
@@ -177,7 +177,7 @@ class InvokeDispatcher(
       }
 
       // A2UI commands
-      OpenClawCanvasA2UICommand.Reset.rawValue ->
+      OperatorCanvasA2UICommand.Reset.rawValue ->
         withReadyA2ui {
           withCanvasAvailable {
             val res = canvas.eval(A2UIHandler.a2uiResetJS)
@@ -185,7 +185,7 @@ class InvokeDispatcher(
             GatewaySession.InvokeResult.ok(res)
           }
         }
-      OpenClawCanvasA2UICommand.Push.rawValue, OpenClawCanvasA2UICommand.PushJSONL.rawValue -> {
+      OperatorCanvasA2UICommand.Push.rawValue, OperatorCanvasA2UICommand.PushJSONL.rawValue -> {
         val messages =
           try {
             a2uiHandler.decodeA2uiMessages(command, paramsJson)
@@ -206,57 +206,57 @@ class InvokeDispatcher(
       }
 
       // Camera commands
-      OpenClawCameraCommand.List.rawValue -> cameraHandler.handleList(paramsJson)
-      OpenClawCameraCommand.Snap.rawValue -> cameraHandler.handleSnap(paramsJson)
-      OpenClawCameraCommand.Clip.rawValue -> cameraHandler.handleClip(paramsJson)
+      OperatorCameraCommand.List.rawValue -> cameraHandler.handleList(paramsJson)
+      OperatorCameraCommand.Snap.rawValue -> cameraHandler.handleSnap(paramsJson)
+      OperatorCameraCommand.Clip.rawValue -> cameraHandler.handleClip(paramsJson)
 
       // Location command
-      OpenClawLocationCommand.Get.rawValue -> locationHandler.handleLocationGet(paramsJson)
+      OperatorLocationCommand.Get.rawValue -> locationHandler.handleLocationGet(paramsJson)
 
       // Device commands
-      OpenClawDeviceCommand.Status.rawValue -> deviceHandler.handleDeviceStatus(paramsJson)
-      OpenClawDeviceCommand.Info.rawValue -> deviceHandler.handleDeviceInfo(paramsJson)
-      OpenClawDeviceCommand.Permissions.rawValue -> deviceHandler.handleDevicePermissions(paramsJson)
-      OpenClawDeviceCommand.Health.rawValue -> deviceHandler.handleDeviceHealth(paramsJson)
-      OpenClawDeviceCommand.Apps.rawValue -> deviceHandler.handleDeviceApps(paramsJson)
+      OperatorDeviceCommand.Status.rawValue -> deviceHandler.handleDeviceStatus(paramsJson)
+      OperatorDeviceCommand.Info.rawValue -> deviceHandler.handleDeviceInfo(paramsJson)
+      OperatorDeviceCommand.Permissions.rawValue -> deviceHandler.handleDevicePermissions(paramsJson)
+      OperatorDeviceCommand.Health.rawValue -> deviceHandler.handleDeviceHealth(paramsJson)
+      OperatorDeviceCommand.Apps.rawValue -> deviceHandler.handleDeviceApps(paramsJson)
 
       // Notifications command
-      OpenClawNotificationsCommand.List.rawValue -> notificationsHandler.handleNotificationsList(paramsJson)
-      OpenClawNotificationsCommand.Actions.rawValue -> notificationsHandler.handleNotificationsActions(paramsJson)
+      OperatorNotificationsCommand.List.rawValue -> notificationsHandler.handleNotificationsList(paramsJson)
+      OperatorNotificationsCommand.Actions.rawValue -> notificationsHandler.handleNotificationsActions(paramsJson)
 
       // System command
-      OpenClawSystemCommand.Notify.rawValue -> systemHandler.handleSystemNotify(paramsJson)
+      OperatorSystemCommand.Notify.rawValue -> systemHandler.handleSystemNotify(paramsJson)
 
       // Talk commands
-      OpenClawTalkCommand.PttStart.rawValue -> talkHandler.handlePttStart(paramsJson)
-      OpenClawTalkCommand.PttStop.rawValue -> talkHandler.handlePttStop(paramsJson)
-      OpenClawTalkCommand.PttCancel.rawValue -> talkHandler.handlePttCancel(paramsJson)
-      OpenClawTalkCommand.PttOnce.rawValue -> talkHandler.handlePttOnce(paramsJson)
+      OperatorTalkCommand.PttStart.rawValue -> talkHandler.handlePttStart(paramsJson)
+      OperatorTalkCommand.PttStop.rawValue -> talkHandler.handlePttStop(paramsJson)
+      OperatorTalkCommand.PttCancel.rawValue -> talkHandler.handlePttCancel(paramsJson)
+      OperatorTalkCommand.PttOnce.rawValue -> talkHandler.handlePttOnce(paramsJson)
 
       // Photos command
-      ai.openclaw.app.protocol.OpenClawPhotosCommand.Latest.rawValue ->
+      ai.operator.app.protocol.OperatorPhotosCommand.Latest.rawValue ->
         photosHandler.handlePhotosLatest(
           paramsJson,
         )
 
       // Contacts command
-      OpenClawContactsCommand.Search.rawValue -> contactsHandler.handleContactsSearch(paramsJson)
-      OpenClawContactsCommand.Add.rawValue -> contactsHandler.handleContactsAdd(paramsJson)
+      OperatorContactsCommand.Search.rawValue -> contactsHandler.handleContactsSearch(paramsJson)
+      OperatorContactsCommand.Add.rawValue -> contactsHandler.handleContactsAdd(paramsJson)
 
       // Calendar command
-      OpenClawCalendarCommand.Events.rawValue -> calendarHandler.handleCalendarEvents(paramsJson)
-      OpenClawCalendarCommand.Add.rawValue -> calendarHandler.handleCalendarAdd(paramsJson)
+      OperatorCalendarCommand.Events.rawValue -> calendarHandler.handleCalendarEvents(paramsJson)
+      OperatorCalendarCommand.Add.rawValue -> calendarHandler.handleCalendarAdd(paramsJson)
 
       // Motion command
-      OpenClawMotionCommand.Activity.rawValue -> motionHandler.handleMotionActivity(paramsJson)
-      OpenClawMotionCommand.Pedometer.rawValue -> motionHandler.handleMotionPedometer(paramsJson)
+      OperatorMotionCommand.Activity.rawValue -> motionHandler.handleMotionActivity(paramsJson)
+      OperatorMotionCommand.Pedometer.rawValue -> motionHandler.handleMotionPedometer(paramsJson)
 
       // SMS command
-      OpenClawSmsCommand.Send.rawValue -> smsHandler.handleSmsSend(paramsJson)
-      OpenClawSmsCommand.Search.rawValue -> smsHandler.handleSmsSearch(paramsJson)
+      OperatorSmsCommand.Send.rawValue -> smsHandler.handleSmsSend(paramsJson)
+      OperatorSmsCommand.Search.rawValue -> smsHandler.handleSmsSearch(paramsJson)
 
       // CallLog command
-      OpenClawCallLogCommand.Search.rawValue -> callLogHandler.handleCallLogSearch(paramsJson)
+      OperatorCallLogCommand.Search.rawValue -> callLogHandler.handleCallLogSearch(paramsJson)
 
       // Debug commands
       "debug.ed25519" -> debugHandler.handleEd25519()

@@ -1,4 +1,4 @@
-import type { WorkboardCard } from "@operator/workboard-contract";
+import type { WorkboardCard } from "@gabrielvfonseca/workboard-contract";
 // Workboard plugin module implements gateway behavior.
 import type { OperatorPluginApi } from "../api.js";
 import {

@@ -1,6 +1,6 @@
 // Interactive grouped auth-choice prompt used by onboarding and agent setup.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { expectDefined } from "@operator/normalization-core";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import type { OperatorConfig } from "../config/types.operator.js";

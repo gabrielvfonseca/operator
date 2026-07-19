@@ -3,7 +3,7 @@ import {
   createEmptyPluginRegistry,
   createRuntimeEnv,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 import type { ResolvedZaloAccount } from "./accounts.js";

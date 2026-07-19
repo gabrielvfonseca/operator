@@ -63,12 +63,12 @@ describe("session tab registry", () => {
     expect(closeTab).toHaveBeenNthCalledWith(1, {
       targetId: "tab-a",
       baseUrl: "http://127.0.0.1:9222",
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     });
     expect(closeTab).toHaveBeenNthCalledWith(2, {
       targetId: "tab-b",
       baseUrl: "http://127.0.0.1:9222",
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     });
   });
 
@@ -87,7 +87,7 @@ describe("session tab registry", () => {
     expect(clientMocks.browserCloseTabByRawTargetId).toHaveBeenCalledWith(
       "http://127.0.0.1:9222",
       "RAW_TARGET",
-      { profile: "openclaw" },
+      { profile: "@gabrielvfonseca/operator" },
     );
   });
 

@@ -22,9 +22,9 @@ type WebKitUpdateMessageHandler = {
   postMessage(message: NativeUpdateMessage): void;
 };
 
-export const NATIVE_UPDATE_DECLINED_EVENT = "openclaw:native-update-declined";
+export const NATIVE_UPDATE_DECLINED_EVENT = "operator:native-update-declined";
 export const NATIVE_UPDATE_AVAILABILITY_CHANGED_EVENT =
-  "openclaw:native-update-availability-changed";
+  "operator:native-update-availability-changed";
 
 type NativeLinkRouting = {
   dispose(): void;
@@ -36,7 +36,7 @@ function getNativeLinkPoster(): WebKitMessageHandler["postMessage"] | undefined 
     window as unknown as {
       webkit?: { messageHandlers?: { openclawLink?: WebKitMessageHandler } };
     }
-  ).webkit?.messageHandlers?.openclawLink;
+  ).webkit?.messageHandlers?.operatorLink;
   return handler?.postMessage.bind(handler);
 }
 
@@ -45,7 +45,7 @@ function getNativeUpdateHandler(): WebKitUpdateMessageHandler | undefined {
     window as unknown as {
       webkit?: { messageHandlers?: { openclawUpdate?: WebKitUpdateMessageHandler } };
     }
-  ).webkit?.messageHandlers?.openclawUpdate;
+  ).webkit?.messageHandlers?.operatorUpdate;
 }
 
 export function hasNativeUpdateBridge(): boolean {
@@ -109,7 +109,7 @@ function trustedExternalAppUrl(event: MouseEvent): { anchor: HTMLAnchorElement; 
 function menuContainer(event: Event): HTMLElement {
   const path = event.composedPath();
   const modalHost = path.find(
-    (target) => target instanceof HTMLElement && target.localName === "openclaw-modal-dialog",
+    (target) => target instanceof HTMLElement && target.localName === "operator-modal-dialog",
   );
   if (modalHost instanceof HTMLElement) {
     // Keep the menu in the modal's light-DOM slot so global menu styles still apply.
@@ -161,7 +161,7 @@ export function startNativeLinkRouting(): NativeLinkRouting {
     container: HTMLElement,
   ) => {
     closeMenu();
-    const nextMenu = document.createElement("openclaw-native-link-menu") as NativeLinkMenu;
+    const nextMenu = document.createElement("operator-native-link-menu") as NativeLinkMenu;
     nextMenu.x = x;
     nextMenu.y = y;
     nextMenu.trigger = anchor;

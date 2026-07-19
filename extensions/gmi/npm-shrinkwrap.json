@@ -1,11 +1,11 @@
 {
-  "name": "@operator/gmi-provider",
+  "name": "@gabrielvfonseca/gmi-provider",
   "version": "2026.7.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/gmi-provider",
+      "name": "@gabrielvfonseca/gmi-provider",
       "version": "2026.7.2"
     }
   }

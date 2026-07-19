@@ -25,8 +25,8 @@ vi.mock("./dm-command-decision.js", () => ({
 import {
   testing as sessionBindingTesting,
   registerSessionBindingAdapter,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { saveRemoteMedia } from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { saveRemoteMedia } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   createDiscordMessage,
   createDiscordPreflightArgs,
@@ -61,7 +61,7 @@ beforeEach(() => {
   saveRemoteMediaMock.mockImplementation(
     async (options: { fallbackContentType?: string; filePathHint?: string }) => ({
       id: "test-media",
-      path: `/tmp/openclaw-discord-test/${options.filePathHint ?? "media"}`,
+      path: `/tmp/operator-discord-test/${options.filePathHint ?? "media"}`,
       size: 5,
       contentType: options.fallbackContentType,
     }),
@@ -405,8 +405,8 @@ describe("preflightDiscordMessage", () => {
               },
               metadata: {
                 pluginBindingOwner: "plugin",
-                pluginId: "openclaw-codex-app-server",
-                pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+                pluginId: "operator-codex-app-server",
+                pluginRoot: "/Users/huntharo/github/operator-app-server",
               },
             })
           : null,
@@ -444,8 +444,8 @@ describe("preflightDiscordMessage", () => {
       boundAt: 1,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
       },
     });
   });
@@ -599,7 +599,7 @@ describe("preflightDiscordMessage", () => {
     const preflight = expectPreflightResult(result);
     expect(preflight.preparedMedia).toEqual([
       {
-        path: "/tmp/openclaw-discord-test/photo.png",
+        path: "/tmp/operator-discord-test/photo.png",
         contentType: "image/png",
         placeholder: "<media:image>",
       },
@@ -700,8 +700,8 @@ describe("preflightDiscordMessage", () => {
     const message = createDiscordMessage({
       id: "m-loop-1",
       channelId,
-      content: "chatter <@openclaw-bot>",
-      mentionedUsers: [{ id: "openclaw-bot" }],
+      content: "chatter <@operator-bot>",
+      mentionedUsers: [{ id: "operator-bot" }],
       author: { id: senderBotId, bot: true, username: "Relay" },
       timestamp: messageTimestamp,
     });
@@ -731,8 +731,8 @@ describe("preflightDiscordMessage", () => {
     const repeatedMessage = createDiscordMessage({
       id: "m-loop-2",
       channelId,
-      content: "more chatter <@openclaw-bot>",
-      mentionedUsers: [{ id: "openclaw-bot" }],
+      content: "more chatter <@operator-bot>",
+      mentionedUsers: [{ id: "operator-bot" }],
       attachments: [
         {
           id: "att-loop",
@@ -774,8 +774,8 @@ describe("preflightDiscordMessage", () => {
         message: createDiscordMessage({
           id,
           channelId,
-          content: "relay <@openclaw-bot>",
-          mentionedUsers: [{ id: "openclaw-bot" }],
+          content: "relay <@operator-bot>",
+          mentionedUsers: [{ id: "operator-bot" }],
           author: { id: "relay-bot-defaults", bot: true, username: "Relay" },
         }),
         discordConfig,
@@ -993,14 +993,14 @@ describe("preflightDiscordMessage", () => {
       message: createDiscordMessage({
         id: "proxy-456",
         channelId: "c1",
-        content: "<@openclaw-bot> hello",
+        content: "<@operator-bot> hello",
         webhookId: "pluralkit-webhook-1",
         author: {
           id: "webhook-author",
           bot: true,
           username: "PluralKit",
         },
-        mentionedUsers: [{ id: "openclaw-bot" }],
+        mentionedUsers: [{ id: "operator-bot" }],
       }),
       discordConfig: {
         pluralkit: { enabled: true },
@@ -1184,8 +1184,8 @@ describe("preflightDiscordMessage", () => {
     const message = createDiscordMessage({
       id: "m-bot-mentions-on",
       channelId,
-      content: "hi <@openclaw-bot>",
-      mentionedUsers: [{ id: "openclaw-bot" }],
+      content: "hi <@operator-bot>",
+      mentionedUsers: [{ id: "operator-bot" }],
       author: {
         id: "relay-bot-1",
         bot: true,
@@ -1269,8 +1269,8 @@ describe("preflightDiscordMessage", () => {
     const message = createDiscordMessage({
       id: "m-bot-command-with-mention",
       channelId,
-      content: "<@openclaw-bot> /new incident room",
-      mentionedUsers: [{ id: "openclaw-bot" }],
+      content: "<@operator-bot> /new incident room",
+      mentionedUsers: [{ id: "operator-bot" }],
       author: {
         id: "relay-bot-1",
         bot: true,
@@ -1436,7 +1436,7 @@ describe("preflightDiscordMessage", () => {
           ...DEFAULT_PREFLIGHT_CFG,
           messages: {
             groupChat: {
-              mentionPatterns: ["openclaw"],
+              mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
         } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
@@ -1485,7 +1485,7 @@ describe("preflightDiscordMessage", () => {
       guildId,
       message,
       discordConfig: {
-        botId: "openclaw-bot",
+        botId: "operator-bot",
       } as DiscordConfig,
       guildEntries: {
         [guildId]: {
@@ -1823,7 +1823,7 @@ describe("preflightDiscordMessage", () => {
     const guildHistories = new Map();
     saveRemoteMediaMock.mockResolvedValueOnce({
       id: "test-sticker",
-      path: "/tmp/openclaw-discord-test/sticker.png",
+      path: "/tmp/operator-discord-test/sticker.png",
       size: 5,
       contentType: "image/png",
     });
@@ -1883,7 +1883,7 @@ describe("preflightDiscordMessage", () => {
         messageId: "m-history-sticker",
         media: [
           {
-            path: "/tmp/openclaw-discord-test/sticker.png",
+            path: "/tmp/operator-discord-test/sticker.png",
             contentType: "image/png",
             kind: "image",
             messageId: "m-history-sticker",
@@ -2090,7 +2090,7 @@ describe("preflightDiscordMessage", () => {
           ...DEFAULT_PREFLIGHT_CFG,
           messages: {
             groupChat: {
-              mentionPatterns: ["openclaw"],
+              mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
         } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
@@ -2158,7 +2158,7 @@ describe("preflightDiscordMessage", () => {
           ...DEFAULT_PREFLIGHT_CFG,
           messages: {
             groupChat: {
-              mentionPatterns: ["openclaw"],
+              mentionPatterns: ["@gabrielvfonseca/operator"],
             },
           },
         } as import("openclaw/plugin-sdk/config-contracts").OperatorConfig,
@@ -2259,9 +2259,9 @@ describe("preflightDiscordMessage", () => {
         message: createDiscordMessage({
           id: "m-binding-2",
           channelId,
-          content: "hello <@openclaw-bot>",
+          content: "hello <@operator-bot>",
           author: { id: "user-1", bot: false, username: "alice" },
-          mentionedUsers: [{ id: "openclaw-bot" }],
+          mentionedUsers: [{ id: "operator-bot" }],
         }),
         discordConfig: {} as DiscordConfig,
         guildEntries: {

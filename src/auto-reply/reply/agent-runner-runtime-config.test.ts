@@ -4,7 +4,7 @@ import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
 } from "../../config/runtime-snapshot.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { buildEmbeddedRunBaseParams } from "./agent-runner-run-params.js";
 import type { FollowupRun } from "./queue.js";
 

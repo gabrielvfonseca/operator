@@ -1,5 +1,5 @@
 /** Discovers plugin-declared environment variable names for channel credential setup. */
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { loadPluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import { appendUniqueEnvVarCandidates } from "../shared/env-var-candidates.js";

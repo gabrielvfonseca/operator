@@ -1,5 +1,5 @@
 {
-  "name": "@operator/normalization-core",
+  "name": "@gabrielvfonseca/normalization-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [

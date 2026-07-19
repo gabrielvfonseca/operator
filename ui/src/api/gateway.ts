@@ -29,7 +29,7 @@ import {
   resolveGatewayStartupRetryAfterMs,
   MIN_CLIENT_PROTOCOL_VERSION,
   PROTOCOL_VERSION,
-} from "@operator/gateway-client/browser";
+} from "@gabrielvfonseca/gateway-client/browser";
 import {
   clearDeviceAuthToken,
   loadDeviceAuthToken,

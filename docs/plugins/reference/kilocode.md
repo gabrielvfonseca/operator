@@ -1,5 +1,5 @@
 ---
-summary: "Adds Kilocode model provider support to OpenClaw."
+summary: "Adds Kilocode model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the kilocode plugin
 title: "Kilocode plugin"
@@ -7,12 +7,12 @@ title: "Kilocode plugin"
 
 # Kilocode plugin
 
-Adds Kilocode model provider support to OpenClaw.
+Adds Kilocode model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/kilocode-provider`
-- Install route: npm; ClawHub: `clawhub:@operator/kilocode-provider`
+- Package: `@gabrielvfonseca/kilocode-provider`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/kilocode-provider`
 
 ## Surface
 

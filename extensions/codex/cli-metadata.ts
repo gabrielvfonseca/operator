@@ -1,5 +1,8 @@
 // Codex CLI metadata stays lightweight until the command runs.
-import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import {
+  definePluginEntry,
+  type OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 export function registerCodexCliMetadata(api: OperatorPluginApi): void {
   api.registerCli(

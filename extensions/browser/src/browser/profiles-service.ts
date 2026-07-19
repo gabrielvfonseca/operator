@@ -6,7 +6,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { getRuntimeConfig, getRuntimeConfigSourceSnapshot } from "../config/config.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { resolveUserPath } from "../utils.js";
@@ -52,7 +52,7 @@ type CreateProfileParams = {
   color?: string;
   cdpUrl?: string;
   userDataDir?: string;
-  driver?: "openclaw" | "existing-session";
+  driver?: "@gabrielvfonseca/operator" | "existing-session";
 };
 
 /** Result returned after creating a browser profile. */
@@ -258,7 +258,11 @@ export function createBrowserProfilesService(ctx: BrowserRouteContext) {
       await deleteBrowserProfileConfig({ name, expected });
       delete state.resolved.profiles[name];
       try {
-        if (resolved?.cdpIsLoopback && resolved.driver === "openclaw" && !resolved.attachOnly) {
+        if (
+          resolved?.cdpIsLoopback &&
+          resolved.driver === "@gabrielvfonseca/operator" &&
+          !resolved.attachOnly
+        ) {
           const userDataDir = resolveOperatorUserDataDir(name);
           const profileDir = path.dirname(userDataDir);
           if (fs.existsSync(profileDir)) {

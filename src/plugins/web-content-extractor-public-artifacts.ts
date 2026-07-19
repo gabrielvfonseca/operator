@@ -1,5 +1,5 @@
 // Extracts web content public artifacts from plugin manifests.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { loadBundledPluginPublicArtifactModuleFromCandidatesSync } from "./public-surface-loader.js";
 import type {
   PluginWebContentExtractorEntry,

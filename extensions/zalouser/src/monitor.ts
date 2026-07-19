@@ -1,37 +1,40 @@
-import { mergeAllowlist, summarizeMapping } from "openclaw/plugin-sdk/allow-from";
+import { mergeAllowlist, summarizeMapping } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
 import {
   implicitMentionKindWhen,
   resolveInboundMentionDecision,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
-import type { MarkdownTableMode, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/core";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { resolveStableChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type {
+  MarkdownTableMode,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
 // Zalouser plugin module implements monitor behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { createDeferred } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import {
   DEFAULT_GROUP_HISTORY_LIMIT,
   type HistoryEntry,
   createChannelHistoryWindow,
-} from "openclaw/plugin-sdk/reply-history";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
   type OutboundReplyPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
 import {
   resolveDefaultGroupPolicy,
   resolveOpenProviderRuntimeGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   buildZalouserGroupCandidates,
   findZalouserGroupEntry,

@@ -1,97 +1,97 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.chat.ChatCacheDatabase
-import ai.openclaw.app.chat.ChatCacheScope
-import ai.openclaw.app.chat.ChatCommandEntry
-import ai.openclaw.app.chat.ChatCommandOutbox
-import ai.openclaw.app.chat.ChatController
-import ai.openclaw.app.chat.ChatMessage
-import ai.openclaw.app.chat.ChatOutboxItem
-import ai.openclaw.app.chat.ChatPendingToolCall
-import ai.openclaw.app.chat.ChatSessionEntry
-import ai.openclaw.app.chat.ChatThinkingLevelSelection
-import ai.openclaw.app.chat.ChatTranscriptCache
-import ai.openclaw.app.chat.MainSessionBinding
-import ai.openclaw.app.chat.MessageSpeechClient
-import ai.openclaw.app.chat.MessageSpeechController
-import ai.openclaw.app.chat.MessageSpeechState
-import ai.openclaw.app.chat.OutgoingAttachment
-import ai.openclaw.app.chat.RoomChatCommandOutbox
-import ai.openclaw.app.chat.RoomChatTranscriptCache
-import ai.openclaw.app.chat.SystemSpeechSpeaker
-import ai.openclaw.app.gateway.DeviceAuthEntry
-import ai.openclaw.app.gateway.DeviceAuthStore
-import ai.openclaw.app.gateway.DeviceIdentityStore
-import ai.openclaw.app.gateway.GatewayDiscovery
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.gateway.GatewayEvent
-import ai.openclaw.app.gateway.GatewayMethod
-import ai.openclaw.app.gateway.GatewayRegistryEntry
-import ai.openclaw.app.gateway.GatewayRegistryEntryKind
-import ai.openclaw.app.gateway.GatewayRequestDefinitiveFailure
-import ai.openclaw.app.gateway.GatewayRequestNotEnqueued
-import ai.openclaw.app.gateway.GatewayRequestOutcomeUnknown
-import ai.openclaw.app.gateway.GatewayRequestRejected
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.gateway.GatewayTlsProbeFailure
-import ai.openclaw.app.gateway.GatewayTlsProbeResult
-import ai.openclaw.app.gateway.GatewayUpdateAvailableSummary
-import ai.openclaw.app.gateway.NetworkMonitor
-import ai.openclaw.app.gateway.NodeEventSendOutcome
-import ai.openclaw.app.gateway.formatGatewayAuthority
-import ai.openclaw.app.gateway.normalizeGatewayApprovalRequestId
-import ai.openclaw.app.gateway.normalizeGatewayTlsFingerprint
-import ai.openclaw.app.gateway.parseChatSendAck
-import ai.openclaw.app.gateway.probeGatewayTlsFingerprint
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeLocaleChanges
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveOptionalNativeText
-import ai.openclaw.app.i18n.verbatimText
-import ai.openclaw.app.node.A2UIHandler
-import ai.openclaw.app.node.CalendarHandler
-import ai.openclaw.app.node.CallLogHandler
-import ai.openclaw.app.node.CameraCaptureManager
-import ai.openclaw.app.node.CameraHandler
-import ai.openclaw.app.node.CanvasController
-import ai.openclaw.app.node.ConnectionManager
-import ai.openclaw.app.node.ContactsHandler
-import ai.openclaw.app.node.DEFAULT_SEAM_COLOR_ARGB
-import ai.openclaw.app.node.DebugHandler
-import ai.openclaw.app.node.DeviceHandler
-import ai.openclaw.app.node.DeviceNotificationListenerService
-import ai.openclaw.app.node.InvokeDispatcher
-import ai.openclaw.app.node.LocationCaptureManager
-import ai.openclaw.app.node.LocationHandler
-import ai.openclaw.app.node.MotionHandler
-import ai.openclaw.app.node.NodePresenceAliveBeacon
-import ai.openclaw.app.node.NotificationsHandler
-import ai.openclaw.app.node.PhotosHandler
-import ai.openclaw.app.node.Quad
-import ai.openclaw.app.node.SmsHandler
-import ai.openclaw.app.node.SmsManager
-import ai.openclaw.app.node.SystemHandler
-import ai.openclaw.app.node.TalkHandler
-import ai.openclaw.app.node.asObjectOrNull
-import ai.openclaw.app.node.asStringOrNull
-import ai.openclaw.app.node.invokeErrorFromThrowable
-import ai.openclaw.app.node.parseHexColorArgb
-import ai.openclaw.app.protocol.OpenClawCanvasA2UIAction
-import ai.openclaw.app.voice.AndroidOnDeviceVoiceWakeRecognizer
-import ai.openclaw.app.voice.GatewayTranscriptionSession
-import ai.openclaw.app.voice.MicCaptureManager
-import ai.openclaw.app.voice.PreviewVoiceWakeRecognizer
-import ai.openclaw.app.voice.TalkAudioPlayer
-import ai.openclaw.app.voice.TalkModeManager
-import ai.openclaw.app.voice.TalkPttOnceStart
-import ai.openclaw.app.voice.TalkPttStopPayload
-import ai.openclaw.app.voice.VoiceConversationEntry
-import ai.openclaw.app.voice.VoiceConversationRole
-import ai.openclaw.app.voice.VoiceWakeManager
-import ai.openclaw.app.voice.VoiceWakeMatch
-import ai.openclaw.app.voice.VoiceWakePreferences
-import ai.openclaw.app.voice.VoiceWakeSuppressionReason
+import ai.operator.app.chat.ChatCacheDatabase
+import ai.operator.app.chat.ChatCacheScope
+import ai.operator.app.chat.ChatCommandEntry
+import ai.operator.app.chat.ChatCommandOutbox
+import ai.operator.app.chat.ChatController
+import ai.operator.app.chat.ChatMessage
+import ai.operator.app.chat.ChatOutboxItem
+import ai.operator.app.chat.ChatPendingToolCall
+import ai.operator.app.chat.ChatSessionEntry
+import ai.operator.app.chat.ChatThinkingLevelSelection
+import ai.operator.app.chat.ChatTranscriptCache
+import ai.operator.app.chat.MainSessionBinding
+import ai.operator.app.chat.MessageSpeechClient
+import ai.operator.app.chat.MessageSpeechController
+import ai.operator.app.chat.MessageSpeechState
+import ai.operator.app.chat.OutgoingAttachment
+import ai.operator.app.chat.RoomChatCommandOutbox
+import ai.operator.app.chat.RoomChatTranscriptCache
+import ai.operator.app.chat.SystemSpeechSpeaker
+import ai.operator.app.gateway.DeviceAuthEntry
+import ai.operator.app.gateway.DeviceAuthStore
+import ai.operator.app.gateway.DeviceIdentityStore
+import ai.operator.app.gateway.GatewayDiscovery
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayEvent
+import ai.operator.app.gateway.GatewayMethod
+import ai.operator.app.gateway.GatewayRegistryEntry
+import ai.operator.app.gateway.GatewayRegistryEntryKind
+import ai.operator.app.gateway.GatewayRequestDefinitiveFailure
+import ai.operator.app.gateway.GatewayRequestNotEnqueued
+import ai.operator.app.gateway.GatewayRequestOutcomeUnknown
+import ai.operator.app.gateway.GatewayRequestRejected
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewayTlsProbeFailure
+import ai.operator.app.gateway.GatewayTlsProbeResult
+import ai.operator.app.gateway.GatewayUpdateAvailableSummary
+import ai.operator.app.gateway.NetworkMonitor
+import ai.operator.app.gateway.NodeEventSendOutcome
+import ai.operator.app.gateway.formatGatewayAuthority
+import ai.operator.app.gateway.normalizeGatewayApprovalRequestId
+import ai.operator.app.gateway.normalizeGatewayTlsFingerprint
+import ai.operator.app.gateway.parseChatSendAck
+import ai.operator.app.gateway.probeGatewayTlsFingerprint
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeLocaleChanges
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveOptionalNativeText
+import ai.operator.app.i18n.verbatimText
+import ai.operator.app.node.A2UIHandler
+import ai.operator.app.node.CalendarHandler
+import ai.operator.app.node.CallLogHandler
+import ai.operator.app.node.CameraCaptureManager
+import ai.operator.app.node.CameraHandler
+import ai.operator.app.node.CanvasController
+import ai.operator.app.node.ConnectionManager
+import ai.operator.app.node.ContactsHandler
+import ai.operator.app.node.DEFAULT_SEAM_COLOR_ARGB
+import ai.operator.app.node.DebugHandler
+import ai.operator.app.node.DeviceHandler
+import ai.operator.app.node.DeviceNotificationListenerService
+import ai.operator.app.node.InvokeDispatcher
+import ai.operator.app.node.LocationCaptureManager
+import ai.operator.app.node.LocationHandler
+import ai.operator.app.node.MotionHandler
+import ai.operator.app.node.NodePresenceAliveBeacon
+import ai.operator.app.node.NotificationsHandler
+import ai.operator.app.node.PhotosHandler
+import ai.operator.app.node.Quad
+import ai.operator.app.node.SmsHandler
+import ai.operator.app.node.SmsManager
+import ai.operator.app.node.SystemHandler
+import ai.operator.app.node.TalkHandler
+import ai.operator.app.node.asObjectOrNull
+import ai.operator.app.node.asStringOrNull
+import ai.operator.app.node.invokeErrorFromThrowable
+import ai.operator.app.node.parseHexColorArgb
+import ai.operator.app.protocol.OperatorCanvasA2UIAction
+import ai.operator.app.voice.AndroidOnDeviceVoiceWakeRecognizer
+import ai.operator.app.voice.GatewayTranscriptionSession
+import ai.operator.app.voice.MicCaptureManager
+import ai.operator.app.voice.PreviewVoiceWakeRecognizer
+import ai.operator.app.voice.TalkAudioPlayer
+import ai.operator.app.voice.TalkModeManager
+import ai.operator.app.voice.TalkPttOnceStart
+import ai.operator.app.voice.TalkPttStopPayload
+import ai.operator.app.voice.VoiceConversationEntry
+import ai.operator.app.voice.VoiceConversationRole
+import ai.operator.app.voice.VoiceWakeManager
+import ai.operator.app.voice.VoiceWakeMatch
+import ai.operator.app.voice.VoiceWakePreferences
+import ai.operator.app.voice.VoiceWakeSuppressionReason
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -1174,7 +1174,7 @@ class NodeRuntime private constructor(
     try {
       operatorSession.request("sessions.subscribe", null)
     } catch (err: Throwable) {
-      Log.d("OpenClawRuntime", "sessions.subscribe failed: ${err.message ?: err::class.java.simpleName}")
+      Log.d("OperatorRuntime", "sessions.subscribe failed: ${err.message ?: err::class.java.simpleName}")
     }
   }
 
@@ -2104,7 +2104,7 @@ class NodeRuntime private constructor(
           _canvasRehydratePending.value = false
           _canvasRehydrateErrorText.value = nativeText("Failed to request restore. Tap to retry.")
         }
-        Log.w("OpenClawCanvas", "canvas rehydrate request failed ($source): transport unavailable")
+        Log.w("OperatorCanvas", "canvas rehydrate request failed ($source): transport unavailable")
         return@launch
       }
       scope.launch {
@@ -2168,7 +2168,7 @@ class NodeRuntime private constructor(
       val cacheCleared =
         runCatching { chat.clearGatewayCache(stableId) }
           .onFailure { err ->
-            Log.e("OpenClawRuntime", "Failed to purge gateway chat data before auth reset", err)
+            Log.e("OperatorRuntime", "Failed to purge gateway chat data before auth reset", err)
             setStandaloneGatewayStatus("Failed: couldn't clear offline chat data. Retry sign out.")
           }.isSuccess
       if (!cacheCleared) return false
@@ -2229,7 +2229,7 @@ class NodeRuntime private constructor(
 
   private fun applyScreenshotFixture() {
     check(BuildConfig.DEBUG) { "Android screenshot fixtures require a debug build" }
-    _serverName.value = "OpenClaw Gateway"
+    _serverName.value = "Operator Gateway"
     _remoteAddress.value = "Mac Studio on local network"
     _gatewayVersion.value = BuildConfig.VERSION_NAME
     _gatewayDefaultAgentId.value = "main"
@@ -2414,7 +2414,7 @@ class NodeRuntime private constructor(
       return
     }
 
-    val client = connectionManager.buildClientInfo(clientId = "openclaw-android", clientMode = "node")
+    val client = connectionManager.buildClientInfo(clientId = "operator-android", clientMode = "node")
     val payloadJson =
       NodePresenceAliveBeacon.makePayloadJson(
         trigger = trigger,
@@ -2437,7 +2437,7 @@ class NodeRuntime private constructor(
       nodePresenceAliveLastSuccessAtMs = nowMs
     } else {
       Log.d(
-        "OpenClawNode",
+        "OperatorNode",
         "node.presence.alive not handled: ${NodePresenceAliveBeacon.sanitizeReasonForLog(response?.reason)}",
       )
     }
@@ -3038,7 +3038,7 @@ class NodeRuntime private constructor(
       } catch (_: CancellationException) {
         // Gateway-scope retirement owns state reset; never publish the old response.
       } catch (err: Throwable) {
-        Log.d("OpenClawRuntime", "voicewake.set failed: ${err.message ?: err::class.java.simpleName}")
+        Log.d("OperatorRuntime", "voicewake.set failed: ${err.message ?: err::class.java.simpleName}")
         if (saveSeq == voiceWakeWordsSaveSeq.get() && isGatewayDataScopeCurrent(gatewayScope)) {
           _voiceWakeWordsSaving.value = false
           _voiceWakeWordsNoticeText.value = nativeText("Could not save wake words")
@@ -3856,7 +3856,7 @@ class NodeRuntime private constructor(
       val cacheCleared =
         runCatching { chat.clearGatewayCache(normalized) }
           .onFailure { err ->
-            Log.e("OpenClawRuntime", "Failed to purge forgotten gateway chat data", err)
+            Log.e("OperatorRuntime", "Failed to purge forgotten gateway chat data", err)
             setStandaloneGatewayStatus("Failed: couldn't clear offline gateway data. Retry forget.")
           }.isSuccess
       if (!cacheCleared) return false
@@ -3985,7 +3985,7 @@ class NodeRuntime private constructor(
             .randomUUID()
             .toString()
         }
-      val name = OpenClawCanvasA2UIAction.extractActionName(userActionObj) ?: return@launch
+      val name = OperatorCanvasA2UIAction.extractActionName(userActionObj) ?: return@launch
 
       val surfaceId =
         (userActionObj["surfaceId"] as? JsonPrimitive)
@@ -4003,7 +4003,7 @@ class NodeRuntime private constructor(
 
       val sessionKey = resolveMainSessionKey()
       val message =
-        OpenClawCanvasA2UIAction.formatAgentMessage(
+        OperatorCanvasA2UIAction.formatAgentMessage(
           actionName = name,
           sessionKey = sessionKey,
           surfaceId = surfaceId,
@@ -4038,7 +4038,7 @@ class NodeRuntime private constructor(
 
       try {
         canvas.eval(
-          OpenClawCanvasA2UIAction.jsDispatchA2UIActionStatus(
+          OperatorCanvasA2UIAction.jsDispatchA2UIActionStatus(
             actionId = actionId,
             ok = connected && error == null,
             error = error,
@@ -4237,7 +4237,7 @@ class NodeRuntime private constructor(
     } catch (_: CancellationException) {
       // A replacement Gateway owns the next refresh.
     } catch (err: Throwable) {
-      Log.d("OpenClawRuntime", "voicewake.get failed: ${err.message ?: err::class.java.simpleName}")
+      Log.d("OperatorRuntime", "voicewake.get failed: ${err.message ?: err::class.java.simpleName}")
     }
   }
 
@@ -6949,7 +6949,7 @@ class NodeRuntime private constructor(
   private fun parseDreamDiaryEntries(content: String?): List<GatewayDreamDiaryEntry> {
     val raw = content?.trim().orEmpty()
     if (raw.isEmpty()) return emptyList()
-    val body = raw.substringAfter("<!-- openclaw:dreaming:diary:start -->", raw).substringBefore("<!-- openclaw:dreaming:diary:end -->")
+    val body = raw.substringAfter("<!-- operator:dreaming:diary:start -->", raw).substringBefore("<!-- operator:dreaming:diary:end -->")
     return body
       .split(Regex("\\n---\\n"))
       .mapNotNull(::parseGatewayDreamDiaryEntry)
@@ -7042,7 +7042,7 @@ class NodeRuntime private constructor(
         HomeCanvasPayload(
           gatewayState = "connecting",
           eyebrow = nativeString("Reconnecting"),
-          title = nativeString("OpenClaw is syncing back up"),
+          title = nativeString("Operator is syncing back up"),
           subtitle =
             nativeString("The gateway session is coming back online. Agent shortcuts should settle automatically in a moment."),
           gatewayLabel = gatewayLabel,
@@ -7056,7 +7056,7 @@ class NodeRuntime private constructor(
       HomeCanvasGatewayState.Error, HomeCanvasGatewayState.Offline ->
         HomeCanvasPayload(
           gatewayState = if (state == HomeCanvasGatewayState.Error) "error" else "offline",
-          eyebrow = nativeString("Welcome to OpenClaw"),
+          eyebrow = nativeString("Welcome to Operator"),
           title = nativeString("Your phone stays quiet until it is needed"),
           subtitle =
             nativeString("Pair this device to your gateway to wake it only for real work, keep a live agent overview handy, and avoid battery-draining background loops."),

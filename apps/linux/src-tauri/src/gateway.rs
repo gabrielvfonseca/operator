@@ -1,4 +1,4 @@
-use crate::cli::OpenClawCli;
+use crate::cli::OperatorCli;
 use serde::{Deserialize, Serialize};
 use std::thread;
 use std::time::Duration;
@@ -25,7 +25,7 @@ impl GatewaySnapshot {
             running: false,
             reachable: false,
             status: "CLI required".to_string(),
-            detail: Some("Install the OpenClaw CLI to continue.".to_string()),
+            detail: Some("Install the Operator CLI to continue.".to_string()),
         }
     }
 
@@ -106,7 +106,7 @@ struct DashboardResponse {
     reason: Option<String>,
 }
 
-pub fn status(cli: &OpenClawCli) -> Result<GatewaySnapshot, String> {
+pub fn status(cli: &OperatorCli) -> Result<GatewaySnapshot, String> {
     let (value, _) = cli
         .json::<DaemonStatus, _, _>(["gateway", "status", "--json"])
         .map_err(|error| error.to_string())?;
@@ -167,7 +167,7 @@ pub fn status(cli: &OpenClawCli) -> Result<GatewaySnapshot, String> {
     })
 }
 
-pub fn ensure_ready(cli: &OpenClawCli) -> Result<ReadyGateway, String> {
+pub fn ensure_ready(cli: &OperatorCli) -> Result<ReadyGateway, String> {
     let mut snapshot = status(cli)?;
     if snapshot.reachable {
         return dashboard(cli, snapshot);
@@ -185,7 +185,7 @@ pub fn ensure_ready(cli: &OpenClawCli) -> Result<ReadyGateway, String> {
     dashboard(cli, snapshot)
 }
 
-fn wait_until_reachable(cli: &OpenClawCli) -> Result<GatewaySnapshot, String> {
+fn wait_until_reachable(cli: &OperatorCli) -> Result<GatewaySnapshot, String> {
     let mut snapshot = status(cli)?;
     for attempt in 0..START_ATTEMPTS {
         if snapshot.reachable {
@@ -201,7 +201,7 @@ fn wait_until_reachable(cli: &OpenClawCli) -> Result<GatewaySnapshot, String> {
         .unwrap_or_else(|| "Gateway did not become reachable.".to_string()))
 }
 
-pub fn act(cli: &OpenClawCli, action: GatewayAction) -> Result<GatewaySnapshot, String> {
+pub fn act(cli: &OperatorCli, action: GatewayAction) -> Result<GatewaySnapshot, String> {
     run_service_command(cli, action.command())?;
     if matches!(action, GatewayAction::Stop) {
         return status(cli);
@@ -209,7 +209,7 @@ pub fn act(cli: &OpenClawCli, action: GatewayAction) -> Result<GatewaySnapshot, 
     wait_until_reachable(cli)
 }
 
-pub fn dashboard(cli: &OpenClawCli, snapshot: GatewaySnapshot) -> Result<ReadyGateway, String> {
+pub fn dashboard(cli: &OperatorCli, snapshot: GatewaySnapshot) -> Result<ReadyGateway, String> {
     // CLIs released before `dashboard --json` reject the flag without JSON output;
     // surface an upgrade path instead of a raw parse error.
     let (response, output) =
@@ -217,8 +217,8 @@ pub fn dashboard(cli: &OpenClawCli, snapshot: GatewaySnapshot) -> Result<ReadyGa
             Ok(result) => result,
             Err(crate::cli::CliError::InvalidJson(_)) => {
                 return Err(
-                    "The installed OpenClaw CLI does not support the desktop dashboard \
-                 integration. Update OpenClaw (for example: npm install -g openclaw@latest), \
+                    "The installed Operator CLI does not support the desktop dashboard \
+                 integration. Update Operator (for example: npm install -g openclaw@latest), \
                  then retry."
                         .to_string(),
                 );
@@ -239,7 +239,7 @@ pub fn dashboard(cli: &OpenClawCli, snapshot: GatewaySnapshot) -> Result<ReadyGa
         .unwrap_or_else(|| "Dashboard is not ready.".to_string()))
 }
 
-fn run_service_command(cli: &OpenClawCli, action: &str) -> Result<(), String> {
+fn run_service_command(cli: &OperatorCli, action: &str) -> Result<(), String> {
     let (response, output) = cli
         .json::<CommandResponse, _, _>(["gateway", action, "--json"])
         .map_err(|error| error.to_string())?;

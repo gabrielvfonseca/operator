@@ -57,7 +57,7 @@ struct SettingsRootView: View {
         .navigationSplitViewStyle(.balanced)
         .frame(width: SettingsTab.windowWidth, height: SettingsTab.windowHeight, alignment: .topLeading)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .onReceive(NotificationCenter.default.publisher(for: .openclawSelectSettingsTab)) { note in
+        .onReceive(NotificationCenter.default.publisher(for: .operatorSelectSettingsTab)) { note in
             if let tab = note.object as? SettingsTab {
                 withAnimation(.spring(response: 0.32, dampingFraction: 0.85)) {
                     self.selectRequestedTab(tab)
@@ -96,7 +96,7 @@ struct SettingsRootView: View {
             }
             self.scheduleInferenceRefresh(clearPrevious: false)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .openclawConfigDidChange)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .operatorConfigDidChange)) { _ in
             let gatewayID = MacChatTranscriptCache.currentGatewayID()
             let plan = Self.configRefreshPlan(
                 selectedTab: self.selectedTab,
@@ -169,8 +169,8 @@ struct SettingsRootView: View {
 
     private var nixManagedBanner: some View {
         // Prefer gateway-resolved paths; fall back to local env defaults if disconnected.
-        let configPath = self.snapshotPaths.configPath ?? OpenClawPaths.configURL.path
-        let stateDir = self.snapshotPaths.stateDir ?? OpenClawPaths.stateDirURL.path
+        let configPath = self.snapshotPaths.configPath ?? OperatorPaths.configURL.path
+        let stateDir = self.snapshotPaths.stateDir ?? OperatorPaths.stateDirURL.path
 
         return VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
@@ -401,12 +401,12 @@ struct SettingsRootView: View {
 
     private func scheduleInferenceRefresh(clearPrevious: Bool, resetSystemAgent: Bool = false) {
         if resetSystemAgent {
-            // OpenClaw sessions are gateway-owned. Re-key the cached detail so a route
+            // Operator sessions are gateway-owned. Re-key the cached detail so a route
             // change cannot send old conversation state to a new endpoint.
             self.systemAgentChatIdentity = UUID()
         }
         if clearPrevious {
-            // Preserve an active or pending OpenClaw request while config truth is revalidated.
+            // Preserve an active or pending Operator request while config truth is revalidated.
             // A confirmed model restores it; a confirmed missing model leaves General selected.
             let requestedTab = self.deferredTab ?? self.selectedTab
             self.inferenceConfiguration = .loading
@@ -448,7 +448,7 @@ struct SettingsTabGroup: Identifiable {
             SettingsTabGroup(title: "Automation", tabs: [.channels, .skills, .cron, .execApprovals]),
             SettingsTabGroup(title: "Data", tabs: [.sessions, .instances]),
             SettingsTabGroup(title: "Advanced", tabs: [.config]),
-            SettingsTabGroup(title: "OpenClaw", tabs: [.about]),
+            SettingsTabGroup(title: "Operator", tabs: [.about]),
         ]
 
         if showDebug {
@@ -475,7 +475,7 @@ enum SettingsTab: CaseIterable, Identifiable, Hashable {
         case .connection: "Connection"
         case .permissions: "Permissions"
         case .voiceWake: "Voice & Talk"
-        case .systemAgent: "OpenClaw"
+        case .systemAgent: "Operator"
         case .channels: "Channels"
         case .skills: "Skills"
         case .cron: "Cron Jobs"

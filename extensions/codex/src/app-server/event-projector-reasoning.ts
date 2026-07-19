@@ -1,5 +1,8 @@
-import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { AgentPlanStep, AgentPlanStepStatus } from "openclaw/plugin-sdk/channel-outbound";
+import type { EmbeddedRunAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type {
+  AgentPlanStep,
+  AgentPlanStepStatus,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   readNonNegativeInteger,
   readNullableString,

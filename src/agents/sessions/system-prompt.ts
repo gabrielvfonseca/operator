@@ -2,7 +2,6 @@
  * System prompt construction and project context loading
  */
 
-import { formatSkillsForPrompt, type Skill } from "../../skills/loading/session.js";
 import { getDocsPath, getExamplesPath, getReadmePath } from "../config.js";
 import { buildPromisedWorkPromptSection } from "../promised-work-prompt.js";
 
@@ -21,8 +20,6 @@ export interface BuildSystemPromptOptions {
   cwd: string;
   /** Pre-loaded context files. */
   contextFiles?: Array<{ path: string; content: string }>;
-  /** Pre-loaded skills. */
-  skills?: Skill[];
 }
 
 /** Build the system prompt with tools, guidelines, and context */
@@ -35,7 +32,6 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
     appendSystemPrompt,
     cwd,
     contextFiles: providedContextFiles,
-    skills: providedSkills,
   } = options;
   const resolvedCwd = cwd;
   const promptCwd = resolvedCwd.replace(/\\/g, "/");
@@ -66,12 +62,6 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
         prompt += `<project_instructions path="${filePath}">\n${content}\n</project_instructions>\n\n`;
       }
       prompt += "</project_context>\n";
-    }
-
-    // Append skills section (only if read tool is available)
-    const customPromptHasRead = !selectedTools || selectedTools.includes("read");
-    if (customPromptHasRead && skills.length > 0) {
-      prompt += formatSkillsForPrompt(skills);
     }
 
     // Add date and working directory last
@@ -167,11 +157,6 @@ Embedded agent documentation (read only when the user asks about the embedded ag
       prompt += `<project_instructions path="${filePath}">\n${content}\n</project_instructions>\n\n`;
     }
     prompt += "</project_context>\n";
-  }
-
-  // Append skills section (only if read tool is available)
-  if (hasRead && skills.length > 0) {
-    prompt += formatSkillsForPrompt(skills);
   }
 
   // Add date and working directory last

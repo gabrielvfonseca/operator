@@ -68,7 +68,7 @@ vi.mock("./remote-media.js", () => ({
   downloadAndStoreMSTeamsRemoteMedia: vi.fn(),
 }));
 
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { downloadMSTeamsGraphMedia } from "./graph.js";
 import { downloadAndStoreMSTeamsRemoteMedia } from "./remote-media.js";
 import { safeFetchWithPolicy } from "./shared.js";

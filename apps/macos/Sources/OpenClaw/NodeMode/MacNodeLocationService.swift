@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 @MainActor
 final class MacNodeLocationService: NSObject, CLLocationManagerDelegate, ConcurrentLocationServiceCommon {
@@ -30,7 +30,7 @@ final class MacNodeLocationService: NSObject, CLLocationManagerDelegate, Concurr
     }
 
     func currentLocation(
-        desiredAccuracy: OpenClawLocationAccuracy,
+        desiredAccuracy: OperatorLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     {

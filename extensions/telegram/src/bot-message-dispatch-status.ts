@@ -3,9 +3,9 @@ import {
   DEFAULT_TIMING,
   logAckFailure,
   removeAckReactionAfterReply,
-} from "openclaw/plugin-sdk/channel-feedback";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { logVerbose, sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logVerbose, sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { TelegramMessageContext } from "./bot-message-context.js";
 
 export function createTelegramDispatchStatus(params: {

@@ -898,7 +898,7 @@ describe("sanitizeAssistantVisibleText", () => {
     const input = [
       "Visible intro.",
       "⚠️ 🛠️ `run openclaw definitely-not-a-real-subcommand (agent)` failed",
-      "⚠️ 🛠️ gh search issues --repo openclaw/openclaw --state open --no-search-pages.jsonl /tmp/openclaw_open_unlabeled_current.json (agent) failed",
+      "⚠️ 🛠️ gh search issues --repo openclaw/openclaw --state open --no-search-pages.jsonl /tmp/operator_open_unlabeled_current.json (agent) failed",
       "⚠️ 🛠️ gh search issues --repo openclaw/openclaw --state open (agent) failed: command timed out",
       "🛠️ run git status",
       "Visible outro.",

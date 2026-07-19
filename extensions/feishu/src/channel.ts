@@ -1,48 +1,48 @@
 // Feishu plugin module implements channel behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
-import { ToolAuthorizationError } from "openclaw/plugin-sdk/channel-actions";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { ToolAuthorizationError } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 import {
   adaptScopedAccountAccessor,
   createHybridChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionContext,
   ChannelMessageToolDiscovery,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   defineChannelMessageAdapter,
   createRuntimeOutboundDelegates,
   createAccountStatusSink,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createPairingPrefixStripper } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
 import {
   createAllowlistProviderGroupPolicyWarningCollector,
   projectConfigAccountIdWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
-import { getSessionBindingService } from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { getSessionBindingService } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
-} from "openclaw/plugin-sdk/directory-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
 import {
   interactiveReplyToPresentation,
   normalizeInteractiveReply,
   normalizeMessagePresentation,
   resolveInteractiveTextFallback,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { createComputedAccountStatusAdapter } from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { createComputedAccountStatusAdapter } from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import type { PluginRuntime } from "../runtime-api.js";
 import {
   inspectFeishuCredentials,

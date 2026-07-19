@@ -1379,7 +1379,7 @@ describe("runtime web tools resolution", () => {
     loadInstalledPluginIndexInstallRecordsSyncMock.mockReturnValue({
       "external-search": {
         source: "npm",
-        spec: "@operator/external-search",
+        spec: "@gabrielvfonseca/external-search",
       },
     });
 
@@ -1427,7 +1427,7 @@ describe("runtime web tools resolution", () => {
     loadInstalledPluginIndexInstallRecordsSyncMock.mockReturnValue({
       firecrawl: {
         source: "npm",
-        spec: "@operator/firecrawl-plugin",
+        spec: "@gabrielvfonseca/firecrawl-plugin",
       },
     });
     resolveManifestContractOwnerPluginIdMock.mockReturnValueOnce(undefined);
@@ -1773,7 +1773,7 @@ describe("runtime web tools resolution", () => {
 
     beforeEach(() => {
       loadInstalledPluginIndexInstallRecordsSyncMock.mockReturnValue({
-        brave: { source: "npm", spec: "@operator/brave-search" },
+        brave: { source: "npm", spec: "@gabrielvfonseca/brave-search" },
       });
       resolveManifestContractOwnerPluginIdMock.mockImplementation(externalBraveImpl);
     });

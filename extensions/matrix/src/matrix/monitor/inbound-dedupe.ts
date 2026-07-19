@@ -5,7 +5,7 @@
 import {
   createClaimableDedupe,
   resolvePersistentDedupePluginStateNamespace,
-} from "openclaw/plugin-sdk/persistent-dedupe";
+} from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
 import type { MatrixAuth } from "../client/types.js";
 import { LogService } from "../sdk/logger.js";
 

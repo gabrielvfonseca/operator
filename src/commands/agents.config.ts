@@ -1,9 +1,9 @@
-// Agent config mutation and summary builders used by `operator agents` commands.
+// Agent config mutation and summary builders used by `openclaw agents` commands.
 import {
   normalizeOptionalString,
   resolvePrimaryStringValue,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   listAgentEntries,
   resolveAgentDir,

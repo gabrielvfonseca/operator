@@ -3,7 +3,7 @@
  *
  * Builds safe status snapshots and resolves enabled/configured account state.
  */
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
 import {

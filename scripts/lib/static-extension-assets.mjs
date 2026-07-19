@@ -108,7 +108,7 @@ function listDistExtensionPackageDirs(rootDir, fsImpl) {
 }
 
 function readPackageStaticAssetEntries(packageJson) {
-  const entries = packageJson.openclaw?.build?.staticAssets;
+  const entries = packageJson.operator?.build?.staticAssets;
   return Array.isArray(entries) ? entries : [];
 }
 
@@ -116,7 +116,7 @@ function readPackageStaticAssetEntries(packageJson) {
 // from core dist, so their static assets must not be discovered for core
 // runtime postbuild copies.
 function isExternalDistPackage(packageJson) {
-  return packageJson.openclaw?.build?.bundledDist === false;
+  return packageJson.operator?.build?.bundledDist === false;
 }
 
 /**

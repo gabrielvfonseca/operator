@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 enum GatewayOnboardingReset {
     @MainActor

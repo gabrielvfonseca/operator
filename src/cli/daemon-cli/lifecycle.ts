@@ -1,6 +1,6 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Gateway service lifecycle runners, including unmanaged-process fallbacks and restart health checks.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
 import { isRestartEnabled } from "../../config/commands.flags.js";
 import { readBestEffortConfig, resolveGatewayPort } from "../../config/config.js";
@@ -270,7 +270,7 @@ async function restartGatewayWithoutServiceManager(
   }
   if (pids.length > 1) {
     throw new Error(
-      `multiple gateway processes are listening on port ${port}: ${formatGatewayPidList(pids)}; use "operator gateway status --deep" before retrying restart`,
+      `multiple gateway processes are listening on port ${port}: ${formatGatewayPidList(pids)}; use "openclaw gateway status --deep" before retrying restart`,
     );
   }
   writeGatewayRestartIntentSync({
@@ -443,8 +443,8 @@ export async function runDaemonRestart(opts: DaemonLifecycleOptions = {}): Promi
         }
 
         fail(`Gateway restart timed out after ${restartWaitSeconds}s waiting for health checks.`, [
-          formatCliCommand("operator gateway status --deep"),
-          formatCliCommand("operator doctor"),
+          formatCliCommand("openclaw gateway status --deep"),
+          formatCliCommand("openclaw doctor"),
         ]);
         throw new Error("unreachable after gateway restart health failure");
       }
@@ -514,8 +514,8 @@ export async function runDaemonRestart(opts: DaemonLifecycleOptions = {}): Promi
       }
 
       fail(failure.failMessage, [
-        formatCliCommand("operator gateway status --deep"),
-        formatCliCommand("operator doctor"),
+        formatCliCommand("openclaw gateway status --deep"),
+        formatCliCommand("openclaw doctor"),
       ]);
       throw new Error("unreachable after gateway restart failure");
     },

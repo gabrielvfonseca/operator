@@ -1,5 +1,5 @@
 // Discord tests cover message handler.reply typing policy plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import type { DiscordMessagePreflightContext } from "./message-handler.preflight.js";
 import { resolveDiscordAcceptedTypingPrestart } from "./message-handler.reply-typing-policy.js";

@@ -1,11 +1,11 @@
 import AppKit
 import Foundation
-import OpenClawDiscovery
-import OpenClawIPC
-import OpenClawKit
+import OperatorDiscovery
+import OperatorIPC
+import OperatorKit
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private struct OnboardingStoredGatewayPreference {
     let stableID: String?
@@ -73,7 +73,7 @@ struct OnboardingViewSmokeTests {
         #expect(short < preferred)
     }
 
-    @Test func `page order delegates setup after inference to OpenClaw`() {
+    @Test func `page order delegates setup after inference to Operator`() {
         let order = OnboardingView.pageOrder(
             for: .local,
             requiresCLIInstall: false)
@@ -233,11 +233,11 @@ struct OnboardingViewSmokeTests {
 
     @Test func `select remote gateway clears stale ssh target when endpoint unresolved`() async {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-config-\(UUID().uuidString)")
+            .appendingPathComponent("operator.json")
             .path
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": override]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host:2222"
@@ -265,8 +265,8 @@ struct OnboardingViewSmokeTests {
 
     @Test func `different remote selection resets UI but preserves prior activation lease`() async throws {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-config-\(UUID().uuidString)")
+            .appendingPathComponent("operator.json")
             .path
         let previousGatewayPreference = captureOnboardingGatewayPreference()
         let (defaults, suiteName) = try makeOnboardingResumeDefaults()
@@ -279,7 +279,7 @@ struct OnboardingViewSmokeTests {
             routeIdentity: "remote:id:gateway-a",
             defaults: defaults)
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": override]) {
             let state = AppState(preview: true)
             state.connectionMode = .remote
             let view = OnboardingView(
@@ -378,8 +378,8 @@ struct OnboardingViewSmokeTests {
 
     @Test func `same persisted remote selection preserves pending gateway setup state`() async throws {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-config-\(UUID().uuidString)")
+            .appendingPathComponent("operator.json")
             .path
         let previousGatewayPreference = captureOnboardingGatewayPreference()
         let (defaults, suiteName) = try makeOnboardingResumeDefaults()
@@ -392,7 +392,7 @@ struct OnboardingViewSmokeTests {
             routeIdentity: "remote:id:gateway-a",
             defaults: defaults)
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": override]) {
             let state = AppState(preview: true)
             state.connectionMode = .remote
             let view = OnboardingView(

@@ -3,7 +3,7 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
 import { resolveDefaultAgentDir } from "../../agents/agent-scope.js";
 import {

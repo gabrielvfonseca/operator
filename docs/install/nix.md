@@ -1,5 +1,5 @@
 ---
-summary: "Install OpenClaw declaratively with Nix"
+summary: "Install Operator declaratively with Nix"
 read_when:
   - You want reproducible, rollback-able installs
   - You're already using Nix/NixOS/Home Manager
@@ -7,7 +7,7 @@ read_when:
 title: "Nix"
 ---
 
-Install OpenClaw declaratively with **[nix-openclaw](https://github.com/openclaw/nix-openclaw)**, the first-party, batteries-included Home Manager module.
+Install Operator declaratively with **[nix-openclaw](https://github.com/openclaw/nix-openclaw)**, the first-party, batteries-included Home Manager module.
 
 <Info>
 The [nix-openclaw](https://github.com/openclaw/nix-openclaw) repo is the source of truth for Nix installation. This page is a quick overview.
@@ -27,10 +27,10 @@ The [nix-openclaw](https://github.com/openclaw/nix-openclaw) repo is the source 
     If Nix is not already installed, follow the [Determinate Nix installer](https://github.com/DeterminateSystems/nix-installer) instructions.
   </Step>
   <Step title="Create a local flake">
-    Use the agent-first template from the nix-openclaw repo:
+    Use the agent-first template from the nix-operator repo:
     ```bash
-    mkdir -p ~/code/openclaw-local
-    # Copy templates/agent-first/flake.nix from the nix-openclaw repo
+    mkdir -p ~/code/operator-local
+    # Copy templates/agent-first/flake.nix from the nix-operator repo
     ```
   </Step>
   <Step title="Configure secrets">
@@ -46,41 +46,41 @@ The [nix-openclaw](https://github.com/openclaw/nix-openclaw) repo is the source 
   </Step>
 </Steps>
 
-See the [nix-openclaw README](https://github.com/openclaw/nix-openclaw) for full module options and examples.
+See the [nix-operator README](https://github.com/openclaw/nix-openclaw) for full module options and examples.
 
 ## Nix-mode runtime behavior
 
-When `OPENCLAW_NIX_MODE=1` is set (automatic with nix-openclaw), OpenClaw enters a deterministic mode for Nix-managed installs. Other Nix packages can set the same mode; nix-openclaw is the first-party reference.
+When `OPERATOR_NIX_MODE=1` is set (automatic with nix-openclaw), Operator enters a deterministic mode for Nix-managed installs. Other Nix packages can set the same mode; nix-operator is the first-party reference.
 
 You can also set it manually:
 
 ```bash
-export OPENCLAW_NIX_MODE=1
+export OPERATOR_NIX_MODE=1
 ```
 
 On macOS, the GUI app does not inherit shell environment variables. Enable Nix mode via `defaults` instead:
 
 ```bash
-defaults write ai.openclaw.mac openclaw.nixMode -bool true
+defaults write ai.operator.mac operator.nixMode -bool true
 ```
 
 ### What changes in Nix mode
 
 - Auto-install and self-mutation flows are disabled.
-- `openclaw.json` is treated as immutable. Startup-derived defaults stay runtime-only, and config writers (setup, onboarding, mutating `openclaw update`, plugin install/update/uninstall/enable, `doctor --fix`, `doctor --generate-gateway-token`, `openclaw config set`) refuse to edit the file.
-- Edit the Nix source instead. For nix-openclaw, use the agent-first [Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) and set config under `programs.openclaw.config` or `instances.<name>.config`.
+- `operator.json` is treated as immutable. Startup-derived defaults stay runtime-only, and config writers (setup, onboarding, mutating `operator update`, plugin install/update/uninstall/enable, `doctor --fix`, `doctor --generate-gateway-token`, `operator config set`) refuse to edit the file.
+- Edit the Nix source instead. For nix-openclaw, use the agent-first [Quick Start](https://github.com/openclaw/nix-openclaw#quick-start) and set config under `programs.operator.config` or `instances.<name>.config`.
 - Missing dependencies surface Nix-specific remediation messages.
 - The UI shows a read-only Nix mode banner.
 
 ### Config and state paths
 
-OpenClaw reads JSON5 config from `OPENCLAW_CONFIG_PATH` and stores mutable data in `OPENCLAW_STATE_DIR`. Under Nix, set these explicitly to Nix-managed locations so runtime state and config stay out of the immutable store.
+Operator reads JSON5 config from `OPERATOR_CONFIG_PATH` and stores mutable data in `OPERATOR_STATE_DIR`. Under Nix, set these explicitly to Nix-managed locations so runtime state and config stay out of the immutable store.
 
 | Variable               | Default                                 |
 | ---------------------- | --------------------------------------- |
-| `OPENCLAW_HOME`        | `HOME` / `USERPROFILE` / `os.homedir()` |
-| `OPENCLAW_STATE_DIR`   | `~/.openclaw`                           |
-| `OPENCLAW_CONFIG_PATH` | `$OPENCLAW_STATE_DIR/openclaw.json`     |
+| `OPERATOR_HOME`        | `HOME` / `USERPROFILE` / `os.homedir()` |
+| `OPERATOR_STATE_DIR`   | `~/.operator`                           |
+| `OPERATOR_CONFIG_PATH` | `$OPERATOR_STATE_DIR/operator.json`     |
 
 ### Service PATH discovery
 

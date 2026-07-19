@@ -3,4 +3,4 @@ export {
   buildSecretInputSchema,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";

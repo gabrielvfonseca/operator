@@ -19,7 +19,7 @@ import {
   type OpenAIReasoningEffort,
   type OpenAIToolProjection,
   type ResponsesToolCallState,
-} from "@operator/ai/internal/openai";
+} from "@gabrielvfonseca/ai/internal/openai";
 import {
   calculateCost,
   createFirstStreamEventAbortController,
@@ -28,15 +28,15 @@ import {
   getFirstStreamEventTimeoutMs,
   parseStreamingJson,
   withFirstStreamEventTimeout,
-} from "@operator/ai/internal/runtime";
+} from "@gabrielvfonseca/ai/internal/runtime";
 import {
   describeToolResultMediaPlaceholder,
   extractToolResultText,
   isImageWithMediaPayload,
   stripSystemPromptCacheBoundary,
-} from "@operator/ai/internal/shared";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/ai/internal/shared";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import OpenAI, { AzureOpenAI } from "openai";
 import type {
   FunctionTool,
@@ -108,7 +108,7 @@ const OPENAI_CODEX_RESPONSES_DEFAULT_INSTRUCTIONS = "Follow the user request.";
 const AZURE_RESPONSES_FIRST_EVENT_TIMEOUT_MS = 30_000;
 const RESPONSE_FAILED_NO_DETAILS_MESSAGE = "Unknown error (no error details in response)";
 const OPENAI_RESPONSES_REASONING_REPLAY_META_KEY = "__operator_replay";
-const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "operatorReasoningReplay";
+const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "openclawReasoningReplay";
 const OPENAI_RESPONSES_REPLAY_ITEM_ID_MAX_LENGTH = 64;
 
 type ReplayableResponseOutputMessage = Omit<ResponseOutputMessage, "id"> & { id?: string };
@@ -1928,7 +1928,7 @@ export function createOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
@@ -2329,7 +2329,7 @@ export function createAzureOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
@@ -2493,7 +2493,7 @@ const responsesTesting = {
 };
 
 declare global {
-  var operatorOpenAIResponsesTransportTestApi: typeof responsesTesting | undefined;
+  var openclawOpenAIResponsesTransportTestApi: typeof responsesTesting | undefined;
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {

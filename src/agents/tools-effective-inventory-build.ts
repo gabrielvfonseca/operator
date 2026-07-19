@@ -3,7 +3,7 @@
  * runtime-compatible tools plus warnings for tools quarantined by schema
  * policy, with plugin/channel ownership preserved.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderRuntimeModel } from "../plugins/provider-runtime-model.types.js";
 import { getActivePluginRegistry } from "../plugins/runtime.js";

@@ -35,7 +35,7 @@ For the plugin authoring guide, see [Plugin SDK overview](/plugins/sdk-overview)
 | `plugin-sdk/migration`         | Migration provider item helpers such as `createMigrationItem`, reason constants, item status markers, redaction helpers, and `summarizeMigrationItems`                                                  |
 | `plugin-sdk/migration-runtime` | Runtime migration helpers such as `copyMigrationFileItem`, `resolvePlannedMigrationTargets`, `withCachedMigrationConfigRuntime`, and `writeMigrationReport`                                             |
 | `plugin-sdk/health`            | Doctor health-check registration, detection, repair, selection, severity, and finding types for bundled health consumers                                                                                |
-| `plugin-sdk/config-schema`     | Deprecated. Root `openclaw.json` Zod schema (`OpenClawSchema`); define plugin-local schemas instead and validate with `plugin-sdk/json-schema-runtime`                                                  |
+| `plugin-sdk/config-schema`     | Deprecated. Root `operator.json` Zod schema (`OperatorSchema`); define plugin-local schemas instead and validate with `plugin-sdk/json-schema-runtime`                                                  |
 
 ### Deprecated compatibility and test helpers
 
@@ -53,7 +53,7 @@ barrels `plugin-sdk/agent-runtime`, `plugin-sdk/channel-lifecycle`,
 `plugin-sdk/security-runtime` are likewise deprecated in favor of focused
 subpaths.
 
-OpenClaw's Vitest-backed test-helper subpaths are repo-local only and are no
+Operator's Vitest-backed test-helper subpaths are repo-local only and are no
 longer package exports: `agent-runtime-test-contracts`,
 `channel-contract-testing`, `channel-target-testing`, `channel-test-helpers`,
 `plugin-state-test-runtime`, `plugin-test-api`, `plugin-test-contracts`,
@@ -101,7 +101,7 @@ deprecated for new code; see the per-row notes below.
     | `plugin-sdk/channel-reply-pipeline` | Deprecated compatibility facade. Use `plugin-sdk/channel-outbound`. |
     | `plugin-sdk/channel-config-helpers` | `createHybridChannelConfigAdapter`, `resolveChannelDmAccess`, `resolveChannelDmAllowFrom`, `resolveChannelDmPolicy`, `normalizeChannelDmPolicy`, `normalizeLegacyDmAliases` |
     | `plugin-sdk/channel-config-schema` | Shared channel config schema primitives plus Zod and direct JSON/TypeBox builders |
-    | `plugin-sdk/bundled-channel-config-schema` | Bundled OpenClaw channel config schemas for maintained bundled plugins only |
+    | `plugin-sdk/bundled-channel-config-schema` | Bundled Operator channel config schemas for maintained bundled plugins only |
     | `plugin-sdk/chat-channel-ids` | `BUNDLED_CHAT_CHANNEL_IDS`, `BUNDLED_CHAT_CHANNEL_ENVELOPE_PREFIXES`, `ChatChannelId`. Canonical bundled/official chat channel ids plus formatter labels/aliases for plugins that need to recognize envelope-prefixed text without hardcoding their own table. |
     | `plugin-sdk/channel-config-schema-legacy` | Deprecated compatibility alias for bundled-channel config schemas |
     | `plugin-sdk/telegram-command-config` | Deprecated Telegram command-name/description normalization and duplicate/conflict checks; use plugin-local command config handling in new plugin code |
@@ -131,7 +131,7 @@ deprecated for new code; see the per-row notes below.
     | `plugin-sdk/group-access` | Deprecated group-access decision helpers; use `resolveChannelMessageIngress` from `plugin-sdk/channel-ingress-runtime` |
     | `plugin-sdk/direct-dm`, `plugin-sdk/direct-dm-access` | Deprecated compatibility facades. Use `plugin-sdk/channel-inbound`. |
     | `plugin-sdk/direct-dm-guard-policy` | Narrow direct-DM pre-crypto guard policy helpers |
-    | `plugin-sdk/discord` | Deprecated Discord compatibility facade for published `@operator/discord@2026.3.13` and tracked owner compatibility; new plugins should use generic channel SDK subpaths |
+    | `plugin-sdk/discord` | Deprecated Discord compatibility facade for published `@gabrielvfonseca/discord@2026.3.13` and tracked owner compatibility; new plugins should use generic channel SDK subpaths |
     | `plugin-sdk/telegram-account` | Deprecated Telegram account-resolution compatibility facade for tracked owner compatibility; new plugins should use injected runtime helpers or generic channel SDK subpaths |
     | `plugin-sdk/zalouser` | Deprecated Zalo Personal compatibility facade for published Lark/Zalo packages that still import sender command authorization; new plugins should use generic channel SDK subpaths |
     | `plugin-sdk/interactive-runtime` | Semantic message presentation, delivery, and legacy interactive reply helpers. See [Message Presentation](/plugins/message-presentation) |
@@ -172,7 +172,7 @@ and pairing-path families.
     | `plugin-sdk/provider-auth-api-key` | API-key onboarding/profile-write helpers such as `upsertApiKeyProfile` |
     | `plugin-sdk/provider-auth-result` | Standard OAuth auth-result builder |
     | `plugin-sdk/provider-env-vars` | Provider auth env-var lookup helpers |
-    | `plugin-sdk/provider-auth` | `createProviderApiKeyAuthMethod`, `ensureApiKeyFromOptionEnvOrPrompt`, `upsertAuthProfile`, `upsertApiKeyProfile`, `writeOAuthCredentials`, OpenAI Codex auth-import helpers, deprecated `resolveOpenClawAgentDir` compatibility export |
+    | `plugin-sdk/provider-auth` | `createProviderApiKeyAuthMethod`, `ensureApiKeyFromOptionEnvOrPrompt`, `upsertAuthProfile`, `upsertApiKeyProfile`, `writeOAuthCredentials`, OpenAI Codex auth-import helpers, deprecated `resolveOperatorAgentDir` compatibility export |
     | `plugin-sdk/provider-model-shared` | `ProviderReplayFamily`, `buildProviderReplayFamilyHooks`, `normalizeModelCompat`, shared replay-policy builders, provider-endpoint helpers, and shared model-id normalization helpers |
     | `plugin-sdk/provider-catalog-live-runtime` | Live provider model catalog helpers for guarded `/models`-style discovery: `buildLiveModelProviderConfig`, `fetchLiveProviderModelRows`, `getCachedLiveProviderModelRows`, `fetchLiveProviderModelIds`, `LiveModelCatalogHttpError`, `clearLiveCatalogCacheForTests`, model-id filtering, TTL cache, and static fallback |
     | `plugin-sdk/provider-catalog-runtime` | Provider catalog augmentation runtime hook and plugin-provider registry seams for contract tests |
@@ -198,7 +198,7 @@ Provider usage snapshots normally report one or more quota `windows`, each with
 a label, percent used, and optional reset time. Providers that expose balance or
 account-state text instead of resettable quota windows should return
 `summary` with an empty `windows` array rather than fabricating percentages.
-OpenClaw displays that summary text in status output; use `error` only when the
+Operator displays that summary text in status output; use `error` only when the
 usage endpoint failed or returned no usable usage data.
 
   <Accordion title="Auth and security subpaths">
@@ -261,7 +261,7 @@ usage endpoint failed or returned no usable usage data.
     | `plugin-sdk/tts-runtime` | Supported facade for text-to-speech config schemas and runtime helpers |
     | `plugin-sdk/gateway-method-runtime` | Reserved Gateway method dispatch helper for plugin HTTP routes that declare `contracts.gatewayMethodDispatch: ["authenticated-request"]` |
     | `plugin-sdk/gateway-runtime` | Gateway client, event-loop-ready client start helper, gateway CLI RPC, gateway protocol errors, advertised LAN host resolution, and channel-status patch helpers |
-    | `plugin-sdk/config-contracts` | Focused type-only config surface for plugin config shapes such as `OpenClawConfig` and channel/provider config types |
+    | `plugin-sdk/config-contracts` | Focused type-only config surface for plugin config shapes such as `OperatorConfig` and channel/provider config types |
     | `plugin-sdk/plugin-config-runtime` | Runtime plugin-config helpers such as `mergeDeep`, `requireRuntimeConfig`, `resolvePluginConfigObject`, and `resolveLivePluginConfigObject` |
     | `plugin-sdk/config-mutation` | Transactional config mutation helpers such as `mutateConfigFile`, `replaceConfigFile`, and `logConfigUpdated` |
     | `plugin-sdk/message-tool-delivery-hints` | Shared message-tool delivery metadata hint strings |
@@ -309,7 +309,7 @@ usage endpoint failed or returned no usable usage data.
     | `plugin-sdk/models-provider-runtime` | `/models` command/provider reply helpers |
     | `plugin-sdk/skill-commands-runtime` | Skill command listing helpers |
     | `plugin-sdk/native-command-registry` | Native command registry/build/serialize helpers |
-    | `plugin-sdk/agent-harness` | Experimental trusted-plugin surface for low-level agent harnesses: harness types, active-run steer/abort helpers, OpenClaw tool bridge helpers, runtime-plan tool policy helpers, terminal outcome classification, tool progress formatting/detail helpers, and attempt result utilities |
+    | `plugin-sdk/agent-harness` | Experimental trusted-plugin surface for low-level agent harnesses: harness types, active-run steer/abort helpers, Operator tool bridge helpers, runtime-plan tool policy helpers, terminal outcome classification, tool progress formatting/detail helpers, and attempt result utilities |
     | `plugin-sdk/provider-zai-endpoint` | Deprecated Z.AI provider-owned endpoint detection facade; use the Z.AI plugin public API |
     | `plugin-sdk/async-lock-runtime` | Process-local async lock helper for small runtime state files |
     | `plugin-sdk/channel-activity-runtime` | Channel activity telemetry helper |
@@ -339,7 +339,7 @@ usage endpoint failed or returned no usable usage data.
     | `plugin-sdk/text-utility-runtime` | Low-level text and path helpers, including five-entity HTML escaping |
     | `plugin-sdk/host-runtime` | Hostname and SCP host normalization helpers |
     | `plugin-sdk/retry-runtime` | Retry config and retry runner helpers |
-    | `plugin-sdk/agent-runtime` | Deprecated broad barrel for agent dir/identity/workspace helpers, including `resolveAgentDir`, `resolveDefaultAgentDir`, and the deprecated `resolveOpenClawAgentDir` compatibility export; prefer focused agent/runtime subpaths |
+    | `plugin-sdk/agent-runtime` | Deprecated broad barrel for agent dir/identity/workspace helpers, including `resolveAgentDir`, `resolveDefaultAgentDir`, and the deprecated `resolveOperatorAgentDir` compatibility export; prefer focused agent/runtime subpaths |
     | `plugin-sdk/directory-runtime` | Config-backed directory query/dedup |
     | `plugin-sdk/keyed-async-queue` | `KeyedAsyncQueue` |
   </Accordion>
@@ -347,7 +347,7 @@ usage endpoint failed or returned no usable usage data.
   <Accordion title="Capability and testing subpaths">
     | Subpath | Key exports |
     | --- | --- |
-    | `plugin-sdk/media-runtime` | Deprecated broad media barrel including `saveRemoteMedia`, `saveResponseMedia`, `readRemoteMediaBuffer`, and deprecated `fetchRemoteMedia`; prefer `plugin-sdk/media-store`, `plugin-sdk/media-mime`, `plugin-sdk/outbound-media`, and capability runtime subpaths, and prefer store helpers before buffer reads when a URL should become OpenClaw media |
+    | `plugin-sdk/media-runtime` | Deprecated broad media barrel including `saveRemoteMedia`, `saveResponseMedia`, `readRemoteMediaBuffer`, and deprecated `fetchRemoteMedia`; prefer `plugin-sdk/media-store`, `plugin-sdk/media-mime`, `plugin-sdk/outbound-media`, and capability runtime subpaths, and prefer store helpers before buffer reads when a URL should become Operator media |
     | `plugin-sdk/media-mime` | Narrow MIME normalization, file-extension mapping, MIME detection, and media-kind helpers |
     | `plugin-sdk/media-store` | Narrow media store helpers such as `saveMediaBuffer` and `saveMediaStream` |
     | `plugin-sdk/media-generation-runtime` | Shared media-generation failover helpers, candidate selection, and missing-model messaging |
@@ -421,7 +421,7 @@ usage endpoint failed or returned no usable usage data.
     | Subpath | Owner and purpose |
     | --- | --- |
     | `plugin-sdk/codex-mcp-projection` | Bundled Codex plugin helper for projecting user MCP server config into Codex app-server thread config (reserved package export) |
-    | `plugin-sdk/codex-native-task-runtime` | Bundled Codex plugin helper for mirroring Codex app-server native subagents into OpenClaw task state (repo-local only, not a package export) |
+    | `plugin-sdk/codex-native-task-runtime` | Bundled Codex plugin helper for mirroring Codex app-server native subagents into Operator task state (repo-local only, not a package export) |
 
   </Accordion>
 </AccordionGroup>

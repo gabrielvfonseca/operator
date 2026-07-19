@@ -1,5 +1,5 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { QaRunnerCliRegistration } from "openclaw/plugin-sdk/qa-runner-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { QaRunnerCliRegistration } from "@gabrielvfonseca/operator/plugin-sdk/qa-runner-runtime";
 import {
   acquireQaCredentialLease,
   startQaCredentialLeaseHeartbeat,

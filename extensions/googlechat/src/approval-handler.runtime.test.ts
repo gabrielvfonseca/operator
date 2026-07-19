@@ -1,8 +1,8 @@
 import type {
   ExecApprovalPendingView,
   ResolvedApprovalView,
-} from "openclaw/plugin-sdk/approval-handler-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import {
@@ -456,7 +456,7 @@ describe("googleChatApprovalNativeRuntime", () => {
       view,
     });
 
-    expect(JSON.stringify(pendingPayload.cardsV2)).toContain("openclaw.approval");
+    expect(JSON.stringify(pendingPayload.cardsV2)).toContain("operator.approval");
     expect(JSON.stringify(pendingPayload.cardsV2)).not.toContain(
       "https://chat-app.example.test/googlechat",
     );

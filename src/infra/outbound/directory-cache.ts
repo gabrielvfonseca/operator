@@ -1,6 +1,6 @@
 // Directory cache stores short-lived channel directory lookups and invalidates
 // them on config-object changes or resolver signature updates.
-import { resolveNonNegativeIntegerOption } from "@operator/normalization-core/number-coercion";
+import { resolveNonNegativeIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { ChannelDirectoryEntryKind, ChannelId } from "../../channels/plugins/types.public.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 

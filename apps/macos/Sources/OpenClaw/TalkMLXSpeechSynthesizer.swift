@@ -1,6 +1,6 @@
 import Dispatch
 import Foundation
-import OpenClawMLXTTSProtocol
+import OperatorMLXTTSProtocol
 import OSLog
 
 protocol MLXTTSTransport: AnyObject, Sendable {
@@ -23,7 +23,7 @@ actor TalkMLXSpeechSynthesizer {
     static let shared = TalkMLXSpeechSynthesizer()
     static let defaultModelRepo = "mlx-community/Soprano-80M-bf16"
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "talk.mlx")
+    private let logger = Logger(subsystem: "ai.operator", category: "talk.mlx")
     private let transportFactory: MLXTTSTransportFactory
     private let idleDuration: Duration
     private let cancelGraceDuration: Duration
@@ -290,7 +290,7 @@ actor TalkMLXSpeechSynthesizer {
 
     fileprivate static func helperInvocation() -> HelperInvocation {
         let fileManager = FileManager.default
-        if let override = ProcessInfo.processInfo.environment["OPENCLAW_MLX_TTS_BIN"], !override.isEmpty {
+        if let override = ProcessInfo.processInfo.environment["OPERATOR_MLX_TTS_BIN"], !override.isEmpty {
             return HelperInvocation(
                 executableURL: URL(fileURLWithPath: override),
                 argumentPrefix: [],
@@ -298,7 +298,7 @@ actor TalkMLXSpeechSynthesizer {
         }
 
         if let executableDir = Bundle.main.executableURL?.deletingLastPathComponent() {
-            let bundled = executableDir.appendingPathComponent("openclaw-mlx-tts")
+            let bundled = executableDir.appendingPathComponent("operator-mlx-tts")
             if fileManager.isExecutableFile(atPath: bundled.path) {
                 return HelperInvocation(
                     executableURL: bundled,
@@ -309,8 +309,8 @@ actor TalkMLXSpeechSynthesizer {
 
         return HelperInvocation(
             executableURL: URL(fileURLWithPath: "/usr/bin/env"),
-            argumentPrefix: ["openclaw-mlx-tts"],
-            displayName: "openclaw-mlx-tts")
+            argumentPrefix: ["operator-mlx-tts"],
+            displayName: "operator-mlx-tts")
     }
 
     private static func resolvedModelRepo(_ modelRepo: String?) -> String {

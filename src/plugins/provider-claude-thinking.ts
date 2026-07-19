@@ -10,7 +10,7 @@ import {
   resolveClaudeSonnet5ModelIdentity,
   supportsClaudeAdaptiveThinking,
   supportsClaudeNativeXhighEffort,
-} from "@operator/llm-core";
+} from "@gabrielvfonseca/llm-core";
 import type { ProviderThinkingProfile } from "./provider-thinking.types.js";
 
 const BASE_CLAUDE_THINKING_LEVELS = [

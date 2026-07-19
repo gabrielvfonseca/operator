@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   clearAgentHarnesses,
   listRegisteredAgentHarnesses,
@@ -62,7 +62,7 @@ describe("resolveEffectiveAgentRuntime", () => {
         provider: "openai",
         modelId: "gpt-5.6-luna",
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("keeps an authored custom route on Operator before registered harness selection", () => {
@@ -94,18 +94,21 @@ describe("resolveEffectiveAgentRuntime", () => {
         provider: "openai",
         modelId: "gpt-5.6-luna",
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(supports).not.toHaveBeenCalled();
   });
 
   it("prefers explicit session overrides and treats legacy harness ids as observational", () => {
-    const cfg = openAIConfig("openclaw");
+    const cfg = openAIConfig("@gabrielvfonseca/operator");
     expect(
       resolveEffectiveAgentRuntime({
         cfg,
         provider: "openai",
         modelId: "gpt-5.6-luna",
-        sessionEntry: { agentRuntimeOverride: "codex", agentHarnessId: "openclaw" },
+        sessionEntry: {
+          agentRuntimeOverride: "codex",
+          agentHarnessId: "@gabrielvfonseca/operator",
+        },
       }),
     ).toBe("codex");
     expect(
@@ -115,14 +118,14 @@ describe("resolveEffectiveAgentRuntime", () => {
         modelId: "gpt-5.6-luna",
         sessionEntry: { agentHarnessId: "codex" },
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(
       resolveEffectiveAgentRuntime({
         cfg,
         provider: "openai",
         modelId: "gpt-5.6-luna",
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("lets an explicit Operator override replace configured Codex policy", () => {
@@ -131,9 +134,12 @@ describe("resolveEffectiveAgentRuntime", () => {
         cfg: openAIConfig("codex"),
         provider: "openai",
         modelId: "gpt-5.6-luna",
-        sessionEntry: { agentRuntimeOverride: "openclaw", agentHarnessId: "codex" },
+        sessionEntry: {
+          agentRuntimeOverride: "@gabrielvfonseca/operator",
+          agentHarnessId: "codex",
+        },
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("keeps a supported candidate level unchanged", () => {

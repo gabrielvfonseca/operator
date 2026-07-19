@@ -3,7 +3,7 @@
  */
 import crypto from "node:crypto";
 import path from "node:path";
-import { sanitizeSurrogates } from "@operator/ai/internal/shared";
+import { sanitizeSurrogates } from "@gabrielvfonseca/ai/internal/shared";
 import { resolveStateDir } from "../config/paths.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveUserPath } from "../utils.js";

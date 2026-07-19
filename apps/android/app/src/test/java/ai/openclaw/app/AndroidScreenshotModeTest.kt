@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.ui.SettingsRoute
+import ai.operator.app.ui.SettingsRoute
 import android.content.Intent
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

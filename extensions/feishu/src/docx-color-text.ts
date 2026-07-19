@@ -11,8 +11,8 @@
  *   "Revenue [green]+15%[/green] YoY, Costs [red]-3%[/red]"
  */
 
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 
 // Feishu text_color values (1-7)
 const TEXT_COLOR: Record<string, number> = {

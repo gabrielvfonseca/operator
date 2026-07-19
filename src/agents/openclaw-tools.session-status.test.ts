@@ -1,6 +1,6 @@
 // Verifies session status output across scoped stores, tasks, and runtime hooks.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveSessionStoreEntry } from "../config/sessions/store-entry.js";
 import { mergeSessionEntry, type SessionEntry } from "../config/sessions/types.js";
@@ -373,7 +373,7 @@ beforeAll(async () => {
     "agent:main:spawned": {
       sessionId: "spawned-status-warmup",
       updatedAt: 1,
-      spawnedWorkspaceDir: "/tmp/openclaw-spawned-workspace",
+      spawnedWorkspaceDir: "/tmp/operator-spawned-workspace",
       providerOverride: "anthropic",
       modelOverride: "claude-opus-4-6",
     },
@@ -588,7 +588,7 @@ describe("session_status tool", () => {
       "agent:main:spawned": {
         sessionId: "spawned-status",
         updatedAt: 10,
-        spawnedWorkspaceDir: "/tmp/openclaw-spawned-workspace",
+        spawnedWorkspaceDir: "/tmp/operator-spawned-workspace",
         providerOverride: "anthropic",
         modelOverride: "claude-opus-4-6",
       },
@@ -599,7 +599,7 @@ describe("session_status tool", () => {
     await tool.execute("call-spawned-workspace-status", {});
 
     expectRecordFields(mockCallArg(buildStatusMessageMock), {
-      workspaceDir: "/tmp/openclaw-spawned-workspace",
+      workspaceDir: "/tmp/operator-spawned-workspace",
     });
   });
 
@@ -1015,7 +1015,7 @@ describe("session_status tool", () => {
 
     const tool = getSessionStatusTool("agent:main:main");
 
-    const result = await tool.execute("call-tui-label", { sessionKey: "openclaw-tui" });
+    const result = await tool.execute("call-tui-label", { sessionKey: "operator-tui" });
     const details = result.details as { ok?: boolean; sessionKey?: string };
     expect(details.ok).toBe(true);
     expect(details.sessionKey).toBe("agent:main:main");

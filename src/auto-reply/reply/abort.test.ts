@@ -1,6 +1,6 @@
 // Tests abort request handling, cutoff persistence, and active run cleanup.
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SubagentRunRecord } from "../../agents/subagent-registry.js";
 import type { OperatorConfig } from "../../config/config.js";
@@ -82,7 +82,7 @@ vi.mock("../../acp/control-plane/manager.js", () => ({
   }),
 }));
 
-const suiteTempDirs = createSuiteTempRootTracker({ prefix: "openclaw-abort-" });
+const suiteTempDirs = createSuiteTempRootTracker({ prefix: "operator-abort-" });
 
 describe("abort detection", () => {
   const trackedAbortMemoryKeys = new Set<string>();
@@ -280,7 +280,7 @@ describe("abort detection", () => {
       "do not do that",
       "please stop",
       "stop please",
-      "STOP OPERATOR",
+      "STOP OPENCLAW",
       "stop openclaw!!!",
       "stop don’t do anything",
       "detente",
@@ -336,8 +336,8 @@ describe("abort detection", () => {
     expect(isAbortRequestText("stopp")).toBe(true);
     expect(isAbortRequestText("pare")).toBe(true);
     expect(isAbortRequestText(" توقف ")).toBe(true);
-    expect(isAbortRequestText("/stop@openclaw_bot", { botUsername: "openclaw_bot" })).toBe(true);
-    expect(isAbortRequestText("/Stop@openclaw_bot", { botUsername: "openclaw_bot" })).toBe(true);
+    expect(isAbortRequestText("/stop@operator_bot", { botUsername: "operator_bot" })).toBe(true);
+    expect(isAbortRequestText("/Stop@operator_bot", { botUsername: "operator_bot" })).toBe(true);
 
     expect(isAbortRequestText("/status")).toBe(false);
     expect(isAbortRequestText("wait")).toBe(false);

@@ -1,10 +1,10 @@
 // Venice plugin entrypoint registers its Operator integration.
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
 import {
   applyModelCompatPatch,
   type ModelCompatConfig,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { applyVeniceConfig, VENICE_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildVeniceProvider } from "./provider-catalog.js";
 import { createVeniceDeepSeekV4Wrapper } from "./stream.js";

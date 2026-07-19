@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/routing";
-import { captureEnv } from "openclaw/plugin-sdk/test-env";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { captureEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("WhatsApp auth dir profile resolution", () => {
@@ -12,7 +12,7 @@ describe("WhatsApp auth dir profile resolution", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv(["OPERATOR_STATE_DIR", "OPERATOR_OAUTH_DIR"]);
-    tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-wa-profile-"));
+    tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-wa-profile-"));
     delete process.env.OPERATOR_STATE_DIR;
     delete process.env.OPERATOR_OAUTH_DIR;
     vi.resetModules();

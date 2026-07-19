@@ -1,11 +1,11 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Runs synchronous extra security audit checks.
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   normalizeStringifiedOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveConfiguredToolPolicies } from "../agents/agent-tools.policy.js";
 import { resolveSandboxConfigForAgent } from "../agents/sandbox/config.js";
 import { isDangerousNetworkMode, normalizeNetworkMode } from "../agents/sandbox/network-mode.js";
@@ -148,7 +148,7 @@ function formatHooksTokenReuseRemediation(reuse: GatewayAuthSharedSecretReuse): 
   if (reuse.source === "override") {
     return "Rotate hooks.token or the runtime Gateway shared-secret auth value used for this audit; doctor can only repair reuse that is present in persisted config or process env.";
   }
-  return `Run ${formatCliCommand("operator doctor --fix")} to rotate a persisted hooks.token, then update external hook senders to use the new hook token.`;
+  return `Run ${formatCliCommand("openclaw doctor --fix")} to rotate a persisted hooks.token, then update external hook senders to use the new hook token.`;
 }
 
 function hasResolvedGatewayHttpAuth(auth: ResolvedGatewayAuth): boolean {
@@ -572,7 +572,7 @@ export function collectSyncedFolderFindings(params: {
       severity: "warn",
       title: "State/config path looks like a synced folder",
       detail: `stateDir=${params.stateDir}, configPath=${params.configPath}. Synced folders (iCloud/Dropbox/OneDrive/Google Drive) can leak tokens and transcripts onto other devices.`,
-      remediation: `Keep OPERATOR_STATE_DIR on a local-only volume and re-run "${formatCliCommand("operator security audit --fix")}".`,
+      remediation: `Keep OPERATOR_STATE_DIR on a local-only volume and re-run "${formatCliCommand("openclaw security audit --fix")}".`,
     });
   }
   return findings;

@@ -1,16 +1,16 @@
 // Mattermost plugin module implements reply delivery behavior.
-import type { OperatorConfig, PluginRuntime } from "openclaw/plugin-sdk/core";
-import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
+import type { OperatorConfig, PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   deliverTextOrMediaReply,
   isReasoningReplyPayload,
   resolveSendableOutboundReplyParts,
-} from "openclaw/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import type {
   ReplyDispatchKind,
   ReplyFollowupAdmissionBarrierTimeoutPolicy,
   ReplyPayload,
-} from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import {
   resolveMattermostReplyDeliveryBarrierTimeoutMs,
   type CreateDmChannelRetryOptions,

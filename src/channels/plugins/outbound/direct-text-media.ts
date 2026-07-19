@@ -3,7 +3,7 @@
  *
  * Builds lightweight SDK-backed send adapters with chunking, sanitization, and media limits.
  */
-import { sendTextMediaPayload } from "operator/plugin-sdk/reply-payload";
+import { sendTextMediaPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { chunkText } from "../../../auto-reply/chunk.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import type { OutboundSendDeps } from "../../../infra/outbound/deliver.js";

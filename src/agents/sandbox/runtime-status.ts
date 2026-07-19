@@ -3,8 +3,8 @@
  *
  * Resolves whether a session is sandboxed and explains policy blocks before tool execution.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { formatCliCommand } from "../../cli/command-format.js";
 import {
   canonicalizeMainSessionAlias,
@@ -190,9 +190,9 @@ export function formatSandboxToolPolicyBlockedMessage(params: {
   }
   const explainCommand = runtime.sessionKey
     ? hasUnsafeControlChars(runtime.sessionKey)
-      ? `operator sandbox explain --agent ${runtime.agentId}`
-      : `operator sandbox explain --session ${shellEscapeSingleArg(runtime.sessionKey)}`
-    : "operator sandbox explain";
+      ? `openclaw sandbox explain --agent ${runtime.agentId}`
+      : `openclaw sandbox explain --session ${shellEscapeSingleArg(runtime.sessionKey)}`
+    : "openclaw sandbox explain";
   lines.push(`- See: ${formatCliCommand(explainCommand)}`);
 
   return lines.join("\n");

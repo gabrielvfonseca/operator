@@ -1,10 +1,13 @@
 // Discord plugin module owns realtime voice activation policy.
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeSupportedRealtimeVoiceActivationName,
   sortRealtimeVoiceActivationNames,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type DiscordRealtimeVoiceConfig = NonNullable<DiscordAccountConfig["voice"]>["realtime"];
 

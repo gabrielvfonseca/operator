@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import type { Duplex } from "node:stream";
 import vm from "node:vm";
-import { defaultRuntime } from "openclaw/plugin-sdk/runtime-env";
+import { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { A2UI_PATH, CANVAS_HOST_PATH, CANVAS_WS_PATH, injectCanvasRuntime } from "./a2ui-shared.js";
 
@@ -170,7 +170,7 @@ function runInjectedScript(
     location: {
       host: "control.example",
       protocol: "https:",
-      pathname: "/__openclaw__/canvas/",
+      pathname: "/__operator__/canvas/",
       reload: vi.fn(),
       search: "",
       ...locationOverrides,
@@ -244,7 +244,7 @@ describe("canvas host", () => {
     ({ createCanvasHostHandler, startCanvasHost } = serverModule);
     const wsModule = await vi.importActual<typeof import("ws")>("ws");
     WebSocketServerClass = wsModule.WebSocketServer;
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-canvas-fixtures-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-canvas-fixtures-"));
   });
 
   beforeEach(() => {
@@ -355,7 +355,7 @@ describe("canvas host", () => {
         urls.push(url);
       },
       {
-        pathname: "/__openclaw__/cap/current-token/__openclaw__/canvas/",
+        pathname: "/__operator__/cap/current-token/__operator__/canvas/",
         search: "?oc_cap=stale-token",
       },
     );
@@ -411,7 +411,7 @@ describe("canvas host", () => {
   });
 
   it("watches Canvas content when the state directory is hidden", async () => {
-    const dir = path.join(fixtureRoot, ".openclaw", `case-${fixtureCount++}`);
+    const dir = path.join(fixtureRoot, ".operator", `case-${fixtureCount++}`);
     await fs.mkdir(dir, { recursive: true });
     const handler = await createTestCanvasHostHandler(dir);
 
@@ -673,22 +673,22 @@ describe("canvas host", () => {
     const originalArgv = [...process.argv];
 
     try {
-      process.argv[1] = path.join(fixtureEntryDir, "openclaw.mjs");
+      process.argv[1] = path.join(fixtureEntryDir, "operator.mjs");
       await fs.mkdir(nestedAssetDir, { recursive: true });
       await fs.writeFile(
         path.join(a2uiRoot, "index.html"),
-        `<openclaw-a2ui-host></openclaw-a2ui-host>
+        `<operator-a2ui-host></operator-a2ui-host>
 <script>openclawCanvasA2UIAction</script>`,
         "utf8",
       );
-      await fs.writeFile(bundlePath, "window.openclawA2UI = {};", "utf8");
+      await fs.writeFile(bundlePath, "window.operatorA2UI = {};", "utf8");
       await fs.writeFile(path.join(nestedAssetDir, "sample.txt"), "nested asset", "utf8");
       await fs.symlink(path.join(process.cwd(), "package.json"), linkPath);
 
       const res = await captureA2uiFixtureResponse(`${A2UI_PATH}/`);
       const html = res.body;
       expect(res.status).toBe(200);
-      expect(html).toContain("openclaw-a2ui-host");
+      expect(html).toContain("operator-a2ui-host");
       expect(html).toContain("openclawCanvasA2UIAction");
 
       const noReloadRes = await captureA2uiFixtureResponse(`${A2UI_PATH}/`, "GET", false);

@@ -1,11 +1,11 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Discord plugin module implements command behavior.
 import {
   ApplicationCommandOptionType,
   ChannelType as DiscordChannelType,
   type APIApplicationCommandChannelOption,
 } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-contracts";
 import {
   Command,
   CommandWithSubcommands,

@@ -1,4 +1,4 @@
-import { EmbeddedBlockChunker } from "openclaw/plugin-sdk/agent-runtime";
+import { EmbeddedBlockChunker } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import {
   type AgentPlanStep,
   type ChannelProgressDraftLine,
@@ -9,15 +9,15 @@ import {
   resolveChannelStreamingPreviewToolProgress,
   resolveChannelStreamingProgressNarration,
   resolveChannelStreamingSuppressDefaultToolProgressMessages,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Discord plugin module implements message handlerraft preview behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   convertMarkdownTables,
   stripInlineDirectiveTagsForDelivery,
   stripReasoningTagsFromText,
-} from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { chunkDiscordTextWithMode } from "../chunk.js";
 import { resolveDiscordDraftStreamingChunking } from "../draft-chunking.js";
 import { createDiscordDraftStream } from "../draft-stream.js";

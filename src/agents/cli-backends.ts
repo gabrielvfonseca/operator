@@ -1,9 +1,9 @@
 /**
  * Resolves CLI runtime backends registered by plugins or setup metadata.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { CliBackendConfig } from "../config/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ContextEngineHostCapability } from "../context-engine/types.js";

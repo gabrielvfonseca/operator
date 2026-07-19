@@ -1,6 +1,6 @@
 /**
  * @deprecated Legacy compat surface for external plugins that still depend on
- * older broad plugin-sdk imports. Use focused operator/plugin-sdk subpaths
+ * older broad plugin-sdk imports. Use focused openclaw/plugin-sdk subpaths
  * instead.
  */
 
@@ -26,7 +26,7 @@ const shouldWarnCompatImport =
 
 if (shouldWarnCompatImport) {
   process.emitWarning(
-    "operator/plugin-sdk/compat is deprecated for new plugins. Migrate to focused operator/plugin-sdk/<subpath> imports. See https://docs.operator.ai/plugins/sdk-migration",
+    "openclaw/plugin-sdk/compat is deprecated for new plugins. Migrate to focused openclaw/plugin-sdk/<subpath> imports. See https://docs.operator.ai/plugins/sdk-migration",
     {
       code: "OPERATOR_PLUGIN_SDK_COMPAT_DEPRECATED",
       detail:
@@ -111,27 +111,27 @@ export {
 } from "./directory-runtime.js";
 export { mapAllowlistResolutionInputs } from "./allow-from.js";
 
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export const createChannelReplyPipeline = createChannelReplyPipelineCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export const createReplyPrefixContext = createReplyPrefixContextCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export const createReplyPrefixOptions = createReplyPrefixOptionsCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export const createTypingCallbacks = createTypingCallbacksCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export const resolveChannelSourceReplyDeliveryMode = resolveChannelSourceReplyDeliveryModeCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type ChannelReplyPipeline = ChannelReplyPipelineCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type CreateTypingCallbacksParams = CreateTypingCallbacksParamsCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type ReplyPrefixContext = ReplyPrefixContextCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type ReplyPrefixContextBundle = ReplyPrefixContextBundleCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type ReplyPrefixOptions = ReplyPrefixOptionsCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type SourceReplyDeliveryMode = SourceReplyDeliveryModeCompat;
-/** @deprecated Use `operator/plugin-sdk/channel-outbound`. */
+/** @deprecated Use `openclaw/plugin-sdk/channel-outbound`. */
 export type TypingCallbacks = TypingCallbacksCompat;

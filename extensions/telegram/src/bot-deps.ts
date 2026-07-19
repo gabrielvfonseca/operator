@@ -1,20 +1,20 @@
 // Telegram plugin module implements bot deps behavior.
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-import { buildChannelInboundEventContext } from "openclaw/plugin-sdk/channel-inbound";
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
+import { buildChannelInboundEventContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   createChannelMessageReplyPipeline,
   deliverInboundReplyWithMessageSendContext,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { readChannelAllowFromStore } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   recordInboundSession,
   upsertChannelPairingRequest,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { buildModelsProviderData } from "openclaw/plugin-sdk/models-provider-runtime";
-import { dispatchReplyWithBufferedBlockDispatcher } from "openclaw/plugin-sdk/reply-dispatch-runtime";
-import { resolveInboundLastRouteSessionKey } from "openclaw/plugin-sdk/routing";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { buildModelsProviderData } from "@gabrielvfonseca/operator/plugin-sdk/models-provider-runtime";
+import { dispatchReplyWithBufferedBlockDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/reply-dispatch-runtime";
+import { resolveInboundLastRouteSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   getSessionEntry,
   listSessionEntries,
@@ -22,10 +22,10 @@ import {
   readAmbientTranscriptWatermark,
   resolveAmbientTranscriptWatermarkKey,
   resolveStorePath,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { listSkillCommandsForAgents } from "openclaw/plugin-sdk/skill-commands-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
-import { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { listSkillCommandsForAgents } from "@gabrielvfonseca/operator/plugin-sdk/skill-commands-runtime";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
+import { loadWebMedia } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 import { syncTelegramMenuCommands } from "./bot-native-command-menu.js";
 import { deliverReplies, emitInternalMessageSentHook } from "./bot/delivery.js";
 import { createTelegramDraftStream } from "./draft-stream.js";

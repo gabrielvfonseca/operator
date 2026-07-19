@@ -5,9 +5,9 @@ import path from "node:path";
 import {
   clearRuntimeAuthProfileStoreSnapshots,
   loadAuthProfileStoreForSecretsRuntime,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
-import { upsertAuthProfile } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { MigrationProviderContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { upsertAuthProfile } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultCodexAppInventoryCache } from "../app-server/app-inventory-cache.js";
 import { CODEX_PLUGINS_MARKETPLACE_NAME } from "../app-server/config.js";
@@ -31,7 +31,7 @@ const logger = {
 };
 
 async function makeTempRoot(): Promise<string> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-migrate-codex-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-migrate-codex-"));
   tempRoots.add(root);
   return root;
 }
@@ -2470,7 +2470,7 @@ function createConfigRuntime(
           previousHash: null,
         });
         return {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           previousHash: null,
           persistedHash: "test-persisted-hash",
           snapshot: {} as never,

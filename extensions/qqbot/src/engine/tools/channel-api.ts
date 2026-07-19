@@ -8,14 +8,17 @@
  * validation, fetch, and structured response formatting.
  */
 
-import { resolveChannelGroupPolicy } from "openclaw/plugin-sdk/channel-policy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { resolveChannelGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   readProviderTextResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
-import { jsonResult as json } from "openclaw/plugin-sdk/tool-results";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { jsonResult as json } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import { formatErrorMessage } from "../utils/format.js";
 import { debugLog, debugError } from "../utils/log.js";
 

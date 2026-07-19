@@ -1,7 +1,7 @@
 // Attachment normalization converts message context media fields into typed
 // attachment records and classifies media kind from MIME or filename.
-import { getFileExtension, isAudioFileName, kindFromMime } from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { getFileExtension, isAudioFileName, kindFromMime } from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { MsgContext } from "../auto-reply/templating.js";
 import { assertNoWindowsNetworkPath, safeFileURLToPath } from "../infra/local-file-access.js";
 import type { MediaAttachment } from "./types.js";

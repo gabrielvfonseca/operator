@@ -1,26 +1,26 @@
-// Slack plugin module implements context behavior.
-import type { App } from "@slack/bolt";
-import { resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import { formatAllowlistMatchMeta } from "openclaw/plugin-sdk/allow-from";
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
+import { resolveDefaultAgentId } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { formatAllowlistMatchMeta } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import type {
   OperatorConfig,
   SlackReactionNotificationMode,
-} from "openclaw/plugin-sdk/config-contracts";
-import type { SessionScope } from "openclaw/plugin-sdk/config-contracts";
-import type { DmPolicy, GroupPolicy } from "openclaw/plugin-sdk/config-contracts";
-import { resolveRuntimeConversationBindingRoute } from "openclaw/plugin-sdk/conversation-runtime";
-import { createDedupeCache } from "openclaw/plugin-sdk/dedupe-runtime";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { getChildLogger } from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { SessionScope } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { DmPolicy, GroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveRuntimeConversationBindingRoute } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { createDedupeCache } from "@gabrielvfonseca/operator/plugin-sdk/dedupe-runtime";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolveThreadSessionKeys } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { getChildLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Slack plugin module implements context behavior.
+import type { App } from "@slack/bolt";
 import { formatSlackError } from "../errors.js";
 import type { SlackMessageEvent } from "../types.js";
 import { normalizeAllowList, normalizeAllowListLower, normalizeSlackSlug } from "./allow-list.js";

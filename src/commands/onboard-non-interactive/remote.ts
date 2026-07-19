@@ -4,7 +4,7 @@
  * It writes gateway.remote config without local gateway setup, preserving the
  * same config commit path as local onboarding.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { formatCliCommand } from "../../cli/command-format.js";
 import { logConfigUpdated } from "../../config/logging.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
@@ -30,7 +30,7 @@ export async function runNonInteractiveRemoteSetup(params: {
     // Remote mode cannot infer a target gateway; fail before writing partial
     // remote config that would leave status/agent commands misconfigured.
     runtime.error(
-      `Missing --remote-url for remote mode. Example: ${formatCliCommand("operator onboard --non-interactive --mode remote --remote-url ws://127.0.0.1:3000")}.`,
+      `Missing --remote-url for remote mode. Example: ${formatCliCommand("openclaw onboard --non-interactive --mode remote --remote-url ws://127.0.0.1:3000")}.`,
     );
     runtime.exit(1);
     return;
@@ -73,7 +73,7 @@ export async function runNonInteractiveRemoteSetup(params: {
     runtime.log(`Remote gateway: ${remoteUrl}`);
     runtime.log(`Auth: ${payload.auth}`);
     runtime.log(
-      `Tip: run \`${formatCliCommand("operator configure --section web")}\` to store your Brave API key for web_search. Docs: https://docs.operator.ai/tools/web`,
+      `Tip: run \`${formatCliCommand("openclaw configure --section web")}\` to store your Brave API key for web_search. Docs: https://docs.operator.ai/tools/web`,
     );
   }
 }

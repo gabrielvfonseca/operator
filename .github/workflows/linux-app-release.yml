@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing OpenClaw release tag to receive Linux companion bundles, for example v2026.7.1
+        description: Existing Operator release tag to receive Linux companion bundles, for example v2026.7.1
         required: true
         type: string
 
@@ -117,9 +117,9 @@ jobs:
             exit 1
           fi
           mkdir -p dist/linux-app
-          cp "${deb}" "dist/linux-app/OpenClaw-${version}-amd64.deb"
+          cp "${deb}" "dist/linux-app/Operator-${version}-amd64.deb"
           cp apps/linux/src-tauri/target/release/bundle/appimage/*.AppImage \
-            "dist/linux-app/OpenClaw-${version}-amd64.AppImage"
+            "dist/linux-app/Operator-${version}-amd64.AppImage"
           (cd dist/linux-app && sha256sum ./* > SHA256SUMS.linux-app.txt)
           cat dist/linux-app/SHA256SUMS.linux-app.txt
 
@@ -139,7 +139,7 @@ jobs:
           # truncate to 2000 Unicode chars inside jq so we never split a
           # multibyte character or SIGPIPE the release-view command.
           notes=$(gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --json body --jq '.body // ""')
-          url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}/OpenClaw-${version}-amd64.AppImage"
+          url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}/Operator-${version}-amd64.AppImage"
           jq -n \
             --arg version "${version}" \
             --arg notes "${notes}" \

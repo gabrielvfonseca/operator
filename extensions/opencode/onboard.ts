@@ -3,7 +3,7 @@ import {
   applyAgentDefaultModelPrimary,
   withAgentModelAliases,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 
 export const OPENCODE_ZEN_DEFAULT_MODEL_REF = "opencode/claude-opus-4-6";
 

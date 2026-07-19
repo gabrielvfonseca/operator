@@ -15,16 +15,22 @@ describe("json output mode", () => {
   });
 
   it("detects json output flags before argv terminators", () => {
-    expect(hasJsonOutputFlag(["node", "openclaw", "nodes", "list", "--json"])).toBe(true);
-    expect(hasJsonOutputFlag(["node", "openclaw", "nodes", "list", "--json=true"])).toBe(true);
-    expect(hasJsonOutputFlag(["node", "openclaw", "nodes", "--", "--json"])).toBe(false);
+    expect(
+      hasJsonOutputFlag(["node", "@gabrielvfonseca/operator", "nodes", "list", "--json"]),
+    ).toBe(true);
+    expect(
+      hasJsonOutputFlag(["node", "@gabrielvfonseca/operator", "nodes", "list", "--json=true"]),
+    ).toBe(true);
+    expect(hasJsonOutputFlag(["node", "@gabrielvfonseca/operator", "nodes", "--", "--json"])).toBe(
+      false,
+    );
   });
 
   it("temporarily routes console logs to stderr while json output is being prepared", async () => {
     const snapshots: boolean[] = [];
 
     await withConsoleLogsRoutedToStderrForJson(
-      ["node", "openclaw", "nodes", "list", "--json"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "list", "--json"],
       async () => {
         snapshots.push(loggingState.forceConsoleToStderr);
       },
@@ -38,7 +44,7 @@ describe("json output mode", () => {
     loggingState.forceConsoleToStderr = true;
 
     await withConsoleLogsRoutedToStderrForJson(
-      ["node", "openclaw", "nodes", "list", "--json"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "list", "--json"],
       async () => {
         expect(loggingState.forceConsoleToStderr).toBe(true);
       },

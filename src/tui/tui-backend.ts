@@ -1,4 +1,4 @@
-import type { FastMode } from "@operator/normalization-core/string-coerce";
+import type { FastMode } from "@gabrielvfonseca/normalization-core/string-coerce";
 // Defines the TUI backend contract and backend event shapes.
 import type {
   CommandEntry,

@@ -1,19 +1,22 @@
 // Telegram plugin module implements state migrations behavior.
 import fs from "node:fs";
 import path from "node:path";
-import type { ChannelLegacyStateMigrationPlan } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ChannelLegacyStateMigrationPlan } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   type PersistentDedupeLegacyJsonImportEntry,
   createPersistentDedupeImportEntry,
   listPersistentDedupeLegacyJsonFileEntries,
   resolvePersistentDedupePluginStateNamespace,
   shouldReplacePersistentDedupeEntry,
-} from "openclaw/plugin-sdk/persistent-dedupe";
-import { createPluginStateSyncKeyedStore } from "openclaw/plugin-sdk/runtime-doctor";
-import { statRegularFileSync } from "openclaw/plugin-sdk/security-runtime";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { isRecord, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
+import { createPluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import { statRegularFileSync } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import {
+  isRecord,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { listTelegramAccountIds, resolveDefaultTelegramAccountId } from "./account-selection.js";
 import {
   listTelegramLegacyBotInfoCacheEntries,
@@ -161,9 +164,9 @@ function listTelegramLegacyMessageCacheEntries(persistedPath: string) {
     if (!isTelegramMessageCacheSourceMessage(sourceMessage)) {
       continue;
     }
-    const { openclaw_prompt_context_projection: _projection, ...canonicalSourceMessage } =
+    const { operator_prompt_context_projection: _projection, ...canonicalSourceMessage } =
       sourceMessage as PersistedTelegramMessageCacheValue["sourceMessage"] & {
-        openclaw_prompt_context_projection?: unknown;
+        operator_prompt_context_projection?: unknown;
       };
     const parsedThreadId = parseTelegramMessageThreadId(value.node.threadId);
     const threadId = parsedThreadId === undefined ? undefined : String(parsedThreadId);

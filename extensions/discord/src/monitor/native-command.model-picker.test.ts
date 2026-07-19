@@ -2,23 +2,23 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { ChannelType } from "discord-api-types/v10";
-import * as commandRegistryModule from "openclaw/plugin-sdk/command-auth-native";
+import * as commandRegistryModule from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 import type {
   ChatCommandDefinition,
   CommandArgsParsing,
-} from "openclaw/plugin-sdk/command-auth-native";
-import type { ModelsProviderData } from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import * as runtimeConfigSnapshotModule from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { ModelsProviderData } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import * as runtimeConfigSnapshotModule from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   getSessionEntry,
   listSessionEntries,
   resolveStorePath,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import * as commandTextModule from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import * as commandTextModule from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import { ChannelType } from "discord-api-types/v10";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineThrowingDiscordChannelGetter } from "../test-support/partial-channel.js";
 import { resolveDiscordChannelContext } from "./agent-components-context.js";
@@ -292,7 +292,7 @@ function createBoundThreadBindingManager(params: {
 
 describe("Discord model picker interactions", () => {
   beforeEach(async () => {
-    tempDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-discord-model-picker-"));
+    tempDir = await mkdtemp(path.join(os.tmpdir(), "operator-discord-model-picker-"));
     vi.useRealTimers();
     vi.restoreAllMocks();
     vi.spyOn(runtimeConfigSnapshotModule, "getRuntimeConfigSnapshot").mockReturnValue(null);
@@ -544,7 +544,11 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
+          {
+            id: "@gabrielvfonseca/operator",
+            label: "Operator Default",
+            description: "Use Operator.",
+          },
         ],
       ],
     ]);
@@ -589,7 +593,11 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
+          {
+            id: "@gabrielvfonseca/operator",
+            label: "Operator Default",
+            description: "Use Operator.",
+          },
         ],
       ],
     ]);
@@ -631,7 +639,11 @@ describe("Discord model picker interactions", () => {
       [
         "anthropic",
         [
-          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
+          {
+            id: "@gabrielvfonseca/operator",
+            label: "Operator Default",
+            description: "Use Operator.",
+          },
           { id: "claude-cli", label: "Claude CLI", description: "Use Claude CLI." },
         ],
       ],
@@ -1080,7 +1092,11 @@ describe("Discord model picker interactions", () => {
         "openai",
         [
           { id: "codex", label: "Codex", description: "Use Codex." },
-          { id: "openclaw", label: "Operator Default", description: "Use Operator." },
+          {
+            id: "@gabrielvfonseca/operator",
+            label: "Operator Default",
+            description: "Use Operator.",
+          },
         ],
       ],
     ]);
@@ -1112,7 +1128,7 @@ describe("Discord model picker interactions", () => {
 
     await button.run(submitInteraction as unknown as PickerButtonInteraction, {
       ...createModelsViewSubmitData(),
-      r: "openclaw",
+      r: "@gabrielvfonseca/operator",
     });
 
     expect(getSessionEntry({ storePath, sessionKey: "agent:worker:subagent:bound" })).toMatchObject(

@@ -7,7 +7,7 @@ import crypto from "node:crypto";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { deriveDefaultBrowserCdpPortRange } from "../../config/port-defaults.js";
 import { isSameSsrFPolicy, type SsrFPolicy } from "../../infra/net/ssrf.js";
 import { startBrowserBridgeServer } from "../../plugin-sdk/browser-bridge.js";
@@ -76,7 +76,7 @@ function buildSandboxCdpAuthHeader(token: string): string {
 
 function buildSandboxCdpUrl(params: { cdpPort: number; authToken: string }): string {
   const url = new URL(`http://127.0.0.1:${params.cdpPort}`);
-  url.username = "operator";
+  url.username = "@gabrielvfonseca/operator";
   url.password = params.authToken;
   return url.toString().replace(/\/$/, "");
 }
@@ -321,13 +321,13 @@ export async function ensureSandboxBrowser(params: {
       if (isHot) {
         const hint = (() => {
           if (params.cfg.scope === "session") {
-            return `operator sandbox recreate --browser --session ${params.scopeKey}`;
+            return `openclaw sandbox recreate --browser --session ${params.scopeKey}`;
           }
           if (params.cfg.scope === "agent") {
             const agentId = resolveSandboxAgentId(params.scopeKey) ?? "main";
-            return `operator sandbox recreate --browser --agent ${agentId}`;
+            return `openclaw sandbox recreate --browser --agent ${agentId}`;
           }
-          return "operator sandbox recreate --browser --all";
+          return "openclaw sandbox recreate --browser --all";
         })();
         defaultRuntime.log(
           `Sandbox browser config changed for ${containerName} (recently used). Recreate to apply: ${hint}`,

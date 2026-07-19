@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds OpenClaw packages and plugin SDK artifacts with cache-aware orchestration.
+// Builds Operator packages and plugin SDK artifacts with cache-aware orchestration.
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -15,8 +15,8 @@ const nodeBin = process.execPath;
 const FULL_GIT_COMMIT_RE = /^[0-9a-f]{40}$/iu;
 const BUILD_CACHE_VERSION = 3;
 const PLUGIN_SDK_ENTRY_DTS_CACHE_ENV = [
-  "OPENCLAW_BUILD_PRIVATE_QA",
-  "OPENCLAW_PLUGIN_SDK_CANONICAL_DTS",
+  "OPERATOR_BUILD_PRIVATE_QA",
+  "OPERATOR_PLUGIN_SDK_CANONICAL_DTS",
 ];
 const PLUGIN_SDK_ENTRY_DTS_CACHE_INPUTS = [
   "scripts/write-plugin-sdk-entry-dts.ts",
@@ -38,8 +38,12 @@ const PNPM_STEP_NODE_FALLBACKS = new Map([
   ["ui:build", ["scripts/ui.js", "build"]],
 ]);
 export const BUILD_ALL_STEPS = [
-  { label: "plugins:assets:build", kind: "pnpm", pnpmArgs: ["plugins:assets:build"] },
-  { label: "tsdown", kind: "node", args: ["scripts/tsdown-build.mjs"] },
+  {
+    label: "plugins:assets:build",
+    kind: "node",
+    args: ["scripts/bundled-plugin-assets.mjs", "--phase", "build"],
+  },
+  { label: "typescript:build", kind: "node", args: ["scripts/typescript-build.mjs"] },
   {
     label: "check-cli-bootstrap-imports",
     kind: "node",
@@ -47,8 +51,8 @@ export const BUILD_ALL_STEPS = [
   },
   {
     label: "plugins:assets:copy",
-    kind: "pnpm",
-    pnpmArgs: ["plugins:assets:copy"],
+    kind: "node",
+    args: ["scripts/bundled-plugin-assets.mjs", "--phase", "copy"],
   },
   { label: "runtime-postbuild", kind: "node", args: ["scripts/runtime-postbuild.mjs"] },
   { label: "build-stamp", kind: "node", args: ["scripts/build-stamp.mjs"] },
@@ -58,61 +62,9 @@ export const BUILD_ALL_STEPS = [
     args: ["scripts/runtime-postbuild-stamp.mjs"],
   },
   {
-    label: "write-plugin-sdk-entry-dts",
-    kind: "node",
-    args: ["--import", "tsx", "scripts/write-plugin-sdk-entry-dts.ts"],
-    env: {
-      OPENCLAW_PLUGIN_SDK_CANONICAL_DTS: "1",
-    },
-    cache: {
-      env: PLUGIN_SDK_ENTRY_DTS_CACHE_ENV,
-      inputs: PLUGIN_SDK_ENTRY_DTS_CACHE_INPUTS,
-      outputs: PLUGIN_SDK_ENTRY_DTS_CACHE_OUTPUTS,
-      restore: "always",
-    },
-  },
-  {
-    label: "check-plugin-sdk-exports",
-    kind: "node",
-    args: ["scripts/check-plugin-sdk-exports.mjs"],
-  },
-  {
-    label: "copy-hook-metadata",
-    kind: "node",
-    args: ["--import", "tsx", "scripts/copy-hook-metadata.ts"],
-  },
-  {
-    label: "copy-export-html-templates",
-    kind: "node",
-    args: ["--import", "tsx", "scripts/copy-export-html-templates.ts"],
-    cache: {
-      inputs: [
-        "scripts/copy-export-html-templates.ts",
-        "scripts/lib/copy-assets.ts",
-        "src/auto-reply/reply/export-html",
-      ],
-      outputs: ["dist/export-html"],
-    },
-  },
-  {
-    label: "ui:build",
-    kind: "pnpm",
-    pnpmArgs: ["ui:build"],
-    // No build-all cache: ui/vite.config.ts derives the Control UI build ID
-    // from package.json, git HEAD, and OPENCLAW_CONTROL_UI_BUILD_ID env, so a
-    // file-input signature cannot exactly invalidate generated assets and a
-    // warm hit could restore stale service-worker/app cache metadata.
-    cache: undefined,
-  },
-  {
-    label: "write-build-info",
-    kind: "node",
-    args: ["--import", "tsx", "scripts/write-build-info.ts"],
-  },
-  {
     label: "write-cli-startup-metadata",
     kind: "node",
-    args: ["--import", "tsx", "scripts/write-cli-startup-metadata.ts"],
+    args: ["scripts/write-cli-startup.mjs"],
   },
 ];
 
@@ -173,41 +125,41 @@ export const BUILD_ALL_PROFILES = {
 export const BUILD_ALL_PROFILE_STEP_ENV = {
   full: {
     tsdown: {
-      OPENCLAW_PRESERVE_CLI_STARTUP_METADATA: "1",
+      OPERATOR_PRESERVE_CLI_STARTUP_METADATA: "1",
     },
   },
   ciArtifacts: {
     tsdown: {
-      OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "0",
-      OPENCLAW_PRESERVE_CLI_STARTUP_METADATA: "1",
+      OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "0",
+      OPERATOR_PRESERVE_CLI_STARTUP_METADATA: "1",
     },
   },
   gatewayWatch: {
     tsdown: {
-      OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "1",
+      OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "1",
     },
     "runtime-postbuild": {
-      OPENCLAW_RUNTIME_POSTBUILD_STATIC_ASSETS: "0",
+      OPERATOR_RUNTIME_POSTBUILD_STATIC_ASSETS: "0",
     },
   },
   qaRuntime: {
     tsdown: {
-      OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "1",
+      OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "1",
     },
   },
   sourcePerformance: {
     tsdown: {
-      OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "1",
-      OPENCLAW_PRESERVE_CLI_STARTUP_METADATA: "1",
+      OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "1",
+      OPERATOR_PRESERVE_CLI_STARTUP_METADATA: "1",
     },
   },
   cliStartup: {
     tsdown: {
-      OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "1",
-      OPENCLAW_PRESERVE_CLI_STARTUP_METADATA: "1",
+      OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "1",
+      OPERATOR_PRESERVE_CLI_STARTUP_METADATA: "1",
     },
     "runtime-postbuild": {
-      OPENCLAW_RUNTIME_POSTBUILD_STATIC_ASSETS: "0",
+      OPERATOR_RUNTIME_POSTBUILD_STATIC_ASSETS: "0",
     },
   },
 };
@@ -216,7 +168,7 @@ export function buildAllUsage() {
   return [
     "Usage: node scripts/build-all.mjs [profile]",
     "",
-    "Builds OpenClaw artifacts for the selected profile.",
+    "Builds Operator artifacts for the selected profile.",
     "",
     "Profiles:",
     ...Object.keys(BUILD_ALL_PROFILES).map((profile) => `  ${profile}`),
@@ -285,7 +237,7 @@ export function resolveBuildAllEnvironment(
   now = () => new Date(),
   readGitCommit = readCurrentGitCommit,
 ) {
-  const explicitTimestamp = env.OPENCLAW_BUILD_TIMESTAMP?.trim();
+  const explicitTimestamp = env.OPERATOR_BUILD_TIMESTAMP?.trim();
   const explicitCommit = env.GIT_COMMIT?.trim() || env.GIT_SHA?.trim();
   const checkedOutCommit = explicitCommit ? null : readGitCommit()?.trim();
   // GITHUB_SHA names the workflow invocation and can differ from a checked-out tag.
@@ -295,7 +247,7 @@ export function resolveBuildAllEnvironment(
   }
   const buildEnv = {
     ...env,
-    OPENCLAW_BUILD_TIMESTAMP: explicitTimestamp || now().toISOString(),
+    OPERATOR_BUILD_TIMESTAMP: explicitTimestamp || now().toISOString(),
   };
   if (commit) {
     buildEnv.GIT_COMMIT = commit.toLowerCase();
@@ -325,7 +277,7 @@ export function resolveBuildAllStep(step, params = {}) {
   const env = resolveStepEnv(step, params.env ?? process.env, platform);
   if (step.kind === "pnpm") {
     const nodeFallbackArgs =
-      env.OPENCLAW_BUILD_ALL_NO_PNPM === "1" ? PNPM_STEP_NODE_FALLBACKS.get(step.label) : undefined;
+      env.OPERATOR_BUILD_ALL_NO_PNPM === "1" ? PNPM_STEP_NODE_FALLBACKS.get(step.label) : undefined;
     if (nodeFallbackArgs) {
       return {
         command: params.nodeExecPath ?? nodeBin,
@@ -638,7 +590,7 @@ if (isMainModule()) {
     for (const step of resolveBuildAllSteps(args.profile)) {
       const startedAt = performance.now();
       const cacheState = resolveBuildAllStepCacheState(step, { env: buildEnv });
-      if (process.env.OPENCLAW_BUILD_CACHE !== "0" && cacheState.fresh) {
+      if (process.env.OPERATOR_BUILD_CACHE !== "0" && cacheState.fresh) {
         restoreBuildAllStepCacheOutputs(cacheState);
         const durationMs = performance.now() - startedAt;
         timings.push({ label: step.label, status: "cached", durationMs });

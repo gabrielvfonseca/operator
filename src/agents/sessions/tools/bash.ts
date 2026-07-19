@@ -5,7 +5,7 @@
  */
 import { existsSync } from "node:fs";
 import { Container, Text, truncateToWidth } from "@earendil-works/pi-tui";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { Type } from "typebox";
 import { toErrorObject } from "../../../infra/errors.js";
 import { formatDurationSeconds } from "../../../infra/format-time/format-duration.js";

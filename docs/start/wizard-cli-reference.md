@@ -1,7 +1,7 @@
 ---
-summary: "Step-by-step behavior for openclaw onboard: what each step does, config it writes, and internals"
+summary: "Step-by-step behavior for operator onboard: what each step does, config it writes, and internals"
 read_when:
-  - You need detailed behavior for a specific openclaw onboard step
+  - You need detailed behavior for a specific operator onboard step
   - You are debugging onboarding results or integrating onboarding clients
 title: "CLI setup reference"
 sidebarTitle: "CLI reference"
@@ -10,7 +10,7 @@ sidebarTitle: "CLI reference"
 This page covers step-by-step onboarding behavior, outputs, and internals.
 For a walkthrough, see [Onboarding (CLI)](/start/wizard). For the full CLI flag
 reference (every `--flag`, non-interactive examples, provider-specific
-commands), see [`openclaw onboard`](/cli/onboard).
+commands), see [`operator onboard`](/cli/onboard).
 
 ## What the wizard does
 
@@ -32,10 +32,10 @@ not install or modify anything on the remote host.
 
 <Steps>
   <Step title="Existing config detection">
-    - If `~/.openclaw/openclaw.json` exists, choose **Keep current values**, **Review and update**, or **Reset before setup**.
+    - If `~/.operator/operator.json` exists, choose **Keep current values**, **Review and update**, or **Reset before setup**.
     - Re-running the wizard does not wipe anything unless you explicitly choose Reset (or pass `--reset`).
     - CLI `--reset` defaults to `config+creds+sessions`; use `--reset-scope full` to also remove the workspace.
-    - If config is invalid or contains legacy keys, the wizard stops and asks you to run `openclaw doctor` before continuing.
+    - If config is invalid or contains legacy keys, the wizard stops and asks you to run `operator doctor` before continuing.
     - Reset moves state to Trash (never deletes directly) and offers scopes:
       - Config only
       - Config + credentials + sessions
@@ -47,7 +47,7 @@ not install or modify anything on the remote host.
 
   </Step>
   <Step title="Workspace">
-    - Default `~/.openclaw/workspace` (configurable).
+    - Default `~/.operator/workspace` (configurable).
     - Seeds workspace files needed for first-run bootstrap.
     - Workspace layout: [Agent workspace](/concepts/agent-workspace).
 
@@ -75,11 +75,11 @@ not install or modify anything on the remote host.
     - [Signal](/channels/signal): optional `signal-cli` install + account config
     - [iMessage](/channels/imessage): `imsg` CLI path + Messages DB access; use an SSH wrapper when the Gateway runs off-Mac
     - DM security: default is pairing. First DM sends a code; approve via
-      `openclaw pairing approve <channel> <code>` or use allowlists.
+      `operator pairing approve <channel> <code>` or use allowlists.
   </Step>
   <Step title="Web search">
     - Pick a provider (Brave, DuckDuckGo, Exa, Firecrawl, Gemini, Grok, Kimi, MiniMax Search, Ollama Web Search, Perplexity, SearXNG, Tavily) or skip.
-    - Skip this step with `--skip-search`; reconfigure later with `openclaw configure --section web`.
+    - Skip this step with `--skip-search`; reconfigure later with `operator configure --section web`.
 
   </Step>
   <Step title="Daemon install">
@@ -89,14 +89,14 @@ not install or modify anything on the remote host.
       - Wizard attempts `loginctl enable-linger <user>` so gateway stays up after logout.
       - May prompt for sudo (writes `/var/lib/systemd/linger`); it tries without sudo first.
     - Native Windows: Scheduled Task first
-      - If task creation is denied, OpenClaw falls back to a per-user Startup-folder login item and starts the gateway immediately.
+      - If task creation is denied, Operator falls back to a per-user Startup-folder login item and starts the gateway immediately.
       - Scheduled Tasks remain preferred because they provide better supervisor status.
-    - Runtime selection: Node is required because OpenClaw's canonical runtime state store uses `node:sqlite`.
+    - Runtime selection: Node is required because Operator's canonical runtime state store uses `node:sqlite`.
 
   </Step>
   <Step title="Health check">
-    - Starts gateway (if needed) and runs `openclaw health`.
-    - `openclaw status --deep` adds the live gateway health probe to status output, including channel probes when supported.
+    - Starts gateway (if needed) and runs `operator health`.
+    - `operator status --deep` adds the live gateway health probe to status output, including channel probes when supported.
 
   </Step>
   <Step title="Skills">
@@ -105,7 +105,7 @@ not install or modify anything on the remote host.
     - Installs optional dependencies for trusted bundled skills when the required
       installer is available.
     - Skips unavailable Homebrew, uv, and Go installers, then groups the affected
-      skills with manual setup guidance. Run `openclaw doctor` after installing
+      skills with manual setup guidance. Run `operator doctor` after installing
       the missing prerequisites.
 
   </Step>
@@ -152,7 +152,7 @@ What you set:
 
 <Note>
 If the gateway is loopback-only and not discoverable, use SSH tunneling or a tailnet manually.
-Plaintext `ws://` is accepted for loopback, private IP literals, `.local`, and Tailnet `*.ts.net` URLs; other private-DNS names need `OPENCLAW_ALLOW_INSECURE_PRIVATE_WS=1`.
+Plaintext `ws://` is accepted for loopback, private IP literals, `.local`, and Tailnet `*.ts.net` URLs; other private-DNS names need `OPERATOR_ALLOW_INSECURE_PRIVATE_WS=1`.
 </Note>
 
 ## Auth and model options
@@ -190,12 +190,12 @@ instead of exiting. Explicit `--auth-choice` runs still fail fast for automation
 
     Adding or reauthenticating OpenAI preserves an existing explicit primary
     model, including `openai/gpt-5.5`. If the account does not expose GPT-5.6,
-    select `openai/gpt-5.5` explicitly; OpenClaw does not silently downgrade it.
+    select `openai/gpt-5.5` explicitly; Operator does not silently downgrade it.
 
   </Accordion>
   <Accordion title="xAI (Grok) OAuth">
     Browser sign-in for eligible SuperGrok or X Premium accounts. This is the
-    recommended xAI path for most users. OpenClaw stores the resulting auth
+    recommended xAI path for most users. Operator stores the resulting auth
     profile for Grok models, Grok `web_search`, `x_search`, and `code_execution`.
   </Accordion>
   <Accordion title="xAI (Grok) device code">
@@ -283,8 +283,8 @@ Model behavior:
 
 Credential and profile paths:
 
-- Auth profiles (API keys + OAuth): `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
-- Legacy OAuth import: `~/.openclaw/credentials/oauth.json`
+- Auth profiles (API keys + OAuth): `~/.operator/agents/<agentId>/agent/auth-profiles.json`
+- Legacy OAuth import: `~/.operator/credentials/oauth.json`
 
 Credential storage mode:
 
@@ -311,14 +311,14 @@ Credential storage mode:
 <Note>
 Headless and server tip: complete OAuth on a machine with a browser, then copy
 that agent's `auth-profiles.json` (for example
-`~/.openclaw/agents/<agentId>/agent/auth-profiles.json`, or the matching
-`$OPENCLAW_STATE_DIR/...` path) to the gateway host. `credentials/oauth.json`
+`~/.operator/agents/<agentId>/agent/auth-profiles.json`, or the matching
+`$OPERATOR_STATE_DIR/...` path) to the gateway host. `credentials/oauth.json`
 is only a legacy import source.
 </Note>
 
 ## Outputs and internals
 
-Typical fields in `~/.openclaw/openclaw.json`:
+Typical fields in `~/.operator/operator.json`:
 
 - `agents.defaults.workspace`
 - `agents.defaults.skipBootstrap` when `--skip-bootstrap` is passed
@@ -338,12 +338,12 @@ Typical fields in `~/.openclaw/openclaw.json`:
 - `wizard.lastRunMode`
 - `wizard.securityAcknowledgedAt`
 
-`openclaw agents add` writes `agents.list[]` and optional `bindings`.
+`operator agents add` writes `agents.list[]` and optional `bindings`.
 
-WhatsApp credentials go under `~/.openclaw/credentials/whatsapp/<accountId>/`.
+WhatsApp credentials go under `~/.operator/credentials/whatsapp/<accountId>/`.
 Active sessions and transcripts are stored in
-`~/.openclaw/agents/<agentId>/agent/openclaw-agent.sqlite`. The
-`~/.openclaw/agents/<agentId>/sessions/` directory is used for legacy migration
+`~/.operator/agents/<agentId>/agent/operator-agent.sqlite`. The
+`~/.operator/agents/<agentId>/sessions/` directory is used for legacy migration
 inputs and archive/support artifacts.
 
 <Note>
@@ -357,12 +357,12 @@ prompts to install the plugin (npm or local path) before channel configuration.
 powerful and full system access is risky):
 
 ```bash
-openclaw onboard --non-interactive --accept-risk \
+operator onboard --non-interactive --accept-risk \
   --auth-choice apiKey \
   --anthropic-api-key "$ANTHROPIC_API_KEY"
 ```
 
-Full flag reference and provider-specific examples: [`openclaw onboard`](/cli/onboard), [CLI automation](/start/wizard-cli-automation).
+Full flag reference and provider-specific examples: [`operator onboard`](/cli/onboard), [CLI automation](/start/wizard-cli-automation).
 
 ## Gateway wizard RPC
 
@@ -377,7 +377,7 @@ Clients (macOS app and Control UI) can render steps without re-implementing onbo
 
 - Downloads the appropriate release asset from the official `signal-cli` GitHub releases (native build, Linux x86-64 only)
 - On other platforms (macOS, non-x64 Linux), installs via Homebrew instead
-- Stores the release-asset install under `~/.openclaw/tools/signal-cli/<version>/`
+- Stores the release-asset install under `~/.operator/tools/signal-cli/<version>/`
 - Writes `channels.signal.cliPath` in config
 - Native Windows is not supported yet; run onboarding inside WSL2 to get the Linux install path
 
@@ -385,4 +385,4 @@ Clients (macOS app and Control UI) can render steps without re-implementing onbo
 
 - Onboarding hub: [Onboarding (CLI)](/start/wizard)
 - Automation and scripts: [CLI Automation](/start/wizard-cli-automation)
-- Command reference: [`openclaw onboard`](/cli/onboard)
+- Command reference: [`operator onboard`](/cli/onboard)

@@ -1,14 +1,12 @@
-// Line plugin module implements monitor behavior.
-import type { webhook } from "@line/bot-sdk";
-import { hasFinalInboundReplyDispatch } from "openclaw/plugin-sdk/channel-inbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { chunkMarkdownText } from "openclaw/plugin-sdk/reply-runtime";
+import { hasFinalInboundReplyDispatch } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { chunkMarkdownText } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import {
   danger,
   logVerbose,
   waitForAbortSignal,
   type RuntimeEnv,
-} from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   isRequestBodyLimitError,
   normalizePluginHttpPath,
@@ -16,11 +14,13 @@ import {
   registerWebhookTargetWithPluginRoute,
   requestBodyErrorToText,
   resolveSingleWebhookTarget,
-} from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import {
   beginWebhookRequestPipelineOrReject,
   createWebhookInFlightLimiter,
-} from "openclaw/plugin-sdk/webhook-request-guards";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-request-guards";
+// Line plugin module implements monitor behavior.
+import type { webhook } from "@line/bot-sdk";
 import { resolveDefaultLineAccountId } from "./accounts.js";
 import { deliverLineAutoReply } from "./auto-reply-delivery.js";
 import { createLineBot } from "./bot.js";

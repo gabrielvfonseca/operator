@@ -1,7 +1,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   applySessionPatchProjection,
   loadSessionEntry,

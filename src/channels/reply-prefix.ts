@@ -1,5 +1,5 @@
 // Reply-prefix context helpers shared by channel reply dispatchers.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentIdentity, resolveEffectiveMessagesConfig } from "../agents/identity.js";
 import type { GetReplyOptions } from "../auto-reply/get-reply-options.types.js";
 import {

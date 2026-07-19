@@ -76,7 +76,7 @@ describe("resolveNpmChannelTag", () => {
 
   it("delegates package target metadata to npm view with global config scope", async () => {
     versionByTag.latest = "1.0.4";
-    const env = { ...process.env, NPM_CONFIG_USERCONFIG: "/tmp/openclaw-user-npmrc" };
+    const env = { ...process.env, NPM_CONFIG_USERCONFIG: "/tmp/operator-user-npmrc" };
 
     await expect(
       fetchNpmPackageTargetStatus({
@@ -84,7 +84,7 @@ describe("resolveNpmChannelTag", () => {
         spec: "openclaw@latest",
         command: "/opt/openclaw/node/bin/npm",
         timeoutMs: 1000,
-        cwd: "/tmp/openclaw-project",
+        cwd: "/tmp/operator-project",
         env,
         runCommand,
       }),
@@ -106,7 +106,7 @@ describe("resolveNpmChannelTag", () => {
       ],
       expect.objectContaining({
         timeoutMs: 1000,
-        cwd: "/tmp/openclaw-project",
+        cwd: "/tmp/operator-project",
         env,
       }),
     );
@@ -138,7 +138,7 @@ describe("resolveNpmChannelTag", () => {
   });
 
   it("uses npm global scope, user config auth, and ignores project npmrc for real metadata", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-npm-view-" }, async (base) => {
+    await withTempDir({ prefix: "operator-update-check-npm-view-" }, async (base) => {
       const requests: Array<{ url: string; authorization?: string }> = [];
       const server = http.createServer((req, res) => {
         requests.push({
@@ -148,15 +148,15 @@ describe("resolveNpmChannelTag", () => {
         res.setHeader("content-type", "application/json");
         res.end(
           JSON.stringify({
-            name: "openclaw",
+            name: "@gabrielvfonseca/operator",
             "dist-tags": { latest: "2026.6.6" },
             versions: {
               "2026.6.6": {
-                name: "openclaw",
+                name: "@gabrielvfonseca/operator",
                 version: "2026.6.6",
                 engines: { node: ">=22.19.0" },
                 dist: {
-                  tarball: "http://example.invalid/openclaw-2026.6.6.tgz",
+                  tarball: "http://example.invalid/operator-2026.6.6.tgz",
                   shasum: "0".repeat(40),
                 },
               },
@@ -417,7 +417,7 @@ describe("resolveNpmChannelTag", () => {
     }));
 
     const result = await fetchNpmPackageTargetStatus({
-      target: "openclaw",
+      target: "@gabrielvfonseca/operator",
       timeoutMs: 1000,
       runCommand: badRunCommand as unknown as typeof runCommandWithTimeout,
     });
@@ -615,7 +615,7 @@ describe("checkUpdateStatus", () => {
   });
 
   it("detects package installs for non-git roots", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-" }, async (root) => {
+    await withTempDir({ prefix: "operator-update-check-" }, async (root) => {
       await fs.writeFile(
         path.join(root, "package.json"),
         JSON.stringify({ packageManager: "npm@10.0.0" }),
@@ -640,10 +640,10 @@ describe("checkUpdateStatus", () => {
   });
 
   it("reports missing and stale dependency markers for package installs", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-deps-" }, async (root) => {
+    await withTempDir({ prefix: "operator-update-check-deps-" }, async (root) => {
       await fs.writeFile(
         path.join(root, "package.json"),
-        JSON.stringify({ name: "openclaw", packageManager: "pnpm@11.2.2" }),
+        JSON.stringify({ name: "@gabrielvfonseca/operator", packageManager: "pnpm@11.2.2" }),
         "utf8",
       );
       const lockfilePath = path.join(root, "pnpm-lock.yaml");
@@ -694,10 +694,10 @@ describe("checkUpdateStatus", () => {
   });
 
   it("detects npm package installs that ship pnpm package metadata with shrinkwrap", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-npm-shrinkwrap-" }, async (root) => {
+    await withTempDir({ prefix: "operator-update-check-npm-shrinkwrap-" }, async (root) => {
       await fs.writeFile(
         path.join(root, "package.json"),
-        JSON.stringify({ name: "openclaw", packageManager: "pnpm@11.2.2" }),
+        JSON.stringify({ name: "@gabrielvfonseca/operator", packageManager: "pnpm@11.2.2" }),
         "utf8",
       );
       await fs.writeFile(path.join(root, "npm-shrinkwrap.json"), "{}", "utf8");
@@ -718,13 +718,13 @@ describe("checkUpdateStatus", () => {
   });
 
   it("treats symlinked git installs as git roots", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-git-" }, async (base) => {
+    await withTempDir({ prefix: "operator-update-check-git-" }, async (base) => {
       const repoRoot = path.join(base, "repo");
       const linkedRoot = path.join(base, "linked-openclaw");
       await fs.mkdir(repoRoot, { recursive: true });
       await fs.writeFile(
         path.join(repoRoot, "package.json"),
-        JSON.stringify({ name: "openclaw", packageManager: "pnpm@10.0.0" }),
+        JSON.stringify({ name: "@gabrielvfonseca/operator", packageManager: "pnpm@10.0.0" }),
         "utf8",
       );
       await runCommandWithTimeout(["git", "init"], { cwd: repoRoot, timeoutMs: 1000 });
@@ -743,10 +743,10 @@ describe("checkUpdateStatus", () => {
   });
 
   it("reports unsupported_git_channel for Git status without querying npm", async () => {
-    await withTempDir({ prefix: "openclaw-update-check-git-channel-" }, async (root) => {
+    await withTempDir({ prefix: "operator-update-check-git-channel-" }, async (root) => {
       await fs.writeFile(
         path.join(root, "package.json"),
-        JSON.stringify({ name: "openclaw", packageManager: "pnpm@10.0.0" }),
+        JSON.stringify({ name: "@gabrielvfonseca/operator", packageManager: "pnpm@10.0.0" }),
         "utf8",
       );
       await runCommandWithTimeout(["git", "init"], { cwd: root, timeoutMs: 1000 });

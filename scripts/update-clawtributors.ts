@@ -1,4 +1,4 @@
-// Update Clawtributors script supports OpenClaw repository automation.
+// Update Clawtributors script supports Operator repository automation.
 import { execFileSync, execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -459,7 +459,7 @@ async function probeDefaultGitHubAvatar(login: string): Promise<boolean> {
   try {
     return await withAvatarProbeTimeout(login, async ({ signal, timeoutPromise }) => {
       const response = await fetch(`https://github.com/${login}.png?size=${AVATAR_PROBE_SIZE}`, {
-        headers: { "user-agent": "openclaw-clawtributors" },
+        headers: { "user-agent": "operator-clawtributors" },
         signal,
       });
       if (!response.ok) {

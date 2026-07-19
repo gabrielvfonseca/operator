@@ -1,5 +1,5 @@
 // Defines safe-bin policy profile fixtures and metadata.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 export type SafeBinProfile = {
   minPositional?: number;
   maxPositional?: number;

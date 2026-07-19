@@ -4,7 +4,7 @@
  * while preserving the shared auth-profile store contracts.
  */
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import type { AuthProfileStore } from "./auth-profiles.js";
 
 const CHUTES_TOKEN_ENDPOINT = "https://api.chutes.ai/idp/token";
@@ -52,7 +52,7 @@ describe("auth-profiles (chutes)", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-chutes-",
+        prefix: "operator-chutes-",
         agentEnv: "main",
         env: {
           CHUTES_CLIENT_ID: undefined,

@@ -1,5 +1,5 @@
 {
-  "name": "@operator/signal",
+  "name": "@gabrielvfonseca/signal",
   "version": "2026.7.2",
   "description": "Operator Signal channel plugin",
   "type": "module",
@@ -7,9 +7,9 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -40,8 +40,8 @@
       ]
     },
     "install": {
-      "clawhubSpec": "clawhub:@operator/signal",
-      "npmSpec": "@operator/signal",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/signal",
+      "npmSpec": "@gabrielvfonseca/signal",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9",
       "allowInvalidConfigRecovery": true
@@ -60,6 +60,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   }
 }

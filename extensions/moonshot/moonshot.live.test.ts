@@ -5,9 +5,9 @@ import {
   type Context,
   type Model,
   type Tool,
-} from "openclaw/plugin-sdk/llm";
-import { registerSingleProviderPlugin } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { registerSingleProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { isLiveTestEnabled } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";

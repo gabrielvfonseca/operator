@@ -2,8 +2,8 @@
 import {
   buildChannelConfigSchema,
   requireOpenAllowFrom,
-} from "openclaw/plugin-sdk/channel-config-schema";
-import { requireChannelOpenAllowFrom } from "openclaw/plugin-sdk/extension-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";
+import { requireChannelOpenAllowFrom } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import { z } from "zod";
 
 const DmPolicySchema = z.enum(["open", "allowlist", "pairing", "disabled"]);

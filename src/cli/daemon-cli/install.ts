@@ -1,5 +1,5 @@
 // Gateway service installer: writes config defaults, resolves credentials, and installs service definitions.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveNodeStartupTlsEnvironment } from "../../bootstrap/node-startup-env.js";
 import { buildGatewayInstallPlan } from "../../commands/daemon-install-helpers.js";
 import {
@@ -224,7 +224,7 @@ export async function runDaemonInstall(opts: DaemonInstallOptions) {
         if (!json) {
           defaultRuntime.log(`Gateway service already ${service.loadedText}.`);
           defaultRuntime.log(
-            `Reinstall with: ${formatCliCommand("operator gateway install --force")}`,
+            `Reinstall with: ${formatCliCommand("openclaw gateway install --force")}`,
           );
         }
         return;

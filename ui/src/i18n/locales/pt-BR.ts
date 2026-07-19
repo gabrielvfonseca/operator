@@ -270,14 +270,14 @@ export const pt_BR: TranslationMap = {
     genericSubtitle: "Algo deu errado ao carregar este painel.",
     staleTitle: "Uma nova versão está disponível",
     staleSubtitle:
-      "O OpenClaw foi atualizado em segundo plano. Recarregue para obter o painel mais recente.",
+      "O Operator foi atualizado em segundo plano. Recarregue para obter o painel mais recente.",
     retry: "Tentar novamente",
   },
   nodes: {
     pairing: {
       button: "Parear dispositivo móvel",
       adminRequired: "É necessário acesso de administrador para criar códigos de configuração.",
-      title: "OpenClaw mobile",
+      title: "Operator mobile",
       subtitle: "Escaneie este código QR no app móvel para conectar um novo telefone.",
       generating: "Criando um código de configuração seguro…",
       accessTitle: "Acesso móvel",
@@ -291,14 +291,14 @@ export const pt_BR: TranslationMap = {
       transportLimitedHint:
         "Esta URL do Gateway usa ws:// sem criptografia. Use wss:// ou Tailscale Serve e crie um novo código para acesso completo.",
       failed: "Não foi possível criar um código de configuração.",
-      qrAlt: "Código QR de pareamento do OpenClaw mobile",
+      qrAlt: "Código QR de pareamento do Operator mobile",
       qrUnavailable: "QR indisponível. Copie o código de configuração em vez disso.",
       copySetupCode: "Copiar código de configuração",
       newCode: "Novo código",
       showSetupCode: "Mostrar código de configuração",
       pending: "Solicitações de dispositivos aguardando análise: {count}",
       review: "Revisão",
-      waiting: "Os apps móveis oficiais do OpenClaw se conectam automaticamente após a leitura.",
+      waiting: "Os apps móveis oficiais do Operator se conectam automaticamente após a leitura.",
       help: "Ajuda de pareamento",
       manageDevices: "Gerenciar dispositivos",
     },
@@ -444,11 +444,11 @@ export const pt_BR: TranslationMap = {
     ownerSession: "Sessão",
     ownerWorkboard: "Workboard",
     title: "Worktrees gerenciadas",
-    subtitle: "Checkouts isolados de repositórios pertencentes ao OpenClaw.",
+    subtitle: "Checkouts isolados de repositórios pertencentes ao Operator.",
     cleanNow: "Limpar agora",
     cleanupTitle: "Limpeza",
     cleanupSubtitle:
-      "O OpenClaw remove periodicamente worktrees antigos para liberar espaço em disco. Ajuste o nível de agressividade da limpeza.",
+      "O Operator remove periodicamente worktrees antigos para liberar espaço em disco. Ajuste o nível de agressividade da limpeza.",
     cleanupMaxCount: "Máximo de worktrees",
     cleanupMaxCountHelp:
       "Número máximo de worktrees gerenciados a serem mantidos em todos os repositórios. Os worktrees mais antigos são salvos como snapshots e removidos primeiro. Defina como 0 para desativar o limite de quantidade.",
@@ -1337,7 +1337,7 @@ export const pt_BR: TranslationMap = {
     autoSaveFailed: "Falha ao salvar",
     autoSaveConflict: "Configurações alteradas em outro lugar",
     retry: "Tentar novamente",
-    applyBannerText: "Salvo em openclaw.json — reinicie o gateway para aplicar.",
+    applyBannerText: "Salvo em operator.json — reinicie o gateway para aplicar.",
     applyBannerAction: "Reiniciar e aplicar",
     rawDiscard: "Descartar",
     rawDraftBlocksApply:
@@ -1393,7 +1393,7 @@ export const pt_BR: TranslationMap = {
     },
   },
   approvalPage: {
-    brandName: "OpenClaw",
+    brandName: "Operator",
     eyebrow: "Operator approval",
     loadingTitle: "Loading approval",
     loadingDescription: "Checking the current approval state with the Gateway.",
@@ -1402,7 +1402,7 @@ export const pt_BR: TranslationMap = {
       "This approval could not be found or this device is not authorized to review it.",
     connectionErrorTitle: "Connection interrupted",
     connectionErrorDescription:
-      "OpenClaw cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
+      "Operator cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
     retry: "Retry",
     execTitle: "Command approval",
     pending: "Waiting for your decision",
@@ -1723,7 +1723,7 @@ export const pt_BR: TranslationMap = {
     skillWorkshop: "Revise, refine e aplique propostas antes que elas se tornem skills ativas.",
     nodes: "Dispositivos e comandos.",
     chat: "Chat do gateway para intervenções rápidas.",
-    config: "Editar openclaw.json.",
+    config: "Editar operator.json.",
     profile: "As estatísticas, sequências e vida do seu agente no recife.",
     communications: "Configurações de canais, mensagens e áudio.",
     appearance: "Configurações de tema, UI e assistente de configuração.",
@@ -1772,12 +1772,12 @@ export const pt_BR: TranslationMap = {
     confirmReplace:
       "Os arquivos de destino existentes serão incluídos em um backup no relatório de migração antes da substituição.",
     confirmBackup:
-      "O OpenClaw cria um backup verificado antes da importação e antes de copiar a memória.",
+      "O Operator cria um backup verificado antes da importação e antes de copiar a memória.",
     confirmImport: "Importar memória",
     disconnected: "Conecte-se ao Gateway para importar a memória.",
     title: "Importar memória do assistente",
     subtitle:
-      "Revise a memória consolidada do Codex e a memória automática do Claude Code antes de copiá-las para o OpenClaw.",
+      "Revise a memória consolidada do Codex e a memória automática do Claude Code antes de copiá-las para o Operator.",
     agent: "Agente de destino",
     replaceExisting: "Substituir importações existentes",
     replaceHint:
@@ -1872,7 +1872,7 @@ export const pt_BR: TranslationMap = {
     },
     noInstalledTitle: "Nenhum plugin opcional instalado",
     noInstalledBody:
-      "Descubra um plugin em destaque ou pesquise no ClawHub para expandir o OpenClaw.",
+      "Descubra um plugin em destaque ou pesquise no ClawHub para expandir o Operator.",
     noInstalledMatchTitle: "Nenhum plugin instalado corresponde",
     noMatchBody: "Tente uma busca diferente.",
     filterAll: "Todos",
@@ -1918,7 +1918,7 @@ export const pt_BR: TranslationMap = {
     detailPluginId: "ID do plugin",
     offlineTitle: "Gateway offline",
     offlineBody: "Conecte-se para procurar plugins instalados e recomendados.",
-    optionalCapability: "Recurso opcional do OpenClaw.",
+    optionalCapability: "Recurso opcional do Operator.",
     enabled: "Ativado",
     disabled: "Desativado",
     available: "Disponível",
@@ -1952,7 +1952,7 @@ export const pt_BR: TranslationMap = {
       "{name} desativado. É necessário reiniciar o Gateway para aplicar a alteração.",
   },
   aboutPage: {
-    productName: "OpenClaw",
+    productName: "Operator",
     tagline: "Seu assistente pessoal de IA, executado nos seus próprios dispositivos.",
     waveHello: "Dê um oi para Clawd",
     linksLabel: "Comunidade e recursos",
@@ -1961,7 +1961,7 @@ export const pt_BR: TranslationMap = {
     linkGitHub: "GitHub",
     linkDiscord: "Discord",
     linkChangelog: "Histórico de alterações",
-    license: "© 2026 OpenClaw Foundation — Licença MIT.",
+    license: "© 2026 Operator Foundation — Licença MIT.",
     artifactTitle: "Control UI",
     artifactSubtitle: "Identidade incorporada quando este artefato do navegador foi criado.",
     artifactDetails: "Detalhes da build da Control UI",
@@ -2141,7 +2141,7 @@ export const pt_BR: TranslationMap = {
     selfLearning: {
       pitchTitle: "Ativar o autoaprendizado",
       pitchBody:
-        "O OpenClaw revisa correções e execuções substanciais concluídas e, em seguida, cria rascunhos de propostas de skills para este quadro. Ele consome tokens adicionais em segundo plano, e os rascunhos chegam como propostas pendentes.",
+        "O Operator revisa correções e execuções substanciais concluídas e, em seguida, cria rascunhos de propostas de skills para este quadro. Ele consome tokens adicionais em segundo plano, e os rascunhos chegam como propostas pendentes.",
       enable: "Ativar autoaprendizado",
       enabling: "Ativando…",
       updateError: "Não foi possível atualizar a configuração de autoaprendizado.",
@@ -3332,7 +3332,7 @@ export const pt_BR: TranslationMap = {
         stepDevUi:
           "Se estiver usando pnpm ui:dev, reconstrua ou reinicie a UI de desenvolvimento com o checkout atual.",
         stepRestart:
-          "Reinicie o Gateway depois de atualizar o OpenClaw para que ele sirva o protocolo atual.",
+          "Reinicie o Gateway depois de atualizar o Operator para que ele sirva o protocolo atual.",
       },
       network: {
         title: "Não foi possível conectar",
@@ -3355,7 +3355,7 @@ export const pt_BR: TranslationMap = {
       remoteViewOnly: "Esta sessão está em um nó pareado e é somente para visualização.",
       unsupportedViewOnly: "Esta fonte de sessão externa é somente para visualização.",
       sessionMenu: "External session actions",
-      openInOpenClaw: "Open in OpenClaw",
+      openInOperator: "Open in Operator",
       openInTerminal: "Open in terminal",
       terminalUnavailable: "Terminal opening is unavailable for this session.",
     },
@@ -3405,7 +3405,7 @@ export const pt_BR: TranslationMap = {
     followUpModeQueue: "Colocar na fila até a execução terminar",
     followUpModeSteer: "Direcionar para a execução ativa",
     catalogOpenTarget: "Open Codex/Claude sessions in",
-    catalogOpenTargetViewer: "OpenClaw viewer",
+    catalogOpenTargetViewer: "Operator viewer",
     catalogOpenTargetTerminal: "Terminal",
     onboardingDisabled: "Desativado durante a integração",
     gatewayStatus: "Status do Gateway: {status}",
@@ -3827,7 +3827,7 @@ export const pt_BR: TranslationMap = {
       shownOf: "{shown} de {total}",
       emptyTitle: "Ainda não há tarefas agendadas",
       emptyHint:
-        "Descreva o que o OpenClaw deve fazer e quando — ele executa conforme a programação.",
+        "Descreva o que o Operator deve fazer e quando — ele executa conforme a programação.",
       noMatching: "Nenhuma tarefa corresponde aos filtros atuais.",
       loadMore: "Carregar mais",
       loading: "Carregando...",
@@ -3894,7 +3894,7 @@ export const pt_BR: TranslationMap = {
     detail: {
       tabsLabel: "Detalhes da automação",
       newTitle: "Nova tarefa agendada",
-      newSubtitle: "Descreva o que o OpenClaw deve fazer e escolha quando será executado.",
+      newSubtitle: "Descreva o que o Operator deve fazer e escolha quando será executado.",
       back: "Todas as automações",
       settingsTab: "Configurações",
       historyTitle: "Histórico de execuções",
@@ -3967,7 +3967,7 @@ export const pt_BR: TranslationMap = {
       descriptionPlaceholder: "Contexto opcional para esta tarefa",
       agentPlaceholder: "main ou ops",
       agentHelp: "Comece a digitar para escolher um agente conhecido ou insira um personalizado.",
-      promptPlaceholder: "Descreva o que o OpenClaw deve fazer...",
+      promptPlaceholder: "Descreva o que o Operator deve fazer...",
       repeat: "Repetir",
       repeatInterval: "Intervalo",
       repeatOnce: "Uma vez",

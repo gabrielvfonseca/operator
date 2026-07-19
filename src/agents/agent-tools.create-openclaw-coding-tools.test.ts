@@ -9,7 +9,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   findUnsupportedSchemaKeywords,
   GEMINI_UNSUPPORTED_SCHEMA_KEYWORDS,
@@ -174,9 +174,9 @@ describe("createOperatorCodingTools", () => {
             filePath: locator,
             baseDir: "node://node-1/skills/pond",
             readContent: "# Pond\nassembled-marker",
-            source: "openclaw-node",
+            source: "operator-node",
             sourceInfo: {
-              source: "openclaw-node",
+              source: "operator-node",
               path: locator,
               scope: "temporary",
               origin: "top-level",
@@ -237,7 +237,7 @@ describe("createOperatorCodingTools", () => {
     initializeGlobalHookRunner(
       createMockPluginRegistry([{ hookName: "before_tool_call", handler: beforeToolCall }]),
     );
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-hook-channel-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-hook-channel-"));
     await fs.writeFile(path.join(tmpDir, "note.txt"), "hello");
     const tools = createOperatorCodingTools({
       workspaceDir: tmpDir,
@@ -418,13 +418,13 @@ describe("createOperatorCodingTools", () => {
 
   it("keeps the injected ring-zero tool under policy and rejects a same-name replacement", () => {
     const injectedTool = {
-      ...stubTool("openclaw"),
+      ...stubTool("@gabrielvfonseca/operator"),
       label: "Operator",
       description: "trusted ring-zero tool",
       execute: async () => ({ content: [], details: {} }),
     };
     const duplicateTool = {
-      ...stubTool("openclaw"),
+      ...stubTool("@gabrielvfonseca/operator"),
       label: "Operator",
       description: "duplicate plugin tool",
       execute: async () => ({ content: [], details: {} }),
@@ -433,8 +433,8 @@ describe("createOperatorCodingTools", () => {
 
     const tools = runWithAgentRingZeroTools([injectedTool], () =>
       createOperatorCodingTools({
-        config: { tools: { allow: ["read"], deny: ["openclaw"] } },
-        runtimeToolAllowlist: ["openclaw"],
+        config: { tools: { allow: ["read"], deny: ["@gabrielvfonseca/operator"] } },
+        runtimeToolAllowlist: ["@gabrielvfonseca/operator"],
         toolConstructionPlan: {
           includeBaseCodingTools: false,
           includeShellTools: false,
@@ -446,7 +446,7 @@ describe("createOperatorCodingTools", () => {
     );
 
     expect(tools).toHaveLength(1);
-    expect(tools[0]?.name).toBe("openclaw");
+    expect(tools[0]?.name).toBe("@gabrielvfonseca/operator");
     expect(tools[0]?.description).toBe("trusted ring-zero tool");
   });
 
@@ -1027,7 +1027,7 @@ describe("createOperatorCodingTools", () => {
     const agentId = `inherited-allow-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const storeTemplate = path.join(
       os.tmpdir(),
-      `openclaw-session-store-${agentId}-{agentId}.json`,
+      `operator-session-store-${agentId}-{agentId}.json`,
     );
     await writeSessionStore(storeTemplate, agentId, {
       [`agent:${agentId}:subagent:limited`]: {
@@ -1351,7 +1351,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("uses stored spawnDepth to apply leaf tool policy for flat depth-2 session keys", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-depth-policy-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-depth-policy-"));
     try {
       const storeTemplate = path.join(tmpDir, "sessions-{agentId}.json");
       await writeSessionStore(storeTemplate, "main", {
@@ -1370,7 +1370,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("applies subagent tool policy to ACP children spawned under a subagent envelope", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-acp-subagent-policy-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-acp-subagent-policy-"));
     try {
       const storeTemplate = path.join(tmpDir, "sessions-{agentId}.json");
       await writeSessionStore(storeTemplate, "main", {
@@ -1420,7 +1420,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("applies leaf tool policy for cross-agent subagent sessions when spawnDepth is missing", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cross-agent-subagent-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cross-agent-subagent-"));
     try {
       const storeTemplate = path.join(tmpDir, "sessions-{agentId}.json");
       await writeSessionStore(storeTemplate, "main", {
@@ -1702,7 +1702,7 @@ describe("createOperatorCodingTools", () => {
     const readTool = requireTool(defaultTools, "read");
     const readExecute = requireToolExecute(readTool);
 
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-read-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-read-"));
     try {
       const imagePath = path.join(tmpDir, "sample.png");
       await fs.writeFile(imagePath, tinyPngBuffer);
@@ -1740,10 +1740,10 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("filters tools by sandbox policy", () => {
-    const sandboxDir = path.join(os.tmpdir(), "openclaw-sandbox");
+    const sandboxDir = path.join(os.tmpdir(), "operator-sandbox");
     const sandbox = createAgentToolsSandboxContext({
       workspaceDir: sandboxDir,
-      agentWorkspaceDir: path.join(os.tmpdir(), "openclaw-workspace"),
+      agentWorkspaceDir: path.join(os.tmpdir(), "operator-workspace"),
       workspaceAccess: "none" as const,
       fsBridge: createHostSandboxFsBridge(sandboxDir),
       tools: {
@@ -1758,10 +1758,10 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("hard-disables write/edit when sandbox workspaceAccess is ro", () => {
-    const sandboxDir = path.join(os.tmpdir(), "openclaw-sandbox");
+    const sandboxDir = path.join(os.tmpdir(), "operator-sandbox");
     const sandbox = createAgentToolsSandboxContext({
       workspaceDir: sandboxDir,
-      agentWorkspaceDir: path.join(os.tmpdir(), "openclaw-workspace"),
+      agentWorkspaceDir: path.join(os.tmpdir(), "operator-workspace"),
       workspaceAccess: "ro" as const,
       fsBridge: createHostSandboxFsBridge(sandboxDir),
       tools: {
@@ -1776,7 +1776,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("accepts canonical parameters for read/write/edit", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-canonical-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-canonical-"));
     try {
       const tools = createOperatorCodingTools({ workspaceDir: tmpDir });
       const { readTool, writeTool, editTool } = expectReadWriteEditTools(tools);
@@ -1807,8 +1807,8 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("roots memory flush append-only writes in the workspace when cwd differs", async () => {
-    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-memory-workspace-"));
-    const taskCwd = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-memory-cwd-"));
+    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-memory-workspace-"));
+    const taskCwd = await fs.mkdtemp(path.join(os.tmpdir(), "operator-memory-cwd-"));
     const memoryRelativePath = "memory/2026-03-24.md";
     const workspaceMemoryFile = path.join(workspaceDir, memoryRelativePath);
     const taskMemoryFile = path.join(taskCwd, memoryRelativePath);
@@ -1841,7 +1841,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("rejects legacy alias parameters", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-legacy-alias-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-legacy-alias-"));
     try {
       const tools = createOperatorCodingTools({ workspaceDir: tmpDir });
       const { readTool, writeTool, editTool } = expectReadWriteEditTools(tools);
@@ -1872,7 +1872,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("rejects structured content blocks for write", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-structured-write-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-structured-write-"));
     try {
       const tools = createOperatorCodingTools({ workspaceDir: tmpDir });
       const writeTool = requireTool(tools, "write");
@@ -1893,7 +1893,7 @@ describe("createOperatorCodingTools", () => {
   });
 
   it("rejects structured edit payloads", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-structured-edit-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-structured-edit-"));
     try {
       const filePath = path.join(tmpDir, "structured-edit.js");
       await fs.writeFile(filePath, "const value = 'old';\n", "utf8");

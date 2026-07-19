@@ -1,13 +1,13 @@
 ---
-summary: "Use Qwen Cloud through its OpenClaw plugin"
+summary: "Use Qwen Cloud through its Operator plugin"
 read_when:
-  - You want to use Qwen with OpenClaw
+  - You want to use Qwen with Operator
   - You have an Alibaba Cloud Token Plan subscription
   - You previously used Qwen OAuth
 title: "Qwen"
 ---
 
-Qwen Cloud is an official external OpenClaw provider plugin with canonical id `qwen`. It targets Qwen Cloud / Alibaba DashScope Standard and Coding Plan endpoints, exposes Token Plan as `qwen-token-plan`, keeps `modelstudio` as a compatibility alias, independently owns Alibaba's documented `bailian-token-plan` custom-provider id, and exposes the Qwen Portal token flow as [`qwen-oauth`](/providers/qwen-oauth).
+Qwen Cloud is an official external Operator provider plugin with canonical id `qwen`. It targets Qwen Cloud / Alibaba DashScope Standard and Coding Plan endpoints, exposes Token Plan as `qwen-token-plan`, keeps `modelstudio` as a compatibility alias, independently owns Alibaba's documented `bailian-token-plan` custom-provider id, and exposes the Qwen Portal token flow as [`qwen-oauth`](/providers/qwen-oauth).
 
 | Property               | Value                                      |
 | ---------------------- | ------------------------------------------ |
@@ -29,8 +29,8 @@ For `qwen3.7-max` or `qwen3.6-flash`, use a **Standard (pay-as-you-go)** endpoin
 `qwen` ships as an official external plugin, not bundled with core. Install it and restart Gateway:
 
 ```bash
-openclaw plugins install @operator/qwen-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/qwen-provider
+operator gateway restart
 ```
 
 ## Getting started
@@ -49,13 +49,13 @@ Choose your plan type and follow the setup steps.
         For the **Global** endpoint:
 
         ```bash
-        openclaw onboard --auth-choice qwen-api-key
+        operator onboard --auth-choice qwen-api-key
         ```
 
         For the **China** endpoint:
 
         ```bash
-        openclaw onboard --auth-choice qwen-api-key-cn
+        operator onboard --auth-choice qwen-api-key-cn
         ```
       </Step>
       <Step title="Set a default model">
@@ -71,7 +71,7 @@ Choose your plan type and follow the setup steps.
       </Step>
       <Step title="Verify the model is available">
         ```bash
-        openclaw models list --provider qwen
+        operator models list --provider qwen
         ```
       </Step>
     </Steps>
@@ -98,13 +98,13 @@ Choose your plan type and follow the setup steps.
         For the **Global** endpoint:
 
         ```bash
-        openclaw onboard --auth-choice qwen-standard-api-key
+        operator onboard --auth-choice qwen-standard-api-key
         ```
 
         For the **China** endpoint:
 
         ```bash
-        openclaw onboard --auth-choice qwen-standard-api-key-cn
+        operator onboard --auth-choice qwen-standard-api-key-cn
         ```
       </Step>
       <Step title="Set a default model">
@@ -120,7 +120,7 @@ Choose your plan type and follow the setup steps.
       </Step>
       <Step title="Verify the model is available">
         ```bash
-        openclaw models list --provider qwen
+        operator models list --provider qwen
         ```
       </Step>
     </Steps>
@@ -147,25 +147,25 @@ Choose your plan type and follow the setup steps.
         For the **Global / International** endpoint in Singapore:
 
         ```bash
-        openclaw onboard --auth-choice qwen-token-plan
+        operator onboard --auth-choice qwen-token-plan
         ```
 
         For the **China** endpoint in Beijing:
 
         ```bash
-        openclaw onboard --auth-choice qwen-token-plan-cn
+        operator onboard --auth-choice qwen-token-plan-cn
         ```
       </Step>
       <Step title="Verify the provider">
         ```bash
-        openclaw models list --provider qwen-token-plan
-        openclaw agent --model qwen-token-plan/qwen3.7-plus --message "Reply with: token plan ready"
+        operator models list --provider qwen-token-plan
+        operator agent --model qwen-token-plan/qwen3.7-plus --message "Reply with: token plan ready"
         ```
       </Step>
     </Steps>
 
     <Note>
-    Alibaba's OpenClaw guide uses `bailian-token-plan` for a manual custom
+    Alibaba's Operator guide uses `bailian-token-plan` for a manual custom
     provider. The plugin registers that id as a compatibility owner, but new
     configs should use `qwen-token-plan`. An exact custom
     `models.providers.bailian-token-plan` entry keeps ownership of its configured
@@ -173,7 +173,7 @@ Choose your plan type and follow the setup steps.
     </Note>
 
     <Warning>
-    Use Token Plan only for interactive OpenClaw sessions. Do not select it for
+    Use Token Plan only for interactive Operator sessions. Do not select it for
     cron jobs, unattended scripts, or application backends. Alibaba states that
     non-interactive use can suspend the subscription or revoke its API key.
     </Warning>
@@ -189,7 +189,7 @@ Choose your plan type and follow the setup steps.
     <Steps>
       <Step title="Provide your portal token">
         ```bash
-        openclaw onboard --auth-choice qwen-oauth
+        operator onboard --auth-choice qwen-oauth
         ```
       </Step>
       <Step title="Set a default model">
@@ -205,7 +205,7 @@ Choose your plan type and follow the setup steps.
       </Step>
       <Step title="Verify the model is available">
         ```bash
-        openclaw models list --provider qwen-oauth
+        operator models list --provider qwen-oauth
         ```
       </Step>
     </Steps>
@@ -213,7 +213,7 @@ Choose your plan type and follow the setup steps.
     <Note>
     `qwen-oauth` uses the same `QWEN_API_KEY` env var name as the Qwen Cloud
     provider, but stores auth under the `qwen-oauth` provider id when configured
-    through OpenClaw onboarding.
+    through Operator onboarding.
     </Note>
 
   </Tab>
@@ -242,7 +242,7 @@ Override with a custom `baseUrl` in config.
 
 ## Built-in catalog
 
-OpenClaw ships this Qwen static catalog. The catalog is endpoint-aware: Coding
+Operator ships this Qwen static catalog. The catalog is endpoint-aware: Coding
 Plan configs omit models that only work on the Standard endpoint.
 
 | Model ref                   | Input       | Context   | Notes                   |
@@ -292,14 +292,14 @@ models are not included here because they use different APIs.
 
 `qwen3.7-max`, `qwen3.7-plus`, `qwen3.6-flash`, and `qwen3.6-plus` are
 reasoning-enabled in the built-in catalog. For reasoning models on the `qwen`
-family, the provider maps OpenClaw thinking levels to DashScope's top-level
+family, the provider maps Operator thinking levels to DashScope's top-level
 `enable_thinking` request flag: disabled thinking sends `enable_thinking: false`,
 any other level sends `enable_thinking: true`. Custom models can opt into an
 alternate chat-template thinking payload by setting
 `compat.thinkingFormat: "qwen-chat-template"` on the model entry.
 
 Token Plan models are also marked reasoning-capable. `kimi-k2.7-code` and
-`MiniMax-M2.5` are thinking-only, so OpenClaw keeps thinking enabled even when
+`MiniMax-M2.5` are thinking-only, so Operator keeps thinking enabled even when
 the session requests `/think off`. DeepSeek V4 maps `minimal` through `high` to
 the service's `high` effort and maps `xhigh` or `max` to `max`. GLM 5.2 accepts
 the full `minimal` through `max` range; GLM 5.1 and GLM 5 accept through
@@ -350,14 +350,14 @@ See [Video generation](/tools/video-generation) for shared tool parameters, prov
     - China: `dashscope.aliyuncs.com/compatible-mode/v1`
     - Global: `dashscope-intl.aliyuncs.com/compatible-mode/v1`
 
-    OpenClaw omits `qwen3.7-max` and `qwen3.6-flash` from Coding Plan catalogs.
+    Operator omits `qwen3.7-max` and `qwen3.6-flash` from Coding Plan catalogs.
     If a Coding Plan endpoint returns an "unsupported model" error for either,
     switch to the matching Standard endpoint and key.
 
   </Accordion>
 
   <Accordion title="Video generation region routing">
-    OpenClaw maps the configured Qwen region to the matching DashScope AIGC host
+    Operator maps the configured Qwen region to the matching DashScope AIGC host
     before submitting a video job:
 
     - Global/Intl: `https://dashscope-intl.aliyuncs.com`
@@ -402,7 +402,7 @@ See [Video generation](/tools/video-generation) for shared tool parameters, prov
   <Accordion title="Environment and daemon setup">
     If the Gateway runs as a daemon (launchd/systemd), make sure `QWEN_API_KEY`
     or `QWEN_TOKEN_PLAN_API_KEY` is available to that process (for example, in
-    `~/.openclaw/.env` or via `env.shellEnv`).
+    `~/.operator/.env` or via `env.shellEnv`).
   </Accordion>
 </AccordionGroup>
 

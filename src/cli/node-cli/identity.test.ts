@@ -18,7 +18,7 @@ describe("runNodeIdentityShow", () => {
   let exitSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-identity-"));
+    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-node-identity-"));
     prevStateDir = process.env.OPERATOR_STATE_DIR;
     process.env.OPERATOR_STATE_DIR = stateDir;
     logSpy = vi.spyOn(defaultRuntime, "log").mockImplementation(() => {});

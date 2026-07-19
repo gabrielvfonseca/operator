@@ -7,24 +7,24 @@ import {
   type EmbeddingInput,
   type MemoryEmbeddingProvider,
   type MemoryEmbeddingProviderCreateOptions,
-} from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
-import { resolveMemorySecretInputString } from "openclaw/plugin-sdk/memory-core-host-secret";
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-core-host-engine-embeddings";
+import { resolveMemorySecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/memory-core-host-secret";
 import {
   collectProviderApiKeysForExecution,
   executeWithApiKeyRotation,
   requireApiKey,
   resolveApiKeyForProvider,
-} from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   createProviderHttpError,
   providerOperationRetryConfig,
   readProviderJsonObjectResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import type { SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import type { SsrFPolicy } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   asOptionalRecord as asRecord,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { parseGeminiAuth } from "./gemini-auth.js";
 import { resolveGoogleApiClientHeaders } from "./google-api-client-header.js";
 

@@ -106,7 +106,7 @@ describe("openclaw skills install ClawHub GitHub-backed E2E", () => {
     });
 
     const registry = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-clawhub-cli-e2e-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-clawhub-cli-e2e-"));
     try {
       const result = await spawnOperator(
         ["skills", "install", "@demo-owner/aiq-deploy", "--global"],
@@ -115,7 +115,7 @@ describe("openclaw skills install ClawHub GitHub-backed E2E", () => {
           env: {
             ...process.env,
             OPERATOR_STATE_DIR: stateDir,
-            OPERATOR_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
+            OPERATOR_CONFIG_PATH: path.join(stateDir, "operator.json"),
             OPERATOR_CLAWHUB_URL: registry,
             CLAWHUB_TOKEN: "test-token",
             CLAWHUB_GITHUB_CODELOAD_BASE_URL: registry,

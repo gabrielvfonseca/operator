@@ -2,16 +2,16 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import { parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { parseSqliteSessionFileMarker } from "openclaw/plugin-sdk/session-store-runtime";
-import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import { parseAgentSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { parseSqliteSessionFileMarker } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { appendSessionTranscriptMessageByIdentity } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import plugin, { testing } from "./index.js";
 
@@ -471,7 +471,7 @@ describe("active-memory plugin", () => {
     vi.clearAllMocks();
     resetPluginStateStoreForTests();
     runEmbeddedAgent.mockReset();
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-active-memory-test-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-active-memory-test-"));
     configFile = {
       plugins: {
         entries: {
@@ -773,7 +773,7 @@ describe("active-memory plugin", () => {
 
     expect(result).toBeUndefined();
     expect(hoisted.cleanupSessionLifecycleArtifacts).toHaveBeenCalledTimes(3);
-    expect(rmSpy).toHaveBeenCalledWith(expect.stringMatching(/openclaw-active-memory-.*/), {
+    expect(rmSpy).toHaveBeenCalledWith(expect.stringMatching(/operator-active-memory-.*/), {
       recursive: true,
       force: true,
     });
@@ -6114,7 +6114,7 @@ describe("active-memory plugin", () => {
     );
 
     expect(mkdtempSpy).toHaveBeenCalled();
-    expect(rmSpy).toHaveBeenCalledWith(expect.stringMatching(/openclaw-active-memory-.*/), {
+    expect(rmSpy).toHaveBeenCalledWith(expect.stringMatching(/operator-active-memory-.*/), {
       recursive: true,
       force: true,
     });

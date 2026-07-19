@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-plugin-peer-link", tempDirs);
+  return makeTrackedTempDir("operator-plugin-peer-link", tempDirs);
 }
 
 describe("plugin peer links", () => {
@@ -30,7 +30,7 @@ describe("plugin peer links", () => {
         name: "peer-plugin",
         version: "1.0.0",
         peerDependencies: {
-          openclaw: ">=2026.0.0",
+          operator: ">=2026.0.0",
         },
       }),
       "utf8",
@@ -45,11 +45,11 @@ describe("plugin peer links", () => {
       },
     });
 
-    const linkPath = path.join(packageDir, "node_modules", "openclaw");
+    const linkPath = path.join(packageDir, "node_modules", "@gabrielvfonseca/operator");
     expect(result).toEqual({ checked: 1, attempted: 1, repaired: 1, skipped: 0 });
     expect(fs.lstatSync(linkPath).isSymbolicLink()).toBe(true);
     expect(fs.realpathSync(linkPath)).toBe(fs.realpathSync(process.cwd()));
-    expect(messages.join("\n")).toContain('Linked peerDependency "openclaw"');
+    expect(messages.join("\n")).toContain('Linked peerDependency "@gabrielvfonseca/operator"');
   });
 
   it("audits missing managed npm openclaw peer links without relinking", async () => {
@@ -62,7 +62,7 @@ describe("plugin peer links", () => {
         name: "peer-plugin",
         version: "1.0.0",
         peerDependencies: {
-          openclaw: ">=2026.0.0",
+          operator: ">=2026.0.0",
         },
       }),
       "utf8",
@@ -70,7 +70,7 @@ describe("plugin peer links", () => {
 
     const result = await auditOperatorPeerDependenciesInManagedNpmRoot({ npmRoot });
 
-    const linkPath = path.join(packageDir, "node_modules", "openclaw");
+    const linkPath = path.join(packageDir, "node_modules", "@gabrielvfonseca/operator");
     expect(result.checked).toBe(1);
     expect(result.broken).toBe(1);
     expect(result.issues[0]?.packageName).toBe("peer-plugin");
@@ -92,7 +92,7 @@ describe("plugin peer links", () => {
       const result = await linkOperatorPeerDependencies({
         installedDir: packageDir,
         peerDependencies: {
-          openclaw: ">=2026.0.0",
+          operator: ">=2026.0.0",
         },
         logger: {
           warn: (message) => warnings.push(message),
@@ -100,7 +100,7 @@ describe("plugin peer links", () => {
       });
 
       expect(result).toEqual({ repaired: 0, skipped: 1 });
-      expect(fs.existsSync(path.join(outsideDir, "openclaw"))).toBe(false);
+      expect(fs.existsSync(path.join(outsideDir, "@gabrielvfonseca/operator"))).toBe(false);
       expect(warnings.join("\n")).toContain("is not a real directory");
     },
   );
@@ -108,15 +108,19 @@ describe("plugin peer links", () => {
   it("replaces an existing real openclaw package directory", async () => {
     const root = makeTempDir();
     const packageDir = path.join(root, "peer-plugin");
-    const existingOperatorDir = path.join(packageDir, "node_modules", "openclaw");
+    const existingOperatorDir = path.join(packageDir, "node_modules", "@gabrielvfonseca/operator");
     fs.mkdirSync(existingOperatorDir, { recursive: true });
-    fs.writeFileSync(path.join(existingOperatorDir, "package.json"), '{"name":"openclaw"}', "utf8");
+    fs.writeFileSync(
+      path.join(existingOperatorDir, "package.json"),
+      '{"name":"@gabrielvfonseca/operator"}',
+      "utf8",
+    );
 
     const messages: string[] = [];
     const result = await linkOperatorPeerDependencies({
       installedDir: packageDir,
       peerDependencies: {
-        openclaw: ">=2026.0.0",
+        operator: ">=2026.0.0",
       },
       logger: {
         info: (message) => messages.push(message),
@@ -126,13 +130,13 @@ describe("plugin peer links", () => {
     expect(result).toEqual({ repaired: 1, skipped: 0 });
     expect(fs.lstatSync(existingOperatorDir).isSymbolicLink()).toBe(true);
     expect(fs.realpathSync(existingOperatorDir)).toBe(fs.realpathSync(process.cwd()));
-    expect(messages.join("\n")).toContain('Linked peerDependency "openclaw"');
+    expect(messages.join("\n")).toContain('Linked peerDependency "@gabrielvfonseca/operator"');
   });
 
   it("does not delete an unrelated existing package directory", async () => {
     const root = makeTempDir();
     const packageDir = path.join(root, "peer-plugin");
-    const existingOperatorDir = path.join(packageDir, "node_modules", "openclaw");
+    const existingOperatorDir = path.join(packageDir, "node_modules", "@gabrielvfonseca/operator");
     fs.mkdirSync(existingOperatorDir, { recursive: true });
     fs.writeFileSync(
       path.join(existingOperatorDir, "package.json"),
@@ -144,7 +148,7 @@ describe("plugin peer links", () => {
     const result = await linkOperatorPeerDependencies({
       installedDir: packageDir,
       peerDependencies: {
-        openclaw: ">=2026.0.0",
+        operator: ">=2026.0.0",
       },
       logger: {
         warn: (message) => warnings.push(message),

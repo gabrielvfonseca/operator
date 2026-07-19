@@ -1,5 +1,5 @@
 // Googlechat plugin module implements monitor types behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import type { GoogleChatAudienceType } from "./auth.js";
 import type { getGoogleChatRuntime } from "./runtime.js";

@@ -2,7 +2,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { withEnvAsync } from "openclaw/plugin-sdk/test-env";
+import { withEnvAsync } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { API, Message } from "./zca-client.js";
 
@@ -44,7 +44,7 @@ async function withStoredSession<T>(params: {
   api: API;
   run: () => Promise<T>;
 }): Promise<T> {
-  const stateDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-zalouser-message-"));
+  const stateDir = await mkdtemp(path.join(os.tmpdir(), "operator-zalouser-message-"));
   const credentialFile = path.join(
     stateDir,
     "credentials",

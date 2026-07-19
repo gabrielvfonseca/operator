@@ -12,27 +12,27 @@ import {
   type BuildMentionRegexesOptions,
   type InboundEventKind,
   type NormalizedLocation,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { resolveChannelGroupPolicy } from "openclaw/plugin-sdk/channel-policy";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-detection";
-import { isAbortRequestText } from "openclaw/plugin-sdk/command-primitives-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { resolveChannelGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { hasControlCommand } from "@gabrielvfonseca/operator/plugin-sdk/command-detection";
+import { isAbortRequestText } from "@gabrielvfonseca/operator/plugin-sdk/command-primitives-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createInternalHookEvent,
   fireAndForgetHook,
   toInternalMessageReceivedContext,
   triggerInternalHook,
-} from "openclaw/plugin-sdk/hook-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import type {
   TelegramLogger,

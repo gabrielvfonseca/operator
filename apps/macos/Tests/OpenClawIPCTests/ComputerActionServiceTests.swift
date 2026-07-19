@@ -1,8 +1,8 @@
 import CoreGraphics
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @MainActor
 struct ComputerActionServiceTests {
@@ -40,8 +40,8 @@ struct ComputerActionServiceTests {
         private(set) var maximumActiveActionCount = 0
 
         func perform(
-            _ params: OpenClawComputerActParams,
-            lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+            _ params: OperatorComputerActParams,
+            lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
         {
             _ = lifecycleGeneration
             let actionID = Int(params.x ?? -1)
@@ -57,7 +57,7 @@ struct ComputerActionServiceTests {
                 await self.releaseFirst.wait()
             }
             try Task.checkCancellation()
-            return OpenClawComputerActResult(ok: true, cursorX: Double(actionID), cursorY: 0)
+            return OperatorComputerActResult(ok: true, cursorX: Double(actionID), cursorY: 0)
         }
     }
 
@@ -103,7 +103,7 @@ struct ComputerActionServiceTests {
 
     @MainActor
     private final class ActionTaskBox {
-        var task: Task<OpenClawComputerActResult, Error>?
+        var task: Task<OperatorComputerActResult, Error>?
     }
 
     private func isLifecycleChanged(_ error: Error?) -> Bool {
@@ -129,7 +129,7 @@ struct ComputerActionServiceTests {
 
     @Test func `coordinate input requires the current display frame identity`() throws {
         let currentFrameId = "display-frame:v1:current"
-        let missing = OpenClawComputerActParams(
+        let missing = OperatorComputerActParams(
             action: .leftClick,
             x: 1,
             y: 2,
@@ -141,7 +141,7 @@ struct ComputerActionServiceTests {
             Issue.record("expected missingDisplayFrameId")
         }
 
-        let stale = OpenClawComputerActParams(
+        let stale = OperatorComputerActParams(
             action: .leftClick,
             displayFrameId: "display-frame:v1:stale",
             x: 1,
@@ -154,7 +154,7 @@ struct ComputerActionServiceTests {
             Issue.record("expected displayFrameChanged")
         }
 
-        let current = OpenClawComputerActParams(
+        let current = OperatorComputerActParams(
             action: .leftClick,
             displayFrameId: currentFrameId,
             x: 1,
@@ -162,7 +162,7 @@ struct ComputerActionServiceTests {
             refWidth: 1280)
         try ComputerActionService.validateDisplayFrame(current, currentFrameId: currentFrameId)
 
-        let missingScale = OpenClawComputerActParams(
+        let missingScale = OperatorComputerActParams(
             action: .leftClick,
             displayFrameId: currentFrameId,
             x: 1,
@@ -176,24 +176,24 @@ struct ComputerActionServiceTests {
             Issue.record("expected invalidReferenceWidth")
         }
 
-        let display = OpenClawComputerDisplayGeometry(
+        let display = OperatorComputerDisplayGeometry(
             originX: 0,
             originY: 0,
             widthPoints: 1280,
             heightPoints: 800)
-        let screenshotFrameId = OpenClawComputerInputGeometry.displayFrameId(
+        let screenshotFrameId = OperatorComputerInputGeometry.displayFrameId(
             displayID: 1,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 1280,
             display: display)
-        let mismatchedScaleFrameId = OpenClawComputerInputGeometry.displayFrameId(
+        let mismatchedScaleFrameId = OperatorComputerInputGeometry.displayFrameId(
             displayID: 1,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 640,
             display: display)
-        let mismatchedScale = OpenClawComputerActParams(
+        let mismatchedScale = OperatorComputerActParams(
             action: .leftClick,
             displayFrameId: screenshotFrameId,
             x: 1,
@@ -209,12 +209,12 @@ struct ComputerActionServiceTests {
         }
 
         // Cursor-relative/keyboard actions do not consume screenshot coordinates.
-        let keyboard = OpenClawComputerActParams(action: .type, text: "hello")
+        let keyboard = OperatorComputerActParams(action: .type, text: "hello")
         try ComputerActionService.validateDisplayFrame(keyboard, currentFrameId: currentFrameId)
     }
 
     @Test func `cursor-relative input stays inside the selected display`() throws {
-        let display = OpenClawComputerDisplayGeometry(
+        let display = OperatorComputerDisplayGeometry(
             originX: 100,
             originY: -50,
             widthPoints: 800,
@@ -353,8 +353,8 @@ struct ComputerActionServiceTests {
     @Test func `computer actions execute in FIFO order without overlap`() async throws {
         let probe = ActionProbe()
         let queue = ComputerActionExecutionQueue(onLifecycleRelease: { true })
-        let firstParams = OpenClawComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
-        let secondParams = OpenClawComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
+        let firstParams = OperatorComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
+        let secondParams = OperatorComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
 
         let first = Task { @MainActor in
             try await queue.perform(firstParams, lifecycleGeneration: 0, operation: probe.perform)
@@ -380,8 +380,8 @@ struct ComputerActionServiceTests {
     @Test func `cancelled queued action never executes`() async throws {
         let probe = ActionProbe()
         let queue = ComputerActionExecutionQueue(onLifecycleRelease: { true })
-        let firstParams = OpenClawComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
-        let cancelledParams = OpenClawComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
+        let firstParams = OperatorComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
+        let cancelledParams = OperatorComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
 
         let first = Task { @MainActor in
             try await queue.perform(firstParams, lifecycleGeneration: 0, operation: probe.perform)
@@ -414,7 +414,7 @@ struct ComputerActionServiceTests {
         let probe = ActionProbe()
         let releaseProbe = LifecycleReleaseProbe(allowed: true)
         let queue = ComputerActionExecutionQueue(onLifecycleRelease: releaseProbe.attempt)
-        let params = OpenClawComputerActParams(action: .leftMouseDown, x: 1, y: 0, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftMouseDown, x: 1, y: 0, refWidth: 1280)
         let action = Task { @MainActor in
             try await queue.perform(params, lifecycleGeneration: 0, operation: probe.perform)
         }
@@ -440,7 +440,7 @@ struct ComputerActionServiceTests {
             },
             scheduleCancellationHop: cancellationHop.schedule)
         let taskBox = ActionTaskBox()
-        let params = OpenClawComputerActParams(
+        let params = OperatorComputerActParams(
             action: .leftMouseDown,
             x: 1,
             y: 0,
@@ -448,7 +448,7 @@ struct ComputerActionServiceTests {
         let action = Task { @MainActor in
             try await queue.perform(params, lifecycleGeneration: 0) { _, _ in
                 taskBox.task?.cancel()
-                return OpenClawComputerActResult(ok: true, cursorX: 1, cursorY: 0)
+                return OperatorComputerActResult(ok: true, cursorX: 1, cursorY: 0)
             }
         }
         taskBox.task = action
@@ -547,8 +547,8 @@ struct ComputerActionServiceTests {
         let probe = ActionProbe()
         let releaseProbe = LifecycleReleaseProbe(allowed: true)
         let queue = ComputerActionExecutionQueue(onLifecycleRelease: releaseProbe.attempt)
-        let oldParams = OpenClawComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
-        let freshParams = OpenClawComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
+        let oldParams = OperatorComputerActParams(action: .leftClick, x: 1, y: 0, refWidth: 1280)
+        let freshParams = OperatorComputerActParams(action: .leftClick, x: 2, y: 0, refWidth: 1280)
 
         let old = Task { @MainActor in
             try await queue.perform(oldParams, lifecycleGeneration: 0, operation: probe.perform)
@@ -596,7 +596,7 @@ struct ComputerActionServiceTests {
         let probe = ActionProbe()
         let releaseProbe = LifecycleReleaseProbe(allowed: false)
         let queue = ComputerActionExecutionQueue(onLifecycleRelease: releaseProbe.attempt)
-        let params = OpenClawComputerActParams(action: .type, x: 2, y: 0, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .type, x: 2, y: 0, refWidth: 1280)
 
         let action = Task { @MainActor in
             try await queue.perform(

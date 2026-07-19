@@ -1,5 +1,5 @@
 // Loads isolated get-reply modules for tests that need fresh mocked state.
-import { importFreshModule } from "operator/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 
 type GetReplyModule = typeof import("./get-reply.js");
 

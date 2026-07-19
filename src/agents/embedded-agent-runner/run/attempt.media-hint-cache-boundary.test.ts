@@ -35,7 +35,7 @@ import {
   ensureSystemPromptCacheBoundary,
   SYSTEM_PROMPT_CACHE_BOUNDARY,
   splitSystemPromptCacheBoundary,
-} from "@operator/ai/internal/shared";
+} from "@gabrielvfonseca/ai/internal/shared";
 import {
   appendModelIdentitySystemPrompt,
   buildModelIdentityPromptLine,

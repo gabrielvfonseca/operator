@@ -209,8 +209,8 @@ describe("irc monitor inbound target", () => {
     },
     {
       label: "DM",
-      serverTarget: "openclaw-bot",
-      expected: { isGroup: false, target: "alice", rawTarget: "openclaw-bot" },
+      serverTarget: "operator-bot",
+      expected: { isGroup: false, target: "alice", rawTarget: "operator-bot" },
     },
   ])("maps $label targets through the monitor boundary", async ({ serverTarget, expected }) => {
     installMonitorRuntime();

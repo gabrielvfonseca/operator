@@ -2,7 +2,7 @@
 import {
   describeImageWithModel,
   describeImagesWithModel,
-} from "openclaw/plugin-sdk/media-understanding";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-understanding";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { openrouterMediaUnderstandingProvider } from "./media-understanding-provider.js";
 
@@ -97,7 +97,7 @@ describe("openrouter media understanding provider", () => {
       defaultHeaders: {
         Authorization: "Bearer sk-openrouter",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://openclaw.ai",
+        "HTTP-Referer": "https://operator.ai",
         "X-OpenRouter-Title": "Operator",
       },
       provider: "openrouter",
@@ -127,7 +127,7 @@ describe("openrouter media understanding provider", () => {
       throw new Error("expected OpenRouter request headers");
     }
     expect(headers.get("authorization")).toBe("Bearer sk-openrouter");
-    expect(headers.get("http-referer")).toBe("https://openclaw.ai");
+    expect(headers.get("http-referer")).toBe("https://operator.ai");
     expect(headers.get("x-openrouter-title")).toBe("Operator");
     expect(release).toHaveBeenCalledOnce();
   });

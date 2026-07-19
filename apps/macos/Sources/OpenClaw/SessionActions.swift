@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 
 enum SessionActions {
     static func patchSession(
@@ -9,7 +9,7 @@ enum SessionActions {
         thinking: String?? = nil,
         verbose: String?? = nil) async throws
     {
-        let request = OpenClawChatGatewayRequests.patchSessionPreferences(
+        let request = OperatorChatGatewayRequests.patchSessionPreferences(
             sessionKey: key,
             agentID: nil,
             thinkingLevel: thinking,
@@ -18,22 +18,22 @@ enum SessionActions {
     }
 
     static func resetSession(key: String) async throws {
-        let request = OpenClawChatGatewayRequests.resetSession(sessionKey: key, agentID: nil)
+        let request = OperatorChatGatewayRequests.resetSession(sessionKey: key, agentID: nil)
         _ = try await ControlChannel.shared.request(request)
     }
 
     static func deleteSession(key: String) async throws {
-        let request = OpenClawChatGatewayRequests.deleteSession(sessionKey: key, agentID: nil)
+        let request = OperatorChatGatewayRequests.deleteSession(sessionKey: key, agentID: nil)
         _ = try await ControlChannel.shared.request(request)
     }
 
     static func compactSession(key: String, maxLines: Int = 400) async throws {
-        let request = OpenClawChatGatewayRequests.compactSession(
+        let request = OperatorChatGatewayRequests.compactSession(
             sessionKey: key,
             agentID: nil,
             maxLines: maxLines)
         let response = try await ControlChannel.shared.request(request, retryTransportFailures: false)
-        try OpenClawSessionsCompactResponse.requireSuccess(from: response)
+        try OperatorSessionsCompactResponse.requireSuccess(from: response)
     }
 
     @MainActor
@@ -65,7 +65,7 @@ enum SessionActions {
                 let dir = URL(fileURLWithPath: storePath).deletingLastPathComponent()
                 urls.append(dir.appendingPathComponent("\(sessionId).jsonl"))
             }
-            urls.append(OpenClawPaths.stateDirURL.appendingPathComponent("sessions/\(sessionId).jsonl"))
+            urls.append(OperatorPaths.stateDirURL.appendingPathComponent("sessions/\(sessionId).jsonl"))
             return urls
         }()
 

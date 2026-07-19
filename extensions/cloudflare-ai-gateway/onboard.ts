@@ -6,7 +6,7 @@ import {
   applyAgentDefaultModelPrimary,
   applyProviderConfigWithDefaultModel,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildCloudflareAiGatewayModelDefinition,
   CLOUDFLARE_AI_GATEWAY_DEFAULT_MODEL_REF,

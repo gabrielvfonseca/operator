@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { reviewExecRequestWithConfiguredModel } from "openclaw/plugin-sdk/agent-harness-exec-review-runtime";
+import { reviewExecRequestWithConfiguredModel } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-exec-review-runtime";
 import {
   callGatewayTool,
   hasNativeHookRelayInvocation,
@@ -10,7 +10,7 @@ import {
   resolveNativeHookRelayDeferredToolApproval,
   runBeforeToolCallHook,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handleCodexAppServerApprovalRequest } from "./approval-bridge.js";
 import { requestPluginApproval } from "./plugin-approval-roundtrip.js";
@@ -221,7 +221,7 @@ describe("Codex app-server approval bridge", () => {
     expect(gatewayCallMethod()).toBe("plugin.approval.request");
     expect(typeof gatewayCallAt(0)[1]).toBe("object");
     const requestPayload = gatewayRequestPayload();
-    expect(requestPayload.pluginId).toBe("openclaw-codex-app-server");
+    expect(requestPayload.pluginId).toBe("operator-codex-app-server");
     expect(requestPayload.title).toBe("Codex app-server command approval");
     expect(requestPayload.twoPhase).toBe(true);
     expect(requestPayload.turnSourceChannel).toBe("telegram");
@@ -677,7 +677,7 @@ describe("Codex app-server approval bridge", () => {
   });
 
   it("falls back to plugin approval when Codex native OpenAI config uses a local base URL", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-approval-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-approval-"));
     try {
       await fs.mkdir(path.join(tempDir, "codex-home"), { recursive: true });
       await fs.writeFile(
@@ -1156,7 +1156,7 @@ describe("Codex app-server approval bridge", () => {
       event: "pre_tool_use",
       rawPayload: {
         hook_event_name: "PreToolUse",
-        openclaw_approval_mode: "report",
+        operator_approval_mode: "report",
         tool_name: "exec_command",
         tool_use_id: "cmd-native-relay",
         cwd: "/workspace",

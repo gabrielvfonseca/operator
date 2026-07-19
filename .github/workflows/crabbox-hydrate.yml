@@ -32,11 +32,11 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   PNPM_CONFIG_CHILD_CONCURRENCY: "1"
-  PNPM_CONFIG_MODULES_DIR: "/var/tmp/openclaw-pnpm/node_modules"
+  PNPM_CONFIG_MODULES_DIR: "/var/tmp/operator-pnpm/node_modules"
   PNPM_CONFIG_NETWORK_CONCURRENCY: "1"
   PNPM_CONFIG_STORE_DIR: "/var/cache/crabbox/pnpm/store"
   PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: "false"
-  PNPM_CONFIG_VIRTUAL_STORE_DIR: "/var/tmp/openclaw-pnpm/virtual-store"
+  PNPM_CONFIG_VIRTUAL_STORE_DIR: "/var/tmp/operator-pnpm/virtual-store"
 
 jobs:
   hydrate:
@@ -128,7 +128,7 @@ jobs:
             fi
           }
           prepare_crabbox_pnpm_dirs() {
-            local volatile_root="/var/tmp/openclaw-pnpm"
+            local volatile_root="/var/tmp/operator-pnpm"
             case "${PNPM_CONFIG_MODULES_DIR:?}" in "$volatile_root"/*) ;; *) echo "::error::PNPM_CONFIG_MODULES_DIR must stay under $volatile_root"; exit 1 ;; esac
             case "${PNPM_CONFIG_VIRTUAL_STORE_DIR:?}" in "$volatile_root"/*) ;; *) echo "::error::PNPM_CONFIG_VIRTUAL_STORE_DIR must stay under $volatile_root"; exit 1 ;; esac
             rm -rf -- "$volatile_root"
@@ -152,7 +152,7 @@ jobs:
               test -f "$PNPM_CONFIG_MODULES_DIR/typescript/package.json"
           }
           run_pnpm_install() {
-            local log_file="$RUNNER_TEMP/openclaw-pnpm-install.log"
+            local log_file="$RUNNER_TEMP/operator-pnpm-install.log"
             local pnpm_pid
             local done_seen=0
             rm -f "$log_file"
@@ -248,10 +248,10 @@ jobs:
           if ! command -v docker >/dev/null 2>&1; then
             echo "docker not found; installing fallback engine"
             curl --fail --show-error --location \
-              --connect-timeout "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}" \
-              --max-time "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_TIMEOUT_SECONDS:-300}" \
-              --retry "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_RETRIES:-3}" \
-              --retry-delay "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_RETRY_DELAY_SECONDS:-5}" \
+              --connect-timeout "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}" \
+              --max-time "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_TIMEOUT_SECONDS:-300}" \
+              --retry "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_RETRIES:-3}" \
+              --retry-delay "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_RETRY_DELAY_SECONDS:-5}" \
               --retry-all-errors \
               https://get.docker.com | sudo sh
           fi
@@ -279,10 +279,10 @@ jobs:
             buildx_version="${DOCKER_BUILDX_VERSION:-v0.15.1}"
             mkdir -p "$HOME/.docker/cli-plugins"
             curl --fail --show-error --location \
-              --connect-timeout "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}" \
-              --max-time "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_TIMEOUT_SECONDS:-300}" \
-              --retry "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_RETRIES:-3}" \
-              --retry-delay "${OPENCLAW_CRABBOX_HYDRATE_DOWNLOAD_RETRY_DELAY_SECONDS:-5}" \
+              --connect-timeout "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}" \
+              --max-time "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_TIMEOUT_SECONDS:-300}" \
+              --retry "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_RETRIES:-3}" \
+              --retry-delay "${OPERATOR_CRABBOX_HYDRATE_DOWNLOAD_RETRY_DELAY_SECONDS:-5}" \
               --retry-all-errors \
               "https://github.com/docker/buildx/releases/download/${buildx_version}/buildx-${buildx_version}.linux-${buildx_arch}" \
               -o "$HOME/.docker/cli-plugins/docker-buildx"
@@ -437,7 +437,7 @@ jobs:
           $env:XDG_CACHE_HOME = Join-Path $cacheRoot "cache"
           $env:COREPACK_HOME = Join-Path $env:XDG_CACHE_HOME "corepack"
           $env:PNPM_HOME = Join-Path $cacheRoot "pnpm-home"
-          $pnpmCacheRoot = Join-Path $cacheRoot "openclaw-pnpm"
+          $pnpmCacheRoot = Join-Path $cacheRoot "operator-pnpm"
           $env:PNPM_CONFIG_STORE_DIR = Join-Path $pnpmCacheRoot "store"
           $env:PNPM_CONFIG_MODULES_DIR = Join-Path $pnpmCacheRoot "node_modules"
           $env:PNPM_CONFIG_VIRTUAL_STORE_DIR = Join-Path $pnpmCacheRoot "virtual-store"
@@ -495,7 +495,7 @@ jobs:
           $installArgs = @(
             "install",
             "--filter",
-            "openclaw",
+            "@gabrielvfonseca/operator",
             "--prefer-offline",
             "--ignore-scripts=true",
             "--config.engine-strict=false",
@@ -697,11 +697,11 @@ jobs:
           MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           OPENCODE_ZEN_API_KEY: ${{ secrets.OPENCODE_ZEN_API_KEY }}
-          OPENCLAW_LIVE_BROWSER_CDP_URL: ${{ secrets.OPENCLAW_LIVE_BROWSER_CDP_URL }}
-          OPENCLAW_LIVE_SETUP_TOKEN: ${{ secrets.OPENCLAW_LIVE_SETUP_TOKEN }}
-          OPENCLAW_LIVE_SETUP_TOKEN_MODEL: ${{ secrets.OPENCLAW_LIVE_SETUP_TOKEN_MODEL }}
-          OPENCLAW_LIVE_SETUP_TOKEN_PROFILE: ${{ secrets.OPENCLAW_LIVE_SETUP_TOKEN_PROFILE }}
-          OPENCLAW_LIVE_SETUP_TOKEN_VALUE: ${{ secrets.OPENCLAW_LIVE_SETUP_TOKEN_VALUE }}
+          OPERATOR_LIVE_BROWSER_CDP_URL: ${{ secrets.OPERATOR_LIVE_BROWSER_CDP_URL }}
+          OPERATOR_LIVE_SETUP_TOKEN: ${{ secrets.OPERATOR_LIVE_SETUP_TOKEN }}
+          OPERATOR_LIVE_SETUP_TOKEN_MODEL: ${{ secrets.OPERATOR_LIVE_SETUP_TOKEN_MODEL }}
+          OPERATOR_LIVE_SETUP_TOKEN_PROFILE: ${{ secrets.OPERATOR_LIVE_SETUP_TOKEN_PROFILE }}
+          OPERATOR_LIVE_SETUP_TOKEN_VALUE: ${{ secrets.OPERATOR_LIVE_SETUP_TOKEN_VALUE }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -717,13 +717,13 @@ jobs:
           BYTEPLUS_ACCESS_KEY_ID: ${{ secrets.BYTEPLUS_ACCESS_KEY_ID }}
           BYTEPLUS_SECRET_ACCESS_KEY: ${{ secrets.BYTEPLUS_SECRET_ACCESS_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          OPENCLAW_CODEX_AUTH_JSON: ${{ secrets.OPENCLAW_CODEX_AUTH_JSON }}
-          OPENCLAW_CODEX_CONFIG_TOML: ${{ secrets.OPENCLAW_CODEX_CONFIG_TOML }}
-          OPENCLAW_CLAUDE_JSON: ${{ secrets.OPENCLAW_CLAUDE_JSON }}
-          OPENCLAW_CLAUDE_CREDENTIALS_JSON: ${{ secrets.OPENCLAW_CLAUDE_CREDENTIALS_JSON }}
-          OPENCLAW_CLAUDE_SETTINGS_JSON: ${{ secrets.OPENCLAW_CLAUDE_SETTINGS_JSON }}
-          OPENCLAW_CLAUDE_SETTINGS_LOCAL_JSON: ${{ secrets.OPENCLAW_CLAUDE_SETTINGS_LOCAL_JSON }}
-          OPENCLAW_GEMINI_SETTINGS_JSON: ${{ secrets.OPENCLAW_GEMINI_SETTINGS_JSON }}
+          OPERATOR_CODEX_AUTH_JSON: ${{ secrets.OPERATOR_CODEX_AUTH_JSON }}
+          OPERATOR_CODEX_CONFIG_TOML: ${{ secrets.OPERATOR_CODEX_CONFIG_TOML }}
+          OPERATOR_CLAUDE_JSON: ${{ secrets.OPERATOR_CLAUDE_JSON }}
+          OPERATOR_CLAUDE_CREDENTIALS_JSON: ${{ secrets.OPERATOR_CLAUDE_CREDENTIALS_JSON }}
+          OPERATOR_CLAUDE_SETTINGS_JSON: ${{ secrets.OPERATOR_CLAUDE_SETTINGS_JSON }}
+          OPERATOR_CLAUDE_SETTINGS_LOCAL_JSON: ${{ secrets.OPERATOR_CLAUDE_SETTINGS_LOCAL_JSON }}
+          OPERATOR_GEMINI_SETTINGS_JSON: ${{ secrets.OPERATOR_GEMINI_SETTINGS_JSON }}
         run: bash scripts/ci-hydrate-testbox-env.sh
 
       - name: Mark Crabbox ready

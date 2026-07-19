@@ -3,7 +3,7 @@
  *
  * Resolves default accounts, pairing hints, delimited entries, and DM security policy views.
  */
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { formatCliCommand } from "../../cli/command-format.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
@@ -20,8 +20,8 @@ export function resolveChannelDefaultAccountId<ResolvedAccount>(params: {
 }
 
 export function formatPairingApproveHint(channelId: string): string {
-  const listCmd = formatCliCommand(`operator pairing list ${channelId}`);
-  const approveCmd = formatCliCommand(`operator pairing approve ${channelId} <code>`);
+  const listCmd = formatCliCommand(`openclaw pairing list ${channelId}`);
+  const approveCmd = formatCliCommand(`openclaw pairing approve ${channelId} <code>`);
   return `Approve via: ${listCmd} / ${approveCmd}`;
 }
 

@@ -4,7 +4,7 @@ import {
   createPluginMetadataSnapshot,
   makeRegistry,
 } from "../config/plugin-auto-enable.test-helpers.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   clearCurrentPluginMetadataSnapshot,
   setCurrentPluginMetadataSnapshot,
@@ -32,7 +32,7 @@ afterEach(() => {
 describe("resolveBundledPluginCompatibleActivationInputs", () => {
   it("passes the current manifest registry into activation auto-enable", () => {
     const manifestRegistry = makeRegistry([{ id: "openai", channels: [], providers: ["openai"] }]);
-    const workspaceDir = "/tmp/openclaw-activation-workspace";
+    const workspaceDir = "/tmp/operator-activation-workspace";
     setCurrentPluginMetadataSnapshot(
       createPluginMetadataSnapshot({
         config: {},

@@ -45,7 +45,7 @@ async function initializeRepository(
   await fs.mkdir(repo, { recursive: true });
   await git(repo, "init", "-b", "main", `--template=${gitTemplate}`);
   await git(repo, "config", "user.name", "Operator Test");
-  await git(repo, "config", "user.email", "openclaw-test@example.invalid");
+  await git(repo, "config", "user.email", "operator-test@example.invalid");
   await fs.writeFile(path.join(repo, "README.md"), "base\n");
   await git(repo, "add", "README.md");
   await git(repo, "commit", "-m", "initial");
@@ -73,7 +73,7 @@ describe("ManagedWorktreeService", () => {
 
   beforeAll(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    templateRoot = await fs.mkdtemp(path.join(tempRoot, "openclaw-managed-worktrees-template-"));
+    templateRoot = await fs.mkdtemp(path.join(tempRoot, "operator-managed-worktrees-template-"));
     gitTemplate = path.join(templateRoot, "git-template");
     // Keep the hooks directory expected by hook-safety coverage without copying
     // the host's sample hooks into every per-test repository.
@@ -87,14 +87,14 @@ describe("ManagedWorktreeService", () => {
 
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    root = await fs.mkdtemp(path.join(tempRoot, "openclaw-managed-worktrees-"));
+    root = await fs.mkdtemp(path.join(tempRoot, "operator-managed-worktrees-"));
     repo = path.join(root, "repo");
     await fs.cp(templateRepo, repo, {
       mode: fsConstants.COPYFILE_FICLONE,
       recursive: true,
     });
     repo = await fs.realpath(repo);
-    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "openclaw-state") };
+    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "operator-state") };
     now = 1_700_000_000_000;
     service = new ManagedWorktreeService({ env, now: () => now });
   });
@@ -453,8 +453,8 @@ describe("ManagedWorktreeService", () => {
   });
 
   it("runs an executable setup script with source and worktree paths", async () => {
-    await fs.mkdir(path.join(repo, ".openclaw"));
-    const script = path.join(repo, ".openclaw", "worktree-setup.sh");
+    await fs.mkdir(path.join(repo, ".operator"));
+    const script = path.join(repo, ".operator", "worktree-setup.sh");
     await fs.writeFile(
       script,
       '#!/bin/sh\nprintf "%s\\n%s\\n" "$OPERATOR_SOURCE_TREE_PATH" "$OPERATOR_WORKTREE_PATH" > setup-paths.txt\n',
@@ -474,9 +474,9 @@ describe("ManagedWorktreeService", () => {
       `#!/bin/sh\nprintf ran > "${hookMarker}"\n`,
       { mode: 0o755 },
     );
-    await fs.mkdir(path.join(repo, ".openclaw"));
+    await fs.mkdir(path.join(repo, ".operator"));
     await fs.writeFile(
-      path.join(repo, ".openclaw", "worktree-setup.sh"),
+      path.join(repo, ".operator", "worktree-setup.sh"),
       `#!/bin/sh\nprintf ran > "${setupMarker}"\n`,
       { mode: 0o755 },
     );
@@ -488,8 +488,8 @@ describe("ManagedWorktreeService", () => {
   });
 
   it("removes the worktree and branch when setup fails", async () => {
-    await fs.mkdir(path.join(repo, ".openclaw"));
-    const script = path.join(repo, ".openclaw", "worktree-setup.sh");
+    await fs.mkdir(path.join(repo, ".operator"));
+    const script = path.join(repo, ".operator", "worktree-setup.sh");
     await fs.writeFile(script, "#!/bin/sh\necho setup-broke >&2\nexit 9\n", { mode: 0o755 });
     await expect(service.create({ repoRoot: repo, name: "broken-setup" })).rejects.toThrow(
       "setup-broke",

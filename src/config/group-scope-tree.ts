@@ -1,5 +1,5 @@
 // Resolves canonical group policy scopes prepared by channel plugins.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ChannelId } from "../channels/plugins/channel-id.types.js";
 import { resolveChannelGroups, resolveToolsBySender } from "./group-policy.js";
 import type { OperatorConfig } from "./types.operator.js";

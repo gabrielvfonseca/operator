@@ -1,10 +1,10 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.ChatDraft
-import ai.openclaw.app.ChatDraftPlacement
-import ai.openclaw.app.ChatShareDraft
-import ai.openclaw.app.chat.OUTBOX_MAX_COMMAND_ATTACHMENT_BYTES
-import ai.openclaw.app.chat.VoiceNoteRecorderState
+import ai.operator.app.ChatDraft
+import ai.operator.app.ChatDraftPlacement
+import ai.operator.app.ChatShareDraft
+import ai.operator.app.chat.OUTBOX_MAX_COMMAND_ATTACHMENT_BYTES
+import ai.operator.app.chat.VoiceNoteRecorderState
 import android.net.Uri
 import kotlinx.coroutines.CancellationException
 

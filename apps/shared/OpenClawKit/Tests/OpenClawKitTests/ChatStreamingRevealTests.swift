@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatStreamingRevealTests {
     @Test func `word boundaries use whitespace and preserve gaps`() {

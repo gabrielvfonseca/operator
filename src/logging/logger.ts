@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { Logger as TsLogger } from "tslog";
 import type { OperatorConfig } from "../config/types.js";
 import {
@@ -569,7 +569,7 @@ export function isFileLogLevelEnabled(level: LogLevel): boolean {
 
 function buildLogger(settings: ResolvedSettings): TsLogger<LogObj> {
   const logger = new TsLogger<LogObj>({
-    name: "operator",
+    name: "@gabrielvfonseca/operator",
     // Custom structured redaction runs at each transport boundary; avoid tslog pre-masking divergent records.
     maskValuesOfKeys: [],
     minLevel: levelToMinLevel(settings.level),
@@ -627,7 +627,7 @@ function buildLogger(settings: ResolvedSettings): TsLogger<LogObj> {
         } else if (!warnedAboutRotationFailure) {
           warnedAboutRotationFailure = true;
           process.stderr.write(
-            `[operator] log file rotation failed; continuing writes file=${activeFile} maxFileBytes=${settings.maxFileBytes}\n`,
+            `[openclaw] log file rotation failed; continuing writes file=${activeFile} maxFileBytes=${settings.maxFileBytes}\n`,
           );
         }
       }

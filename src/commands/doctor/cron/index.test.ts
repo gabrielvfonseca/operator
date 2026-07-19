@@ -34,7 +34,7 @@ vi.mock("../../../../packages/terminal-core/src/note.js", () => ({
 let tempRoot: string | null = null;
 
 async function makeTempStorePath() {
-  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-cron-"));
+  tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-doctor-cron-"));
   return path.join(tempRoot, "cron", "jobs.json");
 }
 
@@ -1928,7 +1928,7 @@ describe("maybeRepairLegacyCronStore", () => {
         wakeMode: "now",
         payload: {
           kind: "systemEvent",
-          text: "__openclaw_memory_core_short_term_promotion_dream__",
+          text: "__operator_memory_core_short_term_promotion_dream__",
         },
         state: {},
       },
@@ -1945,7 +1945,7 @@ describe("maybeRepairLegacyCronStore", () => {
     expect(job.sessionTarget).toBe("isolated");
     const payload = requireRecord(job.payload, "cron payload");
     expect(payload.kind).toBe("agentTurn");
-    expect(payload.message).toBe("__openclaw_memory_core_short_term_promotion_dream__");
+    expect(payload.message).toBe("__operator_memory_core_short_term_promotion_dream__");
     expect(payload.lightContext).toBe(true);
     const delivery = requireRecord(job.delivery, "cron delivery");
     expect(delivery.mode).toBe("none");
@@ -1984,7 +1984,7 @@ describe("legacy WhatsApp crontab health check", () => {
       readCrontab: async () => ({
         stdout: [
           "# keep comments ignored",
-          "*/5 * * * * ~/.openclaw/bin/ensure-whatsapp.sh >> ~/.openclaw/logs/whatsapp-health.log 2>&1",
+          "*/5 * * * * ~/.operator/bin/ensure-whatsapp.sh >> ~/.operator/logs/whatsapp-health.log 2>&1",
           "0 9 * * * /usr/bin/true",
           "",
         ].join("\n"),
@@ -2002,7 +2002,7 @@ describe("legacy WhatsApp crontab health check", () => {
       readCrontab: async () => ({
         stdout: [
           "# keep comments ignored",
-          "*/5 * * * * ~/.openclaw/bin/ensure-whatsapp.sh >> ~/.openclaw/logs/whatsapp-health.log 2>&1",
+          "*/5 * * * * ~/.operator/bin/ensure-whatsapp.sh >> ~/.operator/logs/whatsapp-health.log 2>&1",
           "0 9 * * * /usr/bin/true",
           "",
         ].join("\n"),
@@ -2052,7 +2052,7 @@ describe("legacy WhatsApp crontab health check", () => {
       noteLegacyWhatsAppCrontabHealthCheck({
         platform: "linux",
         readCrontab: async () => ({
-          stdout: { lines: ["*/5 * * * * ~/.openclaw/bin/ensure-whatsapp.sh"] },
+          stdout: { lines: ["*/5 * * * * ~/.operator/bin/ensure-whatsapp.sh"] },
         }),
       }),
     ).resolves.toBeUndefined();

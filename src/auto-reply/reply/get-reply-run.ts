@@ -1,8 +1,11 @@
 /** Prepares and runs auto-reply agent turns, including prompt context and session policy. */
 import crypto from "node:crypto";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
-import { type FastMode, normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import {
+  type FastMode,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   clearAutoFallbackPrimaryProbeSelection,
   hasLegacyAutoFallbackWithoutOrigin,
@@ -1477,7 +1480,7 @@ export async function runPreparedReply(
           // LLM-boundary stamping site (normalizeMessagesForLlmBoundary) can
           // derive a stable per-message `[DOW YYYY-MM-DD HH:MM TZ]` prefix that
           // is identical whether this turn is sent as the current turn or
-          // replayed as history. See: https://github.com/operator/operator/issues/3658
+          // replayed as history. See: https://github.com/openclaw/openclaw/issues/3658
           ...(userTurnTimestamp ? { timestamp: userTurnTimestamp } : {}),
           // Direct transcripts keep their existing identity-storage boundary.
           sender: persistGroupSender

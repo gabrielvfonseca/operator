@@ -1,4 +1,4 @@
-import { formatChannelProgressDraftText } from "openclaw/plugin-sdk/channel-outbound";
+import { formatChannelProgressDraftText } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 // Slack tests cover progress blocks plugin behavior.
 import { describe, expect, it } from "vitest";
 import {

@@ -478,7 +478,7 @@ describe("loadOperatorPlugins", () => {
     fs.mkdirSync(pluginRoot, { recursive: true });
     fs.writeFileSync(
       path.join(packageRoot, "package.json"),
-      JSON.stringify({ name: "operator", version: "2026.4.22", type: "module" }),
+      JSON.stringify({ name: "@gabrielvfonseca/operator", version: "2026.4.22", type: "module" }),
       "utf-8",
     );
     fs.writeFileSync(
@@ -486,13 +486,13 @@ describe("loadOperatorPlugins", () => {
       "export const normalizeLowercaseStringOrEmpty = (value) => String(value).toLowerCase();\n",
       "utf-8",
     );
-    const aliasRoot = path.join(bundledDir, "node_modules", "operator");
+    const aliasRoot = path.join(bundledDir, "node_modules", "@gabrielvfonseca/operator");
     const aliasPluginSdkDir = path.join(aliasRoot, "plugin-sdk");
     fs.mkdirSync(aliasPluginSdkDir, { recursive: true });
     fs.writeFileSync(
       path.join(aliasRoot, "package.json"),
       JSON.stringify({
-        name: "operator",
+        name: "@gabrielvfonseca/operator",
         type: "module",
         exports: {
           "./plugin-sdk/string-coerce-runtime": "./plugin-sdk/string-coerce-runtime.js",
@@ -508,7 +508,7 @@ describe("loadOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(pluginRoot, "index.js"),
       [
-        `import { normalizeLowercaseStringOrEmpty } from "operator/plugin-sdk/string-coerce-runtime";`,
+        `import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";`,
         `export default {`,
         `  id: "discord",`,
         `  register(api) {`,
@@ -523,7 +523,7 @@ describe("loadOperatorPlugins", () => {
       path.join(pluginRoot, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/discord",
+          name: "@gabrielvfonseca/discord",
           version: "1.0.0",
           type: "module",
           operator: { extensions: ["./index.js"] },
@@ -817,7 +817,7 @@ describe("loadOperatorPlugins", () => {
   it("preserves package.json metadata for bundled memory plugins", () => {
     const registry = loadBundledMemoryPluginRegistry({
       packageMeta: {
-        name: "@operator/memory-core",
+        name: "@gabrielvfonseca/memory-core",
         version: "1.2.3",
         description: "Memory plugin package",
       },

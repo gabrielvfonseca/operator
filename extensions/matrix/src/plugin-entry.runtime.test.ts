@@ -37,7 +37,7 @@ function writeOperatorPackageFixture(fixtureRoot: string) {
     "package.json",
     JSON.stringify(
       {
-        name: "openclaw",
+        name: "@gabrielvfonseca/operator",
         type: "module",
         exports: {
           "./plugin-sdk": "./dist/plugin-sdk/index.js",
@@ -47,7 +47,7 @@ function writeOperatorPackageFixture(fixtureRoot: string) {
       2,
     ) + "\n",
   );
-  writeFixtureFile(fixtureRoot, "openclaw.mjs", "export {};\n");
+  writeFixtureFile(fixtureRoot, "operator.mjs", "export {};\n");
   writeFixtureFile(fixtureRoot, "dist/plugin-sdk/index.js", "export {};\n");
 }
 

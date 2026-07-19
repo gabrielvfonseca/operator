@@ -6,16 +6,16 @@ import {
   normalizeAccountId,
   resolveMergedAccountConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 import {
   mapAllowFromEntries,
   normalizeChannelDmPolicy,
   resolveChannelDmAllowFrom,
   resolveChannelDmPolicy,
   type ChannelDmPolicy,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { resolveAccountEntry } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import { resolveAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { SlackAccountSurfaceFields } from "./account-surface-fields.js";
 import type { SlackAccountConfig } from "./runtime-api.js";
 import { resolveSlackAppToken, resolveSlackBotToken, resolveSlackUserToken } from "./token.js";

@@ -16,13 +16,13 @@ import {
 import { requireNodeSqlite } from "../../infra/node-sqlite.js";
 import { resolveSqliteDatabaseFilePaths } from "../../infra/sqlite-files.js";
 import { readSqliteUserVersion } from "../../infra/sqlite-user-version.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
 import {
   OPERATOR_AGENT_SCHEMA_VERSION,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
-import { OPERATOR_SQLITE_BUSY_TIMEOUT_MS } from "../../state/operator-state-db.js";
+} from "../../state/openclaw-agent-db.js";
+import { OPERATOR_SQLITE_BUSY_TIMEOUT_MS } from "../../state/openclaw-state-db.js";
 import { resolveUserPath } from "../../utils.js";
 import { resolveRegisteredAgentIdForDir } from "../agent-dir-registry.js";
 import { resolveDefaultAgentDir } from "../agent-scope-config.js";

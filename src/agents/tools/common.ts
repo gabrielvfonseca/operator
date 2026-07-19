@@ -3,13 +3,13 @@
  *
  * Defines erased tool types, parameter readers, JSON results, progress blocks, and media sanitization.
  */
-import { detectMime } from "@operator/media-core/mime";
+import { detectMime } from "@gabrielvfonseca/media-core/mime";
 import {
   asPositiveSafeInteger,
   asSafeIntegerInRange,
   parseStrictFiniteNumber,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { TSchema } from "typebox";
 import { readLocalFileSafely } from "../../infra/fs-safe.js";
 import { readSnakeCaseParamRaw } from "../../param-key.js";

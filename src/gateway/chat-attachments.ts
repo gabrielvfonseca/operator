@@ -1,10 +1,10 @@
 // Gateway chat attachment parser.
 // Normalizes image attachments, offloads large media, and reports unsupported payloads.
-import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { MAX_IMAGE_BYTES } from "@operator/media-core/constants";
-import { extensionForMime, mimeTypeFromFilePath } from "@operator/media-core/mime";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/media-core/constants";
+import { extensionForMime, mimeTypeFromFilePath } from "@gabrielvfonseca/media-core/mime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { PromptImageOrderEntry } from "../media/prompt-image-order.js";

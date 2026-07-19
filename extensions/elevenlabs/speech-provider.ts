@@ -1,11 +1,14 @@
 // Elevenlabs provider module implements model/runtime integration.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { parseStrictFiniteNumber, parseStrictInteger } from "openclaw/plugin-sdk/number-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import {
+  parseStrictFiniteNumber,
+  parseStrictInteger,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   assertOkOrThrowProviderError,
   readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
@@ -13,7 +16,7 @@ import type {
   SpeechProviderPlugin,
   SpeechSynthesisRequest,
   SpeechVoiceOption,
-} from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   asBoolean,
   asFiniteNumber,
@@ -23,12 +26,12 @@ import {
   normalizeSeed,
   requireInRange,
   trimToUndefined,
-} from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "openclaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveElevenLabsApiKeyWithProfileFallback } from "./config-api.js";
 import { isValidElevenLabsVoiceId, normalizeElevenLabsBaseUrl } from "./shared.js";
 import { elevenLabsTTS, elevenLabsTTSStream } from "./tts.js";

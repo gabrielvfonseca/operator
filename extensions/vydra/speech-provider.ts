@@ -4,14 +4,14 @@ import {
   postJsonRequest,
   readProviderJsonResponse,
   resolveProviderHttpRequestConfig,
-} from "openclaw/plugin-sdk/provider-http";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type {
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "openclaw/plugin-sdk/speech-core";
-import { asObject } from "openclaw/plugin-sdk/speech-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import { asObject } from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
 import {
   DEFAULT_VYDRA_BASE_URL,
   DEFAULT_VYDRA_SPEECH_MODEL,

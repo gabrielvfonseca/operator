@@ -1,10 +1,10 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
-private let chatSendingLogger = Logger(subsystem: "ai.openclaw", category: "OpenClawChatUI")
+private let chatSendingLogger = Logger(subsystem: "ai.operator", category: "OperatorChatUI")
 
-extension OpenClawChatViewModel {
+extension OperatorChatViewModel {
     public func send() {
         self.logDiagnostic(
             "chat.ui send invoked sessionKey=\(self.sessionKey) "
@@ -27,7 +27,7 @@ extension OpenClawChatViewModel {
 
     public func slashCommandMatches(
         query: String,
-        filter: OpenClawChatCommandFilter) -> [OpenClawChatCommandChoice]
+        filter: OperatorChatCommandFilter) -> [OperatorChatCommandChoice]
     {
         if let cache = slashFilterCache, cache.query == query, cache.filter == filter {
             return cache.result
@@ -37,7 +37,7 @@ extension OpenClawChatViewModel {
         return result
     }
 
-    public func applySlashCommandSelection(_ command: OpenClawChatCommandChoice) {
+    public func applySlashCommandSelection(_ command: OperatorChatCommandChoice) {
         let invocation = command.preferredInvocation.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !invocation.isEmpty else { return }
         self.input = command.acceptsArgs ? "\(invocation) " : invocation
@@ -124,7 +124,7 @@ extension OpenClawChatViewModel {
 
     private static func isKnownSlashCommandText(
         _ text: String,
-        commands: [OpenClawChatCommandChoice]) -> Bool
+        commands: [OperatorChatCommandChoice]) -> Bool
     {
         guard let commandName = slashCommandName(from: text), !commandName.isEmpty else {
             return false
@@ -145,14 +145,14 @@ extension OpenClawChatViewModel {
     }
 
     private static func commands(
-        _ commands: [OpenClawChatCommandChoice],
+        _ commands: [OperatorChatCommandChoice],
         containInvocationName name: String) -> Bool
     {
         commands.contains { self.command($0, matchesInvocationName: name) }
     }
 
     private static func command(
-        _ command: OpenClawChatCommandChoice,
+        _ command: OperatorChatCommandChoice,
         matchesInvocationName name: String) -> Bool
     {
         let normalizedName = name.lowercased()
@@ -165,16 +165,16 @@ extension OpenClawChatViewModel {
     }
 
     private static func filteredSlashCommands(
-        _ commands: [OpenClawChatCommandChoice],
+        _ commands: [OperatorChatCommandChoice],
         query rawQuery: String,
-        filter: OpenClawChatCommandFilter) -> [OpenClawChatCommandChoice]
+        filter: OperatorChatCommandFilter) -> [OperatorChatCommandChoice]
     {
         let trimmed = rawQuery.trimmingCharacters(in: .whitespacesAndNewlines)
         let query = self.normalizedSlashQuery(trimmed)
-        let effectiveFilter: OpenClawChatCommandFilter =
+        let effectiveFilter: OperatorChatCommandFilter =
             self.queryTargetsSkills(trimmed) && filter == .all ? .skills : filter
         return commands.enumerated()
-            .compactMap { index, command -> (Int, Int, OpenClawChatCommandChoice)? in
+            .compactMap { index, command -> (Int, Int, OperatorChatCommandChoice)? in
                 guard self.command(command, isIncludedIn: effectiveFilter) else { return nil }
                 guard let rank = self.commandSearchRank(command, query: query) else { return nil }
                 return (rank, index, command)
@@ -207,8 +207,8 @@ extension OpenClawChatViewModel {
     }
 
     private static func command(
-        _ command: OpenClawChatCommandChoice,
-        isIncludedIn filter: OpenClawChatCommandFilter) -> Bool
+        _ command: OperatorChatCommandChoice,
+        isIncludedIn filter: OperatorChatCommandFilter) -> Bool
     {
         switch filter {
         case .all:
@@ -221,7 +221,7 @@ extension OpenClawChatViewModel {
     }
 
     private static func commandSearchRank(
-        _ command: OpenClawChatCommandChoice,
+        _ command: OperatorChatCommandChoice,
         query: String) -> Int?
     {
         guard !query.isEmpty else { return 0 }
@@ -285,7 +285,7 @@ extension OpenClawChatViewModel {
 
     private struct SendDraft {
         let input: String
-        let attachments: [OpenClawPendingAttachment]
+        let attachments: [OperatorPendingAttachment]
         let trimmed: String
         let session: SessionSnapshot
 
@@ -298,7 +298,7 @@ extension OpenClawChatViewModel {
         let draft: SendDraft
         let runId: String
         let storedThinkingLevel: String
-        let encodedAttachments: [OpenClawChatAttachmentPayload]
+        let encodedAttachments: [OperatorChatAttachmentPayload]
         let userMessageTimestamp: Double
         let userMessageID: UUID
     }
@@ -446,7 +446,7 @@ extension OpenClawChatViewModel {
         let routeResult = await self.transport.acquireOutboxRouteLease()
         guard self.isCurrentSession(draft.session) else { return .stop }
         guard case let .unavailable(reason) = routeResult,
-              reason == OpenClawChatTransportUpgradeMessage.routingContract
+              reason == OperatorChatTransportUpgradeMessage.routingContract
         else {
             return .persistIfAvailable
         }
@@ -480,7 +480,7 @@ extension OpenClawChatViewModel {
         // preview, and embedded transports may intentionally have no outbox;
         // keep their established live-only attachment path available.
         let encodedAttachments = draft.attachments.map { attachment in
-            OpenClawChatAttachmentPayload(
+            OperatorChatAttachmentPayload(
                 type: attachment.type,
                 mimeType: attachment.mimeType,
                 fileName: attachment.fileName,
@@ -493,7 +493,7 @@ extension OpenClawChatViewModel {
         let userMessageTimestamp = Date().timeIntervalSince1970 * 1000
         let userMessageID = UUID()
         self.appendMessage(
-            OpenClawChatMessage(
+            OperatorChatMessage(
                 id: userMessageID,
                 role: "user",
                 content: userContent,
@@ -520,11 +520,11 @@ extension OpenClawChatViewModel {
 
     private static func userContent(
         messageText: String,
-        attachments: [OpenClawPendingAttachment],
-        encodedAttachments: [OpenClawChatAttachmentPayload]) -> [OpenClawChatMessageContent]
+        attachments: [OperatorPendingAttachment],
+        encodedAttachments: [OperatorChatAttachmentPayload]) -> [OperatorChatMessageContent]
     {
-        var content: [OpenClawChatMessageContent] = [
-            OpenClawChatMessageContent(
+        var content: [OperatorChatMessageContent] = [
+            OperatorChatMessageContent(
                 type: "text",
                 text: messageText,
                 thinking: nil,
@@ -538,7 +538,7 @@ extension OpenClawChatViewModel {
         ]
         for (attachment, payload) in zip(attachments, encodedAttachments) {
             content.append(
-                OpenClawChatMessageContent(
+                OperatorChatMessageContent(
                     type: payload.type,
                     text: nil,
                     thinking: nil,
@@ -579,7 +579,7 @@ extension OpenClawChatViewModel {
     }
 
     private func handleLiveSendResponse(
-        _ response: OpenClawChatSendResponse,
+        _ response: OperatorChatSendResponse,
         attempt: LiveSendAttempt) async
     {
         let sessionKey = attempt.draft.session.key
@@ -658,7 +658,7 @@ extension OpenClawChatViewModel {
         if attempt.encodedAttachments.isEmpty, !(error is GatewayResponseError) {
             self.runMessageScopesByRunID.removeValue(forKey: attempt.runId)
             self.clearPendingRun(attempt.runId)
-            let deliveryIsAmbiguous = !(error is OpenClawChatTransportSendError)
+            let deliveryIsAmbiguous = !(error is OperatorChatTransportSendError)
             let preserved = await self.preserveFailedLiveSend(
                 runId: attempt.runId,
                 text: attempt.draft.messageText,

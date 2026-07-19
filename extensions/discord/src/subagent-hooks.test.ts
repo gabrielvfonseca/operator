@@ -2,8 +2,8 @@
 import {
   getRequiredHookHandler,
   registerHookHandlersForTest,
-} from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { handleDiscordSubagentSpawning } from "./subagent-hooks.js";
 

@@ -1,5 +1,5 @@
 // Channel inbound root helpers resolve media roots for channel-delivered files.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { MsgContext } from "../auto-reply/templating.js";
 import type { OperatorConfig } from "../config/types.js";
 import { loadBundledPluginPublicArtifactModuleSync } from "../plugins/public-surface-loader.js";

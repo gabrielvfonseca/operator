@@ -1,14 +1,14 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 @MainActor
 private final class GatedClipPlayer: ChatSpeechClipPlaying {
-    var playedClips: [OpenClawChatSpeechClip] = []
+    var playedClips: [OperatorChatSpeechClip] = []
     var stopCount = 0
     private var pending: CheckedContinuation<Bool, Never>?
 
-    func play(clip: OpenClawChatSpeechClip) async -> Bool {
+    func play(clip: OperatorChatSpeechClip) async -> Bool {
         self.playedClips.append(clip)
         return await withCheckedContinuation { continuation in
             self.pending = continuation
@@ -44,16 +44,16 @@ private final class RecordingLocalSpeaker: ChatSpeechLocalSpeaking {
 
 @MainActor
 private struct SpeechHarness {
-    let controller: OpenClawChatSpeechController
+    let controller: OperatorChatSpeechController
     let clipPlayer: GatedClipPlayer
     let localSpeaker: RecordingLocalSpeaker
 
-    init(synthesize: @escaping OpenClawChatSpeechSynthesis) {
+    init(synthesize: @escaping OperatorChatSpeechSynthesis) {
         let clipPlayer = GatedClipPlayer()
         let localSpeaker = RecordingLocalSpeaker()
         self.clipPlayer = clipPlayer
         self.localSpeaker = localSpeaker
-        self.controller = OpenClawChatSpeechController(
+        self.controller = OperatorChatSpeechController(
             synthesize: synthesize,
             clipPlayer: clipPlayer,
             localSpeech: localSpeaker)
@@ -64,8 +64,8 @@ private struct SpeechHarness {
 /// through an unstructured task, so tests must yield to it.
 @MainActor
 private func waitForPhase(
-    _ controller: OpenClawChatSpeechController,
-    _ expected: OpenClawChatSpeechController.Phase) async -> Bool
+    _ controller: OperatorChatSpeechController,
+    _ expected: OperatorChatSpeechController.Phase) async -> Bool
 {
     for _ in 0..<200 {
         if controller.phase == expected { return true }
@@ -75,10 +75,10 @@ private func waitForPhase(
 }
 
 @MainActor
-@Suite("OpenClawChatSpeechController")
+@Suite("OperatorChatSpeechController")
 struct ChatSpeechControllerTests {
     @Test func `plays gateway clip and returns to idle`() async {
-        let clip = OpenClawChatSpeechClip(
+        let clip = OperatorChatSpeechClip(
             data: Data([9, 9, 9]),
             outputFormat: "mp3",
             mimeType: "audio/mpeg",
@@ -108,7 +108,7 @@ struct ChatSpeechControllerTests {
     }
 
     @Test func `falls back to local speech when clip is unplayable`() async {
-        let clip = OpenClawChatSpeechClip(data: Data([1]), mimeType: nil)
+        let clip = OperatorChatSpeechClip(data: Data([1]), mimeType: nil)
         let harness = SpeechHarness { _ in clip }
         let messageID = UUID()
 
@@ -122,7 +122,7 @@ struct ChatSpeechControllerTests {
     }
 
     @Test func `toggle while active stops without fallback`() async {
-        let clip = OpenClawChatSpeechClip(data: Data([5]), mimeType: nil)
+        let clip = OperatorChatSpeechClip(data: Data([5]), mimeType: nil)
         let harness = SpeechHarness { _ in clip }
         let messageID = UUID()
 
@@ -141,7 +141,7 @@ struct ChatSpeechControllerTests {
     }
 
     @Test func `starting another message supersedes the first`() async {
-        let clip = OpenClawChatSpeechClip(data: Data([7]), mimeType: nil)
+        let clip = OperatorChatSpeechClip(data: Data([7]), mimeType: nil)
         let harness = SpeechHarness { _ in clip }
         let first = UUID()
         let second = UUID()
@@ -160,7 +160,7 @@ struct ChatSpeechControllerTests {
 
     @Test func `blank text stays idle`() async {
         let harness = SpeechHarness { _ in
-            OpenClawChatSpeechClip(data: Data([1]), mimeType: nil)
+            OperatorChatSpeechClip(data: Data([1]), mimeType: nil)
         }
 
         harness.controller.toggle(messageID: UUID(), text: "   \n  ")
@@ -173,25 +173,25 @@ struct ChatSpeechControllerTests {
     }
 
     @Test func `identifies container hints and headerless formats`() {
-        let mp3 = OpenClawChatSpeechClip(
+        let mp3 = OperatorChatSpeechClip(
             data: Data([1]),
             outputFormat: "mp3",
             mimeType: "audio/mpeg",
             fileExtension: ".mp3")
-        let pcm = OpenClawChatSpeechClip(
+        let pcm = OperatorChatSpeechClip(
             data: Data([1]),
             outputFormat: "pcm",
             mimeType: "audio/pcm",
             fileExtension: ".pcm")
-        let azureRaw = OpenClawChatSpeechClip(
+        let azureRaw = OperatorChatSpeechClip(
             data: Data([1]),
             outputFormat: "raw-8khz-8bit-mono-mulaw",
             fileExtension: ".pcm")
-        let sampledPCM = OpenClawChatSpeechClip(
+        let sampledPCM = OperatorChatSpeechClip(
             data: Data([1]),
             outputFormat: "pcm_24000",
             fileExtension: ".pcm")
-        let rawULaw = OpenClawChatSpeechClip(
+        let rawULaw = OperatorChatSpeechClip(
             data: Data([1]),
             outputFormat: "ulaw_8000")
 

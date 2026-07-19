@@ -14,13 +14,13 @@ struct ChatCodeBlockView: View {
         VStack(alignment: .leading, spacing: 6) {
             if let language = self.block.language {
                 Text(language)
-                    .font(OpenClawChatTypography.caption2)
+                    .font(OperatorChatTypography.caption2)
                     .foregroundStyle(.secondary)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 Text(self.attributedCode)
-                    .font(OpenClawChatTypography.mono(size: 13, relativeTo: .footnote))
-                    .foregroundStyle(OpenClawChatTheme.assistantText)
+                    .font(OperatorChatTypography.mono(size: 13, relativeTo: .footnote))
+                    .foregroundStyle(OperatorChatTheme.assistantText)
                     .lineSpacing(2)
                     .textSelection(.enabled)
             }
@@ -29,7 +29,7 @@ struct ChatCodeBlockView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(OpenClawChatTheme.subtleCard)
+                .fill(OperatorChatTheme.subtleCard)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .strokeBorder(Color.white.opacity(0.08), lineWidth: 1)))
@@ -50,7 +50,7 @@ struct ChatMathBlockView: View {
     let block: ChatMathBlock
     let textColor: Color
 
-    @ScaledMetric(relativeTo: .body) private var fontSize: CGFloat = OpenClawChatTypography.bodySize
+    @ScaledMetric(relativeTo: .body) private var fontSize: CGFloat = OperatorChatTypography.bodySize
 
     var body: some View {
         if self.block.isComplete,
@@ -159,7 +159,7 @@ struct ChatMarkdownTableView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(OpenClawChatTheme.subtleCard)
+                .fill(OperatorChatTheme.subtleCard)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .strokeBorder(Color.white.opacity(0.08), lineWidth: 1)))
@@ -167,8 +167,8 @@ struct ChatMarkdownTableView: View {
 
     private func cell(_ text: String, isHeader: Bool) -> some View {
         Text(self.inlineMarkdown(text))
-            .font(isHeader ? OpenClawChatTypography.footnoteSemiBold : OpenClawChatTypography.footnote)
-            .foregroundStyle(OpenClawChatTheme.assistantText)
+            .font(isHeader ? OperatorChatTypography.footnoteSemiBold : OperatorChatTypography.footnote)
+            .foregroundStyle(OperatorChatTheme.assistantText)
             .textSelection(.enabled)
     }
 

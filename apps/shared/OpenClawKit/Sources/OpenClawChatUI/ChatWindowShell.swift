@@ -5,16 +5,16 @@ import UniformTypeIdentifiers
 
 /// Native macOS chat window: sessions sidebar + transcript detail with the
 /// pickers promoted into the unified window toolbar. The compact menu-bar
-/// panel keeps using `OpenClawChatView` directly; this shell is the full
+/// panel keeps using `OperatorChatView` directly; this shell is the full
 /// window experience.
 @MainActor
-public struct OpenClawChatWindowShell: View {
-    @State private var viewModel: OpenClawChatViewModel
+public struct OperatorChatWindowShell: View {
+    @State private var viewModel: OperatorChatViewModel
     @State private var sessionQuery = ""
     @State private var isConfirmingClearHistory = false
     private let userAccent: Color?
 
-    public init(viewModel: OpenClawChatViewModel, userAccent: Color? = nil) {
+    public init(viewModel: OperatorChatViewModel, userAccent: Color? = nil) {
         _viewModel = State(initialValue: viewModel)
         self.userAccent = userAccent
     }
@@ -26,7 +26,7 @@ public struct OpenClawChatWindowShell: View {
                 query: self.$sessionQuery)
                 .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 340)
         } detail: {
-            OpenClawChatView(
+            OperatorChatView(
                 viewModel: self.viewModel,
                 drawsBackground: false,
                 userAccent: self.userAccent,
@@ -44,7 +44,7 @@ public struct OpenClawChatWindowShell: View {
                 self.viewModel.requestSessionReset()
             } label: {
                 Text("Clear History")
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
             }
         } message: {
             Text(verbatim: String(
@@ -52,7 +52,7 @@ public struct OpenClawChatWindowShell: View {
                 This resets the conversation for %@. The session key stays the same.
                 """),
                 self.activeSessionTitle))
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
         }
         .onChange(of: self.viewModel.pendingRunCount) { previous, current in
                 // Run completion changes timestamps/token totals; pull them once
@@ -72,7 +72,7 @@ public struct OpenClawChatWindowShell: View {
                 Task { await self.viewModel.startNewSession() }
             } label: {
                 Text("New Session")
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
             }
             .keyboardShortcut("n", modifiers: [.command])
 
@@ -81,7 +81,7 @@ public struct OpenClawChatWindowShell: View {
                 self.viewModel.refreshSessions(limit: 200)
             } label: {
                 Text("Refresh")
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
             }
             .keyboardShortcut("r", modifiers: [.command])
 
@@ -89,7 +89,7 @@ public struct OpenClawChatWindowShell: View {
                 self.exportTranscript()
             } label: {
                 Text("Export Transcript")
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
             }
             .keyboardShortcut("e", modifiers: [.command, .shift])
             .disabled(self.viewModel.messages.isEmpty)
@@ -117,7 +117,7 @@ public struct OpenClawChatWindowShell: View {
     }
 
     private var currentModelLabel: String {
-        if self.viewModel.modelSelectionID != OpenClawChatViewModel.defaultModelSelectionID {
+        if self.viewModel.modelSelectionID != OperatorChatViewModel.defaultModelSelectionID {
             return self.viewModel.modelSelectionID
         }
         let entry = self.viewModel.sessions.first { $0.key == self.viewModel.sessionKey }
@@ -157,12 +157,12 @@ public struct OpenClawChatWindowShell: View {
         {
             ForEach(self.viewModel.thinkingLevelOptions) { option in
                 Text(option.label)
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
                     .tag(option.id)
             }
         } label: {
             Text("Thinking")
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
         }
         .pickerStyle(.menu)
         .help("Thinking level")
@@ -175,8 +175,8 @@ public struct OpenClawChatWindowShell: View {
             set: { self.viewModel.selectModel($0) }))
         {
             Text(self.viewModel.defaultModelLabel)
-                .font(OpenClawChatTypography.body)
-                .tag(OpenClawChatViewModel.defaultModelSelectionID)
+                .font(OperatorChatTypography.body)
+                .tag(OperatorChatViewModel.defaultModelSelectionID)
             if sections.pinned.isEmpty, sections.recent.isEmpty {
                 self.modelOptions(sections.remaining)
             } else {
@@ -192,16 +192,16 @@ public struct OpenClawChatWindowShell: View {
             }
         } label: {
             Text("Model")
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
         }
         .pickerStyle(.menu)
         .help("Model")
     }
 
-    private func modelOptions(_ models: [OpenClawChatModelChoice]) -> some View {
+    private func modelOptions(_ models: [OperatorChatModelChoice]) -> some View {
         ForEach(models) { model in
             Text(model.displayLabel)
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
                 .tag(model.selectionID)
         }
     }
@@ -282,23 +282,23 @@ public struct OpenClawChatWindowShell: View {
 /// Toolbar gauge + dropdown with token/cost details, mirroring the web UI's
 /// context ring.
 private struct ChatContextUsageMenu: View {
-    let usage: OpenClawChatContextUsage
+    let usage: OperatorChatContextUsage
     let onCompact: () -> Void
 
     var body: some View {
         Menu {
             Text(self.tokensLine)
-                .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             if let cost = self.usage.totalCost {
                 Text(verbatim: String(
                     format: String(localized: "Session cost %@"),
                     ChatContextUsageFormatter.cost(cost)))
-                    .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             }
             Divider()
             Button(action: self.onCompact) {
                 Text("Compact Session")
-                    .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             }
         } label: {
             ChatContextUsageIndicator(usage: self.usage)
@@ -318,9 +318,9 @@ private struct ChatContextUsageMenu: View {
 
 @MainActor
 private struct ChatSessionSidebar: View {
-    @Bindable var viewModel: OpenClawChatViewModel
+    @Bindable var viewModel: OperatorChatViewModel
     @Binding var query: String
-    @State private var sessionPendingDeletion: OpenClawChatSessionEntry?
+    @State private var sessionPendingDeletion: OperatorChatSessionEntry?
 
     var body: some View {
         let sections = ChatSessionSidebarModel.sections(
@@ -385,11 +385,11 @@ private struct ChatSessionSidebar: View {
                 self.sessionPendingDeletion = nil
             } label: {
                 Text("Delete Session")
-                    .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             }
         } message: {
             Text("The session and its transcript are removed from the gateway.")
-                .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
         }
     }
 
@@ -419,15 +419,15 @@ private struct ChatSessionSidebar: View {
             })
     }
 
-    private func row(for session: OpenClawChatSessionEntry) -> some View {
+    private func row(for session: OperatorChatSessionEntry) -> some View {
         HStack(spacing: 6) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(ChatSessionSidebarModel.displayName(for: session))
-                    .font(OpenClawChatTypography.body(size: 13, weight: .medium, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .medium, relativeTo: .body))
                     .lineLimit(1)
                 if let subtitle = self.rowSubtitle(for: session) {
                     Text(subtitle)
-                        .font(OpenClawChatTypography.caption)
+                        .font(OperatorChatTypography.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
@@ -450,14 +450,14 @@ private struct ChatSessionSidebar: View {
                 self.viewModel.setSessionPinned(session.key, pinned: session.pinned != true)
             } label: {
                 Text(session.pinned == true ? "Unpin" : "Pin")
-                    .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             }
             Button {
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(session.key, forType: .string)
             } label: {
                 Text("Copy Session Key")
-                    .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                    .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
             }
             if ChatSessionSidebarModel.canDeleteSession(
                 key: session.key,
@@ -468,13 +468,13 @@ private struct ChatSessionSidebar: View {
                     self.sessionPendingDeletion = session
                 } label: {
                     Text("Delete Session…")
-                        .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+                        .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
                 }
             }
         }
     }
 
-    private func rowSubtitle(for session: OpenClawChatSessionEntry) -> String? {
+    private func rowSubtitle(for session: OperatorChatSessionEntry) -> String? {
         guard let updatedAt = session.updatedAt ?? session.lastActivityAt, updatedAt > 0 else {
             return nil
         }
@@ -488,7 +488,7 @@ private struct ChatSessionSidebar: View {
                 .fill(self.viewModel.healthOK ? .green : .orange)
                 .frame(width: 7, height: 7)
             Text(self.viewModel.healthOK ? "Gateway connected" : "Connecting…")
-                .font(OpenClawChatTypography.caption)
+                .font(OperatorChatTypography.caption)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 0)
         }
@@ -501,7 +501,7 @@ private struct ChatSessionSidebar: View {
 private func chatWindowActionLabel(_ title: LocalizedStringKey, systemImage: String) -> some View {
     Label {
         Text(title)
-            .font(OpenClawChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
+            .font(OperatorChatTypography.body(size: 13, weight: .regular, relativeTo: .body))
     } icon: {
         Image(systemName: systemImage)
     }

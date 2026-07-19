@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
 
 struct ComputerInputGeometryTests {
@@ -7,9 +7,9 @@ struct ComputerInputGeometryTests {
         originX: Double = 0,
         originY: Double = 0,
         width: Double,
-        height: Double) -> OpenClawComputerDisplayGeometry
+        height: Double) -> OperatorComputerDisplayGeometry
     {
-        OpenClawComputerDisplayGeometry(
+        OperatorComputerDisplayGeometry(
             originX: originX,
             originY: originY,
             widthPoints: width,
@@ -17,7 +17,7 @@ struct ComputerInputGeometryTests {
     }
 
     private func capturedWidth(refWidth: Int?, sourceWidth: Double, sourceHeight: Double = 0) -> Double {
-        OpenClawComputerInputGeometry.capturedWidth(
+        OperatorComputerInputGeometry.capturedWidth(
             refWidth: refWidth,
             sourceWidth: sourceWidth,
             sourceHeight: sourceHeight)
@@ -25,38 +25,38 @@ struct ComputerInputGeometryTests {
 
     @Test func `display frame identity changes with physical display geometry`() {
         let display = self.display(originX: -1280, originY: 0, width: 1280, height: 800)
-        let original = OpenClawComputerInputGeometry.displayFrameId(
+        let original = OperatorComputerInputGeometry.displayFrameId(
             displayID: 42,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 1280,
             display: display)
-        let repeated = OpenClawComputerInputGeometry.displayFrameId(
+        let repeated = OperatorComputerInputGeometry.displayFrameId(
             displayID: 42,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 1280,
             display: display)
-        let reindexed = OpenClawComputerInputGeometry.displayFrameId(
+        let reindexed = OperatorComputerInputGeometry.displayFrameId(
             displayID: 43,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 1280,
             display: display)
-        let resized = OpenClawComputerInputGeometry.displayFrameId(
+        let resized = OperatorComputerInputGeometry.displayFrameId(
             displayID: 42,
             sourceWidth: 1920,
             sourceHeight: 1200,
             referenceWidth: 1280,
             display: display)
-        let moved = OpenClawComputerInputGeometry.displayFrameId(
+        let moved = OperatorComputerInputGeometry.displayFrameId(
             displayID: 42,
             sourceWidth: 2560,
             sourceHeight: 1600,
             referenceWidth: 1280,
             display: self.display(originX: 0, originY: 0, width: 1280, height: 800))
 
-        let rescaled = OpenClawComputerInputGeometry.displayFrameId(
+        let rescaled = OperatorComputerInputGeometry.displayFrameId(
             displayID: 42,
             sourceWidth: 2560,
             sourceHeight: 1600,
@@ -73,7 +73,7 @@ struct ComputerInputGeometryTests {
         // a 1280pt display → 1:1.
         let captured = self.capturedWidth(refWidth: 1280, sourceWidth: 1280)
         #expect(captured == 1280)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 100,
             y: 200,
             capturedWidthPixels: captured,
@@ -87,7 +87,7 @@ struct ComputerInputGeometryTests {
         // full source width, so mapping over a matching-point display stays 1:1.
         let captured = self.capturedWidth(refWidth: 4000, sourceWidth: 1512)
         #expect(captured == 1512)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 300,
             y: 150,
             capturedWidthPixels: captured,
@@ -101,7 +101,7 @@ struct ComputerInputGeometryTests {
         // refWidth 1280 → captured 1280px, scale 2x.
         let captured = self.capturedWidth(refWidth: 1280, sourceWidth: 2560)
         #expect(captured == 1280)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 100,
             y: 50,
             capturedWidthPixels: captured,
@@ -116,7 +116,7 @@ struct ComputerInputGeometryTests {
         // 1280px screenshot must map back onto the 1024pt display (scale 0.8).
         let captured = self.capturedWidth(refWidth: 1280, sourceWidth: 2048)
         #expect(captured == 1280)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 1280,
             y: 0,
             capturedWidthPixels: captured,
@@ -127,7 +127,7 @@ struct ComputerInputGeometryTests {
 
     @Test func `adds display origin after scaling`() {
         let captured = self.capturedWidth(refWidth: 1280, sourceWidth: 2560)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 100,
             y: 0,
             capturedWidthPixels: captured,
@@ -145,7 +145,7 @@ struct ComputerInputGeometryTests {
         #expect(captured == 720)
         // The 720px-wide delivered frame maps back onto the 1080pt portrait
         // display (scale 1.5), so replayed coordinates land on target.
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 360,
             y: 0,
             capturedWidthPixels: captured,
@@ -163,7 +163,7 @@ struct ComputerInputGeometryTests {
 
     @Test func `accepts finite positive mapping geometry with negative display origins`() {
         let display = self.display(originX: -2560, originY: -1440, width: 2560, height: 1440)
-        #expect(OpenClawComputerInputGeometry.isValidMappingGeometry(
+        #expect(OperatorComputerInputGeometry.isValidMappingGeometry(
             sourceWidth: 2560,
             sourceHeight: 1440,
             display: display))
@@ -172,13 +172,13 @@ struct ComputerInputGeometryTests {
     @Test func `rejects nonpositive or nonfinite mapping geometry`() {
         let validDisplay = self.display(originX: -100, originY: 200, width: 1280, height: 800)
         for invalidSourceWidth in [0, -1, Double.nan, .infinity, -.infinity] {
-            #expect(!OpenClawComputerInputGeometry.isValidMappingGeometry(
+            #expect(!OperatorComputerInputGeometry.isValidMappingGeometry(
                 sourceWidth: invalidSourceWidth,
                 sourceHeight: 800,
                 display: validDisplay))
         }
         for invalidSourceHeight in [0, -1, Double.nan, .infinity, -.infinity] {
-            #expect(!OpenClawComputerInputGeometry.isValidMappingGeometry(
+            #expect(!OperatorComputerInputGeometry.isValidMappingGeometry(
                 sourceWidth: 1280,
                 sourceHeight: invalidSourceHeight,
                 display: validDisplay))
@@ -197,7 +197,7 @@ struct ComputerInputGeometryTests {
             display(width: 1280, height: .infinity),
         ]
         for display in invalidDisplays {
-            #expect(!OpenClawComputerInputGeometry.isValidMappingGeometry(
+            #expect(!OperatorComputerInputGeometry.isValidMappingGeometry(
                 sourceWidth: 1280,
                 sourceHeight: 800,
                 display: display))
@@ -208,18 +208,18 @@ struct ComputerInputGeometryTests {
         let display = self.display(originX: 100, originY: 200, width: 1280, height: 800)
         // The far right/bottom edge maps to origin + size, which belongs to the
         // adjacent display; clamp keeps it on the last in-bounds point.
-        let farEdge = OpenClawComputerInputGeometry.clampToDisplay(
+        let farEdge = OperatorComputerInputGeometry.clampToDisplay(
             x: 100 + 1280,
             y: 200 + 800,
             display: display)
         #expect(farEdge.x == 100 + 1279)
         #expect(farEdge.y == 200 + 799)
         // A slightly-negative epsilon overrun clamps back to the origin.
-        let negative = OpenClawComputerInputGeometry.clampToDisplay(x: 99, y: 199, display: display)
+        let negative = OperatorComputerInputGeometry.clampToDisplay(x: 99, y: 199, display: display)
         #expect(negative.x == 100)
         #expect(negative.y == 200)
         // A point already inside is unchanged.
-        let inside = OpenClawComputerInputGeometry.clampToDisplay(x: 640, y: 400, display: display)
+        let inside = OperatorComputerInputGeometry.clampToDisplay(x: 640, y: 400, display: display)
         #expect(inside.x == 640)
         #expect(inside.y == 400)
     }
@@ -233,7 +233,7 @@ struct ComputerInputGeometryTests {
     }
 
     @Test func `falls back to origin for degenerate display`() {
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: 42,
             y: 42,
             capturedWidthPixels: 0,
@@ -247,7 +247,7 @@ struct ComputerInputGeometryTests {
         {"action":"left_click","displayFrameId":"display-frame:v1:test","x":12,"y":34,"modifiers":"shift","screenIndex":0,"refWidth":1280}
         """
         let data = try #require(json.data(using: .utf8))
-        let params = try JSONDecoder().decode(OpenClawComputerActParams.self, from: data)
+        let params = try JSONDecoder().decode(OperatorComputerActParams.self, from: data)
         #expect(params.action == .leftClick)
         #expect(params.displayFrameId == "display-frame:v1:test")
         #expect(params.x == 12)
@@ -258,14 +258,14 @@ struct ComputerInputGeometryTests {
     @Test func `decodes scroll and hold actions`() throws {
         let scroll = try #require(
             "{\"action\":\"scroll\",\"scrollDirection\":\"down\",\"scrollAmount\":3}".data(using: .utf8))
-        let scrollParams = try JSONDecoder().decode(OpenClawComputerActParams.self, from: scroll)
+        let scrollParams = try JSONDecoder().decode(OperatorComputerActParams.self, from: scroll)
         #expect(scrollParams.action == .scroll)
         #expect(scrollParams.scrollDirection == .down)
         #expect(scrollParams.scrollAmount == 3)
 
         let hold = try #require(
             "{\"action\":\"hold_key\",\"keys\":\"space\",\"durationMs\":2000}".data(using: .utf8))
-        let holdParams = try JSONDecoder().decode(OpenClawComputerActParams.self, from: hold)
+        let holdParams = try JSONDecoder().decode(OperatorComputerActParams.self, from: hold)
         #expect(holdParams.action == .holdKey)
         #expect(holdParams.keys == "space")
         #expect(holdParams.durationMs == 2000)

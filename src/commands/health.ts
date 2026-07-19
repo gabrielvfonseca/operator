@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Collects and renders gateway health for channels, agents, plugins, and sessions. */
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { styleHealthChannelLine } from "../../packages/terminal-core/src/health-style.js";
 import { isRich } from "../../packages/terminal-core/src/theme.js";
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
@@ -744,7 +744,7 @@ export async function getHealthSnapshot(params?: {
   return summary;
 }
 
-/** Runs the `operator health` command against the gateway and renders JSON or text. */
+/** Runs the `openclaw health` command against the gateway and renders JSON or text. */
 export async function healthCommand(
   opts: {
     json?: boolean;

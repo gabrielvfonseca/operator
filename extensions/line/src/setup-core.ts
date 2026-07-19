@@ -1,6 +1,9 @@
 // Line plugin module implements setup core behavior.
-import type { ChannelSetupAdapter, OperatorConfig } from "openclaw/plugin-sdk/setup";
-import { createSetupInputPresenceValidator } from "openclaw/plugin-sdk/setup";
+import type {
+  ChannelSetupAdapter,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { createSetupInputPresenceValidator } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { hasLineCredentials, parseLineAllowFromId } from "./account-helpers.js";
 import {
   DEFAULT_ACCOUNT_ID,

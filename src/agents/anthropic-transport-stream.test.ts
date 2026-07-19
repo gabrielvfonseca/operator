@@ -3,8 +3,8 @@
  * Covers request construction, SSE parsing, aborts, tool calls, usage, and
  * provider transport hooks.
  */
-import { expectDefined } from "@operator/normalization-core";
-import type { Model } from "openclaw/plugin-sdk/llm";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { attachModelProviderRequestTransport } from "./provider-request-config.js";
 

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum OpenClawSystemCommand: String, Codable, Sendable {
+public enum OperatorSystemCommand: String, Codable, Sendable {
     case run = "system.run"
     case which = "system.which"
     case notify = "system.notify"
@@ -8,35 +8,35 @@ public enum OpenClawSystemCommand: String, Codable, Sendable {
     case execApprovalsSet = "system.execApprovals.set"
 }
 
-public enum OpenClawFileSystemCommand: String, Codable, Sendable {
+public enum OperatorFileSystemCommand: String, Codable, Sendable {
     case listDir = "fs.listDir"
 }
 
-public enum OpenClawNotificationPriority: String, Codable, Sendable {
+public enum OperatorNotificationPriority: String, Codable, Sendable {
     case passive
     case active
     case timeSensitive
 }
 
-public enum OpenClawNotificationDelivery: String, Codable, Sendable {
+public enum OperatorNotificationDelivery: String, Codable, Sendable {
     case system
     case overlay
     case auto
 }
 
-public struct OpenClawSystemNotifyParams: Codable, Sendable, Equatable {
+public struct OperatorSystemNotifyParams: Codable, Sendable, Equatable {
     public var title: String
     public var body: String
     public var sound: String?
-    public var priority: OpenClawNotificationPriority?
-    public var delivery: OpenClawNotificationDelivery?
+    public var priority: OperatorNotificationPriority?
+    public var delivery: OperatorNotificationDelivery?
 
     public init(
         title: String,
         body: String,
         sound: String? = nil,
-        priority: OpenClawNotificationPriority? = nil,
-        delivery: OpenClawNotificationDelivery? = nil)
+        priority: OperatorNotificationPriority? = nil,
+        delivery: OperatorNotificationDelivery? = nil)
     {
         self.title = title
         self.body = body

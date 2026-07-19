@@ -82,7 +82,7 @@ function parsePlugins(value) {
 }
 
 function packageSlug(packageName) {
-  return packageName.slice("@operator/".length);
+  return packageName.slice("@gabrielvfonseca/".length);
 }
 
 function normalizePlanEntry(value, index) {

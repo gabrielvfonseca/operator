@@ -1,5 +1,5 @@
 // Googlechat tests cover monitor plugin behavior.
-import { recordChannelBotPairLoopAndCheckSuppression } from "openclaw/plugin-sdk/channel-inbound";
+import { recordChannelBotPairLoopAndCheckSuppression } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import type { GoogleChatCoreRuntime, GoogleChatRuntimeEnv } from "./monitor-types.js";
@@ -58,7 +58,7 @@ function createInboundClassificationHarness() {
     channel: {
       routing: { resolveAgentRoute },
       session: {
-        resolveStorePath: () => "/tmp/openclaw-googlechat-test",
+        resolveStorePath: () => "/tmp/operator-googlechat-test",
         readSessionUpdatedAt: () => undefined,
         recordInboundSession: vi.fn(),
       },
@@ -366,7 +366,7 @@ describe("googlechat monitor direct messages", () => {
           }),
         },
         session: {
-          resolveStorePath: () => "/tmp/openclaw-googlechat-test",
+          resolveStorePath: () => "/tmp/operator-googlechat-test",
           readSessionUpdatedAt: () => undefined,
           recordInboundSession: vi.fn(),
         },
@@ -435,7 +435,7 @@ describe("googlechat monitor direct messages", () => {
           }),
         },
         session: {
-          resolveStorePath: () => "/tmp/openclaw-googlechat-test",
+          resolveStorePath: () => "/tmp/operator-googlechat-test",
           readSessionUpdatedAt: () => undefined,
           recordInboundSession: vi.fn(),
         },
@@ -521,7 +521,7 @@ describe("googlechat monitor direct messages", () => {
           }),
         },
         session: {
-          resolveStorePath: () => "/tmp/openclaw-googlechat-test",
+          resolveStorePath: () => "/tmp/operator-googlechat-test",
           readSessionUpdatedAt: () => undefined,
           recordInboundSession: vi.fn(),
         },

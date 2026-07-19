@@ -6,7 +6,7 @@ public enum ChatTranscriptExporter {
     public static func markdown(
         sessionTitle: String?,
         sessionKey: String,
-        messages: [OpenClawChatMessage]) -> String
+        messages: [OperatorChatMessage]) -> String
     {
         let title = self.resolvedTitle(sessionTitle: sessionTitle, sessionKey: sessionKey)
         let timestampFormatter = ISO8601DateFormatter()
@@ -80,7 +80,7 @@ public enum ChatTranscriptExporter {
         return key.isEmpty ? "Chat transcript" : key.split(whereSeparator: { $0.isNewline }).joined(separator: " ")
     }
 
-    private static func shouldExport(_ message: OpenClawChatMessage) -> Bool {
+    private static func shouldExport(_ message: OperatorChatMessage) -> Bool {
         let role = message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard role != "system" else { return false }
         if !self.attachments(in: message).isEmpty {
@@ -91,7 +91,7 @@ public enum ChatTranscriptExporter {
         return role == "user" || AssistantTextParser.hasVisibleContent(in: text)
     }
 
-    private static func body(for message: OpenClawChatMessage) -> String {
+    private static func body(for message: OperatorChatMessage) -> String {
         var parts: [String] = []
         let text = self.visibleText(in: message)
         if !text.isEmpty {
@@ -104,11 +104,11 @@ public enum ChatTranscriptExporter {
         return parts.joined(separator: "\n\n")
     }
 
-    private static func visibleText(in message: OpenClawChatMessage) -> String {
+    private static func visibleText(in message: OperatorChatMessage) -> String {
         ChatMessageVisibleText.visibleText(in: message)
     }
 
-    private static func attachments(in message: OpenClawChatMessage) -> [OpenClawChatMessageContent] {
+    private static func attachments(in message: OperatorChatMessage) -> [OperatorChatMessageContent] {
         message.content.filter { content in
             let kind = (content.type ?? "text").lowercased()
             return kind == "file" || kind == "attachment"
@@ -133,7 +133,7 @@ public enum ChatTranscriptExporter {
     }
 }
 
-extension OpenClawChatViewModel {
+extension OperatorChatViewModel {
     public func exportTranscriptMarkdown() -> String {
         let title = self.sessions.first { $0.key == self.sessionKey }?.displayName
         return ChatTranscriptExporter.markdown(

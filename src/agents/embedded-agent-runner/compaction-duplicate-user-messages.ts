@@ -1,7 +1,7 @@
 /**
  * Removes short-window duplicate user turns from compaction summaries.
  */
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 const DEFAULT_DUPLICATE_USER_MESSAGE_WINDOW_MS = 60_000;
 const MIN_DUPLICATE_USER_MESSAGE_CHARS = 24;
@@ -10,7 +10,7 @@ type MessageLike = {
   role?: unknown;
   content?: unknown;
   timestamp?: unknown;
-  __operator?: unknown;
+  __openclaw?: unknown;
 };
 
 type EntryLike = {
@@ -55,7 +55,7 @@ function duplicateSignature(message: unknown): { key: string; timestamp: number 
   }
   // Persisted sender identity keeps distinct participants separate while senderless legacy
   // turns retain the old retry behavior. A JSON tuple avoids sender/text delimiter collisions.
-  const metadata = message["__operator"];
+  const metadata = message["__openclaw"];
   const senderId =
     isRecord(metadata) && typeof metadata.senderId === "string" ? metadata.senderId : "";
   return {

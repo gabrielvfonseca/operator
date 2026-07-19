@@ -2,8 +2,8 @@
 import {
   runRealtimeSttLiveTest,
   synthesizeElevenLabsLiveSpeech,
-} from "openclaw/plugin-sdk/provider-test-contracts";
-import { isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
+import { isLiveTestEnabled } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { transcribeDeepgramAudio } from "./audio.js";
 import { buildDeepgramRealtimeTranscriptionProvider } from "./realtime-transcription-provider.js";

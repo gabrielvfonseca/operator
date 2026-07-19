@@ -1,7 +1,7 @@
 // Thread Ownership plugin entrypoint registers its Operator integration.
-import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { escapeRegExp } from "openclaw/plugin-sdk/text-utility-runtime";
+import { resolveLivePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { escapeRegExp } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   definePluginEntry,
   fetchWithSsrFGuard,

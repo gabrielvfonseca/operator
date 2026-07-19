@@ -3,8 +3,8 @@ import type { RequestListener } from "node:http";
 import {
   createEmptyPluginRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { withServer } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { withServer } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../runtime-api.js";
 import type { ZaloRuntimeEnv } from "./monitor.types.js";

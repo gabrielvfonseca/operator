@@ -1,8 +1,8 @@
 // Validates normalized Operator config and reports user-facing errors.
 import path from "node:path";
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
-import { isCanonicalDottedDecimalIPv4, isLoopbackIpAddress } from "@operator/net-policy/ip";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import { isCanonicalDottedDecimalIPv4, isLoopbackIpAddress } from "@gabrielvfonseca/net-policy/ip";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import {
@@ -72,7 +72,7 @@ const BLOCKED_PLUGIN_CANDIDATE_PREFIX = "blocked plugin candidate:";
 
 function formatRemovedPluginConfigWarning(pluginId: string): string {
   if (pluginId === "skill-workshop") {
-    return "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into Operator skills now. Use skills.workshop settings and operator skills workshop commands, then remove this plugins config entry)";
+    return "plugin removed: skill-workshop (stale plugin config ignored; Skill Workshop is built into Operator skills now. Use skills.workshop settings and openclaw skills workshop commands, then remove this plugins config entry)";
   }
   return `plugin removed: ${pluginId} (stale config entry ignored; remove it from plugins config)`;
 }
@@ -224,9 +224,9 @@ function formatMissingOfficialExternalPluginWarning(
     return null;
   }
   if (pluginId === "memory-lancedb" && opts?.selectedMissingMemorySlot) {
-    return `plugin not installed: ${pluginId} — gateway will run without persistent memory until installed; install the official external plugin with: operator plugins install ${installSpec}`;
+    return `plugin not installed: ${pluginId} — gateway will run without persistent memory until installed; install the official external plugin with: openclaw plugins install ${installSpec}`;
   }
-  return `plugin not installed: ${pluginId} — install the official external plugin with: operator plugins install ${installSpec}`;
+  return `plugin not installed: ${pluginId} — install the official external plugin with: openclaw plugins install ${installSpec}`;
 }
 
 function asJsonSchemaLike(value: unknown): JsonSchemaLike | null {
@@ -1553,13 +1553,13 @@ function validateConfigObjectWithPluginsBase(
     if (installCatalogEntry) {
       const issue = {
         path: pathEntry,
-        message: `web_search provider is not available: ${trimmed} (install or enable plugin "${installCatalogEntry.pluginId}", then run operator doctor --fix)`,
+        message: `web_search provider is not available: ${trimmed} (install or enable plugin "${installCatalogEntry.pluginId}", then run openclaw doctor --fix)`,
         allowedValues: collectKnownWebSearchProviderIds(),
       };
       if (hasPluginEvidenceForWebSearchProvider(trimmed, installCatalogEntry.pluginId)) {
         warnings.push({
           ...issue,
-          message: `web_search provider is not available: ${trimmed} (configured plugin "${installCatalogEntry.pluginId}" is unavailable; Gateway will ignore this optional provider until the plugin is installed/enabled or operator doctor --fix repairs the config)`,
+          message: `web_search provider is not available: ${trimmed} (configured plugin "${installCatalogEntry.pluginId}" is unavailable; Gateway will ignore this optional provider until the plugin is installed/enabled or openclaw doctor --fix repairs the config)`,
         });
         return;
       }
@@ -1578,7 +1578,7 @@ function validateConfigObjectWithPluginsBase(
     if (hasStalePluginEvidenceForUnknownWebSearchProvider(trimmed)) {
       warnings.push({
         ...issue,
-        message: `${issue.message} (stale web search plugin config ignored; run operator doctor --fix to remove stale config, or install the plugin)`,
+        message: `${issue.message} (stale web search plugin config ignored; run openclaw doctor --fix to remove stale config, or install the plugin)`,
       });
       return;
     }
@@ -1709,7 +1709,7 @@ function validateConfigObjectWithPluginsBase(
         if (hasStalePluginEvidenceForUnknownChannel(trimmed)) {
           warnings.push({
             ...issue,
-            message: `${issue.message} (stale channel plugin config ignored; run operator doctor --fix to remove stale config, or install the plugin)`,
+            message: `${issue.message} (stale channel plugin config ignored; run openclaw doctor --fix to remove stale config, or install the plugin)`,
           });
         } else {
           issues.push(issue);

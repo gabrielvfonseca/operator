@@ -8,9 +8,9 @@ describe("resolveSessionRuntimeOverrideForProvider", () => {
     expect(
       resolveSessionRuntimeOverrideForProvider({
         provider: "openai",
-        entry: { agentRuntimeOverride: "openclaw" } as SessionEntry,
+        entry: { agentRuntimeOverride: "@gabrielvfonseca/operator" } as SessionEntry,
       }),
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   afterEach(() => {

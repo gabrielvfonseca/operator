@@ -4,8 +4,8 @@
  * size and digest metadata.
  */
 import crypto from "node:crypto";
-import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const REDACTED_IMAGE_DATA = "<redacted>";
 

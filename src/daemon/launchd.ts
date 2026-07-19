@@ -1,8 +1,8 @@
 /** macOS LaunchAgent installer, runtime inspection, and lifecycle controls. */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import { normalizeEnvVarKey } from "../infra/host-env-security.js";
 import { parseStrictInteger, parseStrictPositiveInteger } from "../infra/parse-finite-number.js";
@@ -57,7 +57,7 @@ const OPERATOR_UPDATE_LAUNCHD_LABEL_PREFIX = "ai.operator.update.";
 const OPERATOR_MANUAL_UPDATE_LAUNCHD_LABEL_PATTERN = /^ai\.operator\.manual-update\.\d+$/;
 const OPERATOR_PROFILE_UPDATE_LAUNCHD_LABEL_PATTERN =
   /^ai\.operator\.[A-Za-z0-9._-]+\.update\.[A-Za-z0-9._-]+$/;
-const OPERATOR_DIRECT_CLI_NAMES = new Set(["operator", "operator.mjs"]);
+const OPERATOR_DIRECT_CLI_NAMES = new Set(["@gabrielvfonseca/operator", "operator.mjs"]);
 const OPERATOR_NODE_RUNTIME_NAMES = new Set(["bun", "bun.exe", "node", "node.exe"]);
 const OPERATOR_SCRIPT_NAMES = new Set(["operator.mjs"]);
 const LAUNCH_AGENT_STOP_PORT_RELEASE_TIMEOUT_MS = LAUNCH_AGENT_EXIT_TIMEOUT_SECONDS * 1_000;
@@ -222,7 +222,7 @@ async function resolveLaunchAgentEnvironmentWrapperOverwriteWarnings(params: {
     return [];
   }
   return [
-    `Existing generated LaunchAgent env wrapper at ${params.wrapperPath} contains custom behavior and will be overwritten; move custom behavior to operator gateway install --wrapper <path> or OPERATOR_WRAPPER.`,
+    `Existing generated LaunchAgent env wrapper at ${params.wrapperPath} contains custom behavior and will be overwritten; move custom behavior to openclaw gateway install --wrapper <path> or OPERATOR_WRAPPER.`,
   ];
 }
 
@@ -1023,7 +1023,7 @@ export async function stopLaunchAgent({
   if (!persistDisable) {
     // Default: bootout only. Removes the job from the current launchd domain without
     // persisting a disable, so KeepAlive auto-recovery survives future crashes and
-    // `operator gateway start` re-enables cleanly without a manual `launchctl enable`.
+    // `openclaw gateway start` re-enables cleanly without a manual `launchctl enable`.
     const bootout = await execLaunchctl(["bootout", serviceTarget]);
     if (bootout.code !== 0 && !isLaunchctlNotLoaded(bootout)) {
       throw new Error(`launchctl bootout failed: ${formatLaunchctlResultDetail(bootout)}`);
@@ -1159,7 +1159,7 @@ async function activateLaunchAgent(params: { env: GatewayServiceEnv; plistPath: 
     domain,
     serviceTarget: `${domain}/${label}`,
     plistPath: params.plistPath,
-    actionHint: "operator gateway install --force",
+    actionHint: "openclaw gateway install --force",
   });
 }
 
@@ -1251,7 +1251,7 @@ async function ensureLaunchAgentLoadedAfterFailure(params: {
       domain: params.domain,
       serviceTarget: params.serviceTarget,
       plistPath: params.plistPath,
-      actionHint: "operator gateway start",
+      actionHint: "openclaw gateway start",
     });
   } catch {
     // Best-effort only. Preserve the original kickstart failure below.
@@ -1313,7 +1313,7 @@ export async function restartLaunchAgent({
     warn,
   });
 
-  // `operator gateway restart` is an explicit operator request to bring the
+  // `openclaw gateway restart` is an explicit operator request to bring the
   // LaunchAgent back, so clear any persisted disabled state before restart.
   await execLaunchctl(["enable", serviceTarget]);
 
@@ -1326,7 +1326,7 @@ export async function restartLaunchAgent({
       domain,
       serviceTarget,
       plistPath,
-      actionHint: "operator gateway restart",
+      actionHint: "openclaw gateway restart",
     });
     writeLaunchAgentActionLine(stdout, "Restarted LaunchAgent", serviceTarget);
     return { outcome: "completed" };
@@ -1348,7 +1348,7 @@ export async function restartLaunchAgent({
     domain,
     serviceTarget,
     plistPath,
-    actionHint: "operator gateway restart",
+    actionHint: "openclaw gateway restart",
   });
   writeLaunchAgentActionLine(stdout, "Restarted LaunchAgent", serviceTarget);
   return { outcome: "completed" };

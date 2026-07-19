@@ -2,8 +2,8 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "openclaw/plugin-sdk/channel-entry-contract";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 
 function registerSlashCommandRoute(api: OperatorPluginApi): void {
   const register = loadBundledEntryExportSync<(api: OperatorPluginApi) => void>(import.meta.url, {

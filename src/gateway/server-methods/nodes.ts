@@ -1,12 +1,12 @@
 // Node gateway methods manage paired node discovery, pairing lifecycle, command
 // invocation, wake delivery, events, pending work, and node metadata updates.
 import { randomUUID } from "node:crypto";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   type ConnectParams,
   ErrorCodes,
@@ -967,7 +967,7 @@ export const nodeHandlers: GatewayRequestHandlers = {
       respond(true, rejected, undefined);
     });
   },
-  // Remove a node pairing (CLI: `operator nodes remove`). This revokes the
+  // Remove a node pairing (CLI: `openclaw nodes remove`). This revokes the
   // device's `node` role in devices/paired.json, which drops the approved node
   // surface with it, and disconnects the device's node-role sessions: a
   // mixed-role device keeps its row and only loses the `node` role, a

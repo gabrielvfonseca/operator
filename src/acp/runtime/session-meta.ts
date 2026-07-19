@@ -1,8 +1,8 @@
 /** SQLite-backed ACP session metadata storage keyed through session-store entries. */
 import type { DatabaseSync } from "node:sqlite";
-import { safeParseJson } from "@operator/normalization-core";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { safeParseJson } from "@gabrielvfonseca/normalization-core";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Insertable, Selectable } from "kysely";
 import { getRuntimeConfig } from "../../config/config.js";
 import { resolveStorePath } from "../../config/sessions/paths.js";
@@ -25,12 +25,12 @@ import {
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
 import { parseAgentSessionKey } from "../../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   type OperatorStateDatabaseOptions,
   runOperatorStateWriteTransaction,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 
 /** ACP metadata joined with its legacy session-store row and config context. */
 export type AcpSessionStoreEntry = {

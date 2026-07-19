@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resetPluginStateStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
+import { resetPluginStateStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createNextcloudTalkReplayGuard } from "./replay-guard.js";
 
@@ -93,7 +93,7 @@ describe("nextcloud-talk doctor", () => {
   });
 
   it("migrates legacy replay dedupe JSON into SQLite during doctor repair", async () => {
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-nextcloud-doctor-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-nextcloud-doctor-"));
     const legacyDir = path.join(stateDir, "nextcloud-talk", "replay-dedupe");
     const legacyPath = path.join(legacyDir, "account-a.json");
     await fs.mkdir(legacyDir, { recursive: true });

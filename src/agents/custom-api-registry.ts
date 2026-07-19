@@ -1,7 +1,7 @@
 /**
  * Registers caller-supplied custom API stream functions with the LLM registry.
  */
-import { getApiProvider, registerApiProvider } from "@operator/ai/internal/runtime";
+import { getApiProvider, registerApiProvider } from "@gabrielvfonseca/ai/internal/runtime";
 import type {
   Api,
   AssistantMessageEventStreamContract,

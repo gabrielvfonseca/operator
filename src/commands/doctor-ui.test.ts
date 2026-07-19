@@ -23,9 +23,12 @@ function issue(overrides: Partial<UiProtocolFreshnessIssue> = {}): UiProtocolFre
 }
 
 async function createOperatorRoot(): Promise<string> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-ui-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-doctor-ui-"));
   tempRoots.push(root);
-  await fs.writeFile(path.join(root, "package.json"), JSON.stringify({ name: "openclaw" }));
+  await fs.writeFile(
+    path.join(root, "package.json"),
+    JSON.stringify({ name: "@gabrielvfonseca/operator" }),
+  );
   await fs.mkdir(path.join(root, "packages/gateway-protocol/src"), { recursive: true });
   await fs.writeFile(path.join(root, "packages/gateway-protocol/src/schema.ts"), "export {};\n");
   return root;

@@ -1,4 +1,4 @@
-import { withServer } from "openclaw/plugin-sdk/test-env";
+import { withServer } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { listInworldVoices } from "./tts.js";
 

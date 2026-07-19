@@ -1,6 +1,6 @@
 // Qa Lab plugin module implements lab server capture behavior.
 import net from "node:net";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 
 const CAPTURE_QUERY_PRESETS = new Set([
   "double-sends",

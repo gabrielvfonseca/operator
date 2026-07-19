@@ -1,4 +1,4 @@
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 
 /** Normalize system.run timeout values, preserving null for no expiry. */
 export function normalizeSystemRunTimeoutMs(value: unknown): number | null | undefined {

@@ -1,6 +1,6 @@
 // Discord tests cover gateway plugin behavior.
 import { EventEmitter } from "node:events";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   GatewayCloseCodes,
   GatewayDispatchEvents,

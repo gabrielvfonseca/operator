@@ -1,7 +1,7 @@
 // Configure gateway auth prompt tests cover interactive auth selection and model-aware auth config.
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 

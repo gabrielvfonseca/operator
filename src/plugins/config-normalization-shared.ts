@@ -2,8 +2,8 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeArrayBackedTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeArrayBackedTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeChatChannelId } from "../channels/ids.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { defaultSlotIdForKey } from "./slots.js";

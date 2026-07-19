@@ -4,7 +4,7 @@ import SwiftUI
 /// High-level emotional state for the animated mascot. Callers describe *how
 /// the mascot should feel*; the animator owns how that feeling looks, including
 /// the transition gesture played when a mood is entered.
-public enum OpenClawMascotMood: String, CaseIterable, Equatable, Sendable {
+public enum OperatorMascotMood: String, CaseIterable, Equatable, Sendable {
     /// Site-parity float/wiggle plus randomized blinks, glances, and rare quirks.
     case idle
     /// Looks around a lot — searching (gateway discovery, permission list).
@@ -26,7 +26,7 @@ public enum OpenClawMascotMood: String, CaseIterable, Equatable, Sendable {
 }
 
 /// Ambient particle overlay drawn around the mascot for one pose frame.
-enum OpenClawMascotEffect: Equatable {
+enum OperatorMascotEffect: Equatable {
     case none
     case sparkles
     case hearts
@@ -40,7 +40,7 @@ enum OpenClawMascotEffect: Equatable {
 /// gestures, and interaction Easter eggs (click reactions, dizzy spiral,
 /// auto-sleep). Not thread-safe by design — SwiftUI drives it from the view
 /// body on the main thread only.
-final class OpenClawMascotAnimator {
+final class OperatorMascotAnimator {
     /// Deterministic xorshift64* so tests can seed the behavior schedule.
     struct SeededGenerator: RandomNumberGenerator {
         private var state: UInt64
@@ -57,16 +57,16 @@ final class OpenClawMascotAnimator {
         }
     }
 
-    private(set) var mood: OpenClawMascotMood = .idle
+    private(set) var mood: OperatorMascotMood = .idle
 
     private var rng: SeededGenerator
     private var startTime: TimeInterval?
     private var lastPoseTime: TimeInterval = 0
 
     // One-shot gesture playback (single slot; quirks wait for a free slot).
-    private var activeGesture: OpenClawMascotGesture?
+    private var activeGesture: OperatorMascotGesture?
     private var activeGestureStart: TimeInterval = 0
-    private var pendingGesture: OpenClawMascotGesture?
+    private var pendingGesture: OperatorMascotGesture?
     private var pendingGestureAt: TimeInterval = 0
 
     // Randomized micro-behavior schedule.
@@ -80,7 +80,7 @@ final class OpenClawMascotAnimator {
     private var nextClawSnapAt: TimeInterval = 0
     private var nextQuirkAt: TimeInterval = 0
     private var nextMoodBeatAt: TimeInterval = 0
-    private var lastClickReaction: OpenClawMascotGesture?
+    private var lastClickReaction: OperatorMascotGesture?
 
     // Interaction state.
     private var pointerTarget: CGSize?
@@ -107,7 +107,7 @@ final class OpenClawMascotAnimator {
 
     // MARK: - Inputs
 
-    func setMood(_ mood: OpenClawMascotMood, at time: TimeInterval) {
+    func setMood(_ mood: OperatorMascotMood, at time: TimeInterval) {
         guard mood != self.mood else { return }
         self.mood = mood
         self.lastInteractionAt = time
@@ -156,7 +156,7 @@ final class OpenClawMascotAnimator {
             self.startGesture(.heartBurst, at: time)
             return
         }
-        var reactions: [OpenClawMascotGesture] = [.hop, .wave, .wink]
+        var reactions: [OperatorMascotGesture] = [.hop, .wave, .wink]
         if let last = self.lastClickReaction {
             reactions.removeAll { $0 == last }
         }
@@ -167,7 +167,7 @@ final class OpenClawMascotAnimator {
 
     // MARK: - Pose
 
-    func pose(at time: TimeInterval) -> OpenClawMascotPose {
+    func pose(at time: TimeInterval) -> OperatorMascotPose {
         if self.startTime == nil {
             self.begin(at: time)
         }
@@ -176,7 +176,7 @@ final class OpenClawMascotAnimator {
         self.advanceSchedules(at: time)
 
         let dozing = self.isDozing(at: time)
-        let effectiveMood: OpenClawMascotMood = dozing ? .sleepy : self.mood
+        let effectiveMood: OperatorMascotMood = dozing ? .sleepy : self.mood
         var pose = self.basePose(for: effectiveMood, at: time)
         self.applyGaze(&pose, mood: effectiveMood, at: time, dt: dt)
         self.applyBlinks(&pose, at: time)
@@ -243,7 +243,7 @@ final class OpenClawMascotAnimator {
                 self.nextBlinkAt = time + self.blinkInterval()
             }
         }
-        self.blinkStarts.removeAll { time - $0 > OpenClawMascotGesture.blinkDuration }
+        self.blinkStarts.removeAll { time - $0 > OperatorMascotGesture.blinkDuration }
 
         if time >= self.nextGlanceAt {
             self.gazeTarget = self.randomGlanceTarget()
@@ -304,7 +304,7 @@ final class OpenClawMascotAnimator {
         }
     }
 
-    private func randomQuirk() -> OpenClawMascotGesture {
+    private func randomQuirk() -> OperatorMascotGesture {
         // Weighted grab bag; the sneeze stays rare so it keeps surprising.
         let roll = self.random(in: 0...11)
         switch roll {
@@ -339,12 +339,12 @@ final class OpenClawMascotAnimator {
         self.nextMoodBeatAt = time + self.random(in: 6...12)
     }
 
-    private func startGesture(_ gesture: OpenClawMascotGesture, at time: TimeInterval) {
+    private func startGesture(_ gesture: OperatorMascotGesture, at time: TimeInterval) {
         self.activeGesture = gesture
         self.activeGestureStart = time
     }
 
-    private static func entranceGesture(for mood: OpenClawMascotMood) -> OpenClawMascotGesture? {
+    private static func entranceGesture(for mood: OperatorMascotMood) -> OperatorMascotGesture? {
         switch mood {
         case .happy: .hop
         case .celebrating: .celebrate
@@ -359,8 +359,8 @@ final class OpenClawMascotAnimator {
 
     /// Per-mood base loop. `.idle` keeps the exact site-parity waves (float 4s,
     /// antenna ±3° at 2s); other moods reshape speed, depth, and expression.
-    private func basePose(for mood: OpenClawMascotMood, at time: TimeInterval) -> OpenClawMascotPose {
-        var pose = OpenClawMascotPose()
+    private func basePose(for mood: OperatorMascotMood, at time: TimeInterval) -> OperatorMascotPose {
+        var pose = OperatorMascotPose()
         switch mood {
         case .idle:
             pose.floatOffset = -4.8 * (1 - cos(2 * .pi * Self.cyclePhase(time, period: 4)))
@@ -380,15 +380,15 @@ final class OpenClawMascotAnimator {
             if phase < 0.05 {
                 pose.rightClawDegrees = -6
             } else if phase < 0.60 {
-                pose.rightClawDegrees = -6 - 28 * OpenClawMascotGesture.easeInOut((phase - 0.05) / 0.55)
+                pose.rightClawDegrees = -6 - 28 * OperatorMascotGesture.easeInOut((phase - 0.05) / 0.55)
             } else if phase < 0.72 {
                 let strike = ((phase - 0.60) / 0.12).clamped(to: 0...1)
                 pose.rightClawDegrees = -34 + 46 * strike * strike
             } else {
-                pose.rightClawDegrees = 12 - 18 * OpenClawMascotGesture.easeInOut((phase - 0.72) / 0.28)
+                pose.rightClawDegrees = 12 - 18 * OperatorMascotGesture.easeInOut((phase - 0.72) / 0.28)
             }
             pose.leftClawDegrees = 4 + 2 * sin(2 * .pi * phase)
-            let impact = OpenClawMascotGesture.bell(((phase - 0.72) / 0.14).clamped(to: 0...1))
+            let impact = OperatorMascotGesture.bell(((phase - 0.72) / 0.14).clamped(to: 0...1))
             pose.floatOffset = -2 * (1 - cos(2 * .pi * Self.cyclePhase(time, period: 3.8))) + 0.8 * impact
             pose.bodyStretch = 1 - 0.03 * impact
             pose.bodyTilt = 2.2 + 0.6 * sin(2 * .pi * Self.cyclePhase(time, period: 5))
@@ -448,8 +448,8 @@ final class OpenClawMascotAnimator {
     }
 
     private func applyGaze(
-        _ pose: inout OpenClawMascotPose,
-        mood: OpenClawMascotMood,
+        _ pose: inout OperatorMascotPose,
+        mood: OperatorMascotMood,
         at time: TimeInterval,
         dt: TimeInterval)
     {
@@ -487,19 +487,19 @@ final class OpenClawMascotAnimator {
         pose.gaze = self.currentGaze
     }
 
-    private func applyBlinks(_ pose: inout OpenClawMascotPose, at time: TimeInterval) {
+    private func applyBlinks(_ pose: inout OperatorMascotPose, at time: TimeInterval) {
         guard pose.happyEyes < 0.6 else { return }
         for start in self.blinkStarts {
-            let progress = (time - start) / OpenClawMascotGesture.blinkDuration
+            let progress = (time - start) / OperatorMascotGesture.blinkDuration
             guard progress >= 0, progress <= 1 else { continue }
-            let closure = OpenClawMascotGesture.bell(CGFloat(progress))
+            let closure = OperatorMascotGesture.bell(CGFloat(progress))
             pose.leftEyeOpenness = min(pose.leftEyeOpenness, 1 - closure)
             pose.rightEyeOpenness = min(pose.rightEyeOpenness, 1 - closure)
             pose.eyeGlowOpacity *= max(0.3, 1 - closure)
         }
     }
 
-    private func applyDizzy(_ pose: inout OpenClawMascotPose, at time: TimeInterval) {
+    private func applyDizzy(_ pose: inout OperatorMascotPose, at time: TimeInterval) {
         guard time < self.dizzyUntil else { return }
         let remaining = self.dizzyUntil - time
         // Ramp in from the first dizzy tap, out toward the recovery shake;
@@ -522,7 +522,7 @@ final class OpenClawMascotAnimator {
 }
 
 /// One-shot animation clips layered over the mood base pose.
-enum OpenClawMascotGesture: Equatable {
+enum OperatorMascotGesture: Equatable {
     case wave
     case hop
     case wink
@@ -561,7 +561,7 @@ enum OpenClawMascotGesture: Equatable {
         }
     }
 
-    func apply(to pose: inout OpenClawMascotPose, progress p: CGFloat) {
+    func apply(to pose: inout OperatorMascotPose, progress p: CGFloat) {
         switch self {
         case .wave:
             let raised = Self.plateau(p, attack: 0.18, release: 0.82)
@@ -610,7 +610,7 @@ enum OpenClawMascotGesture: Equatable {
             pose.glowScale = max(pose.glowScale, 1.1)
         case .sneeze:
             if p < 0.42 {
-                let inhale = OpenClawMascotGesture.easeInOut(p / 0.42)
+                let inhale = OperatorMascotGesture.easeInOut(p / 0.42)
                 pose.bodyStretch += 0.04 * inhale
                 pose.gaze = CGSize(width: 0, height: -0.8 * inhale)
                 pose.mouthRound = max(pose.mouthRound, 0.55 * inhale)
@@ -623,7 +623,7 @@ enum OpenClawMascotGesture: Equatable {
                 pose.antennaDroop = max(pose.antennaDroop, 0.9 * burst)
                 pose.bodyTilt += 3 * burst
             } else {
-                let recover = 1 - OpenClawMascotGesture.easeInOut((p - 0.58) / 0.42)
+                let recover = 1 - OperatorMascotGesture.easeInOut((p - 0.58) / 0.42)
                 pose.antennaDroop = max(pose.antennaDroop, 0.5 * recover)
                 pose.eyeGlowOpacity *= 1 - 0.4 * recover
                 pose.mouthRound = max(pose.mouthRound, 0.2 * recover)
@@ -634,8 +634,8 @@ enum OpenClawMascotGesture: Equatable {
             pose.glowScale = max(pose.glowScale, 1 + 0.55 * Self.bell(p))
             pose.eyeGlowOpacity = 1
         case .sigh:
-            let rise = OpenClawMascotGesture.easeInOut((p / 0.3).clamped(to: 0...1))
-            let fall = OpenClawMascotGesture.easeInOut(((p - 0.3) / 0.45).clamped(to: 0...1))
+            let rise = OperatorMascotGesture.easeInOut((p / 0.3).clamped(to: 0...1))
+            let fall = OperatorMascotGesture.easeInOut(((p - 0.3) / 0.45).clamped(to: 0...1))
             pose.bodyStretch += 0.025 * rise - 0.08 * fall * (1 - ((p - 0.85) / 0.15).clamped(to: 0...1))
             pose.gaze = CGSize(width: pose.gaze.width, height: 0.5 * fall)
             pose.antennaDroop = min(1, pose.antennaDroop + 0.15 * fall)

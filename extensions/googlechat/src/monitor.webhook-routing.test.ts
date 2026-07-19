@@ -1,12 +1,12 @@
 // Googlechat tests cover monitor.webhook routing plugin behavior.
 import { EventEmitter } from "node:events";
 import type { IncomingMessage } from "node:http";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   createEmptyPluginRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { createMockServerResponse } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { createMockServerResponse } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../runtime-api.js";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";

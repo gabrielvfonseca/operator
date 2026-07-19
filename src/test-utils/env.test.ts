@@ -122,14 +122,14 @@ describe("env test utils", () => {
   });
 
   it("createPathResolutionEnv clears leaked path overrides before applying explicit ones", () => {
-    const homeDir = path.join(path.sep, "tmp", "openclaw-home");
+    const homeDir = path.join(path.sep, "tmp", "operator-home");
     const resolvedHomeDir = path.resolve(homeDir);
     const previousOperatorHome = process.env.OPERATOR_HOME;
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
     const previousBundledDir = process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
-    setTestEnvValue("OPERATOR_HOME", "/srv/openclaw-home");
-    setTestEnvValue("OPERATOR_STATE_DIR", "/srv/openclaw-state");
-    setTestEnvValue("OPERATOR_BUNDLED_PLUGINS_DIR", "/srv/openclaw-bundled");
+    setTestEnvValue("OPERATOR_HOME", "/srv/operator-home");
+    setTestEnvValue("OPERATOR_STATE_DIR", "/srv/operator-state");
+    setTestEnvValue("OPERATOR_BUNDLED_PLUGINS_DIR", "/srv/operator-bundled");
 
     try {
       const env = createPathResolutionEnv(homeDir, {
@@ -148,10 +148,10 @@ describe("env test utils", () => {
   });
 
   it("withPathResolutionEnv only applies the explicit path env inside the callback", () => {
-    const homeDir = path.join(path.sep, "tmp", "openclaw-home");
+    const homeDir = path.join(path.sep, "tmp", "operator-home");
     const resolvedHomeDir = path.resolve(homeDir);
     const previousOperatorHome = process.env.OPERATOR_HOME;
-    setTestEnvValue("OPERATOR_HOME", "/srv/openclaw-home");
+    setTestEnvValue("OPERATOR_HOME", "/srv/operator-home");
 
     try {
       const seen = withPathResolutionEnv(
@@ -171,7 +171,7 @@ describe("env test utils", () => {
         processBundledDir: "~/bundled",
         envBundledDir: "~/bundled",
       });
-      expect(process.env.OPERATOR_HOME).toBe("/srv/openclaw-home");
+      expect(process.env.OPERATOR_HOME).toBe("/srv/operator-home");
     } finally {
       restoreEnvKey("OPERATOR_HOME", previousOperatorHome);
     }

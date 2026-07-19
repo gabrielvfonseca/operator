@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 object SensitiveFeatureConfig {
   const val smsEnabled: Boolean = false

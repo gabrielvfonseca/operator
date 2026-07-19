@@ -35,7 +35,7 @@ type AnthropicManifest = {
 };
 
 const manifest = JSON.parse(
-  readFileSync(new URL("./openclaw.plugin.json", import.meta.url), "utf8"),
+  readFileSync(new URL("./operator.plugin.json", import.meta.url), "utf8"),
 ) as AnthropicManifest;
 
 describe("Anthropic plugin manifest", () => {

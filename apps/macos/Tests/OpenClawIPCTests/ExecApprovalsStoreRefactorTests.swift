@@ -1,8 +1,8 @@
 import CryptoKit
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 struct ExecApprovalsStoreRefactorTests {
@@ -54,16 +54,16 @@ struct ExecApprovalsStoreRefactorTests {
         _ body: @escaping @Sendable (URL) async throws -> Void) async throws
     {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-state-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
         let stateDir = root.appendingPathComponent("state", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try Self.seedCurrentApprovalsFile(in: stateDir)
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_PROFILE": nil,
-            "OPENCLAW_STATE_DIR": stateDir.path,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_PROFILE": nil,
+            "OPERATOR_STATE_DIR": stateDir.path,
         ]) {
             try await body(stateDir)
         }
@@ -74,15 +74,15 @@ struct ExecApprovalsStoreRefactorTests {
         _ body: @escaping @Sendable (URL, URL) async throws -> Void) async throws
     {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-home-state-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-home-state-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
         let stateDir = root.appendingPathComponent("state", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_PROFILE": profile,
-            "OPENCLAW_STATE_DIR": stateDir.path,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_PROFILE": profile,
+            "OPERATOR_STATE_DIR": stateDir.path,
         ]) {
             try await body(home, stateDir)
         }
@@ -117,15 +117,15 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `effective home owns the default approvals path`() async throws {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-effective-home-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-effective-home-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
-        let stateDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+        let stateDir = home.appendingPathComponent(".operator", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try Self.seedCurrentApprovalsFile(in: stateDir)
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_STATE_DIR": nil,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_STATE_DIR": nil,
         ]) {
             #expect(ExecApprovalsStore.fileURL().path == stateDir.appendingPathComponent(
                 "exec-approvals.json").path)
@@ -256,7 +256,7 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `blocked legacy migration cannot create or mutate current policy`() async throws {
         try await self.withTempHomeAndStateDir { home, _ in
-            let legacyDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let legacyDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(at: legacyDir, withIntermediateDirectories: true)
             let legacyURL = legacyDir.appendingPathComponent("exec-approvals.json")
             let malformed = Data(#"{"version":1,"agents":null}"#.utf8)
@@ -284,7 +284,7 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `symlinked legacy policy cannot seed the current store`() async throws {
         try await self.withTempHomeAndStateDir { home, _ in
-            let legacyDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let legacyDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(at: legacyDir, withIntermediateDirectories: true)
             let linkedTarget = home.appendingPathComponent("linked-policy.json")
             let permissive = Data(#"{"version":1,"defaults":{"security":"full","ask":"off"}}"#.utf8)
@@ -328,10 +328,10 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `symlinked approvals directory fails closed before load or update`() async throws {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-symlink-parent-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-symlink-parent-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
         let redirected = root.appendingPathComponent("redirected", isDirectory: true)
-        let linkedState = home.appendingPathComponent(".openclaw", isDirectory: true)
+        let linkedState = home.appendingPathComponent(".operator", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: home, withIntermediateDirectories: true)
         try FileManager().createDirectory(at: redirected, withIntermediateDirectories: true)
@@ -341,8 +341,8 @@ struct ExecApprovalsStoreRefactorTests {
         try permissive.write(to: target)
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_STATE_DIR": linkedState.path,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_STATE_DIR": linkedState.path,
         ]) {
             let resolved = ExecApprovalsStore.resolve(agentId: "main")
             #expect(resolved.agent.security == .deny)
@@ -363,7 +363,7 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `symlinked configured state directory outside home fails closed`() async throws {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-symlink-external-state-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-symlink-external-state-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
         let redirected = root.appendingPathComponent("redirected", isDirectory: true)
         let linkedState = root.appendingPathComponent("linked-state", isDirectory: true)
@@ -376,8 +376,8 @@ struct ExecApprovalsStoreRefactorTests {
         try permissive.write(to: target)
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_STATE_DIR": linkedState.path,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_STATE_DIR": linkedState.path,
         ]) {
             let resolved = ExecApprovalsStore.resolve(agentId: "main")
             #expect(resolved.agent.security == .deny)
@@ -402,24 +402,24 @@ struct ExecApprovalsStoreRefactorTests {
     @Test
     func `symlinked trusted home root remains supported`() async throws {
         let root = self.realTemporaryDirectory
-            .appendingPathComponent("openclaw-symlink-root-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-symlink-root-\(UUID().uuidString)", isDirectory: true)
         let realHome = root.appendingPathComponent("real-home", isDirectory: true)
         let linkedHome = root.appendingPathComponent("linked-home", isDirectory: true)
-        let stateDir = linkedHome.appendingPathComponent(".openclaw", isDirectory: true)
+        let stateDir = linkedHome.appendingPathComponent(".operator", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: realHome, withIntermediateDirectories: true)
-        try Self.seedCurrentApprovalsFile(in: realHome.appendingPathComponent(".openclaw"))
+        try Self.seedCurrentApprovalsFile(in: realHome.appendingPathComponent(".operator"))
         try FileManager().createSymbolicLink(at: linkedHome, withDestinationURL: realHome)
 
         try await self.withLockedEnv([
-            "OPENCLAW_HOME": linkedHome.path,
-            "OPENCLAW_STATE_DIR": stateDir.path,
+            "OPERATOR_HOME": linkedHome.path,
+            "OPERATOR_STATE_DIR": stateDir.path,
         ]) {
             let resolved = try ExecApprovalsStore.resolveResult(agentId: "main").get()
             #expect(resolved.agent.security == .full)
             #expect(resolved.agent.ask == .off)
             #expect(FileManager().fileExists(atPath: realHome.appendingPathComponent(
-                ".openclaw/exec-approvals.json").path))
+                ".operator/exec-approvals.json").path))
         }
     }
 
@@ -1133,7 +1133,7 @@ extension ExecApprovalsStoreRefactorTests {
     @Test
     func `ensure file migrates default approvals into custom state dir`() async throws {
         try await self.withTempHomeAndStateDir { home, stateDir in
-            let legacyDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let legacyDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(
                 at: legacyDir,
                 withIntermediateDirectories: true)
@@ -1180,7 +1180,7 @@ extension ExecApprovalsStoreRefactorTests {
     @Test
     func `ensure file keeps named profile isolated from default approvals`() async throws {
         try await self.withTempHomeAndStateDir(profile: "work") { home, stateDir in
-            let defaultDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let defaultDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(at: defaultDir, withIntermediateDirectories: true)
             let defaultFile = defaultDir.appendingPathComponent("exec-approvals.json")
             let defaultJson = """
@@ -1207,7 +1207,7 @@ extension ExecApprovalsStoreRefactorTests {
     @Test
     func `legacy writer revocation wins before migration publishes and archives`() async throws {
         try await self.withTempHomeAndStateDir { home, _ in
-            let legacyDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let legacyDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(
                 at: legacyDir,
                 withIntermediateDirectories: true)
@@ -1245,7 +1245,7 @@ extension ExecApprovalsStoreRefactorTests {
     @Test
     func `legacy migration fails closed while legacy writer lock is held`() async throws {
         try await self.withTempHomeAndStateDir { home, _ in
-            let legacyDir = home.appendingPathComponent(".openclaw", isDirectory: true)
+            let legacyDir = home.appendingPathComponent(".operator", isDirectory: true)
             try FileManager().createDirectory(
                 at: legacyDir,
                 withIntermediateDirectories: true)

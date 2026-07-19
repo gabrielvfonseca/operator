@@ -4,7 +4,7 @@
  */
 import { createRequire } from "node:module";
 import path from "node:path";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
 import { splitCommandParts } from "./command-line.js";
 import { resolveAcpxPluginRoot } from "./config.js";
 import { OPERATOR_ACPX_LEASE_ID_ARG, OPERATOR_GATEWAY_INSTANCE_ID_ARG } from "./process-lease.js";
@@ -49,7 +49,7 @@ export type AcpxProcessCleanupDeps = {
 type AcpxProcessCleanupResult = {
   inspectedPids: number[];
   terminatedPids: number[];
-  skippedReason?: "missing-root" | "not-openclaw-owned" | "unverified-root";
+  skippedReason?: "missing-root" | "not-operator-owned" | "unverified-root";
 };
 
 /** Result from startup orphan reaping. */
@@ -346,7 +346,7 @@ export async function cleanupOperatorOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     };
   }
   if (
@@ -356,7 +356,7 @@ export async function cleanupOperatorOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     };
   }
   if (
@@ -368,7 +368,7 @@ export async function cleanupOperatorOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     };
   }
   if (
@@ -381,7 +381,7 @@ export async function cleanupOperatorOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     };
   }
 

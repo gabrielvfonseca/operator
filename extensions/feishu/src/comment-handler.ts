@@ -1,6 +1,6 @@
 // Feishu plugin module implements comment handler behavior.
-import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
-import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { ResolvedAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { createFeishuCommentReplyDispatcher } from "./comment-dispatcher.js";

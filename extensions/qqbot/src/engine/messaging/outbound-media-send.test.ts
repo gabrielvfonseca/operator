@@ -54,8 +54,8 @@ vi.mock("./sender.js", () => ({
   UploadDailyLimitExceededError: MockUploadDailyLimitExceededError,
 }));
 
-import { loadOutboundMediaFromUrl } from "openclaw/plugin-sdk/outbound-media";
-import { resolveLocalPathFromRootsSync } from "openclaw/plugin-sdk/security-runtime";
+import { loadOutboundMediaFromUrl } from "@gabrielvfonseca/operator/plugin-sdk/outbound-media";
+import { resolveLocalPathFromRootsSync } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   resolveOutboundMediaLocalRoots,
   resolveWorkspaceScopedLocalRoots,
@@ -91,11 +91,11 @@ function makeCtx() {
       config: {},
     },
     mediaAccess: {
-      localRoots: ["/tmp/openclaw-sandbox"],
+      localRoots: ["/tmp/operator-sandbox"],
       workspaceDir: "/tmp/workspace",
       readFile: async () => Buffer.from("report"),
     },
-    mediaLocalRoots: ["/tmp/openclaw-sandbox"],
+    mediaLocalRoots: ["/tmp/operator-sandbox"],
     mediaReadFile: async () => Buffer.from("report"),
   };
 }
@@ -185,21 +185,21 @@ describe("resolveOutboundMediaPath", () => {
     expect(
       resolveOutboundMediaLocalRoots({
         mediaAccess: {
-          localRoots: ["/tmp/openclaw-sandbox"],
+          localRoots: ["/tmp/operator-sandbox"],
           workspaceDir: "/tmp/agent-workspace",
         },
-        mediaLocalRoots: ["/tmp/openclaw-sandbox"],
+        mediaLocalRoots: ["/tmp/operator-sandbox"],
       }),
-    ).toEqual(["/tmp/openclaw-sandbox"]);
+    ).toEqual(["/tmp/operator-sandbox"]);
   });
 
   it("maps only authorized virtual workspace roots for host-read loading", () => {
     expect(
       resolveWorkspaceScopedLocalRoots(
-        ["/workspace/attachments", "/tmp/openclaw-sandbox", "/workspace/../media"],
+        ["/workspace/attachments", "/tmp/operator-sandbox", "/workspace/../media"],
         "/tmp/agent-workspace",
       ),
-    ).toEqual(["/tmp/agent-workspace/attachments", "/tmp/openclaw-sandbox"]);
+    ).toEqual(["/tmp/agent-workspace/attachments", "/tmp/operator-sandbox"]);
   });
 
   it.each(["/workspace/../media/secret.pdf", "../media/secret.pdf"])(
@@ -233,7 +233,7 @@ describe("trySendViaHostRead error handling", () => {
   it("returns OutboundResult.error when loadOutboundMediaFromUrl rejects", async () => {
     mockedLoadOutboundMediaFromUrl.mockRejectedValue(new Error("sandbox host read failed"));
 
-    const result = await sendPhoto(makeCtx(), "/tmp/openclaw-sandbox/report.docx");
+    const result = await sendPhoto(makeCtx(), "/tmp/operator-sandbox/report.docx");
 
     expect(result).toMatchObject({ channel: "qqbot", error: expect.any(String) });
     expect(result.error).toContain("sandbox host read failed");
@@ -241,7 +241,7 @@ describe("trySendViaHostRead error handling", () => {
   });
 
   it("falls back to normal local sends for trusted media paths outside host-read roots", async () => {
-    const trustedMediaDir = path.join(openclawHome, ".openclaw", "media", "qqbot");
+    const trustedMediaDir = path.join(openclawHome, ".operator", "media", "qqbot");
     await fs.mkdir(trustedMediaDir, { recursive: true });
     const trustedMediaPath = path.join(trustedMediaDir, "trusted-report.docx");
     await fs.writeFile(trustedMediaPath, Buffer.from("trusted report"));
@@ -341,7 +341,7 @@ describe("trySendViaHostRead error handling", () => {
     });
     mockedSenderSendMedia.mockRejectedValue(new Error("qq upload quota exceeded"));
 
-    const result = await sendPhoto(makeCtx(), "/tmp/openclaw-sandbox/chart.png");
+    const result = await sendPhoto(makeCtx(), "/tmp/operator-sandbox/chart.png");
 
     expect(result).toMatchObject({ channel: "qqbot", error: expect.any(String) });
     expect(result.error).toContain("qq upload quota exceeded");
@@ -385,7 +385,7 @@ describe("trySendViaHostRead error handling", () => {
       "/tmp/workspace/report.docx",
       expect.objectContaining({
         mediaAccess: expect.objectContaining({
-          localRoots: ["/tmp/openclaw-sandbox"],
+          localRoots: ["/tmp/operator-sandbox"],
           workspaceDir: "/tmp/workspace",
         }),
         workspaceDir: "/tmp/workspace",
@@ -406,7 +406,7 @@ describe("trySendViaHostRead error handling", () => {
       {
         ...makeCtx(),
         mediaAccess: {
-          localRoots: ["/tmp/openclaw-sandbox"],
+          localRoots: ["/tmp/operator-sandbox"],
           readFile: async () => Buffer.from("report"),
         },
         mediaLocalRoots: [],
@@ -432,7 +432,7 @@ describe("trySendViaHostRead error handling", () => {
       {
         ...makeCtx(),
         mediaAccess: {
-          localRoots: ["/tmp/openclaw-sandbox"],
+          localRoots: ["/tmp/operator-sandbox"],
           readFile: async () => Buffer.from("image"),
         },
         mediaLocalRoots: [],
@@ -648,7 +648,7 @@ describe("trySendViaHostRead error handling", () => {
       expect.objectContaining({
         maxBytes: expect.any(Number),
         mediaAccess: expect.objectContaining({
-          localRoots: ["/tmp/openclaw-sandbox"],
+          localRoots: ["/tmp/operator-sandbox"],
           workspaceDir: "/tmp/workspace",
         }),
       }),

@@ -1,8 +1,8 @@
 // CLI container targeting: parse --container and re-exec the command inside Docker/Podman.
 import { spawnSync } from "node:child_process";
 import { isIP } from "node:net";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { consumeRootOptionToken, FLAG_TERMINATOR } from "../infra/cli-root-options.js";
 import { resolveCliArgvInvocation } from "./argv-invocation.js";
 import { scanCliRootOptions } from "./root-option-scan.js";
@@ -154,7 +154,7 @@ function buildContainerExecArgs(params: {
     "OPERATOR_CLI_CONTAINER_BYPASS=1",
     ...proxyEnvArgs,
     params.containerName,
-    "operator",
+    "@gabrielvfonseca/operator",
     ...params.argv,
   ];
 }
@@ -233,7 +233,9 @@ function buildContainerExecEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
 }
 
 function isBlockedContainerCommand(argv: string[]): boolean {
-  if (resolveCliArgvInvocation(["node", "operator", ...argv]).primary === "update") {
+  if (
+    resolveCliArgvInvocation(["node", "@gabrielvfonseca/operator", ...argv]).primary === "update"
+  ) {
     return true;
   }
   for (let i = 0; i < argv.length; i += 1) {
@@ -281,7 +283,7 @@ export function maybeRunCliInContainer(
   }
   if (isBlockedContainerCommand(parsed.argv.slice(2))) {
     throw new Error(
-      "operator update is not supported with --container; rebuild or restart the container image instead.",
+      "openclaw update is not supported with --container; rebuild or restart the container image instead.",
     );
   }
 

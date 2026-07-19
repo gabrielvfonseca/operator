@@ -9,7 +9,7 @@ import { listOperatorPluginManifestMetadata } from "./manifest-metadata-scan.js"
 const tempRoots: string[] = [];
 
 function createTempRoot(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-manifest-metadata-"));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-manifest-metadata-"));
   tempRoots.push(root);
   return root;
 }
@@ -32,11 +32,11 @@ describe("listOperatorPluginManifestMetadata", () => {
     const bundledRoot = path.join(root, "extensions");
     const staleBundledRoot = path.join(root, "stale", "extensions");
 
-    writeJson(path.join(bundledRoot, "openai", "openclaw.plugin.json"), {
+    writeJson(path.join(bundledRoot, "openai", "operator.plugin.json"), {
       id: "openai",
       providerEndpoints: [{ endpointClass: "openai-public", hosts: ["api.openai.com"] }],
     });
-    writeJson(path.join(staleBundledRoot, "openai", "openclaw.plugin.json"), {
+    writeJson(path.join(staleBundledRoot, "openai", "operator.plugin.json"), {
       id: "openai",
       providers: ["openai"],
     });
@@ -52,7 +52,7 @@ describe("listOperatorPluginManifestMetadata", () => {
         plugins: [
           {
             pluginId: "openai",
-            manifestPath: path.join(staleBundledRoot, "openai", "openclaw.plugin.json"),
+            manifestPath: path.join(staleBundledRoot, "openai", "operator.plugin.json"),
             manifestHash: "stale-openai",
             rootDir: path.join(staleBundledRoot, "openai"),
             origin: "bundled",
@@ -68,7 +68,7 @@ describe("listOperatorPluginManifestMetadata", () => {
         ],
         diagnostics: [],
       },
-      { stateDir: path.join(home, ".openclaw") },
+      { stateDir: path.join(home, ".operator") },
     );
 
     const records = listOperatorPluginManifestMetadata({
@@ -88,7 +88,7 @@ describe("listOperatorPluginManifestMetadata", () => {
     const home = path.join(root, "home");
     const partialBundledRoot = path.join(root, "dist", "extensions");
 
-    writeJson(path.join(partialBundledRoot, "qa-lab", "openclaw.plugin.json"), {
+    writeJson(path.join(partialBundledRoot, "qa-lab", "operator.plugin.json"), {
       id: "qa-lab",
       providers: ["qa-lab"],
     });
@@ -111,8 +111,8 @@ describe("listOperatorPluginManifestMetadata", () => {
   it("falls through a blank Operator home when scanning global manifests", () => {
     const root = createTempRoot();
     const home = path.join(root, "home");
-    const pluginDir = path.join(home, ".openclaw", "extensions", "example");
-    writeJson(path.join(pluginDir, "openclaw.plugin.json"), { id: "example" });
+    const pluginDir = path.join(home, ".operator", "extensions", "example");
+    writeJson(path.join(pluginDir, "operator.plugin.json"), { id: "example" });
 
     const records = listOperatorPluginManifestMetadata({
       OPERATOR_HOME: "   ",

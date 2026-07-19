@@ -26,7 +26,7 @@ describe("Workboard SQLite policy", () => {
   });
 
   it("closes a newly opened database when filesystem policy refuses it", () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-workboard-policy-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-workboard-policy-"));
     const dbPath = path.join(dir, "workboard.sqlite");
     configureSqliteConnectionPragmas.mockImplementation(() => {
       throw new Error("SSHFS is unsupported");

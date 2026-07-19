@@ -17,9 +17,9 @@ import {
   supportsModelTools,
   type EmbeddedRunAttemptParams,
   type RuntimeToolSchemaDiagnostic,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { resolveAgentDir } from "openclaw/plugin-sdk/agent-runtime";
-import { isToolAllowed } from "openclaw/plugin-sdk/sandbox";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { resolveAgentDir } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { isToolAllowed } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import { readCodexPluginConfig, type CodexPluginConfig } from "./config.js";
 import { dynamicToolBuildState } from "./dynamic-tool-build-state.js";
 import {
@@ -73,12 +73,12 @@ function preserveRingZeroSystemAgentTool<T extends { name: string; catalogMode?:
   filteredTools: T[],
 ): T[] {
   const openclaw = allTools.find(
-    (tool) => tool.name === "openclaw" && tool.catalogMode === "direct-only",
+    (tool) => tool.name === "@gabrielvfonseca/operator" && tool.catalogMode === "direct-only",
   );
   if (!openclaw) {
     return filteredTools;
   }
-  return [openclaw, ...filteredTools.filter((tool) => tool.name !== "openclaw")];
+  return [openclaw, ...filteredTools.filter((tool) => tool.name !== "@gabrielvfonseca/operator")];
 }
 /** Runtime inputs needed to derive the exact Codex dynamic tool surface for a turn. */
 type DynamicToolBuildParams = {
@@ -335,7 +335,7 @@ export async function buildDynamicTools(input: DynamicToolBuildParams) {
     allTools,
     params.sourceReplyDeliveryMode,
   );
-  toolBuildStages.mark("create-openclaw-coding-tools");
+  toolBuildStages.mark("create-operator-coding-tools");
   const preNormalizationDiagnostics: RuntimeToolSchemaDiagnostic[] = [];
   const readableAllToolProjection = filterProviderNormalizableTools(codexScopedTools);
   preNormalizationDiagnostics.push(...readableAllToolProjection.diagnostics);
@@ -350,7 +350,8 @@ export async function buildDynamicTools(input: DynamicToolBuildParams) {
     ? filterCodexDynamicToolsWithOperatorShell(readableAllTools, input.pluginConfig)
     : filterCodexDynamicTools(readableAllTools, input.pluginConfig);
   const hostSystemAgentActive =
-    input.isHostScopedToolActive?.("openclaw") ?? isHostScopedAgentToolActive("openclaw");
+    input.isHostScopedToolActive?.("@gabrielvfonseca/operator") ??
+    isHostScopedAgentToolActive("@gabrielvfonseca/operator");
   const profileFilteredTools =
     hostSystemAgentActive && isSystemAgentOnlyCodexDynamicToolAllowlist(params.toolsAllow)
       ? preserveRingZeroSystemAgentTool(readableAllTools, normallyProfiledTools)

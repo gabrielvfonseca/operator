@@ -1,16 +1,16 @@
 // Telegram plugin module implements sent message cache behavior.
 import { createHash } from "node:crypto";
 import fs from "node:fs";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { getTelegramRuntime } from "./runtime.js";
 
 const TTL_MS = 24 * 60 * 60 * 1000;
 export const TELEGRAM_SENT_MESSAGE_CACHE_NAMESPACE = "telegram.sent-messages";
 export const TELEGRAM_SENT_MESSAGE_CACHE_MAX_ENTRIES = 10_000;
-const TELEGRAM_SENT_MESSAGES_STATE_KEY = Symbol.for("openclaw.telegramSentMessagesState");
+const TELEGRAM_SENT_MESSAGES_STATE_KEY = Symbol.for("operator.telegramSentMessagesState");
 
 type PersistedSentMessage = {
   scopeKey: string;

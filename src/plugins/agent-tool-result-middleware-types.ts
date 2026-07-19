@@ -3,7 +3,7 @@ import type { AgentToolResult } from "../agents/runtime/index.js";
 
 export type OperatorAgentToolResult<TResult = unknown> = AgentToolResult<TResult>;
 
-export type AgentToolResultMiddlewareRuntime = "operator" | "codex";
+export type AgentToolResultMiddlewareRuntime = "@gabrielvfonseca/operator" | "codex";
 /** @deprecated Use AgentToolResultMiddlewareRuntime. */
 export type AgentToolResultMiddlewareHarness =
   | AgentToolResultMiddlewareRuntime

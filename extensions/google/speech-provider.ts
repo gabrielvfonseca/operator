@@ -1,22 +1,22 @@
 // Google provider module implements model/runtime integration.
-import { transcodeAudioBufferToOpus } from "openclaw/plugin-sdk/media-runtime";
+import { transcodeAudioBufferToOpus } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   assertOkOrThrowProviderError,
   postJsonRequest,
   readProviderJsonResponse,
   sanitizeConfiguredModelProviderRequest,
-} from "openclaw/plugin-sdk/provider-http";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-onboard";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
   SpeechSynthesisRequest,
-} from "openclaw/plugin-sdk/speech-core";
-import { asObject, trimToUndefined } from "openclaw/plugin-sdk/speech-core";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import { asObject, trimToUndefined } from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveGoogleGenerativeAiHttpRequestConfig } from "./api.js";
 
 const DEFAULT_GOOGLE_TTS_MODEL = "gemini-3.1-flash-tts-preview";

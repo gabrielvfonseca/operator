@@ -1,5 +1,5 @@
 import type { DatabaseSync } from "node:sqlite";
-import { normalizeSortedUniqueTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeSortedUniqueTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { Insertable, Selectable, Updateable } from "kysely";
 import {
   type WorkerAdmissionHandshake,
@@ -18,12 +18,12 @@ import type {
   DB as StateDatabase,
   WorkerEnvironmentCredentials,
   WorkerEnvironments,
-} from "../../state/operator-state-db.generated.js";
+} from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 import type { WorkerCredentialRecord } from "./credential.js";
 import {
   canTransitionWorkerEnvironment,
@@ -142,7 +142,7 @@ function teardownTerminalStateFrom(
 }
 function normalizeBootstrapReceipt(value: {
   bundleHash: unknown;
-  operatorVersion: unknown;
+  openclawVersion: unknown;
   protocolFeatures: unknown;
 }): WorkerEnvironmentBootstrapReceipt {
   const bundleHash = required(value.bundleHash, "bootstrap bundle hash");
@@ -163,7 +163,7 @@ function normalizeBootstrapReceipt(value: {
   }
   return {
     bundleHash,
-    operatorVersion: required(value.operatorVersion, "bootstrap Operator version"),
+    openclawVersion: required(value.operatorVersion, "bootstrap Operator version"),
     protocolFeatures: normalizeSortedUniqueTrimmedStringList(value.protocolFeatures),
   };
 }
@@ -247,18 +247,18 @@ function endpointFrom(row: Row): Ssh | null {
 function bootstrapReceiptFrom(row: Row): WorkerEnvironmentBootstrapReceipt | null {
   const {
     bootstrap_bundle_hash: bundleHash,
-    bootstrap_operator_version: operatorVersion,
+    bootstrap_operator_version: openclawVersion,
     bootstrap_protocol_features_json: encodedFeatures,
   } = row;
-  if (bundleHash === null && operatorVersion === null && encodedFeatures === null) {
+  if (bundleHash === null && openclawVersion === null && encodedFeatures === null) {
     return null;
   }
-  if (bundleHash === null || operatorVersion === null || encodedFeatures === null) {
+  if (bundleHash === null || openclawVersion === null || encodedFeatures === null) {
     throw new Error("Worker environment bootstrap receipt is incomplete");
   }
   return normalizeBootstrapReceipt({
     bundleHash,
-    operatorVersion,
+    openclawVersion,
     protocolFeatures: JSON.parse(encodedFeatures) as unknown,
   });
 }

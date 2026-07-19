@@ -1,7 +1,7 @@
 // Isolated agent test harness builds filesystem and config fixtures for cron agent tests.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempHome as withTempHomeBase } from "operator/plugin-sdk/test-env";
+import { withTempHome as withTempHomeBase } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
@@ -47,7 +47,7 @@ export function makeCfg(
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
-        workspace: path.join(home, "operator"),
+        workspace: path.join(home, "@gabrielvfonseca/operator"),
       },
     },
     session: { store: storePath, mainKey: "main" },

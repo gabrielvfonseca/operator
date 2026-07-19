@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Config mutation helpers used by chat commands that edit Operator config. */
 import { setConfigValueAtPath, unsetConfigValueAtPath } from "../../config/config-paths.js";
 import {

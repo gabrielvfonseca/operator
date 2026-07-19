@@ -2,16 +2,16 @@
 import {
   resolveOutboundSendDep,
   type OutboundSendDeps,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   attachChannelToResult,
   createAttachedChannelResultAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
 import {
   resolvePayloadMediaUrls,
   resolveTextChunksWithFallback,
   sendPayloadMediaSequence,
-} from "openclaw/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import {
   chunkTextForOutbound,
   normalizeStringEntries,

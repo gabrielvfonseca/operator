@@ -1,6 +1,6 @@
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -17,7 +17,7 @@ struct TailscaleIntegrationSectionTests {
         let service = TailscaleService(
             isInstalled: true,
             isRunning: true,
-            tailscaleHostname: "openclaw.tailnet.ts.net",
+            tailscaleHostname: "operator.tailnet.ts.net",
             tailscaleIP: "100.64.0.1")
         var view = TailscaleIntegrationSection(connectionMode: .local, isPaused: false)
         view.setTestingService(service)
@@ -48,8 +48,8 @@ struct TailscaleIntegrationSectionTests {
 
     @Test func `general tailscale hydration does not rewrite existing config`() async throws {
         let stateDir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-state-\(UUID().uuidString)", isDirectory: true)
+        let configPath = stateDir.appendingPathComponent("operator.json")
 
         defer { try? FileManager().removeItem(at: stateDir) }
 
@@ -82,8 +82,8 @@ struct TailscaleIntegrationSectionTests {
         try initialConfig.write(to: configPath, atomically: true, encoding: .utf8)
 
         try await TestIsolation.withEnvValues([
-            "OPENCLAW_STATE_DIR": stateDir.path,
-            "OPENCLAW_CONFIG_PATH": configPath.path,
+            "OPERATOR_STATE_DIR": stateDir.path,
+            "OPERATOR_CONFIG_PATH": configPath.path,
         ]) {
             let before = try Data(contentsOf: configPath)
             let root = try #require(
@@ -94,7 +94,7 @@ struct TailscaleIntegrationSectionTests {
                 connectionMode: .local,
                 isPaused: true,
                 saveRoot: { root in
-                    OpenClawConfigFile.saveDict(root, allowGatewayAuthMutation: true)
+                    OperatorConfigFile.saveDict(root, allowGatewayAuthMutation: true)
                 })
 
             let after = try Data(contentsOf: configPath)

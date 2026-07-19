@@ -228,8 +228,8 @@ describe("normalizePluginsConfig", () => {
       candidates: [
         {
           idHint: "anthropic",
-          source: "/tmp/openclaw-bundled-anthropic/index.js",
-          rootDir: "/tmp/openclaw-bundled-anthropic",
+          source: "/tmp/operator-bundled-anthropic/index.js",
+          rootDir: "/tmp/operator-bundled-anthropic",
           origin: "bundled",
           bundledManifest: {
             id: "anthropic",
@@ -239,8 +239,8 @@ describe("normalizePluginsConfig", () => {
         },
         {
           idHint: "external-anthropic",
-          source: "/tmp/openclaw-global-anthropic/index.js",
-          rootDir: "/tmp/openclaw-global-anthropic",
+          source: "/tmp/operator-global-anthropic/index.js",
+          rootDir: "/tmp/operator-global-anthropic",
           origin: "global",
         },
       ],
@@ -248,7 +248,7 @@ describe("normalizePluginsConfig", () => {
     });
     const loadManifest = vi.spyOn(manifest, "loadPluginManifest").mockReturnValue({
       ok: true,
-      manifestPath: "/tmp/openclaw-global-anthropic/openclaw.plugin.json",
+      manifestPath: "/tmp/operator-global-anthropic/operator.plugin.json",
       manifest: {
         id: "external-anthropic",
         configSchema: {},

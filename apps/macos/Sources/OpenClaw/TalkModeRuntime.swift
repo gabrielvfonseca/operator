@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
-import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorKit
+import OperatorProtocol
 import OSLog
 import Speech
 
@@ -21,8 +21,8 @@ actor TalkModeRuntime {
         case fallback
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "talk.runtime")
-    private let ttsLogger = Logger(subsystem: "ai.openclaw", category: "talk.tts")
+    private let logger = Logger(subsystem: "ai.operator", category: "talk.runtime")
+    private let ttsLogger = Logger(subsystem: "ai.operator", category: "talk.tts")
     private static let defaultModelIdFallback = "eleven_v3"
     private static let defaultTalkProvider = "elevenlabs"
     private static let mlxTalkProvider = "mlx"
@@ -487,7 +487,7 @@ extension TalkModeRuntime {
                     guard evt.event == "chat", let payload = evt.payload else { continue }
                     guard let chatEvent = try? GatewayPayloadDecoding.decode(
                         payload,
-                        as: OpenClawChatEventPayload.self)
+                        as: OperatorChatEventPayload.self)
                     else {
                         continue
                     }
@@ -497,7 +497,7 @@ extension TalkModeRuntime {
                     {
                         continue
                     }
-                    if let text = OpenClawChatEventText.assistantText(from: chatEvent) {
+                    if let text = OperatorChatEventText.assistantText(from: chatEvent) {
                         latestText = text
                     }
                     switch chatEvent.state {
@@ -564,9 +564,9 @@ extension TalkModeRuntime {
         do {
             let history = try await GatewayConnection.shared.chatHistory(sessionKey: sessionKey)
             let messages = history.messages ?? []
-            let decoded: [OpenClawChatMessage] = messages.compactMap { item in
+            let decoded: [OperatorChatMessage] = messages.compactMap { item in
                 guard let data = try? JSONEncoder().encode(item) else { return nil }
-                return try? JSONDecoder().decode(OpenClawChatMessage.self, from: data)
+                return try? JSONDecoder().decode(OperatorChatMessage.self, from: data)
             }
             let assistant = decoded.last { message in
                 guard message.role == "assistant" else { return false }

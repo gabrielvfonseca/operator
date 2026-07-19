@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, vi } from "vitest";
-import { openOperatorStateDatabase } from "../../state/operator-state-db.js";
+import { openOperatorStateDatabase } from "../../state/openclaw-state-db.js";
 import { resolvePreferredOperatorTmpDir } from "../tmp-operator-dir.js";
 import type { DeliverFn, RecoveryLogger } from "./delivery-queue.js";
 

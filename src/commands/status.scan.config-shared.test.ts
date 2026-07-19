@@ -1,6 +1,6 @@
 // Status scan config tests cover scan command config loading and cold-start resolution.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { loadStatusScanCommandConfig } from "./status.scan.config-shared.js";
 
 const mocks = vi.hoisted(() => ({
@@ -15,7 +15,7 @@ describe("status.scan.config-shared", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.resolveConfigPath.mockReturnValue(
-      `/tmp/openclaw-status-scan-config-shared-missing-${process.pid}.json`,
+      `/tmp/operator-status-scan-config-shared-missing-${process.pid}.json`,
     );
   });
 
@@ -134,7 +134,7 @@ describe("status.scan.config-shared", () => {
     });
 
     expect(result.secretDiagnostics).toEqual([
-      "OPERATOR_GATEWAY_TOKEN conflicts with gateway.auth.token: Remove OPERATOR_GATEWAY_TOKEN from the shell, ~/.openclaw/.env, or launchctl env if gateway.auth.token is intended, or point gateway.auth.token at ${OPERATOR_GATEWAY_TOKEN} if the env var should be canonical.",
+      "OPERATOR_GATEWAY_TOKEN conflicts with gateway.auth.token: Remove OPERATOR_GATEWAY_TOKEN from the shell, ~/.operator/.env, or launchctl env if gateway.auth.token is intended, or point gateway.auth.token at ${OPERATOR_GATEWAY_TOKEN} if the env var should be canonical.",
     ]);
   });
 

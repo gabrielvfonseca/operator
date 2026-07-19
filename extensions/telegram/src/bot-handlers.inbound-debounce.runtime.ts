@@ -1,12 +1,12 @@
-// Telegram inbound debounce lanes and batch flushing.
-import type { Message } from "grammy/types";
-import { shouldDebounceTextInbound } from "openclaw/plugin-sdk/channel-inbound";
+import { shouldDebounceTextInbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   createInboundDebouncer,
   resolveInboundDebounceMs,
-} from "openclaw/plugin-sdk/channel-inbound-debounce";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound-debounce";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram inbound debounce lanes and batch flushing.
+import type { Message } from "grammy/types";
 import type { TelegramHandlerMessageRuntime } from "./bot-handlers.message.runtime.js";
 import type { TelegramMediaRef } from "./bot-message-context.js";
 import type { TelegramAmbientTranscriptWatermark } from "./bot-message-context.types.js";

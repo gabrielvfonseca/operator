@@ -43,7 +43,7 @@ describe("readBestEffortConfig", () => {
 
       await readConfigFileSnapshot({ observe: false });
 
-      const healthPath = `${home}/.openclaw/logs/config-health.json`;
+      const healthPath = `${home}/.operator/logs/config-health.json`;
       await expect(fs.stat(healthPath)).rejects.toMatchObject({ code: "ENOENT" });
 
       await readConfigFileSnapshot();
@@ -147,7 +147,7 @@ describe("readBestEffortConfig", () => {
 
         expect(config.gateway?.mode).toBe("local");
         expect(process.env[key]).toBeUndefined();
-        await expect(fs.stat(`${home}/.openclaw/logs/config-health.json`)).rejects.toMatchObject({
+        await expect(fs.stat(`${home}/.operator/logs/config-health.json`)).rejects.toMatchObject({
           code: "ENOENT",
         });
       });
@@ -157,7 +157,7 @@ describe("readBestEffortConfig", () => {
   it("preserves Windows case-insensitive env lookup in isolated reads", async () => {
     await withTempHome(async (home) => {
       const mixedCaseKey = "Operator_Config_Path";
-      const customConfigPath = `${home}/custom-openclaw.json`;
+      const customConfigPath = `${home}/custom-operator.json`;
       await withEnvAsync({ OPERATOR_CONFIG_PATH: undefined }, async () => {
         await withEnvAsync({ [mixedCaseKey]: customConfigPath }, async () => {
           const platformSpy = vi.spyOn(process, "platform", "get").mockReturnValue("win32");
@@ -195,8 +195,8 @@ describe("readBestEffortConfig", () => {
 
       expect(snapshot.sourceConfig).toEqual({ update: { channel: "beta" } });
       expect(await fs.readFile(configPath, "utf-8")).toBe(directEditRaw);
-      const entries = await fs.readdir(`${home}/.openclaw`);
-      expect(entries.some((entry) => entry.startsWith("openclaw.json.clobbered."))).toBe(false);
+      const entries = await fs.readdir(`${home}/.operator`);
+      expect(entries.some((entry) => entry.startsWith("operator.json.clobbered."))).toBe(false);
     });
   });
 

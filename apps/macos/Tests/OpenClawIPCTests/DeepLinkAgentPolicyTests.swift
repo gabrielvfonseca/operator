@@ -1,6 +1,6 @@
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct DeepLinkAgentPolicyTests {
     @Test func `validate message for handle rejects too long when unkeyed`() {

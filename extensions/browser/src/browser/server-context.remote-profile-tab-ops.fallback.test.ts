@@ -1,5 +1,5 @@
 // Browser tests cover server context.remote profile tab ops.fallback plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { withBrowserFetchPreconnect } from "../../test-fetch.js";
 import {
@@ -13,9 +13,9 @@ installRemoteProfileTestLifecycle(deps);
 
 describe("browser remote profile fallback and attachOnly behavior", () => {
   it("uses profile-level attachOnly when global attachOnly is false", async () => {
-    const state = deps.makeState("openclaw");
+    const state = deps.makeState("@gabrielvfonseca/operator");
     state.resolved.attachOnly = false;
-    state.resolved.profiles.openclaw = {
+    state.resolved.profiles.operator = {
       cdpPort: 18800,
       attachOnly: true,
       color: "#FF4500",
@@ -27,17 +27,17 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const launchMock = vi.mocked(deps.chromeModule.launchOperatorChrome);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
-    await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(
-      /attachOnly is enabled/i,
-    );
+    await expect(
+      ctx.forProfile("@gabrielvfonseca/operator").ensureBrowserAvailable(),
+    ).rejects.toThrow(/attachOnly is enabled/i);
     expect(reachableMock).toHaveBeenCalled();
     expect(launchMock).not.toHaveBeenCalled();
   });
 
   it("keeps attachOnly websocket failures off the loopback ownership error path", async () => {
-    const state = deps.makeState("openclaw");
+    const state = deps.makeState("@gabrielvfonseca/operator");
     state.resolved.attachOnly = false;
-    state.resolved.profiles.openclaw = {
+    state.resolved.profiles.operator = {
       cdpPort: 18800,
       attachOnly: true,
       color: "#FF4500",
@@ -52,9 +52,9 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const launchMock = vi.mocked(deps.chromeModule.launchOperatorChrome);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
-    await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(
-      /attachOnly is enabled and CDP websocket/i,
-    );
+    await expect(
+      ctx.forProfile("@gabrielvfonseca/operator").ensureBrowserAvailable(),
+    ).rejects.toThrow(/attachOnly is enabled and CDP websocket/i);
     expect(httpReachableMock).toHaveBeenCalled();
     expect(wsReachableMock).toHaveBeenCalled();
     expect(launchMock).not.toHaveBeenCalled();
@@ -317,10 +317,10 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const createTargetViaCdp = vi
       .spyOn(deps.cdpModule, "createTargetViaCdp")
       .mockResolvedValue({ targetId: "T_ATTACH" });
-    const state = deps.makeState("openclaw");
+    const state = deps.makeState("@gabrielvfonseca/operator");
     state.resolved.remoteCdpTimeoutMs = 2345;
     state.resolved.remoteCdpHandshakeTimeoutMs = 6789;
-    state.resolved.profiles.openclaw = {
+    state.resolved.profiles.operator = {
       cdpPort: 18800,
       attachOnly: true,
       color: "#FF4500",
@@ -339,7 +339,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
-    const opened = await ctx.forProfile("openclaw").openTab("https://example.com");
+    const opened = await ctx.forProfile("@gabrielvfonseca/operator").openTab("https://example.com");
 
     expect(opened.targetId).toBe("T_ATTACH");
     expect(createTargetViaCdp).toHaveBeenCalledWith({
@@ -358,7 +358,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     const createTargetViaCdp = vi
       .spyOn(deps.cdpModule, "createTargetViaCdp")
       .mockResolvedValue({ targetId: "T_LOCAL" });
-    const state = deps.makeState("openclaw");
+    const state = deps.makeState("@gabrielvfonseca/operator");
     const fetchMock = vi.fn(
       deps.createJsonListFetchMock([
         {
@@ -373,7 +373,7 @@ describe("browser remote profile fallback and attachOnly behavior", () => {
     global.fetch = withBrowserFetchPreconnect(fetchMock);
     const ctx = deps.createBrowserRouteContext({ getState: () => state });
 
-    await ctx.forProfile("openclaw").openTab("http://127.0.0.1:3000");
+    await ctx.forProfile("@gabrielvfonseca/operator").openTab("http://127.0.0.1:3000");
 
     expect(createTargetViaCdp).toHaveBeenCalledWith({
       cdpUrl: "http://127.0.0.1:18800",

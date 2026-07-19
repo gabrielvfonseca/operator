@@ -164,7 +164,7 @@ export function parseArgs(argv) {
     !RELEASE_BRANCH_PATTERN.test(args.targetRef) &&
     !RELEASE_TAG_PATTERN.test(args.targetRef)
   ) {
-    throw new Error("--target-ref must be a canonical OpenClaw release branch or tag");
+    throw new Error("--target-ref must be a canonical Operator release branch or tag");
   }
   return args;
 }
@@ -326,7 +326,7 @@ export function releaseEvidenceVerifierPath(worktreeRoot) {
       worktreeRoot,
       ".agents",
       "skills",
-      "release-openclaw-ci",
+      "release-operator-ci",
       "scripts",
       "release-ci-summary.mjs",
     ),
@@ -339,7 +339,7 @@ export function releaseEvidenceVerifierPath(worktreeRoot) {
 }
 
 function verifyReleaseEvidence(parentRunId, workflowSha) {
-  const verifierWorktree = mkdtempSync(join(tmpdir(), "openclaw-release-verifier-"));
+  const verifierWorktree = mkdtempSync(join(tmpdir(), "operator-release-verifier-"));
   try {
     run("git", ["worktree", "add", "--detach", verifierWorktree, workflowSha], {
       stdio: ["ignore", "ignore", "inherit"],

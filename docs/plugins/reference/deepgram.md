@@ -11,8 +11,8 @@ Adds media understanding provider support. Adds realtime transcription provider 
 
 ## Distribution
 
-- Package: `@operator/deepgram-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/deepgram-provider`
+- Install route: included in Operator
 
 ## Surface
 

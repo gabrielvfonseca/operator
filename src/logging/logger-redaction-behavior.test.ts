@@ -16,7 +16,7 @@ import { createDiagnosticLogRecordCapture } from "./test-helpers/diagnostic-log-
 const secret = "sk-testsecret1234567890abcd";
 const TRACE_ID = "4bf92f3577b34da6a3ce929d0e0e4736";
 const SPAN_ID = "00f067aa0ba902b7";
-const logPathTracker = createSuiteLogPathTracker("openclaw-log-redaction-");
+const logPathTracker = createSuiteLogPathTracker("operator-log-redaction-");
 
 beforeAll(async () => {
   await logPathTracker.setup();
@@ -137,8 +137,8 @@ describe("file log redaction", () => {
     const home = path.join(path.dirname(logPathTracker.nextPath()), "home");
 
     withEnv({ HOME: home }, () => {
-      expect(loggerTest.resolveActiveLogFile("~/custom-openclaw.log")).toBe(
-        path.join(home, "custom-openclaw.log"),
+      expect(loggerTest.resolveActiveLogFile("~/custom-operator.log")).toBe(
+        path.join(home, "custom-operator.log"),
       );
     });
   });

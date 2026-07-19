@@ -1,6 +1,6 @@
 // Resolves event-triggered work to the correct session key and target.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionScope } from "../config/types.base.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveAgentRoute } from "../routing/resolve-route.js";

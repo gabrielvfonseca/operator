@@ -1,18 +1,21 @@
 // Slack tests cover prepare plugin behavior.
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
-import type { App } from "@slack/bolt";
-import { expectChannelInboundContextContract as expectInboundContextContract } from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { expectChannelInboundContextContract as expectInboundContextContract } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   registerSessionBindingAdapter,
   unregisterSessionBindingAdapter,
   type SessionBindingAdapter,
   type SessionBindingRecord,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-import { upsertSessionEntry, type SessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolveThreadSessionKeys } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import {
+  upsertSessionEntry,
+  type SessionEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import type { App } from "@slack/bolt";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedSlackAccount } from "../../accounts.js";
 import {
@@ -68,7 +71,7 @@ vi.mock("openclaw/plugin-sdk/system-event-runtime", async (importOriginal) => {
 });
 
 describe("slack prepareSlackMessage inbound contract", () => {
-  const storeFixture = createSlackSessionStoreFixture("openclaw-slack-thread-");
+  const storeFixture = createSlackSessionStoreFixture("operator-slack-thread-");
 
   beforeAll(() => {
     storeFixture.setup();
@@ -4477,7 +4480,7 @@ describe("prepareSlackMessage sender prefix", () => {
       useAccessGroups: true,
       slashCommand: {
         enabled: false,
-        name: "openclaw",
+        name: "@gabrielvfonseca/operator",
         sessionPrefix: "slack:slash",
         ephemeral: true,
       },
@@ -4493,7 +4496,7 @@ describe("prepareSlackMessage sender prefix", () => {
 });
 
 describe("slack thread.requireExplicitMention", () => {
-  const storeFixture = createSlackSessionStoreFixture("openclaw-slack-explicit-mention-");
+  const storeFixture = createSlackSessionStoreFixture("operator-slack-explicit-mention-");
 
   beforeAll(() => {
     storeFixture.setup();

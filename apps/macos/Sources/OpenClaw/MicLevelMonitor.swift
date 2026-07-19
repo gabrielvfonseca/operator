@@ -1,10 +1,10 @@
 import AVFoundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 import SwiftUI
 
 actor MicLevelMonitor {
-    private let logger = Logger(subsystem: "ai.openclaw", category: "voicewake.meter")
+    private let logger = Logger(subsystem: "ai.operator", category: "voicewake.meter")
     private var engine: AVAudioEngine?
     private var update: (@Sendable (Double) -> Void)?
     private var running = false

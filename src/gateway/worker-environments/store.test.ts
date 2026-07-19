@@ -20,7 +20,7 @@ const HOST_KEY = ["ssh-ed25519", "AAAA"].join(" ");
 const SSH_ENDPOINT: WorkerEnvironmentSshEndpoint = {
   host: "worker.example.test",
   port: 22,
-  user: "openclaw",
+  user: "@gabrielvfonseca/operator",
   hostKey: HOST_KEY,
   keyRef: {
     source: "file",
@@ -42,7 +42,7 @@ describe("worker environment store", () => {
   let nowMs: number;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-env-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-env-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     nowMs = 1_000;
     store = createWorkerEnvironmentStore({ database, now: () => nowMs });
@@ -441,7 +441,7 @@ describe("worker environment store", () => {
       UPDATE worker_environments
       SET
         bootstrap_bundle_hash = NULL,
-        bootstrap_openclaw_version = NULL,
+        bootstrap_operator_version = NULL,
         bootstrap_protocol_features_json = NULL
       WHERE environment_id = 'worker-rebootstrap';
     `);

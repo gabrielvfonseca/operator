@@ -1,5 +1,5 @@
 // Telegram plugin module implements target writeback shared behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 type UnknownMock = Mock<(...args: unknown[]) => unknown>;
@@ -217,7 +217,7 @@ export function installMaybePersistResolvedTelegramTargetTests(params?: {
             },
           },
         },
-        writeOptions: { expectedConfigPath: "/tmp/openclaw.json" },
+        writeOptions: { expectedConfigPath: "/tmp/operator.json" },
       });
       loadCronStore.mockResolvedValue({
         version: 1,
@@ -241,7 +241,7 @@ export function installMaybePersistResolvedTelegramTargetTests(params?: {
       const [writtenConfig, writeOptions] = requireWriteConfigCall();
       expect(writtenConfig.channels?.telegram?.defaultTo).toBe("-100123");
       expect(writtenConfig.channels?.telegram?.accounts?.alerts?.defaultTo).toBe("-100123");
-      expect(writeOptions.expectedConfigPath).toBe("/tmp/openclaw.json");
+      expect(writeOptions.expectedConfigPath).toBe("/tmp/operator.json");
       expect(saveCronStore).toHaveBeenCalledTimes(1);
       const [cronPath, cronStore] = requireSaveCronStoreCall();
       expect(cronPath).toBe("/tmp/cron/jobs.json");

@@ -241,7 +241,7 @@ describe("buildGatewayInstallPlan", () => {
     vi.clearAllMocks();
   });
 
-  // Prevent tests from reading the developer's real ~/.openclaw/.env when
+  // Prevent tests from reading the developer's real ~/.operator/.env when
   // passing `env: {}` (which falls back to os.homedir for state-dir resolution).
   let isolatedHome: string;
   beforeEach(() => {
@@ -282,7 +282,12 @@ describe("buildGatewayInstallPlan", () => {
   it("adds the active openclaw command bin directory to the managed service PATH", async () => {
     mockNodeGatewayPlanFixture();
     const originalArgv = process.argv;
-    const openclawBinPath = path.join(isolatedHome, ".npm-global", "bin", "openclaw");
+    const openclawBinPath = path.join(
+      isolatedHome,
+      ".npm-global",
+      "bin",
+      "@gabrielvfonseca/operator",
+    );
     process.argv = ["node", openclawBinPath, "gateway", "install"];
 
     try {
@@ -353,7 +358,7 @@ describe("buildGatewayInstallPlan", () => {
       platform: "darwin",
     });
 
-    expect(plan.workingDirectory).toBe(path.join(isolatedHome, ".openclaw"));
+    expect(plan.workingDirectory).toBe(path.join(isolatedHome, ".operator"));
     expect(mocks.buildServiceEnvironment).toHaveBeenCalledOnce();
     expect(firstMockArg(mocks.buildServiceEnvironment, "buildServiceEnvironment").platform).toBe(
       "darwin",
@@ -377,7 +382,7 @@ describe("buildGatewayInstallPlan", () => {
   });
 
   it("passes OPERATOR_WRAPPER through program args and managed service env", async () => {
-    const wrapperPath = path.resolve("/usr/local/bin/openclaw-doppler");
+    const wrapperPath = path.resolve("/usr/local/bin/operator-doppler");
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         OPERATOR_PORT: "3000",
@@ -406,7 +411,7 @@ describe("buildGatewayInstallPlan", () => {
   });
 
   it("clears a Windows wrapper env that points at the generated gateway.cmd script", async () => {
-    const selfWrapperPath = path.join(isolatedHome, ".openclaw", "gateway.cmd");
+    const selfWrapperPath = path.join(isolatedHome, ".operator", "gateway.cmd");
     const warn = vi.fn();
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -810,8 +815,8 @@ describe("buildGatewayInstallPlan", () => {
     const warn = vi.fn();
     const plan = await buildGatewayInstallPlan({
       env: isolatedPlanEnv({
-        BASH_ENV: "/tmp/openclaw-test-bashenv",
-        XDG_CONFIG_HOME: "/tmp/openclaw-test-xdg-home",
+        BASH_ENV: "/tmp/operator-test-bashenv",
+        XDG_CONFIG_HOME: "/tmp/operator-test-xdg-home",
         XDG_CONFIG_DIRS: "/etc/xdg:/opt/xdg",
         GH_TOKEN: "gh-test-token",
         AWS_ACCESS_KEY_ID: "aws-access-key",
@@ -992,7 +997,7 @@ describe("buildGatewayInstallPlan", () => {
 
   it("does not inline config env SecretRef values already backed by state-dir dotenv", async () => {
     await writeStateDirDotEnv("DISCORD_BOT_TOKEN=discord-dotenv-token\n", {
-      stateDir: path.join(isolatedHome, ".openclaw"),
+      stateDir: path.join(isolatedHome, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -1156,7 +1161,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
     await writeStateDirDotEnv(
       "BRAVE_API_KEY=BSA-from-env\nOPENROUTER_API_KEY=or-key\nMY_KEY=from-dotenv\nHOME=/from-dotenv\n",
       {
-        stateDir: path.join(tmpDir, ".openclaw"),
+        stateDir: path.join(tmpDir, ".operator"),
       },
     );
     mockNodeGatewayPlanFixture({
@@ -1191,12 +1196,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("retains managed .env values for macOS LaunchAgent env files", async () => {
     await writeStateDirDotEnv("TAVILY_API_KEY=dotenv-tavily\nOPENROUTER_API_KEY=or-key\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1217,12 +1222,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("retains .env values for macOS LaunchAgent env SecretRefs", async () => {
     await writeStateDirDotEnv("MINIMAX_API_KEY=minimax-dotenv-key\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1253,7 +1258,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1296,7 +1301,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1366,12 +1371,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("retains .env values when config env has an unresolved self reference", async () => {
     await writeStateDirDotEnv("MINIMAX_API_KEY=minimax-dotenv-key\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1405,12 +1410,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("does not retain config env values for macOS LaunchAgent env files", async () => {
     await writeStateDirDotEnv("OPENROUTER_API_KEY=or-dotenv\nTAVILY_API_KEY=dotenv-tavily\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         OPERATOR_PORT: "3000",
       },
     });
@@ -1489,7 +1494,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
         BLOGWATCHER_HOME: "/Users/test/.blogwatcher",
         NODE_OPTIONS: "--require /tmp/evil.js",
         GOPATH: "/Users/test/.local/gopath",
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
       },
     });
 
@@ -1666,7 +1671,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("drops legacy inline env values when the key is now managed by .env", async () => {
     await writeStateDirDotEnv("TAVILY_API_KEY=fresh-dotenv-value\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -1724,7 +1729,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("does not embed auth-profile env refs when the key is already durable", async () => {
     await writeStateDirDotEnv("OPENAI_API_KEY=dotenv-openai\n", {
-      stateDir: path.join(tmpDir, ".openclaw"),
+      stateDir: path.join(tmpDir, ".operator"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {

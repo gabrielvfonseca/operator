@@ -2,7 +2,7 @@
 // not provider model output. Some history surfaces keep gateway-injected rows
 // visible, so use the narrower delivery-mirror predicate when visibility matters.
 export const OPERATOR_TRANSCRIPT_ARTIFACT_API = "operator-transcript" as const;
-export const OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER = "operator" as const;
+export const OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER = "@gabrielvfonseca/operator" as const;
 export const OPERATOR_DELIVERY_MIRROR_MODEL = "delivery-mirror" as const;
 const OPERATOR_GATEWAY_INJECTED_MODEL = "gateway-injected" as const;
 
@@ -34,7 +34,7 @@ export function isOperatorMessageToolMirrorAssistantMessage(message: unknown): b
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return false;
   }
-  const entry = message as { role?: unknown; operatorMessageToolMirror?: unknown };
+  const entry = message as { role?: unknown; openclawMessageToolMirror?: unknown };
   return entry.role === "assistant" && entry.operatorMessageToolMirror !== undefined;
 }
 
@@ -42,7 +42,7 @@ export function isOperatorInternalSourceReplyMirrorAssistantMessage(message: unk
   if (!isOperatorMessageToolMirrorAssistantMessage(message)) {
     return false;
   }
-  const marker = (message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror;
+  const marker = (message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror;
   return (
     Boolean(marker) &&
     typeof marker === "object" &&

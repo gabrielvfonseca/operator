@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// Discord Acp Plain Language Smoke script supports OpenClaw repository automation.
+// Discord Acp Plain Language Smoke script supports Operator repository automation.
 import { execFile } from "node:child_process";
 // Manual ACP thread smoke for plain-language routing.
 // Keep this script available for regression/debug validation. Do not delete.
@@ -68,7 +68,7 @@ const execFileAsync = promisify(execFile);
 const THREAD_BINDINGS_NAMESPACE = "thread-bindings";
 const THREAD_BINDINGS_MAX_ENTRIES = 10_000;
 
-type DriverMode = "token" | "webhook" | "openclaw";
+type DriverMode = "token" | "webhook" | "@gabrielvfonseca/operator";
 
 type Args = {
   channelId: string;
@@ -134,7 +134,7 @@ type FailureResult = {
 
 const DISCORD_API_BASE = "https://discord.com/api/v10";
 const DEFAULT_REQUEST_TIMEOUT_MS = 30_000;
-const DEFAULT_OPENCLAW_CLI_TIMEOUT_MS = 60_000;
+const DEFAULT_OPERATOR_CLI_TIMEOUT_MS = 60_000;
 const DISCORD_RESPONSE_BODY_MAX_BYTES = 1024 * 1024;
 const WEBHOOK_CLEANUP_TIMEOUT_MS = 10_000;
 const BOOLEAN_OPTIONS = new Set(["--help", "-h", "--json"]);
@@ -151,7 +151,7 @@ const VALUE_OPTIONS = new Set([
   "--timeout-ms",
   "--poll-ms",
   "--state-dir",
-  "--openclaw-bin",
+  "--operator-bin",
 ]);
 
 class CliArgumentError extends Error {
@@ -238,7 +238,7 @@ async function readDiscordResponseJson(params: {
 }
 
 function resolveStateDir(): string {
-  const override = process.env.OPENCLAW_STATE_DIR?.trim();
+  const override = process.env.OPERATOR_STATE_DIR?.trim();
   if (override) {
     if (override === "~") {
       return path.resolve(process.env.HOME || "");
@@ -248,8 +248,8 @@ function resolveStateDir(): string {
     }
     return path.resolve(override);
   }
-  const home = process.env.OPENCLAW_HOME?.trim() || process.env.HOME || "";
-  return path.join(home, ".openclaw");
+  const home = process.env.OPERATOR_HOME?.trim() || process.env.HOME || "";
+  return path.join(home, ".operator");
 }
 
 function resolveArg(flag: string, argv: string[]): string | undefined {
@@ -298,11 +298,15 @@ function validateCliArgs(argv: string[]): void {
 
 function parseDriverMode(raw: string): DriverMode {
   const normalized = raw.trim().toLowerCase();
-  if (normalized === "token" || normalized === "webhook" || normalized === "openclaw") {
+  if (
+    normalized === "token" ||
+    normalized === "webhook" ||
+    normalized === "@gabrielvfonseca/operator"
+  ) {
     return normalized;
   }
   throw new Error(
-    `Invalid --driver value ${JSON.stringify(raw)}; expected token, webhook, or openclaw.`,
+    `Invalid --driver value ${JSON.stringify(raw)}; expected token, webhook, or operator.`,
   );
 }
 
@@ -322,7 +326,7 @@ function usage(): string {
     "Usage: bun scripts/dev/discord-acp-plain-language-smoke.ts " +
     "--channel <discord-channel-id> [--token <driver-token> | --driver webhook --bot-token <bot-token> | --driver openclaw] [options]\n\n" +
     "Manual live smoke only (not CI). Sends a plain-language instruction in Discord and verifies:\n" +
-    "1) OpenClaw spawned an ACP thread binding\n" +
+    "1) Operator spawned an ACP thread binding\n" +
     "2) agent replied in that bound thread with the expected ACK token\n\n" +
     "Options:\n" +
     "  --channel <id>               Parent Discord channel id (required)\n" +
@@ -336,73 +340,73 @@ function usage(): string {
     "  --instruction <text>         Custom instruction template (optional)\n" +
     "  --timeout-ms <n>             Total timeout in ms (default: 240000)\n" +
     "  --poll-ms <n>                Poll interval in ms (default: 1500)\n" +
-    "  --state-dir <p>              Override OpenClaw state dir for plugin-state polling\n" +
-    "  --openclaw-bin <path>        OpenClaw CLI binary for driver=openclaw (default: openclaw)\n" +
+    "  --state-dir <p>              Override Operator state dir for plugin-state polling\n" +
+    "  --operator-bin <path>        Operator CLI binary for driver=openclaw (default: openclaw)\n" +
     "  --json                       Emit JSON output\n" +
     "\n" +
     "Environment fallbacks:\n" +
-    "  OPENCLAW_DISCORD_SMOKE_CHANNEL_ID\n" +
-    "  OPENCLAW_DISCORD_SMOKE_DRIVER\n" +
-    "  OPENCLAW_DISCORD_SMOKE_DRIVER_TOKEN\n" +
-    "  OPENCLAW_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX\n" +
-    "  OPENCLAW_DISCORD_SMOKE_BOT_TOKEN\n" +
-    "  OPENCLAW_DISCORD_SMOKE_BOT_TOKEN_PREFIX\n" +
-    "  OPENCLAW_DISCORD_SMOKE_AGENT\n" +
-    "  OPENCLAW_DISCORD_SMOKE_MENTION_USER_ID\n" +
-    "  OPENCLAW_DISCORD_SMOKE_TIMEOUT_MS\n" +
-    "  OPENCLAW_DISCORD_SMOKE_POLL_MS\n" +
-    "  OPENCLAW_STATE_DIR\n" +
-    "  OPENCLAW_DISCORD_SMOKE_OPENCLAW_BIN"
+    "  OPERATOR_DISCORD_SMOKE_CHANNEL_ID\n" +
+    "  OPERATOR_DISCORD_SMOKE_DRIVER\n" +
+    "  OPERATOR_DISCORD_SMOKE_DRIVER_TOKEN\n" +
+    "  OPERATOR_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX\n" +
+    "  OPERATOR_DISCORD_SMOKE_BOT_TOKEN\n" +
+    "  OPERATOR_DISCORD_SMOKE_BOT_TOKEN_PREFIX\n" +
+    "  OPERATOR_DISCORD_SMOKE_AGENT\n" +
+    "  OPERATOR_DISCORD_SMOKE_MENTION_USER_ID\n" +
+    "  OPERATOR_DISCORD_SMOKE_TIMEOUT_MS\n" +
+    "  OPERATOR_DISCORD_SMOKE_POLL_MS\n" +
+    "  OPERATOR_STATE_DIR\n" +
+    "  OPERATOR_DISCORD_SMOKE_OPERATOR_BIN"
   );
 }
 
 function parseArgs(argv = process.argv.slice(2)): Args {
   validateCliArgs(argv);
   const channelId =
-    resolveArg("--channel", argv) || process.env.OPENCLAW_DISCORD_SMOKE_CHANNEL_ID || "";
+    resolveArg("--channel", argv) || process.env.OPERATOR_DISCORD_SMOKE_CHANNEL_ID || "";
   const driverModeRaw =
-    resolveArg("--driver", argv) || process.env.OPENCLAW_DISCORD_SMOKE_DRIVER || "token";
+    resolveArg("--driver", argv) || process.env.OPERATOR_DISCORD_SMOKE_DRIVER || "token";
   const driverMode = parseDriverMode(driverModeRaw);
   const driverToken =
-    resolveArg("--token", argv) || process.env.OPENCLAW_DISCORD_SMOKE_DRIVER_TOKEN || "";
+    resolveArg("--token", argv) || process.env.OPERATOR_DISCORD_SMOKE_DRIVER_TOKEN || "";
   const driverTokenPrefix =
     resolveArg("--token-prefix", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX ||
+    process.env.OPERATOR_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX ||
     "Bot";
   const botToken =
     resolveArg("--bot-token", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_BOT_TOKEN ||
+    process.env.OPERATOR_DISCORD_SMOKE_BOT_TOKEN ||
     process.env.DISCORD_BOT_TOKEN ||
     "";
   const botTokenPrefix =
     resolveArg("--bot-token-prefix", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_BOT_TOKEN_PREFIX ||
+    process.env.OPERATOR_DISCORD_SMOKE_BOT_TOKEN_PREFIX ||
     "Bot";
   const targetAgent =
-    resolveArg("--agent", argv) || process.env.OPENCLAW_DISCORD_SMOKE_AGENT || "codex";
+    resolveArg("--agent", argv) || process.env.OPERATOR_DISCORD_SMOKE_AGENT || "codex";
   const mentionUserId =
     resolveArg("--mention", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_MENTION_USER_ID ||
+    process.env.OPERATOR_DISCORD_SMOKE_MENTION_USER_ID ||
     undefined;
   const instruction =
     resolveArg("--instruction", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_INSTRUCTION ||
+    process.env.OPERATOR_DISCORD_SMOKE_INSTRUCTION ||
     undefined;
   const timeoutMs = parseNumber(
-    resolveArg("--timeout-ms", argv) || process.env.OPENCLAW_DISCORD_SMOKE_TIMEOUT_MS,
+    resolveArg("--timeout-ms", argv) || process.env.OPERATOR_DISCORD_SMOKE_TIMEOUT_MS,
     240_000,
     "--timeout-ms",
   );
   const pollMs = parseNumber(
-    resolveArg("--poll-ms", argv) || process.env.OPENCLAW_DISCORD_SMOKE_POLL_MS,
+    resolveArg("--poll-ms", argv) || process.env.OPERATOR_DISCORD_SMOKE_POLL_MS,
     1_500,
     "--poll-ms",
   );
   const stateDir = path.resolve(resolveArg("--state-dir", argv) || resolveStateDir());
   const openclawBin =
-    resolveArg("--openclaw-bin", argv) ||
-    process.env.OPENCLAW_DISCORD_SMOKE_OPENCLAW_BIN ||
-    "openclaw";
+    resolveArg("--operator-bin", argv) ||
+    process.env.OPERATOR_DISCORD_SMOKE_OPERATOR_BIN ||
+    "@gabrielvfonseca/operator";
   const json = hasFlag("--json", argv);
 
   if (!channelId) {
@@ -438,10 +442,10 @@ async function openclawCliJson<T>(params: {
   args: string[];
   timeoutMs?: number;
 }): Promise<T> {
-  const result = await execFileAsync(params.openclawBin, params.args, {
+  const result = await execFileAsync(params.operatorBin, params.args, {
     maxBuffer: 8 * 1024 * 1024,
     env: process.env,
-    timeout: params.timeoutMs ?? DEFAULT_OPENCLAW_CLI_TIMEOUT_MS,
+    timeout: params.timeoutMs ?? DEFAULT_OPERATOR_CLI_TIMEOUT_MS,
     killSignal: "SIGKILL",
   });
   const stdout = (result.stdout || "").trim();
@@ -462,7 +466,7 @@ async function readMessagesWithOpenclaw(params: {
       messages?: DiscordMessage[];
     };
   }>({
-    openclawBin: params.openclawBin,
+    openclawBin: params.operatorBin,
     args: [
       "message",
       "read",
@@ -650,7 +654,7 @@ async function readThreadBindings(stateDir: string): Promise<ThreadBindingRecord
   const store = createPluginStateKeyedStore<ThreadBindingRecord>("discord", {
     namespace: THREAD_BINDINGS_NAMESPACE,
     maxEntries: THREAD_BINDINGS_MAX_ENTRIES,
-    env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+    env: { ...process.env, OPERATOR_STATE_DIR: stateDir },
   });
   const entries = await store.entries();
   return entries
@@ -720,9 +724,9 @@ async function loadParentRecentMessages(params: {
   readAuthHeader: string;
   timeoutMs?: number;
 }): Promise<DiscordMessage[]> {
-  if (params.args.driverMode === "openclaw") {
+  if (params.args.driverMode === "@gabrielvfonseca/operator") {
     return await readMessagesWithOpenclaw({
-      openclawBin: params.args.openclawBin,
+      openclawBin: params.args.operatorBin,
       target: params.args.channelId,
       limit: 20,
       timeoutMs: params.timeoutMs,
@@ -873,7 +877,7 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
         authHeader: botAuthHeader,
         timeoutMs: remainingTimeoutMs(deadline),
         body: {
-          name: `openclaw-acp-smoke-${smokeId.slice(-8)}`,
+          name: `operator-acp-smoke-${smokeId.slice(-8)}`,
         },
       });
       if (!webhook.id || !webhook.token) {
@@ -913,7 +917,7 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
           };
         };
       }>({
-        openclawBin: args.openclawBin,
+        openclawBin: args.operatorBin,
         args: [
           "message",
           "send",
@@ -997,9 +1001,9 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
     while (Date.now() < deadline && !ackMessage) {
       try {
         const threadMessages =
-          args.driverMode === "openclaw"
+          args.driverMode === "@gabrielvfonseca/operator"
             ? await readMessagesWithOpenclaw({
-                openclawBin: args.openclawBin,
+                openclawBin: args.operatorBin,
                 target: threadId,
                 limit: 50,
                 timeoutMs: remainingTimeoutMs(deadline),
@@ -1042,7 +1046,7 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
         ok: false,
         stage: "wait-ack",
         smokeId,
-        error: `Thread bound (${threadId}) but timed out waiting for ACK token "${ackToken}" from OpenClaw.`,
+        error: `Thread bound (${threadId}) but timed out waiting for ACK token "${ackToken}" from Operator.`,
         diagnostics: {
           bindingCandidates: [
             {

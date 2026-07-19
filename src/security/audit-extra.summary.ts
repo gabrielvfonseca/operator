@@ -1,4 +1,4 @@
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 // Summarizes extra security audit findings for user-facing output.
 import {
   resolveConfiguredToolPolicies,

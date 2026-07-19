@@ -29,7 +29,7 @@ afterEach(() => {
 });
 
 function createLifecycleDb() {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-gateway-boot-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-gateway-boot-"));
   const env = { OPERATOR_STATE_DIR: stateDir } as NodeJS.ProcessEnv;
   const { db } = openOperatorStateDatabase({ env });
   const kysely = getNodeSqliteKysely<GatewayBootLifecycleTestDatabase>(db);

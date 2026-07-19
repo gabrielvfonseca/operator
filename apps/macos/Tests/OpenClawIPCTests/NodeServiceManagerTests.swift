@@ -1,10 +1,10 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized) struct NodeServiceManagerTests {
     @Test func `builds node service commands with current CLI shape`() async throws {
-        try await TestIsolation.withUserDefaultsValues(["openclaw.gatewayProjectRootPath": nil]) {
+        try await TestIsolation.withUserDefaultsValues(["operator.gatewayProjectRootPath": nil]) {
             let tmp = try makeTempDirForTests()
             CommandResolver.setProjectRoot(tmp.path)
 
@@ -24,11 +24,11 @@ import Testing
 
     @Test func `reads node service ownership command directly from launchd`() throws {
         let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-node-\(UUID().uuidString).plist")
+            .appendingPathComponent("operator-node-\(UUID().uuidString).plist")
         defer { try? FileManager.default.removeItem(at: url) }
         let arguments = [
-            "/Users/Test/.openclaw/tools/node/bin/node",
-            "/Users/Test/.openclaw/lib/node_modules/openclaw/dist/index.js",
+            "/Users/Test/.operator/tools/node/bin/node",
+            "/Users/Test/.operator/lib/node_modules/operator/dist/index.js",
             "node",
             "run",
         ]

@@ -1,18 +1,18 @@
 /**
  * Canvas plugin config parsing, enablement, and schema metadata.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
   resolvePluginConfigObject,
-} from "openclaw/plugin-sdk/plugin-config-runtime";
-import { isTruthyEnvValue } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { isTruthyEnvValue } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   asBoolean as readBoolean,
   isRecord,
   readStringValue as readString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 /** Host-server configuration for Canvas and A2UI assets. */
 export type CanvasHostConfig = {

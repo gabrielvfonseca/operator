@@ -270,14 +270,14 @@ export const fa: TranslationMap = {
     genericSubtitle: "هنگام بارگذاری این پنل مشکلی پیش آمد.",
     staleTitle: "نسخه جدیدی در دسترس است",
     staleSubtitle:
-      "OpenClaw در پس‌زمینه به‌روزرسانی شد. برای دریافت جدیدترین پنل، دوباره بارگذاری کنید.",
+      "Operator در پس‌زمینه به‌روزرسانی شد. برای دریافت جدیدترین پنل، دوباره بارگذاری کنید.",
     retry: "تلاش دوباره",
   },
   nodes: {
     pairing: {
       button: "جفت‌سازی دستگاه همراه",
       adminRequired: "برای ایجاد کدهای راه‌اندازی، دسترسی مدیر لازم است.",
-      title: "موبایل OpenClaw",
+      title: "موبایل Operator",
       subtitle: "برای اتصال یک تلفن جدید، این کد QR را در برنامه موبایل اسکن کنید.",
       generating: "در حال ایجاد کد راه‌اندازی امن…",
       accessTitle: "دسترسی موبایل",
@@ -290,14 +290,14 @@ export const fa: TranslationMap = {
       transportLimitedHint:
         "این URL مربوط به Gateway از ws:// با متن ساده استفاده می‌کند. از wss:// یا Tailscale Serve استفاده کنید، سپس برای دسترسی کامل یک کد جدید ایجاد کنید.",
       failed: "امکان ایجاد کد راه‌اندازی وجود نداشت.",
-      qrAlt: "کد QR جفت‌سازی موبایل OpenClaw",
+      qrAlt: "کد QR جفت‌سازی موبایل Operator",
       qrUnavailable: "کد QR در دسترس نیست. به‌جای آن کد راه‌اندازی را کپی کنید.",
       copySetupCode: "کپی کد راه‌اندازی",
       newCode: "کد جدید",
       showSetupCode: "نمایش کد راه‌اندازی",
       pending: "درخواست‌های دستگاه در انتظار بررسی: {count}",
       review: "بازبینی",
-      waiting: "برنامه‌های رسمی موبایل OpenClaw پس از اسکن به‌صورت خودکار متصل می‌شوند.",
+      waiting: "برنامه‌های رسمی موبایل Operator پس از اسکن به‌صورت خودکار متصل می‌شوند.",
       help: "راهنمای جفت‌سازی",
       manageDevices: "مدیریت دستگاه‌ها",
     },
@@ -442,11 +442,11 @@ export const fa: TranslationMap = {
     ownerSession: "جلسه",
     ownerWorkboard: "Workboard",
     title: "Worktreeهای مدیریت‌شده",
-    subtitle: "checkoutهای ایزولهٔ مخزن که متعلق به OpenClaw هستند.",
+    subtitle: "checkoutهای ایزولهٔ مخزن که متعلق به Operator هستند.",
     cleanNow: "اکنون پاک‌سازی کن",
     cleanupTitle: "پاک‌سازی",
     cleanupSubtitle:
-      "OpenClaw برای آزاد کردن فضای دیسک، به‌طور دوره‌ای worktreeهای قدیمی را حذف می‌کند. میزان شدت اجرای پاک‌سازی را تنظیم کنید.",
+      "Operator برای آزاد کردن فضای دیسک، به‌طور دوره‌ای worktreeهای قدیمی را حذف می‌کند. میزان شدت اجرای پاک‌سازی را تنظیم کنید.",
     cleanupMaxCount: "حداکثر تعداد worktreeها",
     cleanupMaxCountHelp:
       "حداکثر تعداد worktreeهای مدیریت‌شده که در همه مخزن‌ها نگه داشته می‌شوند. ابتدا از worktreeهای قدیمی‌تر snapshot گرفته می‌شود و سپس حذف می‌شوند. برای غیرفعال کردن محدودیت تعداد، مقدار را روی 0 تنظیم کنید.",
@@ -1334,7 +1334,7 @@ export const fa: TranslationMap = {
     autoSaveConflict: "تنظیمات در جای دیگری تغییر کرده است",
     retry: "تلاش مجدد",
     applyBannerText:
-      "در openclaw.json ذخیره شد — برای اعمال تغییرات، Gateway را مجدداً راه‌اندازی کنید.",
+      "در operator.json ذخیره شد — برای اعمال تغییرات، Gateway را مجدداً راه‌اندازی کنید.",
     applyBannerAction: "راه‌اندازی مجدد و اعمال",
     rawDiscard: "نادیده گرفتن",
     rawDraftBlocksApply:
@@ -1389,7 +1389,7 @@ export const fa: TranslationMap = {
     },
   },
   approvalPage: {
-    brandName: "OpenClaw",
+    brandName: "Operator",
     eyebrow: "Operator approval",
     loadingTitle: "Loading approval",
     loadingDescription: "Checking the current approval state with the Gateway.",
@@ -1398,7 +1398,7 @@ export const fa: TranslationMap = {
       "This approval could not be found or this device is not authorized to review it.",
     connectionErrorTitle: "Connection interrupted",
     connectionErrorDescription:
-      "OpenClaw cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
+      "Operator cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
     retry: "Retry",
     execTitle: "Command approval",
     pending: "Waiting for your decision",
@@ -1720,7 +1720,7 @@ export const fa: TranslationMap = {
     skillWorkshop: "پیشنهادها را پیش از تبدیل‌شدن به مهارت‌های فعال، بررسی، اصلاح و اعمال کنید.",
     nodes: "دستگاه‌های جفت‌شده و فرمان‌ها.",
     chat: "چت Gateway برای مداخله‌های سریع.",
-    config: "ویرایش openclaw.json.",
+    config: "ویرایش operator.json.",
     profile: "آمار، زنجیره‌ها، و زندگی عامل شما در صخره.",
     communications: "کانال‌ها، پیام‌ها و تنظیمات صوتی.",
     appearance: "تنظیمات پوسته، UI و جادوگر راه‌اندازی.",
@@ -1767,12 +1767,12 @@ export const fa: TranslationMap = {
     confirmReplace:
       "پیش از جایگزینی، از فایل‌های موجود در مقصد در گزارش انتقال نسخه پشتیبان تهیه می‌شود.",
     confirmBackup:
-      "OpenClaw پیش از کپی‌کردن حافظه، یک نسخه پشتیبان تأییدشده قبل از واردسازی ایجاد می‌کند.",
+      "Operator پیش از کپی‌کردن حافظه، یک نسخه پشتیبان تأییدشده قبل از واردسازی ایجاد می‌کند.",
     confirmImport: "وارد کردن حافظه",
     disconnected: "برای وارد کردن حافظه به Gateway متصل شوید.",
     title: "وارد کردن حافظه دستیار",
     subtitle:
-      "پیش از کپی‌کردن در OpenClaw، حافظه یکپارچه Codex و حافظه خودکار Claude Code را بررسی کنید.",
+      "پیش از کپی‌کردن در Operator، حافظه یکپارچه Codex و حافظه خودکار Claude Code را بررسی کنید.",
     agent: "عامل مقصد",
     replaceExisting: "جایگزینی موارد واردشده موجود",
     replaceHint:
@@ -1862,7 +1862,7 @@ export const fa: TranslationMap = {
       notes: "ثبت یادداشت‌ها در Markdown، Obsidian، Notion یا Bear.",
     },
     noInstalledTitle: "هیچ افزونه اختیاری نصب نشده است",
-    noInstalledBody: "برای گسترش OpenClaw، یک افزونه ویژه را کشف کنید یا در ClawHub جستجو کنید.",
+    noInstalledBody: "برای گسترش Operator، یک افزونه ویژه را کشف کنید یا در ClawHub جستجو کنید.",
     noInstalledMatchTitle: "هیچ افزونه نصب‌شده‌ای مطابقت ندارد",
     noMatchBody: "جستجوی دیگری را امتحان کنید.",
     filterAll: "همه",
@@ -1908,7 +1908,7 @@ export const fa: TranslationMap = {
     detailPluginId: "شناسهٔ افزونه",
     offlineTitle: "Gateway آفلاین است",
     offlineBody: "برای مرور افزونه‌های نصب‌شده و پیشنهادی متصل شوید.",
-    optionalCapability: "قابلیت اختیاری OpenClaw.",
+    optionalCapability: "قابلیت اختیاری Operator.",
     enabled: "فعال",
     disabled: "غیرفعال",
     available: "در دسترس",
@@ -1940,7 +1940,7 @@ export const fa: TranslationMap = {
     disabledRestart: "{name} غیرفعال شد. برای اعمال تغییر، راه‌اندازی مجدد Gateway لازم است.",
   },
   aboutPage: {
-    productName: "OpenClaw",
+    productName: "Operator",
     tagline: "دستیار هوش مصنوعی شخصی شما که روی دستگاه‌های خودتان اجرا می‌شود.",
     waveHello: "برای Clawd دست تکان دهید",
     linksLabel: "انجمن و منابع",
@@ -1949,7 +1949,7 @@ export const fa: TranslationMap = {
     linkGitHub: "GitHub",
     linkDiscord: "Discord",
     linkChangelog: "تغییرات",
-    license: "© 2026 بنیاد OpenClaw — مجوز MIT.",
+    license: "© 2026 بنیاد Operator — مجوز MIT.",
     artifactTitle: "Control UI",
     artifactSubtitle: "هویتی که هنگام ساخت این آرتیفکت مرورگر در آن تعبیه شده است.",
     artifactDetails: "جزئیات ساخت Control UI",
@@ -2130,7 +2130,7 @@ export const fa: TranslationMap = {
     selfLearning: {
       pitchTitle: "فعال‌سازی خودآموزی",
       pitchBody:
-        "OpenClaw اصلاحات و اجراهای مهم تکمیل‌شده را بررسی می‌کند و سپس برای این برد، پیش‌نویس پیشنهادهای مهارت را می‌سازد. این فرایند توکن‌های پس‌زمینه بیشتری مصرف می‌کند و پیش‌نویس‌ها به‌صورت پیشنهادهای در انتظار ارائه می‌شوند.",
+        "Operator اصلاحات و اجراهای مهم تکمیل‌شده را بررسی می‌کند و سپس برای این برد، پیش‌نویس پیشنهادهای مهارت را می‌سازد. این فرایند توکن‌های پس‌زمینه بیشتری مصرف می‌کند و پیش‌نویس‌ها به‌صورت پیشنهادهای در انتظار ارائه می‌شوند.",
       enable: "فعال‌سازی خودآموزی",
       enabling: "در حال فعال‌سازی…",
       updateError: "تنظیمات خودآموزی به‌روزرسانی نشد.",
@@ -3316,7 +3316,7 @@ export const fa: TranslationMap = {
         stepDevUi:
           "اگر از pnpm ui:dev استفاده می کنید، UI توسعه را بر اساس checkout فعلی دوباره بسازید یا راه اندازی کنید.",
         stepRestart:
-          "پس از به روزرسانی OpenClaw، Gateway را دوباره راه اندازی کنید تا پروتکل فعلی را سرو کند.",
+          "پس از به روزرسانی Operator، Gateway را دوباره راه اندازی کنید تا پروتکل فعلی را سرو کند.",
       },
       network: {
         title: "اتصال برقرار نشد",
@@ -3339,7 +3339,7 @@ export const fa: TranslationMap = {
       remoteViewOnly: "این نشست روی یک گره جفت‌شده قرار دارد و فقط قابل مشاهده است.",
       unsupportedViewOnly: "این منبع نشست خارجی فقط قابل مشاهده است.",
       sessionMenu: "External session actions",
-      openInOpenClaw: "Open in OpenClaw",
+      openInOperator: "Open in Operator",
       openInTerminal: "Open in terminal",
       terminalUnavailable: "Terminal opening is unavailable for this session.",
     },
@@ -3389,7 +3389,7 @@ export const fa: TranslationMap = {
     followUpModeQueue: "در صف نگه‌داشتن تا پایان اجرا",
     followUpModeSteer: "هدایت به اجرای فعال",
     catalogOpenTarget: "Open Codex/Claude sessions in",
-    catalogOpenTargetViewer: "OpenClaw viewer",
+    catalogOpenTargetViewer: "Operator viewer",
     catalogOpenTargetTerminal: "Terminal",
     onboardingDisabled: "در طول راه‌اندازی غیرفعال است",
     gatewayStatus: "وضعیت Gateway: {status}",
@@ -3808,7 +3808,7 @@ export const fa: TranslationMap = {
       filters: "فیلترها",
       shownOf: "{shown} از {total}",
       emptyTitle: "هنوز وظیفه زمان‌بندی‌شده‌ای نیست",
-      emptyHint: "توضیح دهید OpenClaw چه کاری و چه زمانی انجام دهد — طبق زمان‌بندی اجرا می‌شود.",
+      emptyHint: "توضیح دهید Operator چه کاری و چه زمانی انجام دهد — طبق زمان‌بندی اجرا می‌شود.",
       noMatching: "هیچ وظیفه‌ای با فیلترهای فعلی مطابقت ندارد.",
       loadMore: "بارگیری بیشتر",
       loading: "در حال بارگذاری...",
@@ -3875,7 +3875,7 @@ export const fa: TranslationMap = {
     detail: {
       tabsLabel: "جزئیات خودکارسازی",
       newTitle: "وظیفهٔ زمان‌بندی‌شدهٔ جدید",
-      newSubtitle: "توضیح دهید OpenClaw چه کاری باید انجام دهد، سپس زمان اجرای آن را انتخاب کنید.",
+      newSubtitle: "توضیح دهید Operator چه کاری باید انجام دهد، سپس زمان اجرای آن را انتخاب کنید.",
       back: "همه خودکارسازی‌ها",
       settingsTab: "تنظیمات",
       historyTitle: "تاریخچهٔ اجرا",
@@ -3948,7 +3948,7 @@ export const fa: TranslationMap = {
       descriptionPlaceholder: "زمینه اختیاری برای این کار",
       agentPlaceholder: "main یا ops",
       agentHelp: "برای انتخاب یک عامل شناخته‌شده شروع به تایپ کنید، یا یک مورد سفارشی وارد کنید.",
-      promptPlaceholder: "توضیح دهید OpenClaw چه کاری باید انجام دهد...",
+      promptPlaceholder: "توضیح دهید Operator چه کاری باید انجام دهد...",
       repeat: "تکرار",
       repeatInterval: "بازه",
       repeatOnce: "یک‌بار",

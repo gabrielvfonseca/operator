@@ -17,12 +17,12 @@ describe("resolveSessionFilePath cross-root reroot", () => {
   it("re-roots foreign-root absolute paths when the file exists in the current sessions dir", () => {
     // Restored backups and moved state dirs persist absolute sessionFile
     // paths from the old root; migration must find the local copy.
-    const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reroot-")));
+    const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-reroot-")));
     tempDirs.push(root);
     const sessionsDir = path.join(root, "agents", "main", "sessions");
     fs.mkdirSync(sessionsDir, { recursive: true });
     fs.writeFileSync(path.join(sessionsDir, "sess-1.jsonl"), "{}\n", "utf8");
-    const foreign = "/nonexistent-old-root/.openclaw/agents/main/sessions/sess-1.jsonl";
+    const foreign = "/nonexistent-old-root/.operator/agents/main/sessions/sess-1.jsonl";
 
     const resolved = resolveSessionFilePath(
       "sess-1",
@@ -34,11 +34,11 @@ describe("resolveSessionFilePath cross-root reroot", () => {
   });
 
   it("keeps foreign-root absolute paths when no local copy exists", () => {
-    const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reroot-keep-")));
+    const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-reroot-keep-")));
     tempDirs.push(root);
     const sessionsDir = path.join(root, "agents", "main", "sessions");
     fs.mkdirSync(sessionsDir, { recursive: true });
-    const foreign = "/nonexistent-old-root/.openclaw/agents/main/sessions/sess-2.jsonl";
+    const foreign = "/nonexistent-old-root/.operator/agents/main/sessions/sess-2.jsonl";
 
     const resolved = resolveSessionFilePath(
       "sess-2",

@@ -1,7 +1,7 @@
 /** Tests BTW side-question execution, session context, auth, and harness routing. */
 
-import { expectDefined } from "@operator/normalization-core";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
 import {
@@ -954,7 +954,7 @@ describe("runBtwSideQuestion", () => {
       harnessAuthProvider: "openai",
       deferredRouteSupport: {
         requestTransportOverrides: "none",
-        runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
       },
     });
     expect(preparedRuntimeAuth?.plan?.modelRoute).toBeUndefined();
@@ -965,7 +965,7 @@ describe("runBtwSideQuestion", () => {
       expect.objectContaining({
         modelProvider: expect.objectContaining({
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
           preparedAuth: { source: "harness" },
         }),
       }),
@@ -1098,7 +1098,7 @@ describe("runBtwSideQuestion", () => {
         agents: {
           defaults: {
             models: {
-              "anthropic/claude-sonnet-4-6": { agentRuntime: { id: "openclaw" } },
+              "anthropic/claude-sonnet-4-6": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },
@@ -1814,7 +1814,7 @@ describe("runBtwSideQuestion", () => {
           agents: {
             defaults: {
               models: {
-                "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           },
@@ -1895,7 +1895,7 @@ describe("runBtwSideQuestion", () => {
           agents: {
             defaults: {
               models: {
-                "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           },

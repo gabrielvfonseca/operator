@@ -9,7 +9,7 @@ import type { SystemAgentOverview } from "./overview.js";
 function overview(overrides: Partial<SystemAgentOverview["tools"]> = {}): SystemAgentOverview {
   return {
     config: {
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       exists: false,
       valid: false,
       issues: [],
@@ -30,7 +30,7 @@ function overview(overrides: Partial<SystemAgentOverview["tools"]> = {}): System
       reachable: false,
     },
     references: {
-      docsUrl: "https://docs.openclaw.ai",
+      docsUrl: "https://docs.operator.ai",
       sourceUrl: "https://github.com/openclaw/openclaw",
     },
   };
@@ -65,7 +65,7 @@ describe("Operator assistant", () => {
           apiKeys: { openai: true, anthropic: false },
         }),
         config: {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           exists: true,
           valid: true,
           issues: [],
@@ -84,7 +84,7 @@ describe("Operator assistant", () => {
         defaultModel: "openai/gpt-5.5",
         references: {
           docsPath: "/tmp/openclaw/docs",
-          docsUrl: "https://docs.openclaw.ai",
+          docsUrl: "https://docs.operator.ai",
           sourcePath: "/tmp/openclaw",
           sourceUrl: "https://github.com/openclaw/openclaw",
         },

@@ -6,8 +6,8 @@ import {
   getMemoryCapabilityRegistration,
   listActiveMemoryPublicArtifacts,
   type MemoryPluginPublicArtifact,
-} from "openclaw/plugin-sdk/memory-host-core";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-host-core";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import type { OperatorConfig } from "../api.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import { appendMemoryWikiLog } from "./log.js";
@@ -246,8 +246,8 @@ async function writeBridgeSourcePage(params: {
           renderMarkdownFence(raw, contentLanguage),
           "",
           "## Notes",
-          "<!-- openclaw:human:start -->",
-          "<!-- openclaw:human:end -->",
+          "<!-- operator:human:start -->",
+          "<!-- operator:human:end -->",
           "",
         ].join("\n"),
       });

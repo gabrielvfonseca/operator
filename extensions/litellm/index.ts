@@ -1,15 +1,15 @@
 // Litellm plugin entrypoint registers its Operator integration.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   definePluginEntry,
   type OperatorPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   createProviderApiKeyAuthMethod,
   normalizeOptionalSecretInput,
-} from "openclaw/plugin-sdk/provider-auth";
-import { buildSingleProviderApiKeyCatalog } from "openclaw/plugin-sdk/provider-catalog-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { buildSingleProviderApiKeyCatalog } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import { buildLitellmImageGenerationProvider } from "./image-generation-provider.js";
 import { applyLitellmConfig, LITELLM_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildLitellmProvider } from "./provider-catalog.js";

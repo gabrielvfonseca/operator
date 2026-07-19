@@ -2,7 +2,7 @@
 import {
   normalizeOptionalString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.js";
 import { probeGateway } from "../../gateway/probe.js";
 import {

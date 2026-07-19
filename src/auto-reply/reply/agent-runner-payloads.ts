@@ -2,7 +2,7 @@
 import {
   hasOutboundReplyContent,
   resolveSendableOutboundReplyParts,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { sanitizeUserFacingText } from "../../agents/embedded-agent-helpers/sanitize-user-facing-text.js";
 import type { MessagingToolSend } from "../../agents/embedded-agent-messaging.types.js";
 import type { ReplyToMode } from "../../config/types.js";

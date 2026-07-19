@@ -1,9 +1,9 @@
 import {
   buildChannelGroupsScopeTree,
   resolveScopeKeyCaseInsensitive,
-} from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 // Qqbot tests cover shared group tool policy behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { qqbotPlugin } from "./channel.js";
 import { resolveQQBotGroupToolPolicy } from "./group-policy.js";

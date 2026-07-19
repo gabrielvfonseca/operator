@@ -3,7 +3,7 @@
  */
 import { randomUUID } from "node:crypto";
 import path from "node:path";
-import { resolveTimestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+import { resolveTimestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { CURRENT_SESSION_VERSION } from "../../config/sessions/version.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { CompactionEntry, SessionEntry, SessionHeader } from "../sessions/index.js";

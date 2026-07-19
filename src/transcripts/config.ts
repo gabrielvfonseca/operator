@@ -1,5 +1,5 @@
 // Resolves transcript source configuration from Operator config.
-import { normalizeOptionalString as readString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString as readString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /**
  * Configuration normalization for transcript capture/import.

@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import android.content.Context
 import androidx.room.Dao

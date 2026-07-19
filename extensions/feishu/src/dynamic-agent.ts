@@ -3,8 +3,11 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolveChannelConfigWrites } from "openclaw/plugin-sdk/channel-config-writes";
-import { normalizeAccountId, resolveAgentRoute } from "openclaw/plugin-sdk/routing";
+import { resolveChannelConfigWrites } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-writes";
+import {
+  normalizeAccountId,
+  resolveAgentRoute,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import type { OperatorConfig, PluginRuntime } from "../runtime-api.js";
 import { resolveFeishuAccount } from "./accounts.js";
 import type { DynamicAgentCreationConfig } from "./types.js";
@@ -154,9 +157,9 @@ export async function maybeCreateDynamicAgent(params: {
 
         if (!agentExists) {
           const workspaceTemplate =
-            dynamicCfg.workspaceTemplate ?? "~/.openclaw/workspace-{agentId}";
+            dynamicCfg.workspaceTemplate ?? "~/.operator/workspace-{agentId}";
           const agentDirTemplate =
-            dynamicCfg.agentDirTemplate ?? "~/.openclaw/agents/{agentId}/agent";
+            dynamicCfg.agentDirTemplate ?? "~/.operator/agents/{agentId}/agent";
           const workspace = resolveUserPath(
             workspaceTemplate.replace("{userId}", senderOpenId).replace("{agentId}", agentId),
           );

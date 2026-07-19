@@ -3,7 +3,7 @@ import type {
   AcpRuntime,
   AcpRuntimeHandle,
   AcpRuntimeSessionMode,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 
 /** Cached runtime handle plus the configuration signature that made it reusable. */
 export type CachedRuntimeState = {

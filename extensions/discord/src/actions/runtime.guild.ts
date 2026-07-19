@@ -1,6 +1,6 @@
+import type { AgentToolResult } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 // Discord plugin module implements runtime.guild behavior.
 import { ChannelType, PermissionFlagsBits } from "discord-api-types/v10";
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
 import { resolveDefaultDiscordAccountId } from "../accounts.js";
 import { getPresence } from "../monitor/presence-cache.js";
 import {

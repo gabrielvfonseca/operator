@@ -9,7 +9,7 @@ import { hasOperatorAdminAccess } from "../../app/operator-access.ts";
 import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
 import { t } from "../../i18n/index.ts";
 import { isGatewayMethodAdvertised } from "../../lib/gateway-methods.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import {
   buildModelProviderCards,
@@ -82,7 +82,7 @@ function mergeProbeResults(cardId: string, results: ModelsProbeResult[]): Models
   };
 }
 
-export class ModelProvidersPage extends OpenClawLightDomElement {
+export class ModelProvidersPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -593,4 +593,4 @@ export class ModelProvidersPage extends OpenClawLightDomElement {
   }
 }
 
-customElements.define("openclaw-model-providers-page", ModelProvidersPage);
+customElements.define("operator-model-providers-page", ModelProvidersPage);

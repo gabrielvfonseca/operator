@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString

@@ -1,7 +1,7 @@
-# OpenClaw App SDK Completeness
+# Operator App SDK Completeness
 
 Use this rubric when assigning category Completeness scores for the
-`openclaw-app-sdk` surface.
+`operator-app-sdk` surface.
 
 ## Surface-Specific Scoring Questions
 

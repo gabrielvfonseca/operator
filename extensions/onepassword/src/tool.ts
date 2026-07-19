@@ -1,9 +1,12 @@
-import type { AnyAgentTool, OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
-import { jsonResult } from "openclaw/plugin-sdk/tool-results";
+import type {
+  AnyAgentTool,
+  OperatorPluginToolContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import type {
   PluginHookToolResultPersistEvent,
   PluginHookToolResultPersistResult,
-} from "openclaw/plugin-sdk/types";
+} from "@gabrielvfonseca/operator/plugin-sdk/types";
 import { parseToolInput, type OnePasswordBroker } from "./broker.js";
 import { OnePasswordError } from "./errors.js";
 import { AUTHORIZATION_NONCE_PARAM } from "./pending-authorization.js";

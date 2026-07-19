@@ -1,9 +1,9 @@
 // Discord tests cover channel plugin behavior.
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { createStartAccountContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { ChannelType } from "discord-api-types/v10";
-import { createStartAccountContext } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { PluginRuntime } from "openclaw/plugin-sdk/core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedDiscordAccount } from "./accounts.js";
 import type { OperatorConfig } from "./runtime-api.js";

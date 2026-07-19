@@ -3,9 +3,9 @@ import {
   parseModelRef,
   resolveAgentEffectiveModelPrimary,
   resolveDefaultModelForAgent,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   ACTIVE_MEMORY_CLOSE_TAG,
   ACTIVE_MEMORY_OPEN_TAG,

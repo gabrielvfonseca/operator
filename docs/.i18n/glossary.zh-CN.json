@@ -1,7 +1,7 @@
 [
   {
-    "source": "OpenClaw",
-    "target": "OpenClaw"
+    "source": "Operator",
+    "target": "Operator"
   },
   {
     "source": "macOS platform notes",
@@ -1216,12 +1216,12 @@
     "target": "Agent runtime architecture"
   },
   {
-    "source": "OpenClaw agent runtime workflow",
-    "target": "OpenClaw agent runtime workflow"
+    "source": "Operator agent runtime workflow",
+    "target": "Operator agent runtime workflow"
   },
   {
-    "source": "OpenClaw agent runtime architecture",
-    "target": "OpenClaw agent runtime architecture"
+    "source": "Operator agent runtime architecture",
+    "target": "Operator agent runtime architecture"
   },
   {
     "source": "Install and Configure Plugins",
@@ -1476,20 +1476,20 @@
     "target": "待处理的设备配对请求"
   },
   {
-    "source": "openclaw devices list",
-    "target": "openclaw devices list"
+    "source": "operator devices list",
+    "target": "operator devices list"
   },
   {
-    "source": "openclaw devices approve",
-    "target": "openclaw devices approve"
+    "source": "operator devices approve",
+    "target": "operator devices approve"
   },
   {
-    "source": "openclaw nodes pending",
-    "target": "openclaw nodes pending"
+    "source": "operator nodes pending",
+    "target": "operator nodes pending"
   },
   {
-    "source": "openclaw nodes approve",
-    "target": "openclaw nodes approve"
+    "source": "operator nodes approve",
+    "target": "operator nodes approve"
   },
   {
     "source": "Cloud workers plan",

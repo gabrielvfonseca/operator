@@ -79,7 +79,7 @@ async function withModeExecProviderFixture(
   label: string,
   run: (fixture: ModeExecProviderFixture) => Promise<void>,
 ) {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), `openclaw-tui-mode-${label}-`));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), `operator-tui-mode-${label}-`));
   const tokenMarker = path.join(tempDir, "token-provider-ran");
   const passwordMarker = path.join(tempDir, "password-provider-ran");
   const tokenExecProgram = [
@@ -139,7 +139,7 @@ describe("resolveGatewayConnection", () => {
     );
     resolveConfigPath.mockImplementation(
       (env: NodeJS.ProcessEnv, stateDir: string) =>
-        env.OPERATOR_CONFIG_PATH ?? `${stateDir}/openclaw.json`,
+        env.OPERATOR_CONFIG_PATH ?? `${stateDir}/operator.json`,
     );
     delete process.env.OPERATOR_GATEWAY_URL;
     delete process.env.OPERATOR_GATEWAY_PORT;
@@ -490,7 +490,7 @@ describe("resolveGatewayConnection", () => {
   it.runIf(process.platform !== "win32")(
     "resolves file-backed SecretRef token for local mode",
     async () => {
-      const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-tui-file-secret-"));
+      const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-tui-file-secret-"));
       const secretFile = path.join(tempDir, "secrets.json");
       await fs.writeFile(secretFile, JSON.stringify({ gatewayToken: "file-secret-token" }), "utf8");
       await fs.chmod(secretFile, 0o600);
@@ -685,7 +685,7 @@ describe("GatewayChatClient", () => {
       expect(client.connection.allowInsecureLocalOperatorUi).toBe(true);
       expect(constructedOptions).toHaveLength(1);
       expect(constructedOptions[0]).toMatchObject({
-        clientName: "openclaw-tui",
+        clientName: "operator-tui",
         caps: ["task-suggestions", "tool-events"],
         mode: "ui",
         preauthHandshakeTimeoutMs: 30_000,

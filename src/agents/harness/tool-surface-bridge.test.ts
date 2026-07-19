@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { runWithAgentRingZeroTools } from "../agent-tools.ring-zero-context.js";
 import { createStubTool } from "../test-helpers/agent-tool-stubs.js";
 import {
@@ -26,7 +26,7 @@ function createRuntime(config: OperatorConfig) {
 describe("createAgentHarnessToolSurfaceRuntime", () => {
   it("suppresses catalog controls for a host-scoped ring-zero run", () => {
     const openclaw = {
-      ...createStubTool("openclaw"),
+      ...createStubTool("@gabrielvfonseca/operator"),
       catalogMode: "direct-only" as const,
     };
 
@@ -35,14 +35,14 @@ describe("createAgentHarnessToolSurfaceRuntime", () => {
         config: { tools: { toolSearch: true } },
         executeTool: async () => ({ content: [], details: {} }),
         modelToolsEnabled: true,
-        runtimeToolAllowlist: ["openclaw"],
-        toolsAllow: ["openclaw"],
+        runtimeToolAllowlist: ["@gabrielvfonseca/operator"],
+        toolsAllow: ["@gabrielvfonseca/operator"],
       });
 
       expect(runtime.codeModeControlsEnabled).toBe(false);
       expect(runtime.toolSearchControlsEnabled).toBe(false);
       expect(runtime.includeToolSearchControls).toBe(false);
-      expect(runtime.runtimeToolAllowlist).toEqual(["openclaw"]);
+      expect(runtime.runtimeToolAllowlist).toEqual(["@gabrielvfonseca/operator"]);
       expect(runtime.compactTools([openclaw]).tools).toEqual([openclaw]);
       runtime.cleanup();
     });

@@ -108,7 +108,7 @@ function buildSnapshot(params: {
   config: OperatorConfig;
 }): ConfigFileSnapshot {
   return {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     exists: true,
     raw: JSON.stringify(params.resolved),
     parsed: params.resolved,
@@ -164,7 +164,7 @@ function createPluginManifestRecord(
     channels: [],
     cliBackends: [],
     hooks: [],
-    manifestPath: `/tmp/${overrides.id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/${overrides.id}/operator.plugin.json`,
     origin: "bundled",
     providers: [],
     rootDir: `/tmp/${overrides.id}`,
@@ -281,7 +281,7 @@ function setExternalFeishuSchema() {
       diagnostics: [],
       plugins: [
         createPluginManifestRecord({
-          id: "openclaw-lark",
+          id: "operator-lark",
           origin: "global",
           channels: ["feishu"],
           channelConfigs: {
@@ -312,7 +312,7 @@ function makeInvalidSnapshot(params: {
   path?: string;
 }): ConfigFileSnapshot {
   return {
-    path: params.path ?? "/tmp/custom-openclaw.json",
+    path: params.path ?? "/tmp/custom-operator.json",
     exists: true,
     raw: "{}",
     parsed: {},
@@ -745,8 +745,8 @@ describe("config cli", () => {
         runConfigCommand([
           "config",
           "set",
-          'plugins.installs["openclaw-web-search"].spec',
-          '"@ollama/openclaw-web-search@0.2.2"',
+          'plugins.installs["operator-web-search"].spec',
+          '"@ollama/operator-web-search@0.2.2"',
           "--strict-json",
           "--dry-run",
         ]),
@@ -1087,7 +1087,7 @@ describe("config cli", () => {
 
     it("prints warnings while still reporting a valid config", async () => {
       setSnapshotOnce({
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         exists: true,
         raw: "{}",
         parsed: {},
@@ -1174,7 +1174,7 @@ describe("config cli", () => {
 
       const payload = await runValidateJsonAndGetPayload();
       expect(payload.valid).toBe(false);
-      expect(payload.path).toBe("/tmp/custom-openclaw.json");
+      expect(payload.path).toBe("/tmp/custom-operator.json");
       expect(payload.issues).toEqual([{ path: "gateway.bind", message: "Invalid enum value" }]);
       expect(mockError).not.toHaveBeenCalled();
     });
@@ -1195,7 +1195,7 @@ describe("config cli", () => {
 
       const payload = await runValidateJsonAndGetPayload();
       expect(payload.valid).toBe(false);
-      expect(payload.path).toBe("/tmp/custom-openclaw.json");
+      expect(payload.path).toBe("/tmp/custom-operator.json");
       expect(payload.issues).toEqual([
         {
           path: "update.channel",
@@ -1208,7 +1208,7 @@ describe("config cli", () => {
 
     it("prints file-not-found and exits 1 when config file is missing", async () => {
       setSnapshotOnce({
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         exists: false,
         raw: null,
         parsed: {},
@@ -1658,7 +1658,7 @@ describe("config cli", () => {
         },
       };
       setSnapshot(resolved, resolved);
-      const pathname = writeTempJson5File("openclaw-config-plugin-channel-schema", {
+      const pathname = writeTempJson5File("operator-config-plugin-channel-schema", {
         channels: {
           feishu: {
             appId: "app-id",
@@ -1872,7 +1872,7 @@ describe("config cli", () => {
     it("rejects --allow-exec without --dry-run", async () => {
       const nonexistentBatchPath = path.join(
         os.tmpdir(),
-        `openclaw-config-batch-nonexistent-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+        `operator-config-batch-nonexistent-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
       );
       await expect(
         runConfigCommand(["config", "set", "--batch-file", nonexistentBatchPath, "--allow-exec"]),
@@ -2023,7 +2023,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-batch-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+        `operator-config-batch-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
       );
       fs.writeFileSync(pathname, '[{"path":"gateway.auth.mode","value":"token"}]', "utf8");
       try {
@@ -2058,7 +2058,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-memory-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+        `operator-config-memory-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
       );
       fs.writeFileSync(
         pathname,
@@ -2091,7 +2091,7 @@ describe("config cli", () => {
     it("rejects malformed batch-file payloads", async () => {
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-batch-invalid-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+        `operator-config-batch-invalid-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
       );
       fs.writeFileSync(pathname, '{"path":"gateway.auth.mode","value":"token"}', "utf8");
       try {
@@ -2124,7 +2124,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
+        `operator-config-patch-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
       );
       fs.writeFileSync(
         pathname,
@@ -2195,7 +2195,7 @@ describe("config cli", () => {
       } as unknown as OperatorConfig;
       setSnapshot(resolved, resolved);
 
-      const pathname = writeTempJson5File("openclaw-config-patch-empty-object", {
+      const pathname = writeTempJson5File("operator-config-patch-empty-object", {
         agents: {
           defaults: {
             models: {
@@ -2230,7 +2230,7 @@ describe("config cli", () => {
       } as unknown as OperatorConfig;
       setSnapshot(resolved, resolved);
 
-      const pathname = writeTempJson5File("openclaw-config-patch-empty-merge", {
+      const pathname = writeTempJson5File("operator-config-patch-empty-merge", {
         channels: {
           slack: {},
         },
@@ -2258,7 +2258,7 @@ describe("config cli", () => {
       } as unknown as OperatorConfig;
       setSnapshot(resolved, resolved);
 
-      const pathname = writeTempJson5File("openclaw-config-patch-numeric-object-key", {
+      const pathname = writeTempJson5File("operator-config-patch-numeric-object-key", {
         channels: {
           discord: {
             guilds: {
@@ -2297,7 +2297,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-dry-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
+        `operator-config-patch-dry-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
       );
       fs.writeFileSync(
         pathname,
@@ -2325,7 +2325,7 @@ describe("config cli", () => {
 
     it("dry-runs pluginIntegration provider patches against manifest integration metadata", async () => {
       const pluginId = "secret-provider-proof";
-      const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-plugin-provider-"));
+      const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-config-plugin-provider-"));
       try {
         writeSecurePluginEntrypoint(path.join(rootDir, "index.js"), "export default {};\n");
         writeSecurePluginEntrypoint(path.join(rootDir, "resolve.mjs"), "process.stdin.resume();\n");
@@ -2344,7 +2344,7 @@ describe("config cli", () => {
                 origin: "bundled",
                 rootDir,
                 source: path.join(rootDir, "index.js"),
-                manifestPath: path.join(rootDir, "openclaw.plugin.json"),
+                manifestPath: path.join(rootDir, "operator.plugin.json"),
                 secretProviderIntegrations: {
                   vault: {
                     source: "exec",
@@ -2358,7 +2358,7 @@ describe("config cli", () => {
         );
 
         setSnapshot(resolved, resolved);
-        const validPatch = writeTempJson5File("openclaw-config-plugin-provider-valid", {
+        const validPatch = writeTempJson5File("operator-config-plugin-provider-valid", {
           secrets: {
             providers: {
               team: {
@@ -2384,7 +2384,7 @@ describe("config cli", () => {
         expect(mockWriteConfigFile).not.toHaveBeenCalled();
 
         setSnapshot(resolved, resolved);
-        const invalidPatch = writeTempJson5File("openclaw-config-plugin-provider-invalid", {
+        const invalidPatch = writeTempJson5File("operator-config-plugin-provider-invalid", {
           secrets: {
             providers: {
               team: {
@@ -2446,7 +2446,7 @@ describe("config cli", () => {
       } as unknown as OperatorConfig;
       setSnapshot(resolved, resolved);
 
-      const patch = writeTempJson5File("openclaw-config-plugin-disable", {
+      const patch = writeTempJson5File("operator-config-plugin-disable", {
         plugins: {
           entries: {
             [pluginId]: { enabled: false },
@@ -2479,7 +2479,7 @@ describe("config cli", () => {
       } as unknown as OperatorConfig;
       setSnapshot(resolved, resolved);
 
-      const patch = writeTempJson5File("openclaw-config-plugin-provider-ref", {
+      const patch = writeTempJson5File("operator-config-plugin-provider-ref", {
         gateway: {
           auth: {
             token: { source: "exec", provider: "team", id: "gateway/token" },
@@ -2514,7 +2514,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-ref-schema-${Date.now()}-${Math.random()
+        `operator-config-patch-ref-schema-${Date.now()}-${Math.random()
           .toString(16)
           .slice(2)}.json5`,
       );
@@ -2560,7 +2560,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-nested-ref-${Date.now()}-${Math.random()
+        `operator-config-patch-nested-ref-${Date.now()}-${Math.random()
           .toString(16)
           .slice(2)}.json5`,
       );
@@ -2628,7 +2628,7 @@ describe("config cli", () => {
 
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-replace-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
+        `operator-config-patch-replace-${Date.now()}-${Math.random().toString(16).slice(2)}.json5`,
       );
       fs.writeFileSync(
         pathname,
@@ -2679,7 +2679,7 @@ describe("config cli", () => {
     it("rejects unused config patch replace paths", async () => {
       const pathname = path.join(
         os.tmpdir(),
-        `openclaw-config-patch-unused-replace-${Date.now()}-${Math.random()
+        `operator-config-patch-unused-replace-${Date.now()}-${Math.random()
           .toString(16)
           .slice(2)}.json5`,
       );
@@ -3295,7 +3295,7 @@ describe("config cli", () => {
       await runConfigCommand(["config", "unset", "tools.alsoAllow", "--dry-run"]);
 
       expect(mockWriteConfigFile).not.toHaveBeenCalled();
-      expectLogIncludes("Dry run successful: 1 update(s) validated against /tmp/openclaw.json.");
+      expectLogIncludes("Dry run successful: 1 update(s) validated against /tmp/operator.json.");
       expect(mockReadConfigFileSnapshot).toHaveBeenCalledTimes(2);
     });
 
@@ -3490,7 +3490,7 @@ describe("config cli", () => {
         provider: "default",
         id: "WEB_SEARCH_API_KEY",
       });
-      expectLogIncludes("Dry run successful: 1 update(s) validated against /tmp/openclaw.json.");
+      expectLogIncludes("Dry run successful: 1 update(s) validated against /tmp/operator.json.");
     });
 
     it("rejects config unset --json without --dry-run", async () => {
@@ -3686,7 +3686,7 @@ describe("config cli", () => {
       const resolved: OperatorConfig = {
         plugins: {
           load: {
-            paths: ["/tmp/openclaw-plugins-a"],
+            paths: ["/tmp/operator-plugins-a"],
           },
           entries: {
             canvas: { enabled: true },
@@ -3699,7 +3699,7 @@ describe("config cli", () => {
         "config",
         "set",
         "plugins",
-        '{"load":{"paths":["/tmp/openclaw-plugins-b"]},"entries":{"canvas":{"enabled":true}}}',
+        '{"load":{"paths":["/tmp/operator-plugins-b"]},"entries":{"canvas":{"enabled":true}}}',
         "--strict-json",
         "--replace",
       ]);
@@ -3733,7 +3733,7 @@ describe("config cli", () => {
       const resolved: OperatorConfig = {
         plugins: {
           load: {
-            paths: ["/tmp/openclaw-plugins-a"],
+            paths: ["/tmp/operator-plugins-a"],
           },
           entries: {
             canvas: { enabled: true },
@@ -3804,19 +3804,19 @@ describe("config cli", () => {
 
       await runConfigCommand(["config", "file"]);
 
-      expect(mockLog).toHaveBeenCalledWith("/tmp/openclaw.json");
+      expect(mockLog).toHaveBeenCalledWith("/tmp/operator.json");
       expect(mockWriteConfigFile).not.toHaveBeenCalled();
     });
 
     it("handles config file path with home directory", async () => {
       const resolved: OperatorConfig = { gateway: { port: 18789 } };
       const snapshot = buildSnapshot({ resolved, config: resolved });
-      snapshot.path = "/home/user/.openclaw/openclaw.json";
+      snapshot.path = "/home/user/.operator/operator.json";
       mockReadConfigFileSnapshot.mockResolvedValueOnce(snapshot);
 
       await runConfigCommand(["config", "file"]);
 
-      expect(mockLog).toHaveBeenCalledWith("/home/user/.openclaw/openclaw.json");
+      expect(mockLog).toHaveBeenCalledWith("/home/user/.operator/operator.json");
     });
   });
 });

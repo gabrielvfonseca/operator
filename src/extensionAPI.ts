@@ -1,7 +1,7 @@
 /**
  * @deprecated Legacy compat surface for plugins that still import
- * operator/extension-api. Use the injected plugin runtime or focused
- * operator/plugin-sdk subpaths instead.
+ * openclaw/extension-api. Use the injected plugin runtime or focused
+ * openclaw/plugin-sdk subpaths instead.
  */
 
 const shouldWarnExtensionApiImport =
@@ -11,7 +11,7 @@ const shouldWarnExtensionApiImport =
 
 if (shouldWarnExtensionApiImport) {
   process.emitWarning(
-    "operator/extension-api is deprecated. Migrate to api.runtime.agent.* or focused operator/plugin-sdk/<subpath> imports. See https://docs.operator.ai/plugins/sdk-migration",
+    "openclaw/extension-api is deprecated. Migrate to api.runtime.agent.* or focused openclaw/plugin-sdk/<subpath> imports. See https://docs.operator.ai/plugins/sdk-migration",
     {
       code: "OPERATOR_EXTENSION_API_DEPRECATED",
       detail:

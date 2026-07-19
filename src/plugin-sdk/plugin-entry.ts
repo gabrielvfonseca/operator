@@ -293,7 +293,7 @@ export type {
   UnifiedModelCatalogEntry,
   UnifiedModelCatalogKind,
   UnifiedModelCatalogSource,
-} from "@operator/model-catalog-core/model-catalog-types";
+} from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 export type { OperatorConfig };
 
 export {
@@ -337,7 +337,7 @@ type DefinedPluginEntry = {
  *
  * Use this for provider, tool, command, service, memory, and context-engine
  * plugins. Channel plugins should use `defineChannelPluginEntry(...)` from
- * `operator/plugin-sdk/core` so they inherit the channel capability wiring.
+ * `openclaw/plugin-sdk/core` so they inherit the channel capability wiring.
  */
 export function definePluginEntry({
   id,

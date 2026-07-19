@@ -2,14 +2,14 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
-import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness";
-import { classifyEmbeddedAgentRunResultForModelFallback } from "openclaw/plugin-sdk/agent-harness-runtime";
+import type { AgentToolResult } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { EmbeddedRunAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness";
+import { classifyEmbeddedAgentRunResultForModelFallback } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   createContractRunResult,
   OUTCOME_FALLBACK_RUNTIME_CONTRACT,
-} from "openclaw/plugin-sdk/agent-runtime-test-contracts";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createCodexDynamicToolBridge } from "./dynamic-tools.js";
 import { CodexAppServerEventProjector } from "./event-projector.js";
@@ -25,7 +25,7 @@ type CodexAppServerToolTelemetry = Parameters<CodexAppServerEventProjector["buil
 type MirrorTaggedMessage = { __openclaw?: { mirrorIdentity?: string } };
 
 async function createParams(): Promise<EmbeddedRunAttemptParams> {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-outcome-contract-"));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-outcome-contract-"));
   tempDirs.add(tempDir);
   const sessionFile = path.join(tempDir, "session.jsonl");
   SessionManager.open(sessionFile);

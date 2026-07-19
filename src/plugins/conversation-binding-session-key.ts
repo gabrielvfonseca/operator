@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 export const PLUGIN_BINDING_SESSION_PREFIX = "plugin-binding";
 

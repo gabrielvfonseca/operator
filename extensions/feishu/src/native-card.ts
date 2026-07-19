@@ -2,7 +2,7 @@
 import {
   isRecord,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const FEISHU_CARD_TEMPLATES = new Set([
   "blue",

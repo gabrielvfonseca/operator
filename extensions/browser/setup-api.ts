@@ -2,9 +2,9 @@
  * Browser setup entry. It auto-enables the Browser plugin when config or tool
  * policies reference browser control.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { isRecord } from "./src/record-shared.js";
 
 function listContainsBrowser(value: unknown): boolean {

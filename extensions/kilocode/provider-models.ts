@@ -1,15 +1,15 @@
 // Kilocode provider module implements model/runtime integration.
-import { readProviderJsonArrayFieldResponse } from "openclaw/plugin-sdk/provider-http";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
+import { readProviderJsonArrayFieldResponse } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   asPositiveSafeInteger,
   normalizeLowercaseStringOrEmpty,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const log = createSubsystemLogger("kilocode-models");
 

@@ -2,28 +2,28 @@
 summary: "Cerebras setup (auth + model selection)"
 title: "Cerebras"
 read_when:
-  - You want to use Cerebras with OpenClaw
+  - You want to use Cerebras with Operator
   - You need the Cerebras API key env var or CLI auth choice
 ---
 
 [Cerebras](https://www.cerebras.ai) provides high-speed OpenAI-compatible inference on custom inference hardware. The plugin ships a static four-model catalog (no live discovery).
 
-| Property        | Value                                                     |
-| --------------- | --------------------------------------------------------- |
-| Provider id     | `cerebras`                                                |
-| Plugin          | official external package (`@operator/cerebras-provider`) |
-| Auth env var    | `CEREBRAS_API_KEY`                                        |
-| Onboarding flag | `--auth-choice cerebras-api-key`                          |
-| Direct CLI flag | `--cerebras-api-key <key>`                                |
-| API             | OpenAI-compatible (`openai-completions`)                  |
-| Base URL        | `https://api.cerebras.ai/v1`                              |
-| Default model   | `cerebras/zai-glm-4.7`                                    |
+| Property        | Value                                                            |
+| --------------- | ---------------------------------------------------------------- |
+| Provider id     | `cerebras`                                                       |
+| Plugin          | official external package (`@gabrielvfonseca/cerebras-provider`) |
+| Auth env var    | `CEREBRAS_API_KEY`                                               |
+| Onboarding flag | `--auth-choice cerebras-api-key`                                 |
+| Direct CLI flag | `--cerebras-api-key <key>`                                       |
+| API             | OpenAI-compatible (`openai-completions`)                         |
+| Base URL        | `https://api.cerebras.ai/v1`                                     |
+| Default model   | `cerebras/zai-glm-4.7`                                           |
 
 ## Install plugin
 
 ```bash
-openclaw plugins install @operator/cerebras-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/cerebras-provider
+operator gateway restart
 ```
 
 ## Getting started
@@ -36,11 +36,11 @@ openclaw gateway restart
     <CodeGroup>
 
 ```bash Onboarding
-openclaw onboard --auth-choice cerebras-api-key
+operator onboard --auth-choice cerebras-api-key
 ```
 
 ```bash Direct flag
-openclaw onboard --non-interactive \
+operator onboard --non-interactive \
   --auth-choice cerebras-api-key \
   --cerebras-api-key "$CEREBRAS_API_KEY"
 ```
@@ -54,10 +54,10 @@ export CEREBRAS_API_KEY=csk-...
   </Step>
   <Step title="Verify models are available">
     ```bash
-    openclaw models list --provider cerebras
+    operator models list --provider cerebras
     ```
 
-    Lists all four static models. If `CEREBRAS_API_KEY` is unresolved, `openclaw models status --json` reports the missing credential under `auth.unusableProfiles`.
+    Lists all four static models. If `CEREBRAS_API_KEY` is unresolved, `operator models status --json` reports the missing credential under `auth.unusableProfiles`.
 
   </Step>
 </Steps>
@@ -65,7 +65,7 @@ export CEREBRAS_API_KEY=csk-...
 ## Non-interactive setup
 
 ```bash
-openclaw onboard --non-interactive \
+operator onboard --non-interactive \
   --mode local \
   --auth-choice cerebras-api-key \
   --cerebras-api-key "$CEREBRAS_API_KEY"
@@ -116,7 +116,7 @@ Most setups only need the API key. Use explicit `models.providers.cerebras` conf
 ```
 
 <Note>
-If the Gateway runs as a daemon (launchd, systemd, Docker), make sure `CEREBRAS_API_KEY` is available to that process — for example in `~/.openclaw/.env` or through `env.shellEnv`. A key exported only in an interactive shell will not help a managed service unless the env is imported separately.
+If the Gateway runs as a daemon (launchd, systemd, Docker), make sure `CEREBRAS_API_KEY` is available to that process — for example in `~/.operator/.env` or through `env.shellEnv`. A key exported only in an interactive shell will not help a managed service unless the env is imported separately.
 </Note>
 
 ## Related

@@ -9,13 +9,13 @@ Status: experimental. Direct messages and group chats are both implemented; the 
 
 ## Bundled plugin
 
-Zalo ships as a bundled plugin in current OpenClaw releases, so packaged builds do not need a separate install.
+Zalo ships as a bundled plugin in current Operator releases, so packaged builds do not need a separate install.
 
 On an older build or a custom install that excludes Zalo, install the npm package directly:
 
-- Install: `openclaw plugins install @operator/zalo`
-- Pinned version: `openclaw plugins install @operator/zalo@2026.6.11`
-- From a local checkout: `openclaw plugins install ./path/to/local/zalo-plugin`
+- Install: `operator plugins install @gabrielvfonseca/zalo`
+- Pinned version: `operator plugins install @gabrielvfonseca/zalo@2026.6.11`
+- From a local checkout: `operator plugins install ./path/to/local/zalo-plugin`
 - Details: [Plugins](/tools/plugin)
 
 ## Quick setup
@@ -74,8 +74,8 @@ This page covers **Zalo Bot Creator / Marketplace bots**. **Zalo Official Accoun
 
 - `channels.zalo.dmPolicy`: `pairing` (default) | `allowlist` | `open` | `disabled`.
 - Pairing: unknown senders get a pairing code; messages are ignored until approved. Codes expire after 1 hour.
-  - `openclaw pairing list zalo`
-  - `openclaw pairing approve zalo <CODE>`
+  - `operator pairing list zalo`
+  - `operator pairing approve zalo <CODE>`
   - Details: [Pairing](/channels/pairing)
 - `channels.zalo.allowFrom` accepts numeric Zalo user IDs (no username lookup). `open` requires `"*"`.
 
@@ -86,7 +86,7 @@ Group chats are supported by the plugin (`chatTypes: ["direct", "group"]`) and g
 - `channels.zalo.groupPolicy`: `open` | `allowlist` | `disabled`.
 - `channels.zalo.groupAllowFrom` restricts which sender IDs can trigger the bot in groups; falls back to `allowFrom` when unset.
 - Default resolution: when `channels.zalo` is configured, an unset `groupPolicy` resolves to `open`. When `channels.zalo` is missing entirely, runtime fails closed to `allowlist`.
-- Reported real-world caveat: on some Marketplace-bot setups the bot could not be added to a group at all. If you hit that, verify with your bot's Zalo Bot Platform settings; it is a platform-side constraint, not an OpenClaw policy.
+- Reported real-world caveat: on some Marketplace-bot setups the bot could not be added to a group at all. If you hit that, verify with your bot's Zalo Bot Platform settings; it is a platform-side constraint, not an Operator policy.
 
 ## Long-polling vs webhook
 
@@ -124,16 +124,16 @@ Group chats are supported by the plugin (`chatTypes: ["direct", "group"]`) and g
 Use a chat ID as the target:
 
 ```bash
-openclaw message send --channel zalo --target 123456789 --message "hi"
+operator message send --channel zalo --target 123456789 --message "hi"
 ```
 
 ## Troubleshooting
 
 **Bot does not respond:**
 
-- Check the token: `openclaw channels status --probe`
+- Check the token: `operator channels status --probe`
 - Verify the sender is approved (pairing or `allowFrom`)
-- Check gateway logs: `openclaw logs --follow`
+- Check gateway logs: `operator logs --follow`
 
 **Webhook not receiving events:**
 

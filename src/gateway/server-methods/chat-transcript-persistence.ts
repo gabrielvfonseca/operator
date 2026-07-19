@@ -99,7 +99,10 @@ function findSourceReplyTranscriptMirrorByIdempotencyKeyInEvents(
   idempotencyKey: string,
 ): { messageId: string; message: Record<string, unknown> } | null {
   const found = findAssistantTranscriptMessageByIdempotencyKeyInEvents(events, idempotencyKey);
-  if (found?.message.provider !== "operator" || found.message.model !== "delivery-mirror") {
+  if (
+    found?.message.provider !== "@gabrielvfonseca/operator" ||
+    found.message.model !== "delivery-mirror"
+  ) {
     return null;
   }
   return found;
@@ -149,7 +152,7 @@ function findSourceReplyTranscriptMirrorByMetadataInEvents(params: {
     return (
       typeof transcriptEventId(event) === "string" &&
       message?.role === "assistant" &&
-      message.provider === "operator" &&
+      message.provider === "@gabrielvfonseca/operator" &&
       message.model === "delivery-mirror" &&
       extractAssistantTranscriptText(message) === expectedText
     );

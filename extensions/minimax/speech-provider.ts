@@ -1,23 +1,23 @@
 // Minimax provider module implements model/runtime integration.
-import { transcodeAudioBufferToOpus } from "openclaw/plugin-sdk/media-runtime";
+import { transcodeAudioBufferToOpus } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   isProviderAuthProfileConfigured,
   type OperatorConfig,
   resolveProviderAuthProfileApiKey,
-} from "openclaw/plugin-sdk/provider-auth";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "openclaw/plugin-sdk/speech-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
 import {
   asObject,
   parseSpeechDirectiveNumberOverride,
   trimToUndefined,
-} from "openclaw/plugin-sdk/speech-core";
-import { asFiniteNumberInRange } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import { asFiniteNumberInRange } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   DEFAULT_MINIMAX_TTS_BASE_URL,
   MINIMAX_TTS_MODELS,

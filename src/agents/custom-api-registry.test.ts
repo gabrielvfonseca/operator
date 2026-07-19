@@ -4,8 +4,8 @@ import {
   getApiProvider,
   registerApiProvider,
   unregisterApiProviders,
-} from "@operator/ai/internal/runtime";
-import { registerBuiltInApiProviders, resetApiProviders } from "@operator/ai/providers";
+} from "@gabrielvfonseca/ai/internal/runtime";
+import { registerBuiltInApiProviders, resetApiProviders } from "@gabrielvfonseca/ai/providers";
 // Covers dynamic registration of custom model API providers.
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createAssistantMessageEventStream } from "../llm/utils/event-stream.js";

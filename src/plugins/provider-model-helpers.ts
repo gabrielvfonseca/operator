@@ -1,6 +1,6 @@
 // Normalizes provider model metadata from plugin manifests and hooks.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeModelCompat } from "./provider-model-compat.js";
 import type { ProviderRuntimeModel } from "./provider-runtime-model.types.js";
 import type { ProviderResolveDynamicModelContext } from "./types.js";

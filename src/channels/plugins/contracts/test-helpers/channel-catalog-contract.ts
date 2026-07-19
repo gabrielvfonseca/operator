@@ -71,7 +71,7 @@ export function describeBundledMetadataOnlyChannelCatalogContract(params: {
       fs.mkdirSync(bundledDir, { recursive: true });
       fs.writeFileSync(
         path.join(workspaceDir, "package.json"),
-        JSON.stringify({ name: "operator" }),
+        JSON.stringify({ name: "@gabrielvfonseca/operator" }),
         "utf8",
       );
       fs.writeFileSync(

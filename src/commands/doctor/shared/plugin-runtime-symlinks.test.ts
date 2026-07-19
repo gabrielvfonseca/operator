@@ -32,7 +32,7 @@ describe("plugin runtime symlink health findings", () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-plugin-runtime-symlinks-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-plugin-runtime-symlinks-"));
   });
 
   afterEach(async () => {
@@ -44,12 +44,18 @@ describe("plugin runtime symlink health findings", () => {
       return;
     }
 
-    const packageRoot = path.join(tempDir, "prefix", "lib", "node_modules", "openclaw");
+    const packageRoot = path.join(
+      tempDir,
+      "prefix",
+      "lib",
+      "node_modules",
+      "@gabrielvfonseca/operator",
+    );
     const nodeModulesRoot = path.dirname(packageRoot);
     const legacyRoot = path.join(tempDir, "state", "plugin-runtime-deps");
     const missingTarget = path.join(
       legacyRoot,
-      "openclaw-slack",
+      "operator-slack",
       "node_modules",
       "@slack",
       "web-api",
@@ -85,10 +91,16 @@ describe("plugin runtime symlink health findings", () => {
       return;
     }
 
-    const packageRoot = path.join(tempDir, "prefix", "lib", "node_modules", "openclaw");
+    const packageRoot = path.join(
+      tempDir,
+      "prefix",
+      "lib",
+      "node_modules",
+      "@gabrielvfonseca/operator",
+    );
     const nodeModulesRoot = path.dirname(packageRoot);
     const legacyRoot = path.join(tempDir, "state", "plugin-runtime-deps");
-    const existingTarget = path.join(legacyRoot, "openclaw-demo", "node_modules", "left-pad");
+    const existingTarget = path.join(legacyRoot, "operator-demo", "node_modules", "left-pad");
     const staleLink = path.join(nodeModulesRoot, "left-pad");
 
     await fs.mkdir(packageRoot, { recursive: true });

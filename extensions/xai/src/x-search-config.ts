@@ -1,5 +1,5 @@
 // Xai helper module supports x search config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { isRecord } from "./tool-config-shared.js";
 
 type JsonRecord = Record<string, unknown>;

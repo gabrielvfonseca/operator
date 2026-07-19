@@ -33,7 +33,7 @@ describe("agent database permission repair", () => {
   });
 
   it("rolls back an outer write when pre-commit permission repair fails", () => {
-    const stateDir = tempDirs.make("openclaw-agent-chmod-");
+    const stateDir = tempDirs.make("operator-agent-chmod-");
     const options = {
       agentId: "worker-1",
       env: { OPERATOR_STATE_DIR: stateDir },

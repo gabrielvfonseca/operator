@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct HealthCommandsTests {
     @Test func `health summary periods use the node command wire values`() throws {
-        #expect(OpenClawHealthCommand.summary.rawValue == "health.summary")
-        #expect(OpenClawHealthSummaryPeriod.allCases.map(\.rawValue) == ["today"])
+        #expect(OperatorHealthCommand.summary.rawValue == "health.summary")
+        #expect(OperatorHealthSummaryPeriod.allCases.map(\.rawValue) == ["today"])
 
-        let params = OpenClawHealthSummaryParams(period: .today)
+        let params = OperatorHealthSummaryParams(period: .today)
         let data = try JSONEncoder().encode(params)
         #expect(String(decoding: data, as: UTF8.self) == #"{"period":"today"}"#)
     }

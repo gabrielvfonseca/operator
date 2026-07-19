@@ -78,7 +78,7 @@ export function installEmbeddedRunnerFastRunE2eMocks(
     ),
     selectAgentHarness: vi.fn(createMockAgentHarness),
     selectAgentHarnessForPreparedModelProviders: vi.fn(createMockAgentHarness),
-    resolveAgentHarnessPolicy: vi.fn(() => ({ runtime: "operator" })),
+    resolveAgentHarnessPolicy: vi.fn(() => ({ runtime: "@gabrielvfonseca/operator" })),
     runAgentHarnessAttempt: (params: unknown) => options.runEmbeddedAttempt(params),
   }));
   vi.doMock("../runtime-plan/build.js", () => ({
@@ -250,12 +250,12 @@ function resolveMockHarnessId(params: {
   provider?: string;
   agentHarnessId?: string;
   agentHarnessRuntimeOverride?: string;
-}): "codex" | "operator" {
+}): "codex" | "@gabrielvfonseca/operator" {
   return params.provider === "codex-cli" ||
     params.agentHarnessId === "codex" ||
     params.agentHarnessRuntimeOverride === "codex"
     ? "codex"
-    : "operator";
+    : "@gabrielvfonseca/operator";
 }
 
 /** Installs deterministic backoff mocks for retry/timeout E2E tests. */

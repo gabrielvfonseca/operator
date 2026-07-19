@@ -1,5 +1,5 @@
 // Control UI chat module implements chat welcome behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { html, nothing } from "lit";
 import type { GatewaySessionRow, SessionsListResult } from "../../../api/types.ts";
 import {

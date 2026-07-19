@@ -20,7 +20,7 @@ describe("forced worker environment abandonment", () => {
   let database: OperatorStateDatabase;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-force-worker-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-force-worker-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
   });
 

@@ -1,12 +1,12 @@
 // Xai provider module implements model/runtime integration.
-import { resolveDefaultAgentDir } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { resolveDefaultAgentDir } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   coerceSecretRef,
   ensureAuthProfileStore,
   listUsableProviderAuthProfileIds,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   formatCliCommand,
@@ -22,7 +22,7 @@ import {
   resolveWebSearchProviderCredential,
   type WebSearchProviderSetupContext,
   writeCache,
-} from "openclaw/plugin-sdk/provider-web-search";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import {
   buildXaiWebSearchPayload,
   extractXaiWebSearchContent,
@@ -363,7 +363,7 @@ export async function executeXaiWebSearchProviderTool(
       error: "missing_xai_api_key",
       message:
         "web_search (grok) needs xAI credentials. Run `openclaw onboard --auth-choice xai-oauth` to sign in with Grok, run `openclaw onboard --auth-choice xai-api-key`, set `XAI_API_KEY` in the Gateway environment, or configure `plugins.entries.xai.config.webSearch.apiKey`. If you do not want to configure search credentials, use web_fetch for a specific URL or the browser tool for interactive pages.",
-      docs: "https://docs.openclaw.ai/tools/web",
+      docs: "https://docs.operator.ai/tools/web",
     };
   }
 

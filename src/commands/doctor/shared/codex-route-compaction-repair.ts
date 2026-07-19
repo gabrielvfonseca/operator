@@ -1,5 +1,5 @@
-import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import { asOptionalRecord as asMutableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   canAutoMigrateLegacyLosslessCompaction,

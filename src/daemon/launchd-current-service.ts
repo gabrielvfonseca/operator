@@ -1,5 +1,5 @@
 /** Detects whether the current process is running inside a launchd service label. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type CurrentProcessLaunchdServiceLabelOptions = {
   allowConfiguredLabelFallback?: boolean;
@@ -29,7 +29,7 @@ export function isCurrentProcessLaunchdServiceLabel(
     return false;
   }
   if (
-    normalizeOptionalString(env.OPERATOR_SERVICE_MARKER) === "operator" &&
+    normalizeOptionalString(env.OPERATOR_SERVICE_MARKER) === "@gabrielvfonseca/operator" &&
     Boolean(normalizeOptionalString(env.OPERATOR_SERVICE_KIND))
   ) {
     // Managed wrappers inject service metadata; trust it when launchd's own

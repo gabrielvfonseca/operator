@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
 public let clawHubSkillGatewayMethods: Set<String> = ["skills.search", "skills.detail", "skills.install"]
 public let clawHubInstallTimeoutMilliseconds = 120_000
@@ -170,14 +170,14 @@ public struct SkillMissing: Codable, Sendable {
 
 public struct SkillStatusConfigCheck: Codable, Identifiable, Sendable {
     public let path: String
-    public let value: OpenClawProtocol.AnyCodable?
+    public let value: OperatorProtocol.AnyCodable?
     public let satisfied: Bool
 
     public var id: String {
         self.path
     }
 
-    public init(path: String, value: OpenClawProtocol.AnyCodable?, satisfied: Bool) {
+    public init(path: String, value: OperatorProtocol.AnyCodable?, satisfied: Bool) {
         self.path = path
         self.value = value
         self.satisfied = satisfied
@@ -212,7 +212,7 @@ public struct SkillInstallResult: Codable, Sendable {
 public struct SkillUpdateResult: Codable, Sendable {
     public let ok: Bool
     public let skillKey: String
-    public let config: [String: OpenClawProtocol.AnyCodable]?
+    public let config: [String: OperatorProtocol.AnyCodable]?
 }
 
 public struct ClawHubInstalledSkillLink: Codable, Sendable {

@@ -1,11 +1,11 @@
 import AppKit
 import Foundation
-import OpenClawKit
+import OperatorKit
 @preconcurrency import ScreenCaptureKit
 
 struct ScreenSnapshotResult: Sendable {
     let data: Data
-    let format: OpenClawScreenSnapshotFormat
+    let format: OperatorScreenSnapshotFormat
     let width: Int
     let height: Int
     let displayFrameId: String
@@ -37,7 +37,7 @@ final class ScreenSnapshotService {
         screenIndex: Int?,
         maxWidth: Int?,
         quality: Double?,
-        format: OpenClawScreenSnapshotFormat?) async throws
+        format: OperatorScreenSnapshotFormat?) async throws
         -> ScreenSnapshotResult
     {
         let format = format ?? .jpeg
@@ -116,21 +116,21 @@ final class ScreenSnapshotService {
         referenceWidth: Int) throws -> String
     {
         let bounds = CGDisplayBounds(display.displayID)
-        let geometry = OpenClawComputerDisplayGeometry(
+        let geometry = OperatorComputerDisplayGeometry(
             originX: bounds.origin.x,
             originY: bounds.origin.y,
             widthPoints: bounds.width,
             heightPoints: bounds.height)
         let sourceWidth = Double(display.width)
         let sourceHeight = Double(display.height)
-        guard OpenClawComputerInputGeometry.isValidMappingGeometry(
+        guard OperatorComputerInputGeometry.isValidMappingGeometry(
             sourceWidth: sourceWidth,
             sourceHeight: sourceHeight,
             display: geometry)
         else {
             throw ScreenSnapshotError.noDisplays
         }
-        return OpenClawComputerInputGeometry.displayFrameId(
+        return OperatorComputerInputGeometry.displayFrameId(
             displayID: display.displayID,
             sourceWidth: sourceWidth,
             sourceHeight: sourceHeight,
@@ -141,7 +141,7 @@ final class ScreenSnapshotService {
     private static func normalize(
         maxWidth: Int?,
         quality: Double?,
-        format: OpenClawScreenSnapshotFormat)
+        format: OperatorScreenSnapshotFormat)
         -> (maxWidth: Int, quality: Double)
     {
         let resolvedMaxWidth = maxWidth.flatMap { $0 > 0 ? $0 : nil } ?? (format == .png ? 900 : 1600)

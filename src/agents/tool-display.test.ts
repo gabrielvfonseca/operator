@@ -28,10 +28,10 @@ describe("tool display details", () => {
   it("summarizes tool-search code targets from described tool ids", () => {
     expect(
       resolveToolSearchCodeDisplayTarget({
-        code: "const tool = await openclaw.tools.describe('openclaw:core:exec'); return await openclaw.tools.call(tool.id, { command: 'echo hi' });",
+        code: "const tool = await operator.tools.describe('operator:core:exec'); return await operator.tools.call(tool.id, { command: 'echo hi' });",
       }),
     ).toEqual({
-      toolName: "openclaw:core:exec",
+      toolName: "operator:core:exec",
       displayToolName: "exec",
       displayArgs: { command: "echo hi" },
       detail: "echo hi",
@@ -42,10 +42,10 @@ describe("tool display details", () => {
   it("normalizes direct tool-search catalog ids to native display names and args", () => {
     expect(
       resolveToolSearchCodeDisplayTarget({
-        code: 'return await openclaw.tools.call("openclaw:core:exec", { command: "echo hi" });',
+        code: 'return await operator.tools.call("operator:core:exec", { command: "echo hi" });',
       }),
     ).toEqual({
-      toolName: "openclaw:core:exec",
+      toolName: "operator:core:exec",
       displayToolName: "exec",
       displayArgs: { command: "echo hi" },
       detail: "echo hi",
@@ -56,7 +56,7 @@ describe("tool display details", () => {
   it("preserves JS numeric literals in tool-search call args", () => {
     expect(
       resolveToolSearchCodeDisplayTarget({
-        code: 'return await openclaw.tools.call("web_search", { query: "Operator", count: 1e3, limit: +3, threshold: .5 });',
+        code: 'return await operator.tools.call("web_search", { query: "Operator", count: 1e3, limit: +3, threshold: .5 });',
       })?.displayArgs,
     ).toEqual({
       query: "Operator",
@@ -202,8 +202,8 @@ describe("tool display details", () => {
         name: "exec",
         args: {
           command:
-            "set -euo pipefail\ngit -C /Users/adityasingh/.openclaw/workspace status --short | head -n 3",
-          workdir: "/Users/adityasingh/.openclaw/workspace",
+            "set -euo pipefail\ngit -C /Users/adityasingh/.operator/workspace status --short | head -n 3",
+          workdir: "/Users/adityasingh/.operator/workspace",
         },
       }),
     );
@@ -274,7 +274,7 @@ describe("tool display details", () => {
           name: "bash",
           args: {
             command: "command -v discrawl",
-            workdir: "/root/.openclaw/sandboxes/agent-clawsweeper-sandbox-discor-766423d0",
+            workdir: "/root/.operator/sandboxes/agent-clawsweeper-sandbox-discor-766423d0",
           },
           detailMode: "explain",
         }),
@@ -453,7 +453,7 @@ describe("tool display details", () => {
         name: "exec",
         args: {
           command: "python3 <<PY\nprint('x')\nPY",
-          workdir: "/Users/adityasingh/.openclaw/workspace",
+          workdir: "/Users/adityasingh/.operator/workspace",
         },
       }),
     );
@@ -462,7 +462,7 @@ describe("tool display details", () => {
         name: "exec",
         args: {
           command: "node --check /tmp/test.js",
-          workdir: "/Users/adityasingh/.openclaw/workspace",
+          workdir: "/Users/adityasingh/.operator/workspace",
         },
       }),
     );
@@ -471,7 +471,7 @@ describe("tool display details", () => {
         name: "exec",
         args: {
           command: "node -c /tmp/test.js",
-          workdir: "/Users/adityasingh/.openclaw/workspace",
+          workdir: "/Users/adityasingh/.operator/workspace",
         },
       }),
     );
@@ -495,7 +495,7 @@ describe("tool display details", () => {
             "YAML",
             "PY",
           ].join("\n"),
-          workdir: "/Users/example/.openclaw/workspace",
+          workdir: "/Users/example/.operator/workspace",
         },
         detailMode: "explain",
       }),
@@ -539,8 +539,8 @@ describe("tool display details", () => {
   it("keeps heredoc body separators out of top-level stage splitting", () => {
     const stages = splitTopLevelStages(
       [
-        "mkdir -p .openclaw/tmp/farm-notices",
-        "cat > .openclaw/tmp/farm-notices/ventura.txt <<'EOF'",
+        "mkdir -p .operator/tmp/farm-notices",
+        "cat > .operator/tmp/farm-notices/ventura.txt <<'EOF'",
         "Buenos dias equipo; se ajusta la orden A1251718:",
         "sc-carwhi(100) && sc-cardoc(100) || sc-carwhi(100)",
         "Gracias.",
@@ -551,8 +551,8 @@ describe("tool display details", () => {
 
     expect(stages).toEqual([
       [
-        "mkdir -p .openclaw/tmp/farm-notices",
-        "cat > .openclaw/tmp/farm-notices/ventura.txt <<'EOF'",
+        "mkdir -p .operator/tmp/farm-notices",
+        "cat > .operator/tmp/farm-notices/ventura.txt <<'EOF'",
         "Buenos dias equipo; se ajusta la orden A1251718:",
         "sc-carwhi(100) && sc-cardoc(100) || sc-carwhi(100)",
         "Gracias.",
@@ -661,7 +661,7 @@ describe("tool display details", () => {
         name: "exec",
         args: {
           command: [
-            "cat > .openclaw/tmp/farm-notices/ventura.txt <<-'EOF'",
+            "cat > .operator/tmp/farm-notices/ventura.txt <<-'EOF'",
             "\tBuenos dias equipo; se ajusta la orden A1251718:",
             "\tsc-carwhi(100) && sc-cardoc(100) || sc-carwhi(100)",
             "\tGracias.",

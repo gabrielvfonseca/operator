@@ -2,7 +2,7 @@
 import {
   resolveNonNegativeIntegerOption,
   resolveOptionalIntegerOption,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { InboundDebounceByProvider } from "../config/types.messages.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 

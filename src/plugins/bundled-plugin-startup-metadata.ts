@@ -1,7 +1,7 @@
 // Narrow bundled-plugin facts used before the full metadata/runtime registry is available.
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 

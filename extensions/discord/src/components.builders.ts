@@ -1,7 +1,7 @@
 // Discord plugin module implements components.builders behavior.
 import crypto from "node:crypto";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { ButtonStyle, MessageFlags } from "discord-api-types/v10";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { buildDiscordComponentCustomId as buildDiscordComponentCustomIdImpl } from "./component-custom-id.js";
 import { mapButtonStyle, normalizeModalFieldName } from "./components.parse.js";
 import type {

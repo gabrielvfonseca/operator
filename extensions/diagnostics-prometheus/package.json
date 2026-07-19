@@ -1,22 +1,22 @@
 {
-  "name": "@operator/diagnostics-prometheus",
+  "name": "@gabrielvfonseca/diagnostics-prometheus",
   "version": "2026.7.2",
   "description": "Operator diagnostics Prometheus exporter for runtime metrics.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/diagnostics-prometheus",
-      "npmSpec": "@operator/diagnostics-prometheus",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/diagnostics-prometheus",
+      "npmSpec": "@gabrielvfonseca/diagnostics-prometheus",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.25"
     },

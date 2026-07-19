@@ -1,6 +1,6 @@
 // Plugin install command implementation for bundled, npm, path, git, ClawHub, and hook packs.
 import fs from "node:fs";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { theme } from "../../packages/terminal-core/src/theme.js";
 import {
   assertConfigWriteAllowedInCurrentMode,
@@ -667,13 +667,13 @@ async function loadConfigFromSnapshotForInstall(
   const mutationWriteOptions = selectInstallMutationWriteOptions(writeOptions);
   if (resolvePluginInstallInvalidConfigPolicy(request) !== "allow-plugin-recovery") {
     throw buildInvalidPluginInstallConfigError(
-      "Config invalid; run `operator doctor --fix` before installing plugins.",
+      "Config invalid; run `openclaw doctor --fix` before installing plugins.",
     );
   }
   const parsed = (snapshot.parsed ?? {}) as Record<string, unknown>;
   if (!snapshot.exists || Object.keys(parsed).length === 0) {
     throw buildInvalidPluginInstallConfigError(
-      "Config file could not be parsed; run `operator doctor` to repair it.",
+      "Config file could not be parsed; run `openclaw doctor` to repair it.",
     );
   }
   const ownedLoadPaths = await resolveRequestedPluginInstallPaths(
@@ -689,12 +689,12 @@ async function loadConfigFromSnapshotForInstall(
   ) {
     const pluginLabel = request.bundledPluginId ?? "the requested plugin";
     throw buildInvalidPluginInstallConfigError(
-      `Config invalid outside the plugin recovery path for ${pluginLabel}; run \`operator doctor --fix\` before reinstalling it.`,
+      `Config invalid outside the plugin recovery path for ${pluginLabel}; run \`openclaw doctor --fix\` before reinstalling it.`,
     );
   }
   if (!supportsPluginRecoveryIncludeShape(parsed)) {
     throw buildInvalidPluginInstallConfigError(
-      "Config plugin recovery uses an unsupported $include shape; use a single-file top-level plugins include or run `operator doctor --fix` before reinstalling it.",
+      "Config plugin recovery uses an unsupported $include shape; use a single-file top-level plugins include or run `openclaw doctor --fix` before reinstalling it.",
     );
   }
   const { hookMutation, pluginMutation } = resolveInstallConfigMutationPreflights({
@@ -795,13 +795,13 @@ export async function runPluginInstallCommand(params: {
   if (opts.marketplace) {
     if (opts.link) {
       runtime.error(
-        `--link is not supported with --marketplace. Remove --link, or install a local path with ${formatCliCommand(`operator plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+        `--link is not supported with --marketplace. Remove --link, or install a local path with ${formatCliCommand(`openclaw plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
       );
       return runtime.exit(1);
     }
     if (opts.pin) {
       runtime.error(
-        `--pin is not supported with --marketplace. Use ${formatCliCommand(`operator plugins install <plugin> --marketplace <name> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} without --pin.`,
+        `--pin is not supported with --marketplace. Use ${formatCliCommand(`openclaw plugins install <plugin> --marketplace <name> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} without --pin.`,
       );
       return runtime.exit(1);
     }
@@ -810,19 +810,19 @@ export async function runPluginInstallCommand(params: {
   const gitSpec = parseGitPluginSpec(raw);
   if (gitPrefix && !gitSpec) {
     runtime.error(
-      `Unsupported git plugin spec: ${raw}. Use ${formatCliCommand(`operator plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+      `Unsupported git plugin spec: ${raw}. Use ${formatCliCommand(`openclaw plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
     );
     return runtime.exit(1);
   }
   if (gitSpec && opts.link) {
     runtime.error(
-      `--link is not supported with git: installs. Use ${formatCliCommand(`operator plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} for Git installs or ${formatCliCommand(`operator plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} for local paths.`,
+      `--link is not supported with git: installs. Use ${formatCliCommand(`openclaw plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} for Git installs or ${formatCliCommand(`openclaw plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)} for local paths.`,
     );
     return runtime.exit(1);
   }
   if (gitSpec && opts.pin) {
     runtime.error(
-      `--pin is not supported with git: installs. Pin the ref in the spec instead, for example ${formatCliCommand(`operator plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+      `--pin is not supported with git: installs. Pin the ref in the spec instead, for example ${formatCliCommand(`openclaw plugins install git:<repo>@<ref> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
     );
     return runtime.exit(1);
   }
@@ -1067,7 +1067,7 @@ export async function runPluginInstallCommand(params: {
 
   if (opts.link) {
     runtime.error(
-      `--link requires a local path. Run ${formatCliCommand(`operator plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+      `--link requires a local path. Run ${formatCliCommand(`openclaw plugins install --link <path> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
     );
     return runtime.exit(1);
   }
@@ -1076,7 +1076,7 @@ export async function runPluginInstallCommand(params: {
   if (npmPrefixSpec !== null) {
     if (!npmPrefixSpec) {
       runtime.error(
-        `Unsupported npm plugin spec: missing package. Use ${formatCliCommand(`operator plugins install npm:<package> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+        `Unsupported npm plugin spec: missing package. Use ${formatCliCommand(`openclaw plugins install npm:<package> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
       );
       return runtime.exit(1);
     }
@@ -1113,7 +1113,7 @@ export async function runPluginInstallCommand(params: {
   if (npmPackPath !== null) {
     if (!npmPackPath) {
       runtime.error(
-        `Unsupported npm-pack plugin spec: missing archive path. Use ${formatCliCommand(`operator plugins install npm-pack:<path-to.tgz> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+        `Unsupported npm-pack plugin spec: missing archive path. Use ${formatCliCommand(`openclaw plugins install npm-pack:<path-to.tgz> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
       );
       return runtime.exit(1);
     }
@@ -1167,7 +1167,7 @@ export async function runPluginInstallCommand(params: {
     ])
   ) {
     runtime.error(
-      `Plugin path not found: ${resolved}. Check the path, or install from npm with ${formatCliCommand(`operator plugins install npm:<package> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
+      `Plugin path not found: ${resolved}. Check the path, or install from npm with ${formatCliCommand(`openclaw plugins install npm:<package> ${NON_CLAWHUB_INSTALL_FORCE_FLAG}`)}.`,
     );
     return runtime.exit(1);
   }

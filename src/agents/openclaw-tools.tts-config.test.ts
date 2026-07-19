@@ -1,6 +1,6 @@
 // Verifies createOperatorTools wires shared config and context into the TTS tool.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createOperatorTools } from "./openclaw-tools.js";
 import type { AnyAgentTool } from "./tools/common.js";
 

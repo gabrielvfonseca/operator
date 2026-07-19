@@ -83,7 +83,7 @@ describe("applyResetModelOverride", () => {
   });
 
   it("adopts a concurrent model winner instead of acknowledging the reset hint", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reset-model-race-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-reset-model-race-"));
     const storePath = path.join(tempRoot, "sessions.json");
     const fixture = createResetFixture();
     const concurrentEntry: SessionEntry = {
@@ -131,7 +131,7 @@ describe("applyResetModelOverride", () => {
   });
 
   it("checks the persisted winner for an explicit same-value reset hint", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reset-model-race-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-reset-model-race-"));
     const storePath = path.join(tempRoot, "sessions.json");
     const fixture = createResetFixture({
       providerOverride: "minimax",
@@ -176,7 +176,7 @@ describe("applyResetModelOverride", () => {
   });
 
   it("rejects a reset-model hint when the session rotates during persistence", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reset-model-rotation-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-reset-model-rotation-"));
     const storePath = path.join(tempRoot, "sessions.json");
     const fixture = createResetFixture();
     const rotatedEntry: SessionEntry = {

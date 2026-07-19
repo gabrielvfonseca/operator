@@ -88,7 +88,7 @@ describe("runtime-guard", () => {
         "Detected: node 20.0.0 (exec: /usr/bin/node).",
         "PATH searched: /usr/bin",
         "Install Node: https://nodejs.org/en/download",
-        "Upgrade Node and re-run openclaw.",
+        "Upgrade Node and re-run operator.",
       ].join("\n"),
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
@@ -160,7 +160,7 @@ describe("runtime-guard", () => {
         "Detected: unknown runtime (exec: unknown).",
         "PATH searched: (not set)",
         "Install Node: https://nodejs.org/en/download",
-        "Upgrade Node and re-run openclaw.",
+        "Upgrade Node and re-run operator.",
       ].join("\n"),
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);

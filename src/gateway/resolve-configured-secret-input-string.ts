@@ -1,6 +1,6 @@
 // SecretRef-aware Gateway config string resolver.
 // Resolves configured secret inputs and fallback values without leaking values.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";

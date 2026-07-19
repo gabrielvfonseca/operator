@@ -1,24 +1,24 @@
 // Sms plugin module implements channel behavior.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/account-resolution";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import {
   buildChannelOutboundSessionRoute,
   createChatChannelPlugin,
   type ChannelOutboundSessionRouteParams,
   type ChannelPlugin,
-} from "openclaw/plugin-sdk/channel-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { createConditionalWarningCollector } from "openclaw/plugin-sdk/channel-policy";
-import { createEmptyChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { chunkTextForOutbound } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createConditionalWarningCollector } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { createEmptyChannelDirectoryAdapter } from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { chunkTextForOutbound } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import {
   inspectSmsAccount,
   isSmsAccountConfigured,

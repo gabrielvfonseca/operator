@@ -464,7 +464,7 @@ describe("provider request config", () => {
       precedence: "defaults-win",
     });
 
-    expect(resolved?.originator).toBe("openclaw");
+    expect(resolved?.originator).toBe("@gabrielvfonseca/operator");
     expect(typeof resolved?.version).toBe("string");
     expect(resolved?.["User-Agent"]).toMatch(/^openclaw\//);
     expect(resolved?.["X-Custom"]).toBe("1");
@@ -484,7 +484,7 @@ describe("provider request config", () => {
     });
 
     expect(resolved).toEqual({
-      "HTTP-Referer": "https://openclaw.ai",
+      "HTTP-Referer": "https://operator.ai",
       "X-OpenRouter-Title": "Operator",
       "X-OpenRouter-Categories":
         "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent",
@@ -595,7 +595,7 @@ describe("provider request config", () => {
     expect(resolved.policy.endpointClass).toBe("openai-public");
     expect(resolved.capabilities.allowsResponsesStore).toBe(true);
     expect(resolved.headers?.authorization).toBe("Bearer test-key");
-    expect(resolved.headers?.originator).toBe("openclaw");
+    expect(resolved.headers?.originator).toBe("@gabrielvfonseca/operator");
     expect(typeof resolved.headers?.version).toBe("string");
     expect(resolved.headers?.["User-Agent"]).toMatch(/^openclaw\//);
     expect(resolved.headers?.["X-Custom"]).toBe("1");

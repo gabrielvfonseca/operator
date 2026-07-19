@@ -6,7 +6,7 @@ import { clearRuntimeAuthProfileStoreSnapshots } from "../agents/auth-profiles/s
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import { maybeRepairCanonicalApiKeyFieldAlias } from "./doctor-auth-flat-profiles.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
@@ -34,7 +34,7 @@ function makePrompter(shouldRepair: boolean): DoctorPrompter {
 async function makeTestState(): Promise<OperatorTestState> {
   const state = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-doctor-canonical-api-key-",
+    prefix: "operator-doctor-canonical-api-key-",
     env: {
       OPERATOR_AGENT_DIR: undefined,
     },

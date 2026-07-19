@@ -1,7 +1,7 @@
+import { sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Telegram tests cover delivery.resolve media retry plugin behavior.
 import { GrammyError } from "grammy";
 import type { Message } from "grammy/types";
-import { sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveMedia } from "./delivery.resolve-media.js";
 import type { TelegramContext } from "./types.js";

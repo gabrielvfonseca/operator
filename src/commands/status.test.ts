@@ -491,7 +491,7 @@ const mocks = vi.hoisted(() => ({
     readRuntime: async () => ({ status: "running", pid: 1234 }),
     readCommand: async () => ({
       programArguments: ["node", "dist/entry.js", "gateway"],
-      sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.gateway.plist",
+      sourcePath: "/tmp/Library/LaunchAgents/ai.operator.gateway.plist",
     }),
   }),
   resolveNodeService: vi.fn().mockReturnValue({
@@ -507,7 +507,7 @@ const mocks = vi.hoisted(() => ({
     readRuntime: async () => ({ status: "running", pid: 4321 }),
     readCommand: async () => ({
       programArguments: ["node", "dist/entry.js", "node-host"],
-      sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.node.plist",
+      sourcePath: "/tmp/Library/LaunchAgents/ai.operator.node.plist",
     }),
   }),
 }));
@@ -987,7 +987,7 @@ describe("statusCommand", () => {
       readRuntime: async () => ({ status: "running", pid: 1234 }),
       readCommand: async () => ({
         programArguments: ["node", "dist/entry.js", "gateway"],
-        sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.gateway.plist",
+        sourcePath: "/tmp/Library/LaunchAgents/ai.operator.gateway.plist",
       }),
     });
     mocks.resolveNodeService.mockReset();
@@ -1004,7 +1004,7 @@ describe("statusCommand", () => {
       readRuntime: async () => ({ status: "running", pid: 4321 }),
       readCommand: async () => ({
         programArguments: ["node", "dist/entry.js", "node-host"],
-        sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.node.plist",
+        sourcePath: "/tmp/Library/LaunchAgents/ai.operator.node.plist",
       }),
     });
     runtimeLogMock.mockClear();
@@ -1336,14 +1336,14 @@ describe("statusCommand", () => {
   });
 
   it("notes when secret diagnostics may come from a CLI process outside the service wrapper context", async () => {
-    const wrapperPath = "/usr/local/bin/openclaw-doppler";
+    const wrapperPath = "/usr/local/bin/operator-doppler";
     const service = mocks.resolveGatewayService();
     mocks.resolveGatewayService.mockReturnValue({
       ...service,
       readCommand: async () => ({
         programArguments: [wrapperPath, "node", "dist/entry.js", "gateway"],
         environment: { OPERATOR_WRAPPER: wrapperPath },
-        sourcePath: "/tmp/Library/LaunchAgents/ai.openclaw.gateway.plist",
+        sourcePath: "/tmp/Library/LaunchAgents/ai.operator.gateway.plist",
       }),
     });
     mocks.loadConfig.mockReturnValue({

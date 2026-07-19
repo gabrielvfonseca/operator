@@ -1,10 +1,10 @@
 // Whatsapp plugin module implements message line behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export {
   formatInboundEnvelope,
   type EnvelopeFormatOptions,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 
 type WhatsAppMessagePrefixConfig = OperatorConfig;
 

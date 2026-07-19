@@ -2,7 +2,7 @@
 import childProcess from "node:child_process";
 import { randomUUID } from "node:crypto";
 import fsSync from "node:fs";
-import type { ChannelIngressQueueCorruptClaim } from "openclaw/plugin-sdk/channel-outbound";
+import type { ChannelIngressQueueCorruptClaim } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import type {
   ClaimedTelegramSpooledUpdate,
   TelegramSpooledUpdateClaimOwner,

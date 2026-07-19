@@ -1,5 +1,5 @@
 // Ollama tests cover embedding provider plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 

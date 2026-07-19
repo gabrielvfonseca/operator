@@ -1,10 +1,10 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.verbatimText
-import ai.openclaw.app.node.asObjectOrNull
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.verbatimText
+import ai.operator.app.node.asObjectOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement

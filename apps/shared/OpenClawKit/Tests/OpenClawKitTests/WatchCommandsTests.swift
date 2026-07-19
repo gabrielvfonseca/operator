@@ -1,22 +1,22 @@
 import Foundation
-@testable import OpenClawKit
+@testable import OperatorKit
 import Testing
 
 struct WatchCommandsTests {
     @Test func `app snapshot dual writes semantic and legacy status fields`() throws {
-        let message = OpenClawWatchAppSnapshotMessage(
-            gatewayStatus: OpenClawWatchAppStatus(code: .gatewayConnected),
+        let message = OperatorWatchAppSnapshotMessage(
+            gatewayStatus: OperatorWatchAppStatus(code: .gatewayConnected),
             gatewayStatusText: "Connected",
             gatewayConnected: true,
             agentName: "Main",
             sessionKey: "main",
-            talkStatus: OpenClawWatchAppStatus(code: .talkOff),
+            talkStatus: OperatorWatchAppStatus(code: .talkOff),
             talkStatusText: "Off",
             talkEnabled: false,
             talkListening: false,
             talkSpeaking: false,
             pendingApprovalCount: 0,
-            chatStatus: OpenClawWatchAppStatus(code: .chatNoMessages),
+            chatStatus: OperatorWatchAppStatus(code: .chatNoMessages),
             chatStatusText: "No chat messages yet")
 
         let encoded = try JSONEncoder().encode(message)
@@ -31,7 +31,7 @@ struct WatchCommandsTests {
     }
 
     @Test func `shipped snapshot initializer remains available`() {
-        let message = OpenClawWatchAppSnapshotMessage(
+        let message = OperatorWatchAppSnapshotMessage(
             gatewayStatusText: "Connected",
             gatewayConnected: true,
             agentName: "Main",
@@ -47,19 +47,19 @@ struct WatchCommandsTests {
     }
 
     @Test func `semantic chat status always writes the shipped text field`() throws {
-        let message = OpenClawWatchAppSnapshotMessage(
-            gatewayStatus: OpenClawWatchAppStatus(code: .gatewayConnected),
+        let message = OperatorWatchAppSnapshotMessage(
+            gatewayStatus: OperatorWatchAppStatus(code: .gatewayConnected),
             gatewayStatusText: "Connected",
             gatewayConnected: true,
             agentName: "Main",
             sessionKey: "main",
-            talkStatus: OpenClawWatchAppStatus(code: .talkOff),
+            talkStatus: OperatorWatchAppStatus(code: .talkOff),
             talkStatusText: "Off",
             talkEnabled: false,
             talkListening: false,
             talkSpeaking: false,
             pendingApprovalCount: 0,
-            chatStatus: OpenClawWatchAppStatus(code: .chatUnavailable))
+            chatStatus: OperatorWatchAppStatus(code: .chatUnavailable))
 
         let encoded = try JSONEncoder().encode(message)
         let object = try #require(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
@@ -89,22 +89,22 @@ struct WatchCommandsTests {
         """
 
         let message = try JSONDecoder().decode(
-            OpenClawWatchAppSnapshotMessage.self,
+            OperatorWatchAppSnapshotMessage.self,
             from: Data(json.utf8))
 
-        #expect(message.gatewayStatus == OpenClawWatchAppStatus(
+        #expect(message.gatewayStatus == OperatorWatchAppStatus(
             code: .legacy,
             verbatim: "Future gateway state"))
-        #expect(message.talkStatus == OpenClawWatchAppStatus(
+        #expect(message.talkStatus == OperatorWatchAppStatus(
             code: .legacy,
             verbatim: "Future Talk state"))
-        #expect(message.chatStatus == OpenClawWatchAppStatus(
+        #expect(message.chatStatus == OperatorWatchAppStatus(
             code: .legacy,
             verbatim: "Future chat state"))
     }
 
     @Test func `approval resolution dual writes semantic and legacy outcomes`() throws {
-        let message = OpenClawWatchExecApprovalResolvedMessage(
+        let message = OperatorWatchExecApprovalResolvedMessage(
             approvalId: "approval-a",
             outcome: .allowedAlways,
             source: "another-reviewer",

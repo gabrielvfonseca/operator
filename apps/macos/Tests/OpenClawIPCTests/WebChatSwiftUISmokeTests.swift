@@ -1,18 +1,18 @@
 import AppKit
 import Foundation
-import OpenClawChatUI
+import OperatorChatUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
 struct WebChatSwiftUISmokeTests {
-    private struct TestTransport: OpenClawChatTransport {
-        func requestHistory(sessionKey: String) async throws -> OpenClawChatHistoryPayload {
+    private struct TestTransport: OperatorChatTransport {
+        func requestHistory(sessionKey: String) async throws -> OperatorChatHistoryPayload {
             let json = """
             {"sessionKey":"\(sessionKey)","sessionId":null,"messages":[],"thinkingLevel":"off"}
             """
-            return try JSONDecoder().decode(OpenClawChatHistoryPayload.self, from: Data(json.utf8))
+            return try JSONDecoder().decode(OperatorChatHistoryPayload.self, from: Data(json.utf8))
         }
 
         func sendMessage(
@@ -20,19 +20,19 @@ struct WebChatSwiftUISmokeTests {
             message _: String,
             thinking _: String,
             idempotencyKey _: String,
-            attachments _: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+            attachments _: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
         {
             let json = """
             {"runId":"\(UUID().uuidString)","status":"ok"}
             """
-            return try JSONDecoder().decode(OpenClawChatSendResponse.self, from: Data(json.utf8))
+            return try JSONDecoder().decode(OperatorChatSendResponse.self, from: Data(json.utf8))
         }
 
         func requestHealth(timeoutMs _: Int) async throws -> Bool {
             true
         }
 
-        func events() -> AsyncStream<OpenClawChatTransportEvent> {
+        func events() -> AsyncStream<OperatorChatTransportEvent> {
             AsyncStream { continuation in
                 continuation.finish()
             }
@@ -66,7 +66,7 @@ struct WebChatSwiftUISmokeTests {
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         for level in ["max", "ultra"] {
-            defaults.set(level, forKey: "openclaw.webchat.thinkingLevel")
+            defaults.set(level, forKey: "operator.webchat.thinkingLevel")
             #expect(WebChatSwiftUIWindowController.persistedThinkingLevel(defaults: defaults) == level)
         }
     }

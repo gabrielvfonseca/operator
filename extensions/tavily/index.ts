@@ -1,5 +1,5 @@
 // Tavily plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { createTavilyExtractTool } from "./src/tavily-extract-tool.js";
 import { createTavilyWebSearchProvider } from "./src/tavily-search-provider.js";
 import { createTavilySearchTool } from "./src/tavily-search-tool.js";

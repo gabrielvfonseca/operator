@@ -1,23 +1,23 @@
 // Telegram plugin module implements outbound adapter behavior.
-import type { OutboundDeliveryFormattingOptions } from "openclaw/plugin-sdk/channel-outbound";
+import type { OutboundDeliveryFormattingOptions } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   resolveOutboundSendDep,
   sanitizeForPlainText,
   type OutboundSendDeps,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { ChannelOutboundAdapter } from "openclaw/plugin-sdk/channel-send-result";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { ChannelOutboundAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
 import {
   attachChannelToResult,
   createAttachedChannelResultAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
-import { chunkMarkdownTextWithMode } from "openclaw/plugin-sdk/reply-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import { chunkMarkdownTextWithMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
 import {
   resolveSendableOutboundReplyParts,
   sendPayloadMediaSequenceOrFallback,
-} from "openclaw/plugin-sdk/reply-payload";
-import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { isSingleUseReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-reference";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { mergeTelegramAccountConfig, resolveDefaultTelegramAccountId } from "./accounts.js";
 import type { TelegramInlineButtons } from "./button-types.js";
 import { resolveTelegramInlineButtons } from "./button-types.js";

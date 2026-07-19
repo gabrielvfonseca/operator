@@ -1,7 +1,10 @@
 // Matrix plugin module implements approval reactions behavior.
-import { createApprovalReactionTargetStore } from "openclaw/plugin-sdk/approval-reaction-runtime";
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-runtime";
-import { normalizeAccountId, normalizeOptionalAccountId } from "openclaw/plugin-sdk/routing";
+import { createApprovalReactionTargetStore } from "@gabrielvfonseca/operator/plugin-sdk/approval-reaction-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import {
+  normalizeAccountId,
+  normalizeOptionalAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { getOptionalMatrixRuntime } from "./runtime.js";
 
 // Matrix keeps its own reaction emoji set (checkmark/cross render reliably across

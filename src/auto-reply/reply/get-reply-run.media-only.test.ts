@@ -2,7 +2,7 @@
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearActiveEmbeddedRun,
@@ -488,7 +488,7 @@ describe("runPreparedReply media-only handling", () => {
         resolvedThinkLevel: "high",
         sessionEntry,
         sessionStore,
-        storePath: "/tmp/openclaw-sessions.json",
+        storePath: "/tmp/operator-sessions.json",
         modelState: {
           resolveDefaultThinkingLevel: async () => "high",
           resolveThinkingCatalog: async () => [
@@ -1139,7 +1139,7 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("hydrates current image MediaPaths by extension when MediaTypes are missing", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-followup-image-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-followup-image-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "inbound.png");
     await writeFile(
@@ -1269,16 +1269,16 @@ describe("runPreparedReply media-only handling", () => {
     const message = requireRunReplyAgentCall().followupRun.userTurnTranscriptRecorder?.message;
     if (shouldPersist) {
       expect(message).toMatchObject({
-        __openclaw: {
+        __operator: {
           senderId: "user-42",
           senderName: "Ada",
           senderUsername: "ada",
         },
       });
     } else {
-      expect(message).not.toHaveProperty("__openclaw.senderId");
-      expect(message).not.toHaveProperty("__openclaw.senderName");
-      expect(message).not.toHaveProperty("__openclaw.senderUsername");
+      expect(message).not.toHaveProperty("__operator.senderId");
+      expect(message).not.toHaveProperty("__operator.senderName");
+      expect(message).not.toHaveProperty("__operator.senderUsername");
     }
   });
 
@@ -1314,7 +1314,7 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("does not rehydrate current MediaPaths after image understanding enriched the prompt", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-followup-image-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-followup-image-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "inbound.png");
     await writeFile(
@@ -1385,7 +1385,7 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("rehydrates only current MediaPaths missing image understanding", async () => {
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-followup-image-"));
+    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "operator-followup-image-"));
     cleanupPaths.push(tmpDir);
     const imagePath = path.join(tmpDir, "inbound.png");
     await writeFile(
@@ -1638,7 +1638,7 @@ describe("runPreparedReply media-only handling", () => {
         sessionId: "session-goal-interrupt",
         sessionEntry: activeEntry,
         sessionStore: { "session-key": activeEntry },
-        storePath: "/tmp/openclaw-session-store.json",
+        storePath: "/tmp/operator-session-store.json",
       }),
     );
     while (!activeRun.abortSignal.aborted) {
@@ -1650,7 +1650,7 @@ describe("runPreparedReply media-only handling", () => {
 
     await expect(runPromise).resolves.toEqual({ text: "ok" });
     expect(loadSessionEntryMock).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-session-store.json",
+      storePath: "/tmp/operator-session-store.json",
       sessionKey: "session-key",
       readConsistency: "latest",
     });
@@ -1688,7 +1688,7 @@ describe("runPreparedReply media-only handling", () => {
         isNewSession: false,
         sessionEntry,
         sessionStore,
-        storePath: "/tmp/openclaw-session-store.json",
+        storePath: "/tmp/operator-session-store.json",
       }),
     );
 
@@ -1703,7 +1703,7 @@ describe("runPreparedReply media-only handling", () => {
         isNewSession: false,
         sessionEntry,
         sessionStore,
-        storePath: "/tmp/openclaw-session-store.json",
+        storePath: "/tmp/operator-session-store.json",
       }),
     );
 
@@ -2382,7 +2382,7 @@ describe("runPreparedReply media-only handling", () => {
           AmbientTranscriptMessageId: "35676",
           AmbientTranscriptTimestampMs: 1_710_000_000_000,
         },
-        storePath: "/tmp/openclaw-session-store.json",
+        storePath: "/tmp/operator-session-store.json",
       }),
     );
 
@@ -2405,7 +2405,7 @@ describe("runPreparedReply media-only handling", () => {
         messageId: "35676",
       }),
       timestamp: expect.any(Number),
-      __openclaw: { senderIsOwner: false, senderName: "Keśava" },
+      __operator: { senderIsOwner: false, senderName: "Keśava" },
     });
     call?.followupRun.userTurnTranscriptRecorder?.markRuntimePersisted({
       role: "user",
@@ -2413,7 +2413,7 @@ describe("runPreparedReply media-only handling", () => {
       timestamp: 1_710_000_000_000,
     });
     expect(updateAmbientTranscriptWatermarkMock).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-session-store.json",
+      storePath: "/tmp/operator-session-store.json",
       sessionKey: "session-key",
       key: '["telegram","","-100123",""]',
       messageId: "35676",
@@ -3617,7 +3617,7 @@ describe("runPreparedReply media-only handling", () => {
     const call = requireRunReplyAgentCall();
     expect(call?.followupRun.run.senderIsOwner).toBe(true);
     expect(call?.followupRun.userTurnTranscriptRecorder?.message).toMatchObject({
-      __openclaw: { senderIsOwner: true },
+      __operator: { senderIsOwner: true },
     });
   });
 

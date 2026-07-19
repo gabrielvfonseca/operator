@@ -2,10 +2,10 @@ import Foundation
 import OSLog
 
 private let chatSessionActionsLogger = Logger(
-    subsystem: "ai.openclaw",
-    category: "OpenClawChat")
+    subsystem: "ai.operator",
+    category: "OperatorChat")
 
-extension OpenClawChatViewModel {
+extension OperatorChatViewModel {
     public func refreshSessions(limit: Int? = nil) {
         let context = self.currentSessionSnapshot()
         Task { await self.fetchSessions(limit: limit, sessionSnapshot: context) }
@@ -45,7 +45,7 @@ extension OpenClawChatViewModel {
     /// to locally filtering the cached active list when the gateway is
     /// unreachable; archived rows exist only server-side, so archived mode
     /// returns empty offline.
-    public func fetchSessionList(search: String?, archived: Bool) async -> [OpenClawChatSessionEntry] {
+    public func fetchSessionList(search: String?, archived: Bool) async -> [OperatorChatSessionEntry] {
         let normalizedSearch = search?.trimmingCharacters(in: .whitespacesAndNewlines)
         let query = normalizedSearch?.isEmpty == false ? normalizedSearch : nil
         do {
@@ -53,7 +53,7 @@ extension OpenClawChatViewModel {
                 limit: Self.sessionListFetchLimit,
                 search: query,
                 archived: archived)
-            return OpenClawChatSessionListOrganizer.organize(res.sessions)
+            return OperatorChatSessionListOrganizer.organize(res.sessions)
         } catch {
             // A superseded (cancelled) fetch must not produce fallback rows;
             // the newer task owns the scoped list. Callers also guard on
@@ -61,7 +61,7 @@ extension OpenClawChatViewModel {
             guard !(error is CancellationError), !Task.isCancelled else { return [] }
             guard !archived else { return [] }
             guard let query else { return self.sessions }
-            return OpenClawChatSessionListOrganizer.filter(self.sessions, search: query)
+            return OperatorChatSessionListOrganizer.filter(self.sessions, search: query)
         }
     }
 
@@ -97,7 +97,7 @@ extension OpenClawChatViewModel {
         if let index = self.sessions.firstIndex(where: { $0.key == key }) {
             self.sessions[index].pinned = pinned
             self.sessions[index].pinnedAt = pinned ? Date().timeIntervalSince1970 * 1000 : nil
-            self.sessions = OpenClawChatSessionListOrganizer.organize(self.sessions)
+            self.sessions = OperatorChatSessionListOrganizer.organize(self.sessions)
         }
         Task {
             do {

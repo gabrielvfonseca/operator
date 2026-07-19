@@ -2,14 +2,14 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { webhook } from "@line/bot-sdk";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { getSessionBindingService } from "openclaw/plugin-sdk/conversation-runtime";
-import { testing as sessionBindingTesting } from "openclaw/plugin-sdk/conversation-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { getSessionBindingService } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { testing as sessionBindingTesting } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   createTestRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { webhook } from "@line/bot-sdk";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { lineBindingsAdapter } from "./bindings.js";
 import { buildLineMessageContext, buildLinePostbackContext } from "./bot-message-context.js";
@@ -97,7 +97,7 @@ describe("buildLineMessageContext", () => {
       ]),
     );
     sessionBindingTesting.resetSessionBindingAdaptersForTests();
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-line-context-"));
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-line-context-"));
     storePath = path.join(tmpDir, "sessions.json");
     cfg = { session: { store: storePath } };
   });

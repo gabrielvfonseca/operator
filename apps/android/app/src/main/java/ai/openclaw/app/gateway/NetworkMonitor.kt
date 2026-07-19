@@ -1,4 +1,4 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -21,7 +21,7 @@ internal class NetworkMonitor(
   private val onValidatedNetworkAvailable: () -> Unit,
 ) {
   private val connectivity = context.getSystemService(ConnectivityManager::class.java)
-  private val logTag = "OpenClaw/NetworkMonitor"
+  private val logTag = "Operator/NetworkMonitor"
 
   // Tracks the last emitted transport state so capability churn (e.g. signal strength
   // changes) does not re-fire the reconnect path. Only a lost->validated transition

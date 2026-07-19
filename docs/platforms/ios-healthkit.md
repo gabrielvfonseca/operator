@@ -9,7 +9,7 @@ title: "HealthKit summaries"
 
 # HealthKit summaries
 
-OpenClaw can request a read-only summary of the current calendar day from a
+Operator can request a read-only summary of the current calendar day from a
 connected iPhone node. The iPhone computes the aggregate on-device and returns
 only steps, sleep duration, average resting heart rate, and workout
 count/duration. Individual HealthKit samples, sources, metadata, clinical
@@ -20,12 +20,12 @@ authorization on the Gateway.
 
 ## Requirements
 
-- An iPhone running the OpenClaw iOS app where HealthKit reports health data as
+- An iPhone running the Operator iOS app where HealthKit reports health data as
   available.
 - A connected and approved iPhone node. See [iOS app setup](/platforms/ios).
 - A current Gateway that can reach the iPhone node.
 - Readable Health data for any metrics you expect to see. An Apple Watch can
-  contribute data to the iPhone Health store, but the OpenClaw watchOS app is
+  contribute data to the iPhone Health store, but the Operator watchOS app is
   not required for HealthKit summaries.
 
 ## Enable access
@@ -33,7 +33,7 @@ authorization on the Gateway.
 ### 1. Authorize the Gateway command
 
 Add `health.summary` to the existing `gateway.nodes.allowCommands` array in
-`openclaw.json`. Preserve any commands already present:
+`operator.json`. Preserve any commands already present:
 
 ```json5
 {
@@ -55,25 +55,25 @@ In the iOS app:
 
 1. Open **Settings -> Permissions -> Privacy & Access -> Health Summaries**.
 2. Tap **Enable & Share Summaries**.
-3. Read the disclosure, then choose which Health categories OpenClaw may read
+3. Read the disclosure, then choose which Health categories Operator may read
    in Apple's permission sheet.
 
-The switch records your explicit OpenClaw sharing choice. It does not claim
+The switch records your explicit Operator sharing choice. It does not claim
 that Apple granted every requested category.
 
 Enabling Health summaries adds `health.summary` to the node's declared command
 surface. Approve the resulting node pairing update:
 
 ```bash
-openclaw nodes pending
-openclaw nodes approve <requestId>
+operator nodes pending
+operator nodes approve <requestId>
 ```
 
 Then verify that the connected iPhone exposes an effective `health.summary`
 command:
 
 ```bash
-openclaw nodes describe --node "<iPhone name>"
+operator nodes describe --node "<iPhone name>"
 ```
 
 ## Request today's summary
@@ -82,7 +82,7 @@ Only `today` is supported. It covers local midnight through the request time,
 using the iPhone's current calendar and time zone.
 
 ```bash
-openclaw nodes invoke \
+operator nodes invoke \
   --node "<iPhone name>" \
   --command health.summary \
   --params '{"period":"today"}' \
@@ -124,12 +124,12 @@ calculated, so the same minute is not counted twice.
 - The requested aggregate leaves the iPhone through your Gateway. When an agent
   requests it, the aggregate reaches the configured AI provider and may remain
   in chat history. A direct CLI invocation returns it to the CLI operator.
-- OpenClaw requests read access only. It cannot add or modify Health data.
-- OpenClaw reads HealthKit only when `health.summary` is invoked. There is no
+- Operator requests read access only. It cannot add or modify Health data.
+- Operator reads HealthKit only when `health.summary` is invoked. There is no
   background health ingestion.
 - HealthKit deliberately does not reveal whether read access was denied. A
   missing metric can mean denied access, no matching samples, or an unavailable
-  data type. OpenClaw cannot distinguish those cases.
+  data type. Operator cannot distinguish those cases.
 - The summary is for personal health and fitness context, not diagnosis or
   medical advice.
 
@@ -143,8 +143,8 @@ surface. You can also remove `health.summary` from
 ### Command is not declared by the node
 
 Confirm Health summaries are enabled in the iOS app and the iPhone is connected.
-Run `openclaw nodes pending` and approve any capability update, then inspect
-`openclaw nodes describe --node "<iPhone name>"` again.
+Run `operator nodes pending` and approve any capability update, then inspect
+`operator nodes describe --node "<iPhone name>"` again.
 
 ### Command requires explicit opt-in
 
@@ -159,7 +159,7 @@ The app-side sharing switch is off. Enable **Health Summaries** under
 ### Summary succeeds but metrics are missing
 
 Open Apple's Health app and confirm that data exists for today. Review
-OpenClaw's access in Apple's Health settings, but do not treat an empty result
+Operator's access in Apple's Health settings, but do not treat an empty result
 as proof that access was denied: HealthKit intentionally hides that distinction.
 
 ### Older ranges fail

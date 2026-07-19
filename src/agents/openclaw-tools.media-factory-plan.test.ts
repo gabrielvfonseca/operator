@@ -1,7 +1,7 @@
 // Verifies optional media/PDF tool factory planning from plugin metadata and auth.
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   clearCurrentPluginMetadataSnapshot,
   getCurrentPluginMetadataSnapshot,
@@ -61,7 +61,7 @@ function createPlugin(params: {
     origin: params.origin ?? "bundled",
     rootDir: `/plugins/${params.id}`,
     source: `/plugins/${params.id}/index.js`,
-    manifestPath: `/plugins/${params.id}/openclaw.plugin.json`,
+    manifestPath: `/plugins/${params.id}/operator.plugin.json`,
     channels: [],
     providers: [],
     cliBackends: [],
@@ -328,7 +328,7 @@ describe("optional media tool factory planning", () => {
     const toolNames = (
       await createOperatorToolsForTest({
         config,
-        agentDir: "/tmp/openclaw-agent-main",
+        agentDir: "/tmp/operator-agent-main",
         authProfileStore: createAuthStore(),
         pluginToolAllowlist: allowlistFromAlsoAllowOnlyPolicy,
       })
@@ -550,7 +550,7 @@ describe("optional media tool factory planning", () => {
 
     const tools = await createOperatorToolsForTest({
       config,
-      agentDir: "/tmp/openclaw-agent-main",
+      agentDir: "/tmp/operator-agent-main",
       authProfileStore: createAuthStore(["anthropic"]),
     });
 
@@ -872,7 +872,7 @@ describe("optional media tool factory planning", () => {
         providers: {
           vault: {
             source: "file",
-            path: "/tmp/openclaw-secrets.json",
+            path: "/tmp/operator-secrets.json",
             mode: "json",
           },
         },
@@ -920,7 +920,7 @@ describe("optional media tool factory planning", () => {
 
   it("does not register the image tool without cheap vision availability evidence", async () => {
     const config: OperatorConfig = {};
-    const workspaceDir = "/tmp/openclaw-workspace";
+    const workspaceDir = "/tmp/operator-workspace";
     vi.stubEnv("MEDIA_OWNER_API_KEY", "");
     installSnapshot(
       config,
@@ -939,7 +939,7 @@ describe("optional media tool factory planning", () => {
       (
         await createOperatorToolsForTest({
           config,
-          agentDir: "/tmp/openclaw-agent",
+          agentDir: "/tmp/operator-agent",
           workspaceDir,
           authProfileStore: createAuthStore(),
           disablePluginTools: true,

@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 
 const require = createRequire(import.meta.url);
@@ -13,7 +13,7 @@ const rootSdk = require(rootAliasPath) as Record<string, unknown>;
 const rootAliasSource = fs.readFileSync(rootAliasPath, "utf-8");
 const compatPath = fileURLToPath(new URL("../../plugin-sdk/compat.ts", import.meta.url));
 const packageJsonPath = fileURLToPath(new URL("../../../package.json", import.meta.url));
-const diagnosticEventsStateKey = Symbol.for("openclaw.diagnosticEvents.state.v1");
+const diagnosticEventsStateKey = Symbol.for("operator.diagnosticEvents.state.v1");
 const legacyRootExportNames = [
   "registerContextEngine",
   "buildMemorySystemPromptAddition",
@@ -211,7 +211,7 @@ function ensureDiagnosticEventsStateFixture(
   }
   const state = vm.runInNewContext(
     `({
-      marker: Symbol.for("openclaw.diagnosticEvents.state.v1"),
+      marker: Symbol.for("operator.diagnosticEvents.state.v1"),
       enabled: true,
       seq: 0,
       listeners: new Set(),
@@ -360,7 +360,13 @@ describe("plugin-sdk root alias", () => {
     expect(lazyModule.jitiLoadCalls).toBe(1);
     expect(lazyModule.createJitiOptions.at(-1)?.tryNative).toBe(false);
     expect(lazyModule.createJitiOptions.at(-1)?.fsCache).toBe(
-      path.join("/tmp/openclaw-root-alias-test", "jiti", "openclaw", "3.4.5", "12345-678"),
+      path.join(
+        "/tmp/openclaw-root-alias-test",
+        "jiti",
+        "@gabrielvfonseca/operator",
+        "3.4.5",
+        "12345-678",
+      ),
     );
     expect((lazyRootSdk.slowHelper as () => string)()).toBe("loaded");
     expect(Object.keys(lazyRootSdk)).toContain("slowHelper");
@@ -377,7 +383,13 @@ describe("plugin-sdk root alias", () => {
 
     expect("slowHelper" in lazyModule.moduleExports).toBe(true);
     expect(lazyModule.createJitiOptions.at(-1)?.fsCache).toBe(
-      path.join("/tmp/openclaw-root-alias-fallback", "jiti", "openclaw", "3.4.5", "12345-678"),
+      path.join(
+        "/tmp/openclaw-root-alias-fallback",
+        "jiti",
+        "@gabrielvfonseca/operator",
+        "3.4.5",
+        "12345-678",
+      ),
     );
   });
 
@@ -481,11 +493,11 @@ describe("plugin-sdk root alias", () => {
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
     expect(aliasMap["openclaw/plugin-sdk"]).toBe(rootAliasPath);
-    expect(aliasMap["@operator/plugin-sdk"]).toBe(rootAliasPath);
+    expect(aliasMap["@gabrielvfonseca/plugin-sdk"]).toBe(rootAliasPath);
     expect(aliasMap["openclaw/plugin-sdk/group-access"]).toContain(
       path.join("src", "plugin-sdk", "group-access.ts"),
     );
-    expect(aliasMap["@operator/plugin-sdk/group-access"]).toContain(
+    expect(aliasMap["@gabrielvfonseca/plugin-sdk/group-access"]).toContain(
       path.join("src", "plugin-sdk", "group-access.ts"),
     );
   });
@@ -502,7 +514,7 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["@operator/llm-core"]).toBe(sourceLlmCorePath);
+    expect(aliasMap["@gabrielvfonseca/llm-core"]).toBe(sourceLlmCorePath);
   });
 
   it("keeps AI runtime transitive package imports on the source graph", () => {
@@ -529,15 +541,15 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["@operator/ai/internal/retry-after"]).toBe(sourcePaths.aiRetryAfter);
-    expect(aliasMap["@operator/ai/internal/runtime"]).toBe(sourcePaths.aiRuntime);
-    expect(aliasMap["@operator/markdown-core/code-spans"]).toBe(sourcePaths.codeSpans);
-    expect(aliasMap["@operator/markdown-core/fences"]).toBe(sourcePaths.fences);
-    expect(aliasMap["@operator/normalization-core/number-coercion"]).toBe(
+    expect(aliasMap["@gabrielvfonseca/ai/internal/retry-after"]).toBe(sourcePaths.aiRetryAfter);
+    expect(aliasMap["@gabrielvfonseca/ai/internal/runtime"]).toBe(sourcePaths.aiRuntime);
+    expect(aliasMap["@gabrielvfonseca/markdown-core/code-spans"]).toBe(sourcePaths.codeSpans);
+    expect(aliasMap["@gabrielvfonseca/markdown-core/fences"]).toBe(sourcePaths.fences);
+    expect(aliasMap["@gabrielvfonseca/normalization-core/number-coercion"]).toBe(
       sourcePaths.numberCoercion,
     );
-    expect(aliasMap["@operator/normalization-core/result"]).toBe(sourcePaths.result);
-    expect(aliasMap["@operator/retry"]).toBe(sourcePaths.retry);
+    expect(aliasMap["@gabrielvfonseca/normalization-core/result"]).toBe(sourcePaths.result);
+    expect(aliasMap["@gabrielvfonseca/retry"]).toBe(sourcePaths.retry);
   });
 
   it("keeps bootstrap plugin-sdk aliases deterministic and ignores unsafe subpaths", () => {
@@ -559,48 +571,48 @@ describe("plugin-sdk root alias", () => {
     );
     expect(aliasKeys).toEqual([
       "openclaw/plugin-sdk/alpha",
-      "@operator/plugin-sdk/alpha",
+      "@gabrielvfonseca/plugin-sdk/alpha",
       "openclaw/plugin-sdk/group-access",
-      "@operator/plugin-sdk/group-access",
+      "@gabrielvfonseca/plugin-sdk/group-access",
       "openclaw/plugin-sdk/zeta",
-      "@operator/plugin-sdk/zeta",
-      "@operator/llm-core",
-      "@operator/llm-core/diagnostics",
-      "@operator/llm-core/event-stream",
-      "@operator/llm-core/types",
-      "@operator/llm-core/validation",
-      "@operator/ai",
-      "@operator/ai/providers",
-      "@operator/ai/diagnostics",
-      "@operator/ai/event-stream",
-      "@operator/ai/types",
-      "@operator/ai/validation",
-      "@operator/ai/internal/anthropic",
-      "@operator/ai/internal/openai",
-      "@operator/ai/internal/retry-after",
-      "@operator/ai/internal/runtime",
-      "@operator/ai/internal/shared",
-      "@operator/markdown-core",
-      "@operator/markdown-core/code-spans",
-      "@operator/markdown-core/fences",
-      "@operator/markdown-core/frontmatter",
-      "@operator/markdown-core/ir",
-      "@operator/markdown-core/render",
-      "@operator/markdown-core/render-aware-chunking",
-      "@operator/markdown-core/tables",
-      "@operator/markdown-core/types",
-      "@operator/normalization-core",
-      "@operator/normalization-core/boolean-coercion",
-      "@operator/normalization-core/error-coercion",
-      "@operator/normalization-core/number-coercion",
-      "@operator/normalization-core/record-coerce",
-      "@operator/normalization-core/result",
-      "@operator/normalization-core/string-coerce",
-      "@operator/normalization-core/string-normalization",
-      "@operator/normalization-core/utf16-slice",
-      "@operator/retry",
+      "@gabrielvfonseca/plugin-sdk/zeta",
+      "@gabrielvfonseca/llm-core",
+      "@gabrielvfonseca/llm-core/diagnostics",
+      "@gabrielvfonseca/llm-core/event-stream",
+      "@gabrielvfonseca/llm-core/types",
+      "@gabrielvfonseca/llm-core/validation",
+      "@gabrielvfonseca/ai",
+      "@gabrielvfonseca/ai/providers",
+      "@gabrielvfonseca/ai/diagnostics",
+      "@gabrielvfonseca/ai/event-stream",
+      "@gabrielvfonseca/ai/types",
+      "@gabrielvfonseca/ai/validation",
+      "@gabrielvfonseca/ai/internal/anthropic",
+      "@gabrielvfonseca/ai/internal/openai",
+      "@gabrielvfonseca/ai/internal/retry-after",
+      "@gabrielvfonseca/ai/internal/runtime",
+      "@gabrielvfonseca/ai/internal/shared",
+      "@gabrielvfonseca/markdown-core",
+      "@gabrielvfonseca/markdown-core/code-spans",
+      "@gabrielvfonseca/markdown-core/fences",
+      "@gabrielvfonseca/markdown-core/frontmatter",
+      "@gabrielvfonseca/markdown-core/ir",
+      "@gabrielvfonseca/markdown-core/render",
+      "@gabrielvfonseca/markdown-core/render-aware-chunking",
+      "@gabrielvfonseca/markdown-core/tables",
+      "@gabrielvfonseca/markdown-core/types",
+      "@gabrielvfonseca/normalization-core",
+      "@gabrielvfonseca/normalization-core/boolean-coercion",
+      "@gabrielvfonseca/normalization-core/error-coercion",
+      "@gabrielvfonseca/normalization-core/number-coercion",
+      "@gabrielvfonseca/normalization-core/record-coerce",
+      "@gabrielvfonseca/normalization-core/result",
+      "@gabrielvfonseca/normalization-core/string-coerce",
+      "@gabrielvfonseca/normalization-core/string-normalization",
+      "@gabrielvfonseca/normalization-core/utf16-slice",
+      "@gabrielvfonseca/retry",
       "openclaw/plugin-sdk",
-      "@operator/plugin-sdk",
+      "@gabrielvfonseca/plugin-sdk",
     ]);
   });
 
@@ -625,11 +637,11 @@ describe("plugin-sdk root alias", () => {
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
     expect(aliasMap["openclaw/plugin-sdk/qa-lab"]).toBe(qaLabPath);
-    expect(aliasMap["@operator/plugin-sdk/qa-lab"]).toBe(qaLabPath);
+    expect(aliasMap["@gabrielvfonseca/plugin-sdk/qa-lab"]).toBe(qaLabPath);
     expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/../escape");
     expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/nested/path");
     expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/ssrf-runtime-internal");
-    expect(aliasMap).not.toHaveProperty("@operator/plugin-sdk/ssrf-runtime-internal");
+    expect(aliasMap).not.toHaveProperty("@gabrielvfonseca/plugin-sdk/ssrf-runtime-internal");
   });
 
   it("keeps non-QA private local-only plugin-sdk subpaths out of the CJS root alias", () => {
@@ -652,7 +664,7 @@ describe("plugin-sdk root alias", () => {
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
     expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/codex-mcp-projection");
-    expect(aliasMap).not.toHaveProperty("@operator/plugin-sdk/codex-mcp-projection");
+    expect(aliasMap).not.toHaveProperty("@gabrielvfonseca/plugin-sdk/codex-mcp-projection");
     expect(aliasMap).not.toHaveProperty("openclaw/plugin-sdk/qa-runtime");
   });
 
@@ -673,7 +685,7 @@ describe("plugin-sdk root alias", () => {
     expect(aliasMap["openclaw/plugin-sdk/channel-runtime"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "channel-runtime.mts"),
     );
-    expect(aliasMap["@operator/plugin-sdk/channel-runtime"]).toBe(
+    expect(aliasMap["@gabrielvfonseca/plugin-sdk/channel-runtime"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "channel-runtime.mts"),
     );
   });
@@ -850,7 +862,7 @@ describe("plugin-sdk root alias", () => {
     )((event) => {
       seen.push(event.type);
     });
-    const state = lazyModule.globalContext[Symbol.for("openclaw.diagnosticEvents.state.v1")] as {
+    const state = lazyModule.globalContext[Symbol.for("operator.diagnosticEvents.state.v1")] as {
       listeners: Set<(event: { type: string }, metadata: { trusted: boolean }) => void>;
     };
 

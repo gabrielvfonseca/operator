@@ -1,6 +1,6 @@
 // Outbound bridge tests cover channel message handoff from core to outbound adapters.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createChannelMessageAdapterFromOutbound } from "./outbound-bridge.js";
 import type {
   ChannelMessageSendPayloadContext,

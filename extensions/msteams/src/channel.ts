@@ -1,33 +1,33 @@
 // Msteams plugin module implements channel behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
-import { createTopLevelChannelConfigAdapter } from "openclaw/plugin-sdk/channel-config-helpers";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { createTopLevelChannelConfigAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageToolDiscovery,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   createChannelMessageAdapterFromOutbound,
   createRuntimeOutboundDelegates,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createPairingPrefixStripper } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
 import {
   createAllowlistProviderGroupPolicyWarningCollector,
   projectConfigWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
   listDirectoryEntriesFromSources,
-} from "openclaw/plugin-sdk/directory-runtime";
-import { normalizeMessagePresentation } from "openclaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import { createComputedAccountStatusAdapter } from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { normalizeMessagePresentation } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { createComputedAccountStatusAdapter } from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
 import type {
   ChannelMessageActionName,

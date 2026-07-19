@@ -1,10 +1,10 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.NotificationBurstLimiter
-import ai.openclaw.app.SecurePrefs
-import ai.openclaw.app.allowsPackage
-import ai.openclaw.app.isWithinQuietHours
-import ai.openclaw.app.takeUtf16Safe
+import ai.operator.app.NotificationBurstLimiter
+import ai.operator.app.SecurePrefs
+import ai.operator.app.allowsPackage
+import ai.operator.app.isWithinQuietHours
+import ai.operator.app.takeUtf16Safe
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.RemoteInput
@@ -321,7 +321,7 @@ class DeviceNotificationListenerService : NotificationListenerService() {
       nodeEventSink = sink
     }
 
-    private fun recentPackagesPrefs(context: Context) = context.applicationContext.getSharedPreferences("openclaw.secure", Context.MODE_PRIVATE)
+    private fun recentPackagesPrefs(context: Context) = context.applicationContext.getSharedPreferences("operator.secure", Context.MODE_PRIVATE)
 
     private fun migrateLegacyRecentPackagesIfNeeded(context: Context) {
       val prefs = recentPackagesPrefs(context)

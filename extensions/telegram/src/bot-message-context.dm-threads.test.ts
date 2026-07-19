@@ -37,7 +37,7 @@ const { inboundBodyResult, recordInboundSessionMock, resolveStorePathMock } = vi
   return {
     inboundBodyResult: { value: createInboundBodyResult(), reset: createInboundBodyResult },
     recordInboundSessionMock: vi.fn<RecordInboundSessionFn>(async () => undefined),
-    resolveStorePathMock: vi.fn<ResolveStorePathFn>(() => "/tmp/openclaw-session-store.json"),
+    resolveStorePathMock: vi.fn<ResolveStorePathFn>(() => "/tmp/operator-session-store.json"),
   };
 });
 
@@ -74,7 +74,7 @@ afterEach(() => {
   resetTopicNameCacheForTest();
   recordInboundSessionMock.mockClear();
   resolveStorePathMock.mockReset();
-  resolveStorePathMock.mockReturnValue("/tmp/openclaw-session-store.json");
+  resolveStorePathMock.mockReturnValue("/tmp/operator-session-store.json");
 });
 
 describe("buildTelegramMessageContext dm thread sessions", () => {
@@ -339,7 +339,7 @@ describe("buildTelegramMessageContext group sessions without forum", () => {
   });
 
   it("reloads topic name from disk after cache reset", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-telegram-topic-name-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-telegram-topic-name-"));
     const sessionStorePath = path.join(tempDir, "sessions.json");
     const buildPersistedContext = async (message: Record<string, unknown>) =>
       await buildTelegramMessageContextForTest({
@@ -384,7 +384,7 @@ describe("buildTelegramMessageContext group sessions without forum", () => {
   });
 
   it("persists topic names through the default session runtime path", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-telegram-topic-name-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-telegram-topic-name-"));
     const sessionStorePath = path.join(tempDir, "sessions.json");
     resolveStorePathMock.mockReturnValue(sessionStorePath);
 

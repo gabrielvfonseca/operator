@@ -6,9 +6,9 @@ import {
   findNormalizedProviderValue as findNormalizedProviderValueCore,
   normalizeProviderId as normalizeProviderIdCore,
   normalizeProviderIdForAuth as normalizeProviderIdForAuthCore,
-} from "@operator/model-catalog-core/provider-id";
-import { stripSelfProviderModelPrefix } from "@operator/model-catalog-core/provider-model-id-normalization";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { stripSelfProviderModelPrefix } from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import { modelKey as sharedModelKey, normalizeStaticProviderModelId } from "./model-ref-shared.js";
 import { normalizeProviderModelIdWithRuntime } from "./provider-model-normalization.runtime.js";

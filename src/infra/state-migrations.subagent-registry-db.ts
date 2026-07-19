@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,

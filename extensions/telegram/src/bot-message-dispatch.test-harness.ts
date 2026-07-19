@@ -1,11 +1,11 @@
-import { expectDefined } from "@operator/normalization-core";
-// Telegram tests cover bot message dispatch plugin behavior.
-import type { Bot } from "grammy";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   createPluginStateKeyedStoreForTests,
   createPluginStateSyncKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+// Telegram tests cover bot message dispatch plugin behavior.
+import type { Bot } from "grammy";
 import { afterEach, beforeAll, beforeEach, describe, expect, vi } from "vitest";
 import { resolveAutoTopicLabelConfig as resolveAutoTopicLabelConfigRuntime } from "./auto-topic-label-config.js";
 import type { TelegramBotDeps } from "./bot-deps.js";
@@ -108,7 +108,7 @@ const resolveDefaultModelForAgentHoisted = vi.hoisted(() =>
   vi.fn(() => ({ provider: "openai", model: "gpt-test" })),
 );
 const getAgentScopedMediaLocalRootsHoisted = vi.hoisted(() =>
-  vi.fn((_cfg: unknown, agentId: string) => [`/tmp/.openclaw/workspace-${agentId}`]),
+  vi.fn((_cfg: unknown, agentId: string) => [`/tmp/.operator/workspace-${agentId}`]),
 );
 const resolveChunkModeHoisted = vi.hoisted(() => vi.fn(() => undefined));
 const resolveMarkdownTableModeHoisted = vi.hoisted(() => vi.fn(() => "preserve"));

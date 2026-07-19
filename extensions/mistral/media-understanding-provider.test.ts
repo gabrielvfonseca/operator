@@ -2,7 +2,7 @@
 import {
   createRequestCaptureJsonFetch,
   installPinnedHostnameTestHooks,
-} from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { mistralMediaUnderstandingProvider } from "./media-understanding-provider.js";
 

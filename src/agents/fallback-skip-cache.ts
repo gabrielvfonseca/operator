@@ -14,7 +14,7 @@
  * same `sessionId` shares the same skip set.
  */
 
-import { parseStrictNonNegativeInteger } from "@operator/normalization-core/number-coercion";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { modelKey } from "./model-selection-normalize.js";
 
 /**
@@ -68,8 +68,8 @@ const GLOBAL_PRUNE_INTERVAL_MS = 5_000;
 
 function getState(): SkipCacheState {
   const globalStore = globalThis as typeof globalThis & {
-    operatorFallbackSkipCache?: SkipBySession;
-    operatorFallbackSkipCacheState?: SkipCacheState;
+    openclawFallbackSkipCache?: SkipBySession;
+    openclawFallbackSkipCacheState?: SkipCacheState;
   };
   if (!globalStore.operatorFallbackSkipCacheState) {
     // Reuse the existing buckets map if a prior version of this module already

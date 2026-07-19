@@ -2,7 +2,7 @@
 import {
   applyAgentDefaultModelPrimary,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 
 export const OPENROUTER_DEFAULT_MODEL_REF = "openrouter/auto";
 

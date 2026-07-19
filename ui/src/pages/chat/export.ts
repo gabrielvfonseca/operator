@@ -1,5 +1,5 @@
 // Control UI chat module implements export behavior.
-import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+import { timestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { extractTextCached } from "../../lib/chat/message-extract.ts";
 
 /**

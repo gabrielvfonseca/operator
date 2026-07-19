@@ -5,11 +5,14 @@ import {
   listAgentIds,
   resolveAgentDir,
   resolveSessionAgentIds,
-} from "openclaw/plugin-sdk/agent-runtime";
-import { withFileLock, type FileLockOptions } from "openclaw/plugin-sdk/file-lock";
-import type { PluginStateKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import type { PluginDoctorStateMigration } from "openclaw/plugin-sdk/runtime-doctor";
-import { patchSessionEntry, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { withFileLock, type FileLockOptions } from "@gabrielvfonseca/operator/plugin-sdk/file-lock";
+import type { PluginStateKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import type { PluginDoctorStateMigration } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import {
+  patchSessionEntry,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import {
   CODEX_APP_SERVER_BINDING_MAX_ENTRIES,
   CODEX_APP_SERVER_BINDING_NAMESPACE,

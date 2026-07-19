@@ -17,7 +17,7 @@ import {
 import { WORKSPACE_TEMPLATE_PACK_PATHS } from "./lib/workspace-bootstrap-smoke.mjs";
 
 function usage() {
-  return "Usage: node scripts/check-openclaw-package-tarball.mjs [--require-bundled-workspace-deps] <openclaw.tgz>";
+  return "Usage: node scripts/check-operator-package-tarball.mjs [--require-bundled-workspace-deps] <operator.tgz>";
 }
 
 function fail(message) {
@@ -39,10 +39,10 @@ function parseArgs(argv) {
       continue;
     }
     if (arg.startsWith("-")) {
-      throw new Error(`Unknown OpenClaw package tarball check option: ${arg}`);
+      throw new Error(`Unknown Operator package tarball check option: ${arg}`);
     }
     if (tarball) {
-      throw new Error(`Unexpected OpenClaw package tarball check argument: ${arg}`);
+      throw new Error(`Unexpected Operator package tarball check argument: ${arg}`);
     }
     tarball = arg;
   }
@@ -65,7 +65,7 @@ if (cliArgs.help) {
 
 const { tarball } = cliArgs;
 if (!fs.existsSync(tarball)) {
-  fail(`OpenClaw package tarball does not exist: ${tarball}`);
+  fail(`Operator package tarball does not exist: ${tarball}`);
 }
 
 const PACKAGE_DEPENDENCY_SECTIONS = [
@@ -74,18 +74,18 @@ const PACKAGE_DEPENDENCY_SECTIONS = [
   "peerDependencies",
   "devDependencies",
 ];
-const REQUIRED_BUNDLED_WORKSPACE_DEPENDENCIES = ["@operator/ai"];
+const REQUIRED_BUNDLED_WORKSPACE_DEPENDENCIES = ["@gabrielvfonseca/ai"];
 // Strict Docker artifacts bundle this private runtime rather than resolving it
 // from npm. Keep the concrete load-bearing entries explicit instead of
 // reimplementing Node's conditional package-exports resolver here.
 const REQUIRED_BUNDLED_WORKSPACE_RUNTIME_ENTRIES = new Map([
   [
-    "@operator/ai",
+    "@gabrielvfonseca/ai",
     [
-      { specifier: "@operator/ai", entry: "dist/index.mjs" },
-      { specifier: "@operator/ai/providers", entry: "dist/providers.mjs" },
+      { specifier: "@gabrielvfonseca/ai", entry: "dist/index.mjs" },
+      { specifier: "@gabrielvfonseca/ai/providers", entry: "dist/providers.mjs" },
       {
-        specifier: "@operator/ai/internal/runtime",
+        specifier: "@gabrielvfonseca/ai/internal/runtime",
         entry: "dist/internal/runtime.mjs",
       },
     ],
@@ -236,7 +236,7 @@ function collectRequiredBundledWorkspaceDependencyErrors(
     }
     if (!bundledDependencies.has(name)) {
       errors.push(
-        `package.json dependencies.${name} must be listed in bundleDependencies because it is private to the OpenClaw workspace`,
+        `package.json dependencies.${name} must be listed in bundleDependencies because it is private to the Operator workspace`,
       );
     }
     if (!entrySet.has(`node_modules/${name}/package.json`)) {
@@ -257,7 +257,7 @@ function collectRequiredBundledWorkspaceDependencyErrors(
   return errors;
 }
 
-const phaseTimingsEnabled = process.env.OPENCLAW_PACKAGE_TARBALL_CHECK_TIMINGS !== "0";
+const phaseTimingsEnabled = process.env.OPERATOR_PACKAGE_TARBALL_CHECK_TIMINGS !== "0";
 function runPhase(label, action) {
   const startedAt = performance.now();
   try {
@@ -265,7 +265,7 @@ function runPhase(label, action) {
   } finally {
     if (phaseTimingsEnabled) {
       const durationMs = Math.round(performance.now() - startedAt);
-      console.error(`check-openclaw-package-tarball: ${label} completed in ${durationMs}ms`);
+      console.error(`check-operator-package-tarball: ${label} completed in ${durationMs}ms`);
     }
   }
 }
@@ -280,7 +280,7 @@ if (list.status !== 0) {
   fail(`tar -tf failed for ${tarball}: ${list.stderr || list.status}`);
 }
 
-const extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-package-tarball-"));
+const extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-package-tarball-"));
 try {
   const extract = runPhase("tar extract", () =>
     spawnSync("tar", ["-xf", tarball, "-C", extractDir], {
@@ -306,7 +306,7 @@ const entrySet = new Set(normalized);
 const errors = [];
 const warnings = [];
 const REQUIRED_TARBALL_ENTRIES = ["dist/control-ui/index.html", ...WORKSPACE_TEMPLATE_PACK_PATHS];
-const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/openclaw-install-guard";
+const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/operator-install-guard";
 const REQUIRED_TARBALL_ENTRY_PREFIXES = ["dist/control-ui/assets/"];
 const LEGACY_PACKAGE_ACCEPTANCE_COMPAT_MAX = { year: 2026, month: 4, day: 25 };
 const LEGACY_LOCAL_BUILD_METADATA_COMPAT_MAX = { year: 2026, month: 4, day: 26 };
@@ -467,7 +467,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
   try {
     const shrinkwrap = JSON.parse(readTarEntry("npm-shrinkwrap.json"));
     const rootPackage = shrinkwrap.packages?.[""];
-    if (shrinkwrap.name !== "openclaw") {
+    if (shrinkwrap.name !== "@gabrielvfonseca/operator") {
       errors.push("npm-shrinkwrap.json root name must be openclaw");
     }
     if (shrinkwrap.version !== packageVersion) {
@@ -475,7 +475,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
         `npm-shrinkwrap.json version ${shrinkwrap.version ?? "<missing>"} does not match package.json version ${packageVersion || "<missing>"}`,
       );
     }
-    if (!rootPackage || rootPackage.name !== "openclaw") {
+    if (!rootPackage || rootPackage.name !== "@gabrielvfonseca/operator") {
       errors.push("npm-shrinkwrap.json packages root must name openclaw");
     }
     if (rootPackage?.version !== packageVersion) {
@@ -583,11 +583,11 @@ errors.push(
 
 if (errors.length > 0) {
   fs.rmSync(extractDir, { recursive: true, force: true });
-  fail(`OpenClaw package tarball integrity failed:\n${errors.join("\n")}`);
+  fail(`Operator package tarball integrity failed:\n${errors.join("\n")}`);
 }
 
 for (const warning of warnings) {
-  console.warn(`OpenClaw package tarball integrity warning: ${warning}`);
+  console.warn(`Operator package tarball integrity warning: ${warning}`);
 }
 fs.rmSync(extractDir, { recursive: true, force: true });
-console.log("OpenClaw package tarball integrity passed.");
+console.log("Operator package tarball integrity passed.");

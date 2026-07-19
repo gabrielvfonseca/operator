@@ -1,8 +1,8 @@
 // Imported by openai-transport-stream.test.ts to keep its mocked suite in one Vitest module graph.
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
-import { expectDefined } from "@operator/normalization-core";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import OpenAI from "openai";
-import type { Model } from "operator/plugin-sdk/llm";
 import { describe, expect, it, vi } from "vitest";
 import { buildOpenAICompletionsParams } from "./openai-transport-stream.js";
 import {
@@ -351,7 +351,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:oauth",
@@ -572,7 +572,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:oauth",
@@ -641,7 +641,7 @@ describe("openai transport stream", () => {
                   id: "rs_prior",
                   encrypted_content: "ciphertext",
                 }),
-                operatorReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
+                openclawReasoningReplay: testing.buildOpenAIResponsesReasoningReplayMetadata(
                   model,
                   {
                     authProfileId: "openai:old-oauth",

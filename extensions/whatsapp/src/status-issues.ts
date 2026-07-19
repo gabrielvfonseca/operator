@@ -2,13 +2,13 @@
 import type {
   ChannelAccountSnapshot,
   ChannelStatusIssue,
-} from "openclaw/plugin-sdk/channel-contract";
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
 import {
   asString,
   collectIssuesForEnabledAccounts,
   isRecord,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 
 type WhatsAppAccountStatus = {
   accountId?: unknown;

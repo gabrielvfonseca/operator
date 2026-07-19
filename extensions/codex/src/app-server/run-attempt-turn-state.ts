@@ -1,4 +1,4 @@
-import { emitTrustedDiagnosticEvent } from "openclaw/plugin-sdk/diagnostic-runtime";
+import { emitTrustedDiagnosticEvent } from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import {
   CODEX_APP_SERVER_INTERRUPT_TIMEOUT_MS,
   interruptCodexTurnBestEffort,

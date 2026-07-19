@@ -352,7 +352,7 @@ describe("openclaw-tools: subagents (sessions_spawn lifecycle)", () => {
     await getOrCreateSessionMcpRuntime({
       sessionId: "session:subagent:mcp-retire",
       sessionKey: child.sessionKey,
-      workspaceDir: "/tmp/openclaw-subagent-mcp-retire",
+      workspaceDir: "/tmp/operator-subagent-mcp-retire",
       cfg: { mcp: { servers: {} } } as Parameters<typeof getOrCreateSessionMcpRuntime>[0]["cfg"],
     });
     expect(bundleMcpRuntimeTesting.getCachedSessionIds()).toContain("session:subagent:mcp-retire");

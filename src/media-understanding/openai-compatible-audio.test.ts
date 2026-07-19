@@ -27,7 +27,7 @@ describe("transcribeOpenAiCompatibleAudio", () => {
     });
 
     const headers = new Headers(getRequest().init?.headers);
-    expect(headers.get("originator")).toBe("openclaw");
+    expect(headers.get("originator")).toBe("@gabrielvfonseca/operator");
     expect(headers.get("version")).toBe(VERSION);
     expect(headers.get("user-agent")).toBe(`openclaw/${VERSION}`);
   });

@@ -40,7 +40,11 @@ export function resolveCdpReachabilityPolicy(
   // The browser SSRF policy protects page/network navigation, not Operator's
   // own local CDP control plane. Explicit local loopback CDP profiles should
   // not self-block health/control checks just because they target 127.0.0.1.
-  if (!capabilities.isRemote && profile.cdpIsLoopback && profile.driver === "openclaw") {
+  if (
+    !capabilities.isRemote &&
+    profile.cdpIsLoopback &&
+    profile.driver === "@gabrielvfonseca/operator"
+  ) {
     return undefined;
   }
   // Configured local relays are control-plane endpoints even when page policy

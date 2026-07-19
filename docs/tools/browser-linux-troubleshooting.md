@@ -1,5 +1,5 @@
 ---
-summary: "Fix Chrome/Brave/Edge/Chromium CDP startup issues for OpenClaw browser control on Linux"
+summary: "Fix Chrome/Brave/Edge/Chromium CDP startup issues for Operator browser control on Linux"
 read_when: "Browser control fails on Linux, especially with snap Chromium"
 title: "Browser troubleshooting"
 ---
@@ -20,23 +20,23 @@ Note, selecting 'chromium-browser' instead of 'chromium'
 chromium-browser is already the newest version (2:1snap1-0ubuntu2).
 ```
 
-Snap's AppArmor confinement interferes with how OpenClaw spawns and monitors
+Snap's AppArmor confinement interferes with how Operator spawns and monitors
 the browser process.
 
 Other common Linux launch failures:
 
 - `The profile appears to be in use by another Chromium process`: stale
-  `Singleton*` lock files in the managed profile directory. OpenClaw removes
+  `Singleton*` lock files in the managed profile directory. Operator removes
   these locks and retries once when the lock points at a dead or
   different-host process.
 - `Missing X server or $DISPLAY`: a visible browser was explicitly requested
   on a host without a desktop session. Local managed profiles fall back to
   headless mode on Linux when both `DISPLAY` and `WAYLAND_DISPLAY` are unset.
-  If you set `OPENCLAW_BROWSER_HEADLESS=0`, `browser.headless: false`, or
+  If you set `OPERATOR_BROWSER_HEADLESS=0`, `browser.headless: false`, or
   `browser.profiles.<name>.headless: false`, remove that headed override, set
-  `OPENCLAW_BROWSER_HEADLESS=1`, start `Xvfb`, run
-  `openclaw browser start --headless` for a one-shot managed launch, or run
-  OpenClaw in a real desktop session.
+  `OPERATOR_BROWSER_HEADLESS=1`, start `Xvfb`, run
+  `operator browser start --headless` for a one-shot managed launch, or run
+  Operator in a real desktop session.
 
 ### Solution 1: install Google Chrome (recommended)
 
@@ -46,7 +46,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 sudo apt --fix-broken install -y  # if there are dependency errors
 ```
 
-Update `~/.openclaw/openclaw.json`:
+Update `~/.operator/operator.json`:
 
 ```json
 {
@@ -61,7 +61,7 @@ Update `~/.openclaw/openclaw.json`:
 
 ### Solution 2: use snap Chromium in attach-only mode
 
-If you must keep snap Chromium, configure OpenClaw to attach to a
+If you must keep snap Chromium, configure Operator to attach to a
 manually-started browser instead of launching it:
 
 ```json
@@ -80,20 +80,20 @@ Start Chromium manually:
 ```bash
 chromium-browser --headless --no-sandbox --disable-gpu \
   --remote-debugging-port=18800 \
-  --user-data-dir=$HOME/.openclaw/browser/openclaw/user-data \
+  --user-data-dir=$HOME/.operator/browser/openclaw/user-data \
   about:blank &
 ```
 
 Optionally auto-start it with a systemd user service:
 
 ```ini
-# ~/.config/systemd/user/openclaw-browser.service
+# ~/.config/systemd/user/operator-browser.service
 [Unit]
-Description=OpenClaw Browser (Chrome CDP)
+Description=Operator Browser (Chrome CDP)
 After=network.target
 
 [Service]
-ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.openclaw/browser/openclaw/user-data about:blank
+ExecStart=/snap/bin/chromium --headless --no-sandbox --disable-gpu --remote-debugging-port=18800 --user-data-dir=%h/.operator/browser/openclaw/user-data about:blank
 Restart=on-failure
 RestartSec=5
 
@@ -102,7 +102,7 @@ WantedBy=default.target
 ```
 
 ```bash
-systemctl --user enable --now openclaw-browser.service
+systemctl --user enable --now operator-browser.service
 ```
 
 ### Verify the browser works
@@ -120,7 +120,7 @@ curl -s http://127.0.0.1:18791/tabs
 | `browser.enabled`                | Enable browser control                                               | `true`                                                             |
 | `browser.executablePath`         | Path to a Chromium-based browser binary (Chrome/Brave/Edge/Chromium) | auto-detected (prefers the OS default browser when Chromium-based) |
 | `browser.headless`               | Run without GUI                                                      | `false`                                                            |
-| `OPENCLAW_BROWSER_HEADLESS`      | Per-process override for local managed browser headless mode         | unset                                                              |
+| `OPERATOR_BROWSER_HEADLESS`      | Per-process override for local managed browser headless mode         | unset                                                              |
 | `browser.noSandbox`              | Add `--no-sandbox` flag (needed for some Linux setups)               | `false`                                                            |
 | `browser.attachOnly`             | Do not launch a browser; only attach to an existing one              | `false`                                                            |
 | `browser.cdpPortRangeStart`      | Starting local CDP port for auto-assigned profiles                   | `18800` (derived from the gateway port)                            |
@@ -131,7 +131,7 @@ Both timeout values must be positive integers up to `120000` ms; other values
 are rejected at config load. On Raspberry Pi, older VPS hosts, or slow
 storage, raise `browser.localLaunchTimeoutMs` when Chrome needs more time to
 expose its CDP HTTP endpoint. Raise `browser.localCdpReadyTimeoutMs` when
-launch succeeds but `openclaw browser start` still reports `not reachable
+launch succeeds but `operator browser start` still reports `not reachable
 after start`.
 
 ### Problem: No Chrome tabs found for profile="user"
@@ -142,8 +142,8 @@ tabs are open to attach to.
 Fix options:
 
 1. Use the managed browser instead:
-   `openclaw browser --browser-profile openclaw start` (or set
-   `browser.defaultProfile: "openclaw"`).
+   `operator browser --browser-profile operator start` (or set
+   `browser.defaultProfile: "@gabrielvfonseca/operator"`).
 2. Keep local Chrome running with at least one open tab, then retry with
    `--browser-profile user`.
 

@@ -2,12 +2,12 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { stateMigrations } from "./doctor-contract-api.js";
 import {
@@ -33,7 +33,7 @@ async function makeTempDir(): Promise<string> {
 }
 
 function resolveLegacyImportRunRecordPath(vaultRoot: string, runId: string): string {
-  return path.join(vaultRoot, ".openclaw-wiki", "import-runs", `${runId}.json`);
+  return path.join(vaultRoot, ".operator-wiki", "import-runs", `${runId}.json`);
 }
 
 function migrationParams(params: { stateDir: string; vaultRoot: string; agentIds?: string[] }) {
@@ -135,7 +135,7 @@ describe("memory-wiki doctor source sync migration", () => {
     const legacyPath = resolveLegacyImportRunRecordPath(vaultRoot, "chatgpt-alpha");
     const snapshotPath = path.join(
       vaultRoot,
-      ".openclaw-wiki",
+      ".operator-wiki",
       "import-runs",
       "chatgpt-alpha",
       "snapshots",

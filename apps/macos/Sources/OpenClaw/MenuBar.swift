@@ -8,11 +8,11 @@ import Security
 import SwiftUI
 
 @main
-struct OpenClawApp: App {
+struct OperatorApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @Environment(\.openWindow) private var openWindow
     @State private var state: AppState
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "app")
+    private static let logger = Logger(subsystem: "ai.operator", category: "app")
     private let gatewayManager = GatewayProcessManager.shared
     private let controlChannel = ControlChannel.shared
     private let activityStore = WorkActivityStore.shared
@@ -33,7 +33,7 @@ struct OpenClawApp: App {
     }
 
     init() {
-        OpenClawLogging.bootstrapIfNeeded()
+        OperatorLogging.bootstrapIfNeeded()
 
         Self.applyAttachOnlyOverrideIfNeeded()
         _state = State(initialValue: AppStateStore.shared)
@@ -92,7 +92,7 @@ struct OpenClawApp: App {
             BrowserProfileImportModel.shared.handleConnectionModeChange()
         }
 
-        Window("OpenClaw Settings", id: SettingsWindowOpener.windowID) {
+        Window("Operator Settings", id: SettingsWindowOpener.windowID) {
             SettingsRootView(state: self.state, updater: self.delegate.updaterController)
                 .frame(width: SettingsTab.windowWidth, height: SettingsTab.windowHeight, alignment: .topLeading)
                 .environment(self.tailscaleService)
@@ -146,8 +146,8 @@ struct OpenClawApp: App {
         // leak into menu item validation and grey out app-level commands like Settings.
         self.statusItem?.button?.appearsDisabled = false
         self.statusItem?.button?.toolTip = self.state.voiceWakeMeterActive
-            ? "OpenClaw - Voice Wake live meter active"
-            : "OpenClaw"
+            ? "Operator - Voice Wake live meter active"
+            : "Operator"
     }
 
     private static func applyAttachOnlyOverrideIfNeeded() {
@@ -406,12 +406,12 @@ private struct SettingsWindowOpenRegistrar: View {
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private static let dashboardURL = URL(string: "openclaw://dashboard")!
+    private static let dashboardURL = URL(string: "operator://dashboard")!
     private var state: AppState?
     private var terminationCleanupTask: Task<Void, Never>?
     private var terminationDeadlineTask: Task<Void, Never>?
     private var terminationCleanupFinished = false
-    private let webChatAutoLogger = Logger(subsystem: "ai.openclaw", category: "Chat")
+    private let webChatAutoLogger = Logger(subsystem: "ai.operator", category: "Chat")
     var nodeTerminationCleanup: @MainActor () async -> Void = {
         await TalkMLXSpeechSynthesizer.shared.shutdown()
         await MacNodeModeCoordinator.shared.stopAndWait()
@@ -571,7 +571,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         #if DEBUG
         // Screenshot/demo helper: show the pairing panel with sample requests.
-        if ProcessInfo.processInfo.environment["OPENCLAW_DEBUG_PAIRING_DEMO"] == "1" {
+        if ProcessInfo.processInfo.environment["OPERATOR_DEBUG_PAIRING_DEMO"] == "1" {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 DebugActions.showPairingPanelDemo()
             }
@@ -705,7 +705,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
             // Bind inference discovery to the connected route. A socket without a
-            // default-agent model cannot run OpenClaw and must stay in onboarding.
+            // default-agent model cannot run Operator and must stay in onboarding.
             do {
                 configuredInferenceModel = try await GatewayConnection.shared.configuredInferenceModel(
                     ifCurrentRoute: route)
@@ -903,7 +903,7 @@ func allowedSparkleChannels(forGatewayUpdateChannel channel: String?) -> Set<Str
 
 extension SparkleUpdaterController: SPUUpdaterDelegate {
     func allowedChannels(for _: SPUUpdater) -> Set<String> {
-        allowedSparkleChannels(forGatewayUpdateChannel: OpenClawConfigFile.gatewayUpdateChannel())
+        allowedSparkleChannels(forGatewayUpdateChannel: OperatorConfigFile.gatewayUpdateChannel())
     }
 
     func updater(_: SPUUpdater, willInstallUpdate item: SUAppcastItem) {

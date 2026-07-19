@@ -20,7 +20,7 @@ import {
 
 const TEST_SESSION_STORE_PATH = path.join(
   os.tmpdir(),
-  `openclaw-commands-subagents-info-${process.pid}.json`,
+  `operator-commands-subagents-info-${process.pid}.json`,
 );
 
 function buildCommandTestConfig(): OperatorConfig {

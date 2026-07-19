@@ -1,9 +1,9 @@
 // Matrix tests cover subagent hooks plugin behavior.
-import type { OperatorPluginApi as MatrixEntryPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
+import type { OperatorPluginApi as MatrixEntryPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 import {
   getRequiredHookHandler,
   registerHookHandlersForTest,
-} from "openclaw/plugin-sdk/channel-test-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerMatrixSubagentHooks } from "../../subagent-hooks-api.js";
 

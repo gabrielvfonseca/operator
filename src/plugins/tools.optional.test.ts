@@ -1,5 +1,5 @@
 // Verifies optional plugin tool registration and absence handling.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_PLUGIN_TOOLS_ALLOWLIST_ENTRY } from "../agents/tool-policy.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
@@ -1385,7 +1385,7 @@ describe("resolvePluginTools optional tools", () => {
         providers: {
           vault: {
             source: "file",
-            path: "/tmp/openclaw-secrets.json",
+            path: "/tmp/operator-secrets.json",
             mode: "json",
           },
         },
@@ -2068,11 +2068,11 @@ describe("resolvePluginTools optional tools", () => {
     {
       name: "uses loaded plugin tools with an explicit env",
       params: {
-        env: { OPERATOR_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv,
+        env: { OPERATOR_HOME: "/srv/operator-home" } as NodeJS.ProcessEnv,
         toolAllowlist: ["optional_tool"],
       },
       expectedLoaderCall: {
-        env: { OPERATOR_HOME: "/srv/openclaw-home" },
+        env: { OPERATOR_HOME: "/srv/operator-home" },
       },
     },
     {

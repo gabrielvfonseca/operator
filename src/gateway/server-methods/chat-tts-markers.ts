@@ -3,7 +3,7 @@ import {
   buildTtsSupplementMediaPayload,
   getReplyPayloadTtsSupplement,
   isReplyPayloadTtsSupplement,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import { projectChatDisplayMessage } from "../chat-display-projection.js";
 import {

@@ -1,5 +1,5 @@
 // Imessage tests cover self chat dedupe plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { installIMessageStateRuntimeForTest } from "../test-support/runtime.js";
 import { createSentMessageCache } from "./echo-cache.js";

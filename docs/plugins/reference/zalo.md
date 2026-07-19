@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw Zalo channel plugin for bot and webhook chats."
+summary: "Operator Zalo channel plugin for bot and webhook chats."
 read_when:
   - You are installing, configuring, or auditing the zalo plugin
 title: "Zalo plugin"
@@ -7,11 +7,11 @@ title: "Zalo plugin"
 
 # Zalo plugin
 
-OpenClaw Zalo channel plugin for bot and webhook chats.
+Operator Zalo channel plugin for bot and webhook chats.
 
 ## Distribution
 
-- Package: `@operator/zalo`
+- Package: `@gabrielvfonseca/zalo`
 - Install route: npm; ClawHub
 
 ## Surface

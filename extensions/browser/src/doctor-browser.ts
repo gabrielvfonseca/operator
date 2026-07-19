@@ -4,7 +4,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   parseBrowserMajorVersion,
   readBrowserVersion,
@@ -99,7 +99,7 @@ function collectManagedProfiles(cfg: OperatorConfig): ManagedProfile[] {
 
   for (const [profileName, rawProfile] of Object.entries(configuredProfiles)) {
     const profile = asRecord(rawProfile);
-    const driver = normalizeOptionalString(profile?.driver) ?? "openclaw";
+    const driver = normalizeOptionalString(profile?.driver) ?? "@gabrielvfonseca/operator";
     if (driver !== "existing-session") {
       profiles.set(profileName, { name: profileName });
     }

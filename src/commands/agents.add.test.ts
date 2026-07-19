@@ -51,7 +51,7 @@ const transformConfigWithPendingPluginInstallsMock = vi.hoisted(() =>
       });
       await writeConfigFileMock(transformed.nextConfig);
       return {
-        path: snapshot.path ?? "/tmp/openclaw.json",
+        path: snapshot.path ?? "/tmp/operator.json",
         previousHash: snapshot.hash ?? null,
         persistedHash: "persisted-hash",
         snapshot,
@@ -115,10 +115,10 @@ import { WizardCancelledError } from "../wizard/prompts.js";
 import { agentsAddCommand, testing } from "./agents.commands.add.js";
 
 const runtime = createTestRuntime();
-const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["openclaw", "crestodian"] as const; // reserved ids
+const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["@gabrielvfonseca/operator", "crestodian"] as const; // reserved ids
 
 describe("agents add command", () => {
-  const suiteTempDirs = createSuiteTempRootTracker({ prefix: "openclaw-agents-add-" });
+  const suiteTempDirs = createSuiteTempRootTracker({ prefix: "operator-agents-add-" });
 
   beforeAll(async () => {
     await suiteTempDirs.setup();
@@ -161,7 +161,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("openclaw agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
+      `Non-interactive agent creation ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -176,7 +176,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("openclaw agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
+      `Non-interactive agent creation ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe("agents add command", () => {
     });
     wizardMocks.createClackPrompter.mockReturnValue({
       intro: vi.fn(),
-      text: vi.fn().mockResolvedValueOnce("Jon").mockResolvedValueOnce("/tmp/openclaw-jon"),
+      text: vi.fn().mockResolvedValueOnce("Jon").mockResolvedValueOnce("/tmp/operator-jon"),
       confirm: vi.fn().mockResolvedValue(false),
       note: vi.fn(),
       outro: vi.fn(),
@@ -262,7 +262,7 @@ describe("agents add command", () => {
   });
 
   it("copies only portable auth profiles when seeding a new agent store", async () => {
-    await withAgentsAddStateRoot("openclaw-agents-add-auth-copy-", async (root) => {
+    await withAgentsAddStateRoot("operator-agents-add-auth-copy-", async (root) => {
       const sourceAgentDir = path.join(root, "main", "agent");
       const destAgentDir = path.join(root, "work", "agent");
       await fs.mkdir(sourceAgentDir, { recursive: true });
@@ -329,7 +329,7 @@ describe("agents add command", () => {
   });
 
   it("copies portable Codex OAuth profiles inline", async () => {
-    await withAgentsAddStateRoot("openclaw-agents-add-oauth-copy-", async (root) => {
+    await withAgentsAddStateRoot("operator-agents-add-oauth-copy-", async (root) => {
       const sourceAgentDir = path.join(root, "main", "agent");
       const destAgentDir = path.join(root, "work", "agent");
       const expires = Date.now() + 60_000;
@@ -371,12 +371,12 @@ describe("agents add command", () => {
   });
 
   it("skips unresolved OAuth profiles when seeding a new agent store", async () => {
-    await withAgentsAddStateRoot("openclaw-agents-add-oauth-ref-skip-", async (root) => {
+    await withAgentsAddStateRoot("operator-agents-add-oauth-ref-skip-", async (root) => {
       const sourceAgentDir = path.join(root, "main", "agent");
       const destAgentDir = path.join(root, "work", "agent");
       const profileId = "openai:oauth";
       const ref = {
-        source: "openclaw-credentials" as const,
+        source: "operator-credentials" as const,
         provider: "openai" as const,
         id: "0123456789abcdef0123456789abcdef",
       };

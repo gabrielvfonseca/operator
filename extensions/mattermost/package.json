@@ -1,10 +1,10 @@
 {
-  "name": "@operator/mattermost",
+  "name": "@gabrielvfonseca/mattermost",
   "version": "2026.7.2",
   "description": "Operator Mattermost channel plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -12,18 +12,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -38,8 +38,8 @@
       "order": 65
     },
     "install": {
-      "clawhubSpec": "clawhub:@operator/mattermost",
-      "npmSpec": "@operator/mattermost",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/mattermost",
+      "npmSpec": "@gabrielvfonseca/mattermost",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9",
       "allowInvalidConfigRecovery": true

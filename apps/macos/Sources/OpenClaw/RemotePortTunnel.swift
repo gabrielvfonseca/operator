@@ -1,6 +1,6 @@
 import Foundation
 import Network
-import OpenClawKit
+import OperatorKit
 import OSLog
 #if canImport(Darwin)
 import Darwin
@@ -10,7 +10,7 @@ import Darwin
 ///
 /// Uses `ssh -N -L` to forward the remote gateway ports to localhost.
 final class RemotePortTunnel: @unchecked Sendable {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "remote.tunnel")
+    private static let logger = Logger(subsystem: "ai.operator", category: "remote.tunnel")
 
     struct Configuration: Equatable, Sendable {
         let target: CommandResolver.SSHParsedTarget
@@ -78,7 +78,7 @@ final class RemotePortTunnel: @unchecked Sendable {
     }
 
     static func configuration(remotePort: Int) throws -> Configuration {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let settings = CommandResolver.connectionSettings(configRoot: root)
         guard settings.mode == .remote,
               GatewayRemoteConfig.resolveTransportResolution(root: root).transport == .ssh,
@@ -208,7 +208,7 @@ final class RemotePortTunnel: @unchecked Sendable {
     /// on the same remote gateway port this tunnel actually forwards to, or two
     /// gateways behind one SSH target would share cached transcripts.
     static func resolveRemotePortOverride(defaultRemotePort: Int, for sshHost: String) -> Int? {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         return self.resolveRemotePortOverride(
             defaultRemotePort: defaultRemotePort,
             for: sshHost,
@@ -241,8 +241,8 @@ final class RemotePortTunnel: @unchecked Sendable {
         if LoopbackHost.isLoopbackHost(host) {
             return port == defaultRemotePort ? nil : port
         }
-        guard let sshKey = OpenClawConfigFile.canonicalHostForComparison(sshHost),
-              let urlKey = OpenClawConfigFile.canonicalHostForComparison(host)
+        guard let sshKey = OperatorConfigFile.canonicalHostForComparison(sshHost),
+              let urlKey = OperatorConfigFile.canonicalHostForComparison(host)
         else {
             return nil
         }
@@ -288,7 +288,7 @@ final class RemotePortTunnel: @unchecked Sendable {
         }
 
         return try await withCheckedThrowingContinuation { cont in
-            let queue = DispatchQueue(label: "ai.openclaw.remote.tunnel.port", qos: .utility)
+            let queue = DispatchQueue(label: "ai.operator.remote.tunnel.port", qos: .utility)
             do {
                 let listener = try NWListener(using: .tcp, on: .any)
                 listener.newConnectionHandler = { connection in connection.cancel() }

@@ -7,9 +7,9 @@ import {
   defineStableChannelIngressIdentity,
   type ChannelIngressIdentitySubjectInput,
   type ResolveChannelMessageIngressParams,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { RequestClient } from "../internal/discord.js";
 import { canViewDiscordGuildChannel } from "../send.permissions.js";
 import { normalizeDiscordAllowList } from "./allow-list.js";

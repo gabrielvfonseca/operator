@@ -19,13 +19,13 @@ struct ChatSessionsSheet: View {
         }
     }
 
-    @Bindable var viewModel: OpenClawChatViewModel
+    @Bindable var viewModel: OperatorChatViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
     @State private var scope: SessionScope = .active
-    @State private var scopedSessions: [OpenClawChatSessionEntry] = []
+    @State private var scopedSessions: [OperatorChatSessionEntry] = []
     @State private var isLoadingScoped = false
-    @State private var renameTarget: OpenClawChatSessionEntry?
+    @State private var renameTarget: OperatorChatSessionEntry?
     @State private var renameText = ""
 
     /// Live view-model sessions serve the default active list; search and the
@@ -39,7 +39,7 @@ struct ChatSessionsSheet: View {
         self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private var displayedSessions: [OpenClawChatSessionEntry] {
+    private var displayedSessions: [OperatorChatSessionEntry] {
         self.usesScopedFetch ? self.scopedSessions : self.viewModel.sessions
     }
 
@@ -58,12 +58,12 @@ struct ChatSessionsSheet: View {
                     Picker(selection: self.$scope) {
                         ForEach(SessionScope.allCases) { scope in
                             Text(scope.title)
-                                .font(OpenClawChatTypography.caption)
+                                .font(OperatorChatTypography.caption)
                                 .tag(scope)
                         }
                     } label: {
                         Text("Scope")
-                            .font(OpenClawChatTypography.caption)
+                            .font(OperatorChatTypography.caption)
                     }
                     .pickerStyle(.segmented)
                     .textCase(nil)
@@ -97,7 +97,7 @@ struct ChatSessionsSheet: View {
                 await self.refreshScopedSessionsIfNeeded(debounce: !self.trimmedSearchText.isEmpty)
             }
             .onAppear {
-                self.viewModel.refreshSessions(limit: OpenClawChatViewModel.sessionListFetchLimit)
+                self.viewModel.refreshSessions(limit: OperatorChatViewModel.sessionListFetchLimit)
             }
             .alert(
                 "Rename Session",
@@ -107,7 +107,7 @@ struct ChatSessionsSheet: View {
                         if !$0 { self.renameTarget = nil }
                     })) {
                 TextField("Session name", text: self.$renameText)
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
                 Button {
                     if let target = self.renameTarget {
                         self.viewModel.renameSession(key: target.key, label: self.renameText)
@@ -116,13 +116,13 @@ struct ChatSessionsSheet: View {
                     self.renameTarget = nil
                 } label: {
                     Text("Rename")
-                        .font(OpenClawChatTypography.body)
+                        .font(OperatorChatTypography.body)
                 }
                 Button(role: .cancel) {
                     self.renameTarget = nil
                 } label: {
                     Text("Cancel")
-                        .font(OpenClawChatTypography.body)
+                        .font(OperatorChatTypography.body)
                 }
             }
         }
@@ -130,7 +130,7 @@ struct ChatSessionsSheet: View {
 
     private var refreshButton: some View {
         Button {
-            self.viewModel.refreshSessions(limit: OpenClawChatViewModel.sessionListFetchLimit)
+            self.viewModel.refreshSessions(limit: OperatorChatViewModel.sessionListFetchLimit)
             self.refreshScopedSessionsSoon()
         } label: {
             Image(systemName: "arrow.clockwise")
@@ -151,13 +151,13 @@ struct ChatSessionsSheet: View {
                 ProgressView()
             } else {
                 Text(self.scope == .archived ? "No archived sessions" : "No sessions found")
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
                     .foregroundStyle(.secondary)
             }
         }
     }
 
-    private func sessionRow(_ session: OpenClawChatSessionEntry) -> some View {
+    private func sessionRow(_ session: OperatorChatSessionEntry) -> some View {
         Button {
             if session.isArchived {
                 // Archived sessions reject new sends; opening one restores it
@@ -176,13 +176,13 @@ struct ChatSessionsSheet: View {
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(session.displayName ?? session.key)
-                        .font(OpenClawChatTypography.mono(size: 17, relativeTo: .body))
+                        .font(OperatorChatTypography.mono(size: 17, relativeTo: .body))
                         .lineLimit(1)
                     if let updatedAt = session.updatedAt, updatedAt > 0 {
                         Text(Date(timeIntervalSince1970: updatedAt / 1000).formatted(
                             date: .abbreviated,
                             time: .shortened))
-                            .font(OpenClawChatTypography.caption)
+                            .font(OperatorChatTypography.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -205,7 +205,7 @@ struct ChatSessionsSheet: View {
                         session.isPinned ? "Unpin" : "Pin",
                         systemImage: session.isPinned ? "pin.slash" : "pin")
                 }
-                .tint(OpenClawChatTheme.accent)
+                .tint(OperatorChatTheme.accent)
             }
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -217,7 +217,7 @@ struct ChatSessionsSheet: View {
                     session.isArchived ? "Unarchive" : "Archive",
                     systemImage: session.isArchived ? "tray.and.arrow.up" : "archivebox")
             }
-            .tint(session.isArchived ? OpenClawChatTheme.accent : OpenClawChatTheme.danger)
+            .tint(session.isArchived ? OperatorChatTheme.accent : OperatorChatTheme.danger)
         }
         .contextMenu {
             Button {
@@ -250,7 +250,7 @@ struct ChatSessionsSheet: View {
     private func actionLabel(_ title: LocalizedStringKey, systemImage: String) -> some View {
         Label {
             Text(title)
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
         } icon: {
             Image(systemName: systemImage)
         }

@@ -1,5 +1,5 @@
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   isDiscordAccountEnabledForRuntime,
   listDiscordAccountIds,

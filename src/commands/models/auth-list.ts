@@ -1,5 +1,5 @@
 /** Command helpers for listing saved model auth profiles. */
-import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+import { timestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   ensureAuthProfileStore,
   externalCliDiscoveryForProviderAuth,

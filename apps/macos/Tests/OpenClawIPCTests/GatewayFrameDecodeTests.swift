@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
 
 struct GatewayFrameDecodeTests {

@@ -1,7 +1,7 @@
 // Doctor config analysis tests cover schema analysis, model fallback values, and issue generation.
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveAgentModelFallbackValues } from "../config/model-input.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { OperatorSchema } from "../config/zod-schema.js";
 import {
   formatConfigPath,

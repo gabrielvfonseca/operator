@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
 import org.commonmark.node.Code
 import org.commonmark.node.Document

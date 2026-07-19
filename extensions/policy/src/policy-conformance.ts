@@ -1,10 +1,10 @@
 // Policy plugin module implements policy conformance behavior.
 import { promises as fs } from "node:fs";
 import { basename, isAbsolute, resolve } from "node:path";
+import type { HealthFinding } from "@gabrielvfonseca/operator/plugin-sdk/health";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import JSON5 from "json5";
-import type { HealthFinding } from "openclaw/plugin-sdk/health";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
 import {
   isPolicyValueAtLeastAsStrict,
   policyContainerShapeFindings,

@@ -1,5 +1,5 @@
 // Tlon plugin module implements authorization behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { TlonSettingsStore } from "../settings.js";
 
 type ChannelAuthorization = {

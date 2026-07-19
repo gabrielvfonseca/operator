@@ -4,7 +4,7 @@
  */
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { Duplex } from "node:stream";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import type {
   AnyAgentTool,
   OperatorPluginApi,
@@ -13,7 +13,7 @@ import type {
   OperatorPluginService,
   OperatorPluginToolContext,
   OperatorPluginToolFactory,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   BROWSER_REQUEST_GATEWAY_METHOD,
   BROWSER_REQUEST_GATEWAY_SCOPE,

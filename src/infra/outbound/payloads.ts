@@ -1,6 +1,6 @@
 // Outbound payload planning normalizes reply payloads into sendable text,
 // media, presentation, interactive, and mirror projections.
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import {
   mergeReactionDirectiveChannelData,
   parseReplyDirectives,

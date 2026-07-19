@@ -15,7 +15,7 @@ import {
   resolveVersionFromModuleUrl,
 } from "./version.js";
 
-const versionFixtureRoot = createSuiteTempRootTracker({ prefix: "openclaw-version-" });
+const versionFixtureRoot = createSuiteTempRootTracker({ prefix: "operator-version-" });
 
 beforeAll(async () => {
   await versionFixtureRoot.setup();
@@ -61,7 +61,10 @@ describe("version resolution", () => {
 
   it("resolves package version from nested dist/plugin-sdk module URL", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "openclaw", version: "1.2.3" });
+      await writeJsonFixture(root, "package.json", {
+        name: "@gabrielvfonseca/operator",
+        version: "1.2.3",
+      });
       const moduleUrl = await ensureModuleFixture(root);
       expect(readVersionFromPackageJsonForModuleUrl(moduleUrl)).toBe("1.2.3");
       expect(resolveVersionFromModuleUrl(moduleUrl)).toBe("1.2.3");
@@ -70,7 +73,10 @@ describe("version resolution", () => {
 
   it("ignores unrelated nearby package.json files", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "openclaw", version: "2.3.4" });
+      await writeJsonFixture(root, "package.json", {
+        name: "@gabrielvfonseca/operator",
+        version: "2.3.4",
+      });
       await writeJsonFixture(root, "dist/package.json", {
         name: "other-package",
         version: "9.9.9",
@@ -114,7 +120,10 @@ describe("version resolution", () => {
 
   it("resolves binary version with explicit precedence", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "openclaw", version: "2.3.4" });
+      await writeJsonFixture(root, "package.json", {
+        name: "@gabrielvfonseca/operator",
+        version: "2.3.4",
+      });
       const moduleUrl = await ensureModuleFixture(root);
       expect(
         resolveBinaryVersion({

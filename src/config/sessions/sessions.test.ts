@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { upsertAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import * as jsonFiles from "../../infra/json-files.js";
@@ -97,7 +97,7 @@ describe("session path safety", () => {
     if (process.platform === "win32") {
       return;
     }
-    withTempDirSync({ prefix: "openclaw-symlink-session-" }, (tmpDir) => {
+    withTempDirSync({ prefix: "operator-symlink-session-" }, (tmpDir) => {
       const realRoot = path.join(tmpDir, "real-state");
       const aliasRoot = path.join(tmpDir, "alias-state");
       const sessionsDir = path.join(realRoot, "agents", "main", "sessions");
@@ -116,7 +116,7 @@ describe("session path safety", () => {
     if (process.platform === "win32") {
       return;
     }
-    withTempDirSync({ prefix: "openclaw-symlink-escape-" }, (tmpDir) => {
+    withTempDirSync({ prefix: "operator-symlink-escape-" }, (tmpDir) => {
       const sessionsDir = path.join(tmpDir, "agents", "main", "sessions");
       const outsideDir = path.join(tmpDir, "outside");
       fs.mkdirSync(sessionsDir, { recursive: true });
@@ -285,7 +285,7 @@ describe("resolveSessionResetPolicy", () => {
 
 describe("session lifecycle timestamps", () => {
   it("falls back to the JSONL session header for legacy session start time", async () => {
-    const dir = await fsPromises.mkdtemp("/tmp/openclaw-lifecycle-test-");
+    const dir = await fsPromises.mkdtemp("/tmp/operator-lifecycle-test-");
     try {
       const storePath = path.join(dir, "sessions.json");
       const sessionFile = path.join(dir, "legacy-session.jsonl");
@@ -318,7 +318,7 @@ describe("session lifecycle timestamps", () => {
   });
 
   it("ignores out-of-range lifecycle timestamps before header fallback", async () => {
-    const dir = await fsPromises.mkdtemp("/tmp/openclaw-lifecycle-test-");
+    const dir = await fsPromises.mkdtemp("/tmp/operator-lifecycle-test-");
     try {
       const storePath = path.join(dir, "sessions.json");
       const sessionFile = path.join(dir, "legacy-session.jsonl");
@@ -371,7 +371,7 @@ describe("session work admission", () => {
 });
 
 describe("session store writer queue", () => {
-  const writerFixtureRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-writer-test-" });
+  const writerFixtureRootTracker = createSuiteTempRootTracker({ prefix: "operator-writer-test-" });
 
   async function makeTmpStore(
     initial: Record<string, unknown> = {},
@@ -860,7 +860,7 @@ describe("session store writer queue", () => {
 
   it("clones session store cache hits from cached serialized JSON", () => {
     const key = "agent:main:serialized-cache";
-    const storePath = "/tmp/openclaw-serialized-cache-test.json";
+    const storePath = "/tmp/operator-serialized-cache-test.json";
     const store = {
       [key]: {
         sessionId: "s-serialized-cache",

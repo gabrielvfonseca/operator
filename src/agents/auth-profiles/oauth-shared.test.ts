@@ -4,7 +4,7 @@
  * replacement decisions.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { MAX_DATE_TIMESTAMP_MS } from "../../shared/number-coercion.js";
 import {

@@ -1,7 +1,7 @@
 // Tiny-audio runner tests cover minimum-size skip behavior before provider
 // transcription runs.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { MsgContext } from "../auto-reply/templating.js";
 import type { OperatorConfig } from "../config/types.js";
@@ -88,7 +88,7 @@ describe("runCapability skips tiny audio files", () => {
 
   it("skips audio transcription when file is smaller than MIN_AUDIO_FILE_BYTES", async () => {
     await withAudioFixture({
-      filePrefix: "openclaw-tiny-audio",
+      filePrefix: "operator-tiny-audio",
       extension: "wav",
       mediaType: "audio/wav",
       fileContents: Buffer.alloc(100), // 100 bytes, way below 1024
@@ -141,7 +141,7 @@ describe("runCapability skips tiny audio files", () => {
 
   it("skips audio transcription for empty (0-byte) files", async () => {
     await withAudioFixture({
-      filePrefix: "openclaw-empty-audio",
+      filePrefix: "operator-empty-audio",
       extension: "ogg",
       mediaType: "audio/ogg",
       fileContents: Buffer.alloc(0),
@@ -165,7 +165,7 @@ describe("runCapability skips tiny audio files", () => {
 
   it("proceeds with transcription when file meets minimum size", async () => {
     await withAudioFixture({
-      filePrefix: "openclaw-ok-audio",
+      filePrefix: "operator-ok-audio",
       extension: "wav",
       mediaType: "audio/wav",
       fileContents: Buffer.alloc(MIN_AUDIO_FILE_BYTES + 100),
@@ -193,7 +193,7 @@ describe("runCapability skips tiny audio files", () => {
 
   it("marks the decision as failed when every audio model attempt fails", async () => {
     await withAudioFixture({
-      filePrefix: "openclaw-failed-audio",
+      filePrefix: "operator-failed-audio",
       extension: "ogg",
       mediaType: "audio/ogg",
       fileContents: Buffer.alloc(MIN_AUDIO_FILE_BYTES + 100),

@@ -1,9 +1,9 @@
 /** Selection helpers for filtering migration plan items before apply. */
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { markMigrationItemSkipped, summarizeMigrationItems } from "../../plugin-sdk/migration.js";
 import type { MigrationItem, MigrationPlan } from "../../plugins/types.js";
 import { MIGRATION_CONFLICT_REASON_PHRASES } from "./output.js";

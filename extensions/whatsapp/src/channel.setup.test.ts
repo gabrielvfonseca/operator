@@ -1,7 +1,7 @@
 // Whatsapp tests cover channel.setup plugin behavior.
-import { createQueuedWizardPrompter } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import { createQueuedWizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { WHATSAPP_AUTH_UNSTABLE_CODE } from "./auth-store.js";
 import { whatsappSetupPlugin } from "./channel.setup.js";
@@ -35,7 +35,7 @@ const hoisted = vi.hoisted(() => ({
     }),
   ),
   resolveWhatsAppAuthDir: vi.fn(() => ({
-    authDir: "/tmp/openclaw-whatsapp-test",
+    authDir: "/tmp/operator-whatsapp-test",
   })),
 }));
 
@@ -169,7 +169,7 @@ describe("whatsapp setup wizard", () => {
       exists: false,
     });
     hoisted.resolveWhatsAppAuthDir.mockReset();
-    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/openclaw-whatsapp-test" });
+    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/operator-whatsapp-test" });
   });
 
   it("applies owner allowlist when forceAllowFrom is enabled", async () => {

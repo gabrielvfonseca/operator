@@ -2,7 +2,7 @@
 name: discrawl
 description: "Discord archive: search, sync freshness, DMs, summaries, TUI, repo/release work."
 metadata:
-  openclaw:
+  operator:
     homepage: https://github.com/openclaw/discrawl
     requires:
       bins:

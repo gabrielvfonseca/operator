@@ -1,4 +1,4 @@
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 /**
  * OAuth credential manager.
  * Resolves usable access tokens, refreshes expired credentials under global

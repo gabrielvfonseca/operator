@@ -16,7 +16,7 @@ describe("Operator audit log", () => {
   });
 
   it("writes jsonl records under the Operator audit dir", async () => {
-    await withTempDir({ prefix: "openclaw-audit-" }, async (tempDir) => {
+    await withTempDir({ prefix: "operator-audit-" }, async (tempDir) => {
       vi.stubEnv("OPERATOR_STATE_DIR", tempDir);
 
       const auditPath = await appendSystemAgentAuditEntry({

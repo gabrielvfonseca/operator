@@ -3,8 +3,8 @@
  *
  * Turns common shell commands into short redacted labels for tool timelines and transcripts.
  */
-import { asOptionalObjectRecord as asRecord } from "@operator/normalization-core/record-coerce";
-import { sliceUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { asOptionalObjectRecord as asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { sliceUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { redactToolPayloadText } from "../logging/redact.js";
 import { formatInlineCodeSpan } from "../shared/markdown-code.js";
 import {
@@ -278,9 +278,9 @@ function summarizeKnownExec(words: string[]): string {
     return `run ${bin} ${script}`;
   }
 
-  if (bin === "operator") {
+  if (bin === "@gabrielvfonseca/operator") {
     const sub = firstPositional(words, 1);
-    return sub ? `run operator ${sub}` : "run operator";
+    return sub ? `run openclaw ${sub}` : "run openclaw";
   }
 
   const arg = firstPositional(words, 1);
@@ -528,7 +528,7 @@ const KNOWN_SUMMARY_PREFIXES = [
   "run build",
   "start app",
   "run lint",
-  "run operator",
+  "run openclaw",
   "run node script",
   "run node ",
   "run python",

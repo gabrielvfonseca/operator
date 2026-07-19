@@ -3,8 +3,8 @@
  * Keep this module synchronous; request paths call it while rendering usage summaries.
  */
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveDefaultAgentDir } from "../agents/agent-scope-config.js";
 import { modelKey, normalizeModelRef, normalizeProviderId } from "../agents/model-selection.js";
 import type { NormalizedUsage } from "../agents/usage.js";

@@ -18,7 +18,7 @@ afterEach(async () => {
 });
 
 async function createStateDir(): Promise<string> {
-  const stateDir = await mkdtemp(path.join(tmpdir(), "openclaw-widget-tool-"));
+  const stateDir = await mkdtemp(path.join(tmpdir(), "operator-widget-tool-"));
   tempDirs.push(stateDir);
   return stateDir;
 }
@@ -82,7 +82,7 @@ describe("show_widget", () => {
     });
 
     expect(viewId).toMatch(/^cv_[a-f0-9]{32}$/);
-    expect(url).toBe(`/__openclaw__/canvas/documents/${viewId}/index.html`);
+    expect(url).toBe(`/__operator__/canvas/documents/${viewId}/index.html`);
     expect(JSON.parse(text)).toMatchObject({
       kind: "canvas",
       presentation: { target: "assistant_message", title: "<Status>", sandbox: "scripts" },
@@ -99,7 +99,7 @@ describe("show_widget", () => {
     expect(html).toContain("<title>&lt;Status&gt;</title>");
     expect(html).toContain('<body class="svg-widget"><SvG');
     // The embedding chat fits the iframe to the reported content height.
-    expect(html).toContain("openclaw:widget-size");
+    expect(html).toContain("operator:widget-size");
     const manifest = JSON.parse(
       await readFile(
         path.join(resolveCanvasDocumentDir(viewId, { stateDir }), "manifest.json"),

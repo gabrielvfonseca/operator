@@ -1,17 +1,26 @@
 // Codex plugin module implements command handlers behavior.
 import crypto from "node:crypto";
-import { resolveAgentDir, resolveSessionAgentIds } from "openclaw/plugin-sdk/agent-runtime";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import {
+  resolveAgentDir,
+  resolveSessionAgentIds,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   isModelSelectionLocked,
   MODEL_SELECTION_LOCKED_MESSAGE,
-} from "openclaw/plugin-sdk/model-session-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import type { PluginCommandContext, PluginCommandResult } from "openclaw/plugin-sdk/plugin-entry";
-import { parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { getSessionEntry, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/model-session-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type {
+  PluginCommandContext,
+  PluginCommandResult,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { parseAgentSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import {
+  getSessionEntry,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { resolveCodexAppServerAuthProfileIdForAgent } from "./app-server/auth-bridge.js";
 import { resolveCodexBindingAppServerConnection } from "./app-server/binding-connection.js";
 import { CODEX_CONTROL_METHODS, type CodexControlMethod } from "./app-server/capabilities.js";
@@ -210,7 +219,7 @@ type CodexDiagnosticsCandidate = Omit<
   | "authProfileId"
 >;
 
-const CODEX_DIAGNOSTICS_SOURCE = "openclaw-diagnostics";
+const CODEX_DIAGNOSTICS_SOURCE = "operator-diagnostics";
 const CODEX_DIAGNOSTICS_REASON_MAX_CHARS = 2048;
 const CODEX_DIAGNOSTICS_COOLDOWN_MS = 60_000;
 const CODEX_DIAGNOSTICS_ERROR_MAX_CHARS = 500;
@@ -393,7 +402,7 @@ export async function handleCodexSubcommand(
       return {
         text:
           "Codex sub-plugin management is not wired up (codexPluginsManagementIo dep is undefined). " +
-          "Edit ~/.openclaw/openclaw.json or use `openclaw config patch` until the runtime exposes the IO.",
+          "Edit ~/.operator/operator.json or use `openclaw config patch` until the runtime exposes the IO.",
       };
     }
     return await handleCodexPluginsSubcommand(ctx, rest, deps.codexPluginsManagementIo);

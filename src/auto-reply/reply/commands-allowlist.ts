@@ -1,10 +1,10 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Handles /allowlist commands across config and pairing-store targets. */
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveExplicitConfigWriteTarget } from "../../channels/plugins/config-writes.js";
 import { getChannelPlugin } from "../../channels/plugins/index.js";
 import type { ChannelId } from "../../channels/plugins/types.public.js";

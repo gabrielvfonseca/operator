@@ -7,13 +7,13 @@ import {
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
 import { DEFAULT_AGENT_ID, normalizeAgentId } from "../routing/session-key.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
   type OperatorAgentDatabaseOptions,
-} from "../state/operator-agent-db.js";
+} from "../state/openclaw-agent-db.js";
 import { TRAJECTORY_RUNTIME_CAPTURE_MAX_BYTES } from "./paths.js";
 import type { TrajectoryEvent } from "./types.js";
 

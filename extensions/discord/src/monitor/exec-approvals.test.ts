@@ -1,6 +1,6 @@
 // Discord tests cover exec approvals plugin behavior.
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildExecApprovalCustomId, parseExecApprovalData } from "../approval-custom-id.js";
 import { parseCustomId, type ButtonInteraction, type ComponentData } from "../internal/discord.js";

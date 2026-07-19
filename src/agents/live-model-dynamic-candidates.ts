@@ -6,8 +6,8 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { Model } from "../llm/types.js";
 import type {

@@ -9,10 +9,10 @@ import { Worker } from "node:worker_threads";
 import {
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationSeconds,
-} from "@operator/normalization-core/number-coercion";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import type { Result } from "@operator/normalization-core/result";
-import { uniqueValues } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import type { Result } from "@gabrielvfonseca/normalization-core/result";
+import { uniqueValues } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { Type } from "typebox";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { createLazyPromiseLoader } from "../shared/lazy-runtime.js";

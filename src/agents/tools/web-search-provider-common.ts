@@ -3,7 +3,7 @@
  *
  * Handles provider config, credential normalization, guarded endpoint calls, caching, and filters.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { normalizeResolvedSecretInputString } from "../../config/types.secrets.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";

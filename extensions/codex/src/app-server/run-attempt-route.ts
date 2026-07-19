@@ -1,4 +1,7 @@
-import { embeddedAgentLog, formatErrorMessage } from "openclaw/plugin-sdk/agent-harness-runtime";
+import {
+  embeddedAgentLog,
+  formatErrorMessage,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import type { CodexAttemptNotificationController } from "./run-attempt-notification-controller.js";
 import type { CodexAttemptResources } from "./run-attempt-resources.js";
 import type { createCodexAttemptServerRequestController } from "./run-attempt-server-requests.js";

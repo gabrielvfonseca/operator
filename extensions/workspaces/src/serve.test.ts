@@ -51,7 +51,7 @@ function fakeResponse(): { res: ServerResponse; captured: CapturedResponse } {
 async function withApprovedWidget<T>(
   run: (ctx: { stateDir: string; store: WorkspaceStore; widgetDir: string }) => Promise<T>,
 ): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-serve-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-serve-"));
   try {
     const store = new WorkspaceStore({ stateDir });
     const widgetDir = path.join(stateDir, "workspaces", "widgets", "revenue-chart");

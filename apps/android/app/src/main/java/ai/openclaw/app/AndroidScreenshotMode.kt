@@ -1,10 +1,10 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.ui.SettingsRoute
+import ai.operator.app.ui.SettingsRoute
 import android.content.Intent
 
-const val extraAndroidScreenshotMode = "openclaw.screenshotMode"
-const val extraAndroidScreenshotScene = "openclaw.screenshotScene"
+const val extraAndroidScreenshotMode = "operator.screenshotMode"
+const val extraAndroidScreenshotScene = "operator.screenshotScene"
 
 enum class AndroidScreenshotScene(
   val rawValue: String,

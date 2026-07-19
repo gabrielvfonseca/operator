@@ -1,7 +1,7 @@
 // Feishu tests cover monitor.webhook e2e plugin behavior.
 import crypto from "node:crypto";
 import type { Server } from "node:http";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createFeishuRuntimeMockModule } from "./monitor.test-mocks.js";
 import {

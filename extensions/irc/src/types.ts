@@ -1,5 +1,5 @@
 // Irc type declarations define plugin contracts.
-import type { ChannelDeliveryStreamingConfig } from "openclaw/plugin-sdk/channel-outbound";
+import type { ChannelDeliveryStreamingConfig } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import type {
   DmConfig,
   DmPolicy,

@@ -1,7 +1,7 @@
 /** Converts auth-profile credentials into agent runtime credential maps. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { coerceSecretRef } from "../config/types.secrets.js";
 import type { AuthProfileCredential, AuthProfileStore } from "./auth-profiles.js";
 

@@ -2,7 +2,7 @@
  * Splits streamed embedded-agent replies into Markdown-safe message chunks.
  */
 
-import { sliceUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { sliceUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { FenceSpan } from "../../packages/markdown-core/src/fences.js";
 import {
   findFenceSpanAt,

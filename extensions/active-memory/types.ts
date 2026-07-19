@@ -1,4 +1,4 @@
-import type { SessionTranscriptTargetParams } from "openclaw/plugin-sdk/session-transcript-runtime";
+import type { SessionTranscriptTargetParams } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_AGENT_ID = "main";

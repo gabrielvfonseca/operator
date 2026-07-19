@@ -1,7 +1,7 @@
 // Telegram plugin module implements bot message context harness behavior.
 import { createHash } from "node:crypto";
-import { buildChannelInboundEventContext } from "openclaw/plugin-sdk/channel-inbound";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { buildChannelInboundEventContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import type { BuildTelegramMessageContextParams, TelegramMediaRef } from "./bot-message-context.js";
 import { setTelegramRuntime } from "./runtime.js";
 import type { TelegramRuntime } from "./runtime.types.js";

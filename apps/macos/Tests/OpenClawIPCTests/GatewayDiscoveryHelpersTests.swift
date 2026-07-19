@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawDiscovery
+import OperatorDiscovery
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct GatewayDiscoveryHelpersTests {
     private func makeGateway(

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync, SQLInputValue } from "node:sqlite";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type { ChannelLegacyStateMigrationPlan } from "../channels/plugins/types.core.js";
 import { parseInstalledPluginIndex } from "../plugins/installed-plugin-index-store.js";
 import {
@@ -9,7 +9,7 @@ import {
   INSTALLED_PLUGIN_INDEX_VERSION,
   type InstalledPluginIndex,
 } from "../plugins/installed-plugin-index.js";
-import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import { requireNodeSqlite } from "./node-sqlite.js";
 import { parseRegistryNpmSpec } from "./npm-registry-spec.js";
 import { fileExists, safeReadDir } from "./state-migrations.fs.js";

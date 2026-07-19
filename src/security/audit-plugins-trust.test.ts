@@ -198,7 +198,7 @@ describe("security audit install metadata findings", () => {
       installRecords: records,
       plugins: Object.keys(records).map((pluginId) => ({
         pluginId,
-        manifestPath: path.join(stateDir, "extensions", pluginId, "openclaw.plugin.json"),
+        manifestPath: path.join(stateDir, "extensions", pluginId, "operator.plugin.json"),
         manifestHash: "manifest",
         rootDir: path.join(stateDir, "extensions", pluginId),
         origin: "global" as const,
@@ -217,7 +217,7 @@ describe("security audit install metadata findings", () => {
   };
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-security-install-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-security-install-"));
   });
 
   afterAll(async () => {
@@ -240,7 +240,7 @@ describe("security audit install metadata findings", () => {
           await writePluginIndexInstallRecords(stateDir, {
             "voice-call": {
               source: "npm",
-              spec: "@operator/voice-call",
+              spec: "@gabrielvfonseca/voice-call",
             },
           });
           return runInstallMetadataAudit(
@@ -250,7 +250,7 @@ describe("security audit install metadata findings", () => {
                   installs: {
                     "test-hooks": {
                       source: "npm",
-                      spec: "@operator/test-hooks",
+                      spec: "@gabrielvfonseca/test-hooks",
                     },
                   },
                 },
@@ -273,7 +273,7 @@ describe("security audit install metadata findings", () => {
           await writePluginIndexInstallRecords(stateDir, {
             "voice-call": {
               source: "npm",
-              spec: "@operator/voice-call@1.2.3",
+              spec: "@gabrielvfonseca/voice-call@1.2.3",
               integrity: "sha512-plugin",
             },
           });
@@ -284,7 +284,7 @@ describe("security audit install metadata findings", () => {
                   installs: {
                     "test-hooks": {
                       source: "npm",
-                      spec: "@operator/test-hooks@1.2.3",
+                      spec: "@gabrielvfonseca/test-hooks@1.2.3",
                       integrity: "sha512-hook",
                     },
                   },
@@ -308,8 +308,8 @@ describe("security audit install metadata findings", () => {
           await writePluginIndexInstallRecords(stateDir, {
             "voice-call": {
               source: "npm",
-              spec: "@operator/voice-call",
-              resolvedSpec: "@operator/voice-call@1.2.3",
+              spec: "@gabrielvfonseca/voice-call",
+              resolvedSpec: "@gabrielvfonseca/voice-call@1.2.3",
               integrity: "sha512-plugin",
             },
           });
@@ -320,8 +320,8 @@ describe("security audit install metadata findings", () => {
                   installs: {
                     "test-hooks": {
                       source: "npm",
-                      spec: "@operator/test-hooks",
-                      resolvedSpec: "@operator/test-hooks@1.2.3",
+                      spec: "@gabrielvfonseca/test-hooks",
+                      resolvedSpec: "@gabrielvfonseca/test-hooks@1.2.3",
                       integrity: "sha512-hook",
                     },
                   },
@@ -344,7 +344,7 @@ describe("security audit install metadata findings", () => {
           await writePluginIndexInstallRecords(stateDir, {
             "voice-call": {
               source: "npm",
-              spec: "@operator/voice-call@1.2.3",
+              spec: "@gabrielvfonseca/voice-call@1.2.3",
               integrity: "sha512-plugin",
               resolvedVersion: "1.2.3",
             },
@@ -356,7 +356,7 @@ describe("security audit install metadata findings", () => {
                   installs: {
                     "test-hooks": {
                       source: "npm",
-                      spec: "@operator/test-hooks@1.2.3",
+                      spec: "@gabrielvfonseca/test-hooks@1.2.3",
                       integrity: "sha512-hook",
                       resolvedVersion: "1.2.3",
                     },
@@ -425,7 +425,7 @@ describe("security audit install metadata findings", () => {
     const stateDir = await makeTmpDir("installed-plugin-debris");
     for (const name of [
       "live-plugin",
-      ".openclaw-install-backups",
+      ".operator-install-backups",
       "node_modules",
       "old-plugin.backup-20260502",
       "old-plugin.disabled.20260502",
@@ -447,7 +447,7 @@ describe("security audit install metadata findings", () => {
     );
     expect(toolsReachable.detail).toContain("Enabled extension plugins: live-plugin.");
     expect(findings.map((finding) => finding.detail).join("\n")).not.toContain(
-      ".openclaw-install-backups",
+      ".operator-install-backups",
     );
   });
 
@@ -507,7 +507,7 @@ describe("security audit extension tool reachability findings", () => {
   beforeAll(async () => {
     const osModule = await import("node:os");
     const vitestModule = await import("vitest");
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-security-extensions-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-security-extensions-"));
     isolatedHome = path.join(fixtureRoot, "home");
     const isolatedEnv = createPathResolutionEnv(isolatedHome, { OPERATOR_HOME: isolatedHome });
     pathResolutionEnvSnapshot = captureEnv([...pathResolutionEnvKeys]);

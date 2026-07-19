@@ -20,7 +20,7 @@ type NativeEsmGraphProbe = {
 let nativeEsmGraphProbe: NativeEsmGraphProbe;
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-native-require-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-native-require-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -77,7 +77,7 @@ describe("tryNativeRequireJavaScriptModule", () => {
   it("declines missing dependency errors when source-transform fallback is available", () => {
     const dir = makeTempDir();
     const modulePath = path.join(dir, "plugin.cjs");
-    fs.writeFileSync(modulePath, 'require("openclaw/plugin-sdk");\n', "utf8");
+    fs.writeFileSync(modulePath, '...
 
     expect(
       tryNativeRequireJavaScriptModule(modulePath, {
@@ -102,7 +102,7 @@ describe("tryNativeRequireJavaScriptModule", () => {
     );
     fs.writeFileSync(
       modulePath,
-      'import { defineChannelMessageAdapter } from "openclaw/plugin-sdk/channel-outbound";\nexport const marker = defineChannelMessageAdapter();\n',
+      'import { defineChannelMessageAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";\nexport const marker = defineChannelMessageAdapter();\n',
       "utf8",
     );
     fs.writeFileSync(

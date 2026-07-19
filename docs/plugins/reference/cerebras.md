@@ -1,5 +1,5 @@
 ---
-summary: "Adds Cerebras model provider support to OpenClaw."
+summary: "Adds Cerebras model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the cerebras plugin
 title: "Cerebras plugin"
@@ -7,12 +7,12 @@ title: "Cerebras plugin"
 
 # Cerebras plugin
 
-Adds Cerebras model provider support to OpenClaw.
+Adds Cerebras model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/cerebras-provider`
-- Install route: npm; ClawHub: `clawhub:@operator/cerebras-provider`
+- Package: `@gabrielvfonseca/cerebras-provider`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/cerebras-provider`
 
 ## Surface
 

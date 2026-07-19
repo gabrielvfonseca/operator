@@ -1,21 +1,21 @@
 import { accessSync, constants, statSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { resolveNodeHostExecutable } from "openclaw/plugin-sdk/node-host";
+import { resolveNodeHostExecutable } from "@gabrielvfonseca/operator/plugin-sdk/node-host";
 import type {
   OperatorPluginApi,
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import type {
   SessionCatalogHost,
   SessionCatalogProvider,
   SessionCatalogSession,
   SessionCatalogTranscriptItem,
   SessionsCatalogReadResult,
-} from "openclaw/plugin-sdk/session-catalog";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   OPENCODE_LOCAL_SESSION_HOST_ID as LOCAL_HOST_ID,
   OPENCODE_NODE_INVOKE_TIMEOUT_MS as NODE_TIMEOUT_MS,

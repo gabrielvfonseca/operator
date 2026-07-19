@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 private final class CameraSessionLifecycleProbe: @unchecked Sendable {
     private let lock = NSLock()

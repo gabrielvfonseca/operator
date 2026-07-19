@@ -1,25 +1,25 @@
 {
-  "name": "@operator/mxc-sandbox",
+  "name": "@gabrielvfonseca/mxc-sandbox",
   "version": "2026.6.11",
   "description": "Operator MXC sandbox execution plugin for MXC-capable hosts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
   "dependencies": {
     "@microsoft/mxc-sdk": "0.7.0",
     "zod": "4.4.3"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/mxc-sandbox",
+      "npmSpec": "@gabrielvfonseca/mxc-sandbox",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.11"
     },

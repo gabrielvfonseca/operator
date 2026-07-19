@@ -1,6 +1,6 @@
 // Google Meet plugin module implements chrome browser proxy behavior.
-import { addTimerTimeoutGraceMs } from "openclaw/plugin-sdk/number-runtime";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
+import { addTimerTimeoutGraceMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 
 type BrowserProxyResult = {
   result?: unknown;

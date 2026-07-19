@@ -49,7 +49,7 @@ const createInstallPlanFixture = vi.hoisted(() => {
     return {
       programArguments: params?.wrapperPath
         ? [params.wrapperPath, "gateway", "run"]
-        : ["openclaw", "gateway", "run"],
+        : ["@gabrielvfonseca/operator", "gateway", "run"],
       workingDirectory: "/tmp",
       environment,
     };
@@ -88,7 +88,7 @@ vi.mock("../../config/io.js", () => ({
   loadConfig: loadConfigMock,
   readConfigFileSnapshotForWrite: vi.fn(async () => ({
     snapshot: await readConfigFileSnapshotMock(),
-    writeOptions: { expectedConfigPath: "/tmp/openclaw.json" },
+    writeOptions: { expectedConfigPath: "/tmp/operator.json" },
   })),
 }));
 
@@ -105,7 +105,7 @@ vi.mock("../../commands/gateway-install-token.persist.runtime.js", () => ({
   readConfigFileSnapshot: readConfigFileSnapshotMock,
   readConfigFileSnapshotForWrite: vi.fn(async () => ({
     snapshot: await readConfigFileSnapshotMock(),
-    writeOptions: { expectedConfigPath: "/tmp/openclaw.json" },
+    writeOptions: { expectedConfigPath: "/tmp/operator.json" },
   })),
   replaceConfigFile: replaceConfigFileMock,
 }));
@@ -351,7 +351,7 @@ describe("runDaemonInstall", () => {
 
   it("passes service environment value sources through to service install", async () => {
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         OPENROUTER_API_KEY: "or-operator-key",
@@ -544,7 +544,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         NODE_EXTRA_CA_CERTS: "/etc/ssl/certs/ca-certificates.crt",
       },
@@ -559,7 +559,7 @@ describe("runDaemonInstall", () => {
   it("reinstalls when the loaded service still embeds OPERATOR_GATEWAY_TOKEN", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         OPERATOR_GATEWAY_TOKEN: "stale-service-token",
       },
@@ -576,13 +576,13 @@ describe("runDaemonInstall", () => {
   it("returns already-installed when the embedded gateway token matches the install plan", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         OPERATOR_GATEWAY_TOKEN: "durable-token",
       },
     } as never);
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         OPERATOR_GATEWAY_TOKEN: "durable-token",
@@ -600,9 +600,9 @@ describe("runDaemonInstall", () => {
   it("preserves wrapper env from an installed but unloaded service during forced reinstall", async () => {
     service.isLoaded.mockResolvedValue(false);
     service.readCommand.mockResolvedValue({
-      programArguments: ["/usr/local/bin/openclaw-doppler", "gateway", "run"],
+      programArguments: ["/usr/local/bin/operator-doppler", "gateway", "run"],
       environment: {
-        OPERATOR_WRAPPER: "/usr/local/bin/openclaw-doppler",
+        OPERATOR_WRAPPER: "/usr/local/bin/operator-doppler",
       },
     } as never);
 
@@ -610,12 +610,12 @@ describe("runDaemonInstall", () => {
 
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     const installPlanArg = readFirstInstallPlanArg();
-    expectFields(installPlanArg, { wrapperPath: "/usr/local/bin/openclaw-doppler" });
+    expectFields(installPlanArg, { wrapperPath: "/usr/local/bin/operator-doppler" });
     expectFields(installPlanArg.existingEnvironment, {
-      OPERATOR_WRAPPER: "/usr/local/bin/openclaw-doppler",
+      OPERATOR_WRAPPER: "/usr/local/bin/operator-doppler",
     });
     expectFields(installPlanArg.env, {
-      OPERATOR_WRAPPER: "/usr/local/bin/openclaw-doppler",
+      OPERATOR_WRAPPER: "/usr/local/bin/operator-doppler",
     });
     expect(installDaemonServiceAndEmitMock).toHaveBeenCalledTimes(1);
   });
@@ -623,13 +623,13 @@ describe("runDaemonInstall", () => {
   it("reinstalls when wrapper command matches but wrapper env is missing", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["/usr/local/bin/openclaw-doppler", "gateway", "run"],
+      programArguments: ["/usr/local/bin/operator-doppler", "gateway", "run"],
       environment: {},
     } as never);
 
     await runDaemonInstall({
       json: true,
-      wrapper: "/usr/local/bin/openclaw-doppler",
+      wrapper: "/usr/local/bin/operator-doppler",
     });
 
     expect(installDaemonServiceAndEmitMock).toHaveBeenCalledTimes(1);
@@ -641,13 +641,13 @@ describe("runDaemonInstall", () => {
   it("reinstalls when the embedded gateway token differs from the install plan", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         OPERATOR_GATEWAY_TOKEN: "stale-service-token",
       },
     } as never);
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         OPERATOR_GATEWAY_TOKEN: "fresh-token",
@@ -665,7 +665,7 @@ describe("runDaemonInstall", () => {
   it("does not reinstall when OPERATOR_GATEWAY_TOKEN comes from an env file", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         OPERATOR_GATEWAY_TOKEN: "env-file-token",
       },
@@ -687,7 +687,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {},
     } as never);
 
@@ -721,7 +721,7 @@ describe("runDaemonInstall", () => {
   it("reuses env-backed service secrets during forced reinstall when the current shell is missing them", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
         OPENAI_API_KEY: "service-openai-key",
       },
@@ -754,10 +754,10 @@ describe("runDaemonInstall", () => {
   it("does not reuse stale service control env during forced reinstall", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "run"],
       environment: {
-        OPERATOR_STATE_DIR: "/tmp/openclaw-doctor-manual",
-        OPERATOR_CONFIG_PATH: "/tmp/openclaw-doctor-manual/openclaw.json",
+        OPERATOR_STATE_DIR: "/tmp/operator-doctor-manual",
+        OPERATOR_CONFIG_PATH: "/tmp/operator-doctor-manual/operator.json",
         OPERATOR_GATEWAY_TOKEN: "stale-service-token",
         PATH: "/tmp/doctor-bin:/usr/bin",
         NODE_OPTIONS: "--require /tmp/evil.js",

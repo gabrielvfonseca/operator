@@ -2,7 +2,7 @@
 import {
   createModelCatalogPresetAppliers,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import { LONGCAT_BASE_URL, LONGCAT_DEFAULT_MODEL_REF, LONGCAT_MODEL_CATALOG } from "./models.js";
 
 const longCatPresetAppliers = createModelCatalogPresetAppliers({

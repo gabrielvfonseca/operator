@@ -3,7 +3,7 @@ import {
   readRemoteMediaBuffer,
   MAX_IMAGE_BYTES,
   saveRemoteMedia,
-} from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { downloadMessageImages } from "./media.js";
 

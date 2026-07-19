@@ -1,6 +1,6 @@
 import Darwin
 import Foundation
-import OpenClawKit
+import OperatorKit
 import UIKit
 
 /// Shared device and platform info for Settings, gateway node payloads, and device status.
@@ -60,7 +60,7 @@ enum DeviceInfoHelper {
 
     /// Canonical app version when present, otherwise the Apple marketing version.
     static func appVersion() -> String {
-        (Bundle.main.infoDictionary?["OpenClawCanonicalVersion"] as? String)
+        (Bundle.main.infoDictionary?["OperatorCanonicalVersion"] as? String)
             ?? (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
             ?? "dev"
     }
@@ -88,6 +88,6 @@ enum DeviceInfoHelper {
     static func buildMetadata(infoDictionary: [String: Any]) -> ArtifactBuildInfo {
         ArtifactBuildInfo(
             infoDictionary: infoDictionary,
-            versionKeys: ["OpenClawCanonicalVersion", "CFBundleShortVersionString"])
+            versionKeys: ["OperatorCanonicalVersion", "CFBundleShortVersionString"])
     }
 }

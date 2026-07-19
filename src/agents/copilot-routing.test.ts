@@ -1,6 +1,6 @@
 // Covers when model selection should install the Copilot runtime plugin.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { modelSelectionShouldEnsureCopilotRuntimePlugin } from "./copilot-routing.js";
 
 const emptyCfg = {} as OperatorConfig;

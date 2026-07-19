@@ -738,7 +738,7 @@ describe("loginGeminiCliOAuth", () => {
   }
 
   function userInfoResponse(): Response {
-    return responseJson({ email: "lobster@openclaw.ai" });
+    return responseJson({ email: "lobster@operator.ai" });
   }
 
   type RecordedFetchRequest = {
@@ -1085,13 +1085,13 @@ describe("loginGeminiCliOAuth", () => {
     const { refreshTokensForGeminiCli } = await import("./oauth.token.js");
     const result = await refreshTokensForGeminiCli({
       refresh: "refresh-token",
-      email: "lobster@openclaw.ai",
+      email: "lobster@operator.ai",
     });
 
     expect(result).toMatchObject({
       access: "access-token",
       refresh: "refresh-token",
-      email: "lobster@openclaw.ai",
+      email: "lobster@operator.ai",
       projectId: undefined,
     });
     expect(requests.map(({ url }) => url)).toEqual([TOKEN_URL, USERINFO_URL]);
@@ -1120,7 +1120,7 @@ describe("loginGeminiCliOAuth", () => {
     const { refreshTokensForGeminiCli } = await import("./oauth.token.js");
     const result = await refreshTokensForGeminiCli({
       refresh: "refresh-token",
-      email: "lobster@openclaw.ai",
+      email: "lobster@operator.ai",
     });
 
     expect(Number.isFinite(result.expires)).toBe(true);
@@ -1151,7 +1151,7 @@ describe("loginGeminiCliOAuth", () => {
       const { refreshTokensForGeminiCli } = await import("./oauth.token.js");
       const result = await refreshTokensForGeminiCli({
         refresh: "refresh-token",
-        email: "lobster@openclaw.ai",
+        email: "lobster@operator.ai",
       });
 
       expect(result.expires).toBe(0);
@@ -1183,7 +1183,7 @@ describe("loginGeminiCliOAuth", () => {
     const { refreshTokensForGeminiCli } = await import("./oauth.token.js");
     const result = await refreshTokensForGeminiCli({
       refresh: "refresh-token",
-      email: "lobster@openclaw.ai",
+      email: "lobster@operator.ai",
     });
 
     expect(Number.isSafeInteger(result.expires)).toBe(true);

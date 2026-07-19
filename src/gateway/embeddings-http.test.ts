@@ -13,7 +13,7 @@ import { getFreePort, installGatewayTestHooks, testState } from "./test-helpers.
 
 installGatewayTestHooks({ scope: "suite" });
 
-const WRITE_SCOPE_HEADER = { "x-openclaw-scopes": "operator.write" };
+const WRITE_SCOPE_HEADER = { "x-operator-scopes": "operator.write" };
 
 let startGatewayServer: typeof import("./server.js").startGatewayServer;
 let createEmbeddingProviderMock: ReturnType<
@@ -277,7 +277,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
         model: "openclaw/default",
         input: "hello again",
       },
-      { "x-openclaw-model": "openai/text-embedding-3-small" },
+      { "x-operator-model": "openai/text-embedding-3-small" },
     );
     expect(qualified.status).toBe(200);
     const qualifiedJson = (await qualified.json()) as { model?: string };
@@ -298,7 +298,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
           input: "hello",
           encoding_format: "base64",
         },
-        { "x-openclaw-agent-id": "beta" },
+        { "x-operator-agent-id": "beta" },
       );
       expect(res.status).toBe(200);
       const json = (await res.json()) as { data?: Array<{ embedding?: string }> };
@@ -366,7 +366,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
 
       const header = await postEmbeddings(
         { model: "openclaw/default", input: "hello" },
-        { "x-openclaw-agent-id": "missing-agent" },
+        { "x-operator-agent-id": "missing-agent" },
       );
       await expectInvalidEmbeddingRequest(header, "Unknown agent 'missing-agent'.");
 
@@ -392,7 +392,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
         model: "openclaw/default",
         input: "hello",
       },
-      { "x-openclaw-scopes": "operator.read" },
+      { "x-operator-scopes": "operator.read" },
     );
     await expectDefaultEmbeddingResponse(res);
   });
@@ -403,7 +403,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
         model: "openclaw/default",
         input: "hello",
       },
-      { "x-openclaw-scopes": "" },
+      { "x-operator-scopes": "" },
     );
     await expectDefaultEmbeddingResponse(res);
   });
@@ -498,13 +498,13 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
     );
   });
 
-  it("rejects disallowed x-openclaw-model provider overrides", async () => {
+  it("rejects disallowed x-operator-model provider overrides", async () => {
     const res = await postEmbeddings(
       {
         model: "openclaw/default",
         input: "hello",
       },
-      { "x-openclaw-model": "ollama/nomic-embed-text" },
+      { "x-operator-model": "ollama/nomic-embed-text" },
     );
     await expectInvalidEmbeddingRequest(
       res,
@@ -512,7 +512,7 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
     );
   });
 
-  it("rejects x-openclaw-model for trusted write-only callers", async () => {
+  it("rejects x-operator-model for trusted write-only callers", async () => {
     const port = await getFreePort();
     const server = await startOpenAiCompatGatewayServer({
       startGatewayServer,
@@ -526,8 +526,8 @@ describe("OpenAI-compatible embeddings HTTP API (e2e)", () => {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "x-openclaw-scopes": "operator.write",
-          "x-openclaw-model": "openai/text-embedding-3-small",
+          "x-operator-scopes": "operator.write",
+          "x-operator-model": "openai/text-embedding-3-small",
         },
         body: JSON.stringify({
           model: "openclaw/default",

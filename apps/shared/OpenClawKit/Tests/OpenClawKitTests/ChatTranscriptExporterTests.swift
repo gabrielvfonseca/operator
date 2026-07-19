@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 @Suite("ChatTranscriptExporter")
 struct ChatTranscriptExporterTests {
@@ -21,10 +21,10 @@ struct ChatTranscriptExporterTests {
                 </final>
                 """,
                 timestamp: 1000),
-            OpenClawChatMessage(
+            OperatorChatMessage(
                 role: "user",
                 content: [
-                    OpenClawChatMessageContent(
+                    OperatorChatMessageContent(
                         type: "attachment",
                         text: nil,
                         mimeType: "text/plain",
@@ -89,11 +89,11 @@ struct ChatTranscriptExporterTests {
                 messages: []) == "# agent:main\n")
     }
 
-    private func message(role: String, text: String, timestamp: Double) -> OpenClawChatMessage {
-        OpenClawChatMessage(
+    private func message(role: String, text: String, timestamp: Double) -> OperatorChatMessage {
+        OperatorChatMessage(
             role: role,
             content: [
-                OpenClawChatMessageContent(
+                OperatorChatMessageContent(
                     type: "text",
                     text: text,
                     mimeType: nil,

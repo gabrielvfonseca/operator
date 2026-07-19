@@ -7,9 +7,9 @@
  * tell how a node fulfills computer.act; macOS nodes are the first fulfiller.
  */
 import crypto from "node:crypto";
-import { imageMimeFromFormat } from "@operator/media-core/mime";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { imageMimeFromFormat } from "@gabrielvfonseca/media-core/mime";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { Type } from "typebox";
 import { parseScreenSnapshotPayload } from "../../cli/nodes-screen.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

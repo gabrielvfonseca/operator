@@ -8,7 +8,7 @@ read_when:
   - You need to understand how the Codex plugin relates to model providers
 ---
 
-An **agent harness** is the low level executor for one prepared OpenClaw agent
+An **agent harness** is the low level executor for one prepared Operator agent
 turn. It is not a model provider, not a channel, and not a tool registry. For
 the user-facing mental model, see [Agent runtimes](/concepts/agent-runtimes).
 
@@ -19,11 +19,11 @@ current embedded runner.
 ## When to use a harness
 
 Register an agent harness when a model family has its own native session
-runtime and the normal OpenClaw provider transport is the wrong abstraction:
+runtime and the normal Operator provider transport is the wrong abstraction:
 
 - a native coding-agent server that owns threads and compaction
 - a local CLI or daemon that must stream native plan/reasoning/tool events
-- a model runtime that needs its own resume id in addition to the OpenClaw
+- a model runtime that needs its own resume id in addition to the Operator
   session transcript
 
 Do **not** register a harness just to add a new LLM API. For normal HTTP or
@@ -31,12 +31,12 @@ WebSocket model APIs, build a [provider plugin](/plugins/sdk-provider-plugins).
 
 ## What core still owns
 
-Before a harness is selected, OpenClaw has already resolved:
+Before a harness is selected, Operator has already resolved:
 
 - provider and model
 - runtime auth state, unless the harness declares that it owns auth bootstrap
 - thinking level and context budget
-- the OpenClaw transcript/session file
+- the Operator transcript/session file
 - workspace, sandbox, and tool policy
 - channel reply callbacks and streaming callbacks
 - model fallback and live model switching policy
@@ -52,7 +52,7 @@ trusted harness that can authenticate through its own native runtime may set
 skips its generic provider credential bootstrap and missing-credential failure
 for every attempt claimed by that harness.
 
-Core still forwards a compatible, explicitly selected or ordered OpenClaw auth
+Core still forwards a compatible, explicitly selected or ordered Operator auth
 profile and its scoped store when one exists. The harness must resolve that
 profile or its native credentials before issuing model requests, keep secrets
 scoped to the attempt, and surface actionable authentication failures. Do not
@@ -67,15 +67,15 @@ implementation that completed the probe. When
 matching `runtimeArtifact.validate(...)` capability that rechecks that binding
 without loading a different harness or scanning unrelated plugins.
 
-Verified OpenClaw continuations also pass `params.expectedRuntimeArtifact`.
+Verified Operator continuations also pass `params.expectedRuntimeArtifact`.
 The harness must compare it with the exact native process it acquired and fail
 before starting or resuming a native thread if they differ. Ordinary agent
 turns omit both fields, so content hashing stays out of the normal request hot
 path. Remote/WebSocket harnesses need a server attestation contract before
 they can participate; a version string alone is not an artifact identity.
 
-The prepared attempt also includes `params.runtimePlan`, an OpenClaw-owned
-policy bundle for runtime decisions that must stay shared across OpenClaw and
+The prepared attempt also includes `params.runtimePlan`, an Operator-owned
+policy bundle for runtime decisions that must stay shared across Operator and
 native harnesses:
 
 - `runtimePlan.tools.normalize(...)` and `runtimePlan.tools.logDiagnostics(...)`
@@ -88,7 +88,7 @@ native harnesses:
   classification
 - `runtimePlan.observability` for resolved provider/model/harness metadata
 
-Harnesses may use the plan for decisions that need to match OpenClaw behavior,
+Harnesses may use the plan for decisions that need to match Operator behavior,
 but treat it as host-owned attempt state: do not mutate it or use it to switch
 providers/models inside a turn.
 
@@ -108,7 +108,7 @@ Two secret-free provider-owned facts describe the selected route:
 Return `{ supported: false, reason }` when the harness cannot reproduce the
 prepared transport. Do not infer support by reading raw config after selection.
 When auth preparation yields multiple retry routes, one harness must support
-all of them before dispatch. Implicit selection uses OpenClaw if no plugin can
+all of them before dispatch. Implicit selection uses Operator if no plugin can
 own the full set; an explicit or persisted plugin selection fails closed.
 
 ## Register a harness
@@ -160,7 +160,7 @@ plugins that need to execute an existing model-locked session, such as a voice
 transport continuing a Codex-backed conversation. This is static owner consent,
 not a core allowlist. Keep it narrow.
 
-Delegates receive only work admission and embedded execution. OpenClaw requires
+Delegates receive only work admission and embedded execution. Operator requires
 the exact stored session key, store path, and session id; `modelSelectionLocked:
 true`; and matching `agentHarnessId` and `agentHarnessRuntimeOverride` values.
 The run is then scoped through the harness owner. Session creation, patching,
@@ -168,17 +168,17 @@ reset, deletion, archive, and Gateway mutation remain owner-only.
 
 ## Selection policy
 
-OpenClaw chooses a harness after provider/model resolution:
+Operator chooses a harness after provider/model resolution:
 
 1. Model-scoped runtime policy wins.
 2. Provider-scoped runtime policy comes next.
 3. `auto` asks registered harnesses if they support the resolved effective
    route. Provider/model prefixes alone never select a harness.
-4. If no registered harness matches, OpenClaw uses its embedded runtime.
+4. If no registered harness matches, Operator uses its embedded runtime.
 
 Plugin harness failures surface as run failures. In `auto` mode, embedded
 fallback only applies when no registered plugin harness supports the resolved
-provider/model. Once a plugin harness has claimed a run, OpenClaw does not
+provider/model. Once a plugin harness has claimed a run, Operator does not
 replay that same turn through another runtime, because that can change
 auth/runtime semantics or duplicate side effects.
 
@@ -209,7 +209,7 @@ or operator config, not in the shared runtime selector.
 
 Most harnesses should also register a provider. The provider makes model refs,
 auth status, model metadata, and `/model` selection visible to the rest of
-OpenClaw. The harness then claims that provider in `supports(...)`.
+Operator. The harness then claims that provider in `supports(...)`.
 
 The bundled Codex plugin follows this pattern:
 
@@ -219,7 +219,7 @@ The bundled Codex plugin follows this pattern:
 - harness id: `codex`
 - auth: synthetic provider availability, because the Codex harness owns the
   native Codex login/session
-- app-server request: OpenClaw sends the bare model id to Codex and lets the
+- app-server request: Operator sends the bare model id to Codex and lets the
   harness talk to the native app-server protocol
 
 The Codex plugin is additive. With runtime policy unset or `auto`, OpenAI may
@@ -227,7 +227,7 @@ select Codex only when its provider-owned route contract declares `codex`
 compatible: an exact official HTTPS Platform Responses or ChatGPT Responses
 route with no authored request override. The `openai/*` prefix alone never
 selects Codex. Custom endpoints, Completions adapters, and authored request
-behavior stay on OpenClaw. Plaintext official HTTP endpoints are rejected. Older `codex/gpt-*`
+behavior stay on Operator. Plaintext official HTTP endpoints are rejected. Older `codex/gpt-*`
 refs remain compatibility inputs. See
 [OpenAI implicit agent runtime](/providers/openai#implicit-agent-runtime).
 
@@ -236,7 +236,7 @@ For operator setup, model prefix examples, and Codex-only configs, see
 
 The Codex plugin enforces the minimum app-server version documented in
 [Codex Harness](/plugins/codex-harness). It checks the initialize handshake and
-blocks older or unversioned servers, so OpenClaw only runs against the protocol
+blocks older or unversioned servers, so Operator only runs against the protocol
 surface it has tested.
 
 ### Tool-result middleware
@@ -245,7 +245,7 @@ Bundled plugins and explicitly enabled installed plugins with matching
 manifest contracts can attach runtime-neutral tool-result middleware through
 `api.registerAgentToolResultMiddleware(...)` when their manifest declares the
 targeted runtime ids in `contracts.agentToolResultMiddleware`. This trusted
-seam is for async tool-result transforms that must run before OpenClaw or
+seam is for async tool-result transforms that must run before Operator or
 Codex feeds tool output back into the model.
 
 Legacy bundled plugins can still use
@@ -260,9 +260,9 @@ Native harnesses that own their own protocol projection can use
 `classifyAgentHarnessTerminalOutcome(...)` from
 `openclaw/plugin-sdk/agent-harness-runtime` when a completed turn produced no
 visible assistant text. The helper returns `empty`, `reasoning-only`, or
-`planning-only` so OpenClaw's fallback policy can decide whether to retry on a
+`planning-only` so Operator's fallback policy can decide whether to retry on a
 different model. `planning-only` requires the harness's explicit `planText`
-field; OpenClaw does not infer it from assistant prose. The helper
+field; Operator does not infer it from assistant prose. The helper
 intentionally leaves prompt errors, in-flight turns, and intentional silent
 replies such as `NO_REPLY` unclassified.
 
@@ -270,7 +270,7 @@ replies such as `NO_REPLY` unclassified.
 
 Native harnesses must call `runAgentEndSideEffects(...)` from
 `openclaw/plugin-sdk/agent-harness-runtime` after they finalize an attempt. It
-dispatches the portable `agent_end` hook and OpenClaw's research capture
+dispatches the portable `agent_end` hook and Operator's research capture
 without delaying interactive replies. Use `awaitAgentEndSideEffects(...)` for
 local, non-interactive runs where the attempt must not resolve until those
 side effects finish. Both helpers accept the same `{ event, ctx }` payload as
@@ -281,7 +281,7 @@ attempt result.
 
 Native harnesses that expose a runtime-level user-input request should use the
 user-input helpers from `openclaw/plugin-sdk/agent-harness-runtime` to format
-the prompt, deliver it through OpenClaw's blocking reply path, and normalize
+the prompt, deliver it through Operator's blocking reply path, and normalize
 choice/free-form answers back into the runtime's native response shape. The
 helper keeps channel/TUI presentation consistent while each harness keeps its
 own protocol parsing and pending-request lifecycle.
@@ -296,16 +296,16 @@ conversion and native execution callback.
 
 ### Native Codex harness mode
 
-The bundled `codex` harness is the native Codex mode for embedded OpenClaw
+The bundled `codex` harness is the native Codex mode for embedded Operator
 agent turns. Enable the bundled `codex` plugin first, and include `codex` in
 `plugins.allow` if your config uses a restrictive allowlist. Native app-server
 configs should use `openai/gpt-*`; OpenAI agent turns select the Codex harness
 only when the effective route declares Codex compatibility. Legacy Codex model
-refs should be repaired with `openclaw doctor --fix`, and legacy `codex/*`
+refs should be repaired with `operator doctor --fix`, and legacy `codex/*`
 model refs remain compatibility aliases for the native harness.
 
 When this mode runs, Codex owns the native thread id, resume behavior,
-compaction, and app-server execution. OpenClaw still owns the chat channel,
+compaction, and app-server execution. Operator still owns the chat channel,
 visible transcript mirror, tool policy, approvals, media delivery, and session
 selection. Use provider/model `agentRuntime.id: "codex"` when you need to
 prove that only the Codex app-server path can claim the run. Explicit plugin
@@ -314,7 +314,7 @@ are not retried through another runtime.
 
 ## Runtime strictness
 
-By default, OpenClaw uses `auto` provider/model runtime policy: registered
+By default, Operator uses `auto` provider/model runtime policy: registered
 plugin harnesses can claim compatible effective routes, and the embedded
 runtime handles the turn when none match. A provider/model prefix alone never
 selects a harness. Use an explicit provider/model plugin runtime such as
@@ -322,7 +322,7 @@ selects a harness. Use an explicit provider/model plugin runtime such as
 of routing through the embedded runtime. Explicit selection does not make an
 incompatible route compatible. Selected plugin harness failures always fail
 hard. This does not block an explicit provider/model
-`agentRuntime.id: "openclaw"`.
+`agentRuntime.id: "@gabrielvfonseca/operator"`.
 
 For Codex-only embedded runs:
 
@@ -411,34 +411,34 @@ image, video, music, TTS, PDF, or other provider-specific model routing.
 ## Native sessions and transcript mirror
 
 A harness may keep a native session id, thread id, or daemon-side resume
-token. Keep that binding explicitly associated with the OpenClaw session, and
-keep mirroring user-visible assistant/tool output into the OpenClaw
+token. Keep that binding explicitly associated with the Operator session, and
+keep mirroring user-visible assistant/tool output into the Operator
 transcript.
 
-The OpenClaw transcript remains the compatibility layer for:
+The Operator transcript remains the compatibility layer for:
 
 - channel-visible session history
 - transcript search and indexing
-- switching back to the built-in OpenClaw harness on a later turn
+- switching back to the built-in Operator harness on a later turn
 - generic `/new`, `/reset`, and session deletion behavior
 
-If your harness stores a sidecar binding, implement `reset(...)` so OpenClaw
-can clear it when the owning OpenClaw session is reset.
+If your harness stores a sidecar binding, implement `reset(...)` so Operator
+can clear it when the owning Operator session is reset.
 
 ## Tool and media results
 
-Core constructs the OpenClaw tool list and passes it into the prepared
+Core constructs the Operator tool list and passes it into the prepared
 attempt. When a harness executes a dynamic tool call, return the tool result
 back through the harness result shape instead of sending channel media
 yourself.
 
 This keeps text, image, video, music, TTS, approval, and messaging-tool
-outputs on the same delivery path as OpenClaw-backed runs.
+outputs on the same delivery path as Operator-backed runs.
 
 ### Terminal tool outcomes
 
 `AgentHarnessAttemptParams.observeToolTerminal` is the host-owned terminal
-outcome accumulator. A harness that executes OpenClaw dynamic tools or native
+outcome accumulator. A harness that executes Operator dynamic tools or native
 tools must call it when each tool reaches one terminal outcome, before the
 attempt result is finalized. Harnesses that do not execute tools do not need to
 call it.
@@ -453,9 +453,9 @@ Report facts from the execution boundary:
 - Report `outcome: "success"` or `outcome: "failure"`. Include the structured
   failure fields available from the runtime instead of inferring failure from
   display text.
-- Use `nativeMutation` only for native tools that do not use an OpenClaw tool
+- Use `nativeMutation` only for native tools that do not use an Operator tool
   definition. Supply protocol-owned mutation and replay facts there; do not
-  copy OpenClaw's mutation classifier into the harness.
+  copy Operator's mutation classifier into the harness.
 
 The callback returns the canonical resolution for that call. Carry its
 `lastToolError` into `AgentHarnessAttemptResult` and use its execution,
@@ -465,7 +465,7 @@ successful tools and clears it only after the matching action succeeds.
 
 The callback remains optional for source compatibility with older experimental
 harnesses. Optional does not mean ignorable for a harness that executes tools:
-without terminal reports, OpenClaw cannot preserve mutating-tool failure truth
+without terminal reports, Operator cannot preserve mutating-tool failure truth
 across later tool calls, including quiet heartbeat completion.
 
 ## Current limitations

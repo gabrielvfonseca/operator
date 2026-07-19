@@ -2,7 +2,7 @@
 import {
   normalizeSortedUniqueTrimmedStringList,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   buildPairingConnectCloseReason,
   buildPairingConnectErrorDetails,

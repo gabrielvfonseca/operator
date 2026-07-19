@@ -5,8 +5,8 @@
 import {
   resolveStableChannelMessageIngress,
   type StableChannelIngressIdentityParams,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { getClickClackRuntime } from "./runtime.js";
 import type { ClickClackMessage, CoreConfig, ResolvedClickClackAccount } from "./types.js";
 

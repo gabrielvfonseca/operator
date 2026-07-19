@@ -1,6 +1,6 @@
 // Audio transcode helpers run ffmpeg to convert audio for provider requirements.
 import path from "node:path";
-import { basenameFromAnyPath } from "@operator/media-core/file-name";
+import { basenameFromAnyPath } from "@gabrielvfonseca/media-core/file-name";
 import { writeExternalFileWithinRoot } from "../infra/fs-safe.js";
 import { tempWorkspaceSync, withTempWorkspace } from "../infra/private-temp-workspace.js";
 import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";

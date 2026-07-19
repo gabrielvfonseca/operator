@@ -58,7 +58,7 @@ async function initializeRemoteBackedGitWorkspace(root: string): Promise<string>
     workspace,
     "config",
     "user.email",
-    "openclaw-test@example.invalid",
+    "operator-test@example.invalid",
   ]);
   await fs.writeFile(path.join(workspace, "README.md"), "base\n");
   await execFileAsync("git", ["-C", workspace, "add", "README.md"]);
@@ -120,7 +120,7 @@ function expectThreadBindingsUnbound(targetSessionKey: string) {
 
 test("sessions.delete removes clean session worktrees and keeps dirty ones", async () => {
   const root = await fs.mkdtemp(
-    path.join(await fs.realpath(os.tmpdir()), "openclaw-delete-worktree-"),
+    path.join(await fs.realpath(os.tmpdir()), "operator-delete-worktree-"),
   );
   const workspace = await initializeRemoteBackedGitWorkspace(root);
   const previousStateDir = process.env.OPERATOR_STATE_DIR;

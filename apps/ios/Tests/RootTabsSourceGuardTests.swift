@@ -26,7 +26,7 @@ struct RootTabsSourceGuardTests {
         #expect(source.contains("Show Sidebar"))
         #expect(source.contains("shouldShowSidebarRevealInDestinationHeader"))
         #expect(source.contains("layoutMode: self.isSidebarDrawerLayout ? .drawer : .split"))
-        #expect(componentSource.contains("OpenClawSidebarHeaderLeadingSlot"))
+        #expect(componentSource.contains("OperatorSidebarHeaderLeadingSlot"))
         #expect(componentSource.contains(".frame(width: 44, height: 44, alignment: .center)"))
         #expect(source.contains(".safeAreaPadding(.top, 8)"))
         #expect(source.contains("Self.sidebarShowButtonAccessibilityIdentifier"))
@@ -116,8 +116,8 @@ struct RootTabsSourceGuardTests {
         #expect(!source.contains("sidebarDeviceMenu"))
         #expect(sidebarColumn.contains("self.sidebarIdentityHeader"))
         #expect(source.contains("private var sidebarIdentityHeader: some View"))
-        #expect(source.contains("OpenClawProMark(size: 30"))
-        #expect(source.contains("Text(\"OpenClaw\")"))
+        #expect(source.contains("OperatorProMark(size: 30"))
+        #expect(source.contains("Text(\"Operator\")"))
         #expect(source.contains("private var sidebarGatewayStatusTitle: String"))
         #expect(source.contains("private var sidebarGatewayStatusColor: Color"))
         #expect(!sidebarColumn.contains("activeAgent"))
@@ -174,13 +174,13 @@ struct RootTabsSourceGuardTests {
         #expect(sidebarDetail.contains("headerTitle: \"Dreaming\""))
         #expect(sidebarDetail.contains("headerTitle: \"Usage\""))
         #expect(sidebarDetail.contains("headerTitle: \"Automations\""))
-        #expect(!sidebarDetail.contains("headerTitle: \"OpenClaw\""))
-        #expect(agentOverviewSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(!sidebarDetail.contains("headerTitle: \"Operator\""))
+        #expect(agentOverviewSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(agentOverviewSource.contains("title: .localized(self.headerTitle)"))
-        #expect(!agentOverviewSource.contains("Text(\"OpenClaw\")"))
-        #expect(docsSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(!agentOverviewSource.contains("Text(\"Operator\")"))
+        #expect(docsSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(docsSource.contains("title: \"Docs\""))
-        #expect(!docsSource.contains("Text(\"OpenClaw Docs\")"))
+        #expect(!docsSource.contains("Text(\"Operator Docs\")"))
     }
 
     @Test func `agents direct route keeps single sidebar control`() throws {
@@ -200,8 +200,8 @@ struct RootTabsSourceGuardTests {
         #expect(destinationsSource.contains("self.directHeader(\n                        for: .usage"))
         #expect(destinationsSource.contains("self.directHeader(\n                        for: .cron"))
         #expect(destinationsSource.contains("self.directRoute == route ? self.headerLeadingAction : nil"))
-        #expect(nodesSource.contains("OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
-        #expect(dreamingSource.contains("OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
+        #expect(nodesSource.contains("OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
+        #expect(dreamingSource.contains("OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
     }
 
     @Test func `iOS 26 chrome uses native glass while content cards stay quiet`() throws {
@@ -223,7 +223,7 @@ struct RootTabsSourceGuardTests {
         #expect(componentsSource.contains("if #available(iOS 26.0, *)"))
         #expect(componentsSource.contains(".buttonStyle(.borderedProminent)"))
         #expect(componentsSource.contains(".buttonStyle(.bordered)"))
-        #expect(componentsSource.contains("struct OpenClawNoticeBanner: View"))
+        #expect(componentsSource.contains("struct OperatorNoticeBanner: View"))
         #expect(!cardSurface.contains("glassEffect"))
     }
 
@@ -239,7 +239,7 @@ struct RootTabsSourceGuardTests {
         let overviewRowsSource = try String(contentsOf: Self.commandCenterSupportSourceURL(), encoding: .utf8)
         let gatewayStatus = try Self.extract(
             componentsSource,
-            from: "struct OpenClawGatewayCompactPill: View",
+            from: "struct OperatorGatewayCompactPill: View",
             to: "struct ProMetricTile: View")
         let agentFilterMenu = try Self.extract(
             agentSource,
@@ -261,7 +261,7 @@ struct RootTabsSourceGuardTests {
             settingsSource,
             from: "private struct AppearanceSettingsScreen: View",
             to: "extension SettingsProTab")
-        #expect(gatewayStatus.contains("OpenClawStatusBadge(label: .verbatim(self.title), tone: self.tone)"))
+        #expect(gatewayStatus.contains("OperatorStatusBadge(label: .verbatim(self.title), tone: self.tone)"))
         #expect(!gatewayStatus.contains("ProCapsule("))
         #expect(!gatewayStatus.contains("Capsule()"))
         #expect(agentDestinationsSource.contains("List {"))
@@ -279,7 +279,7 @@ struct RootTabsSourceGuardTests {
         #expect(!talkSource.contains("voiceModeCard"))
         #expect(!talkSource.contains("statusChip"))
         #expect(settingsList.contains("Text(\"Device\")"))
-        #expect(settingsList.contains(".font(OpenClawType.captionSemiBold)"))
+        #expect(settingsList.contains(".font(OperatorType.captionSemiBold)"))
         #expect(!settingsList.contains("ProCard("))
         #expect(settingsRow.contains("NavigationLink(value: route)"))
         #expect(!settingsRow.contains("chevron.right"))
@@ -310,7 +310,7 @@ struct RootTabsSourceGuardTests {
         #expect(!aboutDestination.contains("detailStatusCard("))
         #expect(aboutDestination.contains("detailListCard"))
         #expect(aboutDestination.contains("SettingsBuildMetadataStrip(metadata: DeviceInfoHelper.buildMetadata())"))
-        #expect(!aboutDestination.contains("SettingsDetailRow(\"OpenClaw app version\""))
+        #expect(!aboutDestination.contains("SettingsDetailRow(\"Operator app version\""))
         #expect(aboutDestination.contains(
             "SettingsDetailRow(\"Device\", value: .verbatim(DeviceInfoHelper.deviceFamily()))"))
         #expect(aboutDestination.contains(
@@ -362,22 +362,22 @@ struct RootTabsSourceGuardTests {
         let agentOverviewSource = try String(contentsOf: Self.agentProTabOverviewSourceURL(), encoding: .utf8)
         let settingsSource = try String(contentsOf: Self.settingsProTabSectionsSourceURL(), encoding: .utf8)
 
-        #expect(componentsSource.contains("struct OpenClawAdaptiveHeaderRow<Leading: View, Accessory: View>: View"))
+        #expect(componentsSource.contains("struct OperatorAdaptiveHeaderRow<Leading: View, Accessory: View>: View"))
         #expect(componentsSource.contains("ViewThatFits(in: .horizontal)"))
         #expect(componentsSource.contains("private var stackedLayout: some View"))
         #expect(componentsSource.contains(".layoutPriority(1)"))
         #expect(componentsSource.contains(".fixedSize(horizontal: true, vertical: false)"))
-        #expect(featureChromeSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(featureChromeSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(featureChromeSource.contains("if !self.usesNativeNavigationChrome"))
         #expect(!featureChromeSource.contains("if self.headerLeadingAction != nil"))
-        #expect(docsSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(docsSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(docsSource.contains("if !self.usesNativeNavigationChrome"))
-        #expect(overviewSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(overviewSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(overviewSource.matches(of: /if !self\.usesNativeNavigationChrome/).count == 2)
         #expect(chatSource.contains(".navigationTitle(self.headerDisplayTitle)"))
-        #expect(chatSource.contains("OpenClawSidebarRevealButton(action: headerLeadingAction)"))
-        #expect(!chatSource.contains("OpenClawAdaptiveHeaderRow("))
-        #expect(agentOverviewSource.contains("OpenClawAdaptiveHeaderRow("))
+        #expect(chatSource.contains("OperatorSidebarRevealButton(action: headerLeadingAction)"))
+        #expect(!chatSource.contains("OperatorAdaptiveHeaderRow("))
+        #expect(agentOverviewSource.contains("OperatorAdaptiveHeaderRow("))
         #expect(settingsSource.contains("ToolbarItem(placement: .topBarLeading)"))
     }
 
@@ -385,11 +385,11 @@ struct RootTabsSourceGuardTests {
         let source = try String(contentsOf: Self.phoneHubSourceURL(), encoding: .utf8)
 
         #expect(source.contains("case .docs:"))
-        #expect(source.contains("OpenClawDocsScreen("))
+        #expect(source.contains("OperatorDocsScreen("))
         #expect(source.contains("gatewayAction: { self.openGatewayDetail() }"))
         #expect(!source.contains("phoneDetailBackAction"))
         #expect(!source.contains("Label(\"Docs\", systemImage: \"book\")"))
-        #expect(!source.contains("https://docs.openclaw.ai"))
+        #expect(!source.contains("https://docs.operator.ai"))
     }
 
     @Test func `root shell preview matrix covers phone and I pad states`() throws {
@@ -697,7 +697,7 @@ extension RootTabsSourceGuardTests {
         #expect(!appModelSource.contains("defaultAgentId: self.gatewayDefaultAgentId"))
         #expect(activitySource.contains("IPadSidebarScreenChrome("))
         #expect(!taskSource.contains("struct IPadActivityScreen"))
-        #expect(!taskSource.contains("import OpenClawChatUI"))
+        #expect(!taskSource.contains("import OperatorChatUI"))
         #expect(projectSource.contains("IPadActivityScreen.swift in Sources"))
     }
 
@@ -707,8 +707,8 @@ extension RootTabsSourceGuardTests {
         let projectSource = try String(contentsOf: Self.xcodeProjectSourceURL(), encoding: .utf8)
 
         #expect(chromeSource.contains("struct IPadSidebarScreenChrome<Content: View>: View"))
-        #expect(chromeSource.contains("OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
-        #expect(chromeSource.contains("OpenClawGatewayCompactPill()"))
+        #expect(chromeSource.contains("OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)"))
+        #expect(chromeSource.contains("OperatorGatewayCompactPill()"))
         #expect(!taskSource.contains("struct IPadSidebarScreenChrome"))
         #expect(projectSource.contains("IPadSidebarScreenChrome.swift in Sources"))
     }
@@ -780,7 +780,7 @@ extension RootTabsSourceGuardTests {
         #expect(overviewSource.contains("Button(action: self.openSettings)"))
         #expect(overviewSource.contains(".accessibilityHint(\"Opens gateway settings\")"))
         #expect(agentSource.contains("let openSettings: (() -> Void)?"))
-        #expect(agentOverviewSource.contains("OpenClawGatewayCompactPill()"))
+        #expect(agentOverviewSource.contains("OperatorGatewayCompactPill()"))
         #expect(agentOverviewSource.contains("Button(action: openSettings)"))
         #expect(rootSource
             .matches(of: /AgentProTab\([\s\S]*?openSettings: \{ self\.selectSidebarDestination\(\.gateway\) \}/)
@@ -901,7 +901,7 @@ extension RootTabsSourceGuardTests {
             sectionsSource.contains("Toggle(isOn: self.notificationToggleBinding)")
                 && sectionsSource.contains("Text(\"Notifications\")"))
         #expect(locationCard.contains("Text(\"Location\")"))
-        #expect(locationCard.contains(".font(OpenClawType.body)"))
+        #expect(locationCard.contains(".font(OperatorType.body)"))
         #expect(locationCard.contains(".accessibilityLabel(\"Location Sharing\")"))
         #expect(!locationCard.contains("Text(\"Location Sharing\")"))
         #expect(!locationCard.contains("SettingsIcon("))
@@ -1517,7 +1517,7 @@ extension RootTabsSourceGuardTests {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Design/OpenClawProComponents.swift")
+            .appendingPathComponent("Sources/Design/OperatorProComponents.swift")
     }
 
     private static func commandCenterSourceURL() -> URL {
@@ -1646,7 +1646,7 @@ extension RootTabsSourceGuardTests {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Design/OpenClawDocsScreen.swift")
+            .appendingPathComponent("Sources/Design/OperatorDocsScreen.swift")
     }
 
     static func settingsProTabSectionsSourceURL() -> URL {
@@ -1697,7 +1697,7 @@ extension RootTabsSourceGuardTests {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/OpenClawApp.swift")
+            .appendingPathComponent("Sources/OperatorApp.swift")
     }
 
     private static func notificationPermissionGuidanceDialogSourceURL() -> URL {
@@ -1785,14 +1785,14 @@ extension RootTabsSourceGuardTests {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("shared/OpenClawKit/Sources/OpenClawChatUI/ChatView+Previews.swift")
+            .appendingPathComponent("shared/OperatorKit/Sources/OperatorChatUI/ChatView+Previews.swift")
     }
 
     private static func xcodeProjectSourceURL() -> URL {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("OpenClaw.xcodeproj/project.pbxproj")
+            .appendingPathComponent("Operator.xcodeproj/project.pbxproj")
     }
 
     static func extract(_ source: String, from start: String, to end: String) throws -> String {

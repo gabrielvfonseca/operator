@@ -1,8 +1,8 @@
 // Doctor config-flow tests cover config repair, migration, stripping, and validation orchestration.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { withTempHome } from "openclaw/plugin-sdk/test-env";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { withTempHome } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { writeChannelPairingStateSnapshot } from "../pairing/pairing-store-sqlite.test-helpers.js";
 import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
@@ -913,7 +913,7 @@ vi.mock("../plugins/doctor-contract-registry.js", () => {
       {
         path: ["channels", "telegram", "groupMentionsOnly"],
         message:
-          'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*".requireMention instead. Run "openclaw doctor --fix".',
+          'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*"....
       },
       {
         path: ["talk"],
@@ -1263,8 +1263,8 @@ vi.mock("./doctor-config-preflight.js", async () => {
   function resolveConfigPath() {
     const stateDir =
       process.env.OPERATOR_STATE_DIR ||
-      (process.env.HOME ? pathLocal.join(process.env.HOME, ".openclaw") : "");
-    return process.env.OPERATOR_CONFIG_PATH || pathLocal.join(stateDir, "openclaw.json");
+      (process.env.HOME ? pathLocal.join(process.env.HOME, ".operator") : "");
+    return process.env.OPERATOR_CONFIG_PATH || pathLocal.join(stateDir, "operator.json");
   }
 
   function normalizeDiscordStreamingCompat(cfg: Record<string, unknown>): Record<string, unknown> {
@@ -1566,7 +1566,7 @@ describe("doctor config flow", () => {
     const result = await runDoctorConfigWithInput({
       config: {
         gateway: { auth: { mode: "token", token: 123 } },
-        agents: { list: [{ id: "openclaw" }] },
+        agents: { list: [{ id: "@gabrielvfonseca/operator" }] },
       },
       run: loadAndMaybeMigrateDoctorConfig,
     });
@@ -1797,13 +1797,13 @@ describe("doctor config flow", () => {
       hooks: {
         enabled: true,
         token: "hook-secret",
-        transformsDir: "/virtual/.openclaw/workspace/skills/linear-webhook",
+        transformsDir: "/virtual/.operator/workspace/skills/linear-webhook",
         mappings: [
           {
             match: { path: "linear" },
             action: "agent",
             messageTemplate: "Linear event",
-            transform: { module: "./openclaw-linear-transform.js" },
+            transform: { module: "./operator-linear-transform.js" },
           },
         ],
       },
@@ -1811,8 +1811,8 @@ describe("doctor config flow", () => {
 
     const warning = doctorWarnings.join("\n");
     expect(warning).toContain("hooks.transformsDir:");
-    expect(warning).toContain("/virtual/.openclaw/workspace/skills/linear-webhook");
-    expect(warning).toContain("/virtual/.openclaw/hooks/transforms");
+    expect(warning).toContain("/virtual/.operator/workspace/skills/linear-webhook");
+    expect(warning).toContain("/virtual/.operator/hooks/transforms");
     expect(warning).toContain("move custom transforms there or remove hooks.transformsDir");
   });
 
@@ -2038,7 +2038,7 @@ describe("doctor config flow", () => {
       config: {
         bridge: { bind: "auto" },
         gateway: { auth: { mode: "token", token: "ok", extra: true } },
-        agents: { list: [{ id: "openclaw" }] },
+        agents: { list: [{ id: "@gabrielvfonseca/operator" }] },
         session: {
           maintenance: {
             rotateBytes: "10mb",
@@ -2203,8 +2203,8 @@ describe("doctor config flow", () => {
   it("keeps discord streaming aliases on disk during repair so downgrades stay recoverable", async () => {
     await withTempHome(
       async (home) => {
-        const configDir = path.join(home, ".openclaw");
-        const configPath = path.join(configDir, "openclaw.json");
+        const configDir = path.join(home, ".operator");
+        const configPath = path.join(configDir, "operator.json");
         await fs.mkdir(configDir, { recursive: true });
         await fs.writeFile(
           configPath,
@@ -2505,10 +2505,10 @@ describe("doctor config flow", () => {
   it("converts numeric discord ids to strings on repair", async () => {
     await withTempHome(
       async (home) => {
-        const configDir = path.join(home, ".openclaw");
+        const configDir = path.join(home, ".operator");
         await fs.mkdir(configDir, { recursive: true });
         await fs.writeFile(
-          path.join(configDir, "openclaw.json"),
+          path.join(configDir, "operator.json"),
           JSON.stringify(
             {
               channels: {
@@ -2710,10 +2710,10 @@ describe("doctor config flow", () => {
   it('repairs dmPolicy="allowlist" by restoring allowFrom from pairing store on repair', async () => {
     const result = await withTempHome(
       async (home) => {
-        const configDir = path.join(home, ".openclaw");
+        const configDir = path.join(home, ".operator");
         await fs.mkdir(configDir, { recursive: true });
         await fs.writeFile(
-          path.join(configDir, "openclaw.json"),
+          path.join(configDir, "operator.json"),
           JSON.stringify(
             {
               channels: {
@@ -3084,10 +3084,10 @@ describe("doctor config flow", () => {
     await withTempHome(
       async (home) => {
         const providerId = "acme-speech";
-        const configDir = path.join(home, ".openclaw");
+        const configDir = path.join(home, ".operator");
         await fs.mkdir(configDir, { recursive: true });
         await fs.writeFile(
-          path.join(configDir, "openclaw.json"),
+          path.join(configDir, "operator.json"),
           JSON.stringify(
             {
               talk: {

@@ -4,7 +4,7 @@ import Foundation
 // and covers offline browsing; live gateway responses are always the source
 // of truth and replace cached rows wholesale.
 
-extension OpenClawChatViewModel {
+extension OperatorChatViewModel {
     struct SessionSnapshot {
         var key: String
         var generation: UInt64
@@ -13,7 +13,7 @@ extension OpenClawChatViewModel {
         var sessionRoutingContract: String?
     }
 
-    func replaceMessages(_ messages: [OpenClawChatMessage]) {
+    func replaceMessages(_ messages: [OperatorChatMessage]) {
         guard self.messages != messages else { return }
         self.messages = messages
         markTimelineChanged()
@@ -22,7 +22,7 @@ extension OpenClawChatViewModel {
     func persistTranscriptToCache(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>)
     {
         guard let transcriptCache else { return }
@@ -39,7 +39,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    func persistSessionsToCache(_ sessions: [OpenClawChatSessionEntry]) {
+    func persistSessionsToCache(_ sessions: [OperatorChatSessionEntry]) {
         guard let transcriptCache else { return }
         let previous = pendingCacheWriteTask
         pendingCacheWriteTask = Task.detached {
@@ -61,7 +61,7 @@ extension OpenClawChatViewModel {
                 // A live sessions response (even an empty one) is authoritative;
                 // a slow cache read must never repaint over it.
                 guard self.sessions.isEmpty, !self.hasAppliedLiveSessions else { return }
-                self.sessions = OpenClawChatSessionListOrganizer.organize(cached)
+                self.sessions = OperatorChatSessionListOrganizer.organize(cached)
             }
         }
         guard messages.isEmpty, !hasAppliedLiveHistory else { return }
@@ -79,7 +79,7 @@ extension OpenClawChatViewModel {
     }
 
     static func transcriptCacheAgentID(sessionKey: String, agentID: String?) -> String? {
-        guard OpenClawChatSessionKey.agentID(from: sessionKey) == nil else { return nil }
+        guard OperatorChatSessionKey.agentID(from: sessionKey) == nil else { return nil }
         let normalized = agentID?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         return normalized?.isEmpty == false ? normalized : nil
     }

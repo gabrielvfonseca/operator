@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileFailureReason, AuthProfileStore } from "../agents/auth-profiles/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
 const authProfileMocks = vi.hoisted(() => ({
@@ -44,7 +44,7 @@ describe("noteAuthProfileHealth", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-auth-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-auth-"));
     authProfileMocks.ensureAuthProfileStore.mockReset();
     authProfileMocks.hasAnyAuthProfileStoreSource.mockReset();
     authProfileMocks.hasAnyAuthProfileStoreSource.mockReturnValue(false);
@@ -66,7 +66,7 @@ describe("noteAuthProfileHealth", () => {
   }
 
   function expectedAuthStorePath(agentDir: string): string {
-    return path.join(agentDir, "openclaw-agent.sqlite");
+    return path.join(agentDir, "operator-agent.sqlite");
   }
 
   function expiredStore(profileId: string, expires: number) {
@@ -609,7 +609,7 @@ describe("noteAuthProfileHealth", () => {
     [
       "openai-codex:default",
       "OAuth token refresh failed for openai-codex: refresh_token_reused. Please try again or re-authenticate.",
-      "- openai-codex:default: re-auth required [refresh_token_reused] — Run `openclaw models auth login --provider openai`.",
+      "- openai-codex:default: re-auth ...
     ],
     [
       "openai-codex:default",
@@ -619,12 +619,12 @@ describe("noteAuthProfileHealth", () => {
     [
       "OpenAI Work Profile",
       "OAuth token refresh failed for openai: invalid_grant. Please try again or re-authenticate.",
-      "- OpenAI Work Profile: re-auth required [invalid_grant] — Run `openclaw models auth login --provider openai --profile-id 'OpenAI Work Profile'`.",
+      "- OpenAI Work Profile: re-auth ...
     ],
     [
       "openai-codex:default",
       "OAuth token refresh failed for openai-codex`\nrm -rf /: invalid_grant. Please try again or re-authenticate.",
-      "- openai-codex:default: re-auth required [invalid_grant] — Run `openclaw models auth login --provider openai`.",
+      "- openai-codex:default: re-auth ...
     ],
   ])(
     "formats OAuth refresh failures through the doctor command path",

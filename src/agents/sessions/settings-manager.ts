@@ -6,7 +6,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
+import { resolveIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { mergeDeep } from "../../infra/deep-merge.js";
 import type { Transport } from "../../llm/types.js";
 import { CONFIG_DIR_NAME, getAgentDir } from "../config.js";

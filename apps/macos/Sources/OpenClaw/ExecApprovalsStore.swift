@@ -5,7 +5,7 @@ import OSLog
 import Security
 
 enum ExecApprovalsStore {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals")
+    private static let logger = Logger(subsystem: "ai.operator", category: "exec-approvals")
     private static let defaultAgentId = "main"
     // Keep omitted-file behavior aligned with the TypeScript gateway/CLI contract.
     private static let defaultSecurity: ExecSecurity = .full
@@ -43,7 +43,7 @@ enum ExecApprovalsStore {
     }
 
     private static func trustedRootURL() -> URL {
-        guard let configured = OpenClawEnv.path("OPENCLAW_HOME") else {
+        guard let configured = OperatorEnv.path("OPERATOR_HOME") else {
             return FileManager().homeDirectoryForCurrentUser
         }
         return URL(
@@ -52,8 +52,8 @@ enum ExecApprovalsStore {
     }
 
     private static func stateDirURL() -> URL {
-        guard let configured = OpenClawEnv.path("OPENCLAW_STATE_DIR") else {
-            return self.trustedRootURL().appendingPathComponent(".openclaw", isDirectory: true)
+        guard let configured = OperatorEnv.path("OPERATOR_STATE_DIR") else {
+            return self.trustedRootURL().appendingPathComponent(".operator", isDirectory: true)
         }
         let home = self.trustedRootURL().path
         let expanded: String = if configured == "~" {
@@ -69,26 +69,26 @@ enum ExecApprovalsStore {
     }
 
     private static func legacyStateDirURLs() -> [URL] {
-        if OpenClawEnv.path("OPENCLAW_HOME") != nil {
-            // OPENCLAW_HOME replaces the OS home; crossing back would mutate
+        if OperatorEnv.path("OPERATOR_HOME") != nil {
+            // OPERATOR_HOME replaces the OS home; crossing back would mutate
             // the real default profile during an isolated run.
             return [
                 self.trustedRootURL()
-                    .appendingPathComponent(".openclaw", isDirectory: true),
+                    .appendingPathComponent(".operator", isDirectory: true),
             ]
         }
         return [
             FileManager().homeDirectoryForCurrentUser
-                .appendingPathComponent(".openclaw", isDirectory: true),
+                .appendingPathComponent(".operator", isDirectory: true),
         ]
     }
 
     private static func legacyFileURLIfPending() -> URL? {
-        guard OpenClawEnv.path("OPENCLAW_STATE_DIR") != nil || OpenClawEnv.path("OPENCLAW_HOME") != nil
+        guard OperatorEnv.path("OPERATOR_STATE_DIR") != nil || OperatorEnv.path("OPERATOR_HOME") != nil
         else { return nil }
         // Named profiles are isolated. Bare state-dir relocation keeps the
         // shipped migration for users who moved their primary state root.
-        if let profile = OpenClawEnv.path("OPENCLAW_PROFILE"),
+        if let profile = OperatorEnv.path("OPERATOR_PROFILE"),
            profile.lowercased() != "default"
         {
             return nil
@@ -208,7 +208,7 @@ enum ExecApprovalsStore {
         do {
             let trustedRoot = self.trustedRootURL()
             try ExecApprovalsFileIO.assertSafeParentChain(of: targetURL, trustedRoot: trustedRoot)
-            let effectiveLegacyDir = trustedRoot.appendingPathComponent(".openclaw", isDirectory: true)
+            let effectiveLegacyDir = trustedRoot.appendingPathComponent(".operator", isDirectory: true)
             let legacyRoot = legacyURL.deletingLastPathComponent().standardizedFileURL.path
                 == effectiveLegacyDir.standardizedFileURL.path
                 ? trustedRoot
@@ -1209,7 +1209,7 @@ extension ExecApprovalsStore {
 
     static func expandPath(_ raw: String) -> String {
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        let configuredHome = OpenClawEnv.path("OPENCLAW_HOME")
+        let configuredHome = OperatorEnv.path("OPERATOR_HOME")
             .map { ($0 as NSString).expandingTildeInPath }
         let home = configuredHome.map { URL(fileURLWithPath: $0, isDirectory: true) }
             ?? FileManager().homeDirectoryForCurrentUser

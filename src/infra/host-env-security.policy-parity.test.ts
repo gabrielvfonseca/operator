@@ -2,8 +2,8 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { describe, expect, it } from "vitest";
 import { loadHostEnvSecurityPolicy } from "./host-env-security-policy.js";
 

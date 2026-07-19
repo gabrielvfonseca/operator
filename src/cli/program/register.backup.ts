@@ -38,24 +38,24 @@ export function registerBackupCommand(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["operator backup create", "Create a timestamped backup in the current directory."],
+          ["openclaw backup create", "Create a timestamped backup in the current directory."],
           [
-            "operator backup create --output ~/Backups",
+            "openclaw backup create --output ~/Backups",
             "Write the archive into an existing backup directory.",
           ],
           [
-            "operator backup create --dry-run --json",
+            "openclaw backup create --dry-run --json",
             "Preview the archive plan without writing any files.",
           ],
           [
-            "operator backup create --verify",
+            "openclaw backup create --verify",
             "Create the archive and immediately validate its manifest and payload layout.",
           ],
           [
-            "operator backup create --no-include-workspace",
+            "openclaw backup create --no-include-workspace",
             "Back up state/config without agent workspace files.",
           ],
-          ["operator backup create --only-config", "Back up only the active JSON config file."],
+          ["openclaw backup create --only-config", "Back up only the active JSON config file."],
         ])}`,
     )
     .action(async (opts) => {
@@ -80,11 +80,11 @@ export function registerBackupCommand(program: Command) {
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           [
-            "operator backup verify ./2026-03-09T08-00-00.000+08-00-operator-backup.tar.gz",
+            "openclaw backup verify ./2026-03-09T08-00-00.000+08-00-operator-backup.tar.gz",
             "Check that the archive structure and manifest are intact.",
           ],
           [
-            "operator backup verify ~/Backups/latest.tar.gz --json",
+            "openclaw backup verify ~/Backups/latest.tar.gz --json",
             "Emit machine-readable verification output.",
           ],
         ])}`,
@@ -122,11 +122,11 @@ function registerBackupSqliteCommands(backup: Command): void {
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           [
-            "operator backup sqlite create --global --repository ~/Backups/operator-sqlite",
+            "openclaw backup sqlite create --global --repository ~/Backups/operator-sqlite",
             "Snapshot the shared state database.",
           ],
           [
-            "operator backup sqlite create --agent main --repository ~/Backups/operator-sqlite",
+            "openclaw backup sqlite create --agent main --repository ~/Backups/operator-sqlite",
             "Snapshot the main agent database.",
           ],
         ])}`,

@@ -34,7 +34,7 @@ describe("legacy commitments doctor migration", () => {
   });
 
   async function useStateDir(): Promise<string> {
-    const stateDir = tempDirs.make("openclaw-commitments-migration-");
+    const stateDir = tempDirs.make("operator-commitments-migration-");
     envSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     return stateDir;

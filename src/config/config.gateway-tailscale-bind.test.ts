@@ -25,12 +25,17 @@ describe("gateway tailscale bind validation", () => {
     const validRes = validateConfigObject({
       gateway: {
         bind: "loopback",
-        tailscale: { mode: "serve", serviceName: "svc:openclaw-gateway" },
+        tailscale: { mode: "serve", serviceName: "svc:operator-gateway" },
       },
     });
     expect(validRes.ok).toBe(true);
 
-    for (const serviceName of ["openclaw", "svc:", "svc:-openclaw", "svc:Operator"]) {
+    for (const serviceName of [
+      "@gabrielvfonseca/operator",
+      "svc:",
+      "svc:-openclaw",
+      "svc:Operator",
+    ]) {
       const res = validateConfigObject({
         gateway: {
           bind: "loopback",

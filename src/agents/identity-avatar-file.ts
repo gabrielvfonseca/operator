@@ -1,7 +1,7 @@
 // Internal local-avatar resolution and pinned file reads.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { openRootFileSync } from "../infra/boundary-file-read.js";
 import { readFileDescriptorBoundedSync } from "../infra/file-descriptor-read.js";

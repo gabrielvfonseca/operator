@@ -67,7 +67,7 @@ async function runAutoAudioCase(params: {
   cfgExtra?: Partial<OperatorConfig>;
 }) {
   let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
-  await withAudioFixture("openclaw-auto-audio", async ({ ctx, media, cache }) => {
+  await withAudioFixture("operator-auto-audio", async ({ ctx, media, cache }) => {
     const providerRegistry = createOpenAiAudioProvider(params.transcribeAudio);
     const cfg = createOpenAiAudioCfg(params.cfgExtra);
     runResult = await runCapability({
@@ -126,7 +126,7 @@ describe("runCapability auto audio entries", () => {
     }));
 
     try {
-      await withAudioFixture("openclaw-auto-audio-oauth-skip", async ({ ctx, media, cache }) => {
+      await withAudioFixture("operator-auto-audio-oauth-skip", async ({ ctx, media, cache }) => {
         const openAiTranscribe = vi.fn(async (req: AudioTranscriptionRequest) => ({
           text: "openai",
           model: req.model ?? "unknown",
@@ -204,7 +204,7 @@ describe("runCapability auto audio entries", () => {
     const resolveApiKeyForProvider = vi.mocked(modelAuth.resolveApiKeyForProvider);
     resolveApiKeyForProvider.mockClear();
 
-    await withAudioFixture("openclaw-auto-audio-workspace-auth", async ({ ctx, media, cache }) => {
+    await withAudioFixture("operator-auto-audio-workspace-auth", async ({ ctx, media, cache }) => {
       const result = await runCapability({
         capability: "audio",
         cfg: {
@@ -223,8 +223,8 @@ describe("runCapability auto audio entries", () => {
           text: `workspace ${req.apiKey}`,
           model: req.model ?? "unknown",
         })),
-        agentDir: "/tmp/openclaw-agent",
-        workspaceDir: "/tmp/openclaw-workspace",
+        agentDir: "/tmp/operator-agent",
+        workspaceDir: "/tmp/operator-workspace",
       });
 
       expect(result.decision.outcome).toBe("success");
@@ -234,8 +234,8 @@ describe("runCapability auto audio entries", () => {
     expect(resolveApiKeyForProvider).toHaveBeenCalledWith(
       expect.objectContaining({
         provider: "openai",
-        agentDir: "/tmp/openclaw-agent",
-        workspaceDir: "/tmp/openclaw-workspace",
+        agentDir: "/tmp/operator-agent",
+        workspaceDir: "/tmp/operator-workspace",
       }),
     );
   });
@@ -244,7 +244,7 @@ describe("runCapability auto audio entries", () => {
     let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
     let seenModel: string | undefined;
 
-    await withAudioFixture("openclaw-auto-audio-codex", async ({ ctx, media, cache }) => {
+    await withAudioFixture("operator-auto-audio-codex", async ({ ctx, media, cache }) => {
       const providerRegistry = createProviderRegistry({
         openai: {
           id: "openai",
@@ -295,7 +295,7 @@ describe("runCapability auto audio entries", () => {
     let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
     let seenModel: string | undefined;
 
-    await withAudioFixture("openclaw-auto-audio-xai", async ({ ctx, media, cache }) => {
+    await withAudioFixture("operator-auto-audio-xai", async ({ ctx, media, cache }) => {
       const providerRegistry = createProviderRegistry({
         xai: {
           id: "xai",
@@ -341,7 +341,7 @@ describe("runCapability auto audio entries", () => {
   });
 
   it("prefers provider keys over auto-detected local whisper", async () => {
-    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-auto-audio-bin-"));
+    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-auto-audio-bin-"));
     try {
       await createMockExecutable(binDir, "whisper");
       clearMediaUnderstandingBinaryCacheForTests();
@@ -524,7 +524,7 @@ describe("runCapability auto audio entries", () => {
   });
 
   it("uses mistral when only mistral key is configured", async () => {
-    const isolatedAgentDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-audio-agent-"));
+    const isolatedAgentDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-audio-agent-"));
     let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
     try {
       await withEnvAsync(
@@ -538,7 +538,7 @@ describe("runCapability auto audio entries", () => {
           OPERATOR_AGENT_DIR: isolatedAgentDir,
         },
         async () => {
-          await withAudioFixture("openclaw-auto-audio-mistral", async ({ ctx, media, cache }) => {
+          await withAudioFixture("operator-auto-audio-mistral", async ({ ctx, media, cache }) => {
             const providerRegistry = createProviderRegistry({
               openai: {
                 id: "openai",

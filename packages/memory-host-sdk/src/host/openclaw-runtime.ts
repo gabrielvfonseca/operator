@@ -45,7 +45,7 @@ export {
   /** @deprecated Use getRuntimeConfig(), or pass the already loaded config through the call path. */
   loadConfig,
 } from "../../../../src/config/config.js";
-export type { OperatorConfig } from "../../../../src/config/config.js";
+export type { OpenClawConfig } from "../../../../src/config/config.js";
 export { resolveStateDir } from "../../../../src/config/paths.js";
 export {
   isCompactionCheckpointTranscriptFileName,
@@ -99,7 +99,7 @@ export type {
 export { installProcessWarningFilter } from "../../../../src/infra/warning-filter.js";
 export { redactSensitiveText } from "../../../../src/logging/redact.js";
 export { createSubsystemLogger } from "../../../../src/logging/subsystem.js";
-export { detectMime } from "@operator/media-core/mime";
+export { detectMime } from "@gabrielvfonseca/media-core/mime";
 
 // Memory plugin helpers.
 export {
@@ -137,7 +137,7 @@ export type {
   MemoryPluginRuntime,
   MemoryPromptSectionBuilder,
 } from "../../../../src/plugins/memory-state.js";
-export type { OperatorPluginApi } from "../../../../src/plugins/types.js";
+export type { OpenClawPluginApi } from "../../../../src/plugins/types.js";
 
 // Shared session/text utilities.
 export { defaultRuntime } from "../../../../src/runtime.js";

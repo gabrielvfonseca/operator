@@ -1,11 +1,11 @@
 // Maintains plugin manifest lookup tables for discovery and runtime planning.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeOptionalTrimmedStringList,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import type { OperatorConfig } from "../config/types.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
@@ -526,7 +526,7 @@ function buildRecord(params: {
     enabledByDefaultOnPlatforms: params.manifest.enabledByDefaultOnPlatforms,
     autoEnableWhenConfiguredProviders: params.manifest.autoEnableWhenConfiguredProviders,
     legacyPluginIds: params.manifest.legacyPluginIds,
-    format: params.candidate.format ?? "operator",
+    format: params.candidate.format ?? "@gabrielvfonseca/operator",
     bundleFormat: params.candidate.bundleFormat,
     kind: params.manifest.kind,
     channels: params.manifest.channels ?? [],
@@ -1017,7 +1017,7 @@ export function loadPluginManifestRegistry(
       env,
       realpathCache,
     });
-    const isBundleRecord = (candidate.format ?? "operator") === "bundle";
+    const isBundleRecord = (candidate.format ?? "@gabrielvfonseca/operator") === "bundle";
     const manifestRes:
       | ReturnType<typeof loadPluginManifest>
       | ReturnType<typeof loadBundleManifest>

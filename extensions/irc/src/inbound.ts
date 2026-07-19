@@ -1,31 +1,31 @@
 // Irc plugin module implements inbound behavior.
-import { logInboundDrop } from "openclaw/plugin-sdk/channel-inbound";
+import { logInboundDrop } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   channelIngressRoutes,
   createChannelIngressResolver,
   defineStableChannelIngressIdentity,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { resolveChannelStreamingBlockEnabled } from "openclaw/plugin-sdk/channel-outbound";
-import { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "openclaw/plugin-sdk/inbound-envelope";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { resolveChannelStreamingBlockEnabled } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "@gabrielvfonseca/operator/plugin-sdk/inbound-envelope";
 import {
   deliverFormattedTextWithAttachments,
   type OutboundReplyPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { ResolvedIrcAccount } from "./accounts.js";
 import { buildIrcAllowlistCandidates, normalizeIrcAllowEntry } from "./normalize.js";
 import { resolveIrcGroupMatch, resolveIrcGroupRequireMention } from "./policy.js";

@@ -1,14 +1,14 @@
 import {
   listSessionEntries,
   loadTranscriptEventsSync,
-} from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 // Qa Lab plugin module implements runtime parity behavior.
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   asFiniteNumber as readFiniteNumber,
   isRecord as isMessageRecord,
   normalizeOptionalString as readNonEmptyString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   scanDirectReplyTranscriptSentinels,
   scanGatewayLogSentinels,
@@ -16,7 +16,7 @@ import {
 } from "./gateway-log-sentinel.js";
 import * as parity from "./parity-shared.js";
 
-export type RuntimeId = "openclaw" | "codex";
+export type RuntimeId = "@gabrielvfonseca/operator" | "codex";
 
 export type RuntimeParityToolCall = {
   tool: string;
@@ -62,7 +62,7 @@ export type RuntimeParityResult = {
   scenarioId: string;
   runtimeParityUsage?: RuntimeParityUsagePolicy;
   cells: {
-    openclaw: RuntimeParityCell;
+    operator: RuntimeParityCell;
     codex: RuntimeParityCell;
   };
   drift: RuntimeParityDrift;
@@ -103,7 +103,7 @@ export function runtimeParityCellStatus(
 export function isRuntimeParityResultPass(result: RuntimeParityResult) {
   return (
     result.drift !== "failure-mode" &&
-    isRuntimeParityCellPassable(result.cells.openclaw) &&
+    isRuntimeParityCellPassable(result.cells.operator) &&
     isRuntimeParityCellPassable(result.cells.codex)
   );
 }
@@ -871,28 +871,28 @@ function summarizeSentinelErrorClass(findings: readonly GatewayLogSentinelFindin
 }
 
 function classifyRuntimeParityCells(params: {
-  openclaw: RuntimeParityCell;
+  operator: RuntimeParityCell;
   codex: RuntimeParityCell;
   openclawScenarioStatus: "pass" | "fail";
   codexScenarioStatus: "pass" | "fail";
 }): Pick<RuntimeParityResult, "drift" | "driftDetails"> {
   if (
-    isHardFailureRuntimeError(params.openclaw.runtimeErrorClass) ||
+    isHardFailureRuntimeError(params.operator.runtimeErrorClass) ||
     isHardFailureRuntimeError(params.codex.runtimeErrorClass) ||
-    params.openclaw.transportErrorClass ||
+    params.operator.transportErrorClass ||
     params.codex.transportErrorClass
   ) {
     return {
       drift: "failure-mode",
       driftDetails:
-        params.openclaw.transportErrorClass || params.codex.transportErrorClass
+        params.operator.transportErrorClass || params.codex.transportErrorClass
           ? "at least one runtime hit a transport failure"
           : "at least one runtime hit a hard runtime failure",
     };
   }
 
   if (
-    hasMissingToolResult(params.openclaw.toolCalls) ||
+    hasMissingToolResult(params.operator.toolCalls) ||
     hasMissingToolResult(params.codex.toolCalls)
   ) {
     return {
@@ -902,22 +902,22 @@ function classifyRuntimeParityCells(params: {
   }
 
   if (
-    params.openclawScenarioStatus === "fail" ||
+    params.operatorScenarioStatus === "fail" ||
     params.codexScenarioStatus === "fail" ||
-    !isRuntimeParityCellPassable(params.openclaw) ||
+    !isRuntimeParityCellPassable(params.operator) ||
     !isRuntimeParityCellPassable(params.codex)
   ) {
     return {
       drift: "failure-mode",
       driftDetails:
-        params.openclawScenarioStatus === params.codexScenarioStatus
+        params.operatorScenarioStatus === params.codexScenarioStatus
           ? "at least one runtime failed"
-          : `scenario status differs (${params.openclawScenarioStatus} vs ${params.codexScenarioStatus})`,
+          : `scenario status differs (${params.operatorScenarioStatus} vs ${params.codexScenarioStatus})`,
     };
   }
 
   const toolCallShapeDetails = parity.compareToolCallShape(
-    params.openclaw.toolCalls,
+    params.operator.toolCalls,
     params.codex.toolCalls,
   );
   if (toolCallShapeDetails) {
@@ -925,23 +925,23 @@ function classifyRuntimeParityCells(params: {
   }
 
   const toolResultShapeDetails = compareToolResultShape(
-    params.openclaw.toolCalls,
+    params.operator.toolCalls,
     params.codex.toolCalls,
   );
   if (toolResultShapeDetails) {
     return { drift: "tool-result-shape", driftDetails: toolResultShapeDetails };
   }
 
-  const openclawTranscriptLines = params.openclaw.transcriptBytes.trim().length
-    ? params.openclaw.transcriptBytes.trim().split(/\r?\n/u).length
+  const openclawTranscriptLines = params.operator.transcriptBytes.trim().length
+    ? params.operator.transcriptBytes.trim().split(/\r?\n/u).length
     : 0;
   const codexTranscriptLines = params.codex.transcriptBytes.trim().length
     ? params.codex.transcriptBytes.trim().split(/\r?\n/u).length
     : 0;
   if (
     openclawTranscriptLines !== codexTranscriptLines ||
-    (!params.openclaw.finalText && Boolean(params.codex.finalText)) ||
-    (Boolean(params.openclaw.finalText) && !params.codex.finalText)
+    (!params.operator.finalText && Boolean(params.codex.finalText)) ||
+    (Boolean(params.operator.finalText) && !params.codex.finalText)
   ) {
     return {
       drift: "structural",
@@ -950,7 +950,7 @@ function classifyRuntimeParityCells(params: {
   }
 
   if (
-    normalizeTextForParity(params.openclaw.finalText) ===
+    normalizeTextForParity(params.operator.finalText) ===
     normalizeTextForParity(params.codex.finalText)
   ) {
     return { drift: "none" };
@@ -1135,19 +1135,19 @@ export async function runRuntimeParityScenario(params: {
   runtimeParityUsage?: RuntimeParityUsagePolicy;
   runCell: (runtime: RuntimeId) => Promise<RuntimeParityScenarioExecution>;
 }): Promise<RuntimeParityResult> {
-  const openclaw = await params.runCell("openclaw");
+  const openclaw = await params.runCell("@gabrielvfonseca/operator");
   const codex = await params.runCell("codex");
   const drift = classifyRuntimeParityCells({
-    openclaw: openclaw.cell,
+    operator: operator.cell,
     codex: codex.cell,
-    openclawScenarioStatus: openclaw.scenarioStatus,
+    openclawScenarioStatus: operator.scenarioStatus,
     codexScenarioStatus: codex.scenarioStatus,
   });
   return {
     scenarioId: params.scenarioId,
     runtimeParityUsage: resolveRuntimeParityUsagePolicy(params.runtimeParityUsage),
     cells: {
-      openclaw: openclaw.cell,
+      operator: operator.cell,
       codex: codex.cell,
     },
     drift: drift.drift,

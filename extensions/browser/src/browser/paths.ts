@@ -6,7 +6,7 @@
  */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import {
   resolveExistingPathsWithinRoot,
   resolveStrictExistingPathsWithinRoot,

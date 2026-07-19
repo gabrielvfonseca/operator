@@ -4,11 +4,11 @@
  * Image/video task modules use this to track recent starts, find active
  * background tasks, and build consistent user/prompt status messages.
  */
-import { resolveNonNegativeIntegerOption } from "@operator/normalization-core/number-coercion";
+import { resolveNonNegativeIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { listFreshTasksForOwnerKey } from "../tasks/runtime-internal.js";
 import type { TaskRecord } from "../tasks/task-registry.types.js";
 import { buildSessionAsyncTaskStatusDetails } from "./session-async-task-status.js";

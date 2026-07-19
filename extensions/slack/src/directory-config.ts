@@ -1,10 +1,10 @@
 // Slack helper module supports directory config behavior.
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-resolution";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 import {
   createResolvedDirectoryEntriesLister,
   type DirectoryConfigParams,
-} from "openclaw/plugin-sdk/directory-config-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/directory-config-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   mergeSlackAccountConfig,
   resolveDefaultSlackAccountId,

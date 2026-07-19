@@ -1,5 +1,5 @@
 // Telegram plugin module implements setup core behavior.
-import type { ChannelSetupAdapter } from "openclaw/plugin-sdk/setup-runtime";
+import type { ChannelSetupAdapter } from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
 import {
   createEnvPatchedAccountSetupAdapter,
   patchChannelConfigForAccount,
@@ -8,8 +8,8 @@ import {
   createSetupTranslator,
   type OperatorConfig,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatCliCommand, formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import { resolveDefaultTelegramAccountId, resolveTelegramAccount } from "./accounts.js";
 import { isNumericTelegramSenderUserId } from "./allow-from.js";
 
@@ -27,7 +27,7 @@ export function getTelegramTokenHelpLines(): string[] {
     t("wizard.telegram.tokenHelpWebApp", { url: "https://t.me/BotFather?startapp" }),
     t("wizard.telegram.tokenEnvTip"),
     t("wizard.channels.docs", { link: formatDocsLink("/telegram") }),
-    t("wizard.telegram.website", { url: "https://openclaw.ai" }),
+    t("wizard.telegram.website", { url: "https://operator.ai" }),
   ];
 }
 
@@ -39,7 +39,7 @@ export function getTelegramUserIdHelpLines(): string[] {
     t("wizard.telegram.userIdHelpGetUpdates"),
     t("wizard.telegram.userIdHelpThirdParty"),
     t("wizard.channels.docs", { link: formatDocsLink("/telegram") }),
-    t("wizard.telegram.website", { url: "https://openclaw.ai" }),
+    t("wizard.telegram.website", { url: "https://operator.ai" }),
   ];
 }
 

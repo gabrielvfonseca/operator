@@ -3,7 +3,7 @@ import Foundation
 import Darwin
 #endif
 
-private let appDefaultsSuites = ["ai.openclaw.mac", "ai.openclaw.mac.debug"]
+private let appDefaultsSuites = ["ai.operator.mac", "ai.operator.mac.debug"]
 private let appOnboardingVersion = 7
 
 struct ConfigureRemoteOptions {
@@ -77,14 +77,14 @@ func runConfigureRemote(_ args: [String]) {
         let opts = try ConfigureRemoteOptions.parse(args)
         if opts.help {
             print("""
-            openclaw-mac configure-remote
+            operator-mac configure-remote
 
             Usage:
-              openclaw-mac configure-remote --ssh-target <user@host[:port]> [--local-port <port>]
+              operator-mac configure-remote --ssh-target <user@host[:port]> [--local-port <port>]
                                           [--remote-port <port>] [--token <token>] [--password <password>]
                                           [--identity <path>] [--ssh-host-key-policy <strict|openssh>]
                                           [--project-root <path>] [--cli-path <path>] [--json]
-              openclaw-mac configure-remote --direct-url <ws://host:port|wss://host> [--token <token>]
+              operator-mac configure-remote --direct-url <ws://host:port|wss://host> [--token <token>]
                                           [--password <password>] [--project-root <path>] [--cli-path <path>] [--json]
 
             Options:
@@ -97,8 +97,8 @@ func runConfigureRemote(_ args: [String]) {
               --token <token>     Remote gateway token.
               --password <pw>     Remote gateway password.
               --identity <path>   SSH identity file.
-              --project-root <p>  Remote OpenClaw checkout for CLI commands.
-              --cli-path <path>   Remote openclaw executable or entrypoint.
+              --project-root <p>  Remote Operator checkout for CLI commands.
+              --cli-path <path>   Remote operator executable or entrypoint.
               --json              Emit JSON.
               -h, --help          Show help.
             """)
@@ -235,12 +235,12 @@ private func configureDirectRemote(
 }
 
 private func openClawConfigURL() -> URL {
-    if let raw = ProcessInfo.processInfo.environment["OPENCLAW_CONFIG_PATH"],
+    if let raw = ProcessInfo.processInfo.environment["OPERATOR_CONFIG_PATH"],
        !raw.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     {
         return URL(fileURLWithPath: NSString(string: raw).expandingTildeInPath)
     }
-    return FileManager().homeDirectoryForCurrentUser.appendingPathComponent(".openclaw/openclaw.json")
+    return FileManager().homeDirectoryForCurrentUser.appendingPathComponent(".operator/operator.json")
 }
 
 private func loadConfigRoot(from url: URL) throws -> [String: Any] {
@@ -258,13 +258,13 @@ private func saveConfigRoot(_ root: [String: Any], to url: URL) throws {
 private func writeAppDefaults(opts: ConfigureRemoteOptions, target: String, suites: [String]) {
     for suite in suites {
         guard let defaults = UserDefaults(suiteName: suite) else { continue }
-        defaults.set("remote", forKey: "openclaw.connectionMode")
-        setDefaultString(defaults, key: "openclaw.remoteTarget", value: target)
-        defaults.set(true, forKey: "openclaw.onboardingSeen")
-        defaults.set(appOnboardingVersion, forKey: "openclaw.onboardingVersion")
-        setDefaultStringIfProvided(defaults, key: "openclaw.remoteIdentity", value: opts.identity)
-        setDefaultStringIfProvided(defaults, key: "openclaw.remoteProjectRoot", value: opts.projectRoot)
-        setDefaultStringIfProvided(defaults, key: "openclaw.remoteCliPath", value: opts.cliPath)
+        defaults.set("remote", forKey: "operator.connectionMode")
+        setDefaultString(defaults, key: "operator.remoteTarget", value: target)
+        defaults.set(true, forKey: "operator.onboardingSeen")
+        defaults.set(appOnboardingVersion, forKey: "operator.onboardingVersion")
+        setDefaultStringIfProvided(defaults, key: "operator.remoteIdentity", value: opts.identity)
+        setDefaultStringIfProvided(defaults, key: "operator.remoteProjectRoot", value: opts.projectRoot)
+        setDefaultStringIfProvided(defaults, key: "operator.remoteCliPath", value: opts.cliPath)
         defaults.synchronize()
     }
 }
@@ -457,7 +457,7 @@ private func printConfigureRemoteOutput(_ output: ConfigureRemoteOutput, json: B
         }
         return
     }
-    print("OpenClaw macOS Remote Config")
+    print("Operator macOS Remote Config")
     print("Status: \(output.status)")
     print("Config: \(output.configPath)")
     print("Mode: \(output.mode)")

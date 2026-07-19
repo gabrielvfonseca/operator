@@ -4,8 +4,8 @@ import {
   resolveScopeRequireMention,
   resolveScopeToolsPolicy,
   type GroupToolPolicyConfig,
-} from "openclaw/plugin-sdk/channel-policy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 type WhatsAppGroupContext = {
   cfg: OperatorConfig;

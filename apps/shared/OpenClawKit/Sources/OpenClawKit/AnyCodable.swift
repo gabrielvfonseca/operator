@@ -1,3 +1,3 @@
-import OpenClawProtocol
+import OperatorProtocol
 
-public typealias AnyCodable = OpenClawProtocol.AnyCodable
+public typealias AnyCodable = OperatorProtocol.AnyCodable

@@ -1,6 +1,6 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 const MATRIX_DEFAULT_ECHO_TRANSCRIPT_FORMAT = '📝 "{transcript}"';
 
 const loadMatrixPreflightAudioRuntime = createLazyRuntimeModule(

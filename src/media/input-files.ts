@@ -1,12 +1,12 @@
 // Input file helpers normalize inline, fetched, and local media inputs.
-import { canonicalizeBase64, estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { parseMediaContentLength } from "@operator/media-core/content-length";
-import { detectMime } from "@operator/media-core/mime";
+import { canonicalizeBase64, estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { parseMediaContentLength } from "@gabrielvfonseca/media-core/content-length";
+import { detectMime } from "@gabrielvfonseca/media-core/mime";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { readResponseWithLimit } from "../infra/http-body.js";
 import { fetchWithSsrFGuard } from "../infra/net/fetch-guard.js";

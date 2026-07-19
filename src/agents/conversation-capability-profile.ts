@@ -3,7 +3,7 @@
  * hot paths share. Keep this internal: it prepares existing config/state, not a
  * new public access-profile config surface.
  */
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { ChatType } from "../channels/chat-type.js";
 import { normalizeChatType } from "../channels/chat-type.js";
 import type { OperatorConfig } from "../config/types.operator.js";

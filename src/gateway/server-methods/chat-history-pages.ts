@@ -1,4 +1,4 @@
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   dropPreSessionStartAnnouncePairs,
   isHeartbeatHistoryTurnBoundaryMessage,
@@ -20,12 +20,12 @@ import {
 import type { loadSessionEntry } from "../session-utils.js";
 
 export function readChatHistoryMessageId(message: unknown): string | undefined {
-  const metadata = asOptionalRecord(asOptionalRecord(message)?.["__operator"]);
+  const metadata = asOptionalRecord(asOptionalRecord(message)?.["__openclaw"]);
   return typeof metadata?.id === "string" ? metadata.id : undefined;
 }
 
 export function readChatHistoryMessageSeq(message: unknown): number | undefined {
-  const metadata = asOptionalRecord(asOptionalRecord(message)?.["__operator"]);
+  const metadata = asOptionalRecord(asOptionalRecord(message)?.["__openclaw"]);
   const seq = metadata?.seq;
   return typeof seq === "number" && Number.isSafeInteger(seq) && seq > 0 ? seq : undefined;
 }
@@ -63,7 +63,7 @@ export function enrichChatHistoryCompactionMarkers(
   let changed = false;
   const enriched = messages.map((message) => {
     const record = asOptionalRecord(message);
-    const metadata = asOptionalRecord(record?.["__operator"]);
+    const metadata = asOptionalRecord(record?.["__openclaw"]);
     if (metadata?.kind !== "compaction" || typeof metadata.id !== "string") {
       return message;
     }

@@ -1,11 +1,11 @@
 // Qqbot helper module supports config shared behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   applyAccountNameToChannelSection,
   deleteAccountFromConfigSection,
   setAccountEnabledInConfigSection,
-} from "openclaw/plugin-sdk/core";
-import type { ChannelSetupInput } from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import type { ChannelSetupInput } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import {
   describeAccount as engineDescribeAccount,
   formatAllowFrom as engineFormatAllowFrom,

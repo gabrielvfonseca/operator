@@ -3,8 +3,8 @@ import crypto from "node:crypto";
 import {
   hasNonEmptyString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { hasOutboundReplyContent } from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { hasOutboundReplyContent } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { resolveBootstrapWarningSignaturesSeen } from "../../agents/bootstrap-budget.js";
 import {
   formatRateLimitOrOverloadedErrorCopy,

@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Gateway sessions.resolve implementation helper.
 // Resolves key/sessionId/label selectors into one canonical session key.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   type ErrorShape,

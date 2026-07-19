@@ -152,7 +152,7 @@ function createTelegramCfg(botToken: string, enabled?: boolean): OperatorConfig 
 function createMSTeamsCatalogEntry(): ChannelPluginCatalogEntry {
   return {
     id: "external-chat",
-    pluginId: "@operator/external-chat-plugin",
+    pluginId: "@gabrielvfonseca/external-chat-plugin",
     meta: {
       id: "external-chat",
       label: "External Chat",
@@ -161,7 +161,7 @@ function createMSTeamsCatalogEntry(): ChannelPluginCatalogEntry {
       blurb: "external chat channel",
     },
     install: {
-      npmSpec: "@operator/external-chat",
+      npmSpec: "@gabrielvfonseca/external-chat",
     },
   };
 }
@@ -311,7 +311,7 @@ type PatchedSetupAdapterFields = {
 
 function createMSTeamsPluginRegistryEntry(params?: { includeSetupWizard?: boolean }) {
   return {
-    pluginId: "@operator/external-chat-plugin",
+    pluginId: "@gabrielvfonseca/external-chat-plugin",
     source: "test",
     plugin: {
       id: "external-chat",
@@ -858,7 +858,7 @@ describe("setupChannels", () => {
         },
         plugins: {
           entries: {
-            "@operator/external-chat-plugin": { enabled: true },
+            "@gabrielvfonseca/external-chat-plugin": { enabled: true },
           },
         },
       } as OperatorConfig,
@@ -867,7 +867,7 @@ describe("setupChannels", () => {
 
     expectCalledWithFields(vi.mocked(loadChannelSetupPluginRegistrySnapshotForChannel), {
       channel: "external-chat",
-      pluginId: "@operator/external-chat-plugin",
+      pluginId: "@gabrielvfonseca/external-chat-plugin",
     });
     expect(multiselect).not.toHaveBeenCalled();
   });

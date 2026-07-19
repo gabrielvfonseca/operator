@@ -1,11 +1,11 @@
 {
-  "name": "@operator/lobster",
+  "name": "@gabrielvfonseca/lobster",
   "version": "2026.7.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/lobster",
+      "name": "@gabrielvfonseca/lobster",
       "version": "2026.7.2",
       "dependencies": {
         "@clawdbot/lobster": "2026.6.11",
@@ -24,7 +24,7 @@
       "bin": {
         "clawd.invoke": "bin/clawd.invoke.js",
         "lobster": "bin/lobster.js",
-        "openclaw.invoke": "bin/openclaw.invoke.js"
+        "operator.invoke": "bin/operator.invoke.js"
       },
       "engines": {
         "node": ">=22"

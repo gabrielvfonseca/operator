@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   runDoctorStateSqliteCompact: vi.fn(),
   runDoctorSessionSqlite: vi.fn(),
   withDoctorSqliteMaintenanceLock: vi.fn(),
-  resolveInstalledPluginIndexStorePath: vi.fn(() => "/tmp/openclaw-installed-plugins.json"),
+  resolveInstalledPluginIndexStorePath: vi.fn(() => "/tmp/operator-installed-plugins.json"),
 }));
 
 vi.mock("./doctor-post-upgrade.js", () => ({
@@ -199,9 +199,9 @@ describe("doctorCommand", () => {
         throw new Error(`exit:${code}`);
       }),
     };
-    const stateDir = path.resolve(process.env.OPERATOR_STATE_DIR ?? ".openclaw");
+    const stateDir = path.resolve(process.env.OPERATOR_STATE_DIR ?? ".operator");
     const storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
-    const sqlitePath = path.join(stateDir, "agents", "main", "agent", "openclaw-agent.sqlite");
+    const sqlitePath = path.join(stateDir, "agents", "main", "agent", "operator-agent.sqlite");
 
     await expect(
       doctorCommand(runtime, {
@@ -255,7 +255,7 @@ describe("doctorCommand", () => {
       },
       integrityCheck: "ok",
       mode: "compact",
-      path: "/tmp/openclaw/state/openclaw.sqlite",
+      path: "/tmp/openclaw/state/operator.sqlite",
       quickCheck: "ok",
       reclaimedBytes: 12_288,
       skipped: false,

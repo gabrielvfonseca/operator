@@ -1,15 +1,15 @@
 import AppKit
 import Foundation
-import OpenClawIPC
+import OperatorIPC
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
 struct CanvasWindowSmokeTests {
     @Test func `panel controller shows and hides`() async throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-canvas-test-\(UUID().uuidString)")
+            .appendingPathComponent("operator-canvas-test-\(UUID().uuidString)")
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager().removeItem(at: root) }
 
@@ -32,7 +32,7 @@ struct CanvasWindowSmokeTests {
 
     @Test func `window controller shows and closes`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-canvas-test-\(UUID().uuidString)")
+            .appendingPathComponent("operator-canvas-test-\(UUID().uuidString)")
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager().removeItem(at: root) }
 
@@ -49,7 +49,7 @@ struct CanvasWindowSmokeTests {
 
     @Test func `A2UI auto navigation is idempotent for current host target`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-canvas-test-\(UUID().uuidString)")
+            .appendingPathComponent("operator-canvas-test-\(UUID().uuidString)")
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager().removeItem(at: root) }
 
@@ -59,9 +59,9 @@ struct CanvasWindowSmokeTests {
             presentation: .window)
         defer { controller.close() }
 
-        let oldTarget = "http://127.0.0.1:18789/__openclaw__/a2ui/?platform=macos"
-        let currentTarget = "http://127.0.0.1:18790/__openclaw__/a2ui/?platform=macos"
-        let userTarget = "https://github.com/openclaw/openclaw"
+        let oldTarget = "http://127.0.0.1:18789/__operator__/a2ui/?platform=macos"
+        let currentTarget = "http://127.0.0.1:18790/__operator__/a2ui/?platform=macos"
+        let userTarget = "https://github.com/gabrielvfonseca/operator"
 
         #expect(controller.shouldAutoNavigateToA2UI(lastAutoTarget: nil, candidateTarget: currentTarget) == true)
 
@@ -81,50 +81,50 @@ struct CanvasWindowSmokeTests {
     }
 
     @Test func `hosted Canvas URL resolver keeps capability scope and only trusts A2UI`() throws {
-        let surface = "https://gateway.example/root/__openclaw__/cap/token%20value"
+        let surface = "https://gateway.example/root/__operator__/cap/token%20value"
         let canvas = try #require(CanvasHostedURLResolver.resolve(
             surfaceURL: surface,
-            target: "/__openclaw__/canvas/demo%20page.html?mode=proof#result"))
+            target: "/__operator__/canvas/demo%20page.html?mode=proof#result"))
         #expect(canvas.url.absoluteString ==
-            "https://gateway.example/root/__openclaw__/cap/token%20value/__openclaw__/canvas/demo%20page.html?mode=proof#result")
+            "https://gateway.example/root/__operator__/cap/token%20value/__operator__/canvas/demo%20page.html?mode=proof#result")
         #expect(canvas.allowsA2UIActions == false)
 
         let a2ui = try #require(CanvasHostedURLResolver.resolve(
             surfaceURL: surface,
-            target: "/__openclaw__/a2ui/?platform=macos"))
+            target: "/__operator__/a2ui/?platform=macos"))
         #expect(a2ui.url.absoluteString ==
-            "https://gateway.example/root/__openclaw__/cap/token%20value/__openclaw__/a2ui/?platform=macos")
+            "https://gateway.example/root/__operator__/cap/token%20value/__operator__/a2ui/?platform=macos")
         #expect(a2ui.allowsA2UIActions)
 
         #expect(CanvasHostedURLResolver.resolve(surfaceURL: surface, target: "/local.html") == nil)
         #expect(CanvasHostedURLResolver.resolve(surfaceURL: surface, target: "https://example.com/") == nil)
         #expect(CanvasHostedURLResolver.resolve(
             surfaceURL: surface,
-            target: "/__openclaw__/a2ui/../canvas/") == nil)
+            target: "/__operator__/a2ui/../canvas/") == nil)
         #expect(CanvasHostedURLResolver.resolve(
             surfaceURL: surface,
-            target: "/__openclaw__/a2ui/%252e%252e/canvas/") == nil)
+            target: "/__operator__/a2ui/%252e%252e/canvas/") == nil)
         #expect(CanvasHostedURLResolver.resolve(
             surfaceURL: surface,
-            target: "/__openclaw__/a2ui/%25252525252e%25252525252e/canvas/") == nil)
+            target: "/__operator__/a2ui/%25252525252e%25252525252e/canvas/") == nil)
         #expect(CanvasHostedURLResolver.resolve(
             surfaceURL: "https://gateway.example/not-capability-scoped",
-            target: "/__openclaw__/canvas/") == nil)
+            target: "/__operator__/canvas/") == nil)
     }
 
     @Test func `A2UI action trust is exact and capability scoped`() throws {
         let expected = try #require(URL(string:
-            "https://gateway.example/__openclaw__/cap/current-token/__openclaw__/a2ui/?platform=macos"))
+            "https://gateway.example/__operator__/cap/current-token/__operator__/a2ui/?platform=macos"))
         let sameWithFragment = try #require(URL(string: expected.absoluteString + "#card"))
         let staleCapability = try #require(URL(string:
-            "https://gateway.example/__openclaw__/cap/stale-token/__openclaw__/a2ui/?platform=macos"))
+            "https://gateway.example/__operator__/cap/stale-token/__operator__/a2ui/?platform=macos"))
         let changedQuery = try #require(URL(string:
-            "https://gateway.example/__openclaw__/cap/current-token/__openclaw__/a2ui/?platform=other"))
+            "https://gateway.example/__operator__/cap/current-token/__operator__/a2ui/?platform=other"))
         let canvasPage = try #require(URL(string:
-            "https://gateway.example/__openclaw__/cap/current-token/__openclaw__/canvas/"))
+            "https://gateway.example/__operator__/cap/current-token/__operator__/canvas/"))
         let traversingA2UI = try #require(URL(string:
-            "https://gateway.example/__openclaw__/cap/current-token/__openclaw__/a2ui/%2e%2e/canvas/"))
-        let localCanvas = try #require(URL(string: "openclaw-canvas://main/"))
+            "https://gateway.example/__operator__/cap/current-token/__operator__/a2ui/%2e%2e/canvas/"))
+        let localCanvas = try #require(URL(string: "operator-canvas://main/"))
 
         #expect(CanvasA2UIActionMessageHandler.isTrustedSourceURL(expected, expectedRemoteURL: expected))
         #expect(CanvasA2UIActionMessageHandler.isTrustedSourceURL(sameWithFragment, expectedRemoteURL: expected))

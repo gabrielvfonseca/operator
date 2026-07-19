@@ -1,7 +1,7 @@
 // Main interactive configure/update wizard implementation.
 import fsPromises from "node:fs/promises";
 import nodePath from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { describeCodexNativeWebSearch } from "../agents/codex-native-web-search.shared.js";
 import { formatCliCommand } from "../cli/command-format.js";
@@ -408,7 +408,7 @@ export async function runConfigureWizard(
       }
       if (!snapshot.valid) {
         outro(
-          `Config invalid. Run \`${formatCliCommand("operator doctor")}\` to repair it, then re-run configure.`,
+          `Config invalid. Run \`${formatCliCommand("openclaw doctor")}\` to repair it, then re-run configure.`,
         );
         runtime.exit(1);
         return;

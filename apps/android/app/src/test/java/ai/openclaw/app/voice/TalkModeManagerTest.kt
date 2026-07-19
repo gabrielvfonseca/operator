@@ -1,12 +1,12 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.DeviceAuthEntry
-import ai.openclaw.app.gateway.DeviceAuthTokenStore
-import ai.openclaw.app.gateway.DeviceIdentityStore
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.verbatimText
+import ai.operator.app.gateway.DeviceAuthEntry
+import ai.operator.app.gateway.DeviceAuthTokenStore
+import ai.operator.app.gateway.DeviceIdentityStore
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.verbatimText
 import android.Manifest
 import android.content.ComponentName
 import android.content.IntentFilter

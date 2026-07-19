@@ -13,9 +13,9 @@ const tempDirs = useAutoCleanupTempDirTracker((cleanup) => {
 });
 
 async function createLockFixture() {
-  const root = tempDirs.make("openclaw-doctor-sqlite-lock-");
+  const root = tempDirs.make("operator-doctor-sqlite-lock-");
   const stateDir = path.join(root, "state");
-  const configPath = path.join(stateDir, "openclaw.json");
+  const configPath = path.join(stateDir, "operator.json");
   const lockDir = path.join(root, "locks");
   await fs.mkdir(stateDir, { recursive: true });
   await fs.writeFile(configPath, "{}\n", "utf8");
@@ -32,7 +32,7 @@ async function createLockFixture() {
       lockDir,
       platform: "darwin" as const,
       pollIntervalMs: 2,
-      readProcessCmdline: () => ["openclaw-gateway"],
+      readProcessCmdline: () => ["operator-gateway"],
       timeoutMs: 15,
     },
   };
@@ -118,7 +118,12 @@ describe("doctor SQLite maintenance lock", () => {
         platform: "darwin",
         port: 18789,
         pollIntervalMs: 2,
-        readProcessCmdline: () => ["openclaw", "doctor", "--session-sqlite", "compact"],
+        readProcessCmdline: () => [
+          "@gabrielvfonseca/operator",
+          "doctor",
+          "--session-sqlite",
+          "compact",
+        ],
         timeoutMs: 15,
       }),
     ).rejects.toBeInstanceOf(GatewayLockError);
@@ -220,7 +225,7 @@ describe("doctor SQLite maintenance lock", () => {
   it("refuses explicit destructive targets outside the locked state directory", async () => {
     const fixture = await createLockFixture();
     const externalPath = path.join(
-      tempDirs.make("openclaw-external-session-store-"),
+      tempDirs.make("operator-external-session-store-"),
       "sessions.json",
     );
     const run = vi.fn();
@@ -260,7 +265,7 @@ describe("doctor SQLite maintenance lock", () => {
     const sessionsDir = path.join(fixture.env.OPERATOR_STATE_DIR, "agents", "main", "sessions");
     const storePath = path.join(sessionsDir, "sessions.json");
     const outsideTarget = path.join(
-      tempDirs.make("openclaw-dangling-session-target-"),
+      tempDirs.make("operator-dangling-session-target-"),
       "missing.json",
     );
     await fs.mkdir(sessionsDir, { recursive: true });

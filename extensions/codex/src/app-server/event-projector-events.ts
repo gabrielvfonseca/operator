@@ -1,4 +1,4 @@
-import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness-runtime";
+import type { EmbeddedRunAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   isNonSuccessItemStatus,
   itemKind,

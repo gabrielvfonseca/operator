@@ -1,6 +1,6 @@
 // Channel route target helpers normalize channel route targets for delivery.
-import { isRecord as hasRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { isRecord as hasRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeChatChannelId } from "../channels/ids.js";
 import { listRouteBindings } from "../config/bindings.js";
 import type { OperatorConfig } from "../config/types.operator.js";

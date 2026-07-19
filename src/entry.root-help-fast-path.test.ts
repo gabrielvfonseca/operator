@@ -8,7 +8,7 @@ describe("entry root help fast paths", () => {
     const outputRootHelp = vi.fn();
 
     await expect(
-      tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
+      tryHandleRootHelpFastPath(["node", "@gabrielvfonseca/operator", "--help"], {
         loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
         outputPrecomputedRootHelpText,
         outputRootHelp,
@@ -25,7 +25,7 @@ describe("entry root help fast paths", () => {
     const liveOptions = { includePluginDescriptors: true };
 
     await expect(
-      tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
+      tryHandleRootHelpFastPath(["node", "@gabrielvfonseca/operator", "--help"], {
         loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => liveOptions,
         outputPrecomputedRootHelpText,
         outputRootHelp,
@@ -40,9 +40,12 @@ describe("entry root help fast paths", () => {
     const outputPrecomputedBrowserHelpText = vi.fn(() => true);
 
     await expect(
-      tryHandlePrecomputedCommandHelpFastPath(["node", "openclaw", "browser", "--help"], {
-        outputPrecomputedBrowserHelpText,
-      }),
+      tryHandlePrecomputedCommandHelpFastPath(
+        ["node", "@gabrielvfonseca/operator", "browser", "--help"],
+        {
+          outputPrecomputedBrowserHelpText,
+        },
+      ),
     ).resolves.toBe(true);
 
     expect(outputPrecomputedBrowserHelpText).toHaveBeenCalledTimes(1);
@@ -52,12 +55,15 @@ describe("entry root help fast paths", () => {
     const outputPrecomputedNodesHelpText = vi.fn(() => true);
 
     await expect(
-      tryHandlePrecomputedCommandHelpFastPath(["node", "openclaw", "nodes", "--help"], {
-        loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => ({
-          includePluginDescriptors: true,
-        }),
-        outputPrecomputedNodesHelpText,
-      }),
+      tryHandlePrecomputedCommandHelpFastPath(
+        ["node", "@gabrielvfonseca/operator", "nodes", "--help"],
+        {
+          loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => ({
+            includePluginDescriptors: true,
+          }),
+          outputPrecomputedNodesHelpText,
+        },
+      ),
     ).resolves.toBe(false);
 
     expect(outputPrecomputedNodesHelpText).not.toHaveBeenCalled();

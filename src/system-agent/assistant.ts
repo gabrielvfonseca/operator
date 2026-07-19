@@ -92,7 +92,7 @@ export async function planSystemAgentCommandWithConfiguredModel(params: {
     const runId = `operator-planner-${randomUUID()}`;
     const shared = {
       sessionId: `${runId}-session`,
-      agentId: "operator",
+      agentId: "@gabrielvfonseca/operator",
       trigger: "manual" as const,
       sessionFile: path.join(tempDir, "session.jsonl"),
       workspaceDir: tempDir,
@@ -106,8 +106,8 @@ export async function planSystemAgentCommandWithConfiguredModel(params: {
       runId,
       extraSystemPrompt: SYSTEM_AGENT_ASSISTANT_SYSTEM_PROMPT,
       extraSystemPromptStatic: SYSTEM_AGENT_ASSISTANT_SYSTEM_PROMPT,
-      messageChannel: "operator",
-      messageProvider: "operator",
+      messageChannel: "@gabrielvfonseca/operator",
+      messageProvider: "@gabrielvfonseca/operator",
       disableTools: true,
       disableTrajectory: true,
       ...(route.authProfileId ? { authProfileId: route.authProfileId } : {}),

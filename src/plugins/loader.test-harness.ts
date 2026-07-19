@@ -1,7 +1,7 @@
 /** Broad plugin loader coverage for manifest discovery, runtime registration, and diagnostics. */
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { expect } from "vitest";
 import { listRegisteredAgentHarnesses } from "../agents/harness/registry.js";
 import { clearRuntimeConfigSnapshot } from "../config/runtime-snapshot.js";
@@ -206,7 +206,11 @@ export function writeBundledPlugin(params: {
 
 export function makeOperatorDevSourceRoot() {
   const root = makeTempDir();
-  fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "operator" }), "utf-8");
+  fs.writeFileSync(
+    path.join(root, "package.json"),
+    JSON.stringify({ name: "@gabrielvfonseca/operator" }),
+    "utf-8",
+  );
   mkdirSafe(path.join(root, "src"));
   mkdirSafe(path.join(root, "extensions"));
   return root;
@@ -897,10 +901,10 @@ module.exports = {
 
 export function createEnvResolvedPluginFixture(pluginId: string) {
   useNoBundledPlugins();
-  const operatorHome = makeTempDir();
+  const openclawHome = makeTempDir();
   const ignoredHome = makeTempDir();
   const stateDir = makeTempDir();
-  const pluginDir = path.join(operatorHome, "plugins", pluginId);
+  const pluginDir = path.join(openclawHome, "plugins", pluginId);
   mkdirSafe(pluginDir);
   const plugin = writePlugin({
     id: pluginId,
@@ -910,7 +914,7 @@ export function createEnvResolvedPluginFixture(pluginId: string) {
   });
   const env = {
     ...process.env,
-    OPERATOR_HOME: operatorHome,
+    OPERATOR_HOME: openclawHome,
     HOME: ignoredHome,
     OPERATOR_STATE_DIR: stateDir,
     OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",

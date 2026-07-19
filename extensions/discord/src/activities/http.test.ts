@@ -3,7 +3,7 @@ import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import os from "node:os";
 import path from "node:path";
-import type { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import type { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildDiscordActivityCustomId } from "../component-custom-id.js";
 import { createDiscordActivityHttpHandler } from "./http.js";
@@ -587,7 +587,7 @@ describe("Discord Activity widget routes", () => {
 
 describe("Discord Activity shell assets", () => {
   it("serves the generated SDK from a dist plugin root", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-discord-activity-dist-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-discord-activity-dist-"));
     const vendorAssetPath = path.join(
       root,
       "dist",

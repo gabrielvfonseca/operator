@@ -26,7 +26,7 @@ afterEach(async () => {
 });
 
 async function temporaryDirectory(name: string): Promise<string> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), `openclaw-${name}-`));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), `operator-${name}-`));
   roots.push(root);
   return root;
 }

@@ -6,10 +6,14 @@ import {
   normalizeAccountId,
   resolveUserPath,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-core";
-import type { DmPolicy, GroupPolicy, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import { resolveOAuthDir } from "openclaw/plugin-sdk/state-paths";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import type {
+  DmPolicy,
+  GroupPolicy,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveOAuthDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveMergedWhatsAppAccountConfig } from "./account-config.js";
 import {
   listConfiguredAccountIds,

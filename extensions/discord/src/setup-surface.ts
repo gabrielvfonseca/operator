@@ -4,8 +4,8 @@ import {
   type ChannelSetupWizard,
   type OperatorConfig,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import { resolveDiscordAccountAllowFrom } from "./accounts.js";
 import { resolveDiscordChannelAllowlist } from "./resolve-channels.js";
 import { resolveDiscordUserAllowlist } from "./resolve-users.js";

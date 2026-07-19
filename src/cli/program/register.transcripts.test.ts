@@ -9,7 +9,7 @@ import { registerTranscriptsCli } from "./register.transcripts.js";
 const originalStateDir = process.env.OPERATOR_STATE_DIR;
 
 async function makeStateDir(): Promise<string> {
-  return await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-transcripts-cli-"));
+  return await fs.mkdtemp(path.join(os.tmpdir(), "operator-transcripts-cli-"));
 }
 
 async function writeSession(
@@ -50,7 +50,7 @@ async function runTranscriptsCli(args: string[]): Promise<string> {
   }) as typeof process.stdout.write);
   try {
     const program = new Command();
-    program.name("openclaw");
+    program.name("@gabrielvfonseca/operator");
     registerTranscriptsCli(program);
     await program.parseAsync(["transcripts", ...args], { from: "user" });
     return output;

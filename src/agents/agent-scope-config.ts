@@ -1,6 +1,6 @@
 /** Resolves configured agent ids, directories, workspaces, and merged agent defaults. */
 import path from "node:path";
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import type {
   AgentContextLimitsConfig,

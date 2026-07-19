@@ -426,11 +426,11 @@ function buildCoreToolGroupMap() {
     list.push(tool.id);
     sectionToolMap.set(groupId, list);
   }
-  const operatorTools = CORE_TOOL_DEFINITIONS.filter((tool) => tool.includeInOperatorGroup).map(
+  const openclawTools = CORE_TOOL_DEFINITIONS.filter((tool) => tool.includeInOperatorGroup).map(
     (tool) => tool.id,
   );
   return {
-    "group:operator": operatorTools,
+    "group:openclaw": openclawTools,
     ...Object.fromEntries(sectionToolMap.entries()),
   };
 }

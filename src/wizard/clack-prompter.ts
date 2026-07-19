@@ -15,7 +15,7 @@ import {
   spinner,
   text,
 } from "@clack/prompts";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { stripAnsi } from "../../packages/terminal-core/src/ansi.js";
 import { note as emitNote } from "../../packages/terminal-core/src/note.js";
 import { styleSelectParams } from "../../packages/terminal-core/src/prompt-select-styled-params.js";

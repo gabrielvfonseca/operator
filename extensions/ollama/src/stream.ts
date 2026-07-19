@@ -1,7 +1,7 @@
 // Ollama plugin module implements stream behavior.
 import { randomUUID } from "node:crypto";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import type {
   AssistantMessage,
   StopReason,
@@ -10,33 +10,36 @@ import type {
   ToolCall,
   Tool,
   Usage,
-} from "openclaw/plugin-sdk/llm";
-import { createAssistantMessageEventStream, streamSimple } from "openclaw/plugin-sdk/llm";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import {
+  createAssistantMessageEventStream,
+  streamSimple,
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import type {
   OperatorConfig,
   ProviderRuntimeModel,
   ProviderWrapStreamFnContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { isNonSecretApiKeyMarker } from "openclaw/plugin-sdk/provider-auth";
-import { readResponseTextLimited } from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { isNonSecretApiKeyMarker } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { readResponseTextLimited } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import {
   DEFAULT_CONTEXT_TOKENS,
   normalizeProviderId,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   createMoonshotThinkingWrapper,
   createPlainTextToolCallCompatWrapper,
   resolveMoonshotThinkingType,
   streamWithPayloadPatch,
-} from "openclaw/plugin-sdk/provider-stream-shared";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
   readStringValue,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { OLLAMA_DEFAULT_BASE_URL } from "./defaults.js";
 import { shouldWrapOllamaCompatMoonshotThinking } from "./model-behavior.js";
 import { normalizeOllamaWireModelId } from "./model-id.js";

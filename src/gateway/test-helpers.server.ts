@@ -3,8 +3,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import "./test-helpers.mocks.js";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 import { WebSocket } from "ws";
@@ -576,8 +576,8 @@ type GatewayTestMessage = {
   [key: string]: unknown;
 };
 
-const CONNECT_CHALLENGE_NONCE_KEY = "__operatorTestConnectChallengeNonce";
-const CONNECT_CHALLENGE_TRACKED_KEY = "__operatorTestConnectChallengeTracked";
+const CONNECT_CHALLENGE_NONCE_KEY = "__openclawTestConnectChallengeNonce";
+const CONNECT_CHALLENGE_TRACKED_KEY = "__openclawTestConnectChallengeTracked";
 type TrackedWs = WebSocket & Record<string, unknown>;
 
 export function getTrackedConnectChallengeNonce(ws: WebSocket): string | undefined {

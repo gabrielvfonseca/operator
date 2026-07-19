@@ -215,7 +215,7 @@ export type ExecuteOptions = {
 /**
  * One persistent operation = one audited apply. The shared wrapper owns the
  * approval gate, before/after config hashes, the audit record, and the
- * `[operator] running/done` markers the e2e lanes assert on; each spec only
+ * `[openclaw] running/done` markers the e2e lanes assert on; each spec only
  * describes what to run and what to record.
  */
 type PersistentApplyContext = {
@@ -245,7 +245,7 @@ export async function applyPersistentOperation(params: {
     runtime.log(message);
     return { applied: false, message };
   }
-  runtime.log(`[operator] running: ${auditOperation}`);
+  runtime.log(`[openclaw] running: ${auditOperation}`);
   const { readConfigFileSnapshot } = await loadConfigModule();
   const before = await readConfigFileSnapshot();
   const commit: PersistentApplyContext["commit"] = async (effect) => {
@@ -270,7 +270,7 @@ export async function applyPersistentOperation(params: {
       `${outcome.summary}, but Operator could not record its audit entry: ${formatErrorMessage(error)}`,
     );
   }
-  runtime.log(`[operator] done: ${auditOperation}`);
+  runtime.log(`[openclaw] done: ${auditOperation}`);
   return { applied: true };
 }
 
@@ -351,7 +351,7 @@ export async function assertConfigWriteDoesNotBypassInferenceVerification(
     return;
   }
   throw new Error(
-    "Direct config writes cannot change inference routing or include alternate config. Use `set default model <provider/model>` for an already configured route, or exit Operator and run `operator onboard` to change provider/auth access.",
+    "Direct config writes cannot change inference routing or include alternate config. Use `set default model <provider/model>` for an already configured route, or exit Operator and run `openclaw onboard` to change provider/auth access.",
   );
 }
 
@@ -367,14 +367,14 @@ async function verifyCurrentSetupInference(
   const before = await readConfigFileSnapshot();
   if (!before.exists || !before.valid) {
     throw new Error(
-      "Operator setup requires a valid configured inference route. Exit Operator and run `operator onboard`, then retry.",
+      "Operator setup requires a valid configured inference route. Exit Operator and run `openclaw onboard`, then retry.",
     );
   }
   const beforeConfig = before.runtimeConfig ?? before.config;
   const beforeRoute = await projectDefaultInferenceRoute(beforeConfig);
   if (!beforeRoute.route) {
     throw new Error(
-      "Operator setup requires working inference first. Exit Operator and run `operator onboard`, then retry.",
+      "Operator setup requires working inference first. Exit Operator and run `openclaw onboard`, then retry.",
     );
   }
   const verifyInferenceConfig =
@@ -383,7 +383,7 @@ async function verifyCurrentSetupInference(
   const verification = await verifyInferenceConfig({ config: beforeConfig, runtime });
   if (!verification.ok) {
     throw new Error(
-      `Operator setup requires working inference first. The configured route failed a live check: ${verification.error} Exit Operator and run \`operator onboard\`, then retry.`,
+      `Operator setup requires working inference first. The configured route failed a live check: ${verification.error} Exit Operator and run \`openclaw onboard\`, then retry.`,
     );
   }
 
@@ -419,13 +419,13 @@ export async function executeSetup(
   const defaultModel = overview.defaultModel?.trim();
   if (!defaultModel) {
     throw new Error(
-      "Operator setup requires working inference first. Run `operator onboard` to configure and verify a default model, then start Operator again.",
+      "Operator setup requires working inference first. Run `openclaw onboard` to configure and verify a default model, then start Operator again.",
     );
   }
   const requestedModel = operation.model?.trim();
   if (requestedModel && requestedModel !== defaultModel) {
     throw new Error(
-      `Operator setup will preserve the verified default model ${defaultModel}. Exit Operator and run \`operator onboard\` to stage, live-test, and save a different inference route.`,
+      `Operator setup will preserve the verified default model ${defaultModel}. Exit Operator and run \`openclaw onboard\` to stage, live-test, and save a different inference route.`,
     );
   }
   if (!opts.approved) {
@@ -439,7 +439,7 @@ export async function executeSetup(
   const verified = await verifyCurrentSetupInference(runtime, opts.deps);
   if (requestedModel && requestedModel !== verified.modelRef) {
     throw new Error(
-      `The verified default model is now ${verified.modelRef}, not ${requestedModel}. Review the current route or exit Operator and run \`operator onboard\` before retrying setup.`,
+      `The verified default model is now ${verified.modelRef}, not ${requestedModel}. Review the current route or exit Operator and run \`openclaw onboard\` before retrying setup.`,
     );
   }
   const workspace = resolveUserPath(operation.workspace ?? process.cwd());

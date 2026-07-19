@@ -1,6 +1,6 @@
 // Structured plugin catalog and lifecycle operations shared by Gateway-facing surfaces.
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
 import {
   assertConfigWriteAllowedInCurrentMode,
@@ -421,7 +421,7 @@ function assertValidConfigSnapshot(
   const { snapshot, writeOptions } = prepared;
   if (!snapshot.valid) {
     throw new ManagedPluginLifecycleError(
-      "Config invalid; run `operator doctor --fix` before managing plugins.",
+      "Config invalid; run `openclaw doctor --fix` before managing plugins.",
     );
   }
   const mutationWriteOptions = selectInstallMutationWriteOptions(writeOptions);

@@ -189,7 +189,7 @@ async function validatePackagePayload(params: {
         pluginId: params.pluginId,
         installPath: params.installPath,
         reason: "missing-operator-peer-link",
-        detail: `Plugin declares peerDependency "operator" but peer link audit failed: ${peerIssue.reason}.`,
+        detail: `Plugin declares peerDependency "@gabrielvfonseca/operator" but peer link audit failed: ${peerIssue.reason}.`,
       });
     }
   }

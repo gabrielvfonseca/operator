@@ -2,9 +2,9 @@
  * Signal reactions via signal-cli JSON-RPC API
  */
 
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { signalRpcRequest } from "./client-adapter.js";
 import { resolveSignalRpcContext } from "./rpc-context.js";

@@ -3,7 +3,7 @@
  *
  * Provides channel plugin metadata before the full runtime registry is installed.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   getBundledChannelPlugin,
   getBundledChannelSecrets,

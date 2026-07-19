@@ -6,8 +6,8 @@ This document provides comprehensive guidance for deploying and managing Operato
 
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Website:** https://operator.ai
-- **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **Discord:** https://discord.gg/operator
+- **X/Twitter:** [@gabfon_](https://x.com/gabfon_)
 
 ## Deployment Overview
 
@@ -34,7 +34,7 @@ docker-compose up -d
 docker run -v $(pwd)/data:/app/data \
   -p 3000:3000 \
   -e OPERATOR_AUTH_TOKEN=your-secret-token \
-  openclaw/operator:latest
+  ghcr.io/gabrielvfonseca/operator:latest
 ```
 
 ### Systemd Service
@@ -182,7 +182,7 @@ Scale resources on a single instance:
 version: "3.8"
 services:
   operator:
-    image: openclaw/operator:latest
+    image: ghcr.io/gabrielvfonseca/operator:latest
     deploy:
       resources:
         limits:
@@ -282,7 +282,7 @@ operator gateway backup
 operator gateway stop
 
 # Deploy new version
-docker pull openclaw/operator:latest
+docker pull ghcr.io/gabrielvfonseca/operator:latest
 docker run -d --name operator ...
 
 # Verify health

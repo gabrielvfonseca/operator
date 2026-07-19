@@ -178,7 +178,7 @@ import {
   resetDiagnosticEventsForTest,
   waitForDiagnosticEventsDrained,
   type DiagnosticEventPrivateData,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import {
   emitDiagnosticEventWithTrustedTraceContext,
   emitInternalDiagnosticEventForTest,
@@ -187,12 +187,12 @@ import {
   logMessageProcessed,
   onTrustedInternalDiagnosticEvent,
   runWithDiagnosticTraceContext,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import type { OperatorPluginServiceContext } from "../api.js";
 import { emitDiagnosticEvent } from "../api.js";
 import { createDiagnosticsOtelService } from "./service.js";
 
-const OTEL_TEST_STATE_DIR = "/tmp/openclaw-diagnostics-otel-test";
+const OTEL_TEST_STATE_DIR = "/tmp/operator-diagnostics-otel-test";
 const OTEL_TEST_ENDPOINT = "http://otel-collector:4318";
 const OTEL_TEST_PROTOCOL = "http/protobuf";
 const TRACE_ID = "4bf92f3577b34da6a3ce929d0e0e4736";
@@ -658,28 +658,28 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    expect(emitCall.attributes?.["openclaw.provider"]).toBe("openai");
+    expect(emitCall.attributes?.["operator.provider"]).toBe("openai");
     for (const key of [
-      "openclaw.callId",
-      "openclaw.call_id",
-      "openclaw.chatId",
-      "openclaw.chat_id",
-      "openclaw.messageId",
-      "openclaw.message_id",
-      "openclaw.parentSpanId",
-      "openclaw.parent_span_id",
-      "openclaw.runId",
-      "openclaw.run_id",
-      "openclaw.sessionId",
-      "openclaw.session_id",
-      "openclaw.sessionKey",
-      "openclaw.session_key",
-      "openclaw.spanId",
-      "openclaw.span_id",
-      "openclaw.toolCallId",
-      "openclaw.tool_call_id",
-      "openclaw.traceId",
-      "openclaw.trace_id",
+      "operator.callId",
+      "operator.call_id",
+      "operator.chatId",
+      "operator.chat_id",
+      "operator.messageId",
+      "operator.message_id",
+      "operator.parentSpanId",
+      "operator.parent_span_id",
+      "operator.runId",
+      "operator.run_id",
+      "operator.sessionId",
+      "operator.session_id",
+      "operator.sessionKey",
+      "operator.session_key",
+      "operator.spanId",
+      "operator.span_id",
+      "operator.toolCallId",
+      "operator.tool_call_id",
+      "operator.traceId",
+      "operator.trace_id",
     ]) {
       expect(Object.hasOwn(emitCall.attributes ?? {}, key)).toBe(false);
     }
@@ -770,115 +770,115 @@ describe("diagnostics-otel service", () => {
       attempt: 2,
     });
 
-    expect(telemetryState.counters.get("openclaw.webhook.received")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "telegram",
-      "openclaw.webhook": "telegram-post",
+    expect(telemetryState.counters.get("operator.webhook.received")?.add).toHaveBeenCalledWith(1, {
+      "operator.channel": "telegram",
+      "operator.webhook": "telegram-post",
     });
     expect(
-      telemetryState.histograms.get("openclaw.webhook.duration_ms")?.record,
+      telemetryState.histograms.get("operator.webhook.duration_ms")?.record,
     ).toHaveBeenCalledWith(120, {
-      "openclaw.channel": "telegram",
-      "openclaw.webhook": "telegram-post",
+      "operator.channel": "telegram",
+      "operator.webhook": "telegram-post",
     });
-    expect(telemetryState.counters.get("openclaw.message.queued")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "telegram",
-      "openclaw.source": "telegram",
+    expect(telemetryState.counters.get("operator.message.queued")?.add).toHaveBeenCalledWith(1, {
+      "operator.channel": "telegram",
+      "operator.source": "telegram",
     });
-    expect(telemetryState.histograms.get("openclaw.queue.depth")?.record).toHaveBeenCalledTimes(2);
-    expect(telemetryState.histograms.get("openclaw.queue.depth")?.record).toHaveBeenCalledWith(2, {
-      "openclaw.channel": "telegram",
-      "openclaw.source": "telegram",
+    expect(telemetryState.histograms.get("operator.queue.depth")?.record).toHaveBeenCalledTimes(2);
+    expect(telemetryState.histograms.get("operator.queue.depth")?.record).toHaveBeenCalledWith(2, {
+      "operator.channel": "telegram",
+      "operator.source": "telegram",
     });
-    expect(telemetryState.histograms.get("openclaw.queue.depth")?.record).toHaveBeenCalledWith(3, {
-      "openclaw.lane": "main",
+    expect(telemetryState.histograms.get("operator.queue.depth")?.record).toHaveBeenCalledWith(3, {
+      "operator.lane": "main",
     });
-    expect(telemetryState.counters.get("openclaw.message.processed")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "telegram",
-      "openclaw.outcome": "completed",
+    expect(telemetryState.counters.get("operator.message.processed")?.add).toHaveBeenCalledWith(1, {
+      "operator.channel": "telegram",
+      "operator.outcome": "completed",
     });
-    expect(telemetryState.counters.get("openclaw.message.received")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "telegram",
-      "openclaw.source": "webhook",
+    expect(telemetryState.counters.get("operator.message.received")?.add).toHaveBeenCalledWith(1, {
+      "operator.channel": "telegram",
+      "operator.source": "webhook",
     });
-    expect(telemetryState.counters.get("openclaw.message.received")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "unknown",
-      "openclaw.source": "unknown",
+    expect(telemetryState.counters.get("operator.message.received")?.add).toHaveBeenCalledWith(1, {
+      "operator.channel": "unknown",
+      "operator.source": "unknown",
     });
     expect(
-      telemetryState.counters.get("openclaw.message.dispatch.started")?.add,
+      telemetryState.counters.get("operator.message.dispatch.started")?.add,
     ).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "telegram",
-      "openclaw.source": "webhook",
+      "operator.channel": "telegram",
+      "operator.source": "webhook",
     });
     expect(
-      telemetryState.counters.get("openclaw.message.dispatch.started")?.add,
+      telemetryState.counters.get("operator.message.dispatch.started")?.add,
     ).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "unknown",
-      "openclaw.source": "unknown",
+      "operator.channel": "unknown",
+      "operator.source": "unknown",
     });
     expect(
-      telemetryState.counters.get("openclaw.message.dispatch.completed")?.add,
+      telemetryState.counters.get("operator.message.dispatch.completed")?.add,
     ).toHaveBeenCalledWith(
       1,
       expect.objectContaining({
-        "openclaw.channel": "telegram",
-        "openclaw.outcome": "completed",
-        "openclaw.source": "webhook",
+        "operator.channel": "telegram",
+        "operator.outcome": "completed",
+        "operator.source": "webhook",
       }),
     );
     expect(
-      telemetryState.counters.get("openclaw.message.dispatch.completed")?.add,
+      telemetryState.counters.get("operator.message.dispatch.completed")?.add,
     ).toHaveBeenCalledWith(
       1,
       expect.objectContaining({
-        "openclaw.channel": "unknown",
-        "openclaw.reason": "none",
-        "openclaw.source": "unknown",
+        "operator.channel": "unknown",
+        "operator.reason": "none",
+        "operator.source": "unknown",
       }),
     );
     expect(
-      telemetryState.histograms.get("openclaw.message.dispatch.duration_ms")?.record,
+      telemetryState.histograms.get("operator.message.dispatch.duration_ms")?.record,
     ).toHaveBeenCalledWith(
       25,
       expect.objectContaining({
-        "openclaw.channel": "telegram",
-        "openclaw.outcome": "completed",
-        "openclaw.source": "webhook",
+        "operator.channel": "telegram",
+        "operator.outcome": "completed",
+        "operator.source": "webhook",
       }),
     );
     expect(
-      telemetryState.histograms.get("openclaw.message.dispatch.duration_ms")?.record,
+      telemetryState.histograms.get("operator.message.dispatch.duration_ms")?.record,
     ).toHaveBeenCalledWith(
       30,
       expect.objectContaining({
-        "openclaw.channel": "unknown",
-        "openclaw.reason": "none",
-        "openclaw.source": "unknown",
+        "operator.channel": "unknown",
+        "operator.reason": "none",
+        "operator.source": "unknown",
       }),
     );
     expect(
-      telemetryState.histograms.get("openclaw.message.duration_ms")?.record,
+      telemetryState.histograms.get("operator.message.duration_ms")?.record,
     ).toHaveBeenCalledWith(55, {
-      "openclaw.channel": "telegram",
-      "openclaw.outcome": "completed",
+      "operator.channel": "telegram",
+      "operator.outcome": "completed",
     });
-    expect(telemetryState.histograms.get("openclaw.queue.wait_ms")?.record).toHaveBeenCalledWith(
+    expect(telemetryState.histograms.get("operator.queue.wait_ms")?.record).toHaveBeenCalledWith(
       10,
       {
-        "openclaw.lane": "main",
+        "operator.lane": "main",
       },
     );
-    expect(telemetryState.counters.get("openclaw.session.stuck")?.add).toHaveBeenCalledTimes(1);
-    expect(telemetryState.counters.get("openclaw.session.stuck")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.state": "processing",
+    expect(telemetryState.counters.get("operator.session.stuck")?.add).toHaveBeenCalledTimes(1);
+    expect(telemetryState.counters.get("operator.session.stuck")?.add).toHaveBeenCalledWith(1, {
+      "operator.state": "processing",
     });
     expect(
-      telemetryState.histograms.get("openclaw.session.stuck_age_ms")?.record,
+      telemetryState.histograms.get("operator.session.stuck_age_ms")?.record,
     ).toHaveBeenCalledWith(125_000, {
-      "openclaw.state": "processing",
+      "operator.state": "processing",
     });
-    expect(telemetryState.counters.get("openclaw.run.attempt")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.attempt": 2,
+    expect(telemetryState.counters.get("operator.run.attempt")?.add).toHaveBeenCalledWith(1, {
+      "operator.attempt": 2,
     });
 
     emitDiagnosticEvent({
@@ -888,28 +888,28 @@ describe("diagnostics-otel service", () => {
       channel: "telegram",
       trigger: "user",
     });
-    expect(telemetryState.counters.get("openclaw.session.turn.created")?.add).toHaveBeenCalledWith(
+    expect(telemetryState.counters.get("operator.session.turn.created")?.add).toHaveBeenCalledWith(
       1,
       {
-        "openclaw.agent": "agent.default",
-        "openclaw.channel": "telegram",
-        "openclaw.trigger": "user",
+        "operator.agent": "agent.default",
+        "operator.channel": "telegram",
+        "operator.trigger": "user",
       },
     );
 
     const spanNames = telemetryState.tracer.startSpan.mock.calls.map((call) => call[0]);
-    expect(spanNames).toContain("openclaw.webhook.processed");
-    expect(spanNames).toContain("openclaw.message.processed");
-    expect(spanNames).toContain("openclaw.session.stuck");
-    const webhookSpanOptions = startedSpanOptions("openclaw.webhook.processed");
-    expect(webhookSpanOptions?.attributes).not.toHaveProperty("openclaw.chatId");
+    expect(spanNames).toContain("operator.webhook.processed");
+    expect(spanNames).toContain("operator.message.processed");
+    expect(spanNames).toContain("operator.session.stuck");
+    const webhookSpanOptions = startedSpanOptions("operator.webhook.processed");
+    expect(webhookSpanOptions?.attributes).not.toHaveProperty("operator.chatId");
     expect(webhookSpanOptions?.startTime).toBeTypeOf("number");
-    const messageSpanOptions = startedSpanOptions("openclaw.message.processed");
-    expect(messageSpanOptions?.attributes?.["openclaw.channel"]).toBe("telegram");
-    expect(messageSpanOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
-    expect(messageSpanOptions?.attributes?.["openclaw.reason"]).toBe("unknown");
-    expect(messageSpanOptions?.attributes).not.toHaveProperty("openclaw.chatId");
-    expect(messageSpanOptions?.attributes).not.toHaveProperty("openclaw.messageId");
+    const messageSpanOptions = startedSpanOptions("operator.message.processed");
+    expect(messageSpanOptions?.attributes?.["operator.channel"]).toBe("telegram");
+    expect(messageSpanOptions?.attributes?.["operator.outcome"]).toBe("completed");
+    expect(messageSpanOptions?.attributes?.["operator.reason"]).toBe("unknown");
+    expect(messageSpanOptions?.attributes).not.toHaveProperty("operator.chatId");
+    expect(messageSpanOptions?.attributes).not.toHaveProperty("operator.messageId");
     expect(messageSpanOptions?.startTime).toBeTypeOf("number");
 
     emitDiagnosticEvent({
@@ -1031,13 +1031,13 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runDurationRecordCall = lastHistogramRecord("openclaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("operator.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
     const runDurationAttributes = runDurationRecordCall?.[1];
-    expect(runDurationAttributes?.["openclaw.provider"]).toBe("openai");
-    expect(runDurationAttributes?.["openclaw.model"]).toBe("gpt-5.4");
-    const runSpanOptions = startedSpanOptions("openclaw.run");
-    expect(runSpanOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
+    expect(runDurationAttributes?.["operator.provider"]).toBe("openai");
+    expect(runDurationAttributes?.["operator.model"]).toBe("gpt-5.4");
+    const runSpanOptions = startedSpanOptions("operator.run");
+    expect(runSpanOptions?.attributes?.["operator.outcome"]).toBe("completed");
     expect(logEmit).toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -1066,12 +1066,12 @@ describe("diagnostics-otel service", () => {
       expect(event?.reason).toBe("configured");
     }
     expect(
-      telemetryState.counters.get("openclaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("operator.telemetry.exporter.events")?.add,
     ).toHaveBeenCalledWith(1, {
-      "openclaw.exporter": "diagnostics-otel",
-      "openclaw.signal": "logs",
-      "openclaw.status": "started",
-      "openclaw.reason": "configured",
+      "operator.exporter": "diagnostics-otel",
+      "operator.signal": "logs",
+      "operator.status": "started",
+      "operator.reason": "configured",
     });
 
     unsubscribe();
@@ -1131,30 +1131,30 @@ describe("diagnostics-otel service", () => {
       severityNumber?: number;
       severityText?: string;
     };
-    expect(emitCall.body).toBe("openclaw.security.event");
+    expect(emitCall.body).toBe("operator.security.event");
     expect(emitCall.severityText).toBe("WARN");
     expect(emitCall.severityNumber).toBe(13);
     expect(emitCall.attributes).toMatchObject({
-      "openclaw.security.event_id": "security-event-1",
-      "openclaw.security.category": "tool",
-      "openclaw.security.action": "tool.execution.blocked",
-      "openclaw.security.outcome": "denied",
-      "openclaw.security.severity": "medium",
-      "openclaw.security.reason": "tools.deny",
-      "openclaw.security.actor.kind": "agent",
-      "openclaw.security.actor.id_hash": "agent-hash-1",
-      "openclaw.security.actor.role": "operator",
-      "openclaw.security.actor.scopes": "operator.read,operator.approvals",
-      "openclaw.security.target.kind": "plugin",
-      "openclaw.security.target.name": "@acme/security-event-plugin",
-      "openclaw.security.target.owner": "plugin-installer",
-      "openclaw.security.policy.id": "tools.exec",
-      "openclaw.security.policy.decision": "deny",
-      "openclaw.security.policy.reason": "allowlist.miss",
-      "openclaw.security.control.id": "exec-approval",
-      "openclaw.security.control.family": "approval",
-      "openclaw.security.attribute.params_kind": "object",
-      "openclaw.security.attribute.secretish": "unknown",
+      "operator.security.event_id": "security-event-1",
+      "operator.security.category": "tool",
+      "operator.security.action": "tool.execution.blocked",
+      "operator.security.outcome": "denied",
+      "operator.security.severity": "medium",
+      "operator.security.reason": "tools.deny",
+      "operator.security.actor.kind": "agent",
+      "operator.security.actor.id_hash": "agent-hash-1",
+      "operator.security.actor.role": "operator",
+      "operator.security.actor.scopes": "operator.read,operator.approvals",
+      "operator.security.target.kind": "plugin",
+      "operator.security.target.name": "@acme/security-event-plugin",
+      "operator.security.target.owner": "plugin-installer",
+      "operator.security.policy.id": "tools.exec",
+      "operator.security.policy.decision": "deny",
+      "operator.security.policy.reason": "allowlist.miss",
+      "operator.security.control.id": "exec-approval",
+      "operator.security.control.family": "approval",
+      "operator.security.attribute.params_kind": "object",
+      "operator.security.attribute.secretish": "unknown",
     });
     expect(emitCall.context).toEqual({
       spanContext: {
@@ -1164,7 +1164,7 @@ describe("diagnostics-otel service", () => {
         isRemote: true,
       },
     });
-    expect(Object.hasOwn(emitCall.attributes ?? {}, "openclaw.security.attribute.__proto__")).toBe(
+    expect(Object.hasOwn(emitCall.attributes ?? {}, "operator.security.attribute.__proto__")).toBe(
       false,
     );
     expect(JSON.stringify(emitCall)).not.toContain("sk-test-secret");
@@ -1254,19 +1254,19 @@ describe("diagnostics-otel service", () => {
       expect(logExporterCtor).not.toHaveBeenCalled();
       expect(logEmit).not.toHaveBeenCalled();
       const record = parseSingleStdoutDiagnosticLogLine(stdout.writes);
-      expect(record.body).toBe("openclaw.security.event");
+      expect(record.body).toBe("operator.security.event");
       expect(record.severityText).toBe("WARN");
       expect(record.severityNumber).toBe(13);
       expect(record.attributes).toMatchObject({
-        "openclaw.security.event_id": "security-event-stdout",
-        "openclaw.security.category": "tool",
-        "openclaw.security.action": "tool.execution.blocked",
-        "openclaw.security.outcome": "denied",
-        "openclaw.security.severity": "medium",
-        "openclaw.security.reason": "tools.deny",
-        "openclaw.security.attribute.secretish": "unknown",
+        "operator.security.event_id": "security-event-stdout",
+        "operator.security.category": "tool",
+        "operator.security.action": "tool.execution.blocked",
+        "operator.security.outcome": "denied",
+        "operator.security.severity": "medium",
+        "operator.security.reason": "tools.deny",
+        "operator.security.attribute.secretish": "unknown",
       });
-      expect(Object.hasOwn(record.attributes ?? {}, "openclaw.security.attribute.__proto__")).toBe(
+      expect(Object.hasOwn(record.attributes ?? {}, "operator.security.attribute.__proto__")).toBe(
         false,
       );
       expect(record.trace_id).toBe(TRACE_ID);
@@ -1301,26 +1301,26 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.liveness.warning")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.liveness.reason": "event_loop_delay:cpu",
+    expect(telemetryState.counters.get("operator.liveness.warning")?.add).toHaveBeenCalledWith(1, {
+      "operator.liveness.reason": "event_loop_delay:cpu",
     });
     expect(
-      telemetryState.histograms.get("openclaw.liveness.event_loop_delay_p99_ms")?.record,
+      telemetryState.histograms.get("operator.liveness.event_loop_delay_p99_ms")?.record,
     ).toHaveBeenCalledWith(250, {
-      "openclaw.liveness.reason": "event_loop_delay:cpu",
+      "operator.liveness.reason": "event_loop_delay:cpu",
     });
     expect(
-      telemetryState.histograms.get("openclaw.liveness.cpu_core_ratio")?.record,
+      telemetryState.histograms.get("operator.liveness.cpu_core_ratio")?.record,
     ).toHaveBeenCalledWith(1.4, {
-      "openclaw.liveness.reason": "event_loop_delay:cpu",
+      "operator.liveness.reason": "event_loop_delay:cpu",
     });
-    const livenessSpanOptions = startedSpanOptions("openclaw.liveness.warning");
-    expect(livenessSpanOptions?.attributes?.["openclaw.liveness.reason"]).toBe(
+    const livenessSpanOptions = startedSpanOptions("operator.liveness.warning");
+    expect(livenessSpanOptions?.attributes?.["operator.liveness.reason"]).toBe(
       "event_loop_delay:cpu",
     );
-    expect(livenessSpanOptions?.attributes?.["openclaw.liveness.active"]).toBe(2);
-    expect(livenessSpanOptions?.attributes?.["openclaw.liveness.queued"]).toBe(4);
-    const span = telemetryState.spans.find((item) => item.name === "openclaw.liveness.warning");
+    expect(livenessSpanOptions?.attributes?.["operator.liveness.active"]).toBe(2);
+    expect(livenessSpanOptions?.attributes?.["operator.liveness.queued"]).toBe(4);
+    const span = telemetryState.spans.find((item) => item.name === "operator.liveness.warning");
     expect(span?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "event_loop_delay:cpu",
@@ -1346,21 +1346,21 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.payload.large")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.payload.action": "rejected",
-      "openclaw.payload.surface": "gateway.frame",
-      "openclaw.channel": "web",
-      "openclaw.plugin": "none",
-      "openclaw.reason": "body-too-large",
+    expect(telemetryState.counters.get("operator.payload.large")?.add).toHaveBeenCalledWith(1, {
+      "operator.payload.action": "rejected",
+      "operator.payload.surface": "gateway.frame",
+      "operator.channel": "web",
+      "operator.plugin": "none",
+      "operator.reason": "body-too-large",
     });
     expect(
-      telemetryState.histograms.get("openclaw.payload.large_bytes")?.record,
+      telemetryState.histograms.get("operator.payload.large_bytes")?.record,
     ).toHaveBeenCalledWith(2048, {
-      "openclaw.payload.action": "rejected",
-      "openclaw.payload.surface": "gateway.frame",
-      "openclaw.channel": "web",
-      "openclaw.plugin": "none",
-      "openclaw.reason": "body-too-large",
+      "operator.payload.action": "rejected",
+      "operator.payload.surface": "gateway.frame",
+      "operator.channel": "web",
+      "operator.plugin": "none",
+      "operator.reason": "body-too-large",
     });
 
     await service.stop?.(ctx);
@@ -1396,13 +1396,13 @@ describe("diagnostics-otel service", () => {
     expect(failureEvent?.reason).toBe("emit_failed");
     expect(failureEvent?.errorCategory).toBe("TypeError");
     expect(
-      telemetryState.counters.get("openclaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("operator.telemetry.exporter.events")?.add,
     ).toHaveBeenCalledWith(1, {
-      "openclaw.exporter": "diagnostics-otel",
-      "openclaw.signal": "logs",
-      "openclaw.status": "failure",
-      "openclaw.reason": "emit_failed",
-      "openclaw.errorCategory": "TypeError",
+      "operator.exporter": "diagnostics-otel",
+      "operator.signal": "logs",
+      "operator.status": "failure",
+      "operator.reason": "emit_failed",
+      "operator.errorCategory": "TypeError",
     });
 
     unsubscribe();
@@ -1414,7 +1414,7 @@ describe("diagnostics-otel service", () => {
     const ctx = createOtelContext(OTEL_TEST_ENDPOINT, { metrics: true });
 
     await service.start(ctx);
-    telemetryState.counters.get("openclaw.telemetry.exporter.events")?.add.mockClear();
+    telemetryState.counters.get("operator.telemetry.exporter.events")?.add.mockClear();
     emitDiagnosticEvent({
       type: "telemetry.exporter",
       exporter: "spoofed-plugin-exporter",
@@ -1424,7 +1424,7 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(
-      telemetryState.counters.get("openclaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("operator.telemetry.exporter.events")?.add,
     ).not.toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -1446,10 +1446,10 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runDurationRecordCall = lastHistogramRecord("openclaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("operator.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
-    expect(runDurationRecordCall?.[1]?.["openclaw.outcome"]).toBe("blocked");
-    expect(runDurationRecordCall?.[1]?.["openclaw.blocked_by"]).toBe("policy-plugin");
+    expect(runDurationRecordCall?.[1]?.["operator.outcome"]).toBe("blocked");
+    expect(runDurationRecordCall?.[1]?.["operator.blocked_by"]).toBe("policy-plugin");
     expect(JSON.stringify(telemetryState)).not.toContain("matched secret prompt");
 
     await service.stop?.(ctx);
@@ -1474,17 +1474,17 @@ describe("diagnostics-otel service", () => {
     );
     await flushDiagnosticEvents();
 
-    expect(startedSpanOptions("openclaw.run")?.attributes?.["openclaw.error"]).toBe(
+    expect(startedSpanOptions("operator.run")?.attributes?.["operator.error"]).toBe(
       "upstream model stream stalled then aborted",
     );
-    expect(spanByName("openclaw.run").setStatus).toHaveBeenCalledWith({
+    expect(spanByName("operator.run").setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "upstream model stream stalled then aborted",
     });
     // The raw message must never widen metric cardinality.
-    const runDuration = lastHistogramRecord("openclaw.run.duration_ms");
-    expect(runDuration?.[1]?.["openclaw.outcome"]).toBe("error");
-    expect(Object.hasOwn(runDuration?.[1] ?? {}, "openclaw.error")).toBe(false);
+    const runDuration = lastHistogramRecord("operator.run.duration_ms");
+    expect(runDuration?.[1]?.["operator.outcome"]).toBe("error");
+    expect(Object.hasOwn(runDuration?.[1] ?? {}, "operator.error")).toBe(false);
 
     await service.stop?.(ctx);
   });
@@ -1507,7 +1507,7 @@ describe("diagnostics-otel service", () => {
     );
     await flushDiagnosticEvents();
 
-    const status = mockCallArg(spanByName("openclaw.run").setStatus, 0) as {
+    const status = mockCallArg(spanByName("operator.run").setStatus, 0) as {
       message?: string;
     };
     expect(status.message).not.toContain(secret);
@@ -1528,7 +1528,7 @@ describe("diagnostics-otel service", () => {
         runId: "run-1",
         provider: "openai",
         model: "gpt-5.4",
-        harnessId: "openclaw",
+        harnessId: "@gabrielvfonseca/operator",
         outcome: "error",
         durationMs: 90,
         itemLifecycle: { startedCount: 1, completedCount: 1, activeCount: 0 },
@@ -1537,15 +1537,15 @@ describe("diagnostics-otel service", () => {
     );
     await flushDiagnosticEvents();
 
-    expect(startedSpanOptions("openclaw.harness.run")?.attributes?.["openclaw.error"]).toBe(
+    expect(startedSpanOptions("operator.harness.run")?.attributes?.["operator.error"]).toBe(
       "model run failed during resolve phase",
     );
-    expect(spanByName("openclaw.harness.run").setStatus).toHaveBeenCalledWith({
+    expect(spanByName("operator.harness.run").setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "model run failed during resolve phase",
     });
-    const harnessDuration = lastHistogramRecord("openclaw.harness.duration_ms");
-    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "openclaw.error")).toBe(false);
+    const harnessDuration = lastHistogramRecord("operator.harness.duration_ms");
+    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "operator.error")).toBe(false);
 
     await service.stop?.(ctx);
   });
@@ -1561,7 +1561,7 @@ describe("diagnostics-otel service", () => {
         runId: "run-1",
         provider: "openai",
         model: "gpt-5.4",
-        harnessId: "openclaw",
+        harnessId: "@gabrielvfonseca/operator",
         phase: "resolve",
         errorCategory: "Error",
         durationMs: 90,
@@ -1570,10 +1570,10 @@ describe("diagnostics-otel service", () => {
     );
     await flushDiagnosticEvents();
 
-    expect(startedSpanOptions("openclaw.harness.run")?.attributes?.["openclaw.error"]).toBe(
+    expect(startedSpanOptions("operator.harness.run")?.attributes?.["operator.error"]).toBe(
       "harness cleanup threw",
     );
-    expect(spanByName("openclaw.harness.run").setStatus).toHaveBeenCalledWith({
+    expect(spanByName("operator.harness.run").setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "harness cleanup threw",
     });
@@ -1598,9 +1598,9 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(sdkStart).not.toHaveBeenCalled();
-    const runDurationRecordCall = lastHistogramRecord("openclaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("operator.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
-    expect(runDurationRecordCall?.[1]?.["openclaw.provider"]).toBe("openai");
+    expect(runDurationRecordCall?.[1]?.["operator.provider"]).toBe("openai");
     expect(telemetryState.tracer.startSpan).not.toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -1629,11 +1629,11 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
-    expect(attrs?.["openclaw.content.input_messages"]).toBe("user prompt");
+    expect(attrs?.["operator.content.input_messages"]).toBe("user prompt");
 
     await service.stop?.(ctx);
   });
@@ -1820,7 +1820,7 @@ describe("diagnostics-otel service", () => {
   });
 
   test("preserves OTLP TLS env options when passing env proxy agents", async () => {
-    const certDir = mkdtempSync(path.join(tmpdir(), "openclaw-otel-tls-"));
+    const certDir = mkdtempSync(path.join(tmpdir(), "operator-otel-tls-"));
     try {
       const rootCertificatePath = path.join(certDir, "root.pem");
       const clientCertificatePath = path.join(certDir, "client.pem");
@@ -1865,7 +1865,7 @@ describe("diagnostics-otel service", () => {
   });
 
   test("falls back to shared OTLP TLS env options when signal-specific values are empty", async () => {
-    const certDir = mkdtempSync(path.join(tmpdir(), "openclaw-otel-tls-"));
+    const certDir = mkdtempSync(path.join(tmpdir(), "operator-otel-tls-"));
     try {
       const rootCertificatePath = path.join(certDir, "root.pem");
       writeFileSync(rootCertificatePath, "shared-root-certificate");
@@ -1969,17 +1969,17 @@ describe("diagnostics-otel service", () => {
       expect(logEmit).not.toHaveBeenCalled();
       const record = parseSingleStdoutDiagnosticLogLine(stdout.writes);
       expect(record.ts).toMatch(/^\d{4}-\d{2}-\d{2}T/);
-      expect(record.signal).toBe("openclaw.diagnostic.log");
+      expect(record.signal).toBe("operator.diagnostic.log");
       expect(record["service.name"]).toBe("rovoclaw-openclaw");
       expect(record.severityText).toBe("WARN");
       expect(record.severityNumber).toBe(13);
       expect(String(record.body)).not.toContain("sk-1234567890abcdef1234567890abcdef");
       expect(String(record.body)).toContain("sk-123");
       expect(record.attributes).toMatchObject({
-        "openclaw.log.level": "WARN",
-        "openclaw.subsystem": "diagnostic",
+        "operator.log.level": "WARN",
+        "operator.subsystem": "diagnostic",
       });
-      const tokenAttr = record.attributes?.["openclaw.token"];
+      const tokenAttr = record.attributes?.["operator.token"];
       expect(tokenAttr).not.toBe("ghp_abcdefghijklmnopqrstuvwxyz123456"); // pragma: allowlist secret
       expect(record.trace_id).toBe(TRACE_ID);
       expect(record.span_id).toBe(SPAN_ID);
@@ -2097,7 +2097,7 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    const tokenAttr = emitCall?.attributes?.["openclaw.token"];
+    const tokenAttr = emitCall?.attributes?.["operator.token"];
     expect(tokenAttr).not.toBe("ghp_abcdefghijklmnopqrstuvwxyz123456"); // pragma: allowlist secret
     if (typeof tokenAttr === "string") {
       expect(tokenAttr).toContain("…");
@@ -2118,9 +2118,9 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "openclaw.traceId")).toBe(false);
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "openclaw.spanId")).toBe(false);
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "openclaw.traceFlags")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "operator.traceId")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "operator.spanId")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "operator.traceFlags")).toBe(false);
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(emitCall?.context).toBeUndefined();
   });
@@ -2207,21 +2207,21 @@ describe("diagnostics-otel service", () => {
       body: string;
     };
     expect(emitCall.body).toBe(`${"x".repeat(4095)}...(truncated)`);
-    expect(emitCall.attributes["openclaw.good"]).toBe(`${"y".repeat(4095)}...(truncated)`);
+    expect(emitCall.attributes["operator.good"]).toBe(`${"y".repeat(4095)}...(truncated)`);
     expect(emitCall.attributes["code.lineno"]).toBe(42);
     expect(emitCall.attributes["code.function"]).toBe("handler");
-    expect(Object.hasOwn(emitCall.attributes, `openclaw.${PROTO_KEY}`)).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "openclaw.constructor")).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "openclaw.prototype")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, `operator.${PROTO_KEY}`)).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "operator.constructor")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "operator.prototype")).toBe(false);
     expect(
       Object.hasOwn(
         emitCall.attributes,
-        "openclaw.sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
+        "operator.sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
       ),
     ).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "openclaw.bad key")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "operator.bad key")).toBe(false);
     expect(Object.hasOwn(emitCall.attributes, "code.filepath")).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "openclaw.code.location")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "operator.code.location")).toBe(false);
     await service.stop?.(ctx);
   });
 
@@ -2283,7 +2283,7 @@ describe("diagnostics-otel service", () => {
     });
 
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.usage",
+      (call) => call[0] === "operator.model.usage",
     );
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(modelUsageCall?.[2]).toBeUndefined();
@@ -2320,13 +2320,13 @@ describe("diagnostics-otel service", () => {
       expect(tokenUsageBoundaries).toContain(boundary);
     }
     const genAiTokenUsage = telemetryState.histograms.get("gen_ai.client.token.usage");
-    const tokens = telemetryState.counters.get("openclaw.tokens");
+    const tokens = telemetryState.counters.get("operator.tokens");
     expect(tokens?.add).toHaveBeenCalledWith(12, {
-      "openclaw.channel": "webchat",
-      "openclaw.agent": "ops",
-      "openclaw.provider": "openai",
-      "openclaw.model": "gpt-5.4",
-      "openclaw.token": "input",
+      "operator.channel": "webchat",
+      "operator.agent": "ops",
+      "operator.provider": "openai",
+      "operator.model": "gpt-5.4",
+      "operator.token": "input",
     });
     expect(genAiTokenUsage?.record).toHaveBeenCalledTimes(2);
     expect(genAiTokenUsage?.record).toHaveBeenCalledWith(12, {
@@ -2354,7 +2354,7 @@ describe("diagnostics-otel service", () => {
     try {
       await service.start(ctx);
 
-      const runDurationOptions = histogramCreateOptions("openclaw.run.duration_ms");
+      const runDurationOptions = histogramCreateOptions("operator.run.duration_ms");
       expect(runDurationOptions?.unit).toBe("ms");
       const runBoundaries = runDurationOptions?.advice?.explicitBucketBoundaries;
       expect(runBoundaries).toEqual(expect.arrayContaining(priorSdkBoundaries));
@@ -2362,11 +2362,11 @@ describe("diagnostics-otel service", () => {
         expect(runBoundaries).toContain(boundary);
       }
 
-      const harnessDurationOptions = histogramCreateOptions("openclaw.harness.duration_ms");
+      const harnessDurationOptions = histogramCreateOptions("operator.harness.duration_ms");
       const harnessBoundaries = harnessDurationOptions?.advice?.explicitBucketBoundaries;
       expect(harnessBoundaries).toEqual(runBoundaries);
 
-      const contextOptions = histogramCreateOptions("openclaw.context.tokens");
+      const contextOptions = histogramCreateOptions("operator.context.tokens");
       const contextBoundaries = contextOptions?.advice?.explicitBucketBoundaries;
       expect(contextBoundaries).toEqual(expect.arrayContaining(priorSdkBoundaries));
       for (const boundary of [128000, 1_000_000]) {
@@ -2391,15 +2391,15 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.tokens")?.add).toHaveBeenCalledWith(2, {
-      "openclaw.channel": "unknown",
-      "openclaw.agent": "unknown",
-      "openclaw.provider": "openai",
-      "openclaw.model": "gpt-5.4",
-      "openclaw.token": "input",
+    expect(telemetryState.counters.get("operator.tokens")?.add).toHaveBeenCalledWith(2, {
+      "operator.channel": "unknown",
+      "operator.agent": "unknown",
+      "operator.provider": "openai",
+      "operator.model": "gpt-5.4",
+      "operator.token": "input",
     });
     expect(
-      JSON.stringify(telemetryState.counters.get("openclaw.tokens")?.add.mock.calls),
+      JSON.stringify(telemetryState.counters.get("operator.tokens")?.add.mock.calls),
     ).not.toContain("sk-test-secret-value");
     await service.stop?.(ctx);
   });
@@ -2418,15 +2418,15 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.tokens")?.add).toHaveBeenCalledWith(2, {
-      "openclaw.channel": "unknown",
-      "openclaw.agent": "unknown",
-      "openclaw.provider": "openai",
-      "openclaw.model": "gpt-5.4",
-      "openclaw.token": "input",
+    expect(telemetryState.counters.get("operator.tokens")?.add).toHaveBeenCalledWith(2, {
+      "operator.channel": "unknown",
+      "operator.agent": "unknown",
+      "operator.provider": "openai",
+      "operator.model": "gpt-5.4",
+      "operator.token": "input",
     });
     expect(
-      JSON.stringify(telemetryState.counters.get("openclaw.tokens")?.add.mock.calls),
+      JSON.stringify(telemetryState.counters.get("operator.tokens")?.add.mock.calls),
     ).not.toContain("Agent:qa:otel-trace-smoke");
     await service.stop?.(ctx);
   });
@@ -2443,14 +2443,14 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.queue.lane.enqueue")?.add).toHaveBeenCalledWith(
+    expect(telemetryState.counters.get("operator.queue.lane.enqueue")?.add).toHaveBeenCalledWith(
       1,
       {
-        "openclaw.lane": "session",
+        "operator.lane": "session",
       },
     );
     expect(
-      JSON.stringify(telemetryState.counters.get("openclaw.queue.lane.enqueue")?.add.mock.calls),
+      JSON.stringify(telemetryState.counters.get("operator.queue.lane.enqueue")?.add.mock.calls),
     ).not.toContain("Agent:qa:otel-trace-smoke");
     await service.stop?.(ctx);
   });
@@ -2467,14 +2467,14 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.queue.lane.enqueue")?.add).toHaveBeenCalledWith(
+    expect(telemetryState.counters.get("operator.queue.lane.enqueue")?.add).toHaveBeenCalledWith(
       1,
       {
-        "openclaw.lane": "dreaming-narrative",
+        "operator.lane": "dreaming-narrative",
       },
     );
     expect(
-      JSON.stringify(telemetryState.counters.get("openclaw.queue.lane.enqueue")?.add.mock.calls),
+      JSON.stringify(telemetryState.counters.get("operator.queue.lane.enqueue")?.add.mock.calls),
     ).not.toContain("session-main");
     await service.stop?.(ctx);
   });
@@ -2526,7 +2526,7 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const modelUsageOptions = startedSpanOptions("openclaw.model.usage");
+    const modelUsageOptions = startedSpanOptions("operator.model.usage");
     expect(modelUsageOptions?.attributes?.["gen_ai.operation.name"]).toBe("chat");
     expect(modelUsageOptions?.attributes?.["gen_ai.system"]).toBe("anthropic");
     expect(modelUsageOptions?.attributes?.["gen_ai.request.model"]).toBe(
@@ -2536,8 +2536,8 @@ describe("diagnostics-otel service", () => {
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.output_tokens"]).toBe(40);
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.cache_read.input_tokens"]).toBe(30);
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.cache_creation.input_tokens"]).toBe(20);
-    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "openclaw.sessionId")).toBe(false);
+    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
+    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "operator.sessionId")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.provider.name")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.input.messages")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.output.messages")).toBe(
@@ -2626,18 +2626,18 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const expectedAttrs = {
-      "openclaw.agent": "main",
-      "openclaw.skill.activation": "read",
-      "openclaw.skill.name": "tiny-llm-brainstorm",
-      "openclaw.skill.source": "workspace",
-      "openclaw.toolName": "read",
+      "operator.agent": "main",
+      "operator.skill.activation": "read",
+      "operator.skill.name": "tiny-llm-brainstorm",
+      "operator.skill.source": "workspace",
+      "operator.toolName": "read",
     };
-    expect(telemetryState.counters.get("openclaw.skill.used")?.add).toHaveBeenCalledWith(
+    expect(telemetryState.counters.get("operator.skill.used")?.add).toHaveBeenCalledWith(
       1,
       expectedAttrs,
     );
     const skillSpanCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.skill.used",
+      (call) => call[0] === "operator.skill.used",
     );
     expect(skillSpanCall?.[1]).toMatchObject({ attributes: expectedAttrs });
     expect(JSON.stringify(skillSpanCall)).not.toContain("run-should-not-export");
@@ -2742,129 +2742,129 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const spanNames = telemetryState.tracer.startSpan.mock.calls.map((call) => call[0]);
-    expect(spanNames).toContain("openclaw.run");
-    expect(spanNames).toContain("openclaw.model.call");
-    expect(spanNames).toContain("openclaw.harness.run");
-    expect(spanNames).toContain("openclaw.tool.execution");
+    expect(spanNames).toContain("operator.run");
+    expect(spanNames).toContain("operator.model.call");
+    expect(spanNames).toContain("operator.harness.run");
+    expect(spanNames).toContain("operator.tool.execution");
 
-    const runOptions = startedSpanOptions("openclaw.run");
-    expect(runOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
-    expect(runOptions?.attributes?.["openclaw.provider"]).toBe("openai");
-    expect(runOptions?.attributes?.["openclaw.model"]).toBe("gpt-5.4");
-    expect(runOptions?.attributes?.["openclaw.channel"]).toBe("webchat");
+    const runOptions = startedSpanOptions("operator.run");
+    expect(runOptions?.attributes?.["operator.outcome"]).toBe("completed");
+    expect(runOptions?.attributes?.["operator.provider"]).toBe("openai");
+    expect(runOptions?.attributes?.["operator.model"]).toBe("gpt-5.4");
+    expect(runOptions?.attributes?.["operator.channel"]).toBe("webchat");
     expect(Object.hasOwn(runOptions?.attributes ?? {}, "gen_ai.system")).toBe(false);
     expect(Object.hasOwn(runOptions?.attributes ?? {}, "gen_ai.request.model")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "openclaw.runId")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "openclaw.traceId")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "operator.runId")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "operator.traceId")).toBe(false);
     expect(runOptions?.startTime).toBeTypeOf("number");
 
-    const modelCall = startedSpanCall("openclaw.model.call");
+    const modelCall = startedSpanCall("operator.model.call");
     const modelOptions = modelCall?.[1];
     expect(modelOptions?.attributes?.["gen_ai.system"]).toBe("openai");
     expect(modelOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
     expect(modelOptions?.attributes?.["gen_ai.operation.name"]).toBe("text_completion");
     expect(Object.hasOwn(modelOptions?.attributes ?? {}, "gen_ai.provider.name")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.callId")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.runId")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.callId")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.runId")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
     expect(modelOptions?.startTime).toBeTypeOf("number");
     expect(Object.hasOwn(modelOptions ?? {}, "kind")).toBe(false);
     expect(modelCall?.[2]).toBeUndefined();
 
-    const harnessCall = startedSpanCall("openclaw.harness.run");
+    const harnessCall = startedSpanCall("operator.harness.run");
     const harnessOptions = harnessCall?.[1];
-    expect(harnessOptions?.attributes?.["openclaw.harness.id"]).toBe("codex");
-    expect(harnessOptions?.attributes?.["openclaw.harness.plugin"]).toBe("codex-plugin");
-    expect(harnessOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
-    expect(harnessOptions?.attributes?.["openclaw.provider"]).toBe("codex");
-    expect(harnessOptions?.attributes?.["openclaw.model"]).toBe("gpt-5.4");
-    expect(harnessOptions?.attributes?.["openclaw.channel"]).toBe("qa");
-    expect(harnessOptions?.attributes?.["openclaw.harness.result_classification"]).toBe(
+    expect(harnessOptions?.attributes?.["operator.harness.id"]).toBe("codex");
+    expect(harnessOptions?.attributes?.["operator.harness.plugin"]).toBe("codex-plugin");
+    expect(harnessOptions?.attributes?.["operator.outcome"]).toBe("completed");
+    expect(harnessOptions?.attributes?.["operator.provider"]).toBe("codex");
+    expect(harnessOptions?.attributes?.["operator.model"]).toBe("gpt-5.4");
+    expect(harnessOptions?.attributes?.["operator.channel"]).toBe("qa");
+    expect(harnessOptions?.attributes?.["operator.harness.result_classification"]).toBe(
       "reasoning-only",
     );
-    expect(harnessOptions?.attributes?.["openclaw.harness.yield_detected"]).toBe(true);
-    expect(harnessOptions?.attributes?.["openclaw.harness.items.started"]).toBe(3);
-    expect(harnessOptions?.attributes?.["openclaw.harness.items.completed"]).toBe(2);
-    expect(harnessOptions?.attributes?.["openclaw.harness.items.active"]).toBe(1);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "openclaw.runId")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "openclaw.sessionId")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "openclaw.traceId")).toBe(false);
+    expect(harnessOptions?.attributes?.["operator.harness.yield_detected"]).toBe(true);
+    expect(harnessOptions?.attributes?.["operator.harness.items.started"]).toBe(3);
+    expect(harnessOptions?.attributes?.["operator.harness.items.completed"]).toBe(2);
+    expect(harnessOptions?.attributes?.["operator.harness.items.active"]).toBe(1);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "operator.runId")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "operator.sessionId")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "operator.traceId")).toBe(false);
     expect(harnessOptions?.startTime).toBeTypeOf("number");
     expect(harnessCall?.[2]).toBeUndefined();
 
-    const toolCall = startedSpanCall("openclaw.tool.execution");
+    const toolCall = startedSpanCall("operator.tool.execution");
     const toolOptions = toolCall?.[1];
-    expect(toolOptions?.attributes?.["openclaw.toolName"]).toBe("read");
-    expect(toolOptions?.attributes?.["openclaw.tool.source"]).toBe("core");
-    expect(toolOptions?.attributes?.["openclaw.errorCategory"]).toBe("TypeError");
-    expect(toolOptions?.attributes?.["openclaw.errorCode"]).toBe("429");
-    expect(toolOptions?.attributes?.["openclaw.tool.params.kind"]).toBe("object");
+    expect(toolOptions?.attributes?.["operator.toolName"]).toBe("read");
+    expect(toolOptions?.attributes?.["operator.tool.source"]).toBe("core");
+    expect(toolOptions?.attributes?.["operator.errorCategory"]).toBe("TypeError");
+    expect(toolOptions?.attributes?.["operator.errorCode"]).toBe("429");
+    expect(toolOptions?.attributes?.["operator.tool.params.kind"]).toBe("object");
     expect(toolOptions?.attributes?.["gen_ai.tool.name"]).toBe("read");
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "openclaw.toolCallId")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "openclaw.runId")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "operator.toolCallId")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "operator.runId")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
     expect(toolOptions?.startTime).toBeTypeOf("number");
     expect(toolCall?.[2]).toBeUndefined();
 
-    const modelCallDuration = lastHistogramRecord("openclaw.model_call.duration_ms");
+    const modelCallDuration = lastHistogramRecord("operator.model_call.duration_ms");
     expect(modelCallDuration?.[0]).toBe(80);
-    expect(modelCallDuration?.[1]?.["openclaw.provider"]).toBe("openai");
-    expect(modelCallDuration?.[1]?.["openclaw.model"]).toBe("gpt-5.4");
-    const requestBytes = lastHistogramRecord("openclaw.model_call.request_bytes");
+    expect(modelCallDuration?.[1]?.["operator.provider"]).toBe("openai");
+    expect(modelCallDuration?.[1]?.["operator.model"]).toBe("gpt-5.4");
+    const requestBytes = lastHistogramRecord("operator.model_call.request_bytes");
     expect(requestBytes?.[0]).toBe(1234);
-    expect(requestBytes?.[1]?.["openclaw.provider"]).toBe("openai");
-    expect(requestBytes?.[1]?.["openclaw.model"]).toBe("gpt-5.4");
-    const responseBytes = lastHistogramRecord("openclaw.model_call.response_bytes");
+    expect(requestBytes?.[1]?.["operator.provider"]).toBe("openai");
+    expect(requestBytes?.[1]?.["operator.model"]).toBe("gpt-5.4");
+    const responseBytes = lastHistogramRecord("operator.model_call.response_bytes");
     expect(responseBytes?.[0]).toBe(567);
-    expect(responseBytes?.[1]?.["openclaw.provider"]).toBe("openai");
-    expect(responseBytes?.[1]?.["openclaw.model"]).toBe("gpt-5.4");
-    const timeToFirstByte = lastHistogramRecord("openclaw.model_call.time_to_first_byte_ms");
+    expect(responseBytes?.[1]?.["operator.provider"]).toBe("openai");
+    expect(responseBytes?.[1]?.["operator.model"]).toBe("gpt-5.4");
+    const timeToFirstByte = lastHistogramRecord("operator.model_call.time_to_first_byte_ms");
     expect(timeToFirstByte?.[0]).toBe(45);
-    expect(timeToFirstByte?.[1]?.["openclaw.provider"]).toBe("openai");
-    expect(timeToFirstByte?.[1]?.["openclaw.model"]).toBe("gpt-5.4");
-    const modelSpanAttributes = firstSpanAttributes("openclaw.model.call");
-    expect(modelSpanAttributes["openclaw.model_call.request_bytes"]).toBe(1234);
-    expect(modelSpanAttributes["openclaw.model_call.response_bytes"]).toBe(567);
-    expect(modelSpanAttributes["openclaw.model_call.time_to_first_byte_ms"]).toBe(45);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.input_messages_count"]).toBe(2);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.input_messages_chars"]).toBe(3456);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.system_prompt_chars"]).toBe(789);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.tool_definitions_count"]).toBe(4);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.tool_definitions_chars"]).toBe(2345);
-    expect(modelSpanAttributes["openclaw.model_call.prompt.total_chars"]).toBe(6590);
-    expect(modelSpanAttributes["openclaw.model_call.usage.input_tokens"]).toBe(100);
-    expect(modelSpanAttributes["openclaw.model_call.usage.output_tokens"]).toBe(20);
-    expect(modelSpanAttributes["openclaw.model_call.usage.cache_read_input_tokens"]).toBe(30);
-    expect(modelSpanAttributes["openclaw.model_call.usage.cache_creation_input_tokens"]).toBe(5);
-    expect(modelSpanAttributes["openclaw.model_call.usage.reasoning_output_tokens"]).toBe(8);
-    expect(modelSpanAttributes["openclaw.model_call.usage.prompt_tokens"]).toBe(135);
-    expect(modelSpanAttributes["openclaw.model_call.usage.total_tokens"]).toBe(155);
+    expect(timeToFirstByte?.[1]?.["operator.provider"]).toBe("openai");
+    expect(timeToFirstByte?.[1]?.["operator.model"]).toBe("gpt-5.4");
+    const modelSpanAttributes = firstSpanAttributes("operator.model.call");
+    expect(modelSpanAttributes["operator.model_call.request_bytes"]).toBe(1234);
+    expect(modelSpanAttributes["operator.model_call.response_bytes"]).toBe(567);
+    expect(modelSpanAttributes["operator.model_call.time_to_first_byte_ms"]).toBe(45);
+    expect(modelSpanAttributes["operator.model_call.prompt.input_messages_count"]).toBe(2);
+    expect(modelSpanAttributes["operator.model_call.prompt.input_messages_chars"]).toBe(3456);
+    expect(modelSpanAttributes["operator.model_call.prompt.system_prompt_chars"]).toBe(789);
+    expect(modelSpanAttributes["operator.model_call.prompt.tool_definitions_count"]).toBe(4);
+    expect(modelSpanAttributes["operator.model_call.prompt.tool_definitions_chars"]).toBe(2345);
+    expect(modelSpanAttributes["operator.model_call.prompt.total_chars"]).toBe(6590);
+    expect(modelSpanAttributes["operator.model_call.usage.input_tokens"]).toBe(100);
+    expect(modelSpanAttributes["operator.model_call.usage.output_tokens"]).toBe(20);
+    expect(modelSpanAttributes["operator.model_call.usage.cache_read_input_tokens"]).toBe(30);
+    expect(modelSpanAttributes["operator.model_call.usage.cache_creation_input_tokens"]).toBe(5);
+    expect(modelSpanAttributes["operator.model_call.usage.reasoning_output_tokens"]).toBe(8);
+    expect(modelSpanAttributes["operator.model_call.usage.prompt_tokens"]).toBe(135);
+    expect(modelSpanAttributes["operator.model_call.usage.total_tokens"]).toBe(155);
     expect(modelSpanAttributes["gen_ai.usage.input_tokens"]).toBe(135);
     expect(modelSpanAttributes["gen_ai.usage.output_tokens"]).toBe(20);
-    const runDuration = lastHistogramRecord("openclaw.run.duration_ms");
+    const runDuration = lastHistogramRecord("operator.run.duration_ms");
     expect(runDuration?.[0]).toBe(100);
-    expect(Object.hasOwn(runDuration?.[1] ?? {}, "openclaw.runId")).toBe(false);
-    const harnessDuration = lastHistogramRecord("openclaw.harness.duration_ms");
+    expect(Object.hasOwn(runDuration?.[1] ?? {}, "operator.runId")).toBe(false);
+    const harnessDuration = lastHistogramRecord("operator.harness.duration_ms");
     expect(harnessDuration?.[0]).toBe(90);
-    expect(harnessDuration?.[1]?.["openclaw.harness.id"]).toBe("codex");
-    expect(harnessDuration?.[1]?.["openclaw.harness.plugin"]).toBe("codex-plugin");
-    expect(harnessDuration?.[1]?.["openclaw.outcome"]).toBe("completed");
-    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "openclaw.runId")).toBe(false);
-    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "openclaw.sessionKey")).toBe(false);
-    const toolDuration = lastHistogramRecord("openclaw.tool.execution.duration_ms");
+    expect(harnessDuration?.[1]?.["operator.harness.id"]).toBe("codex");
+    expect(harnessDuration?.[1]?.["operator.harness.plugin"]).toBe("codex-plugin");
+    expect(harnessDuration?.[1]?.["operator.outcome"]).toBe("completed");
+    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "operator.runId")).toBe(false);
+    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "operator.sessionKey")).toBe(false);
+    const toolDuration = lastHistogramRecord("operator.tool.execution.duration_ms");
     expect(toolDuration?.[0]).toBe(20);
-    expect(toolDuration?.[1]?.["openclaw.tool.source"]).toBe("core");
-    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "openclaw.errorCode")).toBe(false);
-    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "openclaw.runId")).toBe(false);
+    expect(toolDuration?.[1]?.["operator.tool.source"]).toBe("core");
+    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "operator.errorCode")).toBe(false);
+    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "operator.runId")).toBe(false);
 
-    const toolSpan = spanByName("openclaw.tool.execution");
+    const toolSpan = spanByName("operator.tool.execution");
     expect(toolSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "TypeError",
     });
-    expect(firstSpanEndTime("openclaw.tool.execution")).toBeTypeOf("number");
+    expect(firstSpanEndTime("operator.tool.execution")).toBeTypeOf("number");
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     await service.stop?.(ctx);
   });
@@ -2888,29 +2888,29 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const failoverOptions = startedSpanOptions("openclaw.model.failover");
-    expect(failoverOptions?.attributes?.["openclaw.provider"]).toBe("anthropic");
-    expect(failoverOptions?.attributes?.["openclaw.model"]).toBe("claude-opus-4-6");
-    expect(failoverOptions?.attributes?.["openclaw.failover.to_provider"]).toBe("openai");
-    expect(failoverOptions?.attributes?.["openclaw.failover.to_model"]).toBe("gpt-5.4");
-    expect(failoverOptions?.attributes?.["openclaw.failover.reason"]).toBe("overloaded");
-    expect(failoverOptions?.attributes?.["openclaw.failover.suspended"]).toBe(true);
-    expect(failoverOptions?.attributes?.["openclaw.failover.cascade_depth"]).toBe(1);
-    expect(failoverOptions?.attributes?.["openclaw.lane"]).toBe("main");
-    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "openclaw.sessionId")).toBe(false);
-    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
+    const failoverOptions = startedSpanOptions("operator.model.failover");
+    expect(failoverOptions?.attributes?.["operator.provider"]).toBe("anthropic");
+    expect(failoverOptions?.attributes?.["operator.model"]).toBe("claude-opus-4-6");
+    expect(failoverOptions?.attributes?.["operator.failover.to_provider"]).toBe("openai");
+    expect(failoverOptions?.attributes?.["operator.failover.to_model"]).toBe("gpt-5.4");
+    expect(failoverOptions?.attributes?.["operator.failover.reason"]).toBe("overloaded");
+    expect(failoverOptions?.attributes?.["operator.failover.suspended"]).toBe(true);
+    expect(failoverOptions?.attributes?.["operator.failover.cascade_depth"]).toBe(1);
+    expect(failoverOptions?.attributes?.["operator.lane"]).toBe("main");
+    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "operator.sessionId")).toBe(false);
+    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
     expect(failoverOptions?.startTime).toBeTypeOf("number");
-    expect(firstSpanEndTime("openclaw.model.failover")).toBeTypeOf("number");
-    expect(firstCounterAddCall("openclaw.model.failover")).toStrictEqual([
+    expect(firstSpanEndTime("operator.model.failover")).toBeTypeOf("number");
+    expect(firstCounterAddCall("operator.model.failover")).toStrictEqual([
       1,
       {
-        "openclaw.failover.reason": "overloaded",
-        "openclaw.failover.suspended": "true",
-        "openclaw.lane": "main",
-        "openclaw.model": "claude-opus-4-6",
-        "openclaw.provider": "anthropic",
-        "openclaw.failover.to_model": "gpt-5.4",
-        "openclaw.failover.to_provider": "openai",
+        "operator.failover.reason": "overloaded",
+        "operator.failover.suspended": "true",
+        "operator.lane": "main",
+        "operator.model": "claude-opus-4-6",
+        "operator.provider": "anthropic",
+        "operator.failover.to_model": "gpt-5.4",
+        "operator.failover.to_provider": "openai",
       },
     ]);
     await service.stop?.(ctx);
@@ -2933,19 +2933,19 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(firstCounterAddCall("openclaw.tool.execution.blocked")).toStrictEqual([
+    expect(firstCounterAddCall("operator.tool.execution.blocked")).toStrictEqual([
       1,
       {
-        "openclaw.toolName": "browser",
-        "openclaw.tool.source": "mcp",
+        "operator.toolName": "browser",
+        "operator.tool.source": "mcp",
         "gen_ai.tool.name": "browser",
-        "openclaw.tool.owner": "browser-tools",
-        "openclaw.tool.params.kind": "object",
-        "openclaw.deniedReason": "tools.deny",
+        "operator.tool.owner": "browser-tools",
+        "operator.tool.params.kind": "object",
+        "operator.deniedReason": "tools.deny",
       },
     ]);
     expect(telemetryState.tracer.startSpan).not.toHaveBeenCalledWith(
-      "openclaw.tool.execution",
+      "operator.tool.execution",
       expect.anything(),
       expect.anything(),
     );
@@ -2967,8 +2967,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const failoverOptions = startedSpanOptions("openclaw.model.failover");
-    expect(failoverOptions?.attributes?.["openclaw.lane"]).toBe("session");
+    const failoverOptions = startedSpanOptions("operator.model.failover");
+    expect(failoverOptions?.attributes?.["operator.lane"]).toBe("session");
     expect(JSON.stringify(failoverOptions?.attributes)).not.toContain("Agent:qa:otel-trace-smoke");
     await service.stop?.(ctx);
   });
@@ -3009,7 +3009,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCallAttrs = telemetryState.tracer.startSpan.mock.calls
-      .filter((call) => call[0] === "openclaw.model.call")
+      .filter((call) => call[0] === "operator.model.call")
       .map((call) => (call[1] as { attributes?: Record<string, unknown> }).attributes);
     expect(modelCallAttrs).toHaveLength(3);
     expect(modelCallAttrs[0]?.["gen_ai.system"]).toBe("openai");
@@ -3050,7 +3050,7 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(startedSpanOptions("openclaw.model.call")).toBeUndefined();
+    expect(startedSpanOptions("operator.model.call")).toBeUndefined();
     const modelCallOptions = startedSpanOptions("text_completion gpt-5.4");
     expect(modelCallOptions?.attributes?.["gen_ai.provider.name"]).toBe("openai");
     expect(modelCallOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
@@ -3058,7 +3058,7 @@ describe("diagnostics-otel service", () => {
     expect(Object.hasOwn(modelCallOptions?.attributes ?? {}, "gen_ai.system")).toBe(false);
     expect(modelCallOptions?.startTime).toBeTypeOf("number");
     expect(modelCallOptions?.kind).toBe(2);
-    const modelUsageOptions = startedSpanOptions("openclaw.model.usage");
+    const modelUsageOptions = startedSpanOptions("operator.model.usage");
     expect(modelUsageOptions?.attributes?.["gen_ai.provider.name"]).toBe("openai");
     expect(modelUsageOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
     expect(modelUsageOptions?.attributes?.["gen_ai.operation.name"]).toBe("chat");
@@ -3086,20 +3086,20 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const modelCallOptions = startedSpanOptions("openclaw.model.call");
-    expect(modelCallOptions?.attributes?.["openclaw.failureKind"]).toBe("terminated");
+    const modelCallOptions = startedSpanOptions("operator.model.call");
+    expect(modelCallOptions?.attributes?.["operator.failureKind"]).toBe("terminated");
     expect(
-      Object.hasOwn(modelCallOptions?.attributes ?? {}, "openclaw.upstreamRequestIdHash"),
+      Object.hasOwn(modelCallOptions?.attributes ?? {}, "operator.upstreamRequestIdHash"),
     ).toBe(false);
     expect(modelCallOptions?.startTime).toBeTypeOf("number");
-    const span = telemetryState.spans.find((candidate) => candidate.name === "openclaw.model.call");
-    expect(span?.addEvent).toHaveBeenCalledWith("openclaw.provider.request", {
-      "openclaw.upstreamRequestIdHash": "sha256:123456abcdef",
+    const span = telemetryState.spans.find((candidate) => candidate.name === "operator.model.call");
+    expect(span?.addEvent).toHaveBeenCalledWith("operator.provider.request", {
+      "operator.upstreamRequestIdHash": "sha256:123456abcdef",
     });
-    const modelCallDuration = lastHistogramRecord("openclaw.model_call.duration_ms");
+    const modelCallDuration = lastHistogramRecord("operator.model_call.duration_ms");
     expect(modelCallDuration?.[0]).toBe(40);
-    expect(modelCallDuration?.[1]?.["openclaw.failureKind"]).toBe("terminated");
-    expect(Object.hasOwn(modelCallDuration?.[1] ?? {}, "openclaw.upstreamRequestIdHash")).toBe(
+    expect(modelCallDuration?.[1]?.["operator.failureKind"]).toBe("terminated");
+    expect(Object.hasOwn(modelCallDuration?.[1] ?? {}, "operator.upstreamRequestIdHash")).toBe(
       false,
     );
     await service.stop?.(ctx);
@@ -3148,23 +3148,23 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const contextCall = startedSpanCall("openclaw.context.assembled");
+    const contextCall = startedSpanCall("operator.context.assembled");
     const contextOptions = contextCall?.[1];
-    const runSpan = telemetryState.spans.find((span) => span.name === "openclaw.run");
+    const runSpan = telemetryState.spans.find((span) => span.name === "operator.run");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
-    expect(contextOptions?.attributes?.["openclaw.provider"]).toBe("openai");
-    expect(contextOptions?.attributes?.["openclaw.model"]).toBe("gpt-5.4");
-    expect(contextOptions?.attributes?.["openclaw.channel"]).toBe("webchat");
-    expect(contextOptions?.attributes?.["openclaw.trigger"]).toBe("message");
-    expect(contextOptions?.attributes?.["openclaw.context.message_count"]).toBe(12);
-    expect(contextOptions?.attributes?.["openclaw.context.history_text_chars"]).toBe(1234);
-    expect(contextOptions?.attributes?.["openclaw.context.history_image_blocks"]).toBe(2);
-    expect(contextOptions?.attributes?.["openclaw.context.max_message_text_chars"]).toBe(456);
-    expect(contextOptions?.attributes?.["openclaw.context.system_prompt_chars"]).toBe(789);
-    expect(contextOptions?.attributes?.["openclaw.context.prompt_chars"]).toBe(42);
-    expect(contextOptions?.attributes?.["openclaw.context.prompt_images"]).toBe(1);
-    expect(contextOptions?.attributes?.["openclaw.context.token_budget"]).toBe(128_000);
-    expect(contextOptions?.attributes?.["openclaw.context.reserve_tokens"]).toBe(4096);
+    expect(contextOptions?.attributes?.["operator.provider"]).toBe("openai");
+    expect(contextOptions?.attributes?.["operator.model"]).toBe("gpt-5.4");
+    expect(contextOptions?.attributes?.["operator.channel"]).toBe("webchat");
+    expect(contextOptions?.attributes?.["operator.trigger"]).toBe("message");
+    expect(contextOptions?.attributes?.["operator.context.message_count"]).toBe(12);
+    expect(contextOptions?.attributes?.["operator.context.history_text_chars"]).toBe(1234);
+    expect(contextOptions?.attributes?.["operator.context.history_image_blocks"]).toBe(2);
+    expect(contextOptions?.attributes?.["operator.context.max_message_text_chars"]).toBe(456);
+    expect(contextOptions?.attributes?.["operator.context.system_prompt_chars"]).toBe(789);
+    expect(contextOptions?.attributes?.["operator.context.prompt_chars"]).toBe(42);
+    expect(contextOptions?.attributes?.["operator.context.prompt_images"]).toBe(1);
+    expect(contextOptions?.attributes?.["operator.context.token_budget"]).toBe(128_000);
+    expect(contextOptions?.attributes?.["operator.context.reserve_tokens"]).toBe(4096);
     expect(contextOptions?.attributes).toBeTypeOf("object");
     expect(contextOptions?.startTime).toBeTypeOf("number");
     expect(JSON.stringify(contextCall)).not.toContain("session-key");
@@ -3197,23 +3197,23 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("openclaw.tool.loop")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.toolName": "process",
-      "openclaw.loop.level": "critical",
-      "openclaw.loop.action": "block",
-      "openclaw.loop.detector": "known_poll_no_progress",
-      "openclaw.loop.count": 20,
-      "openclaw.loop.paired_tool": "read",
+    expect(telemetryState.counters.get("operator.tool.loop")?.add).toHaveBeenCalledWith(1, {
+      "operator.toolName": "process",
+      "operator.loop.level": "critical",
+      "operator.loop.action": "block",
+      "operator.loop.detector": "known_poll_no_progress",
+      "operator.loop.count": 20,
+      "operator.loop.paired_tool": "read",
     });
-    const loopSpanCall = startedSpanCall("openclaw.tool.loop");
+    const loopSpanCall = startedSpanCall("operator.tool.loop");
     const loopOptions = loopSpanCall?.[1];
-    expect(loopOptions?.attributes?.["openclaw.toolName"]).toBe("process");
-    expect(loopOptions?.attributes?.["openclaw.loop.level"]).toBe("critical");
-    expect(loopOptions?.attributes?.["openclaw.loop.action"]).toBe("block");
-    expect(loopOptions?.attributes?.["openclaw.loop.detector"]).toBe("known_poll_no_progress");
-    expect(loopOptions?.attributes?.["openclaw.loop.count"]).toBe(20);
-    expect(loopOptions?.attributes?.["openclaw.loop.paired_tool"]).toBe("read");
-    const loopSpan = telemetryState.spans.find((span) => span.name === "openclaw.tool.loop");
+    expect(loopOptions?.attributes?.["operator.toolName"]).toBe("process");
+    expect(loopOptions?.attributes?.["operator.loop.level"]).toBe("critical");
+    expect(loopOptions?.attributes?.["operator.loop.action"]).toBe("block");
+    expect(loopOptions?.attributes?.["operator.loop.detector"]).toBe("known_poll_no_progress");
+    expect(loopOptions?.attributes?.["operator.loop.count"]).toBe(20);
+    expect(loopOptions?.attributes?.["operator.loop.paired_tool"]).toBe("read");
+    const loopSpan = telemetryState.spans.find((span) => span.name === "operator.tool.loop");
     expect(loopSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "known_poll_no_progress:block",
@@ -3256,35 +3256,35 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.histograms.get("openclaw.memory.rss_bytes")?.record).toHaveBeenCalledWith(
+    expect(telemetryState.histograms.get("operator.memory.rss_bytes")?.record).toHaveBeenCalledWith(
       100,
       {},
     );
-    expect(telemetryState.histograms.get("openclaw.memory.rss_bytes")?.record).toHaveBeenCalledWith(
+    expect(telemetryState.histograms.get("operator.memory.rss_bytes")?.record).toHaveBeenCalledWith(
       200,
       {
-        "openclaw.memory.level": "critical",
-        "openclaw.memory.reason": "rss_growth",
+        "operator.memory.level": "critical",
+        "operator.memory.reason": "rss_growth",
       },
     );
-    expect(telemetryState.counters.get("openclaw.memory.pressure")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.memory.level": "critical",
-      "openclaw.memory.reason": "rss_growth",
+    expect(telemetryState.counters.get("operator.memory.pressure")?.add).toHaveBeenCalledWith(1, {
+      "operator.memory.level": "critical",
+      "operator.memory.reason": "rss_growth",
     });
-    const pressureCall = startedSpanCall("openclaw.memory.pressure");
+    const pressureCall = startedSpanCall("operator.memory.pressure");
     const pressureOptions = pressureCall?.[1];
-    expect(pressureOptions?.attributes?.["openclaw.memory.level"]).toBe("critical");
-    expect(pressureOptions?.attributes?.["openclaw.memory.reason"]).toBe("rss_growth");
-    expect(pressureOptions?.attributes?.["openclaw.memory.rss_bytes"]).toBe(200);
-    expect(pressureOptions?.attributes?.["openclaw.memory.heap_used_bytes"]).toBe(50);
-    expect(pressureOptions?.attributes?.["openclaw.memory.heap_total_bytes"]).toBe(90);
-    expect(pressureOptions?.attributes?.["openclaw.memory.external_bytes"]).toBe(20);
-    expect(pressureOptions?.attributes?.["openclaw.memory.array_buffers_bytes"]).toBe(6);
-    expect(pressureOptions?.attributes?.["openclaw.memory.threshold_bytes"]).toBe(512);
-    expect(pressureOptions?.attributes?.["openclaw.memory.rss_growth_bytes"]).toBe(256);
-    expect(pressureOptions?.attributes?.["openclaw.memory.window_ms"]).toBe(60_000);
+    expect(pressureOptions?.attributes?.["operator.memory.level"]).toBe("critical");
+    expect(pressureOptions?.attributes?.["operator.memory.reason"]).toBe("rss_growth");
+    expect(pressureOptions?.attributes?.["operator.memory.rss_bytes"]).toBe(200);
+    expect(pressureOptions?.attributes?.["operator.memory.heap_used_bytes"]).toBe(50);
+    expect(pressureOptions?.attributes?.["operator.memory.heap_total_bytes"]).toBe(90);
+    expect(pressureOptions?.attributes?.["operator.memory.external_bytes"]).toBe(20);
+    expect(pressureOptions?.attributes?.["operator.memory.array_buffers_bytes"]).toBe(6);
+    expect(pressureOptions?.attributes?.["operator.memory.threshold_bytes"]).toBe(512);
+    expect(pressureOptions?.attributes?.["operator.memory.rss_growth_bytes"]).toBe(256);
+    expect(pressureOptions?.attributes?.["operator.memory.window_ms"]).toBe(60_000);
     const pressureSpan = telemetryState.spans.find(
-      (span) => span.name === "openclaw.memory.pressure",
+      (span) => span.name === "operator.memory.pressure",
     );
     expect(pressureSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
@@ -3311,18 +3311,18 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const counter = telemetryState.counters.get("openclaw.diagnostic.async_queue.dropped");
+    const counter = telemetryState.counters.get("operator.diagnostic.async_queue.dropped");
     expect(counter?.add).toHaveBeenCalledWith(4, {
-      "openclaw.diagnostic.async_queue.drop_class": "total",
+      "operator.diagnostic.async_queue.drop_class": "total",
     });
     expect(counter?.add).toHaveBeenCalledWith(1, {
-      "openclaw.diagnostic.async_queue.drop_class": "trusted",
+      "operator.diagnostic.async_queue.drop_class": "trusted",
     });
     expect(counter?.add).toHaveBeenCalledWith(2, {
-      "openclaw.diagnostic.async_queue.drop_class": "untrusted",
+      "operator.diagnostic.async_queue.drop_class": "untrusted",
     });
     expect(counter?.add).toHaveBeenCalledWith(1, {
-      "openclaw.diagnostic.async_queue.drop_class": "priority",
+      "operator.diagnostic.async_queue.drop_class": "priority",
     });
 
     await service.stop?.(ctx);
@@ -3412,9 +3412,9 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runSpan = telemetryState.spans.find((span) => span.name === "openclaw.run");
-    const modelSpan = telemetryState.spans.find((span) => span.name === "openclaw.model.call");
-    const toolSpan = telemetryState.spans.find((span) => span.name === "openclaw.tool.execution");
+    const runSpan = telemetryState.spans.find((span) => span.name === "operator.run");
+    const modelSpan = telemetryState.spans.find((span) => span.name === "operator.model.call");
+    const toolSpan = telemetryState.spans.find((span) => span.name === "operator.tool.execution");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
     const modelSpanId = modelSpan?.spanContext.mock.results[0]?.value?.spanId;
 
@@ -3433,9 +3433,9 @@ describe("diagnostics-otel service", () => {
         (call[2] as { spanContext?: { spanId?: string } } | undefined)?.spanContext?.spanId,
       ]),
     );
-    expect(parentBySpanName["openclaw.run"]).toBeUndefined();
-    expect(parentBySpanName["openclaw.model.call"]).toBe(runSpanId);
-    expect(parentBySpanName["openclaw.tool.execution"]).toBe(modelSpanId);
+    expect(parentBySpanName["operator.run"]).toBeUndefined();
+    expect(parentBySpanName["operator.model.call"]).toBe(runSpanId);
+    expect(parentBySpanName["operator.tool.execution"]).toBe(modelSpanId);
     expect(toolSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "TypeError",
@@ -3568,11 +3568,11 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const messageSpan = spanByName("openclaw.message.processed");
-    const harnessSpan = spanByName("openclaw.harness.run");
-    const runSpan = spanByName("openclaw.run");
-    const usageSpan = spanByName("openclaw.model.usage");
-    const modelCallSpan = spanByName("openclaw.model.call");
+    const messageSpan = spanByName("operator.message.processed");
+    const harnessSpan = spanByName("operator.harness.run");
+    const runSpan = spanByName("operator.run");
+    const usageSpan = spanByName("operator.model.usage");
+    const modelCallSpan = spanByName("operator.model.call");
     const messageSpanContext = messageSpan.spanContext();
     const harnessSpanContext = harnessSpan.spanContext();
     const runSpanContext = runSpan.spanContext();
@@ -3591,11 +3591,11 @@ describe("diagnostics-otel service", () => {
     expect(harnessSpanContext.traceId).toBe(TRACE_ID);
     expect(usageSpanContext.traceId).toBe(TRACE_ID);
     expect(modelCallSpanContext.traceId).toBe(TRACE_ID);
-    expect(parentBySpanName["openclaw.message.processed"]?.spanId).toBe(SPAN_ID);
-    expect(parentBySpanName["openclaw.harness.run"]?.spanId).toBe(messageSpanContext.spanId);
-    expect(parentBySpanName["openclaw.run"]?.spanId).toBe(harnessSpanContext.spanId);
-    expect(parentBySpanName["openclaw.model.usage"]?.spanId).toBe(harnessSpanContext.spanId);
-    expect(parentBySpanName["openclaw.model.call"]?.spanId).toBe(runSpanContext.spanId);
+    expect(parentBySpanName["operator.message.processed"]?.spanId).toBe(SPAN_ID);
+    expect(parentBySpanName["operator.harness.run"]?.spanId).toBe(messageSpanContext.spanId);
+    expect(parentBySpanName["operator.run"]?.spanId).toBe(harnessSpanContext.spanId);
+    expect(parentBySpanName["operator.model.usage"]?.spanId).toBe(harnessSpanContext.spanId);
+    expect(parentBySpanName["operator.model.call"]?.spanId).toBe(runSpanContext.spanId);
     await service.stop?.(ctx);
   });
 
@@ -3657,8 +3657,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const messageSpan = spanByName("openclaw.message.processed");
-    const harnessSpan = spanByName("openclaw.harness.run");
+    const messageSpan = spanByName("operator.message.processed");
+    const harnessSpan = spanByName("operator.harness.run");
     const messageSpanContext = messageSpan.spanContext();
     const harnessSpanContext = harnessSpan.spanContext();
     const parentBySpanName = Object.fromEntries(
@@ -3669,9 +3669,9 @@ describe("diagnostics-otel service", () => {
       ]),
     );
 
-    expect(parentBySpanName["openclaw.message.processed"]?.spanId).toBe(SPAN_ID);
-    expect(parentBySpanName["openclaw.harness.run"]?.spanId).toBe(messageSpanContext.spanId);
-    expect(parentBySpanName["openclaw.model.usage"]?.spanId).toBe(harnessSpanContext.spanId);
+    expect(parentBySpanName["operator.message.processed"]?.spanId).toBe(SPAN_ID);
+    expect(parentBySpanName["operator.harness.run"]?.spanId).toBe(messageSpanContext.spanId);
+    expect(parentBySpanName["operator.model.usage"]?.spanId).toBe(harnessSpanContext.spanId);
     expect(messageSpanContext.traceId).toBe(TRACE_ID);
     expect(harnessSpanContext.traceId).toBe(TRACE_ID);
     await service.stop?.(ctx);
@@ -3703,8 +3703,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(spanByName("openclaw.message.processed").spanContext().traceId).toBe(TRACE_ID);
-    expect(startedSpanParentContexts("openclaw.message.processed")[0]).toBeUndefined();
+    expect(spanByName("operator.message.processed").spanContext().traceId).toBe(TRACE_ID);
+    expect(startedSpanParentContexts("operator.message.processed")[0]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -3751,8 +3751,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const messageSpanContext = spanByName("openclaw.message.processed").spanContext();
-    const deliveryParentContexts = startedSpanParentContexts("openclaw.message.delivery");
+    const messageSpanContext = spanByName("operator.message.processed").spanContext();
+    const deliveryParentContexts = startedSpanParentContexts("operator.message.delivery");
 
     expect(deliveryParentContexts).toHaveLength(2);
     expect(deliveryParentContexts[0]?.traceId).toBe(TRACE_ID);
@@ -3798,12 +3798,12 @@ describe("diagnostics-otel service", () => {
       });
     });
 
-    const messageSpan = spanByName("openclaw.message.processed");
+    const messageSpan = spanByName("operator.message.processed");
     const messageSpanContext = messageSpan.spanContext();
     expect(messageSpan.end).toHaveBeenCalledTimes(1);
     await waitForDiagnosticEventsDrained();
 
-    const deliveryParentContexts = startedSpanParentContexts("openclaw.message.delivery");
+    const deliveryParentContexts = startedSpanParentContexts("operator.message.delivery");
     expect(deliveryParentContexts).toHaveLength(125);
     expect(deliveryParentContexts.every((parent) => parent?.traceId === TRACE_ID)).toBe(true);
     expect(
@@ -3837,14 +3837,14 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const messageSpan = spanByName("openclaw.message.processed");
+    const messageSpan = spanByName("operator.message.processed");
     const messageSpanContext = messageSpan.spanContext();
-    const parentContext = startedSpanParentContexts("openclaw.message.processed")[0];
+    const parentContext = startedSpanParentContexts("operator.message.processed")[0];
 
     expect(messageSpanContext.traceId).toBe(TRACE_ID);
     expect(parentContext?.traceId).toBe(TRACE_ID);
     expect(parentContext?.spanId).toBe(SPAN_ID);
-    expect(firstSpanAttributes("openclaw.message.processed")["openclaw.reason"]).toBe("duplicate");
+    expect(firstSpanAttributes("operator.message.processed")["operator.reason"]).toBe("duplicate");
     expect(messageSpan.end).toHaveBeenCalledTimes(1);
     await service.stop?.(ctx);
   });
@@ -3868,8 +3868,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(spanByName("openclaw.message.processed").spanContext().traceId).toBe(TRACE_ID);
-    expect(startedSpanParentContexts("openclaw.message.processed")[0]).toBeUndefined();
+    expect(spanByName("operator.message.processed").spanContext().traceId).toBe(TRACE_ID);
+    expect(startedSpanParentContexts("operator.message.processed")[0]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -3891,7 +3891,7 @@ describe("diagnostics-otel service", () => {
         traceFlags: "01",
       },
     });
-    expect(spanByName("openclaw.message.processed").end).toHaveBeenCalledTimes(1);
+    expect(spanByName("operator.message.processed").end).toHaveBeenCalledTimes(1);
 
     telemetryState.tracer.setSpanContext.mockClear();
     emitTrustedDiagnosticEvent({
@@ -3911,7 +3911,7 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
-    expect(startedSpanCall("openclaw.harness.run")?.[2]).toBeUndefined();
+    expect(startedSpanCall("operator.harness.run")?.[2]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -3962,10 +3962,10 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runSpan = telemetryState.spans.find((span) => span.name === "openclaw.run");
+    const runSpan = telemetryState.spans.find((span) => span.name === "operator.run");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.usage",
+      (call) => call[0] === "operator.model.usage",
     );
 
     const linkedSpanContext = firstSetSpanContext();
@@ -3975,7 +3975,7 @@ describe("diagnostics-otel service", () => {
       (modelUsageCall?.[2] as { spanContext?: { spanId?: string } } | undefined)?.spanContext
         ?.spanId,
     ).toBe(runSpanId);
-    expect(firstSpanEndTime("openclaw.run")).toBeTypeOf("number");
+    expect(firstSpanEndTime("operator.run")).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
 
@@ -4009,7 +4009,7 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    const runContexts = startedSpanParentContextsByName("openclaw.run");
+    const runContexts = startedSpanParentContextsByName("operator.run");
 
     expect(runContexts).toHaveLength(2);
     expect(runContexts[0]?.parentContext).toBeUndefined();
@@ -4061,7 +4061,7 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    const runContexts = startedSpanParentContextsByName("openclaw.run");
+    const runContexts = startedSpanParentContextsByName("operator.run");
 
     expect(runContexts).toHaveLength(2);
     expect(runContexts[0]?.parentContext).toBeUndefined();
@@ -4116,8 +4116,8 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runSpanContext = spanByName("openclaw.run").spanContext();
-    const modelParentContext = startedSpanParentContexts("openclaw.model.call")[0];
+    const runSpanContext = spanByName("operator.run").spanContext();
+    const modelParentContext = startedSpanParentContexts("operator.model.call")[0];
 
     expect(modelParentContext?.traceId).toBe(TRACE_ID);
     expect(modelParentContext?.spanId).toBe(runSpanContext.spanId);
@@ -4172,12 +4172,12 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    const runSpan = spanByName("openclaw.run");
+    const runSpan = spanByName("operator.run");
     const runSpanContext = runSpan.spanContext();
     expect(runSpan.end).toHaveBeenCalledTimes(1);
     await waitForDiagnosticEventsDrained();
 
-    const modelParentContexts = startedSpanParentContexts("openclaw.model.call");
+    const modelParentContexts = startedSpanParentContexts("operator.model.call");
     expect(modelParentContexts).toHaveLength(125);
     expect(modelParentContexts.every((parent) => parent?.traceId === TRACE_ID)).toBe(true);
     expect(modelParentContexts.every((parent) => parent?.spanId === runSpanContext.spanId)).toBe(
@@ -4258,7 +4258,7 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
-    expect(startedSpanCall("openclaw.model.usage")?.[2]).toBeUndefined();
+    expect(startedSpanCall("operator.model.usage")?.[2]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -4314,7 +4314,7 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
-    expect(startedSpanCall("openclaw.model.usage")?.[2]).toBeUndefined();
+    expect(startedSpanCall("operator.model.usage")?.[2]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -4357,8 +4357,8 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["openclaw.run"]).toBeUndefined();
-    expect(parentBySpanName["openclaw.model.call"]).toBeUndefined();
+    expect(parentBySpanName["operator.run"]).toBeUndefined();
+    expect(parentBySpanName["operator.model.call"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -4399,8 +4399,8 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["openclaw.run"]).toBeUndefined();
-    expect(parentBySpanName["openclaw.model.call"]).toBeUndefined();
+    expect(parentBySpanName["operator.run"]).toBeUndefined();
+    expect(parentBySpanName["operator.model.call"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -4455,9 +4455,9 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["openclaw.run"]).toBeUndefined();
-    expect(parentBySpanName["openclaw.model.call"]).toBeUndefined();
-    expect(parentBySpanName["openclaw.tool.execution"]).toBeUndefined();
+    expect(parentBySpanName["operator.run"]).toBeUndefined();
+    expect(parentBySpanName["operator.model.call"]).toBeUndefined();
+    expect(parentBySpanName["operator.tool.execution"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -4528,21 +4528,21 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(
-      telemetryState.tracer.startSpan.mock.calls.filter((call) => call[0] === "openclaw.run"),
+      telemetryState.tracer.startSpan.mock.calls.filter((call) => call[0] === "operator.run"),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "openclaw.model.call",
+        (call) => call[0] === "operator.model.call",
       ),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "openclaw.tool.execution",
+        (call) => call[0] === "operator.tool.execution",
       ),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "openclaw.harness.run",
+        (call) => call[0] === "operator.harness.run",
       ),
     ).toHaveLength(1);
     await service.stop?.(ctx);
@@ -4566,33 +4566,33 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const execDuration = lastHistogramRecord("openclaw.exec.duration_ms");
+    const execDuration = lastHistogramRecord("operator.exec.duration_ms");
     expect(execDuration?.[0]).toBe(30);
-    expect(execDuration?.[1]?.["openclaw.exec.target"]).toBe("host");
-    expect(execDuration?.[1]?.["openclaw.exec.mode"]).toBe("child");
-    expect(execDuration?.[1]?.["openclaw.outcome"]).toBe("failed");
-    expect(execDuration?.[1]?.["openclaw.failureKind"]).toBe("runtime-error");
+    expect(execDuration?.[1]?.["operator.exec.target"]).toBe("host");
+    expect(execDuration?.[1]?.["operator.exec.mode"]).toBe("child");
+    expect(execDuration?.[1]?.["operator.outcome"]).toBe("failed");
+    expect(execDuration?.[1]?.["operator.failureKind"]).toBe("runtime-error");
 
-    const execCall = startedSpanCall("openclaw.exec");
+    const execCall = startedSpanCall("operator.exec");
     const execOptions = execCall?.[1];
-    expect(execOptions?.attributes?.["openclaw.exec.target"]).toBe("host");
-    expect(execOptions?.attributes?.["openclaw.exec.mode"]).toBe("child");
-    expect(execOptions?.attributes?.["openclaw.outcome"]).toBe("failed");
-    expect(execOptions?.attributes?.["openclaw.exec.command_length"]).toBe(42);
-    expect(execOptions?.attributes?.["openclaw.exec.exit_code"]).toBe(1);
-    expect(execOptions?.attributes?.["openclaw.exec.timed_out"]).toBe(false);
-    expect(execOptions?.attributes?.["openclaw.failureKind"]).toBe("runtime-error");
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "openclaw.exec.command")).toBe(false);
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "openclaw.exec.workdir")).toBe(false);
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
+    expect(execOptions?.attributes?.["operator.exec.target"]).toBe("host");
+    expect(execOptions?.attributes?.["operator.exec.mode"]).toBe("child");
+    expect(execOptions?.attributes?.["operator.outcome"]).toBe("failed");
+    expect(execOptions?.attributes?.["operator.exec.command_length"]).toBe(42);
+    expect(execOptions?.attributes?.["operator.exec.exit_code"]).toBe(1);
+    expect(execOptions?.attributes?.["operator.exec.timed_out"]).toBe(false);
+    expect(execOptions?.attributes?.["operator.failureKind"]).toBe("runtime-error");
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "operator.exec.command")).toBe(false);
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "operator.exec.workdir")).toBe(false);
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "operator.sessionKey")).toBe(false);
     expect(execOptions?.startTime).toBeTypeOf("number");
 
-    const execSpan = spanByName("openclaw.exec");
+    const execSpan = spanByName("operator.exec");
     expect(execSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "runtime-error",
     });
-    expect(firstSpanEndTime("openclaw.exec")).toBeTypeOf("number");
+    expect(firstSpanEndTime("operator.exec")).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
 
@@ -4626,56 +4626,56 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(
-      telemetryState.counters.get("openclaw.message.delivery.started")?.add,
+      telemetryState.counters.get("operator.message.delivery.started")?.add,
     ).toHaveBeenCalledWith(1, {
-      "openclaw.channel": "matrix",
-      "openclaw.delivery.kind": "text",
+      "operator.channel": "matrix",
+      "operator.delivery.kind": "text",
     });
     const deliveryDurationRecords = telemetryState.histograms.get(
-      "openclaw.message.delivery.duration_ms",
+      "operator.message.delivery.duration_ms",
     )?.record.mock.calls as Array<[unknown, Record<string, unknown>]>;
     expect(deliveryDurationRecords[0]?.[0]).toBe(25);
-    expect(deliveryDurationRecords[0]?.[1]["openclaw.channel"]).toBe("matrix");
-    expect(deliveryDurationRecords[0]?.[1]["openclaw.delivery.kind"]).toBe("text");
-    expect(deliveryDurationRecords[0]?.[1]["openclaw.outcome"]).toBe("completed");
+    expect(deliveryDurationRecords[0]?.[1]["operator.channel"]).toBe("matrix");
+    expect(deliveryDurationRecords[0]?.[1]["operator.delivery.kind"]).toBe("text");
+    expect(deliveryDurationRecords[0]?.[1]["operator.outcome"]).toBe("completed");
     expect(deliveryDurationRecords[1]?.[0]).toBe(40);
-    expect(deliveryDurationRecords[1]?.[1]["openclaw.channel"]).toBe("discord");
-    expect(deliveryDurationRecords[1]?.[1]["openclaw.delivery.kind"]).toBe("media");
-    expect(deliveryDurationRecords[1]?.[1]["openclaw.outcome"]).toBe("error");
-    expect(deliveryDurationRecords[1]?.[1]["openclaw.errorCategory"]).toBe("TypeError");
+    expect(deliveryDurationRecords[1]?.[1]["operator.channel"]).toBe("discord");
+    expect(deliveryDurationRecords[1]?.[1]["operator.delivery.kind"]).toBe("media");
+    expect(deliveryDurationRecords[1]?.[1]["operator.outcome"]).toBe("error");
+    expect(deliveryDurationRecords[1]?.[1]["operator.errorCategory"]).toBe("TypeError");
 
     const deliverySpanCalls = telemetryState.tracer.startSpan.mock.calls.filter(
-      (call) => call[0] === "openclaw.message.delivery",
+      (call) => call[0] === "operator.message.delivery",
     );
     expect(deliverySpanCalls).toHaveLength(2);
     const firstDeliveryOptions = deliverySpanCalls[0]?.[1] as
       | { attributes?: Record<string, unknown>; startTime?: unknown }
       | undefined;
-    expect(firstDeliveryOptions?.attributes?.["openclaw.channel"]).toBe("matrix");
-    expect(firstDeliveryOptions?.attributes?.["openclaw.delivery.kind"]).toBe("text");
-    expect(firstDeliveryOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
-    expect(firstDeliveryOptions?.attributes?.["openclaw.delivery.result_count"]).toBe(1);
+    expect(firstDeliveryOptions?.attributes?.["operator.channel"]).toBe("matrix");
+    expect(firstDeliveryOptions?.attributes?.["operator.delivery.kind"]).toBe("text");
+    expect(firstDeliveryOptions?.attributes?.["operator.outcome"]).toBe("completed");
+    expect(firstDeliveryOptions?.attributes?.["operator.delivery.result_count"]).toBe(1);
     expect(firstDeliveryOptions?.startTime).toBeTypeOf("number");
     const secondDeliveryOptions = deliverySpanCalls[1]?.[1] as
       | { attributes?: Record<string, unknown>; startTime?: unknown }
       | undefined;
-    expect(secondDeliveryOptions?.attributes?.["openclaw.channel"]).toBe("discord");
-    expect(secondDeliveryOptions?.attributes?.["openclaw.delivery.kind"]).toBe("media");
-    expect(secondDeliveryOptions?.attributes?.["openclaw.outcome"]).toBe("error");
-    expect(secondDeliveryOptions?.attributes?.["openclaw.errorCategory"]).toBe("TypeError");
+    expect(secondDeliveryOptions?.attributes?.["operator.channel"]).toBe("discord");
+    expect(secondDeliveryOptions?.attributes?.["operator.delivery.kind"]).toBe("media");
+    expect(secondDeliveryOptions?.attributes?.["operator.outcome"]).toBe("error");
+    expect(secondDeliveryOptions?.attributes?.["operator.errorCategory"]).toBe("TypeError");
     expect(secondDeliveryOptions?.startTime).toBeTypeOf("number");
     for (const call of deliverySpanCalls) {
       const options = call[1] as { attributes?: Record<string, unknown>; startTime?: unknown };
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.chatId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.sessionKey")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.messageId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.conversationId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.content")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "openclaw.to")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.chatId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.sessionKey")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.messageId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.conversationId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.content")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "operator.to")).toBe(false);
       expect(options.startTime).toBeTypeOf("number");
     }
     const errorSpan = telemetryState.spans.find(
-      (span) => span.name === "openclaw.message.delivery" && span.setStatus.mock.calls.length > 0,
+      (span) => span.name === "operator.message.delivery" && span.setStatus.mock.calls.length > 0,
     );
     expect(errorSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
@@ -4699,17 +4699,17 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const deliveryDuration = lastHistogramRecord("openclaw.message.delivery.duration_ms");
+    const deliveryDuration = lastHistogramRecord("operator.message.delivery.duration_ms");
     expect(deliveryDuration?.[0]).toBe(20);
-    expect(deliveryDuration?.[1]?.["openclaw.channel"]).toBe("unknown");
-    expect(deliveryDuration?.[1]?.["openclaw.delivery.kind"]).toBe("other");
-    expect(deliveryDuration?.[1]?.["openclaw.outcome"]).toBe("completed");
-    const deliverySpanCall = startedSpanCall("openclaw.message.delivery");
+    expect(deliveryDuration?.[1]?.["operator.channel"]).toBe("unknown");
+    expect(deliveryDuration?.[1]?.["operator.delivery.kind"]).toBe("other");
+    expect(deliveryDuration?.[1]?.["operator.outcome"]).toBe("completed");
+    const deliverySpanCall = startedSpanCall("operator.message.delivery");
     const deliveryOptions = deliverySpanCall?.[1];
-    expect(deliveryOptions?.attributes?.["openclaw.channel"]).toBe("unknown");
-    expect(deliveryOptions?.attributes?.["openclaw.delivery.kind"]).toBe("other");
-    expect(deliveryOptions?.attributes?.["openclaw.outcome"]).toBe("completed");
-    expect(deliveryOptions?.attributes?.["openclaw.delivery.result_count"]).toBe(1);
+    expect(deliveryOptions?.attributes?.["operator.channel"]).toBe("unknown");
+    expect(deliveryOptions?.attributes?.["operator.delivery.kind"]).toBe("other");
+    expect(deliveryOptions?.attributes?.["operator.outcome"]).toBe("completed");
+    expect(deliveryOptions?.attributes?.["operator.delivery.result_count"]).toBe(1);
     expect(deliveryOptions?.startTime).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
@@ -4763,48 +4763,48 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const recoveryRequestedCall = firstCounterAddCall("openclaw.session.recovery.requested");
+    const recoveryRequestedCall = firstCounterAddCall("operator.session.recovery.requested");
     expect(recoveryRequestedCall[0]).toBe(1);
-    expect(recoveryRequestedCall[1]?.["openclaw.state"]).toBe("processing");
-    expect(recoveryRequestedCall[1]?.["openclaw.action"]).toBe("abort");
-    expect(recoveryRequestedCall[1]?.["openclaw.active_work_kind"]).toBe("tool_call");
-    const recoveryCompletedCall = firstCounterAddCall("openclaw.session.recovery.completed");
+    expect(recoveryRequestedCall[1]?.["operator.state"]).toBe("processing");
+    expect(recoveryRequestedCall[1]?.["operator.action"]).toBe("abort");
+    expect(recoveryRequestedCall[1]?.["operator.active_work_kind"]).toBe("tool_call");
+    const recoveryCompletedCall = firstCounterAddCall("operator.session.recovery.completed");
     expect(recoveryCompletedCall[0]).toBe(1);
-    expect(recoveryCompletedCall[1]?.["openclaw.state"]).toBe("processing");
-    expect(recoveryCompletedCall[1]?.["openclaw.status"]).toBe("released");
-    expect(recoveryCompletedCall[1]?.["openclaw.action"]).toBe("abort-active-run");
-    const recoveryAgeRecord = lastHistogramRecord("openclaw.session.recovery.age_ms");
+    expect(recoveryCompletedCall[1]?.["operator.state"]).toBe("processing");
+    expect(recoveryCompletedCall[1]?.["operator.status"]).toBe("released");
+    expect(recoveryCompletedCall[1]?.["operator.action"]).toBe("abort-active-run");
+    const recoveryAgeRecord = lastHistogramRecord("operator.session.recovery.age_ms");
     expect(recoveryAgeRecord?.[0]).toBe(13_000);
-    expect(recoveryAgeRecord?.[1]?.["openclaw.status"]).toBe("released");
-    expect(telemetryState.counters.get("openclaw.talk.event")?.add).toHaveBeenCalledWith(1, {
-      "openclaw.talk.brain": "agent-consult",
-      "openclaw.talk.event_type": "input.audio.delta",
-      "openclaw.talk.mode": "realtime",
-      "openclaw.talk.provider": "openai",
-      "openclaw.talk.transport": "gateway-relay",
+    expect(recoveryAgeRecord?.[1]?.["operator.status"]).toBe("released");
+    expect(telemetryState.counters.get("operator.talk.event")?.add).toHaveBeenCalledWith(1, {
+      "operator.talk.brain": "agent-consult",
+      "operator.talk.event_type": "input.audio.delta",
+      "operator.talk.mode": "realtime",
+      "operator.talk.provider": "openai",
+      "operator.talk.transport": "gateway-relay",
     });
-    expect(telemetryState.histograms.get("openclaw.talk.audio.bytes")?.record).toHaveBeenCalledWith(
+    expect(telemetryState.histograms.get("operator.talk.audio.bytes")?.record).toHaveBeenCalledWith(
       320,
       {
-        "openclaw.talk.brain": "agent-consult",
-        "openclaw.talk.event_type": "input.audio.delta",
-        "openclaw.talk.mode": "realtime",
-        "openclaw.talk.provider": "openai",
-        "openclaw.talk.transport": "gateway-relay",
+        "operator.talk.brain": "agent-consult",
+        "operator.talk.event_type": "input.audio.delta",
+        "operator.talk.mode": "realtime",
+        "operator.talk.provider": "openai",
+        "operator.talk.transport": "gateway-relay",
       },
     );
     expect(
-      telemetryState.histograms.get("openclaw.talk.event.duration_ms")?.record,
+      telemetryState.histograms.get("operator.talk.event.duration_ms")?.record,
     ).toHaveBeenCalledWith(45, {
-      "openclaw.talk.brain": "agent-consult",
-      "openclaw.talk.event_type": "latency.metrics",
-      "openclaw.talk.mode": "realtime",
-      "openclaw.talk.provider": "openai",
-      "openclaw.talk.transport": "gateway-relay",
+      "operator.talk.brain": "agent-consult",
+      "operator.talk.event_type": "latency.metrics",
+      "operator.talk.mode": "realtime",
+      "operator.talk.provider": "openai",
+      "operator.talk.transport": "gateway-relay",
     });
 
     const talkCounterCalls = JSON.stringify(
-      telemetryState.counters.get("openclaw.talk.event")?.add.mock.calls,
+      telemetryState.counters.get("operator.talk.event")?.add.mock.calls,
     );
     expect(talkCounterCalls).not.toContain("talk-session-should-not-export");
     expect(talkCounterCalls).not.toContain("turn-should-not-export");
@@ -4844,20 +4844,20 @@ describe("diagnostics-otel service", () => {
     );
     await flushDiagnosticEvents();
 
-    const modelOptions = startedSpanOptions("openclaw.model.call");
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.content.input_messages")).toBe(
+    const modelOptions = startedSpanOptions("operator.model.call");
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.content.input_messages")).toBe(
       false,
     );
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.content.output_messages")).toBe(
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.content.output_messages")).toBe(
       false,
     );
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "openclaw.content.system_prompt")).toBe(
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "operator.content.system_prompt")).toBe(
       false,
     );
     expect(modelOptions?.startTime).toBeTypeOf("number");
-    const toolOptions = startedSpanOptions("openclaw.tool.execution");
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "openclaw.content.tool_input")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "openclaw.content.tool_output")).toBe(
+    const toolOptions = startedSpanOptions("operator.tool.execution");
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "operator.content.tool_input")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "operator.content.tool_output")).toBe(
       false,
     );
     expect(Object.hasOwn(toolOptions?.attributes ?? {}, "gen_ai.tool.call.arguments")).toBe(false);
@@ -4913,34 +4913,34 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const toolCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.tool.execution",
+      (call) => call[0] === "operator.tool.execution",
     );
     const modelAttrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
     const toolAttrs = (toolCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
 
-    expect(modelAttrs?.["openclaw.content.output_messages"]).toBe("model reply");
-    expect(modelAttrs?.["openclaw.content.system_prompt"]).toBe("system prompt");
-    expect(String(modelAttrs?.["openclaw.content.input_messages"])).not.toContain(
+    expect(modelAttrs?.["operator.content.output_messages"]).toBe("model reply");
+    expect(modelAttrs?.["operator.content.system_prompt"]).toBe("system prompt");
+    expect(String(modelAttrs?.["operator.content.input_messages"])).not.toContain(
       "sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
     );
-    expect(toolAttrs?.["openclaw.content.tool_input"]).toBe("tool input");
+    expect(toolAttrs?.["operator.content.tool_input"]).toBe("tool input");
     expect(toolAttrs?.["gen_ai.tool.call.id"]).toBe("tool-1");
     expect(toolAttrs?.["gen_ai.operation.name"]).toBe("execute_tool");
     expect(toolAttrs?.["gen_ai.tool.call.arguments"]).toBe(
-      toolAttrs?.["openclaw.content.tool_input"],
+      toolAttrs?.["operator.content.tool_input"],
     );
-    expect(typeof toolAttrs?.["openclaw.content.tool_output"]).toBe("string");
-    expect(String(toolAttrs?.["openclaw.content.tool_output"]).length).toBeLessThanOrEqual(
+    expect(typeof toolAttrs?.["operator.content.tool_output"]).toBe("string");
+    expect(String(toolAttrs?.["operator.content.tool_output"]).length).toBeLessThanOrEqual(
       MAX_TEST_OTEL_CONTENT_ATTRIBUTE_CHARS + OTEL_TRUNCATED_SUFFIX_MAX_CHARS,
     );
-    expect(String(toolAttrs?.["openclaw.content.tool_output"])).not.toContain("a".repeat(11));
+    expect(String(toolAttrs?.["operator.content.tool_output"])).not.toContain("a".repeat(11));
     expect(toolAttrs?.["gen_ai.tool.call.result"]).toBe(
-      toolAttrs?.["openclaw.content.tool_output"],
+      toolAttrs?.["operator.content.tool_output"],
     );
     await service.stop?.(ctx);
   });
@@ -4972,14 +4972,14 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs =
       (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)?.attributes ?? {};
-    expect(attrs["openclaw.content.input_messages"]).toBe("user prompt");
-    expect(Object.hasOwn(attrs, "openclaw.content.output_messages")).toBe(false);
-    expect(Object.hasOwn(attrs, "openclaw.content.system_prompt")).toBe(false);
-    expect(Object.hasOwn(attrs, "openclaw.content.tool_definitions")).toBe(false);
+    expect(attrs["operator.content.input_messages"]).toBe("user prompt");
+    expect(Object.hasOwn(attrs, "operator.content.output_messages")).toBe(false);
+    expect(Object.hasOwn(attrs, "operator.content.system_prompt")).toBe(false);
+    expect(Object.hasOwn(attrs, "operator.content.tool_definitions")).toBe(false);
     expect(Object.hasOwn(attrs, "gen_ai.output.messages")).toBe(false);
     expect(Object.hasOwn(attrs, "gen_ai.system_instructions")).toBe(false);
     expect(Object.hasOwn(attrs, "gen_ai.tool.definitions")).toBe(false);
@@ -5035,7 +5035,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5129,7 +5129,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5189,7 +5189,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5244,7 +5244,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5290,7 +5290,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5361,7 +5361,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
@@ -5421,13 +5421,13 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.call",
+      (call) => call[0] === "operator.model.call",
     );
     const attrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
     expect(Object.hasOwn(attrs ?? {}, "gen_ai.input.messages")).toBe(false);
     expect(Object.hasOwn(attrs ?? {}, "input.value")).toBe(false);
-    expect(Object.hasOwn(attrs ?? {}, "openclaw.content.input_messages")).toBe(false);
+    expect(Object.hasOwn(attrs ?? {}, "operator.content.input_messages")).toBe(false);
     expect(JSON.parse(stringAttribute(attrs, "gen_ai.tool.definitions"))).toEqual([
       {
         type: "function",
@@ -5436,7 +5436,7 @@ describe("diagnostics-otel service", () => {
         parameters: { type: "object" },
       },
     ]);
-    expect(JSON.parse(String(attrs?.["openclaw.content.tool_definitions"]))).toEqual([
+    expect(JSON.parse(String(attrs?.["operator.content.tool_definitions"]))).toEqual([
       {
         name: "lookup",
         description: "Lookup data",
@@ -5465,7 +5465,7 @@ describe("diagnostics-otel service", () => {
     });
 
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "openclaw.model.usage",
+      (call) => call[0] === "operator.model.usage",
     );
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(modelUsageCall?.[2]).toBeUndefined();
@@ -5483,12 +5483,12 @@ describe("diagnostics-otel service", () => {
       reason: "token=ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
     });
 
-    const sessionStateCall = firstCounterAddCall("openclaw.session.state");
+    const sessionStateCall = firstCounterAddCall("operator.session.state");
     const attrs = sessionStateCall[1];
     expect(sessionStateCall[0]).toBe(1);
-    expect(String(attrs?.["openclaw.reason"])).toContain("…");
-    expect(typeof attrs?.["openclaw.reason"]).toBe("string");
-    expect(String(attrs?.["openclaw.reason"])).not.toContain(
+    expect(String(attrs?.["operator.reason"])).toContain("…");
+    expect(typeof attrs?.["operator.reason"]).toBe("string");
+    expect(String(attrs?.["operator.reason"])).not.toContain(
       "ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
     );
     await service.stop?.(ctx);

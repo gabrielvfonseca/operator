@@ -1,8 +1,8 @@
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import { info } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Whatsapp plugin module implements connection controller behavior.
 import type { GroupMetadata, WASocket, WAMessageKey, proto } from "baileys";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import { info } from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { WHATSAPP_CONNECTION_CONTROLLER_CAPABILITY } from "./connection-controller-runtime-context.js";
 import { resolveComparableIdentity, type WhatsAppSelfIdentity } from "./identity.js";
 import type { ActiveWebListener, WebListenerCloseReason } from "./inbound/types.js";

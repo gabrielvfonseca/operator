@@ -3,7 +3,7 @@
  * when the owning local credential identity changes.
  */
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { ensureAuthProfileStore, loadAuthProfileStoreForRuntime } from "./auth-profiles/store.js";
 import type { AuthProfileCredential, AuthProfileStore } from "./auth-profiles/types.js";

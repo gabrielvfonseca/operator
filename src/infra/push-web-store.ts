@@ -1,11 +1,11 @@
 // Canonical shared-SQLite store for Web Push subscriptions and VAPID identity.
 import type { Insertable, Selectable } from "kysely";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabaseOptions,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import { sha256HexPrefix } from "./crypto-digest.js";
 import {
   executeSqliteQuerySync,

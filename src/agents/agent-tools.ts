@@ -22,8 +22,6 @@ import { appendRuntimePluginToolGrant } from "../plugins/tool-grant-allowlist.js
 import { getPluginToolMeta } from "../plugins/tools.js";
 import { GATEWAY_OWNER_ONLY_CORE_TOOLS } from "../security/dangerous-tools.js";
 import { createLazyImportLoader } from "../shared/lazy-promise.js";
-import type { SkillSnapshot, SkillUsagePath } from "../skills/types.js";
-import type { SkillWorkshopRunOptions } from "../skills/workshop/types.js";
 import { resolveGatewayMessageChannel } from "../utils/message-channel.js";
 import { wrapToolWithAbortSignal } from "./agent-tools.abort.js";
 import {
@@ -41,7 +39,6 @@ import {
   createSandboxedEditTool,
   createSandboxedReadTool,
   createSandboxedWriteTool,
-  wrapReadToolWithSkillContent,
   wrapToolMemoryFlushAppendOnlyWrite,
   wrapToolWorkspaceRootGuard,
   wrapToolWorkspaceRootGuardWithOptions,
@@ -73,8 +70,8 @@ import {
   resolveLocalModelLeanPreserveToolNames,
 } from "./local-model-lean.js";
 import type { ModelAuthMode } from "./model-auth.js";
-import { resolveOperatorPluginToolsForOptions } from "./operator-plugin-tools.js";
-import { createOperatorTools, filterToolsByClientCaps } from "./operator-tools.js";
+import { resolveOperatorPluginToolsForOptions } from "./openclaw-plugin-tools.js";
+import { createOperatorTools, filterToolsByClientCaps } from "./openclaw-tools.js";
 import type { SandboxContext } from "./sandbox.js";
 import { SANDBOX_AGENT_WORKSPACE_MOUNT } from "./sandbox/constants.js";
 import { resolveReadOnlyWorkspaceSkillMounts } from "./sandbox/workspace-mounts.js";
@@ -153,23 +150,6 @@ function readOnlySandboxReadMounts(
     );
   }
   return mounts.length > 0 ? mounts : undefined;
-}
-
-function resolveSkillReadRoots(skillsSnapshot?: SkillSnapshot): string[] | undefined {
-  const roots = new Set<string>();
-  for (const skill of skillsSnapshot?.resolvedSkills ?? []) {
-    const baseDir = typeof skill.baseDir === "string" ? skill.baseDir.trim() : "";
-    const filePath = typeof skill.filePath === "string" ? skill.filePath.trim() : "";
-    const root = baseDir || (filePath ? path.dirname(filePath) : "");
-    if (!root || !path.isAbsolute(root)) {
-      continue;
-    }
-    roots.add(path.resolve(root));
-  }
-  if (roots.size === 0) {
-    return undefined;
-  }
-  return Array.from(roots);
 }
 
 type BashToolsModule = typeof import("./bash-tools.js");
@@ -340,8 +320,6 @@ type OperatorCodingToolsOptions = {
   modelProvider?: string;
   /** Model id for the current provider (used for model-specific tool gating). */
   modelId?: string;
-  /** Internal review-run restrictions and proposal provenance. */
-  skillWorkshop?: SkillWorkshopRunOptions;
   /** Model API for the current provider (used for provider-native tool arbitration). */
   modelApi?: string;
   /** Model context window in tokens (used to scale read-tool output budget). */
@@ -441,11 +419,8 @@ type OperatorCodingToolsOptions = {
   /** Supplies run-global model-call ordering for parallel tool outcomes. */
   allocateToolOutcomeOrdinal?: (toolCallId?: string) => number;
   /** Runtime-only resolved skill paths that the read tool may load under workspaceOnly. */
-  skillsSnapshot?: SkillSnapshot;
-  /** Original identities for sandbox-materialized skill instruction paths. */
-  skillUsagePaths?: SkillUsagePath[];
-  /** Prepared conversation-scoped facts for callers that already resolved this run context. */
-  conversationCapabilityProfile?: ResolvedConversationCapabilityProfile;
+  /** Supplies run-global model-call ordering for parallel tool outcomes. */
+  allocateToolOutcomeOrdinal?: (toolCallId?: string) => number;
 };
 
 function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions): AnyAgentTool[] {
@@ -500,7 +475,6 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
       workspaceDir: options?.workspaceDir,
       cwd: options?.cwd,
       spawnWorkspaceDir: options?.spawnWorkspaceDir,
-      skillsSnapshot: options?.skillsSnapshot,
       sandboxToolPolicy,
       runtimeToolAllowlist: options?.runtimeToolAllowlist,
     });
@@ -628,7 +602,6 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
   const includeChannelTools = toolConstructionPlan.includeChannelTools;
   const includePluginTools = toolConstructionPlan.includePluginTools;
   const workspaceOnly = fsPolicy.workspaceOnly;
-  const skillReadRoots = sandboxRoot ? undefined : resolveSkillReadRoots(options?.skillsSnapshot);
   const applyPatchConfig = execConfig.applyPatch;
   // Secure by default: apply_patch is workspace-contained unless explicitly disabled.
   // (tools.fs.workspaceOnly is a separate umbrella flag for read/write/edit/apply_patch.)
@@ -664,12 +637,7 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
                 containerWorkdir: sandbox.containerWorkdir,
               })
             : sandboxed;
-          base.push(
-            wrapReadToolWithSkillContent(guarded, options?.skillsSnapshot?.resolvedSkills, {
-              modelContextWindowTokens: options?.modelContextWindowTokens,
-              imageSanitization,
-            }),
-          );
+          base.push(guarded);
           continue;
         }
         const freshReadTool = createReadTool(codingRoot);
@@ -679,15 +647,10 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
         });
         const guarded = workspaceOnly
           ? wrapToolWorkspaceRootGuardWithOptions(wrapped, codingRoot, {
-              additionalRoots: skillReadRoots,
+              additionalRoots: [],
             })
           : wrapped;
-        base.push(
-          wrapReadToolWithSkillContent(guarded, options?.skillsSnapshot?.resolvedSkills, {
-            modelContextWindowTokens: options?.modelContextWindowTokens,
-            imageSanitization,
-          }),
-        );
+        base.push(guarded);
         continue;
       }
       if (tool.name === "bash" || tool.name === execToolName) {
@@ -975,7 +938,6 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
             hasCurrentInboundAudio: options?.hasCurrentInboundAudio,
             modelProvider: options?.modelProvider,
             modelId: options?.modelId,
-            skillWorkshop: options?.skillWorkshop,
             replyToMode: options?.replyToMode,
             hasRepliedRef: options?.hasRepliedRef,
             modelHasVision: options?.modelHasVision,
@@ -1005,7 +967,7 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
       : pluginToolsOnly),
     ...toolSearchTools,
   ];
-  options?.recordToolPrepStage?.("operator-tools");
+  options?.recordToolPrepStage?.("openclaw-tools");
   const toolsForMemoryFlush: AnyAgentTool[] = isMemoryFlushRun && memoryFlushWritePath ? [] : tools;
   if (isMemoryFlushRun && memoryFlushWritePath) {
     for (const tool of tools) {
@@ -1131,8 +1093,6 @@ function createOperatorCodingToolsInternal(options?: OperatorCodingToolsOptions)
     ...(options?.config ? { config: options.config } : {}),
     cwd: codingRoot,
     workspaceDir: workspaceRoot,
-    ...(options?.skillsSnapshot ? { skillsSnapshot: options.skillsSnapshot } : {}),
-    ...(options?.skillUsagePaths ? { skillUsagePaths: options.skillUsagePaths } : {}),
     ...(sandboxRoot && allowWorkspaceWrites
       ? { sandbox: { root: sandboxRoot, bridge: sandboxFsBridge! } }
       : {}),

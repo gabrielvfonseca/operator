@@ -20,7 +20,7 @@ import { clearCurrentPluginMetadataSnapshot } from "../plugins/current-plugin-me
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import { GATEWAY_CLIENT_MODES, GATEWAY_CLIENT_NAMES } from "../utils/message-channel.js";
 import { isLiveTestEnabled } from "./live-test-helpers.js";
 import { testing as subagentAnnounceDeliveryTesting } from "./subagent-announce-delivery.test-support.js";
@@ -90,7 +90,7 @@ function liveSubagentConfig(
   if (providerConfig.provider === "google") {
     providers.google = {
       api: "google-generative-ai" as const,
-      agentRuntime: { id: "openclaw" },
+      agentRuntime: { id: "@gabrielvfonseca/operator" },
       baseUrl: "https://generativelanguage.googleapis.com/v1beta",
       apiKey: {
         source: "env" as const,
@@ -103,7 +103,7 @@ function liveSubagentConfig(
           id: modelId,
           name: modelId,
           api: "google-generative-ai" as const,
-          agentRuntime: { id: "openclaw" },
+          agentRuntime: { id: "@gabrielvfonseca/operator" },
           input: ["text" as const],
           reasoning: true,
           contextWindow: 1_048_576,
@@ -115,7 +115,7 @@ function liveSubagentConfig(
   } else {
     providers.openai = {
       api: "openai-responses" as const,
-      agentRuntime: { id: "openclaw" },
+      agentRuntime: { id: "@gabrielvfonseca/operator" },
       apiKey: {
         source: "env" as const,
         provider: "default" as const,
@@ -128,7 +128,7 @@ function liveSubagentConfig(
           id: modelId,
           name: modelId,
           api: "openai-responses" as const,
-          agentRuntime: { id: "openclaw" },
+          agentRuntime: { id: "@gabrielvfonseca/operator" },
           input: ["text" as const],
           reasoning: true,
           contextWindow: 1_047_576,
@@ -155,7 +155,12 @@ function liveSubagentConfig(
       defaults: {
         workspace,
         model: { primary: modelKey },
-        models: { [modelKey]: { agentRuntime: { id: "openclaw" }, params: { maxTokens: 1024 } } },
+        models: {
+          [modelKey]: {
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
+            params: { maxTokens: 1024 },
+          },
+        },
         sandbox: { mode: "off" },
         subagents: {
           allowAgents: ["*"],
@@ -697,7 +702,7 @@ describeLive("subagent announce live", () => {
       });
       await fs.writeFile(
         path.join(state.workspaceDir, "package.json"),
-        `${JSON.stringify({ name: "openclaw-gemini-stress-live", private: true }, null, 2)}\n`,
+        `${JSON.stringify({ name: "operator-gemini-stress-live", private: true }, null, 2)}\n`,
         "utf8",
       );
       await fs.writeFile(
@@ -748,7 +753,7 @@ describeLive("subagent announce live", () => {
                     `You are stress child ${childNumber}.`,
                     "Use available tools for a tiny multi-tool check.",
                     "First read package.json if the read tool is available.",
-                    "Then run a tiny shell command if the bash tool is available: printf openclaw.",
+                    "Then run a tiny shell command if the bash tool is available: printf operator.",
                     "If web_search or memory_search is available, use at most one small query.",
                     `After the tool work, reply exactly ${childToken}.`,
                   ].join(" "),

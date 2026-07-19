@@ -3,7 +3,7 @@
  *
  * Captures child output, applies wait outcomes, routes announcements, and performs cleanup decisions.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   isSilentReplyText,
   SILENT_REPLY_TOKEN,

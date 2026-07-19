@@ -23,8 +23,8 @@ import {
   resetTaskRegistryDeliveryRuntimeForTests,
   resetTaskRegistryForTests,
 } from "../tasks/task-runtime.test-helpers.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
-import type { OperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
+import type { OperatorTestState } from "../test-utils/openclaw-test-state.js";
 import type { TaskSystemAuditCode, TaskSystemAuditSeverity } from "./tasks-audit-system.js";
 import {
   tasksAuditCommand,
@@ -101,7 +101,7 @@ async function withTaskCommandStateDir(
   run: (state: OperatorTestState) => Promise<void>,
 ): Promise<void> {
   await withOperatorTestState(
-    { layout: "state-only", prefix: "openclaw-tasks-command-" },
+    { layout: "state-only", prefix: "operator-tasks-command-" },
     async (state) => {
       taskRegistryMaintenance.stopTaskRegistryMaintenance();
       taskRegistryMaintenance.resetTaskRegistryMaintenanceRuntimeForTests();

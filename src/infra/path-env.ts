@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   normalizeStringEntries,
   normalizeUniqueStringEntries,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveBrewPathDirs } from "./brew.js";
 import { isTruthyEnvValue } from "./env.js";
 import { tryProcessCwd } from "./safe-cwd.js";
@@ -166,10 +166,10 @@ function candidateBinDirs(
     // ignore
   }
 
-  // Bundled macOS app: `operator` lives next to the executable (process.execPath).
+  // Bundled macOS app: `openclaw` lives next to the executable (process.execPath).
   try {
     const execDir = path.dirname(execPath);
-    const siblingCli = path.join(execDir, "operator");
+    const siblingCli = path.join(execDir, "@gabrielvfonseca/operator");
     if (isExecutable(siblingCli)) {
       prepend.push(execDir);
     }
@@ -184,7 +184,7 @@ function candidateBinDirs(
     isTruthyEnvValue(process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN);
   if (allowProjectLocalBin && cwd) {
     const localBinDir = path.join(cwd, "node_modules", ".bin");
-    if (isExecutable(path.join(localBinDir, "operator"))) {
+    if (isExecutable(path.join(localBinDir, "@gabrielvfonseca/operator"))) {
       append.push(localBinDir);
     }
   }
@@ -195,7 +195,7 @@ function candidateBinDirs(
 
   // User-writable / package-manager directories are appended so they never
   // shadow trusted OS binaries.
-  // This includes Brew/Homebrew dirs, which are useful for finding `operator`
+  // This includes Brew/Homebrew dirs, which are useful for finding `openclaw`
   // in launchd/minimal environments but must not be treated as trusted.
   append.push(...resolvePathBootstrapBrewDirs({ homeDir, platform, existingPathParts }));
   const pnpmHome = normalizeTrustedPackageManagerRoot({
@@ -241,7 +241,7 @@ function candidateBinDirs(
 }
 
 /**
- * Best-effort PATH bootstrap so skills that require the `operator` CLI can run
+ * Best-effort PATH bootstrap so skills that ...
  * under launchd/minimal environments (and inside the macOS app bundle).
  */
 export function ensureOperatorCliOnPath(opts: EnsureOperatorPathOpts = {}) {

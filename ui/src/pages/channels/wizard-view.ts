@@ -341,7 +341,7 @@ export function renderChannelWizard(
   }
 
   return html`
-    <openclaw-modal-dialog
+    <operator-modal-dialog
       label=${t("channels.setup.dialogLabel", { channel: label })}
       @modal-cancel=${() => props.onClose()}
     >
@@ -355,6 +355,6 @@ export function renderChannelWizard(
         </div>
         <div class="channels-wizard__body">${renderHelperLinks(channel, step)} ${body}</div>
       </div>
-    </openclaw-modal-dialog>
+    </operator-modal-dialog>
   `;
 }

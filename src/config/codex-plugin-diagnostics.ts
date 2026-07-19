@@ -1,8 +1,8 @@
 // Builds diagnostics for Codex plugin config and provider wiring.
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   isDefaultAgentRuntimeId,
   normalizeOptionalAgentRuntimeId,

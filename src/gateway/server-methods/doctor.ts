@@ -2,8 +2,8 @@
 // cron state, and REM harness previews for operator diagnostics.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
@@ -730,7 +730,7 @@ function resolveDoctorMemoryTarget(
 const SKIPPED_MEMORY_EMBEDDING_PROBE = {
   ok: false,
   checked: false,
-  error: "memory embedding readiness not checked; run `operator memory status --deep` to probe",
+  error: "memory embedding readiness not checked; run `openclaw memory status --deep` to probe",
 } as const;
 
 export const doctorHandlers: GatewayRequestHandlers = {

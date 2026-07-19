@@ -2,10 +2,10 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { defineChannelAliasMigration } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 // Disabled `channels.imessage.catchup` blocks are retired. Enabled blocks stay
 // as a compatibility contract: older configs that opted into replay still get

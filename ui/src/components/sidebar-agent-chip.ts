@@ -1,14 +1,14 @@
 import { html, nothing } from "lit";
 import { property } from "lit/decorators.js";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomContentsElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomContentsElement } from "../lit/operator-element.ts";
 import { icons } from "./icons.ts";
 import "./tooltip.ts";
 
 /** Sidebar footer identity chip: the beginner-facing entrance to the active
     agent. The body opens the agent/utility menu owned by app-sidebar; the
     trailing control creates a session. */
-class SidebarAgentChip extends OpenClawLightDomContentsElement {
+class SidebarAgentChip extends OperatorLightDomContentsElement {
   @property({ attribute: false }) agentName = "";
   @property({ attribute: false }) avatarUrl: string | null = null;
   @property({ attribute: false }) avatarText = "";
@@ -69,7 +69,7 @@ class SidebarAgentChip extends OpenClawLightDomContentsElement {
               ></span>`
             : nothing}
         </button>
-        <openclaw-tooltip .content=${t("chat.runControls.newSession")}>
+        <operator-tooltip .content=${t("chat.runControls.newSession")}>
           <button
             type="button"
             class="sidebar-agent-chip__action"
@@ -79,12 +79,12 @@ class SidebarAgentChip extends OpenClawLightDomContentsElement {
           >
             ${icons.plus}
           </button>
-        </openclaw-tooltip>
+        </operator-tooltip>
       </div>
     `;
   }
 }
 
-if (!customElements.get("openclaw-sidebar-agent-chip")) {
-  customElements.define("openclaw-sidebar-agent-chip", SidebarAgentChip);
+if (!customElements.get("operator-sidebar-agent-chip")) {
+  customElements.define("operator-sidebar-agent-chip", SidebarAgentChip);
 }

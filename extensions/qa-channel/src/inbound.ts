@@ -1,18 +1,18 @@
 // Qa Channel plugin module implements inbound behavior.
-import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { resolveNativeCommandSessionTargets } from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "openclaw/plugin-sdk/inbound-envelope";
+import { resolveStableChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { resolveNativeCommandSessionTargets } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "@gabrielvfonseca/operator/plugin-sdk/inbound-envelope";
 import {
   buildAgentMediaPayload,
   saveMediaBuffer,
   saveMediaSource,
-} from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   sanitizeQaBusToolCallArguments,
   type QaBusToolCall,
-} from "openclaw/plugin-sdk/qa-channel-protocol";
+} from "@gabrielvfonseca/operator/plugin-sdk/qa-channel-protocol";
 import {
   buildQaTarget,
   deleteQaBusMessage,

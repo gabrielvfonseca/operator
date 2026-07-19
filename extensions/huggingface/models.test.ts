@@ -1,6 +1,6 @@
 // Huggingface tests cover models plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildHuggingfaceModelDefinition,

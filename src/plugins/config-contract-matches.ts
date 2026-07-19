@@ -1,5 +1,5 @@
 // Matches plugin config contracts against config paths and values.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { parseConfigPathArrayIndex } from "../shared/path-array-index.js";
 import { isRecord } from "../utils.js";
 

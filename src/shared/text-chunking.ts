@@ -1,4 +1,4 @@
-import { avoidTrailingHighSurrogateBreak } from "@operator/normalization-core/utf16-slice";
+import { avoidTrailingHighSurrogateBreak } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 export { avoidTrailingHighSurrogateBreak };
 

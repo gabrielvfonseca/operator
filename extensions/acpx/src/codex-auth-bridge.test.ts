@@ -18,7 +18,7 @@ const previousEnv = {
 };
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-acpx-codex-auth-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-acpx-codex-auth-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -110,7 +110,7 @@ async function captureGeneratedCodexWrapperStderr(
     process.execPath,
     [
       generated.wrapperPath,
-      "--openclaw-run-configured",
+      "--operator-run-configured",
       process.execPath,
       stderrScript,
       OPERATOR_ACPX_LEASE_ID_ARG,
@@ -351,9 +351,9 @@ describe("prepareAcpxCodexAuthConfig", () => {
       process.execPath,
       [
         generated.wrapperPath,
-        "--openclaw-acpx-lease-id",
+        "--operator-acpx-lease-id",
         "lease-1",
-        "--openclaw-gateway-instance-id",
+        "--operator-gateway-instance-id",
         "gateway-1",
       ],
       {

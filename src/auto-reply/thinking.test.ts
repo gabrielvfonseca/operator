@@ -130,11 +130,13 @@ describe("listThinkingLevels", () => {
       levels: [
         { id: "off" },
         { id: "max" },
-        ...(context.agentRuntime === "openclaw" ? [{ id: "ultra" as const }] : []),
+        ...(context.agentRuntime === "@gabrielvfonseca/operator" ? [{ id: "ultra" as const }] : []),
       ],
     }));
 
-    expect(listThinkingLevels("openai", "gpt-5.6-luna", undefined, "openclaw")).toContain("ultra");
+    expect(
+      listThinkingLevels("openai", "gpt-5.6-luna", undefined, "@gabrielvfonseca/operator"),
+    ).toContain("ultra");
     expect(listThinkingLevels("openai", "gpt-5.6-luna", undefined, "codex")).not.toContain("ultra");
     expect(providerRuntimeMocks.resolveProviderThinkingProfile).toHaveBeenLastCalledWith({
       provider: "openai",

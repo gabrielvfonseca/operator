@@ -1,14 +1,14 @@
 // Lmstudio tests cover setup plugin behavior.
-import { CUSTOM_LOCAL_AUTH_MARKER } from "openclaw/plugin-sdk/provider-auth";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { resolveAgentModelPrimaryValue } from "openclaw/plugin-sdk/provider-onboard";
+import { CUSTOM_LOCAL_AUTH_MARKER } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { resolveAgentModelPrimaryValue } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   SELF_HOSTED_DEFAULT_CONTEXT_WINDOW,
   type ProviderAuthMethodNonInteractiveContext,
   type ProviderCatalogContext,
-} from "openclaw/plugin-sdk/provider-setup";
-import type { WizardPrompter } from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-setup";
+import type { WizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   LMSTUDIO_DEFAULT_API_KEY_ENV_VAR,

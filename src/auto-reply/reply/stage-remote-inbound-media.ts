@@ -1,5 +1,5 @@
 /** Shared guard for staging remote inbound media into the local cache. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/config.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
 import type { MsgContext } from "../templating.js";

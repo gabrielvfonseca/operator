@@ -1,4 +1,4 @@
-import { getApiProvider } from "@operator/ai/internal/runtime";
+import { getApiProvider } from "@gabrielvfonseca/ai/internal/runtime";
 /**
  * Simple completion transport preparation.
  *

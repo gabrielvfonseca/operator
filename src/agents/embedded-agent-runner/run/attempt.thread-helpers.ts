@@ -1,4 +1,4 @@
-import { normalizeStructuredPromptSection } from "@operator/ai/internal/shared";
+import { normalizeStructuredPromptSection } from "@gabrielvfonseca/ai/internal/shared";
 /**
  * Handles per-attempt thread prompt composition and cache TTL markers.
  */

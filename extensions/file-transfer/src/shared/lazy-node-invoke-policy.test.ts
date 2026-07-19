@@ -2,7 +2,7 @@
 import type {
   OperatorPluginNodeInvokePolicy,
   OperatorPluginNodeInvokePolicyContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { describe, expect, it, vi } from "vitest";
 import { createLazyFileTransferNodeInvokePolicy } from "./lazy-node-invoke-policy.js";
 

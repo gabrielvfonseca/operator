@@ -6,8 +6,8 @@ API.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/cohere-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/cohere-provider
+operator gateway restart
 ```
 
 Configure a Cohere API key, then select `cohere/command-a-plus-05-2026`,

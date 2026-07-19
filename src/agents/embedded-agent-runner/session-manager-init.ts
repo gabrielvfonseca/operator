@@ -3,7 +3,7 @@
  */
 import fs from "node:fs/promises";
 import { StringDecoder } from "node:string_decoder";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { serializeJsonlLine, writeJsonlLines } from "../../config/sessions/transcript-jsonl.js";
 import { invalidateSessionFileRepairCache } from "../session-file-repair.js";
 

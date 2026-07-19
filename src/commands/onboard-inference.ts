@@ -2,7 +2,7 @@ import { randomInt } from "node:crypto";
 // Inference backend detection shared by onboarding bootstrap and Operator setup.
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { resolveAgentConfig, resolveDefaultAgentId } from "../agents/agent-scope-config.js";
 import {
   readClaudeCliCredentialsCached,
@@ -19,7 +19,6 @@ import { probeLocalCommand, type LocalCommandProbe } from "../system-agent/probe
  * asking the user anything. The ladder order is a documented contract
  * (docs/cli/setup.md "Setup bootstrap") — change docs when changing it.
  */
-export const OPENROUTER_API_DEFAULT_MODEL_REF = "openrouter/auto";
 export const OPENAI_API_DEFAULT_MODEL_REF = "openai/gpt-5.6";
 export const ANTHROPIC_API_DEFAULT_MODEL_REF = "anthropic/claude-opus-4-8";
 export const CLAUDE_CLI_DEFAULT_MODEL_REF = "claude-cli/claude-opus-4-8";
@@ -28,7 +27,6 @@ export const GEMINI_CLI_DEFAULT_MODEL_REF = "google-gemini-cli/gemini-3.1-pro-pr
 
 export type InferenceBackendKind =
   | "existing-model"
-  | "openrouter-api-key"
   | "openai-api-key"
   | "anthropic-api-key"
   | "claude-cli"
@@ -211,15 +209,6 @@ export async function detectInferenceBackends(
       modelRef: `${resolved.provider}/${resolved.model}`,
       label: "Current model",
       detail: "already configured",
-      credentials: true,
-    });
-  }
-  if (env.OPENROUTER_API_KEY?.trim()) {
-    candidates.push({
-      kind: "openrouter-api-key",
-      modelRef: OPENROUTER_API_DEFAULT_MODEL_REF,
-      label: "OpenRouter API key",
-      detail: "OPENROUTER_API_KEY set",
       credentials: true,
     });
   }

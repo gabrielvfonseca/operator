@@ -15,20 +15,20 @@ import type {
   ChannelStatusIssue as ContractChannelStatusIssue,
   ChannelThreadingContext as ContractChannelThreadingContext,
   ChannelThreadingToolContext as ContractChannelThreadingToolContext,
-} from "openclaw/plugin-sdk/channel-contract";
-import * as commandAuthSdk from "openclaw/plugin-sdk/command-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import * as commandAuthSdk from "@gabrielvfonseca/operator/plugin-sdk/command-auth";
 import type {
   ChannelMessageActionContext as CoreChannelMessageActionContext,
   OperatorPluginApi as CoreOperatorPluginApi,
   PluginRuntime as CorePluginRuntime,
-} from "openclaw/plugin-sdk/core";
-import * as providerEntrySdk from "openclaw/plugin-sdk/provider-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import * as providerEntrySdk from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
 import type {
   GetReplyOptions as ReplyRuntimeGetReplyOptions,
   ReplyDispatchBeforeDeliverOptions as ReplyRuntimeBeforeDeliverOptions,
   ReplyDispatcher as ReplyRuntimeDispatcher,
-} from "openclaw/plugin-sdk/reply-runtime";
-import * as zalouserSdk from "openclaw/plugin-sdk/zalouser";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import * as zalouserSdk from "@gabrielvfonseca/operator/plugin-sdk/zalouser";
 import ts from "typescript";
 import { beforeAll, describe, expect, expectTypeOf, it } from "vitest";
 import type { ChannelMessageActionContext } from "../../channels/plugins/types.public.js";

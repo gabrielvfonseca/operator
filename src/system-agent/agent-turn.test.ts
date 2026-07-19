@@ -47,7 +47,7 @@ vi.mock("../config/config.js", async (importOriginal) => ({
   readConfigFileSnapshot: vi.fn(async () => ({
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "hash",
     config: { agents: { defaults: { model: { primary: "openai/gpt-5.5" } } } },
     runtimeConfig: { agents: { defaults: { model: { primary: "openai/gpt-5.5" } } } },
@@ -59,7 +59,7 @@ vi.mock("../config/config.js", async (importOriginal) => ({
 const tempDirs: string[] = [];
 
 function useTempStateDir(): string {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-turn-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-turn-"));
   tempDirs.push(stateDir);
   vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
   return stateDir;
@@ -69,7 +69,7 @@ function configSnapshot(config: OperatorConfig) {
   return {
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "hash",
     config,
     runtimeConfig: config,
@@ -163,7 +163,7 @@ describe("runSystemAgentTurn", () => {
         defaults: {
           model: "openai/gpt-5.5",
           models: {
-            "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
         },
       },
@@ -201,7 +201,7 @@ describe("runSystemAgentTurn", () => {
       auth: {
         authProfileId: "openai:p2",
         authFingerprint,
-        agentHarnessId: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
       },
       deps: authDeps,
     });
@@ -347,19 +347,24 @@ describe("runSystemAgentTurn", () => {
       model: "claude-opus-4-8",
       agentDir,
       authProfileId: "claude-cli:ops",
-      agentId: "openclaw",
-      sessionKey: "agent:openclaw:main",
+      agentId: "@gabrielvfonseca/operator",
+      sessionKey: "agent:operator:main",
       sessionId: session.sessionId,
-      workspaceDir: path.join(stateDir, "openclaw", "workspace"),
-      sessionFile: path.join(stateDir, "openclaw", "sessions", `${session.sessionId}.jsonl`),
-      messageChannel: "openclaw",
-      messageProvider: "openclaw",
+      workspaceDir: path.join(stateDir, "@gabrielvfonseca/operator", "workspace"),
+      sessionFile: path.join(
+        stateDir,
+        "@gabrielvfonseca/operator",
+        "sessions",
+        `${session.sessionId}.jsonl`,
+      ),
+      messageChannel: "@gabrielvfonseca/operator",
+      messageProvider: "@gabrielvfonseca/operator",
     });
     expect(call.disableCliLiveSession).toBe(true);
     expect(call.cleanupCliLiveSessionOnRunEnd).toBe(true);
     expect(call.cliToolAvailability).toEqual({
       native: [],
-      mcp: ["mcp__openclaw__openclaw"],
+      mcp: ["mcp__operator__openclaw"],
     });
     expect(call.toolsAllow).toBeUndefined();
     expect(requireValue(call.systemAgentTool, "missing CLI Operator tool").proposalRef).toBe(
@@ -465,7 +470,12 @@ describe("runSystemAgentTurn", () => {
       disableCliLiveSession: true,
       cleanupCliLiveSessionOnRunEnd: true,
     });
-    const transcript = path.join(stateDir, "openclaw", "sessions", `${session.sessionId}.jsonl`);
+    const transcript = path.join(
+      stateDir,
+      "@gabrielvfonseca/operator",
+      "sessions",
+      `${session.sessionId}.jsonl`,
+    );
     await fs.promises.writeFile(transcript, "transcript");
 
     await cleanupSystemAgentSession(session);
@@ -548,7 +558,7 @@ describe("runSystemAgentTurn", () => {
       authEpoch: "auth-epoch",
       authEpochVersion: 1,
       cwdHash: "cwd-hash",
-      mcpResumeHash: "openclaw-mcp-resume",
+      mcpResumeHash: "operator-mcp-resume",
     };
     const runCliAgent = vi.fn(async (_params: RunCliAgentParams) => ({
       payloads: [{ text: "ready" }],
@@ -888,7 +898,7 @@ describe("runSystemAgentTurn", () => {
         defaults: {
           model: { primary: "anthropic/claude-global" },
           models: {
-            "openai/gpt-5.4": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.4": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
         },
         list: [
@@ -904,7 +914,7 @@ describe("runSystemAgentTurn", () => {
             },
           },
           {
-            id: "openclaw",
+            id: "@gabrielvfonseca/operator",
             params: { temperature: 1.7 },
             tools: { allow: ["exec"] },
           },
@@ -943,19 +953,26 @@ describe("runSystemAgentTurn", () => {
       authProfileId: "openai:ops",
       authProfileIdSource: "user",
       agentHarnessRuntimeOverride: "codex",
-      agentId: "openclaw",
-      sessionKey: "agent:openclaw:main",
+      agentId: "@gabrielvfonseca/operator",
+      sessionKey: "agent:operator:main",
       sessionId: session.sessionId,
-      workspaceDir: path.join(stateDir, "openclaw", "workspace"),
-      sessionFile: path.join(stateDir, "openclaw", "sessions", `${session.sessionId}.jsonl`),
-      messageChannel: "openclaw",
-      messageProvider: "openclaw",
-      toolsAllow: ["openclaw"],
+      workspaceDir: path.join(stateDir, "@gabrielvfonseca/operator", "workspace"),
+      sessionFile: path.join(
+        stateDir,
+        "@gabrielvfonseca/operator",
+        "sessions",
+        `${session.sessionId}.jsonl`,
+      ),
+      messageChannel: "@gabrielvfonseca/operator",
+      messageProvider: "@gabrielvfonseca/operator",
+      toolsAllow: ["@gabrielvfonseca/operator"],
       disableMessageTool: true,
     });
     expect(call.agentHarnessId).toBeUndefined();
-    expect(call.config?.agents?.list?.find((agent) => agent.id === "openclaw")).toEqual({
-      id: "openclaw",
+    expect(
+      call.config?.agents?.list?.find((agent) => agent.id === "@gabrielvfonseca/operator"),
+    ).toEqual({
+      id: "@gabrielvfonseca/operator",
       params: { temperature: 0.2 },
       tools: { allow: ["read"], deny: ["exec"] },
     });
@@ -972,7 +989,7 @@ describe("runSystemAgentTurn", () => {
       configSnapshot({ agents: { defaults: { model: "openai/gpt-5.5" } } }),
     );
     const unverifiedSession = {
-      sessionId: "openclaw-unverified",
+      sessionId: "operator-unverified",
       proposalRef: {},
     } as unknown as SystemAgentSession;
 

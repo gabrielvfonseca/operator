@@ -1,6 +1,6 @@
 // Implements subagent log retrieval and pagination.
-import { parseStrictNonNegativeInteger } from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { stripToolMessages } from "../../../agents/tools/chat-history-text.js";
 import { callGateway } from "../../../gateway/call.js";
 import type { CommandHandlerResult } from "../commands-types.js";

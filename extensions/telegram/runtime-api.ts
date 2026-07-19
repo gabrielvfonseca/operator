@@ -1,14 +1,14 @@
 // Telegram API module exposes the plugin public contract.
-export type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-export type { ChannelMessageActionAdapter } from "openclaw/plugin-sdk/channel-contract";
+export type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+export type { ChannelMessageActionAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 export type { TelegramApiOverride } from "./src/send.js";
 export type {
   OperatorPluginService,
   OperatorPluginServiceContext,
   PluginLogger,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorConfig as RuntimeOperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-export type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorConfig as RuntimeOperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+export type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-store";
 export type {
   AcpRuntime,
   AcpRuntimeCapabilities,
@@ -20,23 +20,26 @@ export type {
   AcpRuntimeTurnInput,
   AcpRuntimeErrorCode,
   AcpSessionUpdateTag,
-} from "openclaw/plugin-sdk/acp-runtime";
-export { AcpRuntimeError } from "openclaw/plugin-sdk/acp-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/acp-runtime";
+export { AcpRuntimeError } from "@gabrielvfonseca/operator/plugin-sdk/acp-runtime";
 
 export {
   emptyPluginConfigSchema,
   formatPairingApproveHint,
   getChatChannelMeta,
-} from "openclaw/plugin-sdk/channel-plugin-common";
-export { clearAccountEntryFields } from "openclaw/plugin-sdk/channel-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
+export { clearAccountEntryFields } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 export { buildChannelConfigSchema, TelegramConfigSchema } from "./config-api.js";
-export { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
+export {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 export {
   PAIRING_APPROVED_MESSAGE,
   buildTokenChannelStatusSummary,
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
-} from "openclaw/plugin-sdk/channel-status";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-status";
 export {
   jsonResult,
   readNumberParam,
@@ -45,7 +48,7 @@ export {
   readStringOrNumberParam,
   readStringParam,
   resolvePollMaxSelections,
-} from "openclaw/plugin-sdk/channel-actions";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 export type { TelegramProbe } from "./src/probe.js";
 export { auditTelegramGroupMembership, collectTelegramUnmentionedGroupIds } from "./src/audit.js";
 export { resolveTelegramRuntimeGroupPolicy } from "./src/group-access.js";
@@ -86,8 +89,8 @@ export {
 } from "./src/thread-bindings.js";
 export { resolveTelegramToken } from "./src/token.js";
 export { setTelegramRuntime } from "./src/runtime.js";
-export type { ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+export type { ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+export type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 export type TelegramAccountConfig = NonNullable<
   NonNullable<RuntimeOperatorConfig["channels"]>["telegram"]
 >;

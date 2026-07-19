@@ -1,11 +1,11 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import type {
   SessionCatalogProvider,
   SessionUpstreamActivity,
   SessionUpstreamProbe,
-} from "openclaw/plugin-sdk/session-catalog";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { CodexAppServerRpcError } from "./app-server/client.js";
 import type {
   CodexThread,

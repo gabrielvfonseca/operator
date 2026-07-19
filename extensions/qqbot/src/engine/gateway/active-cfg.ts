@@ -10,8 +10,8 @@
  * Issue #69546.
  */
 
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 
 type GatewayCfgLoader = () => OperatorConfig;
 

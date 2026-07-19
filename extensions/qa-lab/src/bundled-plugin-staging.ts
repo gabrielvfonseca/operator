@@ -2,8 +2,11 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { normalizeStringEntries, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import {
+  normalizeStringEntries,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { coerce as coerceSemver } from "semver";
 
 const QA_ALWAYS_STAGE_RUNTIME_PLUGIN_IDS = Object.freeze([
@@ -258,7 +261,7 @@ async function seedQaStagedNodeModules(params: { repoRoot: string; stagedRoot: s
   const stagedNodeModulesDir = path.join(params.stagedRoot, "node_modules");
   await fs.mkdir(stagedNodeModulesDir, { recursive: true });
   for (const entry of await fs.readdir(sourceNodeModulesDir, { withFileTypes: true })) {
-    if (entry.name === "openclaw") {
+    if (entry.name === "@gabrielvfonseca/operator") {
       continue;
     }
     await symlinkQaStagedDirEntry({
@@ -358,7 +361,7 @@ export async function resolveQaRuntimeHostVersion(params: {
         };
       };
     };
-    const candidate = parseStableSemverFloor(packageJson.openclaw?.install?.minHostVersion);
+    const candidate = parseStableSemverFloor(packageJson.operator?.install?.minHostVersion);
     if (candidate && (!selected || candidate.compare(selected) > 0)) {
       selected = candidate;
     }
@@ -392,7 +395,11 @@ export async function createQaBundledPluginsDir(params: {
     repoRoot: params.repoRoot,
     stagedRoot,
   });
-  const stagedOperatorPackageDir = path.join(stagedRoot, "node_modules", "openclaw");
+  const stagedOperatorPackageDir = path.join(
+    stagedRoot,
+    "node_modules",
+    "@gabrielvfonseca/operator",
+  );
   await fs.mkdir(stagedOperatorPackageDir, { recursive: true });
   await fs.copyFile(
     path.join(params.repoRoot, "package.json"),

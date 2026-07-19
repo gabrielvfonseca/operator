@@ -61,7 +61,7 @@ describe("Agent-specific tool filtering", () => {
       patch: string;
     }) => Promise<void>,
   ) {
-    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-agent-tools-"));
+    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-agent-tools-"));
     const escapedPath = path.join(
       path.dirname(workspaceDir),
       `escaped-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}.txt`,
@@ -283,7 +283,7 @@ describe("Agent-specific tool filtering", () => {
         list: [
           {
             id: "restricted",
-            workspace: "~/openclaw-restricted",
+            workspace: "~/operator-restricted",
             tools: {
               allow: ["read"], // Agent override: only read
               deny: ["exec", "write", "edit"],
@@ -366,7 +366,7 @@ describe("Agent-specific tool filtering", () => {
           },
           {
             id: "family",
-            workspace: "~/openclaw-family",
+            workspace: "~/operator-family",
             tools: {
               allow: ["read"],
               deny: ["exec", "write", "edit", "process"],
@@ -504,13 +504,13 @@ describe("Agent-specific tool filtering", () => {
     expect(ownerTools).toContain("cron");
     expect(ownerTools).toContain("gateway");
     expect(ownerTools).toContain("nodes");
-    expect(ownerTools).toContain("openclaw");
+    expect(ownerTools).toContain("@gabrielvfonseca/operator");
     expect(nonOwnerTools).not.toContain("exec");
     expect(nonOwnerTools).not.toContain("process");
     expect(nonOwnerTools).not.toContain("cron");
     expect(nonOwnerTools).not.toContain("gateway");
     expect(nonOwnerTools).not.toContain("nodes");
-    expect(nonOwnerTools).not.toContain("openclaw");
+    expect(nonOwnerTools).not.toContain("@gabrielvfonseca/operator");
   });
 
   it("should let agent per-sender policy override global sender wildcard", () => {
@@ -524,7 +524,7 @@ describe("Agent-specific tool filtering", () => {
         list: [
           {
             id: "trusted",
-            workspace: "~/openclaw-trusted",
+            workspace: "~/operator-trusted",
             tools: {
               toolsBySender: {
                 "id:alice": {},
@@ -705,7 +705,7 @@ describe("Agent-specific tool filtering", () => {
         list: [
           {
             id: "work",
-            workspace: "~/openclaw-work",
+            workspace: "~/operator-work",
             tools: {
               deny: ["exec", "process"], // Agent deny (override)
             },

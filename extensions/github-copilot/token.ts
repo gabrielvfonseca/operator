@@ -1,17 +1,17 @@
 // GitHub Copilot credential exchange and cache policy.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   asDateTimestampMs,
   parseStrictNonNegativeInteger,
   resolveExpiresAtMsFromEpochSeconds,
-} from "openclaw/plugin-sdk/number-runtime";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   buildCopilotIdeHeaders,
   COPILOT_INTEGRATION_ID,
   deriveCopilotApiBaseUrlFromToken,
-} from "openclaw/plugin-sdk/provider-auth";
-import { readProviderJsonResponse } from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { readProviderJsonResponse } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import { PUBLIC_GITHUB_COPILOT_DOMAIN, resolveGithubCopilotDomain } from "./domain.js";
 import {
   fingerprintCopilotSourceCredential,

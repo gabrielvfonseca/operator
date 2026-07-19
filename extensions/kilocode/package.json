@@ -1,22 +1,22 @@
 {
-  "name": "@operator/kilocode-provider",
+  "name": "@gabrielvfonseca/kilocode-provider",
   "version": "2026.7.2",
   "description": "Operator Kilo Gateway provider plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/kilocode-provider",
-      "npmSpec": "@operator/kilocode-provider",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/kilocode-provider",
+      "npmSpec": "@gabrielvfonseca/kilocode-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

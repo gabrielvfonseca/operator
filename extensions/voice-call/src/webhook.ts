@@ -1,23 +1,23 @@
 // Voice Call plugin module implements webhook behavior.
 import http from "node:http";
 import { URL } from "node:url";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { resolveConfiguredCapabilityProvider } from "openclaw/plugin-sdk/provider-selection-runtime";
-import type { TalkEvent } from "openclaw/plugin-sdk/realtime-voice";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { resolveConfiguredCapabilityProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-selection-runtime";
+import type { TalkEvent } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   createWebhookInFlightLimiter,
   normalizeWebhookPath,
   WEBHOOK_BODY_READ_DEFAULTS,
-} from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import {
   isRequestBodyLimitError,
   readRequestBodyWithLimit,

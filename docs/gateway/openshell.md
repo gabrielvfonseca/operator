@@ -1,5 +1,5 @@
 ---
-summary: "Use OpenShell as a managed sandbox backend for OpenClaw agents"
+summary: "Use OpenShell as a managed sandbox backend for Operator agents"
 title: OpenShell
 read_when:
   - You want cloud-managed sandboxes instead of local Docker
@@ -8,7 +8,7 @@ read_when:
 ---
 
 OpenShell is a managed sandbox backend: instead of running Docker containers
-locally, OpenClaw delegates sandbox lifecycle to the `openshell` CLI, which
+locally, Operator delegates sandbox lifecycle to the `openshell` CLI, which
 provisions remote environments and executes commands over SSH.
 
 The plugin reuses the same SSH transport and remote filesystem bridge as the
@@ -18,16 +18,16 @@ workspace sync mode.
 
 ## Prerequisites
 
-- OpenShell plugin installed (`openclaw plugins install @operator/openshell-sandbox`)
+- OpenShell plugin installed (`operator plugins install @gabrielvfonseca/openshell-sandbox`)
 - `openshell` CLI on `PATH` (or a custom path via
   `plugins.entries.openshell.config.command`)
 - An OpenShell account with sandbox access
-- OpenClaw Gateway running on the host
+- Operator Gateway running on the host
 
 ## Quick start
 
 ```bash
-openclaw plugins install @operator/openshell-sandbox
+operator plugins install @gabrielvfonseca/openshell-sandbox
 ```
 
 ```json5
@@ -47,7 +47,7 @@ openclaw plugins install @operator/openshell-sandbox
       openshell: {
         enabled: true,
         config: {
-          from: "openclaw",
+          from: "@gabrielvfonseca/operator",
           mode: "remote",
         },
       },
@@ -56,12 +56,12 @@ openclaw plugins install @operator/openshell-sandbox
 }
 ```
 
-Restart the Gateway. On the next agent turn OpenClaw creates an OpenShell
+Restart the Gateway. On the next agent turn Operator creates an OpenShell
 sandbox and routes tool execution through it. Verify with:
 
 ```bash
-openclaw sandbox list
-openclaw sandbox explain
+operator sandbox list
+operator sandbox explain
 ```
 
 ## Workspace modes
@@ -73,12 +73,12 @@ This is the most important OpenShell decision.
 `plugins.entries.openshell.config.mode: "mirror"` keeps the **local workspace
 canonical**:
 
-- Before `exec`, OpenClaw syncs the local workspace into the sandbox.
-- After `exec`, OpenClaw syncs the remote workspace back to local.
+- Before `exec`, Operator syncs the local workspace into the sandbox.
+- After `exec`, Operator syncs the remote workspace back to local.
 - File tools go through the sandbox bridge, but local stays source of truth
   between turns.
 
-Best for development workflows: local edits outside OpenClaw show up on the
+Best for development workflows: local edits outside Operator show up on the
 next exec, and the sandbox behaves close to the Docker backend.
 
 Tradeoff: upload + download cost on every exec turn.
@@ -87,10 +87,10 @@ Tradeoff: upload + download cost on every exec turn.
 
 `mode: "remote"` makes the **OpenShell workspace canonical**:
 
-- On first sandbox creation, OpenClaw seeds the remote workspace from local
+- On first sandbox creation, Operator seeds the remote workspace from local
   once.
 - After that, `exec`, `read`, `write`, `edit`, and `apply_patch` operate
-  directly on the remote workspace. OpenClaw does **not** sync remote changes
+  directly on the remote workspace. Operator does **not** sync remote changes
   back to local.
 - Prompt-time media reads still work (file/media tools read through the
   sandbox bridge).
@@ -99,7 +99,7 @@ Best for long-running agents and CI: lower per-turn overhead, and host-local
 edits cannot silently clobber remote state.
 
 <Warning>
-Editing files on the host outside OpenClaw after the initial seed is invisible to the remote sandbox. Run `openclaw sandbox recreate` to re-seed.
+Editing files on the host outside Operator after the initial seed is invisible to the remote sandbox. Run `operator sandbox recreate` to re-seed.
 </Warning>
 
 ### Choosing a mode
@@ -116,20 +116,20 @@ Editing files on the host outside OpenClaw after the initial seed is invisible t
 
 All OpenShell config lives under `plugins.entries.openshell.config`:
 
-| Key                       | Type                     | Default       | Description                                                                            |
-| ------------------------- | ------------------------ | ------------- | -------------------------------------------------------------------------------------- |
-| `mode`                    | `"mirror"` or `"remote"` | `"mirror"`    | Workspace sync mode                                                                    |
-| `command`                 | `string`                 | `"openshell"` | Path or name of the `openshell` CLI                                                    |
-| `from`                    | `string`                 | `"openclaw"`  | Sandbox source for first-time create                                                   |
-| `gateway`                 | `string`                 | unset         | OpenShell gateway name (top-level `--gateway`)                                         |
-| `gatewayEndpoint`         | `string`                 | unset         | OpenShell gateway endpoint (top-level `--gateway-endpoint`)                            |
-| `policy`                  | `string`                 | unset         | OpenShell policy ID for sandbox creation                                               |
-| `providers`               | `string[]`               | `[]`          | Provider names attached at sandbox creation (deduped, one `--provider` flag per entry) |
-| `gpu`                     | `boolean`                | `false`       | Request GPU resources (`--gpu`)                                                        |
-| `autoProviders`           | `boolean`                | `true`        | Pass `--auto-providers` (or `--no-auto-providers` when false) during create            |
-| `remoteWorkspaceDir`      | `string`                 | `"/sandbox"`  | Primary writable workspace inside the sandbox                                          |
-| `remoteAgentWorkspaceDir` | `string`                 | `"/agent"`    | Agent workspace mount path (read-only when workspace access is not `rw`)               |
-| `timeoutSeconds`          | `number`                 | `120`         | Timeout for `openshell` CLI operations                                                 |
+| Key                       | Type                     | Default                       | Description                                                                            |
+| ------------------------- | ------------------------ | ----------------------------- | -------------------------------------------------------------------------------------- |
+| `mode`                    | `"mirror"` or `"remote"` | `"mirror"`                    | Workspace sync mode                                                                    |
+| `command`                 | `string`                 | `"openshell"`                 | Path or name of the `openshell` CLI                                                    |
+| `from`                    | `string`                 | `"@gabrielvfonseca/operator"` | Sandbox source for first-time create                                                   |
+| `gateway`                 | `string`                 | unset                         | OpenShell gateway name (top-level `--gateway`)                                         |
+| `gatewayEndpoint`         | `string`                 | unset                         | OpenShell gateway endpoint (top-level `--gateway-endpoint`)                            |
+| `policy`                  | `string`                 | unset                         | OpenShell policy ID for sandbox creation                                               |
+| `providers`               | `string[]`               | `[]`                          | Provider names attached at sandbox creation (deduped, one `--provider` flag per entry) |
+| `gpu`                     | `boolean`                | `false`                       | Request GPU resources (`--gpu`)                                                        |
+| `autoProviders`           | `boolean`                | `true`                        | Pass `--auto-providers` (or `--no-auto-providers` when false) during create            |
+| `remoteWorkspaceDir`      | `string`                 | `"/sandbox"`                  | Primary writable workspace inside the sandbox                                          |
+| `remoteAgentWorkspaceDir` | `string`                 | `"/agent"`                    | Agent workspace mount path (read-only when workspace access is not `rw`)               |
+| `timeoutSeconds`          | `number`                 | `120`                         | Timeout for `openshell` CLI operations                                                 |
 
 `remoteWorkspaceDir` and `remoteAgentWorkspaceDir` must be absolute paths and
 stay under the managed roots `/sandbox` or `/agent`; other absolute paths are
@@ -158,7 +158,7 @@ Sandbox-level settings (`mode`, `scope`, `workspaceAccess`) live under
       openshell: {
         enabled: true,
         config: {
-          from: "openclaw",
+          from: "@gabrielvfonseca/operator",
           mode: "remote",
         },
       },
@@ -186,7 +186,7 @@ Sandbox-level settings (`mode`, `scope`, `workspaceAccess`) live under
       openshell: {
         enabled: true,
         config: {
-          from: "openclaw",
+          from: "@gabrielvfonseca/operator",
           mode: "mirror",
           gpu: true,
           providers: ["openai"],
@@ -223,7 +223,7 @@ Sandbox-level settings (`mode`, `scope`, `workspaceAccess`) live under
       openshell: {
         enabled: true,
         config: {
-          from: "openclaw",
+          from: "@gabrielvfonseca/operator",
           mode: "remote",
           gateway: "lab",
           gatewayEndpoint: "https://lab.example",
@@ -239,13 +239,13 @@ Sandbox-level settings (`mode`, `scope`, `workspaceAccess`) live under
 
 ```bash
 # List all sandbox runtimes (Docker + OpenShell)
-openclaw sandbox list
+operator sandbox list
 
 # Inspect effective policy
-openclaw sandbox explain
+operator sandbox explain
 
 # Recreate (deletes remote workspace, re-seeds on next use)
-openclaw sandbox recreate --all
+operator sandbox recreate --all
 ```
 
 For `remote` mode, recreate is especially important: it deletes the canonical
@@ -277,12 +277,12 @@ cannot redirect file access outside the mirrored tree.
 
 ## How it works
 
-1. OpenClaw runs `sandbox get` for the sandbox name (with any configured
+1. Operator runs `sandbox get` for the sandbox name (with any configured
    `--gateway`/`--gateway-endpoint`); if that fails it creates one with
    `sandbox create`, passing `--name`, `--from`, `--policy` when set, `--gpu`
    when enabled, `--auto-providers`/`--no-auto-providers`, and one
    `--provider` flag per configured provider.
-2. OpenClaw runs `sandbox ssh-config` for the sandbox name to fetch SSH
+2. Operator runs `sandbox ssh-config` for the sandbox name to fetch SSH
    connection details.
 3. Core writes the SSH config to a temp file and opens an SSH session through
    the same remote filesystem bridge as the generic SSH backend.
@@ -295,4 +295,4 @@ cannot redirect file access outside the mirrored tree.
 - [Sandboxing](/gateway/sandboxing) - modes, scopes, and backend comparison
 - [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated) - debugging blocked tools
 - [Multi-Agent Sandbox and Tools](/tools/multi-agent-sandbox-tools) - per-agent overrides
-- [Sandbox CLI](/cli/sandbox) - `openclaw sandbox` commands
+- [Sandbox CLI](/cli/sandbox) - `operator sandbox` commands

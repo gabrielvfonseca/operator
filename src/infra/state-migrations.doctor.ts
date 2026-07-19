@@ -25,7 +25,7 @@ import { DEFAULT_ACCOUNT_ID, DEFAULT_MAIN_KEY, normalizeAgentId } from "../routi
 import {
   detectOperatorStateDatabaseSchemaMigrations,
   repairOperatorStateDatabaseSchema,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import {
   detectLegacyApnsRegistrations,
   migrateLegacyApnsRegistrations,
@@ -249,7 +249,7 @@ export async function detectLegacyStateMigrations(params: {
     : { ...detectedExecApprovals, hasLegacy: false };
   if (detectedExecApprovals.hasLegacy && !crossStateDirImports) {
     notices.push(
-      `Exec approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`operator doctor --fix\` to import them.`,
+      `Exec approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`openclaw doctor --fix\` to import them.`,
     );
   }
 
@@ -391,7 +391,7 @@ export async function detectLegacyStateMigrations(params: {
     !crossStateDirImports
   ) {
     notices.push(
-      `Plugin binding approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${pluginBindingApprovals.sourcePath}); run \`operator doctor --fix\` to import them.`,
+      `Plugin binding approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${pluginBindingApprovals.sourcePath}); run \`openclaw doctor --fix\` to import them.`,
     );
   }
   const currentConversationBindings = {

@@ -4,15 +4,15 @@ import {
   listConfiguredAccountIds,
   resolveListedDefaultAccountId,
   resolveNormalizedAccountEntry,
-} from "openclaw/plugin-sdk/account-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-core";
 import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { hasConfiguredSecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveMatrixAccountStringValues,
   type MatrixResolvedStringField,

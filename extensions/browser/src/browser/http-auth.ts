@@ -5,8 +5,8 @@
  * comparison against resolved control auth.
  */
 import type { IncomingMessage } from "node:http";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 function firstHeaderValue(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
@@ -56,7 +56,7 @@ export function isAuthorizedBrowserRequest(
   }
 
   if (auth.password) {
-    const passwordHeader = firstHeaderValue(req.headers["x-openclaw-password"]).trim();
+    const passwordHeader = firstHeaderValue(req.headers["x-operator-password"]).trim();
     if (passwordHeader && safeEqualSecret(passwordHeader, auth.password)) {
       return true;
     }

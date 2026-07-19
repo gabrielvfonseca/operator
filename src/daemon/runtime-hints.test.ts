@@ -9,16 +9,16 @@ describe("buildPlatformRuntimeLogHints", () => {
         platform: "darwin",
         env: {
           HOME: "/Users/test",
-          OPERATOR_STATE_DIR: "/tmp/openclaw-state",
+          OPERATOR_STATE_DIR: "/tmp/operator-state",
           OPERATOR_LOG_PREFIX: "gateway",
         },
-        systemdServiceName: "openclaw-gateway",
+        systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
       "Launchd stdout (if installed): /Users/test/Library/Logs/openclaw/gateway.log",
       "Launchd stderr (if installed): suppressed",
-      "Restart attempts: /tmp/openclaw-state/logs/gateway-restart.log",
+      "Restart attempts: /tmp/operator-state/logs/gateway-restart.log",
     ]);
   });
 
@@ -27,27 +27,27 @@ describe("buildPlatformRuntimeLogHints", () => {
       buildPlatformRuntimeLogHints({
         platform: "linux",
         env: {
-          OPERATOR_STATE_DIR: "/tmp/openclaw-state",
+          OPERATOR_STATE_DIR: "/tmp/operator-state",
         },
-        systemdServiceName: "openclaw-gateway",
+        systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
-      "Logs: journalctl --user -u openclaw-gateway.service -n 200 --no-pager",
-      "Restart attempts: /tmp/openclaw-state/logs/gateway-restart.log",
+      "Logs: journalctl --user -u operator-gateway.service -n 200 --no-pager",
+      "Restart attempts: /tmp/operator-state/logs/gateway-restart.log",
     ]);
     expect(
       buildPlatformRuntimeLogHints({
         platform: "win32",
         env: {
-          OPERATOR_STATE_DIR: "/tmp/openclaw-state",
+          OPERATOR_STATE_DIR: "/tmp/operator-state",
         },
-        systemdServiceName: "openclaw-gateway",
+        systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
       'Logs: schtasks /Query /TN "Operator Gateway" /V /FO LIST',
-      "Restart attempts: /tmp/openclaw-state/logs/gateway-restart.log",
+      "Restart attempts: /tmp/operator-state/logs/gateway-restart.log",
     ]);
   });
 });
@@ -59,28 +59,28 @@ describe("buildPlatformServiceStartHints", () => {
         platform: "darwin",
         installCommand: "openclaw gateway install",
         startCommand: "openclaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.openclaw.gateway.plist",
-        systemdServiceName: "openclaw-gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.operator.gateway.plist",
+        systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
       "openclaw gateway install",
       "openclaw gateway",
-      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.openclaw.gateway.plist",
+      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.operator.gateway.plist",
     ]);
     expect(
       buildPlatformServiceStartHints({
         platform: "linux",
         installCommand: "openclaw gateway install",
         startCommand: "openclaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.openclaw.gateway.plist",
-        systemdServiceName: "openclaw-gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.operator.gateway.plist",
+        systemdServiceName: "operator-gateway",
         windowsTaskName: "Operator Gateway",
       }),
     ).toEqual([
       "openclaw gateway install",
       "openclaw gateway",
-      "systemctl --user start openclaw-gateway.service",
+      "systemctl --user start operator-gateway.service",
     ]);
   });
 });

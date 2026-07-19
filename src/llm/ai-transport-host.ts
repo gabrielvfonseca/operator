@@ -1,7 +1,7 @@
 // Installs Operator-owned policy ports before package providers or shared
 // transport helpers run. Direct transport imports need the same wiring as the
 // process-default stream facade.
-import { configureAiTransportHost } from "@operator/ai";
+import { configureAiTransportHost } from "@gabrielvfonseca/ai";
 import { resolveOpenAIStrictToolSetting } from "../agents/openai-strict-tool-setting.js";
 import { buildGuardedModelFetch } from "../agents/provider-transport-fetch.js";
 import { redactSecrets, redactToolPayloadText } from "../logging/redact.js";

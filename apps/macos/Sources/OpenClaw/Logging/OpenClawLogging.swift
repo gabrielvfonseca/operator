@@ -40,14 +40,14 @@ extension Logger.Level {
     }
 }
 
-enum OpenClawLogging {
+enum OperatorLogging {
     private static let labelSeparator = "::"
 
     private static let didBootstrap: Void = {
         LoggingSystem.bootstrap { label in
             let (subsystem, category) = Self.parseLabel(label)
-            let osHandler = OpenClawOSLogHandler(subsystem: subsystem, category: category)
-            let fileHandler = OpenClawFileLogHandler(label: label)
+            let osHandler = OperatorOSLogHandler(subsystem: subsystem, category: category)
+            let fileHandler = OperatorFileLogHandler(label: label)
             return MultiplexLogHandler([osHandler, fileHandler])
         }
     }()
@@ -62,7 +62,7 @@ enum OpenClawLogging {
 
     static func parseLabel(_ label: String) -> (String, String) {
         guard let range = label.range(of: labelSeparator) else {
-            return ("ai.openclaw", label)
+            return ("ai.operator", label)
         }
         let subsystem = String(label[..<range.lowerBound])
         let category = String(label[range.upperBound...])
@@ -72,8 +72,8 @@ enum OpenClawLogging {
 
 extension Logging.Logger {
     init(subsystem: String, category: String) {
-        OpenClawLogging.bootstrapIfNeeded()
-        let label = OpenClawLogging.makeLabel(subsystem: subsystem, category: category)
+        OperatorLogging.bootstrapIfNeeded()
+        let label = OperatorLogging.makeLabel(subsystem: subsystem, category: category)
         self.init(label: label)
     }
 }
@@ -117,7 +117,7 @@ extension AppLogLevelBackedHandler {
     }
 }
 
-struct OpenClawOSLogHandler: AppLogLevelBackedHandler {
+struct OperatorOSLogHandler: AppLogLevelBackedHandler {
     private let osLogger: os.Logger
     var metadata: Logger.Metadata = [:]
 
@@ -156,13 +156,13 @@ struct OpenClawOSLogHandler: AppLogLevelBackedHandler {
     }
 }
 
-struct OpenClawFileLogHandler: AppLogLevelBackedHandler {
+struct OperatorFileLogHandler: AppLogLevelBackedHandler {
     let label: String
     var metadata: Logger.Metadata = [:]
 
     func log(event: LogEvent) {
         guard AppLogSettings.fileLoggingEnabled() else { return }
-        let (subsystem, category) = OpenClawLogging.parseLabel(self.label)
+        let (subsystem, category) = OperatorLogging.parseLabel(self.label)
         var fields: [String: String] = [
             "subsystem": subsystem,
             "category": category,

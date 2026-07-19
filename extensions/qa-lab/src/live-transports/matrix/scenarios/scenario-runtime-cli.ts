@@ -4,9 +4,9 @@ import { randomUUID } from "node:crypto";
 import { chmod, mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { redactSensitiveText } from "openclaw/plugin-sdk/logging-core";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { redactSensitiveText } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   killMatrixQaCliChild,
   resolveMatrixQaOperatorCliEntryPath,
@@ -377,7 +377,7 @@ export async function createMatrixQaOperatorCliRuntime(params: {
   userId: string;
 }) {
   const rootDir = await mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-matrix-cli-qa-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-matrix-cli-qa-"),
   );
   const artifactDir = path.join(
     params.outputDir,

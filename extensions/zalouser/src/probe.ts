@@ -1,7 +1,7 @@
 // Zalouser plugin module implements probe behavior.
-import type { BaseProbeResult } from "openclaw/plugin-sdk/channel-contract";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+import type { BaseProbeResult } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type { ZcaUserInfo } from "./types.js";
 import { getZaloUserInfo } from "./zalo-js.js";
 

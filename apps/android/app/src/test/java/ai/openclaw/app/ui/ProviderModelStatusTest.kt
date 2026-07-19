@@ -1,8 +1,8 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayModelProviderSummary
-import ai.openclaw.app.GatewayModelSummary
-import ai.openclaw.app.parseGatewayModels
+import ai.operator.app.GatewayModelProviderSummary
+import ai.operator.app.GatewayModelSummary
+import ai.operator.app.parseGatewayModels
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import org.junit.Assert.assertEquals

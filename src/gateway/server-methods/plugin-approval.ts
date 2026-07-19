@@ -1,6 +1,6 @@
 // Gateway RPC handlers for plugin approval requests and decisions.
 import { randomUUID } from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { GATEWAY_CLIENT_IDS } from "../../../packages/gateway-protocol/src/client-info.js";
 import {
   ErrorCodes,

@@ -39,8 +39,8 @@ jobs:
           github.event_name == 'issue_comment' &&
           github.event.issue.pull_request &&
           (
-            contains(github.event.comment.body, '@openclaw-mantis') ||
-            contains(github.event.comment.body, '/openclaw-mantis')
+            contains(github.event.comment.body, '@operator-mantis') ||
+            contains(github.event.comment.body, '/operator-mantis')
           )
         )
       }}
@@ -117,7 +117,7 @@ jobs:
 
             const normalized = body.toLowerCase();
             const mentionsMantis =
-              normalized.includes("@openclaw-mantis") || normalized.includes("/openclaw-mantis");
+              normalized.includes("@operator-mantis") || normalized.includes("/operator-mantis");
             const requestedWebUiChat =
               normalized.includes("web-ui-chat") ||
               normalized.includes("web ui chat") ||
@@ -267,21 +267,21 @@ jobs:
           echo "output_dir=${root}" >> "$GITHUB_OUTPUT"
 
           install -D -m 0644 \
-            "${GITHUB_WORKSPACE}/ui/src/e2e/mantis-chat-proof.e2e.test.ts" \
-            "$candidate_repo/ui/src/e2e/mantis-chat-proof.e2e.test.ts"
+            "${GITHUB_WORKSPACE}/ui/tests/e2e/mantis-chat-proof.e2e.test.ts" \
+            "$candidate_repo/ui/tests/e2e/mantis-chat-proof.e2e.test.ts"
           install -D -m 0644 \
-            "${GITHUB_WORKSPACE}/ui/src/test-helpers/control-ui-e2e.ts" \
-            "$candidate_repo/ui/src/test-helpers/control-ui-e2e.ts"
+            "${GITHUB_WORKSPACE}/ui/tests/helpers/control-ui-e2e.ts" \
+            "$candidate_repo/ui/tests/helpers/control-ui-e2e.ts"
 
           cd "$candidate_repo"
           node scripts/ensure-playwright-chromium.mjs
 
           set +e
-          OPENCLAW_MANTIS_WEB_UI_CHAT_OUTPUT_DIR="$root" \
+          OPERATOR_MANTIS_WEB_UI_CHAT_OUTPUT_DIR="$root" \
             node scripts/run-vitest.mjs run \
               --config test/vitest/vitest.ui-e2e.config.ts \
               --configLoader runner \
-              ui/src/e2e/mantis-chat-proof.e2e.test.ts \
+              ui/tests/e2e/mantis-chat-proof.e2e.test.ts \
             2>&1 | tee "$root/vitest.log"
           vitest_exit="${PIPESTATUS[0]}"
           set -e
@@ -345,9 +345,9 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.mantis_app_token.outputs.token }}
           MANTIS_ARTIFACT_R2_ACCESS_KEY_ID: ${{ secrets.MANTIS_ARTIFACT_R2_ACCESS_KEY_ID }}
-          MANTIS_ARTIFACT_R2_BUCKET: openclaw-crabbox-artifacts
+          MANTIS_ARTIFACT_R2_BUCKET: operator-crabbox-artifacts
           MANTIS_ARTIFACT_R2_ENDPOINT: ${{ vars.MANTIS_ARTIFACT_R2_ENDPOINT }}
-          MANTIS_ARTIFACT_R2_PUBLIC_BASE_URL: https://artifacts.openclaw.ai
+          MANTIS_ARTIFACT_R2_PUBLIC_BASE_URL: https://artifacts.operator.ai
           MANTIS_ARTIFACT_R2_REGION: auto
           MANTIS_ARTIFACT_R2_SECRET_ACCESS_KEY: ${{ secrets.MANTIS_ARTIFACT_R2_SECRET_ACCESS_KEY }}
           REQUEST_SOURCE: ${{ needs.resolve_request.outputs.request_source }}

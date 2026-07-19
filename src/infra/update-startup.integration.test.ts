@@ -5,7 +5,7 @@ import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import type { UpdateCheckResult } from "./update-check.js";
 
 vi.mock("./openclaw-root.js", async () => {
@@ -43,7 +43,7 @@ describe("extended-stable startup update integration", () => {
     server = undefined;
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-update-startup-integration-",
+      prefix: "operator-update-startup-integration-",
       env: {
         NODE_ENV: "test",
         NPM_CONFIG_REGISTRY: undefined,
@@ -79,7 +79,7 @@ describe("extended-stable startup update integration", () => {
     if (!address || typeof address === "string") {
       throw new Error("expected loopback registry address");
     }
-    process.env.OPERATOR_UPDATE_PACKAGE_SPEC = "openclaw";
+    process.env.OPERATOR_UPDATE_PACKAGE_SPEC = "@gabrielvfonseca/operator";
     process.env.NPM_CONFIG_REGISTRY = `http://127.0.0.1:${address.port}/`;
 
     const { runGatewayUpdateCheck, resetUpdateAvailableStateForTest } =

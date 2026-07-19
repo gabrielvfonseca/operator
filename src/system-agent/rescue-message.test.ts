@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CommandContext } from "../auto-reply/reply/commands-types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   createCorePluginStateSyncKeyedStore,
   resetPluginStateStoreForTests,
@@ -20,7 +20,7 @@ type TestConfig = Record<string, unknown>;
 
 const mockConfig = vi.hoisted(() => {
   const state = {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     config: {} as TestConfig,
     hash: "mock-hash-0" as string | undefined,
   };
@@ -45,7 +45,7 @@ const mockConfig = vi.hoisted(() => {
   };
   return {
     reset() {
-      state.path = "/tmp/openclaw.json";
+      state.path = "/tmp/operator.json";
       state.config = {};
       state.hash = "mock-hash-0";
     },
@@ -438,9 +438,9 @@ describe("Operator rescue message", () => {
         "[openclaw] done: gateway.restart",
       );
       expect(deps.runGatewayRestart).toHaveBeenCalledTimes(1);
-      await expect(fs.access(path.join(stateDir, "openclaw", "rescue-pending"))).rejects.toThrow(
-        /ENOENT/,
-      );
+      await expect(
+        fs.access(path.join(stateDir, "@gabrielvfonseca/operator", "rescue-pending")),
+      ).rejects.toThrow(/ENOENT/);
     });
   });
 
@@ -498,7 +498,7 @@ describe("Operator rescue message", () => {
     };
 
     await expect(
-      runRescue("/openclaw plugin install clawhub:openclaw-demo", cfg, commandContext(), deps),
+      runRescue("/openclaw plugin install clawhub:operator-demo", cfg, commandContext(), deps),
     ).resolves.toContain("cannot install plugins from a message channel");
     expect(deps.runPluginInstall).not.toHaveBeenCalled();
   });
@@ -599,9 +599,9 @@ describe("Operator rescue message", () => {
           runRescue("/openclaw restart gateway", cfg, commandContext()),
         ).resolves.toContain("expiry clock is invalid");
 
-        await expect(fs.readdir(path.join(tempDir, "openclaw", "rescue-pending"))).rejects.toThrow(
-          /ENOENT/,
-        );
+        await expect(
+          fs.readdir(path.join(tempDir, "@gabrielvfonseca/operator", "rescue-pending")),
+        ).rejects.toThrow(/ENOENT/);
       } finally {
         vi.useRealTimers();
       }

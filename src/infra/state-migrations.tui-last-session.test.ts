@@ -20,7 +20,7 @@ type TuiLastSessionTestDatabase = Pick<OperatorStateKyselyDatabase, "tui_last_se
 const tempDirs: string[] = [];
 
 function makeStateDir(): string {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-tui-migration-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-tui-migration-"));
   tempDirs.push(stateDir);
   return stateDir;
 }

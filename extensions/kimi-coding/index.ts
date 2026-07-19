@@ -1,9 +1,12 @@
 // Kimi Coding plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
-import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
-import type { SecretInput } from "openclaw/plugin-sdk/secret-input";
-import { isRecord, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import type { SecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import {
+  isRecord,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { applyKimiCodeConfig, KIMI_CODING_MODEL_REF } from "./onboard.js";
 import { buildKimiCodingProvider, normalizeKimiCodingModelId } from "./provider-catalog.js";
 import { KIMI_REPLAY_POLICY } from "./replay-policy.js";

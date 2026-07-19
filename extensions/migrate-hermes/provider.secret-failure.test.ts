@@ -2,9 +2,9 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveAuthStorePathForDisplay } from "openclaw/plugin-sdk/agent-runtime";
-import type { MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
+import { resolveAuthStorePathForDisplay } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { MigrationProviderContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { HERMES_REASON_AUTH_PROFILE_WRITE_FAILED } from "./items.js";
 
@@ -28,7 +28,7 @@ const logger = {
 };
 
 async function makeTempRoot() {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-hermes-secret-failure-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-hermes-secret-failure-"));
   tempRoots.add(root);
   return root;
 }

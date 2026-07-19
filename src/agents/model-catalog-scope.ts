@@ -1,8 +1,8 @@
 /**
  * Resolves model catalog scope from config and discovery options.
  */
-import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { findNormalizedProviderValue } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 function providerConfigDeclaresModel(

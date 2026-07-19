@@ -4,14 +4,14 @@ import {
   extractGeneratedMusicFileCandidates,
   type MusicGenerationProvider,
   type MusicGenerationRequest,
-} from "openclaw/plugin-sdk/music-generation";
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/music-generation";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveFalHttpRequestConfig } from "./http-config.js";
 
 const DEFAULT_FAL_MUSIC_MODEL = "fal-ai/minimax-music/v2.6";

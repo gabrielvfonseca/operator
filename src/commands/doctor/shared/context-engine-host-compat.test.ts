@@ -1,6 +1,6 @@
 // Context engine host compatibility tests cover doctor warnings for host/context mismatches.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   getContextEngineRegistration,
   registerContextEngine,
@@ -13,7 +13,7 @@ import {
 } from "./context-engine-host-compat.js";
 
 vi.mock("../../../agents/agent-scope-config.js", () => ({
-  resolveDefaultAgentDir: vi.fn(() => "/tmp/openclaw-doctor-host-compat"),
+  resolveDefaultAgentDir: vi.fn(() => "/tmp/operator-doctor-host-compat"),
 }));
 
 vi.mock("../../../agents/cli-backends.js", () => ({
@@ -25,7 +25,7 @@ vi.mock("../../../agents/harness/policy.js", () => ({
     (params: { config: OperatorConfig; modelId: string; provider: string }) => ({
       runtime:
         params.config.agents?.defaults?.models?.[`${params.provider}/${params.modelId}`]
-          ?.agentRuntime?.id ?? "openclaw",
+          ?.agentRuntime?.id ?? "@gabrielvfonseca/operator",
     }),
   ),
 }));
@@ -117,7 +117,7 @@ describe("doctor context-engine host compatibility", () => {
           defaults: {
             models: {
               "openai/gpt-5.5": { agentRuntime: { id: "codex" } },
-              "anthropic/claude-sonnet-4-6": { agentRuntime: { id: "openclaw" } },
+              "anthropic/claude-sonnet-4-6": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },

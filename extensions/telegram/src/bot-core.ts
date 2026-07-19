@@ -3,25 +3,35 @@ import {
   buildChannelGroupsScopeTree,
   resolveChannelGroupPolicy,
   resolveScopeRequireMention,
-} from "openclaw/plugin-sdk/channel-policy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   resolveThreadBindingIdleTimeoutMsForChannel,
   resolveThreadBindingMaxAgeMsForChannel,
   resolveThreadBindingSpawnPolicy,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { formatErrorMessage, formatUncaughtError } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import {
+  formatErrorMessage,
+  formatUncaughtError,
+} from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   isNativeCommandsExplicitlyDisabled,
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "openclaw/plugin-sdk/native-command-config-runtime";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import { danger, logVerbose, shouldLogVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { getChildLogger } from "openclaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { createNonExitingRuntime, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-config-runtime";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import {
+  danger,
+  logVerbose,
+  shouldLogVerbose,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { getChildLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  createNonExitingRuntime,
+  type RuntimeEnv,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { getOrCreateAccountThrottler } from "./account-throttler.js";
 import { resolveTelegramAccount } from "./accounts.js";
 import { normalizeTelegramApiRoot } from "./api-root.js";

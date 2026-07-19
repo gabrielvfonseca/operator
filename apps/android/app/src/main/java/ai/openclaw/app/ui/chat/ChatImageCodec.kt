@@ -1,7 +1,7 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
-import ai.openclaw.app.node.JpegSizeLimiter
+import ai.operator.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
+import ai.operator.app.node.JpegSizeLimiter
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

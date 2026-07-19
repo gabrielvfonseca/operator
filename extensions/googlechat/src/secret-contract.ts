@@ -9,8 +9,8 @@ import {
   resolveChannelAccountSurface,
   type ResolverContext,
   type SecretDefaults,
-} from "openclaw/plugin-sdk/channel-secret-basic-runtime";
-import { coerceSecretRef } from "openclaw/plugin-sdk/secret-ref-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-secret-basic-runtime";
+import { coerceSecretRef } from "@gabrielvfonseca/operator/plugin-sdk/secret-ref-runtime";
 
 type GoogleChatAccountLike = {
   serviceAccount?: unknown;

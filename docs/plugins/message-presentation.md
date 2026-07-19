@@ -8,7 +8,7 @@ read_when:
   - Debugging provider-specific card/block/component rendering regressions
 ---
 
-Message presentation is OpenClaw's shared contract for rich outbound chat UI.
+Message presentation is Operator's shared contract for rich outbound chat UI.
 It lets agents, CLI commands, approval flows, and plugins describe the message
 intent once, while each channel plugin renders the best native shape it can.
 
@@ -327,7 +327,7 @@ Table report:
 CLI send:
 
 ```bash
-openclaw message send --channel slack \
+operator message send --channel slack \
   --target channel:C123 \
   --message "Deploy approval" \
   --presentation '{"title":"Deploy approval","tone":"warning","blocks":[{"type":"text","text":"Canary is ready."},{"type":"buttons","buttons":[{"label":"Approve","value":"deploy:approve","style":"success"},{"label":"Decline","value":"deploy:decline","style":"danger"}]}]}'
@@ -336,7 +336,7 @@ openclaw message send --channel slack \
 Pinned delivery:
 
 ```bash
-openclaw message send --channel telegram \
+operator message send --channel telegram \
   --target -1001234567890 \
   --message "Topic opened" \
   --pin
@@ -533,7 +533,7 @@ Current bundled renderers:
 | --------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Discord         | Components and component containers       | Preserves legacy `channelData.discord.components` for existing provider-native payload producers, but new shared sends should use `presentation`.                                                                 |
 | Feishu          | Interactive cards                         | Card header can use `title`; body avoids duplicating that title.                                                                                                                                                  |
-| Matrix          | Text fallback plus structured event field | Buttons/selects advertise as supported, but every block currently renders as `renderMessagePresentationFallbackText` output carried in a `com.openclaw.presentation` event field, not native interactive widgets. |
+| Matrix          | Text fallback plus structured event field | Buttons/selects advertise as supported, but every block currently renders as `renderMessagePresentationFallbackText` output carried in a `com.operator.presentation` event field, not native interactive widgets. |
 | Mattermost      | Text plus interactive props               | Selects and dividers are not supported; those blocks degrade to text.                                                                                                                                             |
 | Microsoft Teams | Adaptive Cards                            | Plain `message` text is included with the card when both are provided. Selects, styles, and disabled state are not supported.                                                                                     |
 | Slack           | Block Kit                                 | Renders `chart` as native `data_visualization` and `table` as native `data_table`; preserves legacy `channelData.slack.blocks`, but new shared sends should use `presentation`.                                   |

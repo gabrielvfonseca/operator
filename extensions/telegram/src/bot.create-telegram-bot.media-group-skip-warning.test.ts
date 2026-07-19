@@ -126,7 +126,7 @@ function createChannelPostContext(params: {
       media_group_id: params.mediaGroupId,
       photo: [{ file_id: params.photoFileId }],
     },
-    me: { username: "openclaw_bot" },
+    me: { username: "operator_bot" },
     getFile: async () => ({ file_path: `photos/${params.photoFileId}.jpg` }),
   };
 }

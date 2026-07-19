@@ -1,13 +1,13 @@
 // Discord API module exposes the plugin public contract.
-import { resolveFetch } from "openclaw/plugin-sdk/fetch-runtime";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import { readResponseTextLimited } from "openclaw/plugin-sdk/provider-http";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
+import { resolveFetch } from "@gabrielvfonseca/operator/plugin-sdk/fetch-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { readResponseTextLimited } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
 import {
   resolveRetryConfig,
   retryAsync,
   type RetryConfig,
-} from "openclaw/plugin-sdk/retry-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
 import { isDiscordHtmlResponseBody, summarizeDiscordResponseBody } from "./error-body.js";
 import { parseDiscordRetryAfterBodySeconds, parseRetryAfterHeaderSeconds } from "./retry-after.js";
 

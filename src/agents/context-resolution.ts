@@ -1,5 +1,5 @@
-import { resolveClaudeSonnet5ModelIdentity } from "@operator/llm-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { resolveClaudeSonnet5ModelIdentity } from "@gabrielvfonseca/llm-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   lookupCachedContextTokens,

@@ -1,5 +1,5 @@
 {
-  "name": "@operator/linux-node",
+  "name": "@gabrielvfonseca/linux-node",
   "version": "2026.7.2",
   "description": "Operator Linux node device capabilities",
   "type": "module",
@@ -7,9 +7,9 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

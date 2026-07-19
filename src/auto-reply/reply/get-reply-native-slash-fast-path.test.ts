@@ -70,7 +70,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
       ctx,
       cfg: markCompleteReplyConfig({
         session: {
-          store: path.join(tempDirs.make("openclaw-native-slash-"), "sessions.json"),
+          store: path.join(tempDirs.make("operator-native-slash-"), "sessions.json"),
         },
       } as OperatorConfig),
       agentId: "main",
@@ -134,7 +134,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
       ctx,
       cfg: markCompleteReplyConfig({
         session: {
-          store: path.join(tempDirs.make("openclaw-text-slash-"), "sessions.json"),
+          store: path.join(tempDirs.make("operator-text-slash-"), "sessions.json"),
         },
       } as OperatorConfig),
       agentId: "dev",
@@ -189,7 +189,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
       ctx,
       cfg: markCompleteReplyConfig({
         session: {
-          store: path.join(tempDirs.make("openclaw-external-text-slash-"), "sessions.json"),
+          store: path.join(tempDirs.make("operator-external-text-slash-"), "sessions.json"),
         },
       } as OperatorConfig),
       agentId: "dev",
@@ -212,7 +212,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
 
   it("does not create a session for an unauthorized native command", async () => {
     const storePath = path.join(
-      tempDirs.make("openclaw-native-slash-unauthorized-"),
+      tempDirs.make("operator-native-slash-unauthorized-"),
       "sessions.json",
     );
     const sessionKey = "agent:main:telegram:slash:unauthorized";
@@ -281,7 +281,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
       }),
       cfg: markCompleteReplyConfig({
         session: {
-          store: path.join(tempDirs.make("openclaw-native-slash-conflict-"), "sessions.json"),
+          store: path.join(tempDirs.make("operator-native-slash-conflict-"), "sessions.json"),
         },
       } as OperatorConfig),
       agentId: "main",
@@ -328,7 +328,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
       }),
       cfg: markCompleteReplyConfig({
         session: {
-          store: path.join(tempDirs.make("openclaw-native-slash-rotation-"), "sessions.json"),
+          store: path.join(tempDirs.make("operator-native-slash-rotation-"), "sessions.json"),
         },
       } as OperatorConfig),
       agentId: "main",
@@ -352,7 +352,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
   });
 
   it("adopts a supported legacy alias before native command initialization", async () => {
-    const storePath = path.join(tempDirs.make("openclaw-native-slash-alias-"), "sessions.json");
+    const storePath = path.join(tempDirs.make("operator-native-slash-alias-"), "sessions.json");
     const sessionKey = "agent:main:main";
     await replaceSessionEntry({ sessionKey: "Agent:main:main", storePath }, {
       sessionId: "legacy-session",
@@ -400,7 +400,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
   });
 
   it("does not mutate an archived session during native command initialization", async () => {
-    const storePath = path.join(tempDirs.make("openclaw-native-slash-archived-"), "sessions.json");
+    const storePath = path.join(tempDirs.make("operator-native-slash-archived-"), "sessions.json");
     const sessionKey = "agent:main:main";
     const archivedEntry = {
       sessionId: "archived-session",
@@ -451,7 +451,7 @@ describe("maybeResolveNativeSlashCommandFastReply", () => {
   });
 
   it("persists fast-path session initialization before command mutation", async () => {
-    const storePath = path.join(tempDirs.make("openclaw-native-slash-init-"), "sessions.json");
+    const storePath = path.join(tempDirs.make("operator-native-slash-init-"), "sessions.json");
     const sessionKey = "agent:main:main";
     await replaceSessionEntry({ sessionKey, storePath }, {
       sessionId: "session-1",

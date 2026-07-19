@@ -1,9 +1,9 @@
 // Whatsapp plugin module implements security fix behavior.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { ChannelDoctorConfigMutation } from "openclaw/plugin-sdk/channel-contract";
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/channel-pairing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeUniqueStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { ChannelDoctorConfigMutation } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { readChannelAllowFromStore } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 function applyGroupAllowFromFromStore(params: {
   cfg: OperatorConfig;

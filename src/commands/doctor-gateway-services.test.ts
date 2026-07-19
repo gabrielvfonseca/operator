@@ -358,7 +358,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.renderSystemNodeWarning.mockReturnValue(undefined);
     mocks.resolveSystemNodeInfo.mockResolvedValue(null);
     mocks.isSystemdUnitActive.mockResolvedValue(false);
-    mocks.readWindowsProcessArgsSync.mockReturnValue(["node", "openclaw.mjs", "update"]);
+    mocks.readWindowsProcessArgsSync.mockReturnValue(["node", "operator.mjs", "update"]);
     mocks.resolveGatewayAuthTokenForService.mockImplementation(async (cfg: OperatorConfig, env) => {
       const configToken =
         typeof cfg.gateway?.auth?.token === "string" ? cfg.gateway.auth.token.trim() : undefined;
@@ -671,7 +671,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   });
 
   it("keeps wrapper-managed gateway services aligned during entrypoint drift checks", async () => {
-    const wrapperPath = "/usr/local/bin/openclaw-doppler";
+    const wrapperPath = "/usr/local/bin/operator-doppler";
     mocks.readCommand.mockResolvedValue({
       programArguments: [wrapperPath, "gateway", "--port", "18789"],
       environment: {
@@ -705,7 +705,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       "Gateway service config",
     );
     expect(mocks.note).toHaveBeenCalledWith(
-      "Gateway service invokes OPERATOR_WRAPPER: /usr/local/bin/openclaw-doppler",
+      "Gateway service invokes OPERATOR_WRAPPER: /usr/local/bin/operator-doppler",
       "Gateway",
     );
     expect(mocks.stage).not.toHaveBeenCalled();
@@ -789,7 +789,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.readCommand.mockResolvedValue({
       programArguments: ["/usr/bin/openclaw", "run"],
       environment: {},
-      sourcePath: "/home/test/.config/systemd/user/openclaw-gateway.service",
+      sourcePath: "/home/test/.config/systemd/user/operator-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
       ok: false,
@@ -1002,9 +1002,9 @@ describe("maybeRepairGatewayServiceConfig", () => {
   });
 
   it.each([
-    ["update command", ["node", "openclaw.mjs", "update"]],
-    ["--update shorthand", ["node", "openclaw.mjs", "--update"]],
-    ["doctor update prompt", ["node", "openclaw.mjs", "doctor"]],
+    ["update command", ["node", "operator.mjs", "update"]],
+    ["--update shorthand", ["node", "operator.mjs", "--update"]],
+    ["doctor update prompt", ["node", "operator.mjs", "doctor"]],
   ])("does not rewrite a service for a legacy %s parent", async (_, args) => {
     mockProcessPlatform("win32");
     Object.defineProperty(process.stdin, "isTTY", {
@@ -1131,15 +1131,15 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it.each([
     {
       parent: "direct --no-restart update",
-      args: ["node", "openclaw.mjs", "update", "--no-restart"],
+      args: ["node", "operator.mjs", "update", "--no-restart"],
     },
     {
       parent: "--update shorthand with --no-restart",
-      args: ["node", "openclaw.mjs", "--update", "--no-restart"],
+      args: ["node", "operator.mjs", "--update", "--no-restart"],
     },
     {
       parent: "interactive update wizard",
-      args: ["node", "openclaw.mjs", "update", "wizard"],
+      args: ["node", "operator.mjs", "update", "wizard"],
     },
     {
       parent: "unrecognized shell",
@@ -1147,7 +1147,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     },
     {
       parent: "gateway RPC process",
-      args: ["node", "openclaw.mjs", "gateway"],
+      args: ["node", "operator.mjs", "gateway"],
     },
   ])("stages repairs for a $parent parent without an activation marker", async ({ args }) => {
     mockProcessPlatform("win32");
@@ -1449,7 +1449,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("warns when the gateway service entrypoint resolves to a source checkout", async () => {
     await withEnvAsync({}, async () => {
-      const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-service-layout-"));
+      const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-doctor-service-layout-"));
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
         await fs.mkdir(path.join(root, "src"), { recursive: true });
@@ -1457,7 +1457,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "openclaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }),
           "utf8",
         );
         const entrypoint = path.join(root, "dist", "index.js");
@@ -1479,7 +1479,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("does not duplicate Gateway service config panels for a source-checkout entrypoint with audit findings", async () => {
     await withEnvAsync({}, async () => {
       const root = await fs.mkdtemp(
-        path.join(os.tmpdir(), "openclaw-doctor-service-config-dedup-"),
+        path.join(os.tmpdir(), "operator-doctor-service-config-dedup-"),
       );
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
@@ -1488,7 +1488,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "openclaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }),
           "utf8",
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
@@ -1522,7 +1522,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("keeps the gateway install force hint when a source-checkout warning is suppressed and repair is declined", async () => {
     await withEnvAsync({}, async () => {
       const root = await fs.mkdtemp(
-        path.join(os.tmpdir(), "openclaw-doctor-service-config-force-hint-"),
+        path.join(os.tmpdir(), "operator-doctor-service-config-force-hint-"),
       );
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
@@ -1531,7 +1531,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "openclaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }),
           "utf8",
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
@@ -1663,7 +1663,7 @@ describe("maybeScanExtraGatewayServices", () => {
     expect(
       extraGatewayServiceToHealthFinding({
         platform: "linux",
-        label: "openclaw-gateway.service",
+        label: "operator-gateway.service",
         detail: "legacy unit",
         scope: "user",
         legacy: true,
@@ -1673,7 +1673,7 @@ describe("maybeScanExtraGatewayServices", () => {
         checkId: "core/doctor/gateway-services/extra",
         severity: "warning",
         source: "linux",
-        target: "openclaw-gateway.service",
+        target: "operator-gateway.service",
       }),
     );
   });

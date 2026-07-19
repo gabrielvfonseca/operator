@@ -1,5 +1,5 @@
 // Resolves provider config ownership between core and plugins.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 /** Core built-in model API ids that do not imply plugin ownership of a provider config. */

@@ -1,6 +1,38 @@
 // Google provider module implements model/runtime integration.
 import { randomUUID } from "node:crypto";
 import {
+  resolveExpiresAtMsFromDurationMs,
+  timestampMsToIsoString,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
+import type {
+  RealtimeVoiceAudioFormat,
+  RealtimeVoiceBridge,
+  RealtimeVoiceBrowserSession,
+  RealtimeVoiceBrowserSessionCreateRequest,
+  RealtimeVoiceBridgeCreateRequest,
+  RealtimeVoiceProviderConfig,
+  RealtimeVoiceProviderPlugin,
+  RealtimeVoiceRole,
+  RealtimeVoiceTool,
+  RealtimeVoiceToolResultOptions,
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import {
+  convertPcmToMulaw8k,
+  mulawToPcm,
+  REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,
+  REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,
+  REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME,
+  resamplePcm,
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { warn } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import {
+  asBoolean,
+  asFiniteNumber,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import {
   ActivityHandling,
   Behavior,
   EndSensitivity,
@@ -18,38 +50,6 @@ import {
   type ThinkingConfig,
   TurnCoverage,
 } from "@google/genai";
-import {
-  resolveExpiresAtMsFromDurationMs,
-  timestampMsToIsoString,
-} from "openclaw/plugin-sdk/number-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-onboard";
-import type {
-  RealtimeVoiceAudioFormat,
-  RealtimeVoiceBridge,
-  RealtimeVoiceBrowserSession,
-  RealtimeVoiceBrowserSessionCreateRequest,
-  RealtimeVoiceBridgeCreateRequest,
-  RealtimeVoiceProviderConfig,
-  RealtimeVoiceProviderPlugin,
-  RealtimeVoiceRole,
-  RealtimeVoiceTool,
-  RealtimeVoiceToolResultOptions,
-} from "openclaw/plugin-sdk/realtime-voice";
-import {
-  convertPcmToMulaw8k,
-  mulawToPcm,
-  REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,
-  REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,
-  REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME,
-  resamplePcm,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { warn } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
-import {
-  asBoolean,
-  asFiniteNumber,
-  normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
 import { createGoogleGenAI } from "./google-genai-runtime.js";
 import { resolveGoogleGemini3ThinkingLevel } from "./thinking.js";
 

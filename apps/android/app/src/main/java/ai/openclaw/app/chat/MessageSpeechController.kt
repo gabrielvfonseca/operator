@@ -1,8 +1,8 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.voice.TalkAudioPlaying
-import ai.openclaw.app.voice.TalkSpeakAudio
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.voice.TalkAudioPlaying
+import ai.operator.app.voice.TalkSpeakAudio
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener

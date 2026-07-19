@@ -2,13 +2,13 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { root, type Root } from "@operator/fs-safe";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { root, type Root } from "@openclaw/fs-safe";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -606,7 +606,7 @@ export async function migrateLegacyApnsRegistrations(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy APNs state: ${detail}. Stop the Gateway and run \`operator doctor --fix\` again.`,
+        `Failed migrating legacy APNs state: ${detail}. Stop the Gateway and run \`openclaw doctor --fix\` again.`,
       ],
     };
   }

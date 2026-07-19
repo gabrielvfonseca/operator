@@ -1,5 +1,5 @@
 // Google tests cover default model plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import { describe, expect, it } from "vitest";
 import { applyGoogleGeminiModelDefault, GOOGLE_GEMINI_DEFAULT_MODEL } from "./api.js";
 

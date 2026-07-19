@@ -1,7 +1,7 @@
 // Plugin host hook methods expose plugin UI descriptors and validate plugin
 // session action payload/result JSON against declared schemas.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

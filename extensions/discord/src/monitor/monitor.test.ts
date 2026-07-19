@@ -1,7 +1,10 @@
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { buildPluginBindingApprovalCustomId } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 // Discord tests cover monitor plugin behavior.
 import { ChannelType } from "discord-api-types/v10";
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { buildPluginBindingApprovalCustomId } from "openclaw/plugin-sdk/conversation-runtime";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { clearDiscordComponentEntriesForTest } from "../components-registry.test-support.js";
 import type { DiscordComponentEntry, DiscordModalEntry } from "../components.js";
@@ -330,7 +333,7 @@ describe("discord component interactions", () => {
       );
     recordInboundSessionMock.mockClear().mockResolvedValue(undefined);
     readSessionUpdatedAtMock.mockClear().mockReturnValue(undefined);
-    resolveStorePathMock.mockClear().mockReturnValue("/tmp/openclaw-sessions-test.json");
+    resolveStorePathMock.mockClear().mockReturnValue("/tmp/operator-sessions-test.json");
     dispatchPluginInteractiveHandlerMock.mockReset().mockResolvedValue({
       matched: false,
       handled: false,

@@ -8,9 +8,9 @@
 import {
   createMessageReceiptFromOutboundResults,
   type MessageReceipt,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import { getClientManager as getRegistryClientManager } from "./client-manager-registry.js";
 import { resolveTwitchAccountContext } from "./config.js";
 import { stripMarkdownForTwitch } from "./utils/markdown.js";

@@ -1,5 +1,5 @@
 // Parses explicit ClawHub package install specs.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Parses explicit `clawhub:<name>[@version]` package specs for ClawHub installs. */
 export function parseClawHubPluginSpec(raw: string): {

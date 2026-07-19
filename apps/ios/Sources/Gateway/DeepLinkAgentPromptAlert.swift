@@ -14,8 +14,8 @@ struct DeepLinkAgentPromptAlert: ViewModifier {
     func body(content: Content) -> some View {
         content.alert(item: self.promptBinding) { prompt in
             Alert(
-                title: Text("Run OpenClaw agent?")
-                    .font(OpenClawType.headline),
+                title: Text("Run Operator agent?")
+                    .font(OperatorType.headline),
                 message: Text(verbatim: String(
                     format: String(localized: """
                     Message:
@@ -26,16 +26,16 @@ struct DeepLinkAgentPromptAlert: ViewModifier {
                     """),
                     prompt.messagePreview,
                     prompt.urlPreview))
-                    .font(OpenClawType.subhead),
+                    .font(OperatorType.subhead),
                 primaryButton: .cancel(
                     Text("Cancel")
-                        .font(OpenClawType.subheadSemiBold))
+                        .font(OperatorType.subheadSemiBold))
                 {
                     self.appModel.declinePendingAgentDeepLinkPrompt()
                 },
                 secondaryButton: .default(
                     Text("Run")
-                        .font(OpenClawType.subheadSemiBold))
+                        .font(OperatorType.subheadSemiBold))
                 {
                     Task { await self.appModel.approvePendingAgentDeepLinkPrompt() }
                 })

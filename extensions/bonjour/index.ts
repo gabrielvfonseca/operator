@@ -2,7 +2,7 @@
  * Bonjour gateway-discovery plugin entry. It advertises the local gateway over
  * mDNS and lazily loads the ciao-based advertiser.
  */
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 function formatBonjourInstanceName(displayName: string) {
   const trimmed = displayName.trim();

@@ -1,8 +1,8 @@
 // Qa Lab plugin module implements qa credentials admin behavior.
 import { randomUUID } from "node:crypto";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
 import { z } from "zod";
 import {
   joinQaCredentialEndpoint,

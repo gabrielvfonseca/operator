@@ -3,7 +3,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { CliDeps } from "../cli/deps.types.js";
 import type { CronFailureDestinationConfig } from "../config/types.cron.js";
 import type { OperatorConfig } from "../config/types.operator.js";

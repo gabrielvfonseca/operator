@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStorePath } from "../config/sessions/paths.js";
 import {
   resolveSessionTranscriptRuntimeTarget,

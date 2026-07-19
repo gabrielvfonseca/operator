@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayCronRunSummary
+import ai.operator.app.GatewayCronRunSummary
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

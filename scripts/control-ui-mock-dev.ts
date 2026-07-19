@@ -1,4 +1,4 @@
-// Control Ui Mock Dev script supports OpenClaw repository automation.
+// Control Ui Mock Dev script supports Operator repository automation.
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,7 +10,7 @@ import {
   createControlUiMockBootstrapConfig,
   createControlUiMockGatewayInitScript,
   type ControlUiMockGatewayScenario,
-} from "../ui/src/test-helpers/control-ui-e2e.ts";
+} from "../ui/tests/helpers/control-ui-e2e.ts";
 import {
   resolveExternalPackageAliasesForVite,
   resolveSourcePackageAliasesForVite,
@@ -223,7 +223,7 @@ function buildSessionDiffMock() {
   ].join("\n");
   return {
     sessionKey: "main",
-    root: "/tmp/openclaw-mock-checkout",
+    root: "/tmp/operator-mock-checkout",
     branch: "feature/session-diff-panel",
     baseRef: "main",
     files: [
@@ -461,12 +461,12 @@ function buildProfileUsageMocks(baseTime: number) {
       endDate: daily[daily.length - 1]?.date,
       sessions: [
         {
-          key: "agent:openclaw-mock:marathon",
+          key: "agent:operator-mock:marathon",
           label: "Release night marathon",
           usage: { ...usageCostTotals(4_000_000_000), durationMs: (59 * 60 + 4) * 60 * 1000 },
         },
         {
-          key: "agent:openclaw-mock:daily",
+          key: "agent:operator-mock:daily",
           label: "Daily driver",
           usage: { ...usageCostTotals(900_000_000), durationMs: 3 * 60 * 60 * 1000 },
         },
@@ -521,7 +521,7 @@ function buildProfileUsageMocks(baseTime: number) {
           },
         ],
         byAgent: [
-          { agentId: "openclaw-mock", totals: usageCostTotals(Math.round(lifetimeTokens * 0.8)) },
+          { agentId: "operator-mock", totals: usageCostTotals(Math.round(lifetimeTokens * 0.8)) },
           { agentId: "alpha", totals: usageCostTotals(Math.round(lifetimeTokens * 0.2)) },
         ],
         byChannel: [
@@ -551,7 +551,7 @@ function buildConfigMocks() {
   };
   const schema = {
     type: "object",
-    title: "OpenClaw config",
+    title: "Operator config",
     properties: {
       logging: {
         type: "object",
@@ -627,7 +627,7 @@ function buildConfigMocks() {
   };
   return {
     get: {
-      path: "~/.openclaw/openclaw.json",
+      path: "~/.operator/operator.json",
       exists: true,
       raw: `${JSON.stringify(config, null, 2)}\n`,
       hash: "mock-config-hash",
@@ -759,7 +759,7 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
       updatedAtMs: baseTime - 30_000,
     },
   ];
-  const workspaceListCases = ["main", "alpha", "openclaw-mock"].map((agentId) => ({
+  const workspaceListCases = ["main", "alpha", "operator-mock"].map((agentId) => ({
     match: { agentId },
     response: {
       agentId,
@@ -781,7 +781,7 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
       "# Context notes\n\nThe right rail should feel like workspace context, not a modal pasted beside the chat.\n\n## Current focus\n\n- Markdown previews need readable dark-mode chrome.\n- Empty or unavailable content should show a quiet state instead of an empty card.\n- File previews should load from the same mock scenario as the file list.\n",
     ],
   ]);
-  const workspaceFileCases = ["main", "alpha", "openclaw-mock"].flatMap((agentId) =>
+  const workspaceFileCases = ["main", "alpha", "operator-mock"].flatMap((agentId) =>
     workspaceFiles.map((file) => ({
       match: { agentId, name: file.name },
       response: {
@@ -848,14 +848,14 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
     ],
     [
       "package.json",
-      '{\n  "name": "openclaw",\n  "scripts": { "dev:ui:mock": "tsx scripts/control-ui-mock-dev.ts" }\n}\n',
+      '{\n  "name": "@gabrielvfonseca/operator",\n  "scripts": { "dev:ui:mock": "tsx scripts/control-ui-mock-dev.ts" }\n}\n',
     ],
     [
       "ui/vite.config.ts",
       "export default function controlUiViteConfig() {\n  return { server: { strictPort: true } };\n}\n",
     ],
     [
-      "ui/src/e2e/chat-flow.e2e.test.ts",
+      "ui/tests/e2e/chat-flow.e2e.test.ts",
       "it('keeps the session workspace useful while browsing files', async () => {\n  await page.getByText('Project files').waitFor();\n});\n",
     ],
   ]);
@@ -942,9 +942,9 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
   <text x="320" y="326" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="24" fill="#f6f7f9">openclaw session artifact</text>
 </svg>`;
   const lobsterArtifact = {
-    id: "artifact-openclaw-lobster",
+    id: "artifact-operator-lobster",
     type: "image",
-    title: "openclaw-lobster-preview.svg",
+    title: "operator-lobster-preview.svg",
     mimeType: "image/svg+xml",
     sizeBytes: Buffer.byteLength(lobsterSvg, "utf8"),
     source: "session-transcript",
@@ -981,9 +981,9 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
   const channelWizard = buildChannelWizardMocks();
   const configMocks = buildConfigMocks();
   return {
-    assistantAgentId: "openclaw-mock",
-    assistantName: "OpenClaw mock",
-    defaultAgentId: "openclaw-mock",
+    assistantAgentId: "operator-mock",
+    assistantName: "Operator mock",
+    defaultAgentId: "operator-mock",
     featureMethods: ["chat.metadata", "chat.startup", "sessions.diff", "sessions.files.set"],
     historyMessages: buildScrollableChatHistory(baseTime),
     methodResponses: {
@@ -1062,7 +1062,7 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
             deviceId: "11223344556677889900aabbccddeeff11223344556677889900aabbccddeeff",
             displayName: "iPhone",
             platform: "iOS 26.4",
-            clientId: "openclaw-ios",
+            clientId: "operator-ios",
             clientMode: "ui",
             roles: ["operator", "node"],
             scopes: ["operator.approvals", "operator.read", "operator.write"],
@@ -1179,14 +1179,14 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
           ts: baseTime - 30_000,
         },
         {
-          host: "openclaw-control-ui",
+          host: "operator-control-ui",
           version: "2026.6.11",
           platform: "macos 26.5.2",
           mode: "webchat",
           reason: "connect",
           roles: ["operator"],
           instanceId: "mock-unpaired-webchat",
-          text: "Node: openclaw-control-ui · mode webchat",
+          text: "Node: operator-control-ui · mode webchat",
           ts: baseTime - 10_000,
         },
       ],
@@ -1248,7 +1248,7 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
                   {
                     kind: "file",
                     name: "chat-flow.e2e.test.ts",
-                    path: "ui/src/e2e/chat-flow.e2e.test.ts",
+                    path: "ui/tests/e2e/chat-flow.e2e.test.ts",
                     size: 24950,
                     updatedAtMs: baseTime - 25_000,
                   },
@@ -1316,11 +1316,11 @@ function createMockGatewayPlugin(scenario: ControlUiMockGatewayScenario): Plugin
         res.end(bootstrapBody);
       });
     },
-    name: "openclaw-control-ui-mock-gateway",
+    name: "operator-control-ui-mock-gateway",
     transformIndexHtml(html) {
       return html.replace(
         "</head>",
-        `    <script data-openclaw-control-ui-mock-gateway>\n${initScript}\n    </script>\n  </head>`,
+        `    <script data-operator-control-ui-mock-gateway>\n${initScript}\n    </script>\n  </head>`,
       );
     },
   };
@@ -1355,7 +1355,7 @@ const server = await createServer({
   clearScreen: false,
   configFile: path.join(uiRoot, "vite.config.ts"),
   define: {
-    "globalThis.OPENCLAW_CONTROL_UI_BUILD_INFO": JSON.stringify({
+    "globalThis.OPERATOR_CONTROL_UI_BUILD_INFO": JSON.stringify({
       version: "2026.7.10",
       commit: "0123456789abcdef0123456789abcdef01234567",
       builtAt: "2026-07-10T12:34:56.000Z",

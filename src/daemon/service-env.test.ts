@@ -525,14 +525,14 @@ describe("buildServiceEnvironment", () => {
     }
     expect(env.OPERATOR_GATEWAY_PORT).toBe("18789");
     expect(env.OPERATOR_GATEWAY_TOKEN).toBeUndefined();
-    expect(env.OPERATOR_SERVICE_MARKER).toBe("openclaw");
+    expect(env.OPERATOR_SERVICE_MARKER).toBe("@gabrielvfonseca/operator");
     expect(env.OPERATOR_SERVICE_KIND).toBe("gateway");
     expect(typeof env.OPERATOR_SERVICE_VERSION).toBe("string");
-    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway.service");
+    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("operator-gateway.service");
     expect(env.OPERATOR_WINDOWS_TASK_NAME).toBe("Operator Gateway");
     expect(env.OPERATOR_WINDOWS_TASK_HIDDEN_LAUNCHER).toBe("1");
     if (process.platform === "darwin") {
-      expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.gateway");
+      expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.gateway");
     }
   });
 
@@ -543,19 +543,19 @@ describe("buildServiceEnvironment", () => {
       platform: "darwin",
     });
 
-    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.gateway");
+    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.gateway");
   });
 
   it("passes through OPERATOR_WRAPPER for gateway services", () => {
     const env = buildServiceEnvironment({
       env: {
         HOME: "/home/user",
-        OPERATOR_WRAPPER: " /usr/local/bin/openclaw-doppler ",
+        OPERATOR_WRAPPER: " /usr/local/bin/operator-doppler ",
       },
       port: 18789,
     });
 
-    expect(env.OPERATOR_WRAPPER).toBe("/usr/local/bin/openclaw-doppler");
+    expect(env.OPERATOR_WRAPPER).toBe("/usr/local/bin/operator-doppler");
   });
 
   it("forwards TMPDIR from the host environment on Linux", () => {
@@ -573,7 +573,7 @@ describe("buildServiceEnvironment", () => {
       port: 18789,
       platform: "darwin",
     });
-    expect(env.TMPDIR).toBe(path.join("/Users/user", ".openclaw", "tmp"));
+    expect(env.TMPDIR).toBe(path.join("/Users/user", ".operator", "tmp"));
   });
 
   it("uses a canonical system PATH for macOS LaunchAgents", () => {
@@ -608,10 +608,10 @@ describe("buildServiceEnvironment", () => {
       env: { HOME: "/home/user", OPERATOR_PROFILE: "work" },
       port: 18789,
     });
-    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway-work.service");
+    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("operator-gateway-work.service");
     expect(env.OPERATOR_WINDOWS_TASK_NAME).toBe("Operator Gateway (work)");
     if (process.platform === "darwin") {
-      expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.work");
+      expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.work");
     }
   });
 
@@ -620,26 +620,26 @@ describe("buildServiceEnvironment", () => {
       env: {
         HOME: "/home/user",
         OPERATOR_PROFILE: "work",
-        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway-maintenance",
+        OPERATOR_SYSTEMD_UNIT: "operator-gateway-maintenance",
       },
       port: 18789,
       platform: "linux",
     });
 
-    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway-maintenance.service");
+    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("operator-gateway-maintenance.service");
   });
 
   it("preserves explicit systemd unit overrides with service suffix", () => {
     const env = buildServiceEnvironment({
       env: {
         HOME: "/home/user",
-        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway-maintenance.service",
+        OPERATOR_SYSTEMD_UNIT: "operator-gateway-maintenance.service",
       },
       port: 18789,
       platform: "linux",
     });
 
-    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway-maintenance.service");
+    expect(env.OPERATOR_SYSTEMD_UNIT).toBe("operator-gateway-maintenance.service");
   });
 
   it("sets a profile-specific launchd marker for macOS gateway services", () => {
@@ -649,7 +649,7 @@ describe("buildServiceEnvironment", () => {
       platform: "darwin",
     });
 
-    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.work");
+    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.work");
   });
 
   it("does not persist ambient proxy environment variables for launchd/systemd runtime", () => {
@@ -739,7 +739,7 @@ describe("buildNodeServiceEnvironment", () => {
       platform: "darwin",
     });
 
-    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.node");
+    expect(env.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.node");
   });
 
   it("passes through OPERATOR_GATEWAY_TOKEN for node services", () => {
@@ -810,7 +810,7 @@ describe("buildNodeServiceEnvironment", () => {
       env: { HOME: "/Users/user", TMPDIR: "/var/folders/xw/abc123/T/" },
       platform: "darwin",
     });
-    expect(env.TMPDIR).toBe(path.join("/Users/user", ".openclaw", "tmp"));
+    expect(env.TMPDIR).toBe(path.join("/Users/user", ".operator", "tmp"));
   });
 
   it("falls back to os.tmpdir for node services when TMPDIR is not set on Linux", () => {
@@ -893,17 +893,17 @@ describe("shared Node TLS env defaults matrix", () => {
 describe("resolveGatewayStateDir", () => {
   it("uses the default state dir when no overrides are set", () => {
     const env = { HOME: "/Users/test" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".operator"));
   });
 
   it("appends the profile suffix when set", () => {
     const env = { HOME: "/Users/test", OPERATOR_PROFILE: "rescue" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw-rescue"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".operator-rescue"));
   });
 
   it("treats default profiles as the base state dir", () => {
     const env = { HOME: "/Users/test", OPERATOR_PROFILE: "Default" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".operator"));
   });
 
   it("uses OPERATOR_STATE_DIR when provided", () => {
@@ -912,8 +912,8 @@ describe("resolveGatewayStateDir", () => {
   });
 
   it("expands ~ in OPERATOR_STATE_DIR", () => {
-    const env = { HOME: "/Users/test", OPERATOR_STATE_DIR: "~/openclaw-state" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/openclaw-state"));
+    const env = { HOME: "/Users/test", OPERATOR_STATE_DIR: "~/operator-state" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/operator-state"));
   });
 
   it("preserves Windows absolute paths without HOME", () => {

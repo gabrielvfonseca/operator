@@ -1,7 +1,7 @@
 // Discord tests cover reply delivery plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RequestClient } from "../internal/discord.js";
 
@@ -494,7 +494,7 @@ describe("deliverDiscordReply", () => {
       cfg,
       textLimit: 2000,
       replyToMode: "off",
-      mediaLocalRoots: ["/tmp/openclaw-media"],
+      mediaLocalRoots: ["/tmp/operator-media"],
       kind: "final",
     });
 
@@ -502,7 +502,7 @@ describe("deliverDiscordReply", () => {
     expect(params.payloads).toEqual(replies);
     expect(params.replyToId).toBeUndefined();
     expect(params.replyToMode).toBe("off");
-    expect(params.mediaAccess).toEqual({ localRoots: ["/tmp/openclaw-media"] });
+    expect(params.mediaAccess).toEqual({ localRoots: ["/tmp/operator-media"] });
   });
 
   it("bridges Discord voice sends through the outbound dependency bag", async () => {

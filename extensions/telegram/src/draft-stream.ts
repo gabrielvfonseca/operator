@@ -1,12 +1,15 @@
-// Telegram plugin module implements draft stream behavior.
-import type { Bot } from "grammy";
 import {
   createFinalizableDraftStreamControlsForState,
   takeMessageIdAfterStop,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { MarkdownTableMode, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type {
+  MarkdownTableMode,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { isSingleUseReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-reference";
+// Telegram plugin module implements draft stream behavior.
+import type { Bot } from "grammy";
 import { buildTelegramThreadParams, type TelegramThreadSpec } from "./bot/helpers.js";
 import {
   escapeTelegramHtml,

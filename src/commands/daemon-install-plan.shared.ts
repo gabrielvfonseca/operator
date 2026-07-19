@@ -63,7 +63,7 @@ export function resolveDaemonNodeBinDir(nodePath?: string): string[] | undefined
 }
 
 function isOperatorCommandBasename(basename: string, platform: NodeJS.Platform): boolean {
-  if (basename === "operator") {
+  if (basename === "@gabrielvfonseca/operator") {
     return true;
   }
   if (platform === "win32") {
@@ -129,7 +129,10 @@ function resolveDaemonOperatorBinDir(
     if (!path.isAbsolute(segment)) {
       continue;
     }
-    const candidate = path.join(segment, platform === "win32" ? "operator.cmd" : "operator");
+    const candidate = path.join(
+      segment,
+      platform === "win32" ? "operator.cmd" : "@gabrielvfonseca/operator",
+    );
     if (!existsSync(candidate)) {
       continue;
     }

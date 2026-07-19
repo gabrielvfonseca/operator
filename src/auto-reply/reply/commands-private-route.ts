@@ -1,9 +1,9 @@
 /** Private command reply routing for sensitive owner-only command output. */
-import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   getLoadedChannelPlugin,
   listChannelPlugins,

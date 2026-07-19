@@ -1,6 +1,6 @@
 // Telegram plugin module implements telegram ingress worker behavior.
 import { parentPort, workerData } from "node:worker_threads";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
 import { resolveTelegramAllowedUpdates } from "./allowed-updates.js";
 import { normalizeTelegramApiRoot } from "./api-root.js";
 import { resolveTelegramTransport } from "./fetch.js";

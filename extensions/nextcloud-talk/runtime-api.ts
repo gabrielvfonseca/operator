@@ -1,10 +1,10 @@
 // Private runtime barrel for the bundled Nextcloud Talk extension.
 // Keep this barrel thin and aligned with the local extension surface.
 
-export type { AllowlistMatch } from "openclaw/plugin-sdk/allow-from";
-export type { ChannelGroupContext } from "openclaw/plugin-sdk/channel-contract";
-export { logInboundDrop } from "openclaw/plugin-sdk/channel-inbound";
-export { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
+export type { AllowlistMatch } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+export type { ChannelGroupContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+export { logInboundDrop } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+export { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
 export type {
   BlockStreamingCoalesceConfig,
   DmConfig,
@@ -12,18 +12,18 @@ export type {
   GroupPolicy,
   GroupToolPolicyConfig,
   OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 export {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-export { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
-export type { OutboundReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-export { deliverFormattedTextWithAttachments } from "openclaw/plugin-sdk/reply-payload";
-export type { PluginRuntime } from "openclaw/plugin-sdk/runtime-store";
-export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
-export type { SecretInput } from "openclaw/plugin-sdk/secret-input";
-export { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+export { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+export type { OutboundReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+export { deliverFormattedTextWithAttachments } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+export type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-store";
+export type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
+export type { SecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+export { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 export { setNextcloudTalkRuntime } from "./src/runtime.js";

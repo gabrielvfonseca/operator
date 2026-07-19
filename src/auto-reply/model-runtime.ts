@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionEntry } from "../config/sessions.js";
 
 /** Format a provider/model pair without duplicating provider prefixes already in the model id. */

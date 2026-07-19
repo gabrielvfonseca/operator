@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   compat:
-    if: github.repository == 'openclaw/openclaw' || github.event_name == 'workflow_dispatch'
+    if: github.repository == 'gabrielvfonseca/operator' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -24,7 +24,7 @@ jobs:
           install-bun: "false"
 
       - name: Configure Node test resources
-        run: echo "OPENCLAW_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
+        run: echo "OPERATOR_VITEST_MAX_WORKERS=2" >> "$GITHUB_ENV"
 
       - name: Run Node 22 compatibility
         env:
@@ -32,6 +32,6 @@ jobs:
         run: |
           pnpm build
           pnpm ui:build
-          node openclaw.mjs --help
-          node openclaw.mjs status --json --timeout 1
+          node operator.mjs --help
+          node operator.mjs status --json --timeout 1
           pnpm test:build:singleton

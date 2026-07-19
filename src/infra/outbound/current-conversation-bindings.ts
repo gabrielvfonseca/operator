@@ -4,17 +4,17 @@ import {
   asDateTimestampMs,
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeConversationText } from "../../acp/conversation-id.js";
 import { normalizeAnyChannelId } from "../../channels/registry.js";
 import { getActivePluginChannelRegistryFromState } from "../../plugins/runtime-channel-state.js";
 import { resolveAgentIdFromSessionKey } from "../../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 import { INTERNAL_MESSAGE_CHANNEL } from "../../utils/message-channel-constants.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../kysely-sync.js";
 import { normalizeConversationRef } from "./session-binding-normalization.js";

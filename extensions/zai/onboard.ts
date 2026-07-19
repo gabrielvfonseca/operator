@@ -2,8 +2,8 @@
 import {
   applyProviderConfigWithModelCatalogPreset,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   buildZaiCatalogModels,
   resolveZaiBaseUrl,

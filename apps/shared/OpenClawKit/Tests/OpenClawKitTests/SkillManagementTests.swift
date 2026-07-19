@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct SkillManagementTests {
     @Test func `detail review uses exact detail version and publisher`() throws {
@@ -113,7 +113,7 @@ struct SkillManagementTests {
         SkillStatus(
             name: "Weather",
             description: "Forecasts",
-            source: "openclaw-managed",
+            source: "operator-managed",
             filePath: "/tmp/weather/SKILL.md",
             baseDir: "/tmp/weather",
             skillKey: "weather",

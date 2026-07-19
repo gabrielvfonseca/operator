@@ -1,9 +1,9 @@
-// Copilot plugin module implements event bridge behavior.
-import type { MessageOptions, SessionEvent, SessionEventType } from "@github/copilot-sdk";
 import type {
   AgentHarnessAttemptResult,
   AgentMessage,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+// Copilot plugin module implements event bridge behavior.
+import type { MessageOptions, SessionEvent, SessionEventType } from "@github/copilot-sdk";
 import {
   buildCopilotAssistantUsage,
   normalizeCopilotUsage,

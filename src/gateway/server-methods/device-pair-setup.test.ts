@@ -3,7 +3,7 @@
  * code + QR for non-terminal clients and never leaks the gateway credential.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 

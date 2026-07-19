@@ -120,7 +120,7 @@ describe("secret ref resolver", () => {
   }
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-secrets-resolve-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-secrets-resolve-"));
     const sharedExecDir = path.join(fixtureRoot, "shared-exec");
     await fs.mkdir(sharedExecDir, { recursive: true });
 

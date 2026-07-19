@@ -1,7 +1,7 @@
 // Msteams plugin module implements store fs behavior.
-import { withFileLock as withPathLock } from "openclaw/plugin-sdk/file-lock";
-import { writeJsonFileAtomically } from "openclaw/plugin-sdk/json-store";
-import { pathExists } from "openclaw/plugin-sdk/security-runtime";
+import { withFileLock as withPathLock } from "@gabrielvfonseca/operator/plugin-sdk/file-lock";
+import { writeJsonFileAtomically } from "@gabrielvfonseca/operator/plugin-sdk/json-store";
+import { pathExists } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 
 const STORE_LOCK_OPTIONS = {
   retries: {

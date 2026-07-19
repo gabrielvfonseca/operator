@@ -1,8 +1,8 @@
 // CLI for reading and mutating exec approval allowlists locally, via gateway, or via node.
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { Command } from "commander";
 import JSON5 from "json5";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
@@ -843,16 +843,16 @@ export function registerExecApprovalsCli(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatExample(
-          'operator approvals allowlist add "~/Projects/**/bin/rg"',
+          'openclaw approvals allowlist add "~/Projects/**/bin/rg"',
           "Allowlist a local binary pattern for the main agent.",
         )}\n${formatExample(
-          'operator approvals allowlist add --agent main --node <id|name|ip> "/usr/bin/uptime"',
+          'openclaw approvals allowlist add --agent main --node <id|name|ip> "/usr/bin/uptime"',
           "Allowlist on a specific node/agent.",
         )}\n${formatExample(
-          'operator approvals allowlist add --agent "*" "/usr/bin/uname"',
+          'openclaw approvals allowlist add --agent "*" "/usr/bin/uname"',
           "Allowlist for all agents (wildcard).",
         )}\n${formatExample(
-          'operator approvals allowlist remove "~/Projects/**/bin/rg"',
+          'openclaw approvals allowlist remove "~/Projects/**/bin/rg"',
           "Remove an allowlist pattern.",
         )}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/approvals", "docs.operator.ai/cli/approvals")}\n`,
     );

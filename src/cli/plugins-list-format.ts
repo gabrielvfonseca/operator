@@ -1,5 +1,5 @@
 // Text formatter for plugin list rows and verbose plugin details.
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { sanitizeTerminalText } from "../../packages/terminal-core/src/safe-text.js";
 import { theme } from "../../packages/terminal-core/src/theme.js";
 import type { PluginRecord } from "../plugins/registry.js";
@@ -21,7 +21,7 @@ export function formatPluginLine(plugin: PluginRecord, verbose = false): string 
           : plugin.description,
       )
     : theme.muted("(no description)");
-  const format = plugin.format ?? "operator";
+  const format = plugin.format ?? "@gabrielvfonseca/operator";
 
   if (!verbose) {
     return `${name}${idSuffix} ${status} ${theme.muted(`[${format}]`)} - ${desc}`;

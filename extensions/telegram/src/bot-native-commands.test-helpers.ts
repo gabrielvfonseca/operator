@@ -1,9 +1,9 @@
 // Telegram helper module supports bot native commands helpers behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelGroupPolicy } from "openclaw/plugin-sdk/config-contracts";
-import type { TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MockFn } from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ChannelGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { TelegramAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MockFn } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { vi } from "vitest";
 import type { TelegramNativeCommandDeps } from "./bot-native-command-deps.runtime.js";
 import { registerTelegramNativeCommands } from "./bot-native-commands.js";

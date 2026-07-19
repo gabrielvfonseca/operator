@@ -8,7 +8,7 @@ import {
 describe("completion-fish helpers", () => {
   it("builds a subcommand completion line", () => {
     const line = buildFishSubcommandCompletionLine({
-      rootCmd: "openclaw",
+      rootCmd: "@gabrielvfonseca/operator",
       condition: "__fish_use_subcommand",
       name: "plugins",
       description: "Manage Bob's plugins",
@@ -20,7 +20,7 @@ describe("completion-fish helpers", () => {
 
   it("builds option line with short and long flags", () => {
     const line = buildFishOptionCompletionLine({
-      rootCmd: "openclaw",
+      rootCmd: "@gabrielvfonseca/operator",
       condition: "__fish_use_subcommand",
       flags: "-s, --shell <shell>",
       description: "Shell target",
@@ -32,7 +32,7 @@ describe("completion-fish helpers", () => {
 
   it("builds option line with long-only flags", () => {
     const line = buildFishOptionCompletionLine({
-      rootCmd: "openclaw",
+      rootCmd: "@gabrielvfonseca/operator",
       condition: "__fish_seen_subcommand_from completion",
       flags: "--write-state",
       description: "Write cache",

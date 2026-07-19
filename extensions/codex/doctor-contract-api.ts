@@ -2,8 +2,8 @@
  * Doctor contract hooks for Codex plugin config migrations and session-route
  * ownership warnings.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { DoctorSessionRouteStateOwner } from "openclaw/plugin-sdk/runtime-doctor";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { DoctorSessionRouteStateOwner } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 
 type LegacyConfigRule = {
   path: string[];

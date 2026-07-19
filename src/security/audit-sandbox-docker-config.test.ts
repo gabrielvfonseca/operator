@@ -44,7 +44,7 @@ describe("security audit sandbox docker config", () => {
   });
 
   it("evaluates sandbox docker config findings", async () => {
-    const isolatedHome = path.join(os.tmpdir(), "openclaw-security-audit-home");
+    const isolatedHome = path.join(os.tmpdir(), "operator-security-audit-home");
     vi.spyOn(os, "homedir").mockReturnValue(isolatedHome);
     await withEnvAsync({ HOME: isolatedHome, USERPROFILE: isolatedHome }, async () => {
       const cases = [

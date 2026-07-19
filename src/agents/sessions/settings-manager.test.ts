@@ -35,15 +35,15 @@ describe("SettingsManager runtime overrides", () => {
     });
 
     settingsManager.applyOverrides({ compaction: { reserveTokens: 50_000 } });
-    settingsManager.setProjectPackages(["npm:@operator/example"]);
+    settingsManager.setProjectPackages(["npm:@gabrielvfonseca/example"]);
 
-    expect(settingsManager.getPackages()).toEqual(["npm:@operator/example"]);
+    expect(settingsManager.getPackages()).toEqual(["npm:@gabrielvfonseca/example"]);
     expect(settingsManager.getCompactionReserveTokens()).toBe(50_000);
 
     await settingsManager.flush();
     await settingsManager.reload();
 
-    expect(settingsManager.getPackages()).toEqual(["npm:@operator/example"]);
+    expect(settingsManager.getPackages()).toEqual(["npm:@gabrielvfonseca/example"]);
     expect(settingsManager.getCompactionReserveTokens()).toBe(50_000);
   });
 
@@ -52,12 +52,12 @@ describe("SettingsManager runtime overrides", () => {
       retry: {
         provider: { timeoutMs: 30_000, maxRetries: 2, maxRetryDelayMs: 60_000 },
       },
-      packages: ["npm:@operator/base"],
+      packages: ["npm:@gabrielvfonseca/base"],
     });
 
     settingsManager.applyOverrides({
       retry: { provider: { maxRetries: 5 } },
-      packages: ["npm:@operator/override"],
+      packages: ["npm:@gabrielvfonseca/override"],
     });
 
     expect(settingsManager.getProviderRetrySettings()).toEqual({
@@ -65,6 +65,6 @@ describe("SettingsManager runtime overrides", () => {
       maxRetries: 5,
       maxRetryDelayMs: 60_000,
     });
-    expect(settingsManager.getPackages()).toEqual(["npm:@operator/override"]);
+    expect(settingsManager.getPackages()).toEqual(["npm:@gabrielvfonseca/override"]);
   });
 });

@@ -1,12 +1,15 @@
 // Codex memory plans validate source/destination separation before exposing copy items.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from "openclaw/plugin-sdk/migration";
-import type { MigrationItem } from "openclaw/plugin-sdk/plugin-entry";
+import {
+  createMigrationItem,
+  MIGRATION_REASON_TARGET_EXISTS,
+} from "@gabrielvfonseca/operator/plugin-sdk/migration";
+import type { MigrationItem } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   canonicalPathFromExistingAncestor,
   isPathInside,
-} from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { exists } from "./helpers.js";
 import type { CodexMemorySource } from "./source-files.js";
 

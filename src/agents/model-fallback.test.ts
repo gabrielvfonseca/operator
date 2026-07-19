@@ -1,7 +1,7 @@
 // Covers model fallback ordering, error classification, and auth cooldown behavior.
 import crypto from "node:crypto";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { TranscriptNotContinuableError } from "../../packages/agent-core/src/errors.js";
 import type { OperatorConfig } from "../config/config.js";
@@ -320,7 +320,7 @@ async function withTempAuthStore<T>(
 }
 
 async function makeAuthTempDir(): Promise<string> {
-  authTempRoot ||= path.join("/tmp", "openclaw-auth-suite-mock");
+  authTempRoot ||= path.join("/tmp", "operator-auth-suite-mock");
   return path.join(authTempRoot, `case-${++authTempCounter}`);
 }
 
@@ -786,13 +786,13 @@ describe("runWithModelFallback", () => {
       cfg: makeCfg(),
       provider: "openai",
       model: "gpt-4.1-mini",
-      agentDir: "/tmp/openclaw-no-auth-profiles",
+      agentDir: "/tmp/operator-no-auth-profiles",
       run,
     });
 
     expect(result.result).toBe("ok");
     expect(authSourceCheckMock.hasAnyAuthProfileStoreSource).toHaveBeenCalledWith(
-      "/tmp/openclaw-no-auth-profiles",
+      "/tmp/operator-no-auth-profiles",
     );
     expect(authRuntimeMock.runtime.ensureAuthProfileStore).not.toHaveBeenCalled();
     expect(run).toHaveBeenCalledWith("openai", "gpt-4.1-mini", {
@@ -999,7 +999,7 @@ describe("runWithModelFallback", () => {
         providers: {
           openai: {
             baseUrl: "https://api.openai.com/v1",
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
             models: [],
           },
         },
@@ -1029,7 +1029,7 @@ describe("runWithModelFallback", () => {
         providers: {
           openai: {
             baseUrl: "https://api.openai.com/v1",
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
             models: [],
           },
         },
@@ -2284,7 +2284,7 @@ describe("runWithModelFallback", () => {
         provider: "anthropic",
         model: "claude-haiku-3-5",
         resolveAgentHarnessRuntimeOverride: (provider) =>
-          provider === "openai" ? "openclaw" : undefined,
+          provider === "openai" ? "@gabrielvfonseca/operator" : undefined,
         run,
       }),
     ).rejects.toBe(switchError);
@@ -2305,7 +2305,7 @@ describe("runWithModelFallback", () => {
         provider: "openai",
         model: "gpt-4.1-mini",
         fallbacksOverride: [],
-        resolveAgentHarnessRuntimeOverride: () => "openclaw",
+        resolveAgentHarnessRuntimeOverride: () => "@gabrielvfonseca/operator",
         run,
       }),
     ).rejects.toBe(switchError);
@@ -2703,7 +2703,7 @@ describe("runWithModelFallback", () => {
   });
 
   it("warns when falling back due to model_not_found", async () => {
-    const warnLogs = createWarnLogCapture("openclaw-model-fallback-test");
+    const warnLogs = createWarnLogCapture("operator-model-fallback-test");
     try {
       const cfg = makeCfg();
       const run = vi
@@ -2730,7 +2730,7 @@ describe("runWithModelFallback", () => {
   });
 
   it("sanitizes model identifiers in model_not_found warnings", async () => {
-    const warnLogs = createWarnLogCapture("openclaw-model-fallback-test");
+    const warnLogs = createWarnLogCapture("operator-model-fallback-test");
     try {
       const cfg = makeCfg();
       const run = vi

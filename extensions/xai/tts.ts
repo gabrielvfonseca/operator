@@ -3,13 +3,17 @@ import {
   assertOkOrThrowProviderError,
   postJsonRequest,
   readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
-import { asObject, trimToUndefined, type SpeechVoiceOption } from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
+import {
+  asObject,
+  trimToUndefined,
+  type SpeechVoiceOption,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import WebSocket, { type RawData } from "ws";
 import { XAI_BASE_URL } from "./api.js";
 import { xaiUserAgentHeaderFor } from "./src/xai-user-agent.js";

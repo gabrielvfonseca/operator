@@ -706,50 +706,50 @@
     },
     {
       "locale": "fr",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "Demande à OpenClaw",
-        "Interrogation d’OpenClaw"
+        "Demande à Operator",
+        "Interrogation d’Operator"
       ]
     },
     {
       "locale": "id",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "Bertanya kepada OpenClaw",
-        "Meminta OpenClaw"
+        "Bertanya kepada Operator",
+        "Meminta Operator"
       ]
     },
     {
       "locale": "ja-JP",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "OpenClaw に問い合わせ中",
-        "OpenClawに問い合わせ中"
+        "Operator に問い合わせ中",
+        "Operatorに問い合わせ中"
       ]
     },
     {
       "locale": "ko",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "OpenClaw에 문의 중",
-        "OpenClaw에 요청 중"
+        "Operator에 문의 중",
+        "Operator에 요청 중"
       ]
     },
     {
       "locale": "pl",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "Pytanie OpenClaw",
-        "Pytanie do OpenClaw"
+        "Pytanie Operator",
+        "Pytanie do Operator"
       ]
     },
     {
       "locale": "tr",
-      "source": "Asking OpenClaw",
+      "source": "Asking Operator",
       "translations": [
-        "OpenClaw'a soruluyor",
-        "OpenClaw’a soruluyor"
+        "Operator'a soruluyor",
+        "Operator’a soruluyor"
       ]
     },
     {
@@ -5581,74 +5581,74 @@
     },
     {
       "locale": "ar",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "لا يستطيع OpenClaw تحديد إذن الموقع الحالي في iOS.",
-        "يتعذّر على OpenClaw تحديد إذن الموقع الحالي في iOS."
+        "لا يستطيع Operator تحديد إذن الموقع الحالي في iOS.",
+        "يتعذّر على Operator تحديد إذن الموقع الحالي في iOS."
       ]
     },
     {
       "locale": "fr",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw ne peut pas déterminer l'autorisation de localisation iOS actuelle.",
-        "OpenClaw ne peut pas déterminer l’autorisation de localisation iOS actuelle."
+        "Operator ne peut pas déterminer l'autorisation de localisation iOS actuelle.",
+        "Operator ne peut pas déterminer l’autorisation de localisation iOS actuelle."
       ]
     },
     {
       "locale": "hi",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw वर्तमान iOS लोकेशन अनुमति निर्धारित नहीं कर सकता।",
-        "OpenClaw वर्तमान iOS स्थान अनुमति निर्धारित नहीं कर सकता।"
+        "Operator वर्तमान iOS लोकेशन अनुमति निर्धारित नहीं कर सकता।",
+        "Operator वर्तमान iOS स्थान अनुमति निर्धारित नहीं कर सकता।"
       ]
     },
     {
       "locale": "it",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw non può determinare l’autorizzazione alla posizione iOS attuale.",
-        "OpenClaw non riesce a determinare l'attuale autorizzazione alla posizione di iOS."
+        "Operator non può determinare l’autorizzazione alla posizione iOS attuale.",
+        "Operator non riesce a determinare l'attuale autorizzazione alla posizione di iOS."
       ]
     },
     {
       "locale": "ja-JP",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw は現在の iOS 位置情報の権限を確認できません。",
-        "OpenClaw は現在の iOS 位置情報許可を判別できません。"
+        "Operator は現在の iOS 位置情報の権限を確認できません。",
+        "Operator は現在の iOS 位置情報許可を判別できません。"
       ]
     },
     {
       "locale": "ru",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw не может определить текущее разрешение iOS на доступ к местоположению.",
-        "OpenClaw не удается определить текущее разрешение iOS на доступ к геопозиции."
+        "Operator не может определить текущее разрешение iOS на доступ к местоположению.",
+        "Operator не удается определить текущее разрешение iOS на доступ к геопозиции."
       ]
     },
     {
       "locale": "th",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw ไม่สามารถระบุการอนุญาตตำแหน่งที่ตั้งของ iOS ในปัจจุบันได้",
-        "OpenClaw ไม่สามารถระบุการอนุญาตตำแหน่งที่ตั้งปัจจุบันของ iOS ได้"
+        "Operator ไม่สามารถระบุการอนุญาตตำแหน่งที่ตั้งของ iOS ในปัจจุบันได้",
+        "Operator ไม่สามารถระบุการอนุญาตตำแหน่งที่ตั้งปัจจุบันของ iOS ได้"
       ]
     },
     {
       "locale": "tr",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw geçerli iOS konum iznini belirleyemiyor.",
-        "OpenClaw mevcut iOS konum iznini belirleyemiyor."
+        "Operator geçerli iOS konum iznini belirleyemiyor.",
+        "Operator mevcut iOS konum iznini belirleyemiyor."
       ]
     },
     {
       "locale": "uk",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
+      "source": "Operator cannot determine the current iOS location permission.",
       "translations": [
-        "OpenClaw не може визначити поточний дозвіл iOS на геолокацію.",
-        "OpenClaw не може визначити поточний дозвіл iOS на доступ до геолокації."
+        "Operator не може визначити поточний дозвіл iOS на геолокацію.",
+        "Operator не може визначити поточний дозвіл iOS на доступ до геолокації."
       ]
     },
     {
@@ -8521,18 +8521,18 @@
     },
     {
       "locale": "hi",
-      "source": "Updating OpenClaw",
+      "source": "Updating Operator",
       "translations": [
-        "OpenClaw अपडेट किया जा रहा है",
-        "OpenClaw को अपडेट किया जा रहा है"
+        "Operator अपडेट किया जा रहा है",
+        "Operator को अपडेट किया जा रहा है"
       ]
     },
     {
       "locale": "ja-JP",
-      "source": "Updating OpenClaw",
+      "source": "Updating Operator",
       "translations": [
-        "OpenClaw を更新中",
-        "OpenClawを更新中"
+        "Operator を更新中",
+        "Operatorを更新中"
       ]
     },
     {

@@ -1,6 +1,6 @@
-import { SENSITIVE_URL_HINT_TAG } from "@operator/net-policy/redact-sensitive-url";
+import { SENSITIVE_URL_HINT_TAG } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
 // Covers canonical config schema defaults, validation, and sensitive redaction.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, describe, expect, it } from "vitest";
 import { buildConfigSchema, lookupConfigSchema } from "./schema.js";
 import { applyDerivedTags } from "./schema.tags.js";
@@ -279,7 +279,7 @@ describe("config schema", () => {
               transport: "streamable-http",
               auth: "oauth",
               oauth: {
-                clientMetadataUrl: "https://client.example.com/openclaw-mcp.json",
+                clientMetadataUrl: "https://client.example.com/operator-mcp.json",
               },
             },
           },
@@ -287,7 +287,7 @@ describe("config schema", () => {
       }),
     ).not.toThrow();
     for (const clientMetadataUrl of [
-      "http://client.example.com/openclaw-mcp.json",
+      "http://client.example.com/operator-mcp.json",
       "https://client.example.com/",
     ]) {
       expect(() =>
@@ -840,7 +840,7 @@ describe("config schema", () => {
           targets: ["skill", "plugin"],
           exec: {
             source: "exec",
-            command: "/usr/local/bin/openclaw-install-policy",
+            command: "/usr/local/bin/operator-install-policy",
             args: ["--json"],
             timeoutMs: 5000,
             noOutputTimeoutMs: 2500,
@@ -860,7 +860,7 @@ describe("config schema", () => {
     expect(parsed.security?.installPolicy?.targets).toEqual(["skill", "plugin"]);
     expect(parsed.security?.installPolicy?.exec?.source).toBe("exec");
     expect(parsed.security?.installPolicy?.exec?.command).toBe(
-      "/usr/local/bin/openclaw-install-policy",
+      "/usr/local/bin/operator-install-policy",
     );
   });
 

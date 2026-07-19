@@ -1,13 +1,13 @@
 // Telegram plugin module implements bot native command menu behavior.
 import { createHash } from "node:crypto";
-import type { Bot } from "grammy";
-import type { LanguageCode } from "grammy/types";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   normalizeOptionalString,
   readStringValue,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import type { Bot } from "grammy";
+import type { LanguageCode } from "grammy/types";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import { normalizeTelegramCommandName, TELEGRAM_COMMAND_NAME_PATTERN } from "./command-config.js";
 

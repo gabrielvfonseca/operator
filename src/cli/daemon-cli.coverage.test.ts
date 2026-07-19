@@ -184,7 +184,7 @@ describe("daemon-cli coverage", () => {
 
   beforeEach(() => {
     daemonProgram = createDaemonProgram();
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-daemon-cli-"));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-daemon-cli-"));
     envSnapshot = captureEnv([
       "OPERATOR_STATE_DIR",
       "OPERATOR_CONFIG_PATH",
@@ -192,7 +192,7 @@ describe("daemon-cli coverage", () => {
       "OPERATOR_PROFILE",
     ]);
     setTestEnvValue("OPERATOR_STATE_DIR", tmpDir);
-    setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(tmpDir, "openclaw.json"));
+    setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(tmpDir, "operator.json"));
     deleteTestEnvValue("OPERATOR_GATEWAY_PORT");
     deleteTestEnvValue("OPERATOR_PROFILE");
     serviceReadCommand.mockResolvedValue(null);
@@ -230,11 +230,11 @@ describe("daemon-cli coverage", () => {
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
         OPERATOR_PROFILE: "dev",
-        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon-state",
-        OPERATOR_CONFIG_PATH: "/tmp/openclaw-daemon-state/openclaw.json",
+        OPERATOR_STATE_DIR: "/tmp/operator-daemon-state",
+        OPERATOR_CONFIG_PATH: "/tmp/operator-daemon-state/operator.json",
         OPERATOR_GATEWAY_PORT: "19001",
       },
-      sourcePath: "/tmp/ai.openclaw.gateway.plist",
+      sourcePath: "/tmp/ai.operator.gateway.plist",
     });
 
     await runDaemonCommand(["daemon", "status", "--json"]);
@@ -303,12 +303,12 @@ describe("daemon-cli coverage", () => {
     serviceReadCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway", "--port", "18789"],
       environment: {
-        OPERATOR_WRAPPER: "/usr/local/bin/openclaw-doppler",
+        OPERATOR_WRAPPER: "/usr/local/bin/operator-doppler",
         PATH: "/custom/go/bin:/usr/bin",
         GOPATH: "/Users/test/.local/gopath",
         GOBIN: "/Users/test/.local/gopath/bin",
       },
-      sourcePath: "/tmp/ai.openclaw.gateway.plist",
+      sourcePath: "/tmp/ai.operator.gateway.plist",
     });
 
     await runDaemonCommand(["daemon", "install", "--force", "--json"]);
@@ -319,12 +319,12 @@ describe("daemon-cli coverage", () => {
     );
     expect(installPlanParams.existingEnvironment).toEqual({
       PATH: "/custom/go/bin:/usr/bin",
-      OPERATOR_WRAPPER: "/usr/local/bin/openclaw-doppler",
+      OPERATOR_WRAPPER: "/usr/local/bin/operator-doppler",
       GOPATH: "/Users/test/.local/gopath",
       GOBIN: "/Users/test/.local/gopath/bin",
     });
     expect((installPlanParams.env as NodeJS.ProcessEnv).OPERATOR_WRAPPER).toBe(
-      "/usr/local/bin/openclaw-doppler",
+      "/usr/local/bin/operator-doppler",
     );
   });
 
@@ -336,12 +336,12 @@ describe("daemon-cli coverage", () => {
       "daemon",
       "install",
       "--wrapper",
-      "/usr/local/bin/openclaw-doppler",
+      "/usr/local/bin/operator-doppler",
       "--json",
     ]);
 
     expect(requireMockCallArg(buildGatewayInstallPlan, "buildGatewayInstallPlan").wrapperPath).toBe(
-      "/usr/local/bin/openclaw-doppler",
+      "/usr/local/bin/operator-doppler",
     );
   });
 

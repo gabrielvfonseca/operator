@@ -5,7 +5,7 @@ read_when:
 title: "TypeBox"
 ---
 
-TypeBox is a TypeScript-first schema library. OpenClaw uses it to define the **Gateway WebSocket protocol** (handshake, request/response, server events). Those schemas drive **runtime validation** (AJV), **JSON Schema export**, and **Swift codegen** for the macOS app. One source of truth; everything else is generated.
+TypeBox is a TypeScript-first schema library. Operator uses it to define the **Gateway WebSocket protocol** (handshake, request/response, server events). Those schemas drive **runtime validation** (AJV), **JSON Schema export**, and **Swift codegen** for the macOS app. One source of truth; everything else is generated.
 
 For the higher-level protocol context, start with [Gateway architecture](/concepts/architecture).
 
@@ -52,7 +52,7 @@ The authoritative advertised **discovery** inventory lives in `src/gateway/serve
 - Server handshake and method dispatch: `src/gateway/server.impl.ts`
 - Node client: `src/gateway/client.ts`
 - Generated JSON Schema: `dist/protocol.schema.json` (build output, not committed)
-- Generated Swift models: `apps/shared/OpenClawKit/Sources/OpenClawProtocol/GatewayModels.swift`
+- Generated Swift models: `apps/shared/OperatorKit/Sources/OperatorProtocol/GatewayModels.swift`
 
 ## Current pipeline
 
@@ -80,7 +80,7 @@ Connect (first message):
     "minProtocol": 3,
     "maxProtocol": 4,
     "client": {
-      "id": "openclaw-macos",
+      "id": "operator-macos",
       "displayName": "macos",
       "version": "1.0.0",
       "platform": "macos 15.1",

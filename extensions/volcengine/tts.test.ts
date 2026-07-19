@@ -206,7 +206,7 @@ describe("Volcengine speech provider", () => {
           "X-Api-App-Key": "aGjiRDfUWi",
         },
         body: JSON.stringify({
-          user: { uid: "openclaw" },
+          user: { uid: "@gabrielvfonseca/operator" },
           req_params: {
             text: "hello",
             speaker: "zh_male_aojiao_mars_bigtts",

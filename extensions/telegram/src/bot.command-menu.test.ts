@@ -2,7 +2,7 @@
 import {
   listNativeCommandSpecs,
   listNativeCommandSpecsForConfig,
-} from "openclaw/plugin-sdk/native-command-registry";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-registry";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 

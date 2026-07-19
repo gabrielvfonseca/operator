@@ -1,16 +1,16 @@
 // Zalo tests cover monitor.polling.media reply plugin behavior.
 import type { ServerResponse } from "node:http";
-import { expectDefined } from "@operator/normalization-core";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import {
   createEmptyPluginRegistry,
   createRuntimeEnv,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { PluginRuntime } from "../runtime-api.js";
 import { setZaloRuntime } from "./runtime.js";

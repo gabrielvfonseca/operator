@@ -1,5 +1,5 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeConfiguredMcpServers } from "../config/mcp-config-normalize.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";

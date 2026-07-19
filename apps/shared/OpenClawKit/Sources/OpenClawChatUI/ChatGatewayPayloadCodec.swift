@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 
-public enum OpenClawChatSessionKey {
+public enum OperatorChatSessionKey {
     public static func agentID(from sessionKey: String?) -> String? {
         let parts = (sessionKey ?? "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -14,7 +14,7 @@ public enum OpenClawChatSessionKey {
 }
 
 /// Canonical gateway payload mapping shared by the native Apple chat transports.
-public enum OpenClawChatGatewayPayloadCodec {
+public enum OperatorChatGatewayPayloadCodec {
     private struct AgentWaitResponse: Decodable {
         var status: String?
         var endedAt: Double?
@@ -28,9 +28,9 @@ public enum OpenClawChatGatewayPayloadCodec {
         var aborted: Bool?
     }
 
-    public static func decodeAgentWaitObservation(_ data: Data) throws -> OpenClawChatRunObservation {
+    public static func decodeAgentWaitObservation(_ data: Data) throws -> OperatorChatRunObservation {
         let decoded = try JSONDecoder().decode(AgentWaitResponse.self, from: data)
-        return OpenClawChatRunObservation.fromWaitResponse(
+        return OperatorChatRunObservation.fromWaitResponse(
             status: decoded.status,
             endedAt: decoded.endedAt,
             error: decoded.error,
@@ -43,14 +43,14 @@ public enum OpenClawChatGatewayPayloadCodec {
             aborted: decoded.aborted)
     }
 
-    public static func decodeModelChoices(_ data: Data) throws -> [OpenClawChatModelChoice] {
+    public static func decodeModelChoices(_ data: Data) throws -> [OperatorChatModelChoice] {
         let decoded = try JSONDecoder().decode(ModelsListResult.self, from: data)
         return decoded.models.map(self.modelChoice)
     }
 
-    public static func decodeSessionRoutingIdentity(_ data: Data) throws -> OpenClawChatSessionRoutingIdentity {
+    public static func decodeSessionRoutingIdentity(_ data: Data) throws -> OperatorChatSessionRoutingIdentity {
         let decoded = try JSONDecoder().decode(AgentsListResult.self, from: data)
-        guard let identity = OpenClawChatSessionRoutingIdentity(
+        guard let identity = OperatorChatSessionRoutingIdentity(
             scope: decoded.scope.value as? String,
             mainSessionKey: decoded.mainkey,
             defaultAgentID: decoded.defaultid)
@@ -58,9 +58,9 @@ public enum OpenClawChatGatewayPayloadCodec {
         return identity
     }
 
-    public static func modelChoice(_ model: ModelChoice) -> OpenClawChatModelChoice {
+    public static func modelChoice(_ model: ModelChoice) -> OperatorChatModelChoice {
         let name = model.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        return OpenClawChatModelChoice(
+        return OperatorChatModelChoice(
             modelID: model.id,
             name: name.isEmpty ? model.id : model.name,
             provider: model.provider,
@@ -68,11 +68,11 @@ public enum OpenClawChatGatewayPayloadCodec {
             reasoning: model.reasoning)
     }
 
-    public static func commandChoice(_ entry: CommandEntry) -> OpenClawChatCommandChoice {
+    public static func commandChoice(_ entry: CommandEntry) -> OperatorChatCommandChoice {
         let sourceValue = (entry.source.value as? String)?
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
-        let source: OpenClawChatCommandChoice.Source = switch sourceValue {
+        let source: OperatorChatCommandChoice.Source = switch sourceValue {
         case "native":
             .command
         case "skill":
@@ -90,7 +90,7 @@ public enum OpenClawChatGatewayPayloadCodec {
             entry.name.trimmingCharacters(in: .whitespacesAndNewlines),
             aliases.first ?? "",
         ].joined(separator: ":")
-        return OpenClawChatCommandChoice(
+        return OperatorChatCommandChoice(
             id: id,
             name: entry.name,
             textAliases: aliases,
@@ -99,7 +99,7 @@ public enum OpenClawChatGatewayPayloadCodec {
             acceptsArgs: entry.acceptsargs)
     }
 
-    public static func event(from frame: EventFrame) -> OpenClawChatTransportEvent? {
+    public static func event(from frame: EventFrame) -> OperatorChatTransportEvent? {
         switch frame.event {
         case "tick":
             return .tick
@@ -107,7 +107,7 @@ public enum OpenClawChatGatewayPayloadCodec {
             guard let payload = frame.payload,
                   let change = try? GatewayPayloadDecoding.decode(
                       payload,
-                      as: OpenClawChatSessionsChangedEvent.self)
+                      as: OperatorChatSessionsChangedEvent.self)
             else { return nil }
             return .sessionsChanged(change)
         case "seqGap":
@@ -116,27 +116,27 @@ public enum OpenClawChatGatewayPayloadCodec {
             guard let payload = frame.payload else { return nil }
             let ok = (try? GatewayPayloadDecoding.decode(
                 payload,
-                as: OpenClawGatewayHealthOK.self))?.ok ?? true
+                as: OperatorGatewayHealthOK.self))?.ok ?? true
             return .health(ok: ok)
         case "chat":
             guard let payload = frame.payload,
                   let chat = try? GatewayPayloadDecoding.decode(
                       payload,
-                      as: OpenClawChatEventPayload.self)
+                      as: OperatorChatEventPayload.self)
             else { return nil }
             return .chat(chat)
         case "session.message":
             guard let payload = frame.payload,
                   let message = try? GatewayPayloadDecoding.decode(
                       payload,
-                      as: OpenClawSessionMessageEventPayload.self)
+                      as: OperatorSessionMessageEventPayload.self)
             else { return nil }
             return .sessionMessage(message)
         case "agent":
             guard let payload = frame.payload,
                   let agent = try? GatewayPayloadDecoding.decode(
                       payload,
-                      as: OpenClawAgentEventPayload.self)
+                      as: OperatorAgentEventPayload.self)
             else { return nil }
             return .agent(agent)
         default:

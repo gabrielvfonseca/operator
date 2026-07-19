@@ -5,7 +5,7 @@ import { readTextFileTail } from "../text-file-utils.mjs";
 import { assert, readJson, requireArg, write, writeJson } from "./common.mjs";
 
 const AGENTS_DELETE_OUTPUT_MAX_BYTES = readPositiveIntEnv(
-  "OPENCLAW_FIXTURE_AGENTS_DELETE_OUTPUT_MAX_BYTES",
+  "OPERATOR_FIXTURE_AGENTS_DELETE_OUTPUT_MAX_BYTES",
   1024 * 1024,
 );
 const ERROR_DETAIL_TAIL_BYTES = 16 * 1024;
@@ -24,12 +24,12 @@ function readPositiveIntEnv(name, fallback) {
 
 function writeOpenWebUiWorkspace() {
   const workspace =
-    process.env.OPENCLAW_WORKSPACE_DIR || path.join(process.env.HOME, ".openclaw", "workspace");
+    process.env.OPERATOR_WORKSPACE_DIR || path.join(process.env.HOME, ".operator", "workspace");
   write(
     path.join(workspace, "IDENTITY.md"),
-    "# Identity\n\n- Name: OpenClaw\n- Purpose: Open WebUI Docker compatibility smoke test assistant.\n",
+    "# Identity\n\n- Name: Operator\n- Purpose: Open WebUI Docker compatibility smoke test assistant.\n",
   );
-  writeJson(path.join(workspace, ".openclaw", "workspace-state.json"), {
+  writeJson(path.join(workspace, ".operator", "workspace-state.json"), {
     version: 1,
     setupCompletedAt: "2026-01-01T00:00:00.000Z",
   });
@@ -37,11 +37,11 @@ function writeOpenWebUiWorkspace() {
 }
 
 function writeAgentsDeleteConfig() {
-  const stateDir = requireArg(process.env.OPENCLAW_STATE_DIR, "OPENCLAW_STATE_DIR");
+  const stateDir = requireArg(process.env.OPERATOR_STATE_DIR, "OPERATOR_STATE_DIR");
   const sharedWorkspace = requireArg(process.env.SHARED_WORKSPACE, "SHARED_WORKSPACE");
-  const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN?.trim();
+  const gatewayToken = process.env.OPERATOR_GATEWAY_TOKEN?.trim();
   fs.mkdirSync(sharedWorkspace, { recursive: true });
-  writeJson(path.join(stateDir, "openclaw.json"), {
+  writeJson(path.join(stateDir, "operator.json"), {
     agents: {
       list: [
         { id: "main", workspace: sharedWorkspace },
@@ -88,7 +88,7 @@ function assertAgentsDeleteResult([outputPath]) {
   );
   assert(fs.existsSync(process.env.SHARED_WORKSPACE), "shared workspace was removed");
   const remaining =
-    readJson(path.join(process.env.OPENCLAW_STATE_DIR, "openclaw.json"))?.agents?.list ?? [];
+    readJson(path.join(process.env.OPERATOR_STATE_DIR, "operator.json"))?.agents?.list ?? [];
   assert(Array.isArray(remaining), "agents list missing after delete");
   assert(!remaining.some((entry) => entry?.id === "ops"), "deleted agent remained in config");
   assert(

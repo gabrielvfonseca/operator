@@ -44,7 +44,8 @@ export function isSystemAgentOnlyCodexDynamicToolAllowlist(
   toolsAllow: readonly string[] | undefined,
 ): boolean {
   return (
-    toolsAllow?.length === 1 && normalizeCodexDynamicToolName(toolsAllow[0] ?? "") === "openclaw"
+    toolsAllow?.length === 1 &&
+    normalizeCodexDynamicToolName(toolsAllow[0] ?? "") === "@gabrielvfonseca/operator"
   );
 }
 

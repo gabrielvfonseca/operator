@@ -1,7 +1,7 @@
 // agents_list tests cover subagent discovery, runtime metadata, and legacy
 // runtime override handling.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createAgentsListTool } from "./agents-list-tool.js";
 
 const loadConfigMock = vi.fn<() => OperatorConfig>();
@@ -38,7 +38,7 @@ describe("agents_list tool", () => {
       agents: {
         defaults: {
           model: "anthropic/claude-opus-4.5",
-          agentRuntime: { id: "openclaw" },
+          agentRuntime: { id: "@gabrielvfonseca/operator" },
           subagents: { allowAgents: ["codex"] },
         },
         list: [
@@ -47,7 +47,7 @@ describe("agents_list tool", () => {
             id: "codex",
             name: "Codex",
             model: "openai/gpt-5.5",
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
             models: {
               "openai/gpt-5.5": { agentRuntime: { id: "codex" } },
             },

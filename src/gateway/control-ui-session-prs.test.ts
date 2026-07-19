@@ -49,14 +49,16 @@ function pullListItem(overrides: Record<string, unknown> = {}): Record<string, u
     draft: false,
     merged_at: null,
     head: { sha: "a".repeat(40) },
-    base: { repo: { name: "openclaw", owner: { login: "openclaw" } } },
+    base: {
+      repo: { name: "@gabrielvfonseca/operator", owner: { login: "@gabrielvfonseca/operator" } },
+    },
     ...overrides,
   };
 }
 
 const context: GitContext = {
-  owner: "openclaw",
-  repo: "openclaw",
+  owner: "@gabrielvfonseca/operator",
+  repo: "@gabrielvfonseca/operator",
   branch: "claude/browser-tabs-tighter-header",
 };
 
@@ -66,15 +68,15 @@ let cacheEvictionEpoch = 0;
 
 describe("parseGitHubRemoteUrl", () => {
   it("parses https, scp-like, and ssh remotes", () => {
-    const expected = { owner: "openclaw", repo: "openclaw" };
-    expect(parseGitHubRemoteUrl("https://github.com/openclaw/openclaw.git")).toEqual(expected);
+    const expected = { owner: "@gabrielvfonseca/operator", repo: "@gabrielvfonseca/operator" };
+    expect(parseGitHubRemoteUrl("https://github.com/openclaw/operator.git")).toEqual(expected);
     expect(parseGitHubRemoteUrl("https://github.com/openclaw/openclaw")).toEqual(expected);
-    expect(parseGitHubRemoteUrl("git@github.com:openclaw/openclaw.git")).toEqual(expected);
-    expect(parseGitHubRemoteUrl("ssh://git@github.com/openclaw/openclaw.git")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("git@github.com:openclaw/operator.git")).toEqual(expected);
+    expect(parseGitHubRemoteUrl("ssh://git@github.com/openclaw/operator.git")).toEqual(expected);
   });
 
   it("rejects non-GitHub and malformed remotes", () => {
-    expect(parseGitHubRemoteUrl("https://gitlab.com/openclaw/openclaw.git")).toBeNull();
+    expect(parseGitHubRemoteUrl("https://gitlab.com/openclaw/operator.git")).toBeNull();
     expect(parseGitHubRemoteUrl("git@github.com:openclaw")).toBeNull();
     expect(parseGitHubRemoteUrl("https://github.com/openclaw/openclaw/extra")).toBeNull();
     expect(parseGitHubRemoteUrl("/local/path/repo.git")).toBeNull();
@@ -159,8 +161,8 @@ describe("loadControlUiSessionPullRequests", () => {
       pullRequests: [
         {
           number: 103469,
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           branch: context.branch,
           title: "fix(macos): tighten the link-browser tab header",
           url: "https://github.com/openclaw/openclaw/pull/103469",
@@ -172,8 +174,8 @@ describe("loadControlUiSessionPullRequests", () => {
         },
       ],
       branch: {
-        owner: "openclaw",
-        repo: "openclaw",
+        owner: "@gabrielvfonseca/operator",
+        repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         createUrl:
           "https://github.com/openclaw/openclaw/pull/new/claude/browser-tabs-tighter-header",
@@ -198,8 +200,8 @@ describe("loadControlUiSessionPullRequests", () => {
     expect(result.pullRequests).toEqual([
       {
         number: 103469,
-        owner: "openclaw",
-        repo: "openclaw",
+        owner: "@gabrielvfonseca/operator",
+        repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         title: "fix(macos): tighten the link-browser tab header",
         url: "https://github.com/openclaw/openclaw/pull/103469",
@@ -274,7 +276,10 @@ describe("loadControlUiSessionPullRequests", () => {
         response: () =>
           githubJson({
             fork: true,
-            parent: { name: "openclaw", owner: { login: "openclaw" } },
+            parent: {
+              name: "@gabrielvfonseca/operator",
+              owner: { login: "@gabrielvfonseca/operator" },
+            },
           }),
       },
       {
@@ -388,8 +393,8 @@ describe("loadControlUiSessionPullRequests", () => {
     expect(result).toEqual({
       pullRequests: [],
       branch: {
-        owner: "openclaw",
-        repo: "openclaw",
+        owner: "@gabrielvfonseca/operator",
+        repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         createUrl:
           "https://github.com/openclaw/openclaw/pull/new/claude/browser-tabs-tighter-header",
@@ -423,8 +428,8 @@ describe("loadControlUiSessionPullRequests", () => {
     expect(result.pullRequests).toEqual([
       {
         number: 103469,
-        owner: "openclaw",
-        repo: "openclaw",
+        owner: "@gabrielvfonseca/operator",
+        repo: "@gabrielvfonseca/operator",
         branch: context.branch,
         title: "fix(macos): tighten the link-browser tab header",
         url: "https://github.com/openclaw/openclaw/pull/103469",
@@ -469,12 +474,12 @@ describe("session branch diff stats", () => {
   let root: string;
 
   const git = (...args: string[]) =>
-    execFileAsync("git", ["-c", "user.email=test@openclaw.ai", "-c", "user.name=Test", ...args], {
+    execFileAsync("git", ["-c", "user.email=test@operator.ai", "-c", "user.name=Test", ...args], {
       cwd: root,
     });
 
   beforeEach(async () => {
-    root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-prs-")));
+    root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-prs-")));
   });
 
   afterEach(async () => {
@@ -518,8 +523,8 @@ describe("session branch diff stats", () => {
     );
 
     expect(result.branch).toEqual({
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
       branch: "feature",
       additions: 4,
       deletions: 1,
@@ -627,8 +632,8 @@ describe("session branch diff stats", () => {
     // GitHub's pull/new page 404s for unpushed branches, so no Create PR
     // link — but the session's changed files still get a row.
     expect(result.branch).toEqual({
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
       branch: "feature",
       additions: 1,
       deletions: 0,
@@ -665,8 +670,8 @@ describe("session branch diff stats", () => {
     // origin/feature == origin/main, so no Create PR link yet, but the dirty
     // working tree is visible work the row must surface.
     expect(result.branch).toEqual({
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
       branch: "feature",
       additions: 1,
       deletions: 0,

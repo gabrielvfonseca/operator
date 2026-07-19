@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 import SwiftUI
 
 enum OnboardingProviderIcon {
@@ -108,7 +108,7 @@ struct OnboardingAISetupView: View {
                     : "Looking for AI you already use…")
                     .font(.callout.weight(.semibold))
                 Text(self.model.waitingForPendingActivationDeadline
-                    ? "OpenClaw will check again before changing any inference settings."
+                    ? "Operator will check again before changing any inference settings."
                     : "Checking CLI logins, saved API keys, and local model servers on the Gateway.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -195,7 +195,7 @@ struct OnboardingAISetupView: View {
                 Button {
                     self.showSystemAgentChat = true
                 } label: {
-                    Label("Need help? Chat with OpenClaw", systemImage: "questionmark.bubble")
+                    Label("Need help? Chat with Operator", systemImage: "questionmark.bubble")
                         .font(.caption)
                 }
                 .buttonStyle(.link)
@@ -431,7 +431,7 @@ struct OnboardingAISetupView: View {
                     .font(.headline)
                 Text(
                     "Use an existing subscription or provider account. " +
-                        "OpenClaw opens the provider’s own sign-in flow, then verifies it with a real reply.")
+                        "Operator opens the provider’s own sign-in flow, then verifies it with a real reply.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -741,15 +741,15 @@ struct OnboardingAISetupView: View {
     private var manualProviderHelp: String {
         let hint = self.model.selectedManualProvider?.hint?.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let hint, !hint.isEmpty else {
-            return "Paste the key or token here, and OpenClaw checks it with a real test question."
+            return "Paste the key or token here, and Operator checks it with a real test question."
         }
-        return "\(hint). Paste it here, and OpenClaw checks it with a real test question."
+        return "\(hint). Paste it here, and Operator checks it with a real test question."
     }
 
     private var systemAgentSheet: some View {
         VStack(spacing: 8) {
             HStack {
-                Label("OpenClaw — setup helper", systemImage: "lifepreserver")
+                Label("Operator — setup helper", systemImage: "lifepreserver")
                     .font(.headline)
                 Spacer(minLength: 0)
                 Button("Done") {
@@ -765,7 +765,7 @@ struct OnboardingAISetupView: View {
 }
 
 /// Friendly error presentation with a consistent docs escape hatch.
-/// Every onboarding failure points at a docs.openclaw.ai page so people are
+/// Every onboarding failure points at a docs.operator.ai page so people are
 /// never stuck staring at a raw error string.
 struct OnboardingErrorCard: View {
     let title: String
@@ -814,7 +814,7 @@ struct OnboardingErrorCard: View {
                             .controlSize(.small)
                     }
                     Button("Open help…") {
-                        if let url = URL(string: "https://docs.openclaw.ai/\(docsSlug)") {
+                        if let url = URL(string: "https://docs.operator.ai/\(docsSlug)") {
                             NSWorkspace.shared.open(url)
                         }
                     }

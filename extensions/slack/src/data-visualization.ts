@@ -1,10 +1,10 @@
-// Slack data-visualization Block Kit contract, projection, and text fallback.
-import type { Block } from "@slack/web-api";
 import {
   normalizeMessagePresentation,
   renderMessagePresentationChartFallbackText,
   type MessagePresentationChartBlock,
-} from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+// Slack data-visualization Block Kit contract, projection, and text fallback.
+import type { Block } from "@slack/web-api";
 import { escapeSlackMrkdwn } from "./monitor/mrkdwn.js";
 import { renderSlackMessagePresentationChartFallbackText } from "./presentation-fallback.js";
 

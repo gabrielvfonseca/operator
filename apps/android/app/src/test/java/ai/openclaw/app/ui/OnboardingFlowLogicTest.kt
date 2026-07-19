@@ -1,11 +1,11 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayConnectionProblem
-import ai.openclaw.app.GatewayNodeCapabilityApproval
-import ai.openclaw.app.LocationMode
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.GatewayConnectionProblem
+import ai.operator.app.GatewayNodeCapabilityApproval
+import ai.operator.app.LocationMode
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
 import android.Manifest
 import androidx.compose.runtime.saveable.SaverScope
 import kotlinx.coroutines.CompletableDeferred
@@ -234,7 +234,7 @@ class OnboardingFlowLogicTest {
   fun nearbyGatewayManualPortUsesResolvedDiscoveryEndpointPort() {
     val endpoint =
       GatewayEndpoint(
-        stableId = "_openclaw-gw._tcp.|local.|Home",
+        stableId = "_operator-gw._tcp.|local.|Home",
         name = "Home",
         host = "192.168.1.12",
         port = 53122,
@@ -249,7 +249,7 @@ class OnboardingFlowLogicTest {
     assertFalse(
       nearbyGatewayManualTls(
         GatewayEndpoint(
-          stableId = "_openclaw-gw._tcp.|local.|Lan",
+          stableId = "_operator-gw._tcp.|local.|Lan",
           name = "Lan",
           host = "192.168.1.12",
           port = 18789,
@@ -259,7 +259,7 @@ class OnboardingFlowLogicTest {
     assertTrue(
       nearbyGatewayManualTls(
         GatewayEndpoint(
-          stableId = "_openclaw-gw._tcp.|local.|Tls",
+          stableId = "_operator-gw._tcp.|local.|Tls",
           name = "Tls",
           host = "192.168.1.12",
           port = 18789,
@@ -270,7 +270,7 @@ class OnboardingFlowLogicTest {
     assertTrue(
       nearbyGatewayManualTls(
         GatewayEndpoint(
-          stableId = "_openclaw-gw._tcp.|local.|Pinned",
+          stableId = "_operator-gw._tcp.|local.|Pinned",
           name = "Pinned",
           host = "127.0.0.1",
           port = 18789,
@@ -281,7 +281,7 @@ class OnboardingFlowLogicTest {
     assertTrue(
       nearbyGatewayManualTls(
         GatewayEndpoint(
-          stableId = "_openclaw-gw._tcp.|local.|Remote",
+          stableId = "_operator-gw._tcp.|local.|Remote",
           name = "Remote",
           host = "gateway.example.com",
           port = 443,
@@ -291,7 +291,7 @@ class OnboardingFlowLogicTest {
     assertFalse(
       nearbyGatewayManualTls(
         GatewayEndpoint(
-          stableId = "_openclaw-gw._tcp.|local.|Loopback",
+          stableId = "_operator-gw._tcp.|local.|Loopback",
           name = "Loopback",
           host = "127.0.0.1",
           port = 18789,
@@ -416,9 +416,9 @@ class OnboardingFlowLogicTest {
 
   @Test
   fun recoveryNodeApprovalCommandUsesRequestIdWhenAvailable() {
-    assertEquals("openclaw nodes approve request-1", recoveryNodeApprovalCommand(" request-1 "))
-    assertEquals("openclaw nodes approve REQUEST_ID", recoveryNodeApprovalCommand(null))
-    assertEquals("openclaw nodes approve REQUEST_ID", recoveryNodeApprovalCommand(" "))
+    assertEquals("operator nodes approve request-1", recoveryNodeApprovalCommand(" request-1 "))
+    assertEquals("operator nodes approve REQUEST_ID", recoveryNodeApprovalCommand(null))
+    assertEquals("operator nodes approve REQUEST_ID", recoveryNodeApprovalCommand(" "))
   }
 
   @Test
@@ -836,7 +836,7 @@ class OnboardingFlowLogicTest {
   @Test
   fun recoveryGatewayDetailPreservesRetryablePairingGuidance() {
     assertEquals(
-      "Gateway approval is in progress. OpenClaw will retry automatically.",
+      "Gateway approval is in progress. Operator will retry automatically.",
       recoveryGatewayDetail(
         ready = false,
         remoteAddress = null,
@@ -934,7 +934,7 @@ class OnboardingFlowLogicTest {
   @Test
   fun recoveryGatewayAuthDetailPreservesProtocolMismatchGuidance() {
     assertEquals(
-      "This app is older than the Gateway. Update OpenClaw on this device, then retry. (app protocol v4, gateway protocol v5).",
+      "This app is older than the Gateway. Update Operator on this device, then retry. (app protocol v4, gateway protocol v5).",
       recoveryGatewayAuthDetail(
         GatewayConnectionProblem(
           code = "PROTOCOL_MISMATCH",
@@ -955,7 +955,7 @@ class OnboardingFlowLogicTest {
   @Test
   fun recoveryGatewayAuthDetailExplainsOlderGatewayProtocolMismatch() {
     assertEquals(
-      "The Gateway is older than this app. Update OpenClaw on the Gateway host, then retry. (app protocol v6, gateway protocol v5).",
+      "The Gateway is older than this app. Update Operator on the Gateway host, then retry. (app protocol v6, gateway protocol v5).",
       recoveryGatewayAuthDetail(
         GatewayConnectionProblem(
           code = "PROTOCOL_MISMATCH",
@@ -972,7 +972,7 @@ class OnboardingFlowLogicTest {
       ),
     )
     assertEquals(
-      "openclaw update",
+      "operator update",
       recoveryGatewayProtocolMismatchCommand(
         GatewayConnectionProblem(
           code = "PROTOCOL_MISMATCH",
@@ -993,7 +993,7 @@ class OnboardingFlowLogicTest {
   @Test
   fun recoveryGatewayAuthDetailExplainsIncompatibleProtocolMismatch() {
     assertEquals(
-      "The app and Gateway use incompatible protocol versions. Update OpenClaw on both, then retry. (app protocols v4-v6).",
+      "The app and Gateway use incompatible protocol versions. Update Operator on both, then retry. (app protocols v4-v6).",
       recoveryGatewayAuthDetail(
         GatewayConnectionProblem(
           code = "PROTOCOL_MISMATCH",
@@ -1103,7 +1103,7 @@ class OnboardingFlowLogicTest {
         localizeLabel = { label -> "[$label]" },
       )
 
-    assertTrue(diagnostic.contains("[OpenClaw Android gateway diagnostic]"))
+    assertTrue(diagnostic.contains("[Operator Android gateway diagnostic]"))
     assertTrue(diagnostic.contains("[Gateway]: Home Gateway"))
     assertTrue(diagnostic.contains("[Status]: Gateway closed: token mismatch"))
     assertTrue(diagnostic.contains("[Gateway paired]: false"))

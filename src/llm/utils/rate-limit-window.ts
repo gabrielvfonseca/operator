@@ -1,4 +1,4 @@
-import { parseRetryAfterHttpDateMs } from "@operator/ai/internal/retry-after";
+import { parseRetryAfterHttpDateMs } from "@gabrielvfonseca/ai/internal/retry-after";
 import milliseconds from "ms";
 import { extractLeadingHttpStatus } from "../../shared/assistant-error-format.js";
 

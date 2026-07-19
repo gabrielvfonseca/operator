@@ -3,7 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   coerceCommitmentRecord,
   commitmentImmutableIdentity,
@@ -18,7 +18,7 @@ import type { CommitmentRecord } from "../commitments/types.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,

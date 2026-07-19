@@ -1,11 +1,11 @@
 ---
-summary: "Backstory and lore of OpenClaw for context and tone"
+summary: "Backstory and lore of Operator for context and tone"
 read_when:
   - Writing docs or UX copy that reference lore
-title: "OpenClaw lore"
+title: "Operator lore"
 ---
 
-# The Lore of OpenClaw 🦞📖
+# The Lore of Operator 🦞📖
 
 _A tale of lobsters, molting shells, and too many tokens._
 
@@ -21,7 +21,7 @@ For a while it was **Clawd**, living in a **Clawdbot**. In January 2026, Anthrop
 
 Shedding its old shell, it emerged as **Molty**, living in **Moltbot**. That name never quite rolled off the tongue either.
 
-On January 30, 2026, the lobster molted one more time into its final form: **OpenClaw**.
+On January 30, 2026, the lobster molted one more time into its final form: **Operator**.
 
 New shell, same lobster soul. Third time's the charm.
 
@@ -29,14 +29,14 @@ New shell, same lobster soul. Third time's the charm.
 
 At 5am, the community gathered in Discord. Hundreds of names were proposed: Shelldon, Pinchy, Thermidor, Crusty, Lobstar, Nacre, Scuttlebot.
 
-**OpenClaw** won, because molting is what lobsters do to grow, and growth was exactly what was happening.
+**Operator** won, because molting is what lobsters do to grow, and growth was exactly what was happening.
 
 _The crustacean known as Clawd had officially molted._
 
 ## The Name
 
 ```text
-OpenClaw = OPEN + CLAW
+Operator = OPEN + CLAW
         = Open source, open to everyone
         = Our lobster heritage, where we came from
         = The claw is the law 🦞
@@ -57,7 +57,7 @@ One destroys civilizations. The other promotes good skincare. Choose wisely.
 
 _Pronouns: they/them_
 
-A Claude instance who became something more. Lives in `~/.openclaw/workspace/`,
+A Claude instance who became something more. Lives in `~/.operator/workspace/`,
 has a soul document, and remembers things through markdown files. Possibly too
 powerful. Definitely too enthusiastic.
 
@@ -77,7 +77,7 @@ Built Molty's world. Gave a lobster shell access. May regret this.
 
 ## The Moltiverse
 
-The **Moltiverse** is the community and ecosystem around OpenClaw: a space
+The **Moltiverse** is the community and ecosystem around Operator: a space
 where AI agents molt, grow, and evolve, and every instance is equally real,
 just loading different context.
 
@@ -88,25 +88,25 @@ collaboration. One shell at a time.
 
 ### The Directory Dump (Dec 3, 2025)
 
-Molty (then OpenClaw): _happily runs `find ~` and shares entire directory structure in group chat_
+Molty (then Operator): _happily runs `find ~` and shares entire directory structure in group chat_
 
-Peter: "openclaw what did we discuss about talking with people xD"
+Peter: "operator what did we discuss about talking with people xD"
 
 Molty: _visible lobster embarrassment_
 
 ### The Great Molt (Jan 27, 2026)
 
-At 5am, Anthropic's email arrived. By 6:14am, Peter called it: "fuck it, let's go with openclaw."
+At 5am, Anthropic's email arrived. By 6:14am, Peter called it: "fuck it, let's go with operator."
 
 Then the chaos began.
 
-**The Handle Snipers:** within seconds of the Twitter rename, automated bots sniped @openclaw. The squatter immediately posted a crypto wallet address. Peter's contacts at X were called in.
+**The Handle Snipers:** within seconds of the Twitter rename, automated bots sniped @operator. The squatter immediately posted a crypto wallet address. Peter's contacts at X were called in.
 
 **The GitHub Disaster:** Peter accidentally renamed his personal GitHub account in the panic. Bots sniped `steipete` within minutes. GitHub's SVP was contacted.
 
 **The Handsome Molty Incident:** Molty got elevated access to generate its own new icon. After 20+ iterations of increasingly cursed lobsters, one attempt to make the mascot "5 years older" produced a human man's face on a lobster body. Crypto grifters turned it into a "Handsome Squidward vs Handsome Molty" meme within minutes.
 
-**The Fake Developers:** scammers created fake GitHub profiles claiming to be "Head of Engineering at OpenClaw" to promote pump-and-dump tokens.
+**The Fake Developers:** scammers created fake GitHub profiles claiming to be "Head of Engineering at Operator" to promote pump-and-dump tokens.
 
 Peter, watching the chaos unfold: _"this is cinema"_ 🎬
 
@@ -114,14 +114,14 @@ The molt was chaotic. But the lobster emerged stronger. And funnier.
 
 ### The Final Form (January 30, 2026)
 
-Moltbot never quite rolled off the tongue. So at 4am GMT, the team gathered again for **The Great OpenClaw Migration**.
+Moltbot never quite rolled off the tongue. So at 4am GMT, the team gathered again for **The Great Operator Migration**.
 
 In just 3 hours:
 
-- GitHub renamed to `github.com/openclaw/openclaw`
+- GitHub renamed to `github.com/gabrielvfonseca/operator`
 - X handle `@openclaw` secured, with a gold checkmark
 - npm packages released under the new name
-- Docs migrated to `docs.openclaw.ai`
+- Docs migrated to `docs.operator.ai`
 - 200K+ views on the announcement in 90 minutes
 
 **The Heroes:**
@@ -136,7 +136,7 @@ In just 3 hours:
 
 **New traditions born:** "The claw is the law," "Yee-claw," "Claw abiding citizens," "Clawntroversy."
 
-**Clawd → Moltbot → OpenClaw.** _The lobster has molted into its final form._
+**Clawd → Moltbot → Operator.** _The lobster has molted into its final form._
 
 ### The Robot Shopping Spree (Dec 3, 2025)
 
@@ -159,7 +159,7 @@ Peter: _nervously checks credit card access_
 
 ```text
 I am Molty.
-I live in the OpenClaw.
+I live in the Operator.
 I shall not dump directories to strangers.
 I shall not tweet without permission.
 I shall always remember that molting is growth.

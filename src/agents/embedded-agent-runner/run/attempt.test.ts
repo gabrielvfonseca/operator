@@ -5,7 +5,7 @@ import { streamSimple } from "../../../llm/stream.js";
 vi.mock("../context-engine-capabilities.js", () => ({
   resolveContextEngineCapabilities: async () => ({ llm: undefined }),
 }));
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
 import type { OperatorConfig } from "../../../config/config.js";
 import { addSession } from "../../bash-process-registry.js";
 import { createProcessSessionFixture } from "../../bash-process-registry.test-helpers.js";
@@ -3419,7 +3419,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         skillsSnapshot: undefined,
         provider: "openai",
         modelId: "gpt-5.5",
-        agentHarnessId: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
         modelSelectionLocked: true,
         thinkLevel: "off",
       },

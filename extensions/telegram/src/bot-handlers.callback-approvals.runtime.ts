@@ -1,7 +1,7 @@
-import type { parseExecApprovalCommandText } from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isApprovalNotFoundError } from "openclaw/plugin-sdk/error-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import type { parseExecApprovalCommandText } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isApprovalNotFoundError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { TelegramApprovalCallback } from "./approval-callback-data.js";
 import {
   buildTelegramCanonicalApprovalTerminalText,

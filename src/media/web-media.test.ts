@@ -3,12 +3,12 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import JSZip from "jszip";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createSolidPngBuffer } from "../../test/helpers/image-fixtures.js";
 import { resolveStateDir } from "../config/paths.js";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../plugins/runtime.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -24,7 +24,7 @@ let resolveImageCompressionGrid: typeof import("./web-media.js").resolveImageCom
 
 const TINY_PNG_BUFFER = createSolidPngBuffer(1, 1, { r: 255, g: 255, b: 255 });
 const TINY_PNG_BASE64 = TINY_PNG_BUFFER.toString("base64");
-const CANVAS_HOST_PATH = "/__openclaw__/canvas";
+const CANVAS_HOST_PATH = "/__operator__/canvas";
 
 let fixtureRoot = "";
 let tinyPngFile = "";

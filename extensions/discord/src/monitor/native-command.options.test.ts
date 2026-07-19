@@ -1,11 +1,11 @@
-// Discord tests cover native command.options plugin behavior.
-import { ApplicationCommandType, ChannelType, InteractionContextType } from "discord-api-types/v10";
-import type { ChatCommandDefinition } from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ChatCommandDefinition } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+// Discord tests cover native command.options plugin behavior.
+import { ApplicationCommandType, ChannelType, InteractionContextType } from "discord-api-types/v10";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { nativeCommandRuntime } from "./native-command.runtime.js";
 
@@ -301,7 +301,7 @@ describe("createDiscordNativeCommand option wiring", () => {
           type: "string",
           choices: ({ agentRuntime: selectedRuntime }) => [
             "max",
-            ...(selectedRuntime === "openclaw" ? ["ultra"] : []),
+            ...(selectedRuntime === "@gabrielvfonseca/operator" ? ["ultra"] : []),
           ],
         },
       ],
@@ -335,7 +335,7 @@ describe("createDiscordNativeCommand option wiring", () => {
     const codexRespond = await runAutocomplete(autocomplete, params);
     expect(codexRespond).toHaveBeenCalledWith([{ name: "max", value: "max" }]);
 
-    agentRuntime = "openclaw";
+    agentRuntime = "@gabrielvfonseca/operator";
     const openclawRespond = await runAutocomplete(autocomplete, params);
     expect(openclawRespond).toHaveBeenCalledWith([
       { name: "max", value: "max" },

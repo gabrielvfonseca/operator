@@ -144,7 +144,7 @@ async function resolveQaFlowChannelGroups(
   // Package-only live lanes mount the QA harness without its dev tree. Load
   // Crabline only for Crabline-owned runs so unrelated transports stay isolated.
   const { OPERATOR_CRABLINE_DEFAULT_CHANNEL, resolveOperatorCrablineChannelDriverSelection } =
-    await import("@operator/crabline");
+    await import("@openclaw/crabline");
   const channels = resolveQaSuiteScenarioChannels({
     defaultChannel: OPERATOR_CRABLINE_DEFAULT_CHANNEL,
     explicitChannel: runParams.channelDriverSelection?.channel,

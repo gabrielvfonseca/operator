@@ -1,6 +1,6 @@
 /** Quality contract, fallback, and audit helpers for compaction safeguard summaries. */
-import { localeLowercasePreservingWhitespace } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { localeLowercasePreservingWhitespace } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { extractKeywords, isQueryStopWordToken } from "../../memory-host-sdk/query.js";
 import type { CompactionSummarizationInstructions } from "../compaction.js";
 import { wrapUntrustedPromptDataBlock } from "../sanitize-for-prompt.js";

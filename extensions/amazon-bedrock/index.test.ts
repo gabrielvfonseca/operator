@@ -1,15 +1,15 @@
 // Amazon Bedrock tests cover index plugin behavior.
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginRuntime } from "openclaw/plugin-sdk/core";
-import { createDeferred } from "openclaw/plugin-sdk/extension-shared";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { createDeferred } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import {
   buildPluginApi,
   registerSingleProviderPlugin,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { withEnvAsync } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { withEnvAsync } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { supportsBedrockPromptCaching } from "./bedrock-options.js";
 import { resetBedrockDiscoveryCacheForTest } from "./discovery.js";
@@ -907,7 +907,7 @@ describe("amazon-bedrock provider plugin", () => {
   describe("guardrail config schema", () => {
     it("defines discovery and guardrail objects with the expected shape", () => {
       const pluginJson = JSON.parse(
-        readFileSync(resolve(import.meta.dirname, "openclaw.plugin.json"), "utf-8"),
+        readFileSync(resolve(import.meta.dirname, "operator.plugin.json"), "utf-8"),
       );
       const discovery = pluginJson.configSchema?.properties?.discovery;
       const guardrail = pluginJson.configSchema?.properties?.guardrail;

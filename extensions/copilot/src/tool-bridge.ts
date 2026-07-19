@@ -1,15 +1,8 @@
-// Copilot plugin module implements tool bridge behavior.
-import {
-  convertMcpCallToolResult,
-  type Tool as SdkTool,
-  type ToolInvocation,
-  type ToolResultObject,
-} from "@github/copilot-sdk";
 import type {
   AnyAgentTool,
   EmbeddedRunAttemptParams,
   SandboxContext,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   applyEmbeddedAttemptToolsAllow,
   buildEmbeddedAttemptToolRunContext,
@@ -21,8 +14,15 @@ import {
   resolveEmbeddedAttemptToolConstructionPlan,
   resolveModelAuthMode,
   sanitizeToolResult,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { createAgentHarnessToolSurfaceRuntime } from "openclaw/plugin-sdk/agent-harness-tool-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { createAgentHarnessToolSurfaceRuntime } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-tool-runtime";
+// Copilot plugin module implements tool bridge behavior.
+import {
+  convertMcpCallToolResult,
+  type Tool as SdkTool,
+  type ToolInvocation,
+  type ToolResultObject,
+} from "@github/copilot-sdk";
 
 type CreateOperatorCodingTools =
   (typeof import("openclaw/plugin-sdk/agent-harness"))["createOperatorCodingTools"];

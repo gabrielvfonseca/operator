@@ -1,13 +1,13 @@
 {
-  "name": "@operator/openrouter-provider",
+  "name": "@gabrielvfonseca/openrouter-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator OpenRouter provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

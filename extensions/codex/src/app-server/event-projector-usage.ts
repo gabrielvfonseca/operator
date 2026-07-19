@@ -1,4 +1,4 @@
-import { normalizeUsage } from "openclaw/plugin-sdk/agent-harness-runtime";
+import { normalizeUsage } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { readNumber } from "./event-projector-values.js";
 import type { JsonObject } from "./protocol.js";
 

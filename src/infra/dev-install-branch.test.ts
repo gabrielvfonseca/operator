@@ -9,7 +9,7 @@ type RunCommand = typeof runCommandWithTimeout;
 const tmpRoots: string[] = [];
 
 async function makeRoot(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-dev-branch-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-dev-branch-"));
   tmpRoots.push(dir);
   // macOS tmpdir is a symlink (/var -> /private/var); production compares
   // canonical package and git roots.
@@ -88,7 +88,7 @@ describe("resolveDevInstallGitBranch", () => {
 
   it("returns null when the package root is nested inside an unrelated repo", async () => {
     const root = await makeRoot();
-    const nested = path.join(root, "node_modules", "openclaw");
+    const nested = path.join(root, "node_modules", "@gabrielvfonseca/operator");
     await fs.mkdir(nested, { recursive: true });
     const branch = await resolveBranch({
       root: nested,

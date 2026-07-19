@@ -1,4 +1,4 @@
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-openclaw-assistant.js";
 import type { AgentMessage } from "../../runtime/index.js";
 /**
  * Handles sessions-yield interruption, persistence, and artifact cleanup.

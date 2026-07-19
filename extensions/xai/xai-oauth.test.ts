@@ -1,10 +1,10 @@
 // Xai tests cover xai oauth plugin behavior.
-import type { ProviderAuthContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { ProviderAuthContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   createRuntimeEnv,
   createTestWizardPrompter,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { OAuthCredential } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { OAuthCredential } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createXaiDeviceCodeAuthMethod,

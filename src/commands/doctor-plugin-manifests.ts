@@ -1,8 +1,8 @@
 /** Doctor migration for legacy plugin manifest capability keys into contracts.* fields. */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { z } from "zod";
 import { note } from "../../packages/terminal-core/src/note.js";
 import type { OperatorConfig } from "../config/types.operator.js";
@@ -165,7 +165,7 @@ export function legacyPluginManifestContractMigrationToHealthFinding(
     target: migration.pluginId,
     requirement: "contracts-capability-keys",
     fixHint:
-      "Run `operator doctor --fix` to rewrite legacy plugin manifest capability keys under contracts.*.",
+      "Run `openclaw doctor --fix` to rewrite legacy plugin manifest capability keys under contracts.*.",
   };
 }
 

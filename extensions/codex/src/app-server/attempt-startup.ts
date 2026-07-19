@@ -9,7 +9,7 @@ import {
   type CodexBundleMcpThreadConfig,
   type EmbeddedRunAttemptParams,
   type resolveSandboxContext,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   CODEX_APP_SERVER_UNSUBSCRIBE_TIMEOUT_MS,
   CodexAppServerUnsafeSubscriptionError,

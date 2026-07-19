@@ -1,65 +1,65 @@
 ---
-summary: "Expose OpenClaw channel conversations over MCP and manage saved MCP server definitions"
+summary: "Expose Operator channel conversations over MCP and manage saved MCP server definitions"
 read_when:
-  - Connecting Codex, Claude Code, or another MCP client to OpenClaw-backed channels
-  - Running `openclaw mcp serve`
-  - Managing OpenClaw-saved MCP server definitions
+  - Connecting Codex, Claude Code, or another MCP client to Operator-backed channels
+  - Running `operator mcp serve`
+  - Managing Operator-saved MCP server definitions
 title: "MCP"
 sidebarTitle: "MCP"
 ---
 
-`openclaw mcp` has two jobs:
+`operator mcp` has two jobs:
 
-- run OpenClaw as an MCP server with `openclaw mcp serve`
-- manage OpenClaw-managed outbound MCP server definitions with `list`, `show`, `status`, `doctor`, `probe`, `add`, `set`, `configure`, `tools`, `login`, `logout`, `reload`, and `unset`
+- run Operator as an MCP server with `operator mcp serve`
+- manage Operator-managed outbound MCP server definitions with `list`, `show`, `status`, `doctor`, `probe`, `add`, `set`, `configure`, `tools`, `login`, `logout`, `reload`, and `unset`
 
-`serve` is OpenClaw acting as an MCP server. The other subcommands are OpenClaw acting as an MCP client-side registry for servers its own runtimes may consume later.
+`serve` is Operator acting as an MCP server. The other subcommands are Operator acting as an MCP client-side registry for servers its own runtimes may consume later.
 
 <Note>
-  `list`, `show`, `set`, and `unset` only read and write OpenClaw-managed `mcp.servers` entries in OpenClaw config. They do not include mcporter servers from `config/mcporter.json`; use `mcporter list` for that registry.
+  `list`, `show`, `set`, and `unset` only read and write Operator-managed `mcp.servers` entries in Operator config. They do not include mcporter servers from `config/mcporter.json`; use `mcporter list` for that registry.
 </Note>
 
-Use [`openclaw acp`](/cli/acp) when OpenClaw should host a coding harness session itself and route that runtime through ACP.
+Use [`operator acp`](/cli/acp) when Operator should host a coding harness session itself and route that runtime through ACP.
 
 ## Choose the right MCP path
 
 | Goal                                                                | Use                                                                  | Why                                                                                                             |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Let an external MCP client read/send OpenClaw channel conversations | `openclaw mcp serve`                                                 | OpenClaw is the MCP server and exposes Gateway-backed conversations over stdio.                                 |
-| Save third-party MCP servers for OpenClaw-managed agent runs        | `openclaw mcp add`, `set`, `configure`, `tools`, `login`             | OpenClaw is the MCP client-side registry and later projects those servers into eligible runtimes.               |
-| Check a saved server without running an agent turn                  | `openclaw mcp status`, `doctor`, `probe`                             | `status` and `doctor` inspect config; `probe` opens a live MCP connection and lists capabilities.               |
+| Let an external MCP client read/send Operator channel conversations | `operator mcp serve`                                                 | Operator is the MCP server and exposes Gateway-backed conversations over stdio.                                 |
+| Save third-party MCP servers for Operator-managed agent runs        | `operator mcp add`, `set`, `configure`, `tools`, `login`             | Operator is the MCP client-side registry and later projects those servers into eligible runtimes.               |
+| Check a saved server without running an agent turn                  | `operator mcp status`, `doctor`, `probe`                             | `status` and `doctor` inspect config; `probe` opens a live MCP connection and lists capabilities.               |
 | Edit MCP config from a browser                                      | Control UI `/settings/mcp` (`/mcp` alias)                            | The page shows inventory, enablement, OAuth/filter summaries, command hints, and a scoped `mcp` editor.         |
 | Give Codex app-server a scoped native MCP server                    | `mcp.servers.<name>.codex`                                           | The `codex` block only affects Codex app-server thread projection and is stripped before native config handoff. |
-| Run ACP-hosted harness sessions                                     | [`openclaw acp`](/cli/acp) and [ACP Agents](/tools/acp-agents-setup) | ACP bridge mode does not accept per-session MCP server injection; configure gateway/plugin bridges instead.     |
+| Run ACP-hosted harness sessions                                     | [`operator acp`](/cli/acp) and [ACP Agents](/tools/acp-agents-setup) | ACP bridge mode does not accept per-session MCP server injection; configure gateway/plugin bridges instead.     |
 
 <Tip>
-If you are not sure which path you need, start with `openclaw mcp status --verbose`. It shows what OpenClaw has saved without starting any MCP servers.
+If you are not sure which path you need, start with `operator mcp status --verbose`. It shows what Operator has saved without starting any MCP servers.
 </Tip>
 
-## OpenClaw as an MCP server
+## Operator as an MCP server
 
-This is the `openclaw mcp serve` path.
+This is the `operator mcp serve` path.
 
 ### When to use serve
 
-Use `openclaw mcp serve` when:
+Use `operator mcp serve` when:
 
-- Codex, Claude Code, or another MCP client should talk directly to OpenClaw-backed channel conversations
-- you already have a local or remote OpenClaw Gateway with routed sessions
-- you want one MCP server that works across OpenClaw's channel backends instead of running separate per-channel bridges
+- Codex, Claude Code, or another MCP client should talk directly to Operator-backed channel conversations
+- you already have a local or remote Operator Gateway with routed sessions
+- you want one MCP server that works across Operator's channel backends instead of running separate per-channel bridges
 
-Use [`openclaw acp`](/cli/acp) instead when OpenClaw should host the coding runtime itself and keep the agent session inside OpenClaw.
+Use [`operator acp`](/cli/acp) instead when Operator should host the coding runtime itself and keep the agent session inside Operator.
 
 ### How it works
 
-`openclaw mcp serve` starts a stdio MCP server. The MCP client owns that process. While the client keeps the stdio session open, the bridge connects to a local or remote OpenClaw Gateway over WebSocket and exposes routed channel conversations over MCP.
+`operator mcp serve` starts a stdio MCP server. The MCP client owns that process. While the client keeps the stdio session open, the bridge connects to a local or remote Operator Gateway over WebSocket and exposes routed channel conversations over MCP.
 
 <Steps>
   <Step title="Client spawns the bridge">
-    The MCP client spawns `openclaw mcp serve`.
+    The MCP client spawns `operator mcp serve`.
   </Step>
   <Step title="Bridge connects to Gateway">
-    The bridge connects to the OpenClaw Gateway over WebSocket.
+    The bridge connects to the Operator Gateway over WebSocket.
   </Step>
   <Step title="Sessions become MCP conversations">
     Routed sessions become MCP conversations and transcript/history tools.
@@ -78,8 +78,8 @@ Use [`openclaw acp`](/cli/acp) instead when OpenClaw should host the coding runt
     - older transcript history is read with `messages_read`
     - Claude push notifications only exist while the MCP session is alive
     - when the client disconnects, the bridge exits and the live queue is gone
-    - one-shot agent entry points such as `openclaw agent` and `openclaw infer model run` retire any bundled MCP runtimes they open when the reply completes, so repeated scripted runs do not accumulate stdio MCP child processes
-    - stdio MCP servers launched by OpenClaw (bundled or user-configured) are torn down as a process tree on shutdown, so child subprocesses started by the server do not survive after the parent stdio client exits
+    - one-shot agent entry points such as `operator agent` and `operator infer model run` retire any bundled MCP runtimes they open when the reply completes, so repeated scripted runs do not accumulate stdio MCP child processes
+    - stdio MCP servers launched by Operator (bundled or user-configured) are torn down as a process tree on shutdown, so child subprocesses started by the server do not survive after the parent stdio client exits
     - deleting or resetting a session disposes that session's MCP clients through the shared runtime cleanup path, so there are no lingering stdio connections tied to a removed session
 
   </Accordion>
@@ -102,7 +102,7 @@ Today, `auto` behaves the same as `on`. There is no client capability detection 
 
 ### What serve exposes
 
-The bridge uses existing Gateway session route metadata to expose channel-backed conversations. A conversation appears when OpenClaw already has session state with a known route such as:
+The bridge uses existing Gateway session route metadata to expose channel-backed conversations. A conversation appears when Operator already has session state with a known route such as:
 
 - `channel`
 - recipient or destination metadata
@@ -122,23 +122,23 @@ This gives MCP clients one place to:
 <Tabs>
   <Tab title="Local Gateway">
     ```bash
-    openclaw mcp serve
+    operator mcp serve
     ```
   </Tab>
   <Tab title="Remote Gateway (token)">
     ```bash
-    openclaw mcp serve --url wss://gateway-host:18789 --token-file ~/.openclaw/gateway.token
+    operator mcp serve --url wss://gateway-host:18789 --token-file ~/.operator/gateway.token
     ```
   </Tab>
   <Tab title="Remote Gateway (password)">
     ```bash
-    openclaw mcp serve --url wss://gateway-host:18789 --password-file ~/.openclaw/gateway.password
+    operator mcp serve --url wss://gateway-host:18789 --password-file ~/.operator/gateway.password
     ```
   </Tab>
   <Tab title="Verbose / Claude off">
     ```bash
-    openclaw mcp serve --verbose
-    openclaw mcp serve --claude-channel-mode off
+    operator mcp serve --verbose
+    operator mcp serve --claude-channel-mode off
     ```
   </Tab>
 </Tabs>
@@ -215,7 +215,7 @@ Current event types:
 
 ### Claude channel notifications
 
-The bridge can also expose Claude-specific channel notifications. This is the OpenClaw equivalent of a Claude Code channel adapter: standard MCP tools remain available, but live inbound messages can also arrive as Claude-specific MCP notifications.
+The bridge can also expose Claude-specific channel notifications. This is the Operator equivalent of a Claude Code channel adapter: standard MCP tools remain available, but live inbound messages can also arrive as Claude-specific MCP notifications.
 
 <Tabs>
   <Tab title="off">
@@ -250,8 +250,8 @@ Example stdio client config:
 ```json
 {
   "mcpServers": {
-    "openclaw": {
-      "command": "openclaw",
+    "@gabrielvfonseca/operator": {
+      "command": "@gabrielvfonseca/operator",
       "args": [
         "mcp",
         "serve",
@@ -269,7 +269,7 @@ For most generic MCP clients, start with the standard tool surface and ignore Cl
 
 ### Options
 
-`openclaw mcp serve` supports:
+`operator mcp serve` supports:
 
 <ParamField path="--url" type="string">
   Gateway WebSocket URL. Defaults to `gateway.remote.url` when configured.
@@ -303,7 +303,7 @@ The bridge does not invent routing. It only exposes conversations that Gateway a
 
 That means:
 
-- sender allowlists, pairing, and channel-level trust still belong to the underlying OpenClaw channel configuration
+- sender allowlists, pairing, and channel-level trust still belong to the underlying Operator channel configuration
 - `messages_send` can only reply through an existing stored route
 - approval state is live/in-memory only for the current bridge session
 - bridge auth should use the same Gateway token or password controls you would trust for any other remote Gateway client
@@ -312,13 +312,13 @@ If a conversation is missing from `conversations_list`, the usual cause is not M
 
 ### Testing
 
-OpenClaw ships a deterministic Docker smoke for this bridge:
+Operator ships a deterministic Docker smoke for this bridge:
 
 ```bash
 pnpm test:docker:mcp-channels
 ```
 
-That smoke runs a single container: it seeds conversation state, starts the Gateway, then spawns `openclaw mcp serve` as a stdio child process and drives it as an MCP client. It verifies conversation discovery, transcript reads, attachment metadata reads, live event queue behavior, and Claude-style channel and permission notifications over the real stdio MCP bridge. Outbound send routing (`messages_send` reusing the stored conversation route) is covered separately by unit tests in `src/mcp/channel-server.test.ts`.
+That smoke runs a single container: it seeds conversation state, starts the Gateway, then spawns `operator mcp serve` as a stdio child process and drives it as an MCP client. It verifies conversation discovery, transcript reads, attachment metadata reads, live event queue behavior, and Claude-style channel and permission notifications over the real stdio MCP bridge. Outbound send routing (`messages_send` reusing the stored conversation route) is covered separately by unit tests in `src/mcp/channel-server.test.ts`.
 
 This is the fastest way to prove the bridge works without wiring a real Telegram, Discord, or iMessage account into the test run.
 
@@ -347,18 +347,18 @@ For broader testing context, see [Testing](/help/testing).
   </Accordion>
 </AccordionGroup>
 
-## OpenClaw as an MCP client registry
+## Operator as an MCP client registry
 
-This is the `openclaw mcp list`, `show`, `status`, `doctor`, `probe`, `add`, `set`,
+This is the `operator mcp list`, `show`, `status`, `doctor`, `probe`, `add`, `set`,
 `configure`, `tools`, `login`, `logout`, `reload`, and `unset` path.
 
-These commands do not expose OpenClaw over MCP. They manage OpenClaw-managed MCP server definitions under `mcp.servers` in OpenClaw config. They do not read mcporter servers from `config/mcporter.json`.
+These commands do not expose Operator over MCP. They manage Operator-managed MCP server definitions under `mcp.servers` in Operator config. They do not read mcporter servers from `config/mcporter.json`.
 
-Those saved definitions are for runtimes that OpenClaw launches or configures later, such as embedded OpenClaw and other runtime adapters. OpenClaw stores the definitions centrally so those runtimes do not need to keep their own duplicate MCP server lists.
+Those saved definitions are for runtimes that Operator launches or configures later, such as embedded Operator and other runtime adapters. Operator stores the definitions centrally so those runtimes do not need to keep their own duplicate MCP server lists.
 
 <AccordionGroup>
   <Accordion title="Important behavior">
-    - these commands only read or write OpenClaw config
+    - these commands only read or write Operator config
     - `status`, `list`, `show`, `doctor` without `--probe`, `set`, `configure`, `tools`, `logout`, `reload`, and `unset` do not connect to the target MCP server
     - `login` performs the MCP OAuth network flow for the configured HTTP server and saves the resulting local credentials
     - `status --verbose` prints resolved transport, auth, timeout, filter, and parallel-tool-call hints without connecting
@@ -371,8 +371,8 @@ Those saved definitions are for runtimes that OpenClaw launches or configures la
     - `timeout` and `connectTimeout` set per-server request and connection timeouts in seconds
     - `supportsParallelToolCalls: true` marks servers that adapters can call concurrently
     - HTTP servers can use static headers, OAuth login, TLS verification control, and mTLS certificate/key paths
-    - embedded OpenClaw exposes configured MCP tools in normal `coding` and `messaging` tool profiles; `minimal` still hides them, and `tools.deny: ["bundle-mcp"]` disables them explicitly
-    - per-server `toolFilter.include` and `toolFilter.exclude` filter discovered MCP tools before they become OpenClaw tools
+    - embedded Operator exposes configured MCP tools in normal `coding` and `messaging` tool profiles; `minimal` still hides them, and `tools.deny: ["bundle-mcp"]` disables them explicitly
+    - per-server `toolFilter.include` and `toolFilter.exclude` filter discovered MCP tools before they become Operator tools
     - servers that advertise resources or prompts also expose utility tools for listing/reading resources and listing/fetching prompts; those generated utility names (`resources_list`, `resources_read`, `prompts_list`, `prompts_get`) use the same include/exclude filter
     - dynamic MCP tool-list changes invalidate the cached catalog for that session; the next discovery/use refreshes from the server
     - repeated MCP tool request/protocol failures pause that server briefly so one broken server does not consume the whole turn
@@ -381,36 +381,36 @@ Those saved definitions are for runtimes that OpenClaw launches or configures la
   </Accordion>
 </AccordionGroup>
 
-Runtime adapters may normalize this shared registry into the shape their downstream client expects. For example, embedded OpenClaw consumes OpenClaw `transport` values directly, while Claude Code and Gemini receive CLI-native `type` values such as `http`, `sse`, or `stdio`.
+Runtime adapters may normalize this shared registry into the shape their downstream client expects. For example, embedded Operator consumes Operator `transport` values directly, while Claude Code and Gemini receive CLI-native `type` values such as `http`, `sse`, or `stdio`.
 
 Codex app-server also honors an optional `codex` block on each server. This is
-OpenClaw projection metadata for Codex app-server threads only; it does not
+Operator projection metadata for Codex app-server threads only; it does not
 change ACP sessions, generic Codex harness config, or other runtime adapters.
-Use non-empty `codex.agents` to project a server only into specific OpenClaw
+Use non-empty `codex.agents` to project a server only into specific Operator
 agent ids. Empty, blank, or invalid agent lists are rejected by config
 validation and omitted by the runtime projection path instead of becoming
 global. Use `codex.defaultToolsApprovalMode` (`auto`, `prompt`, or `approve`)
 to emit Codex's native `default_tools_approval_mode` for a trusted server.
-OpenClaw strips the `codex` metadata before handing the native `mcp_servers`
+Operator strips the `codex` metadata before handing the native `mcp_servers`
 config to Codex.
 
 ### Saved MCP server definitions
 
 Commands:
 
-- `openclaw mcp list`
-- `openclaw mcp show [name]`
-- `openclaw mcp status [--verbose]`
-- `openclaw mcp doctor [name] [--probe]`
-- `openclaw mcp probe [name]`
-- `openclaw mcp add <name> [flags]`
-- `openclaw mcp set <name> <json>`
-- `openclaw mcp configure <name> [flags]`
-- `openclaw mcp tools <name> [--include csv] [--exclude csv] [--clear]`
-- `openclaw mcp login <name> [--code code]`
-- `openclaw mcp logout <name>`
-- `openclaw mcp reload`
-- `openclaw mcp unset <name>`
+- `operator mcp list`
+- `operator mcp show [name]`
+- `operator mcp status [--verbose]`
+- `operator mcp doctor [name] [--probe]`
+- `operator mcp probe [name]`
+- `operator mcp add <name> [flags]`
+- `operator mcp set <name> <json>`
+- `operator mcp configure <name> [flags]`
+- `operator mcp tools <name> [--include csv] [--exclude csv] [--clear]`
+- `operator mcp login <name> [--code code]`
+- `operator mcp logout <name>`
+- `operator mcp reload`
+- `operator mcp unset <name>`
 
 Notes:
 
@@ -426,42 +426,42 @@ Notes:
 - `login` runs the OAuth flow for HTTP servers configured with `auth: "oauth"`. The first run prints an authorization URL; rerun with `--code` after approval.
 - `logout` clears stored OAuth credentials for the named server without removing the saved server definition.
 - `reload` disposes cached in-process MCP runtimes for the current CLI process only. Gateway or agent processes in another process still need their own reload or restart path.
-- Use `transport: "streamable-http"` for Streamable HTTP MCP servers. `openclaw mcp set` also normalizes CLI-native `type: "http"` to the same canonical config shape for compatibility.
+- Use `transport: "streamable-http"` for Streamable HTTP MCP servers. `operator mcp set` also normalizes CLI-native `type: "http"` to the same canonical config shape for compatibility.
 - `unset` fails if the named server does not exist.
 
 Examples:
 
 ```bash
-openclaw mcp list
-openclaw mcp show context7 --json
-openclaw mcp status --verbose
-openclaw mcp doctor --probe
-openclaw mcp probe context7 --json
-openclaw mcp add memory --command npx --arg -y --arg @modelcontextprotocol/server-memory
-openclaw mcp set context7 '{"command":"uvx","args":["context7-mcp"]}'
-openclaw mcp tools context7 --include 'resolve-library-id,get-library-docs'
-openclaw mcp set docs '{"url":"https://mcp.example.com","transport":"streamable-http"}'
-openclaw mcp configure docs --timeout 20 --connect-timeout 5 --include 'search,read_*'
-openclaw mcp configure docs --auth oauth --oauth-scope 'docs.read'
-openclaw mcp login docs
-openclaw mcp logout docs
-openclaw mcp unset context7
+operator mcp list
+operator mcp show context7 --json
+operator mcp status --verbose
+operator mcp doctor --probe
+operator mcp probe context7 --json
+operator mcp add memory --command npx --arg -y --arg @modelcontextprotocol/server-memory
+operator mcp set context7 '{"command":"uvx","args":["context7-mcp"]}'
+operator mcp tools context7 --include 'resolve-library-id,get-library-docs'
+operator mcp set docs '{"url":"https://mcp.example.com","transport":"streamable-http"}'
+operator mcp configure docs --timeout 20 --connect-timeout 5 --include 'search,read_*'
+operator mcp configure docs --auth oauth --oauth-scope 'docs.read'
+operator mcp login docs
+operator mcp logout docs
+operator mcp unset context7
 ```
 
 ### Common server recipes
 
-These examples save server definitions only. Run `openclaw mcp doctor --probe` afterward to prove that the server starts and exposes tools.
+These examples save server definitions only. Run `operator mcp doctor --probe` afterward to prove that the server starts and exposes tools.
 
 <Tabs>
   <Tab title="Filesystem">
     ```bash
-    openclaw mcp add files \
+    operator mcp add files \
       --command npx \
       --arg -y \
       --arg @modelcontextprotocol/server-filesystem \
       --arg "$HOME/Documents" \
       --include 'read_file,list_directory,search_files'
-    openclaw mcp doctor files --probe
+    operator mcp doctor files --probe
     ```
 
     Scope filesystem servers to the smallest directory tree that the agent should read or edit.
@@ -469,11 +469,11 @@ These examples save server definitions only. Run `openclaw mcp doctor --probe` a
   </Tab>
   <Tab title="Memory">
     ```bash
-    openclaw mcp add memory \
+    operator mcp add memory \
       --command npx \
       --arg -y \
       --arg @modelcontextprotocol/server-memory
-    openclaw mcp probe memory --json
+    operator mcp probe memory --json
     ```
 
     Use a tool filter if the server exposes write tools that should not be available to normal agents.
@@ -481,12 +481,12 @@ These examples save server definitions only. Run `openclaw mcp doctor --probe` a
   </Tab>
   <Tab title="Local script">
     ```bash
-    openclaw mcp add local-tools \
+    operator mcp add local-tools \
       --command node \
       --arg ./dist/mcp-server.js \
-      --cwd /srv/openclaw-tools \
+      --cwd /srv/operator-tools \
       --env API_BASE=https://internal.example
-    openclaw mcp status --verbose
+    operator mcp status --verbose
     ```
 
     `doctor` checks that `cwd` exists and that the command resolves from the configured environment.
@@ -494,7 +494,7 @@ These examples save server definitions only. Run `openclaw mcp doctor --probe` a
   </Tab>
   <Tab title="Remote HTTP">
     ```bash
-    openclaw mcp add docs \
+    operator mcp add docs \
       --url https://mcp.example.com/mcp \
       --transport streamable-http \
       --auth oauth \
@@ -502,7 +502,7 @@ These examples save server definitions only. Run `openclaw mcp doctor --probe` a
       --timeout 20 \
       --connect-timeout 5 \
       --include 'search,read_*'
-    openclaw mcp doctor docs --probe
+    operator mcp doctor docs --probe
     ```
 
     Use OAuth when the remote server supports it. If the server requires static headers, avoid committing literal bearer tokens.
@@ -510,9 +510,9 @@ These examples save server definitions only. Run `openclaw mcp doctor --probe` a
   </Tab>
   <Tab title="Desktop/CUA">
     ```bash
-    openclaw mcp set cua-driver '{"command":"cua-driver","args":["mcp"]}'
-    openclaw mcp tools cua-driver --include 'list_apps,observe,click,type'
-    openclaw mcp doctor cua-driver --probe
+    operator mcp set cua-driver '{"command":"cua-driver","args":["mcp"]}'
+    operator mcp tools cua-driver --include 'list_apps,observe,click,type'
+    operator mcp doctor cua-driver --probe
     ```
 
     Direct desktop-control servers inherit the permissions of the process they launch. Use narrow tool filters and OS-level permission prompts.
@@ -528,7 +528,7 @@ Use `--json` for scripts and dashboards. Field sets can grow over time, so consu
   <Accordion title="status --json">
     ```json
     {
-      "path": "/home/user/.openclaw/openclaw.json",
+      "path": "/home/user/.operator/operator.json",
       "servers": [
         {
           "name": "docs",
@@ -561,7 +561,7 @@ Use `--json` for scripts and dashboards. Field sets can grow over time, so consu
     ```json
     {
       "ok": true,
-      "path": "/home/user/.openclaw/openclaw.json",
+      "path": "/home/user/.operator/operator.json",
       "servers": [
         {
           "name": "docs",
@@ -569,7 +569,7 @@ Use `--json` for scripts and dashboards. Field sets can grow over time, so consu
           "issues": [
             {
               "level": "warning",
-              "message": "OAuth credentials are not authorized; run openclaw mcp login docs"
+              "message": "OAuth credentials are not authorized; run operator mcp login docs"
             }
           ]
         }
@@ -653,7 +653,7 @@ Launches a local child process and communicates over stdin/stdout.
 <Warning>
 **Stdio env safety filter**
 
-OpenClaw rejects interpreter-startup, loader-hijack, and shell-init env keys before spawning a stdio MCP server, even if they appear in a server's `env` block. This uses the same host environment security policy as other OpenClaw-spawned processes: it blocks known interpreter startup hooks (for example `NODE_OPTIONS`, `PYTHONSTARTUP`, `PERL5OPT`, `RUBYOPT`, `BASHOPTS`, `KSH_ENV`), shared-library and function-injection prefixes (`DYLD_*`, `LD_*`, `BASH_FUNC_*`), and similar runtime-control variables. Startup drops these silently and logs a warning so they cannot inject an implicit prelude, swap the interpreter, enable a debugger, or hijack the dynamic linker against the stdio process. An explicit allowlist keeps ordinary MCP credential env vars usable (`GITHUB_TOKEN`, `GH_TOKEN`, `GITLAB_TOKEN`, `NPM_TOKEN`, `NODE_AUTH_TOKEN`, `DATABASE_URL`, `MONGODB_URI`, `REDIS_URL`, `AMQP_URL`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`), along with ordinary proxy and server-specific env vars (`HTTP_PROXY`, custom `*_API_KEY`, etc.). Other `AWS_*` keys such as `AWS_CONFIG_FILE` and `AWS_SHARED_CREDENTIALS_FILE` remain blocked because they point at credential files rather than carry a credential value directly.
+Operator rejects interpreter-startup, loader-hijack, and shell-init env keys before spawning a stdio MCP server, even if they appear in a server's `env` block. This uses the same host environment security policy as other Operator-spawned processes: it blocks known interpreter startup hooks (for example `NODE_OPTIONS`, `PYTHONSTARTUP`, `PERL5OPT`, `RUBYOPT`, `BASHOPTS`, `KSH_ENV`), shared-library and function-injection prefixes (`DYLD_*`, `LD_*`, `BASH_FUNC_*`), and similar runtime-control variables. Startup drops these silently and logs a warning so they cannot inject an implicit prelude, swap the interpreter, enable a debugger, or hijack the dynamic linker against the stdio process. An explicit allowlist keeps ordinary MCP credential env vars usable (`GITHUB_TOKEN`, `GH_TOKEN`, `GITLAB_TOKEN`, `NPM_TOKEN`, `NODE_AUTH_TOKEN`, `DATABASE_URL`, `MONGODB_URI`, `REDIS_URL`, `AMQP_URL`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`), along with ordinary proxy and server-specific env vars (`HTTP_PROXY`, custom `*_API_KEY`, etc.). Other `AWS_*` keys such as `AWS_CONFIG_FILE` and `AWS_SHARED_CREDENTIALS_FILE` remain blocked because they point at credential files rather than carry a credential value directly.
 
 If your MCP server genuinely needs one of the blocked variables, set it on the gateway host process instead of under the stdio server's `env`.
 </Warning>
@@ -669,7 +669,7 @@ Connects to a remote MCP server over HTTP Server-Sent Events.
 | `connectionTimeoutMs`          | Per-server connection timeout in ms (optional)                   |
 | `connectTimeout`               | Per-server connection timeout in seconds (optional)              |
 | `timeout` / `requestTimeoutMs` | Per-server MCP request timeout in seconds or ms                  |
-| `auth: "oauth"`                | Use MCP OAuth credentials saved by `openclaw mcp login`          |
+| `auth: "oauth"`                | Use MCP OAuth credentials saved by `operator mcp login`          |
 | `sslVerify`                    | Set false only for explicitly trusted private HTTPS endpoints    |
 | `clientCert` / `clientKey`     | mTLS client certificate and key paths                            |
 | `supportsParallelToolCalls`    | Hint that concurrent calls are safe for this server              |
@@ -693,28 +693,28 @@ Example:
 }
 ```
 
-Sensitive values in `url` (userinfo) and `headers` are redacted in logs and status output. `openclaw mcp doctor` warns when sensitive-looking `headers` or `env` entries contain literal values, so operators can move those values out of committed config.
+Sensitive values in `url` (userinfo) and `headers` are redacted in logs and status output. `operator mcp doctor` warns when sensitive-looking `headers` or `env` entries contain literal values, so operators can move those values out of committed config.
 
 ### OAuth workflow
 
-OAuth is for HTTP MCP servers that advertise the MCP OAuth flow. Static `Authorization` headers are ignored for a server while `auth: "oauth"` is enabled. Credentials saved by `openclaw mcp login` work with embedded MCP, CLI runners, and the local Codex app-server.
+OAuth is for HTTP MCP servers that advertise the MCP OAuth flow. Static `Authorization` headers are ignored for a server while `auth: "oauth"` is enabled. Credentials saved by `operator mcp login` work with embedded MCP, CLI runners, and the local Codex app-server.
 
-Until credentials are available, OpenClaw omits only that MCP server from the agent runtime instead of failing the agent turn. The operator, or an agent with shell access, can then run `openclaw mcp login <name>` and use the server on a later turn.
+Until credentials are available, Operator omits only that MCP server from the agent runtime instead of failing the agent turn. The operator, or an agent with shell access, can then run `operator mcp login <name>` and use the server on a later turn.
 
-When a remote MCP service is already backed by a separate OpenClaw refresh-capable auth profile, you can optionally set `oauth.authProfileId`. OpenClaw refreshes either credential source before runtime projection and passes only the current access token to the downstream MCP client.
+When a remote MCP service is already backed by a separate Operator refresh-capable auth profile, you can optionally set `oauth.authProfileId`. Operator refreshes either credential source before runtime projection and passes only the current access token to the downstream MCP client.
 
 <Steps>
   <Step title="Save the server">
     Add or update the server with `auth: "oauth"` and any optional OAuth metadata.
 
     ```bash
-    openclaw mcp set docs '{"url":"https://mcp.example.com/mcp","transport":"streamable-http","auth":"oauth","oauth":{"scope":"docs.read"}}'
+    operator mcp set docs '{"url":"https://mcp.example.com/mcp","transport":"streamable-http","auth":"oauth","oauth":{"scope":"docs.read"}}'
     ```
 
     For an auth-profile-backed bearer, save the profile binding:
 
     ```bash
-    openclaw mcp set docs '{"url":"https://mcp.example.com/mcp","transport":"streamable-http","auth":"oauth","oauth":{"authProfileId":"docs:mcp"}}'
+    operator mcp set docs '{"url":"https://mcp.example.com/mcp","transport":"streamable-http","auth":"oauth","oauth":{"authProfileId":"docs:mcp"}}'
     ```
 
   </Step>
@@ -722,17 +722,17 @@ When a remote MCP service is already backed by a separate OpenClaw refresh-capab
     Run login to create the authorization request.
 
     ```bash
-    openclaw mcp login docs
+    operator mcp login docs
     ```
 
-    OpenClaw prints the authorization URL and stores temporary OAuth verifier state under the OpenClaw state directory.
+    Operator prints the authorization URL and stores temporary OAuth verifier state under the Operator state directory.
 
   </Step>
   <Step title="Finish with the code">
-    After approving in the browser, pass the returned code back to OpenClaw.
+    After approving in the browser, pass the returned code back to Operator.
 
     ```bash
-    openclaw mcp login docs --code abc123
+    operator mcp login docs --code abc123
     ```
 
   </Step>
@@ -740,8 +740,8 @@ When a remote MCP service is already backed by a separate OpenClaw refresh-capab
     Use status or doctor to confirm that tokens are present.
 
     ```bash
-    openclaw mcp status --verbose
-    openclaw mcp doctor docs --probe
+    operator mcp status --verbose
+    operator mcp doctor docs --probe
     ```
 
   </Step>
@@ -749,13 +749,13 @@ When a remote MCP service is already backed by a separate OpenClaw refresh-capab
     Logout removes stored OAuth credentials but keeps the saved server definition.
 
     ```bash
-    openclaw mcp logout docs
+    operator mcp logout docs
     ```
 
   </Step>
 </Steps>
 
-If the provider rotates tokens or the authorization state gets stuck, run `openclaw mcp logout <name>`, then repeat `login`. `logout` can clear credentials for a saved HTTP server even after `auth: "oauth"` has been removed from config, as long as the server name and URL still identify the credential store entry.
+If the provider rotates tokens or the authorization state gets stuck, run `operator mcp logout <name>`, then repeat `login`. `logout` can clear credentials for a saved HTTP server even after `auth: "oauth"` has been removed from config, as long as the server name and URL still identify the credential store entry.
 
 ### Streamable HTTP transport
 
@@ -764,17 +764,17 @@ If the provider rotates tokens or the authorization state gets stuck, run `openc
 | Field                          | Description                                                                            |
 | ------------------------------ | -------------------------------------------------------------------------------------- |
 | `url`                          | HTTP or HTTPS URL of the remote server (required)                                      |
-| `transport`                    | Set to `"streamable-http"` to select this transport; when omitted, OpenClaw uses `sse` |
+| `transport`                    | Set to `"streamable-http"` to select this transport; when omitted, Operator uses `sse` |
 | `headers`                      | Optional key-value map of HTTP headers (for example auth tokens)                       |
 | `connectionTimeoutMs`          | Per-server connection timeout in ms (optional)                                         |
 | `connectTimeout`               | Per-server connection timeout in seconds (optional)                                    |
 | `timeout` / `requestTimeoutMs` | Per-server MCP request timeout in seconds or ms                                        |
-| `auth: "oauth"`                | Use MCP OAuth credentials saved by `openclaw mcp login`                                |
+| `auth: "oauth"`                | Use MCP OAuth credentials saved by `operator mcp login`                                |
 | `sslVerify`                    | Set false only for explicitly trusted private HTTPS endpoints                          |
 | `clientCert` / `clientKey`     | mTLS client certificate and key paths                                                  |
 | `supportsParallelToolCalls`    | Hint that concurrent calls are safe for this server                                    |
 
-OpenClaw config uses `transport: "streamable-http"` as the canonical spelling. CLI-native MCP `type: "http"` values are accepted when saved through `openclaw mcp set` and repaired by `openclaw doctor --fix` in existing config, but `transport` is what embedded OpenClaw consumes directly.
+Operator config uses `transport: "streamable-http"` as the canonical spelling. CLI-native MCP `type: "http"` values are accepted when saved through `operator mcp set` and repaired by `operator doctor --fix` in existing config, but `transport` is what embedded Operator consumes directly.
 
 Example:
 
@@ -804,7 +804,7 @@ Registry commands do not start the channel bridge. Only `probe` and `doctor --pr
 
 The browser Control UI includes a dedicated MCP settings page at `/settings/mcp`; the previous `/mcp` path remains an alias. The page shows configured server counts, enabled/OAuth/filter summaries, per-server transport rows, enable/disable controls, common CLI commands, and a scoped editor for the `mcp` config section.
 
-Use the page for operator edits and quick inventory. Use `openclaw mcp doctor --probe` or `openclaw mcp probe` when you need live server proof.
+Use the page for operator edits and quick inventory. Use `operator mcp doctor --probe` or `operator mcp probe` when you need live server proof.
 
 Operator workflow:
 
@@ -814,26 +814,26 @@ Operator workflow:
 4. Toggle enablement when you want to keep a definition but exclude it from runtime discovery.
 5. Edit the scoped `mcp` config section for structural changes such as new servers, headers, TLS, OAuth metadata, or tool filters.
 6. Choose **Save** to persist config only, or **Save & Publish** to apply through the Gateway config path.
-7. Run `openclaw mcp doctor --probe` when you need live proof that the edited server starts and lists tools.
+7. Run `operator mcp doctor --probe` when you need live proof that the edited server starts and lists tools.
 
 Notes:
 
 - command snippets quote server names so unusual names remain copyable in a shell
 - displayed URL-like values are redacted before rendering when they contain embedded credentials
 - the page does not start MCP transports by itself
-- active runtimes may need `openclaw mcp reload`, Gateway config publish, or process restart depending on which process owns the MCP clients
+- active runtimes may need `operator mcp reload`, Gateway config publish, or process restart depending on which process owns the MCP clients
 
 ## MCP Apps
 
-OpenClaw can render tools that implement the stable [MCP Apps extension](https://modelcontextprotocol.io/extensions/apps). Apps are opt-in because their HTML comes from the configured MCP server and can request app-visible tools or resources from that same server.
+Operator can render tools that implement the stable [MCP Apps extension](https://modelcontextprotocol.io/extensions/apps). Apps are opt-in because their HTML comes from the configured MCP server and can request app-visible tools or resources from that same server.
 
 Enable the host bridge:
 
 ```bash
-openclaw config set mcp.apps.enabled true --strict-json
+operator config set mcp.apps.enabled true --strict-json
 ```
 
-Restart the Gateway after changing this setting. When enabled, OpenClaw starts a sandbox-only HTTP(S) listener on the Gateway port plus one (for the default Gateway, `18790`). The Control UI loads Apps from that separate origin; the listener never serves Control UI, authenticated Gateway routes, or user data.
+Restart the Gateway after changing this setting. When enabled, Operator starts a sandbox-only HTTP(S) listener on the Gateway port plus one (for the default Gateway, `18790`). The Control UI loads Apps from that separate origin; the listener never serves Control UI, authenticated Gateway routes, or user data.
 
 Direct Gateway connections need access to both ports. If a reverse proxy or TLS terminator exposes the Control UI, give Apps a dedicated public origin and proxy only that origin to the sandbox listener:
 
@@ -869,13 +869,13 @@ For example, the official basic React demo can be configured as:
 
 Behavior and security boundaries:
 
-- OpenClaw advertises the `io.modelcontextprotocol/ui` extension only when Apps are enabled.
+- Operator advertises the `io.modelcontextprotocol/ui` extension only when Apps are enabled.
 - Only `ui://` resources with the exact `text/html;profile=mcp-app` MIME type render.
 - UI resources are capped at 2 MiB, placed behind a double-iframe proxy on a dedicated outer origin, loaded into an opaque inner App origin, and constrained by CSP derived from the resource metadata.
-- App-only tools (`_meta.ui.visibility: ["app"]`) stay out of model tool lists. Apps can call only app-visible tools on their owning server that also pass the effective OpenClaw tool policy for the run that created the view.
+- App-only tools (`_meta.ui.visibility: ["app"]`) stay out of model tool lists. Apps can call only app-visible tools on their owning server that also pass the effective Operator tool policy for the run that created the view.
 - Origin-bound App permissions such as camera, microphone, and geolocation are not granted while inner App documents use opaque origins for cross-App isolation.
 - App HTML, complete tool arguments, and raw results live in a bounded ten-minute in-memory view lease and are not written to disk or copied into transcript preview metadata. The transcript stores only a bounded server/tool/resource descriptor tied to the original tool-call ID. After a Gateway restart, the Control UI can verify that descriptor against the authenticated session transcript and refetch the `ui://` resource; reconstructed views are read-only until a fresh run establishes current tool permissions.
-- `openclaw security audit` warns while the bridge is enabled. Disable it with `openclaw config set mcp.apps.enabled false --strict-json` when it is not needed.
+- `operator security audit` warns while the bridge is enabled. Disable it with `operator config set mcp.apps.enabled false --strict-json` when it is not needed.
 
 ## Current limits
 

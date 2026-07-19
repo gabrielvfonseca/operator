@@ -1,5 +1,5 @@
 // Qa Lab tests cover discord live plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { discordQaScenarioSupport } from "./discord-live.runtime.js";
 
@@ -117,7 +117,7 @@ describe("discord live qa runtime", () => {
         "qa-channel": {
           enabled: true,
           baseUrl: "http://127.0.0.1:43123",
-          botUserId: "openclaw",
+          botUserId: "@gabrielvfonseca/operator",
           botDisplayName: "Operator QA",
           allowFrom: ["*"],
         },

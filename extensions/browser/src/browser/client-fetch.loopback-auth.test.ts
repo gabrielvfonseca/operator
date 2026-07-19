@@ -1,5 +1,5 @@
 // Browser tests cover client fetch.loopback auth plugin behavior.
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "../test-support/browser-security.mock.js";
 import type { OperatorConfig } from "../config/config.js";
@@ -328,9 +328,9 @@ describe("fetchBrowserJson loopback auth", () => {
   it("keeps restart-gateway guidance for managed local dispatcher timeouts", async () => {
     mocks.loadConfig.mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: {
+          operator: {
             cdpPort: 18800,
             color: "#FF4500",
           },
@@ -366,9 +366,9 @@ describe("fetchBrowserJson loopback auth", () => {
   it("keeps restart-gateway guidance for unknown dispatcher profiles", async () => {
     mocks.loadConfig.mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: {
+          operator: {
             cdpPort: 18800,
             color: "#FF4500",
           },
@@ -456,7 +456,7 @@ describe("fetchBrowserJson loopback auth", () => {
         error: "display required",
         reason: "no_display_for_headed_profile",
         details: {
-          profile: "openclaw",
+          profile: "@gabrielvfonseca/operator",
           requestedHeadless: false,
           headlessSource: "request",
           displayPresent: false,
@@ -473,7 +473,7 @@ describe("fetchBrowserJson loopback auth", () => {
       message: "display required",
       reason: "no_display_for_headed_profile",
       details: {
-        profile: "openclaw",
+        profile: "@gabrielvfonseca/operator",
         requestedHeadless: false,
         headlessSource: "request",
         displayPresent: false,

@@ -37,7 +37,7 @@ describe("buildCodexMcpServersConfig", () => {
     expect(
       buildCodexMcpServersConfig({
         mcpServers: {
-          openclaw: {
+          operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -49,7 +49,7 @@ describe("buildCodexMcpServersConfig", () => {
         },
       }),
     ).toEqual({
-      openclaw: {
+      operator: {
         url: "http://127.0.0.1:23119/mcp",
         default_tools_approval_mode: "approve",
         bearer_token_env_var: "OPERATOR_MCP_TOKEN",

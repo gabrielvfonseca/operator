@@ -1,6 +1,6 @@
 /** Formats model-fallback notice state for UI/status messages and persisted transition tracking. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { formatRawAssistantErrorForUi } from "../agents/embedded-agent-helpers.js";
 import { areRuntimeModelRefsEquivalent } from "../agents/model-runtime-aliases.js";
 import type { OperatorConfig } from "../config/types.operator.js";

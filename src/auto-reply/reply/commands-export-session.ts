@@ -2,8 +2,8 @@
 import fsp from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { expectDefined } from "@operator/normalization-core";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { readAcpSessionMetaForEntry } from "../../acp/runtime/session-meta.js";
 import {
   migrateSessionEntries,

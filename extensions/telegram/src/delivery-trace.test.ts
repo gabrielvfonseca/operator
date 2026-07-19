@@ -1,3 +1,13 @@
+import {
+  deliveryTraceScenarios,
+  expectDeliveryTraceMatchesGolden,
+  runDeliveryTraceScenario,
+  type DeliveryTraceInStep,
+  type DeliveryTraceScenarioName,
+  type WireRecorder,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Telegram delivery trace goldens: replayable wire-level lifecycle recordings.
 //
 // Drives the REAL dispatcher wiring: buildTelegramMessageContext builds the
@@ -9,16 +19,6 @@
 // deleteMessage) observed at a recording API mock with scripted message ids.
 // Refresh goldens with OPERATOR_TRACE_UPDATE=1 (see delivery-trace harness docs).
 import type { Bot } from "grammy";
-import {
-  deliveryTraceScenarios,
-  expectDeliveryTraceMatchesGolden,
-  runDeliveryTraceScenario,
-  type DeliveryTraceInStep,
-  type DeliveryTraceScenarioName,
-  type WireRecorder,
-} from "openclaw/plugin-sdk/channel-contract-testing";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { describe, it, vi } from "vitest";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import {
@@ -145,7 +145,7 @@ function createTraceTelegramDeps(captured: {
       config: baseTelegramMessageContextConfig,
     })) as unknown as TelegramBotDeps["getRuntimeConfig"],
     resolveStorePath: (() =>
-      "/tmp/openclaw-trace-unused.json") as TelegramBotDeps["resolveStorePath"],
+      "/tmp/operator-trace-unused.json") as TelegramBotDeps["resolveStorePath"],
     // No session entry: keeps the transcript mirror and final-text recovery
     // inert so the trace stays a pure wire recording.
     getSessionEntry: (() => undefined) as TelegramBotDeps["getSessionEntry"],

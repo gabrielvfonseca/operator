@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getCliSessionBinding } from "../../config/sessions/cli-session-binding.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveCronSession } from "./session.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;

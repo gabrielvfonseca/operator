@@ -1,8 +1,8 @@
 /** Tests materializing MCP catalog tools into agent tool definitions and results. */
 
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { validateToolArguments } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { expectDefined } from "@operator/normalization-core";
-import { validateToolArguments } from "openclaw/plugin-sdk/llm";
 import { afterEach, describe, expect, it } from "vitest";
 import { getPluginToolMeta } from "../plugins/tools.js";
 import {

@@ -2,16 +2,22 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { resolveAgentDir, resolveAgentWorkspaceDir } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
+import {
+  resolveAgentDir,
+  resolveAgentWorkspaceDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { parseAgentSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   cleanupSessionLifecycleArtifacts,
   formatSqliteSessionFileMarker,
   patchSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { readSessionTranscriptEvents } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { readSessionTranscriptEvents } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
+import {
+  tempWorkspace,
+  resolvePreferredOperatorTmpDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   applyActiveMemoryRuntimeConfigSnapshot,
   isMissingRegisteredMemoryToolsError,
@@ -182,7 +188,7 @@ async function runRecallSubagent(params: {
     ? undefined
     : await tempWorkspace({
         rootDir: resolvePreferredOperatorTmpDir(),
-        prefix: "openclaw-active-memory-",
+        prefix: "operator-active-memory-",
       });
   const tempDir = transientWorkspace?.dir;
   const persistedDir = params.config.persistTranscripts

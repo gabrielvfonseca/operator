@@ -1,6 +1,6 @@
-/** Human-readable formatter for `operator message` action results. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+/** Human-readable formatter for `openclaw message` action results. */
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getTerminalTableWidth, renderTable } from "../../packages/terminal-core/src/table.js";
 import { isRich, theme } from "../../packages/terminal-core/src/theme.js";
 import { getLoadedChannelPlugin } from "../channels/plugins/index.js";

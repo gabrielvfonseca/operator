@@ -6,7 +6,7 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import { openOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import {
   createManagedTaskFlow as createManagedTaskFlowOrNull,
   getTaskFlowById,
@@ -66,7 +66,7 @@ async function withFlowRegistryTempDir<T>(run: (root: string) => Promise<T>): Pr
   return await withOperatorTestState(
     {
       layout: "state-only",
-      prefix: "openclaw-task-flow-store-",
+      prefix: "operator-task-flow-store-",
     },
     async (state) => {
       const root = state.stateDir;
@@ -327,7 +327,7 @@ describe("task-flow-registry store runtime", () => {
 
       const databasePath = resolveOperatorStateSqlitePath(process.env);
       const registryDir = path.dirname(databasePath);
-      expect(databasePath.endsWith(path.join("state", "openclaw.sqlite"))).toBe(true);
+      expect(databasePath.endsWith(path.join("state", "operator.sqlite"))).toBe(true);
       expect(statSync(registryDir).mode & 0o777).toBe(0o700);
       expect(statSync(databasePath).mode & 0o777).toBe(0o600);
     });

@@ -30,7 +30,7 @@ Status: the macOS/iOS SwiftUI chat UI talks directly to the Gateway WebSocket. N
 - Control UI remembers the backing Gateway `sessionId` returned by `chat.history` and includes it on follow-up `chat.send` calls, so reconnects and page refreshes continue the same stored conversation unless the user starts or resets a session.
 - `chat.send` takes an idempotency key (Control UI uses the run id); the Gateway dedupes repeated requests that reuse the same key, so retried or duplicate in-flight submits for the same session/message/attachments do not create a second run.
 - Workspace startup files and pending `BOOTSTRAP.md` instructions are supplied through the agent system prompt's `# Project Context` section, not copied into the WebChat user message. If bootstrap content is truncated, the system prompt gets a short "Bootstrap Context Notice" instead; detailed counts and config knobs stay on diagnostic surfaces.
-- Display normalization on `chat.history` strips: runtime-only OpenClaw context, inbound envelope wrappers, inline delivery directive tags such as `[[reply_to_current]]`, `[[reply_to:<id>]]`, and `[[audio_as_voice]]`, plain-text tool-call XML payloads (`<tool_call>`, `<function_call>`, `<tool_calls>`, `<function_calls>`, including truncated blocks), and leaked ASCII/full-width model control tokens. Assistant entries whose whole visible text is only the silent token `NO_REPLY` (case-insensitive) are omitted.
+- Display normalization on `chat.history` strips: runtime-only Operator context, inbound envelope wrappers, inline delivery directive tags such as `[[reply_to_current]]`, `[[reply_to:<id>]]`, and `[[audio_as_voice]]`, plain-text tool-call XML payloads (`<tool_call>`, `<function_call>`, `<tool_calls>`, `<function_calls>`, including truncated blocks), and leaked ASCII/full-width model control tokens. Assistant entries whose whole visible text is only the silent token `NO_REPLY` (case-insensitive) are omitted.
 - Reasoning-flagged reply payloads (`isReasoning: true`) are excluded from WebChat assistant content, transcript replay text, and audio content blocks, so thinking-only payloads do not surface as visible assistant messages or playable audio.
 - `chat.inject` appends an assistant note directly to the transcript and broadcasts it to the UI (no agent run).
 - Aborted runs can keep partial assistant output visible in the UI. Gateway persists that partial text into transcript history when buffered output exists, and marks the entry with abort metadata.
@@ -39,7 +39,7 @@ Status: the macOS/iOS SwiftUI chat UI talks directly to the Gateway WebSocket. N
 
 WebChat has two separate data paths:
 
-- The SQLite transcript rows are the durable model/runtime transcript. For normal agent runs, the embedded OpenClaw runtime persists model-visible `user`, `assistant`, and `toolResult` messages through the session accessor. WebChat does not write arbitrary delivery, status, or helper text into that transcript.
+- The SQLite transcript rows are the durable model/runtime transcript. For normal agent runs, the embedded Operator runtime persists model-visible `user`, `assistant`, and `toolResult` messages through the session accessor. WebChat does not write arbitrary delivery, status, or helper text into that transcript.
 - Gateway `ReplyPayload` events are the live delivery projection: normalized for WebChat/channel display, block streaming, directive tags, media embedding, TTS/audio flags, and UI fallback behavior. They are not themselves the canonical session log.
 - Harnesses that require visible replies through `tools.message` still use WebChat as a current-run internal source reply sink. A targetless `message.send` from that active WebChat run is projected into the same chat and mirrored to the session transcript; WebChat does not become a reusable outbound channel and never inherits `lastChannel`.
 - WebChat injects assistant transcript entries only when the Gateway owns a displayed message outside a normal embedded agent turn: `chat.inject`, non-agent command replies, aborted partial output, and WebChat-managed media transcript supplements.
@@ -63,7 +63,7 @@ Normal agent-run final answers should be durable because the embedded runtime wr
 
 Full configuration: [Configuration](/gateway/configuration)
 
-WebChat has no persisted config section. Gateway uses the built-in `chat.history` display limit; API clients can send per-request `maxChars` to override it for a single call. Legacy `channels.webchat` and `gateway.webchat` config is retired; run `openclaw doctor --fix` to remove it.
+WebChat has no persisted config section. Gateway uses the built-in `chat.history` display limit; API clients can send per-request `maxChars` to override it for a single call. Legacy `channels.webchat` and `gateway.webchat` config is retired; run `operator doctor --fix` to remove it.
 
 Related global options:
 

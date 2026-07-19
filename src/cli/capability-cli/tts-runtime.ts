@@ -3,7 +3,7 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveApiKeyForProvider } from "../../agents/model-auth.js";
 import { getRuntimeConfig } from "../../config/config.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

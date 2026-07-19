@@ -1,5 +1,5 @@
 /** Timeout wrapper for node-host operations using AbortSignal cancellation. */
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { toErrorObject } from "../infra/errors.js";
 
 /**

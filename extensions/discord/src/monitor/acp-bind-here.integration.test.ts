@@ -14,14 +14,14 @@ vi.mock("openclaw/plugin-sdk/runtime-config-snapshot", async () => {
   };
 });
 
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   getSessionBindingService,
   registerSessionBindingAdapter,
   type SessionBindingBindInput,
   type SessionBindingRecord,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { testing as sessionBindingTesting } from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { testing as sessionBindingTesting } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import { preflightDiscordMessage } from "./message-handler.preflight.js";
 import {
   createDiscordMessage,

@@ -11,8 +11,8 @@ Adds web search provider support.
 
 ## Distribution
 
-- Package: `@operator/perplexity-plugin`
-- Install route: npm; ClawHub: `clawhub:@operator/perplexity-plugin`
+- Package: `@gabrielvfonseca/perplexity-plugin`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/perplexity-plugin`
 
 ## Surface
 

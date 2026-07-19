@@ -1,5 +1,5 @@
 /** Collects plugin config secret refs from runtime plugin metadata. */
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {

@@ -53,33 +53,69 @@ const browserCommandAliasRegistry: PluginManifestCommandAliasRegistry = {
 
 describe("isGatewayRunFastPathArgv", () => {
   it("matches only plain gateway foreground starts without root options or help", () => {
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--force"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--port", "18789"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--auth=none"])).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway"])).toBe(true);
     expect(
-      isGatewayRunFastPathArgv(["node", "openclaw", "--no-color", "gateway", "--bind", "loopback"]),
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--force"]),
     ).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "run"])).toBe(true);
     expect(
-      isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "run", "--raw-stream-path", "x"]),
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--port", "18789"]),
     ).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "call", "health"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--help"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--port"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "openclaw", "gateway", "--unknown"])).toBe(false);
+    expect(
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--auth=none"]),
+    ).toBe(true);
+    expect(
+      isGatewayRunFastPathArgv([
+        "node",
+        "@gabrielvfonseca/operator",
+        "--no-color",
+        "gateway",
+        "--bind",
+        "loopback",
+      ]),
+    ).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "run"])).toBe(
+      true,
+    );
+    expect(
+      isGatewayRunFastPathArgv([
+        "node",
+        "@gabrielvfonseca/operator",
+        "gateway",
+        "run",
+        "--raw-stream-path",
+        "x",
+      ]),
+    ).toBe(true);
+    expect(
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "call", "health"]),
+    ).toBe(false);
+    expect(
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--help"]),
+    ).toBe(false);
+    expect(
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--port"]),
+    ).toBe(false);
+    expect(
+      isGatewayRunFastPathArgv(["node", "@gabrielvfonseca/operator", "gateway", "--unknown"]),
+    ).toBe(false);
   });
 });
 
 describe("resolveGatewayRunPreBootstrapOptions", () => {
   it("resolves destructive gateway flags across fast and full Commander paths", () => {
     expect(
-      resolveGatewayRunPreBootstrapOptions(["node", "openclaw", "gateway", "run", "--force"]),
+      resolveGatewayRunPreBootstrapOptions([
+        "node",
+        "@gabrielvfonseca/operator",
+        "gateway",
+        "run",
+        "--force",
+      ]),
     ).toEqual({ force: true, reset: false });
     expect(
       resolveGatewayRunPreBootstrapOptions([
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "--log-level",
         "debug",
         "gateway",
@@ -92,7 +128,13 @@ describe("resolveGatewayRunPreBootstrapOptions", () => {
 
   it("does not treat malformed required option values as destructive flags", () => {
     expect(
-      resolveGatewayRunPreBootstrapOptions(["node", "openclaw", "gateway", "--token", "--force"]),
+      resolveGatewayRunPreBootstrapOptions([
+        "node",
+        "@gabrielvfonseca/operator",
+        "gateway",
+        "--token",
+        "--force",
+      ]),
     ).toEqual({ force: false, reset: false });
   });
 });
@@ -172,98 +214,155 @@ describe("rewriteUpdateFlagArgv", () => {
 
 describe("shouldEnsureCliPath", () => {
   it("skips path bootstrap for help/version invocations", () => {
-    expect(shouldEnsureCliPath(["node", "openclaw", "--help"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "-V"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "-v"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "--help"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "-V"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "-v"])).toBe(false);
   });
 
   it("skips path bootstrap for read-only fast paths", () => {
-    expect(shouldEnsureCliPath(["node", "openclaw"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "--profile", "work"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "approvals"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "channels"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "cron"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "devices"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "plugins"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "mcp"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "status"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "--log-level", "debug", "status"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "sessions", "--json"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "config", "get", "update"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "models", "status", "--json"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "openclaw", "tools", "effective"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "--profile", "work"])).toBe(
+      false,
+    );
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "approvals"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "channels"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "cron"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "devices"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "plugins"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "mcp"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "status"])).toBe(false);
+    expect(
+      shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "--log-level", "debug", "status"]),
+    ).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "sessions", "--json"])).toBe(
+      false,
+    );
+    expect(
+      shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "config", "get", "update"]),
+    ).toBe(false);
+    expect(
+      shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "models", "status", "--json"]),
+    ).toBe(false);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "tools", "effective"])).toBe(
+      false,
+    );
   });
 
   it("keeps path bootstrap for mutating or unknown commands", () => {
-    expect(shouldEnsureCliPath(["node", "openclaw", "message", "send"])).toBe(true);
-    expect(shouldEnsureCliPath(["node", "openclaw", "voicecall", "status"])).toBe(true);
-    expect(shouldEnsureCliPath(["node", "openclaw", "acp", "-v"])).toBe(true);
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "message", "send"])).toBe(
+      true,
+    );
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "voicecall", "status"])).toBe(
+      true,
+    );
+    expect(shouldEnsureCliPath(["node", "@gabrielvfonseca/operator", "acp", "-v"])).toBe(true);
   });
 });
 
 describe("shouldHandleBareRoot", () => {
   it("handles bare root invocations", () => {
-    expect(shouldHandleBareRoot(["node", "openclaw"])).toBe(true);
-    expect(shouldHandleBareRoot(["node", "openclaw", "--profile", "work"])).toBe(true);
-    expect(shouldHandleBareRoot(["node", "openclaw", "--dev"])).toBe(true);
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator"])).toBe(true);
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator", "--profile", "work"])).toBe(
+      true,
+    );
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator", "--dev"])).toBe(true);
   });
 
   it("does not handle help, version, or commands", () => {
-    expect(shouldHandleBareRoot(["node", "openclaw", "--help"])).toBe(false);
-    expect(shouldHandleBareRoot(["node", "openclaw", "-V"])).toBe(false);
-    expect(shouldHandleBareRoot(["node", "openclaw", "status"])).toBe(false);
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator", "--help"])).toBe(false);
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator", "-V"])).toBe(false);
+    expect(shouldHandleBareRoot(["node", "@gabrielvfonseca/operator", "status"])).toBe(false);
   });
 });
 
 describe("shouldStartProxyForCli", () => {
   it("starts managed proxy routing for the --update shorthand", () => {
-    expect(shouldStartProxyForCli(["node", "openclaw", "--update"])).toBe(true);
-    expect(shouldStartProxyForCli(["node", "openclaw", "--profile", "p", "--update"])).toBe(true);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "--update"])).toBe(true);
+    expect(
+      shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "--profile", "p", "--update"]),
+    ).toBe(true);
   });
 
   it("skips managed proxy routing for bare parent default help", () => {
-    expect(shouldStartProxyForCli(["node", "openclaw", "plugins"])).toBe(false);
-    expect(shouldStartProxyForCli(["node", "openclaw", "channels"])).toBe(false);
-    expect(shouldStartProxyForCli(["node", "openclaw", "cron"])).toBe(false);
-    expect(shouldStartProxyForCli(["node", "openclaw", "devices"])).toBe(false);
-    expect(shouldStartProxyForCli(["node", "openclaw", "mcp"])).toBe(false);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "plugins"])).toBe(false);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "channels"])).toBe(false);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "cron"])).toBe(false);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "devices"])).toBe(false);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "mcp"])).toBe(false);
   });
 
   it("skips managed proxy routing before shared-state SQLite maintenance", () => {
     expect(
-      shouldStartProxyForCli(["node", "openclaw", "doctor", "--state-sqlite", "compact", "--json"]),
+      shouldStartProxyForCli([
+        "node",
+        "@gabrielvfonseca/operator",
+        "doctor",
+        "--state-sqlite",
+        "compact",
+        "--json",
+      ]),
     ).toBe(false);
     expect(
-      shouldStartProxyForCli(["node", "openclaw", "doctor", "--state-sqlite=compact", "--json"]),
+      shouldStartProxyForCli([
+        "node",
+        "@gabrielvfonseca/operator",
+        "doctor",
+        "--state-sqlite=compact",
+        "--json",
+      ]),
     ).toBe(false);
-    expect(shouldStartProxyForCli(["node", "openclaw", "doctor", "--lint"])).toBe(true);
+    expect(shouldStartProxyForCli(["node", "@gabrielvfonseca/operator", "doctor", "--lint"])).toBe(
+      true,
+    );
   });
 });
 
 describe("shouldUseRootHelpFastPath", () => {
   it("uses the fast path for root help only", () => {
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "--profile", "work", "-h"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "help", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "tools", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "status", "--help"])).toBe(false);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "--help", "status"])).toBe(false);
-    expect(shouldUseRootHelpFastPath(["node", "openclaw", "help", "gateway"])).toBe(false);
+    expect(shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "--help"])).toBe(true);
+    expect(
+      shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "--profile", "work", "-h"]),
+    ).toBe(true);
+    expect(shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "help", "--help"])).toBe(
+      true,
+    );
+    expect(
+      shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "tools", "--help"]),
+    ).toBe(true);
+    expect(
+      shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "status", "--help"]),
+    ).toBe(false);
+    expect(
+      shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "--help", "status"]),
+    ).toBe(false);
+    expect(
+      shouldUseRootHelpFastPath(["node", "@gabrielvfonseca/operator", "help", "gateway"]),
+    ).toBe(false);
   });
 });
 
 describe("shouldUseSetupOnboardConfigureHelpFastPath", () => {
   it("uses the fast path only for setup, onboard, and configure help", () => {
     expect(
-      shouldUseSetupOnboardConfigureHelpFastPath(["node", "openclaw", "setup", "--help"]),
+      shouldUseSetupOnboardConfigureHelpFastPath([
+        "node",
+        "@gabrielvfonseca/operator",
+        "setup",
+        "--help",
+      ]),
     ).toBe(true);
-    expect(shouldUseSetupOnboardConfigureHelpFastPath(["node", "openclaw", "onboard", "-h"])).toBe(
-      true,
-    );
     expect(
       shouldUseSetupOnboardConfigureHelpFastPath([
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
+        "onboard",
+        "-h",
+      ]),
+    ).toBe(true);
+    expect(
+      shouldUseSetupOnboardConfigureHelpFastPath([
+        "node",
+        "@gabrielvfonseca/operator",
         "--profile",
         "work",
         "configure",
@@ -273,14 +372,19 @@ describe("shouldUseSetupOnboardConfigureHelpFastPath", () => {
     expect(
       shouldUseSetupOnboardConfigureHelpFastPath([
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "onboard",
         "status",
         "--help",
       ]),
     ).toBe(false);
     expect(
-      shouldUseSetupOnboardConfigureHelpFastPath(["node", "openclaw", "status", "--help"]),
+      shouldUseSetupOnboardConfigureHelpFastPath([
+        "node",
+        "@gabrielvfonseca/operator",
+        "status",
+        "--help",
+      ]),
     ).toBe(false);
   });
 });

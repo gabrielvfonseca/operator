@@ -1,14 +1,14 @@
-// Discord plugin module implements native command.options behavior.
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { loadModelCatalog } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { loadModelCatalog } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   resolveCommandArgChoices,
   type ChatCommandDefinition,
-} from "openclaw/plugin-sdk/native-command-registry";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-registry";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+// Discord plugin module implements native command.options behavior.
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { AutocompleteInteraction, CommandOptions } from "../internal/discord.js";
 
 const log = createSubsystemLogger("discord/native-command");

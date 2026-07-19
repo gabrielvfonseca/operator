@@ -1,5 +1,5 @@
 // Slack plugin module implements setup core behavior.
-import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input";
+import { hasConfiguredSecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   createAccountScopedAllowFromSection,
   createAccountScopedGroupAccessSection,
@@ -16,13 +16,13 @@ import {
   type ChannelSetupDmPolicy,
   type ChannelSetupWizard,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { inspectSlackAccount } from "./account-inspect.js";
 import { resolveSlackAccount } from "./accounts.js";
 import {

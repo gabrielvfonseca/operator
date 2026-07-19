@@ -1,8 +1,8 @@
 // Voice Call plugin module implements runtime behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { isLoopbackHost } from "openclaw/plugin-sdk/gateway-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { isLoopbackHost } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   assertRealtimeVoiceAgentConsultModelSelectionUnlocked,
   consultRealtimeVoiceAgent,
@@ -11,8 +11,8 @@ import {
   resolveRealtimeVoiceAgentConsultToolsAllow,
   type RealtimeVoiceAgentConsultTranscriptEntry,
   type ResolvedRealtimeVoiceProvider,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import type { VoiceCallConfig } from "./config.js";
 import {
   resolveVoiceCallEffectiveConfig,

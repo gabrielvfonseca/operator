@@ -1,6 +1,6 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import Testing
 
 private func setupCode(from payload: String) -> String {
@@ -31,48 +31,48 @@ private func gatewayLink(from raw: String) -> GatewayConnectDeepLink? {
     }
 
     @Test func dashboardDeepLinkParses() {
-        let url = URL(string: "openclaw://dashboard")!
+        let url = URL(string: "operator://dashboard")!
         #expect(DeepLinkParser.parse(url) == .dashboard)
     }
 
     @Test func debugDashboardDeepLinkParses() {
-        let url = URL(string: "openclaw-debug://dashboard")!
+        let url = URL(string: "operator-debug://dashboard")!
         #expect(DeepLinkParser.parse(url) == .dashboard)
     }
 
     @Test func gatewayDeepLinkUsesTlsDefaultPortWhenPortMissing() {
-        let link = gatewayLink(from: "openclaw://gateway?host=gateway.example.com&tls=1")
+        let link = gatewayLink(from: "operator://gateway?host=gateway.example.com&tls=1")
         #expect(link?.port == 443)
         #expect(link?.tls == true)
     }
 
     @Test func gatewayDeepLinkUsesPlaintextDefaultPortWhenPortMissing() {
-        let link = gatewayLink(from: "openclaw://gateway?host=127.0.0.1&tls=0")
+        let link = gatewayLink(from: "operator://gateway?host=127.0.0.1&tls=0")
         #expect(link?.port == 18789)
         #expect(link?.tls == false)
     }
 
     @Test func gatewayDeepLinkPreservesExplicitTlsPort() {
-        let link = gatewayLink(from: "openclaw://gateway?host=gateway.example.com&port=18789&tls=1")
+        let link = gatewayLink(from: "operator://gateway?host=gateway.example.com&port=18789&tls=1")
         #expect(link?.port == 18789)
         #expect(link?.tls == true)
     }
 
     @Test func gatewayDeepLinkRejectsInsecureNonLoopbackWs() {
         let url = URL(
-            string: "openclaw://gateway?host=attacker.example&port=18789&tls=0&token=abc")!
+            string: "operator://gateway?host=attacker.example&port=18789&tls=0&token=abc")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func gatewayDeepLinkRejectsInsecurePrefixBypassHost() {
         let url = URL(
-            string: "openclaw://gateway?host=127.attacker.example&port=18789&tls=0&token=abc")!
+            string: "operator://gateway?host=127.attacker.example&port=18789&tls=0&token=abc")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func gatewayDeepLinkAllowsLoopbackWs() {
         let url = URL(
-            string: "openclaw://gateway?host=127.0.0.1&port=18789&tls=0&token=abc")!
+            string: "operator://gateway?host=127.0.0.1&port=18789&tls=0&token=abc")!
         #expect(
             DeepLinkParser.parse(url) == .gateway(
                 .init(
@@ -119,10 +119,10 @@ private func gatewayLink(from raw: String) -> GatewayConnectDeepLink? {
     }
 
     @Test func setupCodeAllowsMDNSWs() {
-        let payload = #"{"url":"ws://openclaw.local:18789","bootstrapToken":"tok"}"#
+        let payload = #"{"url":"ws://operator.local:18789","bootstrapToken":"tok"}"#
         #expect(
             GatewayConnectDeepLink.fromSetupCode(setupCode(from: payload)) == .init(
-                host: "openclaw.local",
+                host: "operator.local",
                 port: 18789,
                 tls: false,
                 bootstrapToken: "tok",
@@ -220,10 +220,10 @@ private func gatewayLink(from raw: String) -> GatewayConnectDeepLink? {
     }
 
     @Test func setupCodeAllowsPrivateLanHostPayload() {
-        let payload = #"{"host":"openclaw.local","port":18789,"tls":false,"bootstrapToken":"tok"}"#
+        let payload = #"{"host":"operator.local","port":18789,"tls":false,"bootstrapToken":"tok"}"#
         #expect(
             GatewayConnectDeepLink.fromSetupCode(setupCode(from: payload)) == .init(
-                host: "openclaw.local",
+                host: "operator.local",
                 port: 18789,
                 tls: false,
                 bootstrapToken: "tok",

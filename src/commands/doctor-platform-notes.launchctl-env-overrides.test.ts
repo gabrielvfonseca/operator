@@ -123,8 +123,8 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
 describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
   it("uses service env for gateway platform stale updater warnings", async () => {
     const serviceEnv = {
-      OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-      OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+      OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+      OPERATOR_LAUNCHD_LABEL: "ai.operator.manual-update.gateway",
     };
     const service = {
       readCommand: vi.fn(async () => ({
@@ -143,16 +143,16 @@ describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     expect(findJobs).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+        OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.manual-update.gateway",
       }),
     );
   });
 
   it("uses service env for doctor stale updater notes", async () => {
     const serviceEnv = {
-      OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-      OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+      OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+      OPERATOR_LAUNCHD_LABEL: "ai.operator.manual-update.gateway",
     };
     const service = {
       readCommand: vi.fn(async () => ({
@@ -171,8 +171,8 @@ describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     expect(findJobs).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+        OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.manual-update.gateway",
       }),
     );
   });
@@ -184,11 +184,11 @@ describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
     };
     const findJobs = vi.fn(async () => [
       {
-        label: "ai.openclaw.update.2026.5.12",
+        label: "ai.operator.update.2026.5.12",
         lastExitStatus: 127,
       },
       {
-        label: "ai.openclaw.manual-update.1717168800",
+        label: "ai.operator.manual-update.1717168800",
         lastExitStatus: 0,
       },
     ]);
@@ -204,8 +204,8 @@ describe("noteMacStaleOperatorUpdateLaunchdJobs", () => {
     const [message, title] = requireNoteCall(noteFn);
     expect(title).toBe("Gateway (macOS)");
     expect(message).toContain("Stale Operator updater launchd job(s) detected");
-    expect(message).toContain("ai.openclaw.update.2026.5.12");
-    expect(message).toContain("ai.openclaw.manual-update.1717168800");
+    expect(message).toContain("ai.operator.update.2026.5.12");
+    expect(message).toContain("ai.operator.manual-update.1717168800");
     expect(message).toContain("launchctl remove <label>");
     expect(message).toContain("openclaw gateway restart");
   });

@@ -1,9 +1,9 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.takeUtf16Safe
-import ai.openclaw.app.ui.image.SafeWebFetcher
-import ai.openclaw.app.ui.image.isPubliclyRoutableHost
-import ai.openclaw.app.ui.image.safePublicHttpClient
+import ai.operator.app.takeUtf16Safe
+import ai.operator.app.ui.image.SafeWebFetcher
+import ai.operator.app.ui.image.isPubliclyRoutableHost
+import ai.operator.app.ui.image.safePublicHttpClient
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.commonmark.node.Code

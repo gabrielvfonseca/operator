@@ -4,11 +4,11 @@
 // doctor-migrated transcripts and rebuilds branch-rewound sessions.
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import { truncateUtf16Safe } from "../../utils.js";
 import {
   deleteOrphanedTranscriptIndexRowsInTransaction,

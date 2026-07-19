@@ -3,7 +3,7 @@
  *
  * Resolves music providers/options, saves generated tracks, and supports detached background runs.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { Type } from "typebox";
 import { getRuntimeConfig } from "../../config/config.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

@@ -31,7 +31,7 @@ import {
 const tempPaths: string[] = [];
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-manager-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-manager-"));
   tempPaths.push(dir);
   return dir;
 }
@@ -2183,7 +2183,7 @@ describe("SessionManager.open", () => {
       timestamp: "2026-06-04T00:00:05.000Z",
       message: {
         ...buildAssistantMessage("mirrored delivery"),
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
       },
     };

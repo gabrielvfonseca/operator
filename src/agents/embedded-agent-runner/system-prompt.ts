@@ -31,7 +31,6 @@ export function buildEmbeddedSystemPrompt(params: {
   ownerDisplaySecret?: string;
   reasoningTagHint: boolean;
   heartbeatPrompt?: string;
-  skillsPrompt?: string;
   docsPath?: string;
   sourcePath?: string;
   ttsHint?: string;
@@ -88,8 +87,6 @@ export function buildEmbeddedSystemPrompt(params: {
   contextFiles?: EmbeddedContextFile[];
   bootstrapMode?: BootstrapMode;
   bootstrapTruncationNotice?: string;
-  includeMemorySection?: boolean;
-  memoryCitationsMode?: MemoryCitationsMode;
   promptContribution?: ProviderSystemPromptContribution;
 }): string {
   return buildConfiguredAgentSystemPrompt({
@@ -104,7 +101,6 @@ export function buildEmbeddedSystemPrompt(params: {
     ownerDisplaySecret: params.ownerDisplaySecret,
     reasoningTagHint: params.reasoningTagHint,
     heartbeatPrompt: params.heartbeatPrompt,
-    skillsPrompt: params.skillsPrompt,
     docsPath: params.docsPath,
     sourcePath: params.sourcePath,
     ttsHint: params.ttsHint,
@@ -132,8 +128,6 @@ export function buildEmbeddedSystemPrompt(params: {
     contextFiles: params.contextFiles,
     bootstrapMode: params.bootstrapMode,
     bootstrapTruncationNotice: params.bootstrapTruncationNotice,
-    includeMemorySection: params.includeMemorySection,
-    memoryCitationsMode: params.memoryCitationsMode,
     promptContribution: params.promptContribution,
   });
 }

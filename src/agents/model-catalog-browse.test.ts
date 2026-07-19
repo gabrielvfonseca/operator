@@ -3,7 +3,7 @@
  * Verifies filtered catalog output and pending load behavior.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { MAX_TIMER_TIMEOUT_MS } from "../shared/number-coercion.js";
 import {
   buildProviderConfigModelCatalogForBrowse,

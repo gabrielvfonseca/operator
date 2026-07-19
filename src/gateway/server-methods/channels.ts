@@ -1,5 +1,5 @@
 // Gateway RPC handlers for channel lifecycle, status, and account operations.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

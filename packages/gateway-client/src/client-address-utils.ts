@@ -2,7 +2,7 @@ import {
   normalizeIpAddress,
   parseCanonicalIpAddress,
   type ParsedIpAddress,
-} from "@operator/net-policy/ip";
+} from "@gabrielvfonseca/net-policy/ip";
 
 export function normalizeLowercaseStringOrEmpty(value: unknown): string {
   return typeof value === "string" ? value.trim().toLowerCase() : "";

@@ -1,5 +1,5 @@
 // Tests private-route command persistence and timestamp bounds.
-import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ChannelPlugin } from "../../channels/plugins/types.public.js";
 import type { OperatorConfig } from "../../config/config.js";

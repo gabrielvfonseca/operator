@@ -268,7 +268,7 @@ describe("plugin entry guardrails", () => {
         const pkg = JSON.parse(readFileSync(packageJsonPath, "utf8")) as {
           openclaw?: { extensions?: unknown };
         };
-        const extensions = Array.isArray(pkg.openclaw?.extensions) ? pkg.openclaw.extensions : [];
+        const extensions = Array.isArray(pkg.operator?.extensions) ? pkg.operator.extensions : [];
         if (
           extensions.some(
             (candidate) => typeof candidate === "string" && RUNTIME_ENTRY_HELPER_RE.test(candidate),
@@ -305,7 +305,7 @@ describe("plugin entry guardrails", () => {
         import "./setup.js";
         export { x };
         export * from "./barrel.js";
-        import { y } from "openclaw/plugin-sdk/core";
+        import { y } from "@gabrielvfonseca/operator/plugin-sdk/core";
       `,
       }).relativeSpecifiers.toSorted(),
     ).toEqual(["./barrel.js", "./safe.js", "./setup.js"]);
@@ -335,8 +335,8 @@ describe("plugin entry guardrails", () => {
       analyzeSourceModule({
         filePath: "aliased-plugin-entry.ts",
         source: `
-          import { definePluginEntry as dpe } from "openclaw/plugin-sdk/core";
-          import { somethingElse } from "openclaw/plugin-sdk/core";
+          import { definePluginEntry as dpe } from "@gabrielvfonseca/operator/plugin-sdk/core";
+          import { somethingElse } from "@gabrielvfonseca/operator/plugin-sdk/core";
         `,
       }).importsDefinePluginEntryFromCore,
     ).toBe(true);

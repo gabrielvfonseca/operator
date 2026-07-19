@@ -1,9 +1,9 @@
 // Doctor warnings for plugin allowlists that make configured tool policies ineffective.
-import { isRecord as hasRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord as hasRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   sortUniqueStrings,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { sanitizeServerName, TOOL_NAME_SEPARATOR } from "../../../agents/agent-bundle-mcp-names.js";
 import { compileGlobPatterns, matchesAnyGlobPattern } from "../../../agents/glob-pattern.js";
 import { resolveProviderToolPolicy } from "../../../agents/provider-tool-policy.js";

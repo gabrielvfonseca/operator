@@ -33,8 +33,8 @@ export { createPluginStateSyncKeyedStore } from "../plugin-state/plugin-state-st
 export {
   detectOperatorStateDatabaseSchemaMigrations,
   repairOperatorStateDatabaseSchema,
-} from "../state/operator-state-db.js";
-export type { OperatorStateDatabaseSchemaMigration } from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
+export type { OperatorStateDatabaseSchemaMigration } from "../state/openclaw-state-db.js";
 export { removePluginFromConfig } from "../plugins/uninstall.js";
 export type {
   PluginDoctorStateMigration,

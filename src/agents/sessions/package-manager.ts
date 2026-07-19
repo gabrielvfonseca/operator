@@ -212,7 +212,7 @@ function collectFiles(
   return files;
 }
 
-type SkillDiscoveryMode = "operator" | "agents";
+type SkillDiscoveryMode = "@gabrielvfonseca/operator" | "agents";
 
 function collectSkillEntries(
   dir: string,
@@ -283,7 +283,7 @@ function collectSkillEntries(
 
       const relPath = toPosixPath(relative(root, fullPath));
       if (
-        mode === "operator" &&
+        mode === "@gabrielvfonseca/operator" &&
         dir === root &&
         isFile &&
         entry.name.endsWith(".md") &&
@@ -401,7 +401,7 @@ function collectTopLevelAutoResourceEntries(
 function readResourceManifestFile(packageJsonPath: string): ResourceManifest | null {
   try {
     const content = readFileSync(packageJsonPath, "utf-8");
-    const pkg = JSON.parse(content) as { operator?: ResourceManifest };
+    const pkg = JSON.parse(content) as { openclaw?: ResourceManifest };
     return pkg.operator ?? null;
   } catch {
     return null;
@@ -508,7 +508,7 @@ function collectAutoExtensionEntries(dir: string): string[] {
  */
 function collectResourceFiles(dir: string, resourceType: ResourceType): string[] {
   if (resourceType === "skills") {
-    return collectSkillEntries(dir, "operator");
+    return collectSkillEntries(dir, "@gabrielvfonseca/operator");
   }
   if (resourceType === "extensions") {
     return collectAutoExtensionEntries(dir);
@@ -1120,7 +1120,7 @@ export class DefaultPackageManager implements PackageManager {
 
     try {
       const content = readFileSync(packageJsonPath, "utf-8");
-      const pkg = JSON.parse(content) as { operator?: ResourceManifest };
+      const pkg = JSON.parse(content) as { openclaw?: ResourceManifest };
       return pkg.operator ?? null;
     } catch {
       return null;
@@ -1283,7 +1283,7 @@ export class DefaultPackageManager implements PackageManager {
     // Project skills from the embedded agent project directory.
     addResources(
       "skills",
-      collectAutoSkillEntries(projectDirs.skills, "operator"),
+      collectAutoSkillEntries(projectDirs.skills, "@gabrielvfonseca/operator"),
       projectMetadata,
       projectOverrides.skills,
       projectBaseDir,
@@ -1332,7 +1332,7 @@ export class DefaultPackageManager implements PackageManager {
     // User skills from ~/.operator/agent/
     addResources(
       "skills",
-      collectAutoSkillEntries(userDirs.skills, "operator"),
+      collectAutoSkillEntries(userDirs.skills, "@gabrielvfonseca/operator"),
       userMetadata,
       userOverrides.skills,
       globalBaseDir,

@@ -1,25 +1,28 @@
 // Openai provider module implements model/runtime integration.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import type {
   ProviderAuthContext,
   ProviderAuthMethod,
   ProviderAuthResult,
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { CODEX_CLI_PROFILE_ID, type OAuthCredential } from "openclaw/plugin-sdk/provider-auth";
-import { buildOauthProviderAuthResult } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  CODEX_CLI_PROFILE_ID,
+  type OAuthCredential,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { buildOauthProviderAuthResult } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   DEFAULT_CONTEXT_TOKENS,
   normalizeModelCompat,
   normalizeProviderId,
   type ProviderPlugin,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   normalizeLowercaseStringOrEmpty,
   readStringValue,
   uniqueValues,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   OPENAI_CHATGPT_DEVICE_PAIRING_HINT,
   OPENAI_CHATGPT_DEVICE_PAIRING_LABEL,
@@ -564,7 +567,7 @@ async function runOpenAICodexDeviceCode(ctx: ProviderAuthContext) {
     spin.stop("OpenAI device code failed");
     ctx.runtime.error(formatErrorMessage(error));
     await ctx.prompter.note(
-      "Trouble with device code login? See https://docs.openclaw.ai/start/faq",
+      "Trouble with device code login? See https://docs.operator.ai/start/faq",
       "OAuth help",
     );
     throw error;

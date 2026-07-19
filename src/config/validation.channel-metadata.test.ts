@@ -1,6 +1,6 @@
 // Verifies channel metadata validation and plugin capability lookups.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PluginManifestRecord, PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import {
@@ -81,7 +81,7 @@ function createExternalFeishuSchemaRegistry(): PluginManifestRegistry {
     diagnostics: [],
     plugins: [
       createPluginManifestRecord({
-        id: "openclaw-lark",
+        id: "operator-lark",
         origin: "global",
         channels: ["feishu"],
         channelConfigs: {
@@ -209,7 +209,7 @@ function createPluginManifestRecord(
     channels: [],
     cliBackends: [],
     hooks: [],
-    manifestPath: `/tmp/${overrides.id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/${overrides.id}/operator.plugin.json`,
     origin: "bundled",
     providers: [],
     rootDir: `/tmp/${overrides.id}`,
@@ -615,7 +615,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
         expect.objectContaining({
           path: "channels.feishu",
           message:
-            'invalid config for plugin openclaw-lark: must not have additional properties: "unsupportedField"',
+            'invalid config for plugin operator-lark: must not have additional properties: "unsupportedField"',
         }),
       );
     }
@@ -642,7 +642,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
         expect.objectContaining({
           path: "channels.feishu",
           message:
-            'invalid config for plugin openclaw-lark: must not have additional properties: "unsupportedField"',
+            'invalid config for plugin operator-lark: must not have additional properties: "unsupportedField"',
         }),
       );
       expect(result.issues.map((issue) => issue.message)).not.toContain(
@@ -672,7 +672,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
         expect.objectContaining({
           path: "channels.feishu",
           message:
-            'invalid config for plugin openclaw-lark: must not have additional properties: "unsupportedField"',
+            'invalid config for plugin operator-lark: must not have additional properties: "unsupportedField"',
         }),
       );
       expect(result.issues.map((issue) => issue.message)).not.toContain(
@@ -707,7 +707,7 @@ describe("validateConfigObjectRawWithPlugins channel metadata", () => {
         expect.objectContaining({
           path: "channels.feishu",
           message:
-            'invalid config for plugin openclaw-lark: must not have additional properties: "unsupportedField"',
+            'invalid config for plugin operator-lark: must not have additional properties: "unsupportedField"',
         }),
       );
     }

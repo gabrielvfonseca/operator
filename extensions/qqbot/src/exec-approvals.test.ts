@@ -1,6 +1,6 @@
 // Qqbot tests cover exec approvals plugin behavior.
-import { isImplicitSameChatApprovalAuthorization } from "openclaw/plugin-sdk/approval-auth-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { isImplicitSameChatApprovalAuthorization } from "@gabrielvfonseca/operator/plugin-sdk/approval-auth-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerPlatformAdapter, type PlatformAdapter } from "./engine/adapter/index.js";
 import { authorizeQQBotApprovalAction } from "./exec-approvals.js";

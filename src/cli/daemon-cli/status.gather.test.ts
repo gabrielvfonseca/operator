@@ -102,8 +102,8 @@ const serviceReadCommand = vi.fn<
 >(async (_env?: NodeJS.ProcessEnv) => ({
   programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
   environment: {
-    OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-    OPERATOR_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
+    OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+    OPERATOR_CONFIG_PATH: "/tmp/operator-daemon/operator.json",
   },
 }));
 const resolveGatewayBindHost = vi.fn(
@@ -116,10 +116,10 @@ const resolveAdvertisedControlUiLinks = vi.fn(async (_opts?: unknown) => ({
 const pickPrimaryTailnetIPv4 = vi.fn(() => "100.64.0.9");
 const resolveGatewayPort = vi.fn((_cfg?: unknown, _env?: unknown) => 18789);
 const resolveStateDir = vi.fn(
-  (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/openclaw-cli",
+  (env: NodeJS.ProcessEnv) => env.OPERATOR_STATE_DIR ?? "/tmp/operator-cli",
 );
 const resolveConfigPath = vi.fn((env: NodeJS.ProcessEnv, stateDir: string) => {
-  return env.OPERATOR_CONFIG_PATH ?? `${stateDir}/openclaw.json`;
+  return env.OPERATOR_CONFIG_PATH ?? `${stateDir}/operator.json`;
 });
 const createConfigIOCalls = vi.fn((configPath: string, pluginValidation?: "full" | "skip") => ({
   configPath,
@@ -150,7 +150,7 @@ vi.mock("../../config/config.js", () => ({
     configPath: string;
     pluginValidation?: "full" | "skip";
   }) => {
-    const isDaemon = configPath.includes("/openclaw-daemon/");
+    const isDaemon = configPath.includes("/operator-daemon/");
     const runtimeConfig = isDaemon ? daemonLoadedConfig : cliLoadedConfig;
     const warnings = isDaemon ? daemonConfigWarnings : cliConfigWarnings;
     createConfigIOCalls(configPath, pluginValidation);
@@ -287,8 +287,8 @@ describe("gatherDaemonStatus", () => {
       "DAEMON_GATEWAY_TOKEN",
       "DAEMON_GATEWAY_PASSWORD",
     ]);
-    setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/openclaw-cli");
-    setTestEnvValue("OPERATOR_CONFIG_PATH", "/tmp/openclaw-cli/openclaw.json");
+    setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/operator-cli");
+    setTestEnvValue("OPERATOR_CONFIG_PATH", "/tmp/operator-cli/operator.json");
     deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
     deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
     deleteTestEnvValue("DAEMON_GATEWAY_TOKEN");
@@ -438,7 +438,7 @@ describe("gatherDaemonStatus", () => {
       configPath?: string;
     };
     expect(probeInput.requireRpc).toBe(true);
-    expect(probeInput.configPath).toBe("/tmp/openclaw-daemon/openclaw.json");
+    expect(probeInput.configPath).toBe("/tmp/operator-daemon/operator.json");
   });
 
   it("uses configured handshake timeout as the default daemon probe budget", async () => {
@@ -479,7 +479,7 @@ describe("gatherDaemonStatus", () => {
     });
 
     expect(readConfigFileSnapshotCalls).toHaveBeenCalledTimes(1);
-    expect(readConfigFileSnapshotCalls).toHaveBeenCalledWith("/tmp/openclaw-cli/openclaw.json");
+    expect(readConfigFileSnapshotCalls).toHaveBeenCalledWith("/tmp/operator-cli/operator.json");
     expect(loadConfigCalls).not.toHaveBeenCalled();
   });
 
@@ -554,8 +554,8 @@ describe("gatherDaemonStatus", () => {
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
         OPERATOR_GATEWAY_PORT: "19001",
-        OPERATOR_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
-        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+        OPERATOR_CONFIG_PATH: "/tmp/operator-daemon/operator.json",
+        OPERATOR_STATE_DIR: "/tmp/operator-daemon",
       } as Record<string, string>,
     });
     serviceReadRuntime.mockImplementationOnce(async (env?: NodeJS.ProcessEnv) => ({
@@ -620,8 +620,8 @@ describe("gatherDaemonStatus", () => {
     });
 
     const handoffInput = callArg(readGatewayRestartHandoffSync) as NodeJS.ProcessEnv;
-    expect(handoffInput.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-daemon");
-    expect(handoffInput.OPERATOR_CONFIG_PATH).toBe("/tmp/openclaw-daemon/openclaw.json");
+    expect(handoffInput.OPERATOR_STATE_DIR).toBe("/tmp/operator-daemon");
+    expect(handoffInput.OPERATOR_CONFIG_PATH).toBe("/tmp/operator-daemon/operator.json");
     expect(status.service.restartHandoff?.reason).toBe("plugin source changed");
     expect(status.service.restartHandoff?.restartKind).toBe("full-process");
     expect(status.service.restartHandoff?.supervisorMode).toBe("launchd");
@@ -633,18 +633,18 @@ describe("gatherDaemonStatus", () => {
       serviceReadCommand.mockResolvedValueOnce({
         programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
         environment: {
-          OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-          OPERATOR_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
-          OPERATOR_LAUNCHD_LABEL: "ai.openclaw.manual-update.gateway",
+          OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+          OPERATOR_CONFIG_PATH: "/tmp/operator-daemon/operator.json",
+          OPERATOR_LAUNCHD_LABEL: "ai.operator.manual-update.gateway",
         },
       });
       findStaleOperatorUpdateLaunchdJobs.mockResolvedValueOnce([
         {
-          label: "ai.openclaw.update.2026.5.12",
+          label: "ai.operator.update.2026.5.12",
           lastExitStatus: 127,
         },
         {
-          label: "ai.openclaw.manual-update.1717168800",
+          label: "ai.operator.manual-update.1717168800",
           lastExitStatus: 0,
         },
       ]);
@@ -656,16 +656,16 @@ describe("gatherDaemonStatus", () => {
       });
 
       const staleScanEnv = findStaleOperatorUpdateLaunchdJobs.mock.calls[0]?.[0];
-      expect(staleScanEnv?.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-daemon");
-      expect(staleScanEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/openclaw-daemon/openclaw.json");
-      expect(staleScanEnv?.OPERATOR_LAUNCHD_LABEL).toBe("ai.openclaw.manual-update.gateway");
+      expect(staleScanEnv?.OPERATOR_STATE_DIR).toBe("/tmp/operator-daemon");
+      expect(staleScanEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/operator-daemon/operator.json");
+      expect(staleScanEnv?.OPERATOR_LAUNCHD_LABEL).toBe("ai.operator.manual-update.gateway");
       expect(status.service.staleUpdateLaunchdJobs).toEqual([
         {
-          label: "ai.openclaw.update.2026.5.12",
+          label: "ai.operator.update.2026.5.12",
           lastExitStatus: 127,
         },
         {
-          label: "ai.openclaw.manual-update.1717168800",
+          label: "ai.operator.manual-update.1717168800",
           lastExitStatus: 0,
         },
       ]);
@@ -741,8 +741,8 @@ describe("gatherDaemonStatus", () => {
   });
 
   it("uses the fast config path for plain same-file status reads", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-status-config-"));
-    const configPath = path.join(tmp, "openclaw.json");
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-status-config-"));
+    const configPath = path.join(tmp, "operator.json");
     await fs.writeFile(
       configPath,
       JSON.stringify({
@@ -785,8 +785,8 @@ describe("gatherDaemonStatus", () => {
   });
 
   it("uses full plugin-aware config validation for deep status", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-status-config-"));
-    const configPath = path.join(tmp, "openclaw.json");
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-status-config-"));
+    const configPath = path.join(tmp, "operator.json");
     await fs.writeFile(
       configPath,
       JSON.stringify({
@@ -1134,7 +1134,7 @@ describe("gatherDaemonStatus", () => {
       portUsage: {
         port: 19001,
         status: "busy",
-        listeners: [{ pid: 9000, ppid: 8999, commandLine: "openclaw-gateway" }],
+        listeners: [{ pid: 9000, ppid: 8999, commandLine: "operator-gateway" }],
         hints: [],
       },
       healthy: false,
@@ -1178,8 +1178,8 @@ describe("gatherDaemonStatus", () => {
 
     expect(readLastGatewayErrorLine).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
-        OPERATOR_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
+        OPERATOR_STATE_DIR: "/tmp/operator-daemon",
+        OPERATOR_CONFIG_PATH: "/tmp/operator-daemon/operator.json",
       }),
       { requirePatternMatch: true },
     );
@@ -1256,7 +1256,7 @@ describe("gatherDaemonStatus", () => {
     loadInstalledPluginIndexInstallRecords.mockResolvedValueOnce({
       whatsapp: {
         source: "npm",
-        resolvedName: "@operator/whatsapp",
+        resolvedName: "@gabrielvfonseca/whatsapp",
         resolvedVersion: "2026.5.4",
       },
     } as never);
@@ -1281,7 +1281,7 @@ describe("gatherDaemonStatus", () => {
     loadInstalledPluginIndexInstallRecords.mockResolvedValueOnce({
       whatsapp: {
         source: "npm",
-        resolvedName: "@operator/whatsapp",
+        resolvedName: "@gabrielvfonseca/whatsapp",
         resolvedVersion: "2026.5.3",
       },
     } as never);
@@ -1303,13 +1303,13 @@ describe("gatherDaemonStatus", () => {
       deep: true,
     });
 
-    // The mock daemon service command sets OPERATOR_STATE_DIR=/tmp/openclaw-daemon,
-    // distinct from the CLI process OPERATOR_STATE_DIR=/tmp/openclaw-cli. Drift
+    // The mock daemon service command sets OPERATOR_STATE_DIR=/tmp/operator-daemon,
+    // distinct from the CLI process OPERATOR_STATE_DIR=/tmp/operator-cli. Drift
     // detection must inspect the daemon profile's install records.
     expect(loadInstalledPluginIndexInstallRecords).toHaveBeenCalledWith(
       expect.objectContaining({
         env: expect.objectContaining({
-          OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+          OPERATOR_STATE_DIR: "/tmp/operator-daemon",
         }),
       }),
     );
@@ -1319,7 +1319,7 @@ describe("gatherDaemonStatus", () => {
     loadInstalledPluginIndexInstallRecords.mockResolvedValueOnce({
       whatsapp: {
         source: "npm",
-        resolvedName: "@operator/whatsapp",
+        resolvedName: "@gabrielvfonseca/whatsapp",
         resolvedVersion: "2026.5.3",
       },
     } as never);
@@ -1333,7 +1333,7 @@ describe("gatherDaemonStatus", () => {
     expect(loadInstalledPluginIndexInstallRecords).toHaveBeenCalledWith(
       expect.objectContaining({
         env: expect.objectContaining({
-          OPERATOR_STATE_DIR: "/tmp/openclaw-daemon",
+          OPERATOR_STATE_DIR: "/tmp/operator-daemon",
         }),
       }),
     );

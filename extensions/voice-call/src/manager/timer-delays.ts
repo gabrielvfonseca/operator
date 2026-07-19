@@ -1,5 +1,8 @@
 // Voice Call plugin module implements timer delays behavior.
-import { MAX_TIMER_TIMEOUT_MS, resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+import {
+  MAX_TIMER_TIMEOUT_MS,
+  resolveTimerTimeoutMs,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 
 // Timer delay normalization helpers for voice-call lifecycle timers.
 

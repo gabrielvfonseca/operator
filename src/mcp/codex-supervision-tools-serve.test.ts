@@ -77,7 +77,7 @@ describe("createCodexSupervisionToolsMcpServer", () => {
         config: {},
         tools: [],
       }),
-    ).toThrow("Install or update @operator/codex");
+    ).toThrow("Install or update @gabrielvfonseca/codex");
   });
 
   it("lists official tools through the trusted standalone owner context", async () => {

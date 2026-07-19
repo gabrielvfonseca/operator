@@ -1,5 +1,5 @@
 /** Applies workspace plugin allow/deny config before manifest records reach control-plane decisions. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
 

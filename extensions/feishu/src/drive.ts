@@ -1,8 +1,8 @@
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { readPositiveIntegerParam } from "@gabrielvfonseca/operator/plugin-sdk/param-readers";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 // Feishu plugin module implements drive behavior.
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { readPositiveIntegerParam } from "openclaw/plugin-sdk/param-readers";
-import { jsonResult } from "openclaw/plugin-sdk/tool-results";
 import type { OperatorPluginApi } from "../runtime-api.js";
 import { listEnabledFeishuAccounts } from "./accounts.js";
 import { cleanupAmbientCommentTypingReaction } from "./comment-reaction.js";

@@ -1,6 +1,6 @@
 // Outbound target helpers resolve direct send targets, heartbeat destinations,
 // sender context, and session-route aware heartbeat refinements.
-import { mapAllowFromEntries } from "operator/plugin-sdk/channel-config-helpers";
+import { mapAllowFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import { normalizeChatType, type ChatType } from "../../channels/chat-type.js";
 import type { ChannelOutboundTargetMode } from "../../channels/plugins/types.core.js";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
@@ -61,7 +61,7 @@ type HeartbeatSenderContext = {
 
 export type { OutboundTargetResolution } from "./targets-resolve-shared.js";
 export { resolveSessionDeliveryTarget, type SessionDeliveryTarget } from "./targets-session.js";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { resolveSessionDeliveryTarget, type SessionDeliveryTarget } from "./targets-session.js";
 
 /** Resolves a user-supplied outbound destination through the channel plugin. */

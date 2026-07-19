@@ -1,4 +1,4 @@
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { setGatewayDedupeEntry } from "./agent-job.js";
 import type { GatewayRequestContext } from "./types.js";
 

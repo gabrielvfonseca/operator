@@ -47,9 +47,9 @@ describe("plugin.approval.request turn-source routing (real gateway)", () => {
     deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
     tempHome = await fs.mkdtemp(
-      path.join(os.tmpdir(), "openclaw-plugin-approval-turn-source-e2e-"),
+      path.join(os.tmpdir(), "operator-plugin-approval-turn-source-e2e-"),
     );
-    const stateDir = path.join(tempHome, ".openclaw");
+    const stateDir = path.join(tempHome, ".operator");
     await fs.mkdir(stateDir, { recursive: true });
     setTestEnvValue("HOME", tempHome);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);

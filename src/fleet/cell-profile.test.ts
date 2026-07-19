@@ -24,9 +24,9 @@ import {
 } from "./cell-profile.js";
 
 const FLEET_BASE_PORT = 19_100;
-const FLEET_CONTAINER_STATE_DIR = "/home/node/.openclaw";
+const FLEET_CONTAINER_STATE_DIR = "/home/node/.operator";
 const FLEET_CONTAINER_AUTH_SECRET_DIR = "/home/node/.config/openclaw";
-const TEST_ENVIRONMENT_FILE = "/tmp/openclaw-fleet-env/cell.env";
+const TEST_ENVIRONMENT_FILE = "/tmp/operator-fleet-env/cell.env";
 
 function makeProfile(overrides: Partial<CellContainerProfile> = {}): CellContainerProfile {
   const tenantId = overrides.tenantId ?? "acme";
@@ -81,8 +81,8 @@ describe("fleet tenant ids", () => {
   });
 
   it("derives stable container and data paths", () => {
-    expect(cellContainerName("acme-2")).toBe("openclaw-cell-acme-2");
-    expect(cellNetworkName("acme-2")).toBe("openclaw-cell-acme-2-net");
+    expect(cellContainerName("acme-2")).toBe("operator-cell-acme-2");
+    expect(cellNetworkName("acme-2")).toBe("operator-cell-acme-2-net");
     expect(cellDataDir("/srv/openclaw", "acme-2")).toBe(
       path.join("/srv/openclaw", "fleet", "cells", "acme-2"),
     );
@@ -112,8 +112,8 @@ describe("fleet port allocation", () => {
 
 describe("fleet image references", () => {
   it("normalizes valid references and rejects option-like values", () => {
-    expect(validateFleetImage(" ghcr.io/openclaw/openclaw:v1 ")).toBe(
-      "ghcr.io/openclaw/openclaw:v1",
+    expect(validateFleetImage(" ghcr.io/openclaw/operator:v1 ")).toBe(
+      "ghcr.io/openclaw/operator:v1",
     );
     expect(() => validateFleetImage("--help")).toThrow(/must not begin/iu);
     expect(() => validateFleetImage(" ")).toThrow(/must not be empty/iu);
@@ -139,9 +139,9 @@ describe("fleet disk limits", () => {
     const withoutDisk = buildCellRunArgs(makeProfile(), { environmentFile: TEST_ENVIRONMENT_FILE });
     expectOption(withDisk, "--storage-opt", "size=10g");
     expect(withDisk.indexOf("--storage-opt")).toBe(withDisk.indexOf("--cpus") + 2);
-    expect(withDisk).toContain("openclaw.fleet.disk-limit=10g");
+    expect(withDisk).toContain("operator.fleet.disk-limit=10g");
     expect(withoutDisk).not.toContain("--storage-opt");
-    expect(withoutDisk.join(" ")).not.toContain("openclaw.fleet.disk-limit");
+    expect(withoutDisk.join(" ")).not.toContain("operator.fleet.disk-limit");
   });
 });
 
@@ -180,7 +180,7 @@ describe("fleet cell environment", () => {
       HOME: "/home/node",
       OPERATOR_HOME: "/home/node",
       OPERATOR_STATE_DIR: FLEET_CONTAINER_STATE_DIR,
-      OPERATOR_CONFIG_PATH: `${FLEET_CONTAINER_STATE_DIR}/openclaw.json`,
+      OPERATOR_CONFIG_PATH: `${FLEET_CONTAINER_STATE_DIR}/operator.json`,
       OPERATOR_WORKSPACE_DIR: `${FLEET_CONTAINER_STATE_DIR}/workspace`,
       OPERATOR_GATEWAY_TOKEN: "secret",
       REGION: "west",
@@ -201,7 +201,7 @@ describe("fleet container arguments", () => {
     const args = buildCellRunArgs(profile, { environmentFile: TEST_ENVIRONMENT_FILE });
 
     expect(args.slice(0, 2)).toEqual(["run", "-d"]);
-    expectOption(args, "--name", "openclaw-cell-acme");
+    expectOption(args, "--name", "operator-cell-acme");
     expectOption(args, "--label", `${FLEET_TENANT_LABEL}=acme`);
     expect(args).toContain(`${FLEET_OWNER_LABEL}=${cellOwnerId(profile.dataDir)}`);
     expect(args).toContain(`${FLEET_ATTEMPT_LABEL}=${profile.attemptId}`);
@@ -213,7 +213,7 @@ describe("fleet container arguments", () => {
     expectOption(args, "--memory", "2g");
     expectOption(args, "--cpus", "2");
     expectOption(args, "--restart", "unless-stopped");
-    expectOption(args, "--network", "openclaw-cell-acme-net");
+    expectOption(args, "--network", "operator-cell-acme-net");
     expectOption(args, "-p", `127.0.0.1:${FLEET_BASE_PORT}:${FLEET_GATEWAY_PORT}`);
     expect(args).toContain(`${profile.dataDir}:${FLEET_CONTAINER_STATE_DIR}`);
     expect(args).toContain(`${profile.authSecretDir}:${FLEET_CONTAINER_AUTH_SECRET_DIR}`);
@@ -292,7 +292,7 @@ describe("fleet container arguments", () => {
       expect(rendered).not.toContain("docker.sock");
       expect(args).not.toContain("--privileged");
       expect(args).not.toContain("--network=host");
-      expectOption(args, "--network", "openclaw-cell-acme-net");
+      expectOption(args, "--network", "operator-cell-acme-net");
       expect(args[args.indexOf("--network") + 1]).not.toBe("host");
       expect(rendered).not.toContain("--cap-add");
       expect(rendered).not.toContain("0.0.0.0");

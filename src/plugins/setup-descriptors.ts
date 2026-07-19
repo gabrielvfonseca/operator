@@ -1,5 +1,5 @@
 // Builds setup descriptors from plugin provider and manifest metadata.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { PluginManifestRecord } from "./manifest-registry.js";
 
 type SetupDescriptorRecord = Pick<

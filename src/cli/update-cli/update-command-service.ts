@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { Writable } from "node:stream";
 import { confirm, isCancel } from "@clack/prompts";
-import { err as resultError, ok, type Result } from "@operator/normalization-core/result";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { err as resultError, ok, type Result } from "@gabrielvfonseca/normalization-core/result";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { stylePromptMessage } from "../../../packages/terminal-core/src/prompt-style.js";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
 import {
@@ -208,13 +208,13 @@ async function recoverLaunchAgentAndRecheckGatewayHealth(params: {
 }
 
 function formatPostUpdateGatewayRecoveryLine(platform: NodeJS.Platform): string {
-  const restartCommand = replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME);
+  const restartCommand = replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME);
   const installCommand = replaceCliName(
-    formatCliCommand("operator gateway install --force"),
+    formatCliCommand("openclaw gateway install --force"),
     CLI_NAME,
   );
   const statusCommand = replaceCliName(
-    formatCliCommand("operator gateway status --deep"),
+    formatCliCommand("openclaw gateway status --deep"),
     CLI_NAME,
   );
   if (platform === "darwin") {
@@ -237,7 +237,7 @@ function formatPostUpdateGatewayRecoveryInstructions(
   const beforeVersion = normalizeOptionalString(result.before?.version);
   if (isPackageManagerUpdateMode(result.mode) && beforeVersion) {
     lines.push(
-      `Rollback: reinstall Operator ${beforeVersion} with the same package manager, then rerun \`${replaceCliName(formatCliCommand("operator gateway install --force"), CLI_NAME)}\`.`,
+      `Rollback: reinstall Operator ${beforeVersion} with the same package manager, then rerun \`${replaceCliName(formatCliCommand("openclaw gateway install --force"), CLI_NAME)}\`.`,
     );
   }
   return lines;
@@ -297,9 +297,9 @@ export type ManagedServiceRootRedirect = {
 };
 
 function formatGatewayAncestryBlockMessage(pid: number): string {
-  return `operator update detected it is running inside the gateway process tree.
+  return `openclaw update detected it is running inside the gateway process tree.
 Gateway PID ${pid} is an ancestor of this process, so this updater cannot safely stop or restart the gateway that owns it.
-Run \`${replaceCliName(formatCliCommand("operator update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`;
+Run \`${replaceCliName(formatCliCommand("openclaw update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`;
 }
 
 function parsePositivePid(value: unknown): number | null {
@@ -801,13 +801,13 @@ export async function resolvePackageRuntimePreflight(params: {
     : `Node ${runtime.version ?? "unknown"}`;
   return resultError(
     [
-      `${runtimeLabel} is too old for operator@${targetVersion}.`,
+      `${runtimeLabel} is too old for openclaw@${targetVersion}.`,
       `The requested package requires ${status.nodeEngine}.`,
       runtime.nodeRunner
-        ? "Upgrade the Node runtime that owns the managed Gateway service, then rerun `operator update`."
-        : "Upgrade to Node 22.22.3+, Node 24.15.0+, or Node 25.9.0+, then rerun `operator update`.",
-      "Bare `npm i -g operator` can silently install an older compatible release.",
-      "After upgrading Node, use `npm i -g operator@latest`.",
+        ? "Upgrade the Node runtime that owns the managed Gateway service, then rerun `openclaw update`."
+        : "Upgrade to Node 22.22.3+, Node 24.15.0+, or Node 25.9.0+, then rerun `openclaw update`.",
+      "Bare `npm i -g openclaw` can silently install an older compatible release.",
+      "After upgrading Node, use `npm i -g openclaw@latest`.",
     ].join("\n"),
   );
 }
@@ -1036,7 +1036,7 @@ export async function tryInstallShellCompletion(opts: {
       if (!opts.skipPrompt) {
         defaultRuntime.log(
           theme.muted(
-            `Skipped. Run \`${replaceCliName(formatCliCommand("operator completion --install"), CLI_NAME)}\` later to enable.`,
+            `Skipped. Run \`${replaceCliName(formatCliCommand("openclaw completion --install"), CLI_NAME)}\` later to enable.`,
           ),
         );
       }
@@ -1280,7 +1280,7 @@ export async function maybeRestartService(params: {
           ]
         : []),
       `Restart log: ${resolveGatewayRestartLogPath(params.serviceEnv ?? process.env)}`,
-      `Run \`${replaceCliName(formatCliCommand("operator gateway status --deep"), CLI_NAME)}\` for details.`,
+      `Run \`${replaceCliName(formatCliCommand("openclaw gateway status --deep"), CLI_NAME)}\` for details.`,
       ...formatPostUpdateGatewayRecoveryInstructions(params.result),
     ];
     if (params.opts.json) {
@@ -1450,7 +1450,7 @@ export async function maybeRestartService(params: {
         defaultRuntime.log(theme.warn(`Gateway: restart failed: ${String(err)}`));
         defaultRuntime.log(
           theme.muted(
-            `You may need to restart the service manually: ${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}`,
+            `You may need to restart the service manually: ${replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME)}`,
           ),
         );
       }
@@ -1470,13 +1470,13 @@ export async function maybeRestartService(params: {
     if (params.result.mode === "npm" || params.result.mode === "pnpm") {
       defaultRuntime.log(
         theme.muted(
-          `Tip: Run \`${replaceCliName(formatCliCommand("operator doctor"), CLI_NAME)}\`, then \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
+          `Tip: Run \`${replaceCliName(formatCliCommand("openclaw doctor"), CLI_NAME)}\`, then \`${replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
         ),
       );
     } else {
       defaultRuntime.log(
         theme.muted(
-          `Tip: Run \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
+          `Tip: Run \`${replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
         ),
       );
     }

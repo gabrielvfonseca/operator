@@ -6,8 +6,8 @@ import {
   isFutureDateTimestampMs,
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sha256Base64Url } from "../infra/crypto-digest.js";
 import { recordTalkObservabilityEvent } from "../talk/observability.js";
 import {

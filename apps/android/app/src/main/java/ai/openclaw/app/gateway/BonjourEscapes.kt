@@ -1,4 +1,4 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
 /**
  * Decoder for Bonjour DNS-SD service names returned with decimal byte escapes.

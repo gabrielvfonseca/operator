@@ -3,5 +3,5 @@
 export {
   ensureOperatorAgentDatabaseSchema,
   resolveOperatorAgentSqlitePath,
-} from "../state/operator-agent-db.js";
+} from "../state/openclaw-agent-db.js";
 export { runSqliteImmediateTransactionSync } from "../infra/sqlite-transaction.js";

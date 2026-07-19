@@ -3,10 +3,10 @@ import type {
   ensureConfiguredBindingRouteReady,
   getSessionBindingService,
   resolveConfiguredBindingRoute,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { createRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
-import { resolveGroupSessionKey } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { createRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { ResolvedAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolveGroupSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClawdbotConfig, PluginRuntime } from "../runtime-api.js";
 import { parseMergeForwardContent } from "./bot-content.js";

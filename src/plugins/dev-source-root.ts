@@ -27,7 +27,7 @@ export function resolveOperatorDevSourceRoot(env: NodeJS.ProcessEnv = process.en
   if (!realRoot) {
     return null;
   }
-  if (readPackageName(path.join(realRoot, "package.json")) !== "operator") {
+  if (readPackageName(path.join(realRoot, "package.json")) !== "@gabrielvfonseca/operator") {
     return null;
   }
   if (!fs.existsSync(path.join(realRoot, "src"))) {

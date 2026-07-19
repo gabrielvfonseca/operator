@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private struct WorkerBackpressureTimeout: Error {}
 
@@ -53,12 +53,12 @@ struct MacNodeHostWorkerTests {
 
         let response = await runtime.handleInvoke(BridgeInvokeRequest(
             id: "worker-run",
-            command: OpenClawSystemCommand.run.rawValue,
+            command: OperatorSystemCommand.run.rawValue,
             paramsJSON: #"{"command":["/usr/bin/true"]}"#))
 
         #expect(response.ok)
         #expect(response.payloadJSON == #"{"owner":"cli"}"#)
-        #expect(await worker.invokedCommands() == [OpenClawSystemCommand.run.rawValue])
+        #expect(await worker.invokedCommands() == [OperatorSystemCommand.run.rawValue])
     }
 
     @Test func `capability union preserves native order and adds worker commands once`() {
@@ -76,8 +76,8 @@ struct MacNodeHostWorkerTests {
     @Test func `worker forces app exec host without fallback`() async throws {
         let worker = MacNodeHostWorker(session: GatewayNodeSession())
         let script = """
-        test "$OPENCLAW_NODE_EXEC_HOST" = app || exit 42
-        test "$OPENCLAW_NODE_EXEC_FALLBACK" = 0 || exit 43
+        test "$OPERATOR_NODE_EXEC_HOST" = app || exit 42
+        test "$OPERATOR_NODE_EXEC_FALLBACK" = 0 || exit 43
         printf '%s\\n' '{"type":"ready","version":"test","manifest":{"caps":["system"],"commands":["system.run"],"pathEnv":"/usr/bin:/bin"},"inventory":{"skills":null,"pluginTools":[]}}'
         printf '%s\\n' '{"type":"gateway-request","id":"gateway-1","method":"node.invoke.progress","params":{"invokeId":"terminal-1","nodeId":"node-1","seq":0,"chunk":"hello"},"timeoutMs":1000}'
         IFS= read -r unavailable

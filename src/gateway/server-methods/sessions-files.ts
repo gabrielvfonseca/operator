@@ -1,8 +1,8 @@
 // Gateway methods expose session files and workspace browsing.
 import { createHash } from "node:crypto";
 import path from "node:path";
-import { asOptionalObjectRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { asOptionalObjectRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

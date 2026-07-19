@@ -105,8 +105,8 @@ enum MacNodeClaudeSessionCatalog {
         root: [String: Any]? = nil,
         homeURL: URL = FileManager.default.homeDirectoryForCurrentUser) -> Bool
     {
-        let root = root ?? OpenClawConfigFile.loadDict()
-        guard OpenClawConfigFile.defaultEnabledBundledPluginAllowed(
+        let root = root ?? OperatorConfigFile.loadDict()
+        guard OperatorConfigFile.defaultEnabledBundledPluginAllowed(
             MacNodeClaudeSessionCatalogContract.pluginId,
             root: root)
         else { return false }

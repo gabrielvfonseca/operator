@@ -86,8 +86,8 @@ const readConfigFileSnapshotWithPluginMetadata = vi.fn(
 );
 const writeDiagnosticStabilityBundleForFailureSync = vi.fn((_reason: string, _error: unknown) => ({
   status: "written" as const,
-  message: "wrote stability bundle: /tmp/openclaw-stability.json",
-  path: "/tmp/openclaw-stability.json",
+  message: "wrote stability bundle: /tmp/operator-stability.json",
+  path: "/tmp/operator-stability.json",
 }));
 const bootLifecycle = vi.hoisted(() => ({
   decisions: [] as Array<{
@@ -135,7 +135,7 @@ const serviceEnvSnapshot = captureEnv([
 ]);
 
 vi.mock("../../config/config.js", () => ({
-  getConfigPath: () => "/tmp/openclaw-test-missing-config.json",
+  getConfigPath: () => "/tmp/operator-test-missing-config.json",
   readBestEffortConfig: () => readBestEffortConfig(),
   readConfigFileSnapshot: async () => configState.snapshot,
   readConfigFileSnapshotWithPluginMetadata: (options?: ConfigSnapshotReadOptionsStub) =>
@@ -150,10 +150,10 @@ vi.mock("../../commands/doctor/shared/pristine-startup-state.js", () => ({
 }));
 
 vi.mock("../../config/paths.js", () => ({
-  CONFIG_PATH: "/tmp/openclaw-test-missing-config.json",
+  CONFIG_PATH: "/tmp/operator-test-missing-config.json",
   normalizeStateDirEnv: (env?: NodeJS.ProcessEnv) => normalizeStateDirEnv(env),
   pinRuntimePaths: (env?: NodeJS.ProcessEnv) => pinRuntimePaths(env),
-  resolveConfigPath: () => "/tmp/openclaw-test-missing-config.json",
+  resolveConfigPath: () => "/tmp/operator-test-missing-config.json",
   resolveStateDir: () => "/tmp",
   resolveGatewayPort: (cfg?: { gateway?: { port?: number } }) => cfg?.gateway?.port ?? 18789,
 }));
@@ -456,7 +456,7 @@ describe("gateway run option collisions", () => {
       exists: true,
       hash: "initial",
       parsed: initialConfig,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       sourceConfig: initialConfig,
       valid: true,
     };
@@ -480,7 +480,7 @@ describe("gateway run option collisions", () => {
       exists: true,
       hash: "recovered",
       parsed: recoveredConfig,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       sourceConfig: recoveredConfig,
       valid: true,
     };
@@ -498,7 +498,7 @@ describe("gateway run option collisions", () => {
     configState.snapshot = {
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       config: finalConfig,
       parsed: finalConfig,
       sourceConfig: finalConfig,
@@ -532,7 +532,7 @@ describe("gateway run option collisions", () => {
       configState.snapshot = {
         exists: true,
         valid: true,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         config: finalConfig,
         parsed: finalConfig,
         sourceConfig: finalConfig,
@@ -614,7 +614,7 @@ describe("gateway run option collisions", () => {
         config: finalConfig,
         exists: true,
         parsed: finalConfig,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         sourceConfig: finalConfig,
         valid: true,
       };
@@ -646,7 +646,7 @@ describe("gateway run option collisions", () => {
         config,
         exists: true,
         parsed: config,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         sourceConfig: config,
         valid: true,
       });
@@ -699,7 +699,7 @@ describe("gateway run option collisions", () => {
           config: finalConfig,
           exists: true,
           parsed: finalConfig,
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: finalConfig,
           valid: true,
         };
@@ -741,7 +741,7 @@ describe("gateway run option collisions", () => {
           config: finalConfig,
           exists: true,
           parsed: finalConfig,
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: finalConfig,
           valid: true,
         };
@@ -778,7 +778,7 @@ describe("gateway run option collisions", () => {
           exists: true,
           issues: [{ path: "gateway", message: "invalid" }],
           parsed: invalidConfig,
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: invalidConfig,
           valid: false,
         };
@@ -798,7 +798,7 @@ describe("gateway run option collisions", () => {
   });
 
   it("rejects an invalid final config after a prepared config selected runtime paths", async () => {
-    const selectedStateDir = "/tmp/openclaw-prepared-selected-state";
+    const selectedStateDir = "/tmp/operator-prepared-selected-state";
     await withEnvAsync({ OPERATOR_STATE_DIR: undefined }, async () => {
       const selectedConfig = {
         env: { vars: { OPERATOR_STATE_DIR: selectedStateDir } },
@@ -808,7 +808,7 @@ describe("gateway run option collisions", () => {
         config: selectedConfig,
         exists: true,
         parsed: selectedConfig,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         sourceConfig: selectedConfig,
         valid: true,
       };
@@ -865,7 +865,7 @@ describe("gateway run option collisions", () => {
           config: oldConfig,
           exists: true,
           hash: "old",
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: oldConfig,
           valid: true,
         };
@@ -882,7 +882,7 @@ describe("gateway run option collisions", () => {
           config: newConfig,
           exists: true,
           hash: "new",
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: newConfig,
           valid: true,
         };
@@ -934,7 +934,7 @@ describe("gateway run option collisions", () => {
   it("marks service-mode gateway descendants with the live gateway pid", async () => {
     await withEnvAsync(
       {
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
         [GATEWAY_SERVICE_RUNTIME_PID_ENV]: undefined,
       },
       async () => {
@@ -949,7 +949,7 @@ describe("gateway run option collisions", () => {
   it("protects the inherited service pid before replacing it", async () => {
     await withEnvAsync(
       {
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
         [GATEWAY_SERVICE_RUNTIME_PID_ENV]: "4242",
       },
       async () => {
@@ -971,20 +971,20 @@ describe("gateway run option collisions", () => {
       },
       async () => {
         const finalConfig = {
-          env: { vars: { OPERATOR_SERVICE_MARKER: "openclaw" } },
+          env: { vars: { OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator" } },
           gateway: { mode: "local" },
         };
         configState.snapshot = {
           config: finalConfig,
           exists: true,
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: finalConfig,
           valid: true,
         };
 
         await runGatewayCli(["gateway"]);
 
-        expect(process.env.OPERATOR_SERVICE_MARKER).toBe("openclaw");
+        expect(process.env.OPERATOR_SERVICE_MARKER).toBe("@gabrielvfonseca/operator");
         expect(process.env[GATEWAY_SERVICE_RUNTIME_PID_ENV]).toBe(String(process.pid));
       },
     );
@@ -998,7 +998,7 @@ describe("gateway run option collisions", () => {
       },
       async () => {
         const finalConfig = {
-          env: { vars: { OPERATOR_SERVICE_MARKER: "openclaw" } },
+          env: { vars: { OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator" } },
           gateway: { mode: "local" },
           meta: { lastTouchedVersion: "9999.1.1" },
         };
@@ -1006,7 +1006,7 @@ describe("gateway run option collisions", () => {
         configState.snapshot = {
           config: finalConfig,
           exists: true,
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           sourceConfig: finalConfig,
           valid: true,
         };
@@ -1117,10 +1117,10 @@ describe("gateway run option collisions", () => {
           sourceConfig: {
             env: {
               vars: {
-                OPERATOR_CONFIG_PATH: "/tmp/openclaw-reset/openclaw.json",
+                OPERATOR_CONFIG_PATH: "/tmp/operator-reset/operator.json",
                 OPERATOR_GATEWAY_TOKEN: "old-token",
-                OPERATOR_HOME: "/tmp/openclaw-reset-home",
-                OPERATOR_STATE_DIR: "/tmp/openclaw-reset",
+                OPERATOR_HOME: "/tmp/operator-reset-home",
+                OPERATOR_STATE_DIR: "/tmp/operator-reset",
               },
             },
             gateway: { mode: "local" },
@@ -1132,7 +1132,7 @@ describe("gateway run option collisions", () => {
           expect(process.env.OPERATOR_PROFILE).toBe("dev");
           expect(process.env.OPERATOR_STATE_DIR).toBeUndefined();
           expect(process.env.OPERATOR_GATEWAY_TOKEN).toBeUndefined();
-          expect(process.env.OPERATOR_WORKSPACE_DIR).toBe("/tmp/openclaw-reset-workspace");
+          expect(process.env.OPERATOR_WORKSPACE_DIR).toBe("/tmp/operator-reset-workspace");
           configState.snapshot = {
             exists: true,
             valid: true,
@@ -1144,7 +1144,7 @@ describe("gateway run option collisions", () => {
           process.env.OPERATOR_GATEWAY_TOKEN ??= "trusted-token";
           process.env.OPERATOR_PROFILE ??= "dev";
           if (process.env.OPERATOR_WORKSPACE_DIR === undefined) {
-            setTestEnvValue("OPERATOR_WORKSPACE_DIR", "/tmp/openclaw-reset-workspace");
+            setTestEnvValue("OPERATOR_WORKSPACE_DIR", "/tmp/operator-reset-workspace");
           }
         });
 
@@ -1159,17 +1159,17 @@ describe("gateway run option collisions", () => {
   });
 
   it("refuses dev reset if trusted dotenv retargets after pre-bootstrap", async () => {
-    await withEnvAsync({ OPERATOR_STATE_DIR: "/tmp/openclaw-reset-original" }, async () => {
+    await withEnvAsync({ OPERATOR_STATE_DIR: "/tmp/operator-reset-original" }, async () => {
       configState.snapshot = {
         config: { gateway: { mode: "local" } },
         exists: true,
-        path: "/tmp/openclaw-reset-original/openclaw.json",
+        path: "/tmp/operator-reset-original/operator.json",
         sourceConfig: { gateway: { mode: "local" } },
         valid: true,
       };
       await prepareGatewayReset();
       loadGlobalRuntimeDotEnvFiles.mockImplementation(() => {
-        setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/openclaw-reset-retargeted");
+        setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/operator-reset-retargeted");
         return {
           gatewayEnvAppliedKeys: [],
           stateEnvAppliedKeys: ["OPERATOR_STATE_DIR"],
@@ -1181,7 +1181,7 @@ describe("gateway run option collisions", () => {
       ).rejects.toThrow("__exit__:1");
 
       expect(ensureDevGatewayConfig).not.toHaveBeenCalled();
-      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-reset-original");
+      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/operator-reset-original");
       expect(runtimeErrors.join("\n")).toContain(
         "selected config or state target changed during startup",
       );
@@ -1199,9 +1199,9 @@ describe("gateway run option collisions", () => {
     "OPERATOR_WORKSPACE_DIR",
     "PI_CODING_AGENT_DIR",
   ])("blocks trusted dotenv selector drift for %s after startup mutations", async (selector) => {
-    await withEnvAsync({ [selector]: "/tmp/openclaw-reset-value" }, async () => {
+    await withEnvAsync({ [selector]: "/tmp/operator-reset-value" }, async () => {
       loadGlobalRuntimeDotEnvFiles.mockImplementation(() => {
-        setTestEnvValue(selector, "/tmp/openclaw-reset-retargeted");
+        setTestEnvValue(selector, "/tmp/operator-reset-retargeted");
       });
       const { reloadTrustedGatewayRunEnvironment } = await import("./pre-bootstrap.js");
 
@@ -1209,7 +1209,7 @@ describe("gateway run option collisions", () => {
         "__exit__:1",
       );
 
-      expect(process.env[selector]).toBe("/tmp/openclaw-reset-value");
+      expect(process.env[selector]).toBe("/tmp/operator-reset-value");
       expect(runtimeErrors.join("\n")).toContain(
         "trusted dotenv reload after startup mutations changed config or state selection",
       );
@@ -1296,7 +1296,7 @@ describe("gateway run option collisions", () => {
         valid: true,
         config: { gateway: { mode: "local" } },
         sourceConfig: {
-          env: { vars: { OPERATOR_STATE_DIR: "/tmp/openclaw-late-selection" } },
+          env: { vars: { OPERATOR_STATE_DIR: "/tmp/operator-late-selection" } },
           gateway: { mode: "local" },
         },
       };
@@ -1314,14 +1314,14 @@ describe("gateway run option collisions", () => {
   it("blocks a final startup snapshot that changes an already-selected config selector", async () => {
     await withEnvAsync({ OPERATOR_STATE_DIR: undefined }, async () => {
       const guardedConfig = {
-        env: { vars: { OPERATOR_STATE_DIR: "/tmp/openclaw-guarded-state" } },
+        env: { vars: { OPERATOR_STATE_DIR: "/tmp/operator-guarded-state" } },
         gateway: { mode: "local" },
       };
       configState.snapshot = {
         config: guardedConfig,
         exists: true,
         hash: "guarded",
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         sourceConfig: guardedConfig,
         valid: true,
       };
@@ -1329,24 +1329,24 @@ describe("gateway run option collisions", () => {
         await import("./pre-bootstrap.js");
       await selectGatewayRunEnvironment({ opts: {}, runtime: defaultRuntime });
       await prepareGatewayRunBootstrap({ opts: {}, runtime: defaultRuntime });
-      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-guarded-state");
+      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/operator-guarded-state");
 
       const finalConfig = {
-        env: { vars: { OPERATOR_STATE_DIR: "/tmp/openclaw-final-state" } },
+        env: { vars: { OPERATOR_STATE_DIR: "/tmp/operator-final-state" } },
         gateway: { mode: "local" },
       };
       configState.snapshot = {
         config: finalConfig,
         exists: true,
         hash: "final",
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         sourceConfig: finalConfig,
         valid: true,
       };
 
       await expect(runGatewayCli(["gateway", "run"])).rejects.toThrow("__exit__:1");
 
-      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-guarded-state");
+      expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/operator-guarded-state");
       expect(startGatewayServer).not.toHaveBeenCalled();
       expect(runtimeErrors.join("\n")).toContain(
         "final config read changed config or state selection",
@@ -1548,7 +1548,7 @@ describe("gateway run option collisions", () => {
     configState.snapshot = {
       exists: true,
       valid: false,
-      path: "/tmp/openclaw-test-missing-config.json",
+      path: "/tmp/operator-test-missing-config.json",
       config: {},
       parsed: null,
       issues: [{ path: "<root>", message: "JSON5 parse failed" }],
@@ -1571,7 +1571,7 @@ describe("gateway run option collisions", () => {
     configState.snapshot = {
       exists: true,
       valid: false,
-      path: "/tmp/openclaw-test-missing-config.json",
+      path: "/tmp/operator-test-missing-config.json",
       config: {},
       parsed: null,
       issues: [{ path: "<root>", message: "JSON5 parse failed" }],
@@ -1589,7 +1589,7 @@ describe("gateway run option collisions", () => {
     configState.snapshot = {
       exists: true,
       valid: false,
-      path: "/tmp/openclaw-test-missing-config.json",
+      path: "/tmp/operator-test-missing-config.json",
       config: {},
       parsed: null,
       issues: [{ path: "<root>", message: "JSON5 parse failed" }],
@@ -1647,7 +1647,7 @@ describe("gateway run option collisions", () => {
 
   it("reads gateway password from --password-file", async () => {
     await withTempSecretFiles(
-      "openclaw-gateway-run-",
+      "operator-gateway-run-",
       { password: "pw_from_file\n" },
       async ({ passwordFile }) => {
         await runGatewayCli([
@@ -1688,7 +1688,7 @@ describe("gateway run option collisions", () => {
 
   it("rejects using both --password and --password-file", async () => {
     await withTempSecretFiles(
-      "openclaw-gateway-run-",
+      "operator-gateway-run-",
       { password: "pw_from_file\n" },
       async ({ passwordFile }) => {
         await expect(

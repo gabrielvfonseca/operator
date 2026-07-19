@@ -1,5 +1,8 @@
 // Matrix plugin module implements polls behavior.
-import { uniqueStrings, uniqueValues } from "openclaw/plugin-sdk/string-coerce-runtime";
+import {
+  uniqueStrings,
+  uniqueValues,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   buildPollResponseContent,
   isPollStartType,

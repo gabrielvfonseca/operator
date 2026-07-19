@@ -12,7 +12,7 @@
  */
 import http, { type IncomingMessage, type Server } from "node:http";
 import type { Duplex } from "node:stream";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { WebSocketServer, type WebSocket } from "ws";
 import { isLoopbackHost } from "../../gateway/net.js";
 import { rawDataToString } from "../../infra/ws.js";
@@ -20,8 +20,8 @@ import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { ExtensionRelayBridge } from "./relay-bridge.js";
 
 const log = createSubsystemLogger("browser").child("extension-relay");
-const EXTENSION_RELAY_PROTOCOL = "openclaw-extension-relay";
-const EXTENSION_RELAY_TOKEN_PROTOCOL_PREFIX = "openclaw-extension-token.";
+const EXTENSION_RELAY_PROTOCOL = "operator-extension-relay";
+const EXTENSION_RELAY_TOKEN_PROTOCOL_PREFIX = "operator-extension-token.";
 
 /**
  * Cap relay frame size to bound memory from a hostile/buggy peer while leaving
@@ -133,7 +133,7 @@ export async function startExtensionRelayServer(params: {
       return;
     }
     if (!isAuthorized(req, params.token)) {
-      res.writeHead(401, { "WWW-Authenticate": 'Basic realm="openclaw-extension-relay"' });
+      res.writeHead(401, { "WWW-Authenticate": 'Basic realm="operator-extension-relay"' });
       res.end("Unauthorized");
       return;
     }

@@ -3,7 +3,7 @@ import {
   identityHasStableSessionId,
   isSessionIdentityPending,
   resolveSessionIdentityFromMeta,
-} from "@operator/acp-core/runtime/session-identity";
+} from "@gabrielvfonseca/acp-core/runtime/session-identity";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import type {

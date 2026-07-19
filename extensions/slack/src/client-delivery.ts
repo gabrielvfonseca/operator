@@ -1,15 +1,18 @@
-// Slack plugin module owns WebClient-scoped message and file delivery primitives.
-import type { MessageMetadata } from "@slack/types";
-import type { Block, KnownBlock, WebClient } from "@slack/web-api";
 import {
   extractErrorCode,
   PlatformMessageNotDispatchedError,
   readErrorName,
-} from "openclaw/plugin-sdk/error-runtime";
-import { buildTimeoutAbortSignal } from "openclaw/plugin-sdk/extension-shared";
-import { withTrustedEnvProxyGuardedFetchMode } from "openclaw/plugin-sdk/fetch-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { buildTimeoutAbortSignal } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { withTrustedEnvProxyGuardedFetchMode } from "@gabrielvfonseca/operator/plugin-sdk/fetch-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+// Slack plugin module owns WebClient-scoped message and file delivery primitives.
+import type { MessageMetadata } from "@slack/types";
+import type { Block, KnownBlock, WebClient } from "@slack/web-api";
 import {
   postSlackMessageWithIdentityFallback,
   type SlackPostMessageIdentity,

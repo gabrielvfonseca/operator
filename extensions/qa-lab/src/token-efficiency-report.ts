@@ -12,7 +12,7 @@ type TokenEfficiencyRuntimeUsage = {
 type TokenEfficiencyRow = {
   scenarioId: string;
   usageSource: "live-usage" | "mock-estimate";
-  openclaw: TokenEfficiencyRuntimeUsage;
+  operator: TokenEfficiencyRuntimeUsage;
   codex: TokenEfficiencyRuntimeUsage;
   deltaPercent: number;
   classification: "regression" | "savings" | "neutral";
@@ -29,7 +29,7 @@ type TokenEfficiencyReport = {
   rows: TokenEfficiencyRow[];
   notApplicableScenarios: Array<{ scenarioId: string; reason: string }>;
   aggregate: {
-    openclaw: { totalTokens: number; p50PerScenario: number; p90PerScenario: number };
+    operator: { totalTokens: number; p50PerScenario: number; p90PerScenario: number };
     codex: { totalTokens: number; p50PerScenario: number; p90PerScenario: number };
     deltaPercent: number;
     flaggedScenarios: string[];
@@ -61,7 +61,7 @@ type BuildTokenEfficiencyReportParams = {
 
 const DEFAULT_THRESHOLD_PERCENT = 15;
 const ZERO_AGGREGATE: TokenEfficiencyReport["aggregate"] = {
-  openclaw: { totalTokens: 0, p50PerScenario: 0, p90PerScenario: 0 },
+  operator: { totalTokens: 0, p50PerScenario: 0, p90PerScenario: 0 },
   codex: { totalTokens: 0, p50PerScenario: 0, p90PerScenario: 0 },
   deltaPercent: 0,
   flaggedScenarios: [],
@@ -74,7 +74,7 @@ function normalizeRuntimePair(
   if (pair?.[0] && pair?.[1]) {
     return pair;
   }
-  return ["openclaw", "codex"];
+  return ["@gabrielvfonseca/operator", "codex"];
 }
 
 function normalizeTokenCount(value: number): number {
@@ -115,9 +115,9 @@ function runtimeUsage(cell: RuntimeParityCell): TokenEfficiencyRuntimeUsage {
   };
 }
 
-function toolNamesForCells(openclaw: RuntimeParityCell, codex: RuntimeParityCell): string[] {
+function toolNamesForCells(operator: RuntimeParityCell, codex: RuntimeParityCell): string[] {
   return [
-    ...new Set([...openclaw.toolCalls, ...codex.toolCalls].map((call) => call.tool)),
+    ...new Set([...operator.toolCalls, ...codex.toolCalls].map((call) => call.tool)),
   ].toSorted((left, right) => left.localeCompare(right));
 }
 
@@ -126,9 +126,9 @@ function buildRow(params: {
   thresholdPercent: number;
   usageSource: TokenEfficiencyRow["usageSource"];
 }): TokenEfficiencyRow {
-  const openclaw = runtimeUsage(params.result.cells.openclaw);
+  const openclaw = runtimeUsage(params.result.cells.operator);
   const codex = runtimeUsage(params.result.cells.codex);
-  const delta = deltaPercent(openclaw.totalTokens, codex.totalTokens);
+  const delta = deltaPercent(operator.totalTokens, codex.totalTokens);
   const flagged = params.usageSource === "live-usage" && delta > params.thresholdPercent;
   const classification =
     delta > params.thresholdPercent
@@ -144,17 +144,17 @@ function buildRow(params: {
     deltaPercent: delta,
     classification,
     flagged,
-    toolsUsed: toolNamesForCells(params.result.cells.openclaw, params.result.cells.codex),
+    toolsUsed: toolNamesForCells(params.result.cells.operator, params.result.cells.codex),
   };
 }
 
 function buildAggregate(rows: readonly TokenEfficiencyRow[]): TokenEfficiencyReport["aggregate"] {
-  const openclawTotals = rows.map((row) => row.openclaw.totalTokens);
+  const openclawTotals = rows.map((row) => row.operator.totalTokens);
   const codexTotals = rows.map((row) => row.codex.totalTokens);
   const openclawTotalTokens = openclawTotals.reduce((sum, value) => sum + value, 0);
   const codexTotalTokens = codexTotals.reduce((sum, value) => sum + value, 0);
   return {
-    openclaw: {
+    operator: {
       totalTokens: openclawTotalTokens,
       p50PerScenario: percentile(openclawTotals, 50),
       p90PerScenario: percentile(openclawTotals, 90),
@@ -174,8 +174,8 @@ function buildAggregate(rows: readonly TokenEfficiencyRow[]): TokenEfficiencyRep
 
 function liveEvidenceFailures(row: TokenEfficiencyRow): string[] {
   const failures: string[] = [];
-  if (row.openclaw.totalTokens <= 0) {
-    failures.push(`${row.scenarioId} openclaw live usage totalTokens=${row.openclaw.totalTokens}`);
+  if (row.operator.totalTokens <= 0) {
+    failures.push(`${row.scenarioId} openclaw live usage totalTokens=${row.operator.totalTokens}`);
   }
   if (row.codex.totalTokens <= 0) {
     failures.push(`${row.scenarioId} codex live usage totalTokens=${row.codex.totalTokens}`);
@@ -276,7 +276,11 @@ export function buildTokenEfficiencyReport(
     const rowFailures =
       liveUsage && result
         ? [
-            ...liveUsageShapeFailures(row.scenarioId, "openclaw", result.cells.openclaw.usage),
+            ...liveUsageShapeFailures(
+              row.scenarioId,
+              "@gabrielvfonseca/operator",
+              result.cells.operator.usage,
+            ),
             ...liveUsageShapeFailures(row.scenarioId, "codex", result.cells.codex.usage),
             ...liveEvidenceFailures(row),
           ]
@@ -331,7 +335,7 @@ export function renderTokenEfficiencyMarkdownReport(report: TokenEfficiencyRepor
     "",
     "| Runtime | Total tokens | p50 per scenario | p90 per scenario |",
     "| --- | ---: | ---: | ---: |",
-    `| openclaw | ${report.aggregate.openclaw.totalTokens} | ${report.aggregate.openclaw.p50PerScenario} | ${report.aggregate.openclaw.p90PerScenario} |`,
+    `| openclaw | ${report.aggregate.operator.totalTokens} | ${report.aggregate.operator.p50PerScenario} | ${report.aggregate.operator.p90PerScenario} |`,
     `| codex | ${report.aggregate.codex.totalTokens} | ${report.aggregate.codex.p50PerScenario} | ${report.aggregate.codex.p90PerScenario} |`,
     `| delta | ${formatPercent(report.aggregate.deltaPercent)} |  |  |`,
     "",
@@ -346,7 +350,7 @@ export function renderTokenEfficiencyMarkdownReport(report: TokenEfficiencyRepor
     );
     for (const row of report.rows) {
       lines.push(
-        `| ${row.scenarioId} | ${row.usageSource} | ${row.openclaw.inputTokens}/${row.openclaw.outputTokens}/${row.openclaw.totalTokens}/${row.openclaw.toolCallCount} | ${row.codex.inputTokens}/${row.codex.outputTokens}/${row.codex.totalTokens}/${row.codex.toolCallCount} | ${formatPercent(row.deltaPercent)} | ${row.classification} | ${row.flagged ? "yes" : "no"} | ${row.toolsUsed.join(", ")} |`,
+        `| ${row.scenarioId} | ${row.usageSource} | ${row.operator.inputTokens}/${row.operator.outputTokens}/${row.operator.totalTokens}/${row.operator.toolCallCount} | ${row.codex.inputTokens}/${row.codex.outputTokens}/${row.codex.totalTokens}/${row.codex.toolCallCount} | ${formatPercent(row.deltaPercent)} | ${row.classification} | ${row.flagged ? "yes" : "no"} | ${row.toolsUsed.join(", ")} |`,
       );
     }
     lines.push("");

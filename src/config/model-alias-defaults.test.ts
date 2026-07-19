@@ -1,6 +1,6 @@
 // Verifies default model alias config values and overrides.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_CONTEXT_TOKENS } from "../agents/defaults.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
@@ -108,7 +108,7 @@ describe("applyModelDefaults", () => {
           origin: "config",
           rootDir: "/tmp/custom-provider-plugin",
           source: "test",
-          manifestPath: "/tmp/custom-provider-plugin/openclaw.plugin.json",
+          manifestPath: "/tmp/custom-provider-plugin/operator.plugin.json",
           modelIdNormalization: {
             providers: {
               myproxy: {

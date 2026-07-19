@@ -2,9 +2,9 @@ import fsSync from "node:fs";
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { formatByteSize } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { formatByteSize } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import {
   resolveAgentDir,
@@ -273,8 +273,8 @@ function buildMemoryRecallIssueNote(audit: ShortTermAuditSummary): string | null
   const issueLines = audit.issues.map((issue) => `- ${issue.message}`);
   const hasFixableIssue = audit.issues.some((issue) => issue.fixable);
   const guidance = hasFixableIssue
-    ? `Fix: ${formatCliCommand("operator doctor --fix")} or ${formatCliCommand("operator memory status --fix")}`
-    : `Verify: ${formatCliCommand("operator memory status --deep")}`;
+    ? `Fix: ${formatCliCommand("openclaw doctor --fix")} or ${formatCliCommand("openclaw memory status --fix")}`
+    : `Verify: ${formatCliCommand("openclaw memory status --deep")}`;
   return [
     "Memory recall artifacts need attention:",
     ...issueLines,
@@ -294,8 +294,8 @@ function buildDreamingArtifactIssueNote(audit: DreamingArtifactsAuditSummary): s
     ...issueLines,
     `Dream corpus: ${audit.sessionCorpusDir}`,
     hasFixableIssue
-      ? `Fix: ${formatCliCommand("operator doctor --fix")} or ${formatCliCommand("operator memory status --fix")}`
-      : `Verify: ${formatCliCommand("operator memory status --deep")}`,
+      ? `Fix: ${formatCliCommand("openclaw doctor --fix")} or ${formatCliCommand("openclaw memory status --fix")}`
+      : `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
   ].join("\n");
 }
 
@@ -374,7 +374,7 @@ export async function maybeRepairMemoryRecallHealth(params: {
             "Memory recall artifacts repaired:",
             repair.rewroteStore ? `- rewrote recall store${details ? ` (${details})` : ""}` : null,
             repair.removedStaleLock ? "- removed stale promotion lock" : null,
-            `Verify: ${formatCliCommand("operator memory status --deep")}`,
+            `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
           ].filter(Boolean);
           note(lines.join("\n"), "Doctor changes");
         }
@@ -404,7 +404,7 @@ export async function maybeRepairMemoryRecallHealth(params: {
       dreamingRepair.archivedDreamsDiary ? "- archived dream diary" : null,
       dreamingRepair.archiveDir ? `- archive dir: ${dreamingRepair.archiveDir}` : null,
       ...dreamingRepair.warnings.map((warning) => `- warning: ${warning}`),
-      `Verify: ${formatCliCommand("operator memory status --deep")}`,
+      `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
     ].filter(Boolean);
     note(lines.join("\n"), "Doctor changes");
   } catch (err) {
@@ -442,7 +442,7 @@ function hasActiveAlternateMemoryPluginSlot(cfg: OperatorConfig): boolean {
 
 /**
  * Check whether memory search has a usable embedding provider.
- * Runs as part of `operator doctor` — config-only checks where possible;
+ * Runs as part of `openclaw doctor` — config-only checks where possible;
  * may spawn a short-lived probe process when `memory.backend=qmd` to verify
  * the configured `qmd` binary is available.
  */
@@ -516,10 +516,10 @@ export async function noteMemorySearchHealth(
               : "- Install the supported QMD package: npm install -g @tobilu/qmd (or bun install -g @tobilu/qmd)",
             workspaceProbeFailed
               ? "- Verify the resolved workspace path for the affected agent before retrying."
-              : `- Set an explicit binary path: ${formatCliCommand("operator config set memory.qmd.command /absolute/path/to/qmd")}`,
-            `- Or switch back to builtin memory: ${formatCliCommand("operator config set memory.backend builtin")}`,
+              : `- Set an explicit binary path: ${formatCliCommand("openclaw config set memory.qmd.command /absolute/path/to/qmd")}`,
+            `- Or switch back to builtin memory: ${formatCliCommand("openclaw config set memory.backend builtin")}`,
             "",
-            `Verify: ${formatCliCommand("operator memory status --deep")}`,
+            `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
           ]
             .filter(Boolean)
             .join("\n"),
@@ -536,11 +536,11 @@ export async function noteMemorySearchHealth(
           "",
           "Fix (pick one):",
           `- Enable QMD session export: ${formatCliCommand(
-            "operator config set memory.qmd.sessions.enabled true",
+            "openclaw config set memory.qmd.sessions.enabled true",
           )}`,
           "- Or remove sessions from the default agent's memorySearch.sources if QMD session recall is not intended.",
           "",
-          `Verify: ${formatCliCommand("operator memory status --deep")}`,
+          `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
         ].join("\n"),
         "Memory search",
       );
@@ -579,13 +579,13 @@ export async function noteMemorySearchHealth(
         gatewayDetail ? `Gateway probe: ${gatewayDetail}` : null,
         "",
         "Fix (pick one):",
-        `- Install the llama.cpp provider plugin: ${formatCliCommand("operator plugins install @operator/llama-cpp-provider")}`,
+        `- Install the llama.cpp provider plugin: ${formatCliCommand("openclaw plugins install @gabrielvfonseca/llama-cpp-provider")}`,
         `- Set a local GGUF model path in config`,
         suggestedRemoteProvider
-          ? `- Switch to a remote provider: ${formatCliCommand(`operator config set agents.defaults.memorySearch.provider ${suggestedRemoteProvider}`)}`
+          ? `- Switch to a remote provider: ${formatCliCommand(`openclaw config set agents.defaults.memorySearch.provider ${suggestedRemoteProvider}`)}`
           : `- Switch to a remote embedding provider in config`,
         "",
-        `Verify: ${formatCliCommand("operator memory status --deep")}`,
+        `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
       ]
         .filter(Boolean)
         .join("\n"),
@@ -604,9 +604,9 @@ export async function noteMemorySearchHealth(
         "Set agents.defaults.memorySearch.remote.baseUrl to the /v1 endpoint for your embeddings server.",
         "",
         "Fix:",
-        `- ${formatCliCommand("operator config set agents.defaults.memorySearch.remote.baseUrl http://127.0.0.1:1234/v1")}`,
+        `- ${formatCliCommand("openclaw config set agents.defaults.memorySearch.remote.baseUrl http://127.0.0.1:1234/v1")}`,
         "",
-        `Verify: ${formatCliCommand("operator memory status --deep")}`,
+        `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
       ].join("\n"),
       "Memory search",
     );
@@ -620,9 +620,9 @@ export async function noteMemorySearchHealth(
         "Set agents.defaults.memorySearch.model to the embedding model id your server expects.",
         "",
         "Fix:",
-        `- ${formatCliCommand("operator config set agents.defaults.memorySearch.model text-embedding-bge-m3")}`,
+        `- ${formatCliCommand("openclaw config set agents.defaults.memorySearch.model text-embedding-bge-m3")}`,
         "",
-        `Verify: ${formatCliCommand("operator memory status --deep")}`,
+        `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
       ].join("\n"),
       "Memory search",
     );
@@ -635,7 +635,7 @@ export async function noteMemorySearchHealth(
     }
     // When the probe was intentionally skipped (skipped: true / checked: false
     // due to probe:false path), we have no embedding status information — do
-    // not warn. A skipped probe means the user ran `operator doctor` without
+    // not warn. A skipped probe means the user ran `openclaw doctor` without
     // --deep; it does not mean embeddings are unavailable.
     // NOTE: a transport timeout also sets checked: false, but skipped stays
     // false/absent — a timeout is a real diagnostic signal and should fall
@@ -650,7 +650,7 @@ export async function noteMemorySearchHealth(
           ? `Memory search provider "${provider}" is configured, but the gateway reports embeddings are not ready.`
           : `Memory search provider "${provider}" is configured, but the gateway could not confirm embeddings are ready.`,
         gatewayProbeWarning,
-        `Verify: ${formatCliCommand("operator memory status --deep")}`,
+        `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
       ]
         .filter(Boolean)
         .join("\n"),
@@ -674,7 +674,7 @@ export async function noteMemorySearchHealth(
       [
         `Memory search provider is set to "${provider}" but the API key was not found in the CLI environment.`,
         "The running gateway reports memory embeddings are ready for the default agent.",
-        `Verify: ${formatCliCommand("operator memory status --deep")}`,
+        `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
       ].join("\n"),
       "Memory search",
     );
@@ -691,10 +691,10 @@ export async function noteMemorySearchHealth(
       "",
       "Fix (pick one):",
       `- Set ${envVar} in your environment`,
-      `- Configure credentials: ${formatCliCommand("operator configure --section model")}`,
-      `- To disable: ${formatCliCommand("operator config set agents.defaults.memorySearch.enabled false")}`,
+      `- Configure credentials: ${formatCliCommand("openclaw configure --section model")}`,
+      `- To disable: ${formatCliCommand("openclaw config set agents.defaults.memorySearch.enabled false")}`,
       "",
-      `Verify: ${formatCliCommand("operator memory status --deep")}`,
+      `Verify: ${formatCliCommand("openclaw memory status --deep")}`,
     ].join("\n"),
     "Memory search",
   );

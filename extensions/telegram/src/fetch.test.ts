@@ -2,9 +2,9 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { resolveFetch } from "openclaw/plugin-sdk/fetch-runtime";
-import { MAX_DATE_TIMESTAMP_MS } from "openclaw/plugin-sdk/number-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { resolveFetch } from "@gabrielvfonseca/operator/plugin-sdk/fetch-runtime";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const setDefaultResultOrder = vi.hoisted(() => vi.fn());
@@ -203,7 +203,7 @@ function constructorOptions(ctor: ReturnType<typeof vi.fn>, label: string): unkn
 }
 
 function writeTempCa(contents: string): string {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-proxy-ca-"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "operator-telegram-proxy-ca-"));
   tempDirs.push(dir);
   const caFile = path.join(dir, "proxy-ca.pem");
   writeFileSync(caFile, contents, "utf8");

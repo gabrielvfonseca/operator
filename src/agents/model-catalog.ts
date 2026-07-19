@@ -3,12 +3,12 @@
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { resolveClaudeFable5ModelIdentity } from "@operator/llm-core";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { resolveClaudeFable5ModelIdentity } from "@gabrielvfonseca/llm-core";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { getRuntimeConfig } from "../config/config.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";

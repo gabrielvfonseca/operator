@@ -1,6 +1,6 @@
 /** Tests cron before_agent_reply gating at the CLI runner entrypoint. */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import type { CliOutput } from "./cli-output.js";
@@ -71,7 +71,7 @@ const baseRunParams = {
   agentId: "main",
   sessionFile: "/tmp/test-session.jsonl",
   workspaceDir: "/tmp/test-workspace",
-  prompt: "__openclaw_memory_core_short_term_promotion_dream__",
+  prompt: "__operator_memory_core_short_term_promotion_dream__",
   provider: "codex-cli",
   model: "gpt-5.5",
   timeoutMs: 30_000,

@@ -2,7 +2,7 @@
 // whose producer-owned source may disappear before retry.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { isPassThroughRemoteMediaSource } from "@operator/media-core/media-source-url";
+import { isPassThroughRemoteMediaSource } from "@gabrielvfonseca/media-core/media-source-url";
 import type { ReplyPayload } from "../../auto-reply/types.js";
 import { resolveDeliveryQueueMediaDir } from "../../config/paths.js";
 import {

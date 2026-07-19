@@ -1,6 +1,6 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Discord plugin module implements message handlerm preflight behavior.
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { resolveDiscordConversationIdentity } from "../conversation-identity.js";
 import type { User } from "../internal/discord.js";
 import { resolveDiscordDmCommandAccess, type DiscordDmPolicy } from "./dm-command-auth.js";

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 #if canImport(WebKit)
 struct WebViewJavaScriptSupportTests {

@@ -1,6 +1,6 @@
 // Hook update tests cover updating installed hook records and config.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HookNpmIntegrityDriftParams } from "./install.js";
 
 const installHooksFromNpmSpecMock = vi.fn();
@@ -51,14 +51,15 @@ describe("updateNpmInstalledHookPacks", () => {
           actualIntegrity: "sha512-new",
           resolution: {
             integrity: "sha512-new",
-            resolvedSpec: "@operator/demo-hooks@1.0.0",
+            resolvedSpec: "@gabrielvfonseca/demo-hooks@1.0.0",
             version: "1.0.0",
           },
         });
         if (proceed === false) {
           return {
             ok: false,
-            error: "aborted: npm package integrity drift detected for @operator/demo-hooks@1.0.0",
+            error:
+              "aborted: npm package integrity drift detected for @gabrielvfonseca/demo-hooks@1.0.0",
           };
         }
         return {
@@ -73,7 +74,7 @@ describe("updateNpmInstalledHookPacks", () => {
 
     const config = createHookInstallConfig({
       hookId: "demo-hooks",
-      spec: "@operator/demo-hooks@1.0.0",
+      spec: "@gabrielvfonseca/demo-hooks@1.0.0",
       integrity: "sha512-old",
     });
     const result = await updateNpmInstalledHookPacks({
@@ -83,7 +84,7 @@ describe("updateNpmInstalledHookPacks", () => {
     });
 
     expect(warn).toHaveBeenCalledWith(
-      'Integrity drift for hook pack "demo-hooks" (@operator/demo-hooks@1.0.0): expected sha512-old, got sha512-new',
+      'Integrity drift for hook pack "demo-hooks" (@gabrielvfonseca/demo-hooks@1.0.0): expected sha512-old, got sha512-new',
     );
     expect(result.changed).toBe(false);
     expect(result.config).toBe(config);
@@ -92,7 +93,7 @@ describe("updateNpmInstalledHookPacks", () => {
         hookId: "demo-hooks",
         status: "error",
         message:
-          'Failed to update hook pack "demo-hooks": aborted: npm package integrity drift detected for @operator/demo-hooks@1.0.0',
+          'Failed to update hook pack "demo-hooks": aborted: npm package integrity drift detected for @gabrielvfonseca/demo-hooks@1.0.0',
       },
     ]);
   });
@@ -105,9 +106,9 @@ describe("updateNpmInstalledHookPacks", () => {
       targetDir: "/tmp/hooks/demo-hooks",
       version: "1.2.3",
       npmResolution: {
-        name: "@operator/demo-hooks",
+        name: "@gabrielvfonseca/demo-hooks",
         version: "1.2.3",
-        resolvedSpec: "@operator/demo-hooks@1.2.3",
+        resolvedSpec: "@gabrielvfonseca/demo-hooks@1.2.3",
         integrity: "sha512-new",
         shasum: "abc123",
         resolvedAt: "2026-05-11T20:00:00.000Z",
@@ -116,7 +117,7 @@ describe("updateNpmInstalledHookPacks", () => {
 
     const config = createHookInstallConfig({
       hookId: "demo-hooks",
-      spec: "@operator/demo-hooks",
+      spec: "@gabrielvfonseca/demo-hooks",
     });
     const result = await updateNpmInstalledHookPacks({
       config,
@@ -133,12 +134,12 @@ describe("updateNpmInstalledHookPacks", () => {
     expect(result.changed).toBe(true);
     expect(result.config.hooks?.internal?.installs?.["demo-hooks"]).toEqual({
       source: "npm",
-      spec: "@operator/demo-hooks",
+      spec: "@gabrielvfonseca/demo-hooks",
       installPath: "/tmp/hooks/demo-hooks",
       version: "1.2.3",
-      resolvedName: "@operator/demo-hooks",
+      resolvedName: "@gabrielvfonseca/demo-hooks",
       resolvedVersion: "1.2.3",
-      resolvedSpec: "@operator/demo-hooks@1.2.3",
+      resolvedSpec: "@gabrielvfonseca/demo-hooks@1.2.3",
       integrity: "sha512-new",
       shasum: "abc123",
       resolvedAt: "2026-05-11T20:00:00.000Z",

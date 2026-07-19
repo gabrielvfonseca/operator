@@ -211,7 +211,7 @@ describe("noteMemorySearchHealth", () => {
     expect(note).toHaveBeenCalledTimes(1);
     const message = firstNoteMessage();
     expect(message).toContain('Memory search provider is set to "local"');
-    expect(message).toContain("openclaw plugins install @operator/llama-cpp-provider");
+    expect(message).toContain("openclaw plugins install @gabrielvfonseca/llama-cpp-provider");
   });
 
   it("supports silent structured collection through an injected note sink", async () => {
@@ -407,7 +407,7 @@ describe("noteMemorySearchHealth", () => {
   it("warns when local provider skipped readiness but configured local model is missing", async () => {
     resolveMemorySearchConfig.mockReturnValue({
       provider: "local",
-      local: { modelPath: "/definitely/missing/openclaw-memory-model.gguf" },
+      local: { modelPath: "/definitely/missing/operator-memory-model.gguf" },
       remote: {},
     });
 
@@ -485,7 +485,7 @@ describe("noteMemorySearchHealth", () => {
     const cfgWithLancedb = {
       plugins: {
         slots: { memory: "memory-lancedb" },
-        entries: { "memory-lancedb": { enabled: true, config: { dbPath: ".openclaw/memory" } } },
+        entries: { "memory-lancedb": { enabled: true, config: { dbPath: ".operator/memory" } } },
       },
     } as unknown as OperatorConfig;
 
@@ -1573,7 +1573,7 @@ describe("memory recall doctor integration", () => {
     });
     repairDreamingArtifacts.mockResolvedValueOnce({
       changed: true,
-      archiveDir: "/tmp/agent-default/workspace/.openclaw-repair/dreaming/2026-04-11T21-35-00-000Z",
+      archiveDir: "/tmp/agent-default/workspace/.operator-repair/dreaming/2026-04-11T21-35-00-000Z",
       archivedDreamsDiary: false,
       archivedSessionCorpus: true,
       archivedSessionIngestion: true,

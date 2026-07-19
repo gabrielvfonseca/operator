@@ -4,12 +4,12 @@ import {
   installGlobalProxy,
   type ProxylineHandle,
   type ProxylineUndiciOptions,
-} from "@operator/proxyline";
+} from "@openclaw/proxyline";
 import type { ProxyConfig } from "../../../config/zod-schema.proxy.js";
 
 type ProxyLoopbackMode = NonNullable<NonNullable<ProxyConfig>["loopbackMode"]>;
-import { isLoopbackIpAddress } from "@operator/net-policy/ip";
-import { isHttpUrl, isWebSocketUrl } from "@operator/net-policy/url-protocol";
+import { isLoopbackIpAddress } from "@gabrielvfonseca/net-policy/ip";
+import { isHttpUrl, isWebSocketUrl } from "@gabrielvfonseca/net-policy/url-protocol";
 import { logInfo, logWarn } from "../../../logger.js";
 import { forceResetGlobalDispatcher } from "../undici-global-dispatcher.js";
 import {

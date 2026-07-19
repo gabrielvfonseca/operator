@@ -44,7 +44,7 @@ describe("shared/frontmatter", () => {
     expect(
       resolveOperatorManifestBlock({
         frontmatter: {
-          metadata: "{ openclaw: { foo: 1, bar: 'baz' } }",
+          metadata: "{ operator: { foo: 1, bar: 'baz' } }",
         },
       }),
     ).toEqual({ foo: 1, bar: "baz" });
@@ -52,7 +52,7 @@ describe("shared/frontmatter", () => {
     expect(
       resolveOperatorManifestBlock({
         frontmatter: {
-          pluginMeta: "{ openclaw: { foo: 2 } }",
+          pluginMeta: "{ operator: { foo: 2 } }",
         },
         key: "pluginMeta",
       }),
@@ -74,7 +74,7 @@ describe("shared/frontmatter", () => {
       resolveOperatorManifestBlock({
         frontmatter: {
           metadata:
-            "{ openclaw: { requires: { bins: ['current'] } }, clawdbot: { requires: { bins: ['legacy'] } } }",
+            "{ operator: { requires: { bins: ['current'] } }, clawdbot: { requires: { bins: ['legacy'] } } }",
         },
       }),
     ).toEqual({ requires: { bins: ["current"] } });

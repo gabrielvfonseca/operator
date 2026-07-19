@@ -2,7 +2,7 @@
  * Detects, resolves, and loads prompt image references for model input.
  */
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { formatErrorMessage } from "../../../infra/errors.js";
 import { assertNoWindowsNetworkPath, safeFileURLToPath } from "../../../infra/local-file-access.js";
 import type { ImageContent } from "../../../llm/types.js";
@@ -111,7 +111,7 @@ function isOperatorCliImageCachePath(filePath: string): boolean {
       return true;
     }
     const parent = parts[index - 1] ?? "";
-    return part === "operator-cli-images" && /^operator(?:-\d+)?$/.test(parent);
+    return part === "operator-cli-images" && /^openclaw(?:-\d+)?$/.test(parent);
   });
 }
 

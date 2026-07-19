@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
 import android.provider.Settings
 import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
@@ -28,8 +28,8 @@ import kotlin.math.pow
 import kotlin.math.sin
 
 /**
- * Universal OpenClaw talk animation: Compose port of the shared Siri-style
- * waveform in `apps/shared/OpenClawKit/Sources/OpenClawChatUI/TalkWaveformView.swift`.
+ * Universal Operator talk animation: Compose port of the shared Siri-style
+ * waveform in `apps/shared/OperatorKit/Sources/OperatorChatUI/TalkWaveformView.swift`.
  * Every constant mirrors the Swift original; change them there first.
  */
 internal sealed interface TalkWaveformPhase {
@@ -97,7 +97,7 @@ internal fun TalkWaveform(
 ) {
   val context = LocalContext.current
   // Compose frame clocks ignore the system animator scale; honor the OS
-  // "remove animations" setting explicitly (same pattern as OpenClawMascot).
+  // "remove animations" setting explicitly (same pattern as OperatorMascot).
   val animationsEnabled =
     remember(context) {
       Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) > 0f

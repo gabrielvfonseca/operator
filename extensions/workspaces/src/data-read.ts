@@ -1,6 +1,6 @@
 import path from "node:path";
-import { FsSafeError, root as fsRoot } from "openclaw/plugin-sdk/security-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+import { FsSafeError, root as fsRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import {
   WorkspaceBindingResolutionError,
   normalizeWorkspaceDataLogicalPath,

@@ -1,4 +1,4 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -1257,7 +1257,7 @@ class GatewaySessionInvokeTest {
           permissions = emptyMap(),
           client =
             GatewayClientInfo(
-              id = "openclaw-android-test",
+              id = "operator-android-test",
               displayName = "Android Test",
               version = "1.0.0-test",
               platform = "android",

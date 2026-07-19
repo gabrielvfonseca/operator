@@ -14,16 +14,16 @@ import {
   type DeliveryTraceInStep,
   type DeliveryTraceScenarioName,
   type WireRecorder,
-} from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig, PluginRuntime } from "openclaw/plugin-sdk/core";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig, PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
 import {
   chunkMarkdownTextWithMode,
   resolveChunkMode,
   resolveTextChunkLimit,
-} from "openclaw/plugin-sdk/reply-chunking";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { convertMarkdownTables } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { convertMarkdownTables } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { describe, it, vi } from "vitest";
 import { createMattermostPost, type MattermostClient } from "./mattermost/client.js";
 import {

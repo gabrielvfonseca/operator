@@ -1,4 +1,4 @@
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import { discordQaScenarioSupport } from "./discord-live.runtime.js";
 import type { DiscordQaScenarioEnvironment } from "./scenario-environment.js";
 

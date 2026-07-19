@@ -3,8 +3,8 @@
  *
  * Truncates and reshapes portable presentation blocks to match per-channel limits.
  */
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   renderMessagePresentationChartFallbackText,
   renderMessagePresentationTableFallbackText,

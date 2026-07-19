@@ -1,6 +1,6 @@
 // Lightweight static projections for deciding whether plugin repair can be skipped.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { BUNDLED_OFFICIAL_EXTERNAL_PLUGIN_CATALOG_ENTRIES } from "./official-external-plugin-bundled-catalogs.js";
 
@@ -22,7 +22,7 @@ type StaticManifest = {
   webSearchProviders?: readonly StaticWebProvider[];
 };
 
-type StaticEntry = { operator?: StaticManifest };
+type StaticEntry = { openclaw?: StaticManifest };
 
 const STATIC_ENTRIES = BUNDLED_OFFICIAL_EXTERNAL_PLUGIN_CATALOG_ENTRIES as readonly StaticEntry[];
 

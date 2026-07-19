@@ -2,7 +2,7 @@ import Foundation
 import ImageIO
 import Testing
 import UniformTypeIdentifiers
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatLinkPreviewExtractionTests {
     @Test func `extracts first bare web URL`() {

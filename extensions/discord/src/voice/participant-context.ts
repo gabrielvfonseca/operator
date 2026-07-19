@@ -1,4 +1,7 @@
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { APIVoiceState, Client } from "../internal/discord.js";
 import type { GatewayPlugin } from "../internal/gateway.js";
 import { type DiscordVoiceIngressContext, resolveDiscordVoiceIngressContext } from "./ingress.js";

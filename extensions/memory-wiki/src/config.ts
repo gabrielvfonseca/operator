@@ -1,8 +1,11 @@
 // Memory Wiki helper module supports config behavior.
 import os from "node:os";
 import path from "node:path";
-import { mapPluginConfigIssues } from "openclaw/plugin-sdk/extension-shared";
-import { resolveDefaultAgentId, resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
+import { mapPluginConfigIssues } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import {
+  resolveDefaultAgentId,
+  resolveSessionAgentId,
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-host-core";
 import { buildPluginConfigSchema, z, type OperatorPluginConfigSchema } from "../api.js";
 import type { OperatorConfig } from "../api.js";
 
@@ -226,11 +229,11 @@ function expandHomePath(inputPath: string, homedir: string): string {
 }
 
 function resolveDefaultMemoryWikiVaultPath(homedir = os.homedir()): string {
-  return path.join(homedir, ".openclaw", "wiki", "main");
+  return path.join(homedir, ".operator", "wiki", "main");
 }
 
 function resolveDefaultMemoryWikiVaultRoot(homedir = os.homedir()): string {
-  return path.join(homedir, ".openclaw", "wiki");
+  return path.join(homedir, ".operator", "wiki");
 }
 
 export function resolveMemoryWikiConfig(

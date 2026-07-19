@@ -80,7 +80,7 @@ const { mockExecApprovals, supervisorSpawnMock } = vi.hoisted(() => {
 beforeAll(async () => {
   await withEnvAsync(
     {
-      OPERATOR_BUNDLED_PLUGINS_DIR: path.join(os.tmpdir(), "openclaw-test-no-bundled-extensions"),
+      OPERATOR_BUNDLED_PLUGINS_DIR: path.join(os.tmpdir(), "operator-test-no-bundled-extensions"),
     },
     async () => {
       ({ createOperatorCodingTools } = await import("./agent-tools.js"));
@@ -257,7 +257,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("threads tools.exec.safeBins into exec allowlist checks", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-",
+        tmpPrefix: "operator-safe-bins-",
         safeBins: ["echo"],
         safeBinProfiles: {
           echo: { maxPositional: 1 },
@@ -282,7 +282,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("rejects unprofiled custom safe-bin entries", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-unprofiled-",
+        tmpPrefix: "operator-safe-bins-unprofiled-",
         safeBins: ["echo"],
       },
       async ({ tmpDir, execTool }) => {
@@ -299,7 +299,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("does not allow env var expansion to smuggle file args via safeBins", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-expand-",
+        tmpPrefix: "operator-safe-bins-expand-",
         safeBins: ["head", "wc"],
         files: [{ name: "secret.txt", contents: "TOP_SECRET\n" }],
       },
@@ -318,7 +318,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("blocks sort output/compress bypass attempts in safeBins mode", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-sort-",
+        tmpPrefix: "operator-safe-bins-sort-",
         safeBins: ["sort"],
         files: [{ name: "existing.txt", contents: "x\n" }],
       },
@@ -365,7 +365,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("blocks shell redirection metacharacters in safeBins mode", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-redirect-",
+        tmpPrefix: "operator-safe-bins-redirect-",
         safeBins: ["head"],
         files: [{ name: "source.txt", contents: "line1\nline2\n" }],
       },
@@ -384,7 +384,7 @@ describe("createOperatorCodingTools safeBins", () => {
   it("blocks grep recursive flags from reading cwd via safeBins", async () => {
     await withSafeBinsExecTool(
       {
-        tmpPrefix: "openclaw-safe-bins-grep-",
+        tmpPrefix: "operator-safe-bins-grep-",
         safeBins: ["grep"],
         files: [{ name: "secret.txt", contents: "SAFE_BINS_RECURSIVE_SHOULD_NOT_LEAK\n" }],
       },

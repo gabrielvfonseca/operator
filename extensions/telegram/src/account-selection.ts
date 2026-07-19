@@ -2,13 +2,13 @@
 import {
   listCombinedAccountIds,
   resolveListedDefaultAccountId,
-} from "openclaw/plugin-sdk/account-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-core";
 import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 const DEFAULT_AGENT_ID = "main";
 

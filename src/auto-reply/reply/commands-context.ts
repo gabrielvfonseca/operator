@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeAnyChannelId } from "../../channels/registry.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveCommandAuthorization } from "../command-auth.js";

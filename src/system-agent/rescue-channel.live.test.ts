@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import type { CommandContext } from "../auto-reply/reply/commands-types.js";
 import { clearConfigCache } from "../config/config.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { deleteTestEnvValue, setTestEnvValue } from "../test-utils/env.js";
 import { runSystemAgentRescueMessage } from "./rescue-message.js";
@@ -67,8 +67,8 @@ describeLive("Operator live rescue channel smoke", () => {
   });
 
   it("handles /openclaw status and a persistent approval roundtrip", async () => {
-    await withTempDir({ prefix: "openclaw-live-rescue-" }, async (tempDir) => {
-      const configPath = path.join(tempDir, "openclaw.json");
+    await withTempDir({ prefix: "operator-live-rescue-" }, async (tempDir) => {
+      const configPath = path.join(tempDir, "operator.json");
       setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
       setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
       await fs.writeFile(

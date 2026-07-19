@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw ACP runtime backend with plugin-owned session and transport management."
+summary: "Operator ACP runtime backend with plugin-owned session and transport management."
 read_when:
   - You are installing, configuring, or auditing the acpx plugin
 title: "ACPx plugin"
@@ -7,18 +7,18 @@ title: "ACPx plugin"
 
 # ACPx plugin
 
-OpenClaw ACP runtime backend with plugin-owned session and transport management.
+Operator ACP runtime backend with plugin-owned session and transport management.
 
 ## Distribution
 
-- Package: `@operator/acpx`
+- Package: `@gabrielvfonseca/acpx`
 - Install route: npm; ClawHub
 
 ## Surface
 
 skills
 
-<!-- openclaw-plugin-reference:manual-start -->
+<!-- operator-plugin-reference:manual-start -->
 
 ## Pi native sessions
 
@@ -32,7 +32,7 @@ from the directory containing their `settings.json` file.
 Turn **Pi Session Catalog** off under **Config > Plugins > ACPX Runtime** to
 disable discovery. It is enabled by default.
 
-<!-- openclaw-plugin-reference:manual-end -->
+<!-- operator-plugin-reference:manual-end -->
 
 ## Related docs
 

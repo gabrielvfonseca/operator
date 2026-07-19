@@ -11,10 +11,10 @@ type ResolveWideAreaDiscoveryDomain =
 const mocks = vi.hoisted(() => ({
   pickPrimaryTailnetIPv4: vi.fn(() => "100.64.0.10"),
   pickPrimaryTailnetIPv6: vi.fn(() => undefined as string | undefined),
-  resolveWideAreaDiscoveryDomain: vi.fn<ResolveWideAreaDiscoveryDomain>(() => "openclaw.internal."),
+  resolveWideAreaDiscoveryDomain: vi.fn<ResolveWideAreaDiscoveryDomain>(() => "operator.internal."),
   writeWideAreaGatewayZone: vi.fn<WriteWideAreaGatewayZone>(async () => ({
     changed: true,
-    zonePath: "/tmp/openclaw.internal.db",
+    zonePath: "/tmp/operator.internal.db",
   })),
   formatBonjourInstanceName: vi.fn((name: string) => `${name} (Operator)`),
   resolveBonjourCliPath: vi.fn(() => "/usr/local/bin/openclaw"),
@@ -276,7 +276,7 @@ describe("startGatewayDiscovery", () => {
       gatewayTls: { enabled: false },
       gatewayDirectReachable: true,
       wideAreaDiscoveryEnabled: true,
-      wideAreaDiscoveryDomain: "openclaw.internal.",
+      wideAreaDiscoveryDomain: "operator.internal.",
       tailscaleMode: "serve",
       mdnsMode: "off",
       gatewayDiscoveryServices: [service],
@@ -286,14 +286,14 @@ describe("startGatewayDiscovery", () => {
     expect(service.service.advertise).not.toHaveBeenCalled();
     expect(mocks.resolveTailnetDnsHint).toHaveBeenCalledWith({ enabled: true });
     const zoneParams = latestZoneParams();
-    expect(zoneParams.domain).toBe("openclaw.internal.");
+    expect(zoneParams.domain).toBe("operator.internal.");
     expect(zoneParams.gatewayPort).toBe(18789);
     expect(zoneParams.gatewayDirectReachable).toBe(true);
     expect(zoneParams.displayName).toBe("Lab Mac (Operator)");
     expect(zoneParams.tailnetIPv4).toBe("100.64.0.10");
     expect(zoneParams.tailnetDns).toBe("gateway.tailnet.example.ts.net");
     expect(logs.info.mock.calls).toEqual([
-      ["wide-area DNS-SD updated (openclaw.internal. → /tmp/openclaw.internal.db)"],
+      ["wide-area DNS-SD updated (operator.internal. → /tmp/operator.internal.db)"],
     ]);
     expect(result.bonjourStop).toBeNull();
   });
@@ -347,7 +347,7 @@ describe("startGatewayDiscovery", () => {
       port: 18789,
       gatewayTls: { enabled: false },
       wideAreaDiscoveryEnabled: true,
-      wideAreaDiscoveryDomain: "openclaw.internal.",
+      wideAreaDiscoveryDomain: "operator.internal.",
       tailscaleMode: "serve",
       mdnsMode: "minimal",
       gatewayDiscoveryServices: [],

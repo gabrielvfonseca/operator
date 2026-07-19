@@ -5,7 +5,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentDir } from "../agents/agent-scope.js";
 import { resolveMemorySearchConfig } from "../agents/memory-search.js";
 import { createConfiguredProviderLocalServiceAcquirer } from "../agents/provider-local-service.js";
@@ -280,7 +280,7 @@ export async function handleOpenAiEmbeddingsHttpRequest(
   if (requestModel !== OPERATOR_MODEL_ID && !resolveAgentIdFromModel(requestModel, cfg)) {
     sendJson(res, 400, {
       error: {
-        message: "Invalid `model`. Use `operator` or `operator/<agentId>`.",
+        message: "Invalid `model`. Use `openclaw` or `openclaw/<agentId>`.",
         type: "invalid_request_error",
       },
     });

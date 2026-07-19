@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   closeOperatorStateDatabaseForTest,
   createChannelIngressQueueForTests as createChannelIngressQueue,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, describe, expect, it } from "vitest";
 import { setTelegramRuntime } from "./runtime.js";
 import { clearTelegramRuntimeForTest as clearTelegramRuntime } from "./runtime.test-support.js";
@@ -46,7 +46,7 @@ function installTelegramIngressQueueRuntime(resolveStateDir: () => string): void
 }
 
 async function withTempSpool<T>(fn: (spoolDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-telegram-spool-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-telegram-spool-"));
   const spoolDir = path.join(stateDir, "telegram", "ingress-spool-test");
   await fs.mkdir(spoolDir, { recursive: true });
   installTelegramIngressQueueRuntime(() => stateDir);

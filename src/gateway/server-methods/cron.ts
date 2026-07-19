@@ -1,5 +1,5 @@
 // Gateway RPC handlers for cron job CRUD, run logs, wake, and delivery previews.
-import { parseBoolean } from "@operator/normalization-core/boolean-coercion";
+import { parseBoolean } from "@gabrielvfonseca/normalization-core/boolean-coercion";
 import {
   ErrorCodes,
   errorShape,

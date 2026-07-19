@@ -2,9 +2,12 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resetInboundDedupe } from "openclaw/plugin-sdk/reply-runtime";
-import type { GetReplyOptions, MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resetInboundDedupe } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import type {
+  GetReplyOptions,
+  MsgContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { afterEach, beforeEach, vi, type Mock } from "vitest";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import { setTelegramRuntime } from "./runtime.js";
@@ -75,7 +78,7 @@ const saveMediaBufferSpy: Mock = vi.fn(defaultSaveMediaBuffer);
 let mediaHarnessStoreRoot: string | undefined;
 
 function ensureMediaHarnessStoreRoot(): string {
-  mediaHarnessStoreRoot ??= mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-media-e2e-"));
+  mediaHarnessStoreRoot ??= mkdtempSync(path.join(os.tmpdir(), "operator-telegram-media-e2e-"));
   return mediaHarnessStoreRoot;
 }
 

@@ -38,7 +38,7 @@ describe("diagnostic support export", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-support-export-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-support-export-"));
     resetDiagnosticEventsForTest();
     resetDiagnosticStabilityRecorderForTest();
     resetDiagnosticStabilityBundleForTest();
@@ -67,7 +67,7 @@ describe("diagnostic support export", () => {
     const proxyTlsPassphrase = "support-proxy-tls-passphrase";
     const credentialUrl =
       "wss://support-user:support-password@gateway.example/ws?token=short-token&ok=1";
-    const configPath = path.join(tempDir, "openclaw.json");
+    const configPath = path.join(tempDir, "operator.json");
     fs.writeFileSync(
       configPath,
       JSON.stringify(
@@ -151,7 +151,7 @@ describe("diagnostic support export", () => {
     expect(bundle.status).toBe("written");
 
     const logTail: LogTailPayload = {
-      file: path.join(tempDir, "logs", "openclaw.log"),
+      file: path.join(tempDir, "logs", "operator.log"),
       cursor: 200,
       size: 200,
       truncated: false,
@@ -224,7 +224,7 @@ describe("diagnostic support export", () => {
         service: {
           loaded: true,
           command: {
-            programArguments: ["openclaw", "gateway", "run", "--token", fakeToken],
+            programArguments: ["@gabrielvfonseca/operator", "gateway", "run", "--token", fakeToken],
             environment: {
               HOME: tempDir,
               OPERATOR_GATEWAY_TOKEN: fakeToken,
@@ -270,7 +270,7 @@ describe("diagnostic support export", () => {
       "config/shape.json",
       "diagnostics.json",
       "health/gateway-health.json",
-      "logs/openclaw-sanitized.jsonl",
+      "logs/operator-sanitized.jsonl",
       "manifest.json",
       "stability/latest.json",
       "status/gateway-status.json",
@@ -308,7 +308,7 @@ describe("diagnostic support export", () => {
     expect(combined).toContain("gateway-health.json");
     expect(combined).toContain("Attach this zip to the bug report");
 
-    const sanitizedLogs = entries["logs/openclaw-sanitized.jsonl"];
+    const sanitizedLogs = entries["logs/operator-sanitized.jsonl"];
     expect(sanitizedLogs).toContain('"subsystem":"gateway"');
     expect(sanitizedLogs).toContain('"component":"gateway/server"');
     expect(sanitizedLogs).toContain('"channel":"telegram"');
@@ -346,7 +346,7 @@ describe("diagnostic support export", () => {
       };
     };
     expect(status.data?.service?.command?.programArguments).toEqual([
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "gateway",
       "run",
       "--token",
@@ -495,7 +495,7 @@ describe("diagnostic support export", () => {
       stabilityBundle: bundlePath,
       now: new Date("2026-04-22T12:00:01.000Z"),
       readLogTail: async () => ({
-        file: path.join(tempDir, "logs", "openclaw.log"),
+        file: path.join(tempDir, "logs", "operator.log"),
         cursor: 0,
         size: 0,
         truncated: false,
@@ -540,7 +540,7 @@ describe("diagnostic support export", () => {
   });
 
   it("includes mDNS config state and recent Bonjour log summary", async () => {
-    const configPath = path.join(tempDir, "openclaw.json");
+    const configPath = path.join(tempDir, "operator.json");
     const outputPath = path.join(tempDir, "support-bonjour.zip");
     fs.writeFileSync(
       configPath,
@@ -566,7 +566,7 @@ describe("diagnostic support export", () => {
       outputPath,
       now: new Date("2026-04-22T12:00:01.000Z"),
       readLogTail: async () => ({
-        file: path.join(tempDir, "logs", "openclaw.log"),
+        file: path.join(tempDir, "logs", "operator.log"),
         cursor: 0,
         size: 0,
         truncated: false,
@@ -782,7 +782,7 @@ describe("diagnostic support export", () => {
               "node",
               `${userProfile}\\openclaw\\dist\\index.js`,
               "--config",
-              `${stateDir}\\openclaw.json`,
+              `${stateDir}\\operator.json`,
             ],
             sourcePath: "c:\\users\\support-user\\AppData\\Local\\openclaw\\gateway-service.json",
           },
@@ -793,7 +793,7 @@ describe("diagnostic support export", () => {
     const serialized = JSON.stringify(status);
     expect(serialized).not.toContain("support-user");
     expect(serialized).toContain("~\\\\openclaw\\\\dist\\\\index.js");
-    expect(serialized).toContain("$OPERATOR_STATE_DIR\\\\openclaw.json");
+    expect(serialized).toContain("$OPERATOR_STATE_DIR\\\\operator.json");
     expect(serialized).toContain("~\\\\AppData\\\\Local\\\\openclaw\\\\gateway-service.json");
   });
 
@@ -811,7 +811,7 @@ describe("diagnostic support export", () => {
       outputPath,
       now: new Date("2026-04-22T12:00:01.000Z"),
       readLogTail: async () => ({
-        file: path.join(tempDir, "logs", "openclaw.log"),
+        file: path.join(tempDir, "logs", "operator.log"),
         cursor: 0,
         size: 0,
         truncated: false,
@@ -852,12 +852,12 @@ describe("diagnostic support export", () => {
       outputPath,
       now: new Date("2026-04-22T12:00:02.000Z"),
       readLogTail: async () => {
-        throw new Error(`log tail failed at ${tempDir}/openclaw.log with token ${fakeToken}`);
+        throw new Error(`log tail failed at ${tempDir}/operator.log with token ${fakeToken}`);
       },
     });
 
     const entries = await readZipTextEntries(outputPath);
-    expect(Object.keys(entries).toSorted()).toContain("logs/openclaw-sanitized.jsonl");
+    expect(Object.keys(entries).toSorted()).toContain("logs/operator-sanitized.jsonl");
 
     const combined = Object.values(entries).join("\n");
     expect(combined).not.toContain(fakeToken);
@@ -868,7 +868,7 @@ describe("diagnostic support export", () => {
 
   it("keeps writing when config stat fails", async () => {
     const fakeToken = "sk-test-config-stat-secret-token-1234567890";
-    const configPath = path.join(tempDir, "openclaw.json");
+    const configPath = path.join(tempDir, "operator.json");
     const outputPath = path.join(tempDir, "support-failed-config-stat.zip");
     fs.writeFileSync(configPath, "{}\n", "utf8");
 
@@ -892,7 +892,7 @@ describe("diagnostic support export", () => {
         outputPath,
         now: new Date("2026-04-22T12:00:03.000Z"),
         readLogTail: async () => ({
-          file: path.join(tempDir, "logs", "openclaw.log"),
+          file: path.join(tempDir, "logs", "operator.log"),
           cursor: 0,
           size: 0,
           truncated: false,

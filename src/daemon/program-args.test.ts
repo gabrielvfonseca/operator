@@ -183,7 +183,7 @@ describe("resolveGatewayProgramArguments", () => {
   it("uses trusted Windows where.exe when resolving the Node runtime", async () => {
     const repoIndexPath = path.resolve("/repo/src/index.ts");
     const repoEntryPath = path.resolve("/repo/src/entry.ts");
-    const launcherPath = String.raw`D:\Operator\openclaw.exe`;
+    const launcherPath = String.raw`D:\Operator\operator.exe`;
     process.argv = [launcherPath, repoIndexPath];
     process.execPath = launcherPath;
     vi.stubEnv("SystemRoot", String.raw`D:\Windows`);
@@ -217,7 +217,7 @@ describe("resolveGatewayProgramArguments", () => {
   });
 
   it("uses an executable wrapper when provided", async () => {
-    const wrapperPath = path.resolve("/usr/local/bin/openclaw-doppler");
+    const wrapperPath = path.resolve("/usr/local/bin/operator-doppler");
     fsMocks.stat.mockResolvedValue({ isFile: () => true } as never);
     fsMocks.access.mockResolvedValue(undefined);
 
@@ -231,7 +231,7 @@ describe("resolveGatewayProgramArguments", () => {
   });
 
   it("rejects a non-executable wrapper file", async () => {
-    const wrapperPath = path.resolve("/usr/local/bin/openclaw-doppler");
+    const wrapperPath = path.resolve("/usr/local/bin/operator-doppler");
     fsMocks.stat.mockResolvedValue({ isFile: () => true } as never);
     fsMocks.access.mockRejectedValue(new Error("EACCES"));
 

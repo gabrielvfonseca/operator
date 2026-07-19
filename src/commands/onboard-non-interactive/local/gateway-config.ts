@@ -4,7 +4,7 @@
  * This module owns port/bind/auth validation and token/ref preservation before
  * the final config write happens.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { formatCliCommand } from "../../../cli/command-format.js";
 import { formatInvalidPortOption } from "../../../cli/error-format.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
@@ -101,7 +101,7 @@ export function applyNonInteractiveGatewayConfig(params: {
       const resolvedFromEnv = process.env[gatewayTokenRefEnv]?.trim();
       if (!resolvedFromEnv) {
         runtime.error(
-          `Environment variable "${gatewayTokenRefEnv}" is missing or empty. Export it first, then rerun ${formatCliCommand("operator onboard --non-interactive")}.`,
+          `Environment variable "${gatewayTokenRefEnv}" is missing or empty. Export it first, then rerun ${formatCliCommand("openclaw onboard --non-interactive")}.`,
         );
         runtime.exit(1);
         return null;

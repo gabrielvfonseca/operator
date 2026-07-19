@@ -1,14 +1,14 @@
 import {
   resolveOpenAIReasoningEffortForModel,
   supportsOpenAIReasoningEffort,
-} from "@operator/ai/internal/openai";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+} from "@gabrielvfonseca/ai/internal/openai";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 // OpenAI stream wrapper normalizes OpenAI-compatible streamed tool and text events.
 import {
   normalizeFastMode,
   normalizeOptionalLowercaseString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   patchCodexNativeWebSearchPayload,
   resolveCodexNativeSearchActivation,
@@ -43,7 +43,7 @@ const log = createSubsystemLogger("llm/providers/stream-wrappers");
 type OpenAIServiceTier = "auto" | "default" | "flex" | "priority";
 type DynamicFastMode = boolean | (() => boolean | undefined);
 type OperatorSimpleStreamOptions = SimpleStreamOptions & {
-  operatorCodeModeToolSurface?: boolean;
+  openclawCodeModeToolSurface?: boolean;
 };
 type OpenAIResponsesReplayOptions = Parameters<StreamFn>[2] & {
   replayResponsesItemIds?: boolean;
@@ -711,7 +711,7 @@ export function createCodexNativeWebSearchWrapper(
       const originalOnPayload = options?.onPayload;
       const codeModeOptions: OperatorSimpleStreamOptions = {
         ...options,
-        operatorCodeModeToolSurface: true,
+        openclawCodeModeToolSurface: true,
         onPayload: (payload) => {
           filterCodeModePayloadTools(payload);
           const nextPayload = originalOnPayload?.(payload, model);

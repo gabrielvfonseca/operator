@@ -3,8 +3,8 @@
  *
  * Builds agent tool schema contributions from loaded or bundled channel action hooks.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { Type, type TSchema } from "typebox";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { formatErrorMessage } from "../../infra/errors.js";

@@ -221,10 +221,10 @@ async function buildResponsesPayload(
     if (targetTool && hasDeclaredTool(body, "tool_search_code")) {
       return buildToolCallEventsWithArgs("tool_search_code", {
         code: [
-          `const hits = await openclaw.tools.search(${JSON.stringify(targetTool)}, { limit: 1 });`,
+          `const hits = await operator.tools.search(${JSON.stringify(targetTool)}, { limit: 1 });`,
           "const match = hits.find((tool) => tool.name === " + JSON.stringify(targetTool) + ");",
           "if (!match) throw new Error('target tool not found');",
-          `return await openclaw.tools.call(match.id, ${JSON.stringify(plannedArgs)});`,
+          `return await operator.tools.call(match.id, ${JSON.stringify(plannedArgs)});`,
         ].join("\n"),
       });
     }

@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 export function levenshteinDistance(left: string, right: string): number {
   if (left === right) {
     return 0;

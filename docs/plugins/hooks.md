@@ -5,10 +5,10 @@ read_when:
   - You are building a plugin that needs before_tool_call, before_agent_reply, message hooks, or lifecycle hooks
   - You need to block, rewrite, or require approval for tool calls from a plugin
   - You are deciding between internal hooks and plugin hooks
-  - You are projecting OpenClaw cron wakes into an external host scheduler
+  - You are projecting Operator cron wakes into an external host scheduler
 ---
 
-Plugin hooks are in-process extension points for OpenClaw plugins: inspect or
+Plugin hooks are in-process extension points for Operator plugins: inspect or
 change agent runs, tool calls, message flow, session lifecycle, subagent
 routing, installs, or Gateway startup.
 
@@ -60,7 +60,7 @@ observation side effects.
 | Option      | Effect                                                                                                                                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `priority`  | Ordering; higher runs first.                                                                                                                                                                      |
-| `timeoutMs` | Per-hook await budget. When it expires, OpenClaw stops awaiting that handler and moves on. It does not cancel the handler or its side effects. Omit to use the runner's default per-hook timeout. |
+| `timeoutMs` | Per-hook await budget. When it expires, Operator stops awaiting that handler and moves on. It does not cancel the handler or its side effects. Omit to use the runner's default per-hook timeout. |
 
 Operators can set hook budgets without patching plugin code:
 
@@ -93,7 +93,7 @@ admission while that plugin work is still in progress. Plugins that own
 long-running work must provide their own cancellation and shutdown lifecycle.
 
 Outbound modifying hooks `message_sending` and `reply_payload_sending` use a
-15-second default per handler. If one times out, OpenClaw logs the plugin error
+15-second default per handler. If one times out, Operator logs the plugin error
 and continues with the latest payload so the serialized delivery lane can
 settle. Set a larger per-hook budget for plugins that intentionally do slower
 work before delivery.
@@ -105,7 +105,7 @@ Without an owner-declared budget, those callbacks use the same 15-second
 default so a hung callback cannot retain the serialized delivery lane.
 
 Each hook receives `event.context.pluginConfig`, the resolved config for the
-plugin that registered that handler. OpenClaw injects it per handler without
+plugin that registered that handler. Operator injects it per handler without
 mutating the shared event object other plugins see.
 
 ## Hook catalog
@@ -172,7 +172,7 @@ observation-only.
 - `subagent_spawned` / `subagent_ended` - observe subagent launch and completion.
 - `subagent_delivery_target` - compatibility hook for completion delivery when no core session binding can project a route.
 - `subagent_spawning` - deprecated compatibility hook. Core now prepares `thread: true` subagent bindings through channel session-binding adapters before `subagent_spawned` fires.
-- `subagent_spawned` includes `resolvedModel` and `resolvedProvider` when OpenClaw has resolved the child session's native model before launch.
+- `subagent_spawned` includes `resolvedModel` and `resolvedProvider` when Operator has resolved the child session's native model before launch.
 - `subagent_ended` carries `targetSessionKey` (identity - matches `subagent_spawned.childSessionKey`), `targetKind` (`"subagent"` or `"acp"`), `reason`, optional `outcome` (`"ok"`, `"error"`, `"timeout"`, `"killed"`, `"reset"`, or `"deleted"`), optional `error`, `runId`, `endedAt`, `accountId`, and `sendFarewell`. It does **not** include `agentId` or `childSessionKey`; use `targetSessionKey` to correlate with the matching `subagent_spawned` event.
 
 **Lifecycle**
@@ -214,7 +214,7 @@ runs before model resolution. `llm_output` only runs after a model attempt
 produces assistant output.
 
 For proof of the effective session model, inspect runtime registrations, then
-use `openclaw sessions` or the Gateway session/status surfaces. To debug
+use `operator sessions` or the Gateway session/status surfaces. To debug
 provider payloads, start the Gateway with `--raw-stream` and
 `--raw-stream-path <path>` to write raw model stream events to a jsonl file.
 
@@ -322,7 +322,7 @@ Tool results can include structured `details` for UI rendering, diagnostics,
 media routing, or plugin-owned metadata. Treat `details` as runtime metadata,
 not prompt content:
 
-- OpenClaw strips `toolResult.details` before provider replay and compaction
+- Operator strips `toolResult.details` before provider replay and compaction
   input so metadata does not become model context.
 - Persisted session entries keep only bounded `details`. Oversized details are
   replaced with a compact summary and `persistedDetailsTruncated: true`.
@@ -358,7 +358,7 @@ to stop the run before the model reads the prompt. `reason` is internal;
 `message` is the user-facing replacement. Only `pass` and `block` outcomes are
 supported; unsupported decision shapes fail closed.
 
-When a run is blocked, OpenClaw stores only the replacement text in
+When a run is blocked, Operator stores only the replacement text in
 `message.content` plus non-sensitive block metadata such as the blocking
 plugin id and timestamp. The original user text is not retained in transcript
 or future context. Internal block reasons are treated as sensitive and
@@ -366,7 +366,7 @@ excluded from transcript, history, broadcast, log, and diagnostics payloads.
 Observability should use sanitized fields such as blocker id, outcome,
 timestamp, or a safe category.
 
-`before_agent_start` and `agent_end` include `event.runId` when OpenClaw can
+`before_agent_start` and `agent_end` include `event.runId` when Operator can
 identify the active run; the same value is also on `ctx.runId`. Cron-driven
 runs also expose `ctx.jobId` (the originating cron job id) on the agent-turn
 context so hooks can scope metrics, side effects, or state to a specific
@@ -374,7 +374,7 @@ scheduled job. `ctx.jobId` is not part of the `before_tool_call` tool context.
 
 For channel-originated runs, `ctx.channel` and `ctx.messageProvider` identify
 the provider surface such as `discord` or `telegram`, while `ctx.channelId` is
-the conversation target identifier when OpenClaw can derive one from the
+the conversation target identifier when Operator can derive one from the
 session key or delivery metadata.
 
 When sender identity is available, agent hook contexts also include:
@@ -430,7 +430,7 @@ it fire-and-forget after the turn, while short-lived one-shot CLI paths wait
 for the hook promise before process cleanup so trusted plugins can flush
 terminal observability or capture state. The hook runner applies a 30 second
 timeout so a wedged plugin or embedding endpoint cannot leave the hook promise
-pending forever. A timeout is logged and OpenClaw continues; it does not
+pending forever. A timeout is logged and Operator continues; it does not
 cancel plugin-owned network work unless the plugin also uses its own abort
 signal.
 
@@ -438,7 +438,7 @@ Use `model_call_started` and `model_call_ended` for provider-call telemetry
 that should not receive raw prompts, history, responses, headers, request
 bodies, or provider request IDs. These hooks include stable metadata such as
 `runId`, `callId`, `provider`, `model`, optional `api`/`transport`, terminal
-`durationMs`/`outcome`, and `upstreamRequestIdHash` when OpenClaw can derive a
+`durationMs`/`outcome`, and `upstreamRequestIdHash` when Operator can derive a
 bounded provider request-id hash. When the runtime has resolved
 context-window metadata, the hook event and context also include
 `contextTokenBudget`, the effective token budget after model/config/agent
@@ -450,9 +450,9 @@ final assistant answer. It is not the `/stop` cancellation path and does not
 run when the user aborts a turn. Return `{ action: "revise", reason }` to ask
 the harness for one more model pass before finalization, `{ action:
 "finalize", reason? }` to force finalization, or omit a result to continue.
-Handlers have a 15s default budget; on timeout, OpenClaw logs the failure and
+Handlers have a 15s default budget; on timeout, Operator logs the failure and
 continues with the original final answer.
-Codex native `Stop` hooks are relayed into this hook as OpenClaw
+Codex native `Stop` hooks are relayed into this hook as Operator
 `before_agent_finalize` decisions.
 
 When returning `action: "revise"`, plugins can include `retry` metadata to
@@ -505,7 +505,7 @@ the `api.session.state` namespace.
 Use `api.session.workflow.enqueueNextTurnInjection(...)` when a plugin needs
 durable context to reach the next model turn exactly once (the top-level
 `api.enqueueNextTurnInjection(...)` is a deprecated alias with the same
-behavior). OpenClaw drains queued injections before prompt hooks, drops
+behavior). Operator drains queued injections before prompt hooks, drops
 expired injections, and deduplicates by `idempotencyKey` per plugin. This is
 the right seam for approval resumes, policy summaries, background monitor
 deltas, and command continuations that should be visible to the model on the
@@ -574,16 +574,16 @@ Decision rules:
 ## Install hooks
 
 Use `security.installPolicy` for operator-owned allow/block decisions. That
-policy runs from OpenClaw config, covers CLI install and update paths, and
+policy runs from Operator config, covers CLI install and update paths, and
 fails closed when enabled but unavailable.
 
 `before_install` is a plugin-runtime lifecycle hook. It runs after
-`security.installPolicy` only in the OpenClaw process where plugin hooks have
+`security.installPolicy` only in the Operator process where plugin hooks have
 already been loaded, such as Gateway-backed install flows. It is useful for
 plugin-owned observations, warnings, and compatibility checks, but it is not
 the primary enterprise or host security boundary for installs. The
 `builtinScan` field remains in the event payload for compatibility, but
-OpenClaw no longer runs built-in install-time dangerous-code blocking, so it
+Operator no longer runs built-in install-time dangerous-code blocking, so it
 is an empty `ok` result. Return additional findings or
 `{ block: true, blockReason }` to stop the install in that process.
 
@@ -634,7 +634,7 @@ explicit `added`, `updated`, or `removed` lifecycle event. The top-level
 no next wake. Treat these events as reconciliation hints, not an ordered delta
 log. Use them as coalescible hints to reread the scheduler last captured by
 `cron_reconciled`; do not adopt the scheduler from a `cron_changed` context.
-Keep OpenClaw as the source of truth for due checks and execution.
+Keep Operator as the source of truth for due checks and execution.
 
 ### Safe external cron projection
 
@@ -652,7 +652,7 @@ snapshot.
 
 ```typescript
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 
 type ExternalWake = { jobId: string; runAtMs: number };
 
@@ -671,7 +671,7 @@ type CronReader = {
   >;
 };
 
-export function registerCronProjection(api: OpenClawPluginApi, host: ExternalWakeHost) {
+export function registerCronProjection(api: OperatorPluginApi, host: ExternalWakeHost) {
   const lifecycle = new AbortController();
   let cron: CronReader | undefined;
   let enabled = false;
@@ -781,7 +781,7 @@ export function registerCronProjection(api: OpenClawPluginApi, host: ExternalWak
 When `cron_reconciled` reports `enabled: false`, the same path calls
 `replaceAll([])` and clears stale external wakes. Retry/backoff in this example
 is process-local and treats runtime adapter failures as transient; validate
-non-retryable configuration before registration. OpenClaw does not provide an
+non-retryable configuration before registration. Operator does not provide an
 outbox for plugin hook effects. If the process exits before durable acceptance,
 the next Gateway start emits a new authoritative `cron_reconciled` snapshot.
 `gateway_stop` aborts in-flight host work, waits for the worker to settle, then

@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import type { AgentCommandOpts } from "../../agents/command/types.js";
 import { agentCommandFromIngress } from "../../commands/agent.js";

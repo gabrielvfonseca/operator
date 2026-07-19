@@ -10,8 +10,8 @@ import {
   OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
   OPERATOR_STATE_SCHEMA_VERSION,
   type OperatorStateDatabaseOptions,
-} from "./operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "./operator-state-db.paths.js";
+} from "./openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "./openclaw-state-db.paths.js";
 
 type OperatorStateReadOnlyDatabase = {
   db: DatabaseSync;

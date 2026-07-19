@@ -2,7 +2,7 @@ import {
   clampThinkingLevel,
   getSupportedThinkingLevels,
   modelsAreEqual,
-} from "@operator/ai/internal/runtime";
+} from "@gabrielvfonseca/ai/internal/runtime";
 import type { Model } from "../../llm/types.js";
 import type { ThinkingLevel } from "../runtime/index.js";
 import { AgentSessionPrompting } from "./agent-session-prompting.js";

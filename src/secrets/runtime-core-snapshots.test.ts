@@ -97,7 +97,7 @@ describe("secrets runtime snapshot core lanes", () => {
             },
           }),
           env: { OPENAI_API_KEY: "sk-runtime" },
-          agentDirs: ["/tmp/openclaw-agent-main"],
+          agentDirs: ["/tmp/operator-agent-main"],
           includeAuthStoreRefs: params?.includeAuthStoreRefs,
           loadablePluginOrigins: new Map(),
           loadAuthStore: () =>
@@ -208,7 +208,7 @@ describe("secrets runtime snapshot core lanes", () => {
         OPENAI_API_KEY: "sk-env-openai",
         GITHUB_TOKEN: "ghp-env-token",
       },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadablePluginOrigins: new Map(),
       loadAuthStore: () =>
         loadAuthStoreWithProfiles({
@@ -228,9 +228,9 @@ describe("secrets runtime snapshot core lanes", () => {
     });
 
     const warningPaths = snapshot.warnings.map((warning) => warning.path);
-    expect(warningPaths).toContain("/tmp/openclaw-agent-main.auth-profiles.openai:default.key");
+    expect(warningPaths).toContain("/tmp/operator-agent-main.auth-profiles.openai:default.key");
     expect(warningPaths).toContain(
-      "/tmp/openclaw-agent-main.auth-profiles.github-copilot:default.token",
+      "/tmp/operator-agent-main.auth-profiles.github-copilot:default.token",
     );
     const openAiProfile = snapshot.authStores[0]?.store.profiles["openai:default"] as
       | Record<string, unknown>
@@ -250,7 +250,7 @@ describe("secrets runtime snapshot core lanes", () => {
       env: {
         OPENAI_API_KEY: "sk-env-openai",
       },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadablePluginOrigins: new Map(),
       loadAuthStore: () =>
         loadAuthStoreWithProfiles({
@@ -285,7 +285,7 @@ describe("secrets runtime snapshot core lanes", () => {
     const prepared = await prepareOpenAiRuntimeSnapshot();
     activateSecretsRuntimeSnapshot(prepared);
 
-    const runtimeProfile = ensureAuthProfileStore("/tmp/openclaw-agent-main").profiles[
+    const runtimeProfile = ensureAuthProfileStore("/tmp/operator-agent-main").profiles[
       "openai:default"
     ] as Record<string, unknown> | undefined;
     expect(runtimeProfile?.type).toBe("api_key");

@@ -1,6 +1,6 @@
 // Qqbot plugin entrypoint registers its Operator integration.
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { ResolvedChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { ResolvedChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
 import type { EffectivePolicyInput } from "../access/resolve-policy.js";
 import type { FetchMediaOptions, FetchMediaResult, SecretInputRef } from "./types.js";
 

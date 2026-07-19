@@ -1,4 +1,4 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -9,7 +9,7 @@ class DeviceAuthPayloadTest {
     val payload =
       DeviceAuthPayload.buildV3(
         deviceId = "dev-1",
-        clientId = "openclaw-macos",
+        clientId = "operator-macos",
         clientMode = "ui",
         role = "operator",
         scopes = listOf("operator.admin", "operator.read"),
@@ -21,7 +21,7 @@ class DeviceAuthPayloadTest {
       )
 
     assertEquals(
-      "v3|dev-1|openclaw-macos|ui|operator|operator.admin,operator.read|1700000000000|tok-123|nonce-abc|ios|iphone",
+      "v3|dev-1|operator-macos|ui|operator|operator.admin,operator.read|1700000000000|tok-123|nonce-abc|ios|iphone",
       payload,
     )
   }

@@ -3,8 +3,8 @@
  *
  * Resolves direct, parent, normalized, and wildcard config entries with match metadata.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 /** How a channel config entry was selected. */
 export type ChannelMatchSource = "direct" | "parent" | "wildcard";

@@ -5,8 +5,8 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
-import { escapeHtml } from "openclaw/plugin-sdk/text-utility-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
+import { escapeHtml } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { validateWidgetManifest } from "./manifest.js";
 
 type WorkspaceScaffoldOptions = {
@@ -72,7 +72,7 @@ function widgetHtml(title: string, createdBy: string): string {
   <footer>Built by ${escapeHtml(createdBy)}</footer>
   <script>
     const valueNode = document.getElementById("value");
-    const bridge = window.openclawWorkspaceBridge;
+    const bridge = window.operatorWorkspaceBridge;
     function post(type, payload = {}) {
       bridge.postMessage({ v: 1, type, ...payload });
     }
@@ -109,10 +109,10 @@ function widgetReadme(name: string): string {
 
 This workspace widget runs inside a sandboxed iframe and talks to the parent
 Control UI through the document-bound workspace message bridge exposed as
-\`window.openclawWorkspaceBridge\`.
+\`window.operatorWorkspaceBridge\`.
 
-- Send messages with \`window.openclawWorkspaceBridge.postMessage(...)\`.
-- Listen with \`window.openclawWorkspaceBridge.addEventListener("message", ...)\`.
+- Send messages with \`window.operatorWorkspaceBridge.postMessage(...)\`.
+- Listen with \`window.operatorWorkspaceBridge.addEventListener("message", ...)\`.
 - Send \`{ "v": 1, "type": "workspace:ready" }\` when loaded.
 - Send \`workspace:getData\` with a \`requestId\` and \`bindingId\` to read a declared binding.
 - Re-render on \`workspace:data\` and \`workspace:push\`.

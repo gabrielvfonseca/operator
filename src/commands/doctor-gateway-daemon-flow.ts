@@ -139,7 +139,7 @@ function renderBlockingSystemGatewayServices(services: ExtraGatewayService[]): s
     "System-level Operator gateway service detected while the user gateway service is not installed.",
     ...services.map((svc) => `- ${svc.label} (${svc.detail})`),
     "Operator will not install a second user-level gateway service automatically.",
-    "Run `operator gateway status --deep` or `operator doctor --deep` to inspect duplicate services.",
+    "Run `openclaw gateway status --deep` or `openclaw doctor --deep` to inspect duplicate services.",
     `Set ${SERVICE_REPAIR_POLICY_ENV}=external if a system supervisor owns the gateway lifecycle.`,
   ].join("\n");
 }
@@ -339,7 +339,7 @@ export async function maybeRepairGatewayDaemon(params: {
       );
       if (!install) {
         note(
-          `Run ${formatCliCommand("operator gateway install")} when you want to install the gateway service.`,
+          `Run ${formatCliCommand("openclaw gateway install")} when you want to install the gateway service.`,
           "Gateway",
         );
       }
@@ -432,7 +432,7 @@ export async function maybeRepairGatewayDaemon(params: {
   if (process.platform === "darwin") {
     const label = resolveGatewayLaunchAgentLabel(process.env.OPERATOR_PROFILE);
     note(
-      `LaunchAgent loaded; stopping requires "${formatCliCommand("operator gateway stop")}" or launchctl bootout gui/$UID/${label}.`,
+      `LaunchAgent loaded; stopping requires "${formatCliCommand("openclaw gateway stop")}" or launchctl bootout gui/$UID/${label}.`,
       "Gateway",
     );
   }

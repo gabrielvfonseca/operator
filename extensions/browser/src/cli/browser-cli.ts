@@ -1,14 +1,14 @@
-/**
- * Browser CLI root command registration with lazy subcommand loading.
- */
-import type { Command } from "commander";
 import {
   registerCommandGroups,
   resolveCliArgvInvocation,
   shouldEagerRegisterSubcommands,
   type CommandGroupEntry,
   type CommandGroupPlaceholder,
-} from "openclaw/plugin-sdk/cli-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+/**
+ * Browser CLI root command registration with lazy subcommand loading.
+ */
+import type { Command } from "commander";
 import { browserActionExamples, browserCoreExamples } from "./browser-cli-examples.js";
 import type { BrowserParentOpts } from "./browser-cli-shared.js";
 import {
@@ -276,7 +276,7 @@ export function registerBrowserCli(
           true,
         )}\n\n${theme.muted("Docs:")} ${formatDocsLink(
           "/cli/browser",
-          "docs.openclaw.ai/cli/browser",
+          "docs.operator.ai/cli/browser",
         )}\n`,
     )
     .action(() => {

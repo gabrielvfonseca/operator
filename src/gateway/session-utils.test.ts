@@ -328,7 +328,7 @@ describe("gateway session utils", () => {
       "agent:main:telegram:direct:42": {
         chatType: "direct",
         channel: "telegram",
-        origin: { label: "openclaw-tui" },
+        origin: { label: "operator-tui" },
         updatedAt: 2,
       } as SessionEntry,
       "agent:main:telegram:direct:99": {
@@ -343,13 +343,13 @@ describe("gateway session utils", () => {
       cfg,
       storePath: "",
       store,
-      opts: { search: "openclaw-tui" },
+      opts: { search: "operator-tui" },
     });
 
     expect(listed.sessions.map((session) => session.key)).toEqual([
       "agent:main:telegram:direct:42",
     ]);
-    expect(listed.sessions[0]?.displayName).toBe("openclaw-tui");
+    expect(listed.sessions[0]?.displayName).toBe("operator-tui");
   });
 
   test("session lists mark the final offset page without hasMore", () => {
@@ -762,7 +762,7 @@ describe("gateway session utils", () => {
           { id: "xhigh" },
           { id: "max" },
           ...(modelId.startsWith("gpt-5.6") &&
-          (agentRuntime === "openclaw" || !modelId.startsWith("gpt-5.6-luna"))
+          (agentRuntime === "@gabrielvfonseca/operator" || !modelId.startsWith("gpt-5.6-luna"))
             ? [{ id: "ultra" as const }]
             : []),
         ],
@@ -790,20 +790,20 @@ describe("gateway session utils", () => {
 
     const codex = row({ sessionId: "codex", thinkingLevel: "ultra" } as SessionEntry);
     const openClawOverride = row({
-      sessionId: "openclaw",
+      sessionId: "@gabrielvfonseca/operator",
       thinkingLevel: "ultra",
-      agentRuntimeOverride: "openclaw",
+      agentRuntimeOverride: "@gabrielvfonseca/operator",
     } as SessionEntry);
     const legacyObservedOperator = row({
       sessionId: "legacy-observed-openclaw",
       thinkingLevel: "ultra",
-      agentHarnessId: "openclaw",
+      agentHarnessId: "@gabrielvfonseca/operator",
     } as SessionEntry);
     const lockedCodex = row({
       sessionId: "locked-codex",
       thinkingLevel: "ultra",
       agentHarnessId: "codex",
-      agentRuntimeOverride: "openclaw",
+      agentRuntimeOverride: "@gabrielvfonseca/operator",
       modelSelectionLocked: true,
     } as SessionEntry);
 
@@ -811,7 +811,7 @@ describe("gateway session utils", () => {
     expect(codex.thinkingLevel).toBe("ultra");
     expect(codex.thinkingLevels?.map((level) => level.id)).not.toContain("ultra");
     expect(openClawOverride.thinkingLevel).toBe("ultra");
-    expect(openClawOverride.agentRuntime?.id).toBe("openclaw");
+    expect(openClawOverride.agentRuntime?.id).toBe("@gabrielvfonseca/operator");
     expect(legacyObservedOperator.thinkingLevel).toBe("ultra");
     expect(legacyObservedOperator.agentRuntime?.id).toBe("codex");
     expect(legacyObservedOperator.thinkingLevels?.map((level) => level.id)).not.toContain("ultra");
@@ -826,7 +826,7 @@ describe("gateway session utils", () => {
         defaults: {
           model: { primary: "openai/gpt-5.6-sol" },
           models: {
-            "openai/gpt-5.6-sol": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.6-sol": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
         },
       },
@@ -1067,7 +1067,7 @@ describe("gateway session utils", () => {
     const entry = {
       chatType: "direct",
       channel: "telegram",
-      origin: { label: "openclaw-tui" },
+      origin: { label: "operator-tui" },
     } as SessionEntry;
     const row = buildGatewaySessionRow({
       cfg,
@@ -1076,7 +1076,7 @@ describe("gateway session utils", () => {
       key: "agent:main:telegram:direct:42",
       entry,
     });
-    expect(row.displayName).toBe("openclaw-tui");
+    expect(row.displayName).toBe("operator-tui");
   });
 
   test("buildGatewaySessionRow displayName prefers the human chat title for group sessions", () => {
@@ -1085,7 +1085,7 @@ describe("gateway session utils", () => {
       chatType: "group",
       channel: "telegram",
       subject: "Engineering",
-      origin: { label: "openclaw-tui" },
+      origin: { label: "operator-tui" },
     } as SessionEntry;
     const row = buildGatewaySessionRow({
       cfg,
@@ -1163,7 +1163,7 @@ describe("gateway session utils", () => {
       chatType: "direct",
       channel: "telegram",
       label: "Alice",
-      origin: { label: "openclaw-tui" },
+      origin: { label: "operator-tui" },
     } as SessionEntry;
     const row = buildGatewaySessionRow({
       cfg,
@@ -1485,7 +1485,7 @@ describe("gateway session utils", () => {
   test("resolveGatewaySessionStoreTarget uses canonical key for main alias", () => {
     const storeTemplate = path.join(
       os.tmpdir(),
-      "openclaw-session-utils",
+      "operator-session-utils",
       "{agentId}",
       "sessions.json",
     );
@@ -1866,7 +1866,7 @@ describe("gateway session utils", () => {
   });
 
   test("listAgentsForGateway keeps explicit agents.list scope over disk-only agents (scope boundary)", async () => {
-    await withStateDirEnv("openclaw-agent-list-scope-", async ({ stateDir }) => {
+    await withStateDirEnv("operator-agent-list-scope-", async ({ stateDir }) => {
       fs.mkdirSync(path.join(stateDir, "agents", "main"), { recursive: true });
       fs.mkdirSync(path.join(stateDir, "agents", "codex"), { recursive: true });
 
@@ -1911,7 +1911,7 @@ describe("gateway session utils", () => {
   });
 
   test("listAgentsForGateway reports whether each workspace is a git checkout", () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-agent-workspace-git-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-agent-workspace-git-"));
     const gitWorkspace = path.join(root, "git");
     const plainWorkspace = path.join(root, "plain");
     fs.mkdirSync(path.join(gitWorkspace, ".git"), { recursive: true });
@@ -2226,7 +2226,7 @@ describe("resolveSessionModelRef", () => {
 
 describe("listSessionsFromStore selected model display", () => {
   test("async list yields during bulk transcript title and last-message hydration", async () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sessions-list-yield-"));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sessions-list-yield-"));
     try {
       const storePath = path.join(tmpDir, "sessions.json");
       const store: Record<string, SessionEntry> = {};
@@ -2297,7 +2297,7 @@ describe("listSessionsFromStore selected model display", () => {
   });
 
   test("caps transcript title and last-message hydration for bulk list responses", async () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sessions-list-cap-"));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sessions-list-cap-"));
     try {
       const storePath = path.join(tmpDir, "sessions.json");
       const store: Record<string, SessionEntry> = {};

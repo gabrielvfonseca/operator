@@ -2,7 +2,7 @@
 // reconciliation, commit hooks, and retry budget deferral.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrustedMessageAuditEvent } from "../../audit/message-audit-events.js";
 import { onTrustedMessageAuditEventForTest as onTrustedMessageAuditEvent } from "../../audit/message-audit-events.test-support.js";

@@ -119,7 +119,7 @@ describe("startGatewayTailscaleExposure preserveFunnel", () => {
 
     expect(mocks.enableTailscaleServe).toHaveBeenCalledWith(18789, undefined, "svc:openclaw");
     expect(logTailscale.info).toHaveBeenCalledWith(
-      "serve enabled for svc:openclaw: https://openclaw.tailnet.ts.net/ (WS via wss://openclaw.tailnet.ts.net)",
+      "serve enabled for svc:operator: https://operator.tailnet.ts.net/ (WS via wss://operator.tailnet.ts.net)",
     );
 
     await cleanup?.();

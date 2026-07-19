@@ -146,7 +146,7 @@ export function resolveSystemAgentExpectedAgentHarnessRuntimeArtifact(
 ): ExpectedAgentHarnessRuntimeArtifact | undefined {
   if (
     binding.execution.runner !== "embedded" ||
-    binding.execution.agentHarnessRuntimeOverride === "operator"
+    binding.execution.agentHarnessRuntimeOverride === "@gabrielvfonseca/operator"
   ) {
     return undefined;
   }
@@ -228,7 +228,7 @@ async function resolveCurrentRuntimeOwnerFingerprint(params: {
       provider: params.route.provider,
       config: params.route.runConfig,
       agentDir: params.route.agentDir,
-      agentId: "operator",
+      agentId: "@gabrielvfonseca/operator",
       runtimeOwnerId: params.runtimeOwnerId,
       ...(params.authProfileId ? { authProfileId: params.authProfileId } : {}),
       ...(params.skipLocalCredential ? { skipLocalCredential: true } : {}),
@@ -255,7 +255,7 @@ async function resolveCurrentRuntimeOwnerFingerprint(params: {
     }
   }
   if (params.kind === "plugin-harness") {
-    if (params.route.agentHarnessRuntimeOverride === "operator") {
+    if (params.route.agentHarnessRuntimeOverride === "@gabrielvfonseca/operator") {
       return undefined;
     }
     return fingerprintOpaqueRuntimeOwner({
@@ -429,7 +429,10 @@ function resolveRouteHarnessOwnerPluginIds(
   config: OperatorConfig,
   route: SystemAgentConfiguredRoute,
 ): string[] {
-  if (route.runner !== "embedded" || route.agentHarnessRuntimeOverride === "operator") {
+  if (
+    route.runner !== "embedded" ||
+    route.agentHarnessRuntimeOverride === "@gabrielvfonseca/operator"
+  ) {
     return [];
   }
   const workspaceDir = resolveAgentWorkspaceDir(config, route.agentId, process.env);
@@ -556,7 +559,7 @@ async function resolveCurrentAuthFingerprint(params: {
     if (
       credential.type === "oauth" ||
       (params.route.runner === "embedded" &&
-        params.route.agentHarnessRuntimeOverride !== "operator")
+        params.route.agentHarnessRuntimeOverride !== "@gabrielvfonseca/operator")
     ) {
       if (credential.type === "oauth") {
         return fingerprintAuthProfileCredential({
@@ -677,7 +680,7 @@ export async function createSystemAgentVerifiedInferenceBinding(params: {
     currentRuntimeArtifactFingerprint = await resolveArtifact({
       provider: execution.provider,
       config: execution.runConfig,
-      agentId: "operator",
+      agentId: "@gabrielvfonseca/operator",
       runtimeArtifactId: params.auth.runtimeArtifactId.trim(),
     });
     if (currentRuntimeArtifactFingerprint !== params.auth.runtimeArtifactFingerprint) {
@@ -685,7 +688,7 @@ export async function createSystemAgentVerifiedInferenceBinding(params: {
     }
   }
   const pluginHarnessId =
-    execution.runner === "embedded" && successfulHarnessId !== "operator"
+    execution.runner === "embedded" && successfulHarnessId !== "@gabrielvfonseca/operator"
       ? successfulHarnessId
       : undefined;
   if (pluginHarnessId) {
@@ -874,7 +877,7 @@ export async function resolveSystemAgentVerifiedInferenceRoute(
     currentRuntimeArtifactFingerprint = await resolveArtifact({
       provider: currentExecution.provider,
       config: currentExecution.runConfig,
-      agentId: "operator",
+      agentId: "@gabrielvfonseca/operator",
       runtimeArtifactId: binding.auth.runtimeArtifactId,
     }).catch(() => undefined);
     if (currentRuntimeArtifactFingerprint !== binding.auth.runtimeArtifactFingerprint) {
@@ -882,7 +885,7 @@ export async function resolveSystemAgentVerifiedInferenceRoute(
     }
   } else if (
     binding.execution.runner === "embedded" &&
-    binding.execution.agentHarnessRuntimeOverride !== "operator"
+    binding.execution.agentHarnessRuntimeOverride !== "@gabrielvfonseca/operator"
   ) {
     const harnessId = binding.execution.agentHarnessRuntimeOverride;
     const artifactId = binding.auth.runtimeArtifactId?.trim();

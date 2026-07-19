@@ -21,7 +21,7 @@ function assistantTextMessage(text: string, seq: number) {
   return {
     role: "assistant" as const,
     content: textContent(text),
-    __openclaw: { seq },
+    __operator: { seq },
   };
 }
 
@@ -29,7 +29,7 @@ function userTextMessage(text: string, seq: number) {
   return {
     role: "user" as const,
     content: textContent(text),
-    __openclaw: { seq },
+    __operator: { seq },
   };
 }
 
@@ -73,7 +73,7 @@ function messageToolResult(
     toolName: "message",
     toolCallId,
     content: { ok: true, messageId, ...content },
-    ...(seq === undefined ? {} : { __openclaw: { seq } }),
+    ...(seq === undefined ? {} : { __operator: { seq } }),
   };
 }
 
@@ -213,7 +213,7 @@ describe("SessionHistorySseState", () => {
     expect(
       Boolean(
         (appended?.message as { openclawMessageToolMirror?: unknown } | undefined)
-          ?.openclawMessageToolMirror,
+          ?.operatorMessageToolMirror,
       ),
     ).toBe(true);
   });
@@ -235,7 +235,7 @@ describe("SessionHistorySseState", () => {
               },
             },
           ],
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
         {
           role: "user",
@@ -245,7 +245,7 @@ describe("SessionHistorySseState", () => {
             sourceSessionKey: "agent:main:webchat:source",
             sourceTool: "sessions_send",
           },
-          __openclaw: { seq: 2 },
+          __operator: { seq: 2 },
         },
       ],
     });
@@ -285,7 +285,7 @@ describe("SessionHistorySseState", () => {
     expect(
       Boolean(
         (appended?.message as { openclawMessageToolMirror?: unknown } | undefined)
-          ?.openclawMessageToolMirror,
+          ?.operatorMessageToolMirror,
       ),
     ).toBe(true);
   });
@@ -297,7 +297,7 @@ describe("SessionHistorySseState", () => {
         {
           role: "assistant",
           content: [messageToolCall("call-message-cursor", "Cursor-visible reply.")],
-          __openclaw: { seq: 2 },
+          __operator: { seq: 2 },
         },
         messageToolResult("call-message-cursor", "cursor", 3),
         assistantTextMessage("NO_REPLY", 4),
@@ -406,7 +406,7 @@ describe("SessionHistorySseState", () => {
             },
           },
         ],
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
     ]);
   });
@@ -482,7 +482,7 @@ describe("SessionHistorySseState", () => {
               ].join("\n"),
             },
           ],
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
       ],
     });
@@ -512,7 +512,7 @@ describe("SessionHistorySseState", () => {
               ].join("\n"),
             },
           ],
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
         assistantTextMessage("visible answer", 2),
       ],
@@ -526,10 +526,10 @@ describe("SessionHistorySseState", () => {
       rawMessages: [
         {
           role: "custom",
-          customType: "openclaw.runtime-context",
+          customType: "operator.runtime-context",
           content: "secret runtime context",
           display: false,
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
         assistantTextMessage("visible answer", 2),
       ],
@@ -561,7 +561,7 @@ describe("SessionHistorySseState", () => {
             sourceSessionKey: "agent:main:subagent:child",
             sourceTool: "subagent_announce",
           },
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
         assistantTextMessage("clean child result", 2),
       ],
@@ -576,13 +576,13 @@ describe("SessionHistorySseState", () => {
         {
           role: "user",
           content: `${HEARTBEAT_PROMPT}\nWhen reading HEARTBEAT.md, use workspace file /tmp/HEARTBEAT.md (exact case). Do not read docs/heartbeat.md.`,
-          __openclaw: { seq: 1 },
+          __operator: { seq: 1 },
         },
         assistantTextMessage("HEARTBEAT_OK", 2),
         {
           role: "user",
           content: HEARTBEAT_PROMPT,
-          __openclaw: { seq: 3 },
+          __operator: { seq: 3 },
         },
         assistantTextMessage("Disk usage crossed 95 percent.", 4),
       ],
@@ -591,7 +591,7 @@ describe("SessionHistorySseState", () => {
     expect(snapshot.history.messages).toEqual([
       {
         ...assistantTextMessage("Disk usage crossed 95 percent.", 4),
-        __openclaw: { seq: 4, turnBoundary: true },
+        __operator: { seq: 4, turnBoundary: true },
       },
     ]);
     expect(snapshot.rawTranscriptSeq).toBe(4);
@@ -603,7 +603,7 @@ describe("SessionHistorySseState", () => {
       {
         role: "user",
         content: HEARTBEAT_PROMPT,
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
     ]);
 
@@ -621,7 +621,7 @@ describe("SessionHistorySseState", () => {
     const appended = appendAssistantText(state, "Disk usage crossed 95 percent.", 5);
     expect(appended?.message).toMatchObject({
       role: "assistant",
-      __openclaw: { seq: 5, turnBoundary: true },
+      __operator: { seq: 5, turnBoundary: true },
     });
   });
 
@@ -641,7 +641,7 @@ describe("SessionHistorySseState", () => {
       state.appendInlineMessage({
         message: {
           role: "custom",
-          customType: "openclaw.runtime-context",
+          customType: "operator.runtime-context",
           content: "secret runtime context",
           display: false,
         },

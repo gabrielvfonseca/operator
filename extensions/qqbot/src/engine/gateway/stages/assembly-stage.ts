@@ -15,7 +15,7 @@
  * sees directly.
  */
 
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   buildMergedMessageContext,
   formatAttachmentTags,

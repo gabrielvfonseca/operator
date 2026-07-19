@@ -1,8 +1,11 @@
+import {
+  chunkMarkdownTextWithMode,
+  type ChunkMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
 // Feishu-specific Markdown parsing and chunking.
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { gfmTableFromMarkdown } from "mdast-util-gfm-table";
 import { gfmTable } from "micromark-extension-gfm-table";
-import { chunkMarkdownTextWithMode, type ChunkMode } from "openclaw/plugin-sdk/reply-chunking";
 import type { MentionTarget } from "./mention-target.types.js";
 
 export type FeishuMarkdownNode = {

@@ -402,7 +402,7 @@ enum ChatCodeSyntaxPalette {
     {
         #if os(macOS)
         // Semantic NSColor resolution is unreliable for arbitrary appearances
-        // in SwiftPM (see OpenClawChatTheme); use an explicit dynamic provider.
+        // in SwiftPM (see OperatorChatTheme); use an explicit dynamic provider.
         Color(nsColor: NSColor(name: nil, dynamicProvider: { appearance in
             let isDark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
             let value = isDark ? dark : light

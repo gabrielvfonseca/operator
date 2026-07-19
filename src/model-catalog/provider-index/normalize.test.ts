@@ -13,10 +13,10 @@ describe("Operator provider index", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: " @operator/plugin-moonshot ",
+            package: " @gabrielvfonseca/plugin-moonshot ",
             install: {
               clawhubSpec: " clawhub:openclaw/moonshot@2026.5.2 ",
-              npmSpec: " @operator/plugin-moonshot@1.2.3 ",
+              npmSpec: " @gabrielvfonseca/plugin-moonshot@1.2.3 ",
               defaultChoice: "clawhub",
               expectedIntegrity: " sha512-moonshot ",
             },
@@ -64,10 +64,10 @@ describe("Operator provider index", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: "@operator/plugin-moonshot",
+            package: "@gabrielvfonseca/plugin-moonshot",
             install: {
               clawhubSpec: "clawhub:openclaw/moonshot@2026.5.2",
-              npmSpec: "@operator/plugin-moonshot@1.2.3",
+              npmSpec: "@gabrielvfonseca/plugin-moonshot@1.2.3",
               defaultChoice: "clawhub",
               expectedIntegrity: "sha512-moonshot",
             },

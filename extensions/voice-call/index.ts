@@ -1,13 +1,13 @@
 // Voice Call plugin entrypoint registers its Operator integration.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { ErrorCodes, errorShape } from "openclaw/plugin-sdk/gateway-runtime";
-import { timestampMsToIsoString } from "openclaw/plugin-sdk/number-runtime";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { ErrorCodes, errorShape } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { timestampMsToIsoString } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   asOptionalRecord,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { jsonResult as json } from "openclaw/plugin-sdk/tool-results";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { jsonResult as json } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import { Type } from "typebox";
 import {
   definePluginEntry,
@@ -103,12 +103,12 @@ const voiceCallConfigSchema = {
     "realtime.instructions": { label: "Realtime Instructions", advanced: true },
     "realtime.toolPolicy": {
       label: "Realtime Tool Policy",
-      help: "Controls the shared openclaw_agent_consult tool.",
+      help: "Controls the shared operator_agent_consult tool.",
       advanced: true,
     },
     "realtime.consultPolicy": {
       label: "Realtime Consult Policy",
-      help: "Guides when the realtime voice model should call openclaw_agent_consult.",
+      help: "Guides when the realtime voice model should call operator_agent_consult.",
       advanced: true,
     },
     "realtime.fastContext.enabled": {
@@ -266,9 +266,9 @@ function toVoiceCallStatus(call: CallRecord): VoiceCallStatus {
   };
 }
 
-const VOICE_CALL_RUNTIME_KEY = Symbol.for("openclaw.voice-call.runtime");
-const VOICE_CALL_RUNTIME_PROMISE_KEY = Symbol.for("openclaw.voice-call.runtimePromise");
-const VOICE_CALL_RUNTIME_STOP_PROMISE_KEY = Symbol.for("openclaw.voice-call.runtimeStopPromise");
+const VOICE_CALL_RUNTIME_KEY = Symbol.for("operator.voice-call.runtime");
+const VOICE_CALL_RUNTIME_PROMISE_KEY = Symbol.for("operator.voice-call.runtimePromise");
+const VOICE_CALL_RUNTIME_STOP_PROMISE_KEY = Symbol.for("operator.voice-call.runtimeStopPromise");
 
 type VoiceCallRuntimeGlobalState = typeof globalThis & {
   [VOICE_CALL_RUNTIME_KEY]?: VoiceCallRuntime | null;

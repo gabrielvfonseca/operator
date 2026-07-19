@@ -17,7 +17,7 @@ import { resolveWindowsTaskkillPath } from "./lib/windows-taskkill.mjs";
 import { resolveNpmRunner } from "./npm-runner.mjs";
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const DEFAULT_OUTPUT_NAME = "openclaw-current.tgz";
+const DEFAULT_OUTPUT_NAME = "operator-current.tgz";
 const PACKAGE_URL_DOWNLOAD_TIMEOUT_MS = 60_000;
 const PACKAGE_URL_MAX_BYTES = 250 * 1024 * 1024;
 const PACKAGE_URL_MAX_REDIRECTS = 5;
@@ -35,7 +35,7 @@ const SIGNAL_EXIT_CODES = {
   SIGTERM: 143,
 };
 const TRUSTED_PACKAGE_SOURCE_POLICY = ".github/package-trusted-sources.json";
-const TRUSTED_PACKAGE_SOURCE_TOKEN_ENV = "OPENCLAW_TRUSTED_PACKAGE_TOKEN";
+const TRUSTED_PACKAGE_SOURCE_TOKEN_ENV = "OPERATOR_TRUSTED_PACKAGE_TOKEN";
 const BLOCKED_PACKAGE_HOSTNAMES = new Set([
   "localhost",
   "localhost.localdomain",
@@ -62,11 +62,11 @@ for (const signal of Object.keys(SIGNAL_EXIT_CODES)) {
     }, FORWARDED_SIGNAL_KILL_AFTER_MS);
   });
 }
-export const OPENCLAW_PACKAGE_SPEC_RE =
+export const OPERATOR_PACKAGE_SPEC_RE =
   /^openclaw@(alpha|beta|extended-stable|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$/u;
 
 function usage() {
-  return `Usage: node scripts/resolve-openclaw-package-candidate.mjs --source <ref|npm|url|trusted-url|artifact> --output-dir <dir> [options]
+  return `Usage: node scripts/resolve-operator-package-candidate.mjs --source <ref|npm|url|trusted-url|artifact> --output-dir <dir> [options]
 
 Options:
   --package-spec <spec>       Published npm spec for source=npm.
@@ -158,31 +158,31 @@ function validateOutputName(value) {
   }
 }
 
-function resolvePackedOpenClawTarballFilename(value) {
+function resolvePackedOperatorTarballFilename(value) {
   const filename = typeof value === "string" ? value.trim() : "";
   if (
-    !/^openclaw-[A-Za-z0-9._-]+\.tgz$/u.test(filename) ||
+    !/^operator-[A-Za-z0-9._-]+\.tgz$/u.test(filename) ||
     filename.includes("\0") ||
     filename !== path.basename(filename) ||
     filename !== path.win32.basename(filename)
   ) {
     throw new Error(
-      `npm pack reported unsafe OpenClaw tarball filename: ${JSON.stringify(filename)}`,
+      `npm pack reported unsafe Operator tarball filename: ${JSON.stringify(filename)}`,
     );
   }
   return filename;
 }
 
-export function validateOpenClawPackageSpec(spec) {
-  if (!OPENCLAW_PACKAGE_SPEC_RE.test(spec)) {
+export function validateOperatorPackageSpec(spec) {
+  if (!OPERATOR_PACKAGE_SPEC_RE.test(spec)) {
     throw new Error(
-      `package_spec must be openclaw@alpha, openclaw@beta, openclaw@extended-stable, openclaw@latest, or an exact OpenClaw release version; got: ${spec}`,
+      `package_spec must be openclaw@alpha, openclaw@beta, openclaw@extended-stable, openclaw@latest, or an exact Operator release version; got: ${spec}`,
     );
   }
 }
 
 export function resolveNpmPackageCandidatePackRunner(packageSpec, outputDir, params = {}) {
-  validateOpenClawPackageSpec(packageSpec);
+  validateOperatorPackageSpec(packageSpec);
   return resolveNpmRunner({
     comSpec: params.comSpec,
     env: params.env,
@@ -606,7 +606,7 @@ async function resolveTrustedRepoRef(ref) {
   }
 
   throw new Error(
-    `package_ref ${ref} resolved to ${selectedSha}, which is not reachable from an OpenClaw branch or release tag`,
+    `package_ref ${ref} resolved to ${selectedSha}, which is not reachable from an Operator branch or release tag`,
   );
 }
 
@@ -614,7 +614,7 @@ async function preparePackageSourceWorktree(ref) {
   const { selectedSha, trustedReason } = await resolveTrustedRepoRef(ref);
   const sourceDir = path.join(
     process.env.RUNNER_TEMP || os.tmpdir(),
-    `openclaw-package-source-${process.pid}`,
+    `operator-package-source-${process.pid}`,
   );
   await fs.rm(sourceDir, { recursive: true, force: true });
   await run("git", ["worktree", "add", "--detach", sourceDir, selectedSha]);
@@ -664,7 +664,7 @@ async function moveNewestPackedTarball(outputDir, packOutput, outputName) {
     const packedFilename =
       parsed.find((entry) => typeof entry?.filename === "string")?.filename ?? "";
     if (packedFilename) {
-      filename = resolvePackedOpenClawTarballFilename(packedFilename);
+      filename = resolvePackedOperatorTarballFilename(packedFilename);
     }
   }
   if (!filename) {
@@ -672,12 +672,12 @@ async function moveNewestPackedTarball(outputDir, packOutput, outputName) {
       const trimmed = line.trim();
       if (
         trimmed.endsWith(".tgz") &&
-        (trimmed.startsWith("openclaw-") ||
+        (trimmed.startsWith("operator-") ||
           trimmed.includes(":") ||
           trimmed.includes("/") ||
           trimmed.includes("\\"))
       ) {
-        filename = resolvePackedOpenClawTarballFilename(trimmed);
+        filename = resolvePackedOperatorTarballFilename(trimmed);
       }
     }
   }
@@ -686,7 +686,7 @@ async function moveNewestPackedTarball(outputDir, packOutput, outputName) {
     filename = entries
       .filter((entry) => {
         try {
-          return resolvePackedOpenClawTarballFilename(entry) === entry;
+          return resolvePackedOperatorTarballFilename(entry) === entry;
         } catch {
           return false;
         }
@@ -695,7 +695,7 @@ async function moveNewestPackedTarball(outputDir, packOutput, outputName) {
       .at(-1);
   }
   if (!filename) {
-    throw new Error(`npm pack produced no OpenClaw tarball in ${outputDir}`);
+    throw new Error(`npm pack produced no Operator tarball in ${outputDir}`);
   }
   const packed = path.join(outputDir, filename);
   const target = path.join(outputDir, outputName);
@@ -708,7 +708,7 @@ async function moveNewestPackedTarball(outputDir, packOutput, outputName) {
 
 export const moveNewestPackedTarballForTest = moveNewestPackedTarball;
 
-async function cleanPackedOpenClawTarballs(outputDir) {
+async function cleanPackedOperatorTarballs(outputDir) {
   let entries;
   try {
     entries = await fs.readdir(outputDir);
@@ -723,7 +723,7 @@ async function cleanPackedOpenClawTarballs(outputDir) {
     entries
       .filter((entry) => {
         try {
-          return resolvePackedOpenClawTarballFilename(entry) === entry;
+          return resolvePackedOperatorTarballFilename(entry) === entry;
         } catch {
           return false;
         }
@@ -732,7 +732,7 @@ async function cleanPackedOpenClawTarballs(outputDir) {
   );
 }
 
-export const cleanPackedOpenClawTarballsForTest = cleanPackedOpenClawTarballs;
+export const cleanPackedOperatorTarballsForTest = cleanPackedOperatorTarballs;
 
 function normalizeUrlHostname(hostname) {
   return hostname.replace(/^\[/u, "").replace(/\]$/u, "").replace(/\.+$/u, "").toLowerCase();
@@ -1475,7 +1475,7 @@ async function resolveCandidate(options) {
       packageTrustedReason = packageSource.trustedReason;
       await installPackageSourceDeps(packageSource.sourceDir);
       await run("node", [
-        "scripts/package-openclaw-for-docker.mjs",
+        "scripts/package-operator-for-docker.mjs",
         "--allow-unreleased-changelog",
         "--source-dir",
         packageSource.sourceDir,
@@ -1488,7 +1488,7 @@ async function resolveCandidate(options) {
       const npmPackRunner = resolveNpmPackageCandidatePackRunner(options.packageSpec, outputDir, {
         env: process.env,
       });
-      await cleanPackedOpenClawTarballs(outputDir);
+      await cleanPackedOperatorTarballs(outputDir);
       const packOutput = await run(npmPackRunner.command, npmPackRunner.args, {
         capture: true,
         env: npmPackRunner.env,
@@ -1554,13 +1554,13 @@ async function resolveCandidate(options) {
 
   const artifactSha256 = typeof artifactMetadata.sha256 === "string" ? artifactMetadata.sha256 : "";
   const digest = await assertExpectedSha256(target, options.packageSha256 || artifactSha256);
-  console.error(`Checking OpenClaw package tarball: ${target}`);
+  console.error(`Checking Operator package tarball: ${target}`);
   const checkStartedAt = Date.now();
-  await run("node", ["scripts/check-openclaw-package-tarball.mjs", target], {
+  await run("node", ["scripts/check-operator-package-tarball.mjs", target], {
     timeoutMs: 5 * 60 * 1000,
   });
   console.error(
-    `OpenClaw package tarball check finished in ${Math.round((Date.now() - checkStartedAt) / 1000)}s`,
+    `Operator package tarball check finished in ${Math.round((Date.now() - checkStartedAt) / 1000)}s`,
   );
   const pkg = await readPackageJson(target);
   if (!packageSourceSha) {
@@ -1582,8 +1582,10 @@ async function resolveCandidate(options) {
     version: pkg.version,
   };
 
-  if (pkg.name !== "openclaw") {
-    throw new Error(`package candidate must be named "openclaw"; got: ${pkg.name || "<missing>"}`);
+  if (pkg.name !== "@gabrielvfonseca/operator") {
+    throw new Error(
+      `package candidate must be named "@gabrielvfonseca/operator"; got: ${pkg.name || "<missing>"}`,
+    );
   }
   if (!pkg.version) {
     throw new Error("package candidate package.json has no version");

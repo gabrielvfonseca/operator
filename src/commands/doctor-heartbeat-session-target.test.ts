@@ -4,14 +4,14 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { resolveStorePath } from "../config/sessions/paths.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { describeHeartbeatSessionTargetIssues } from "./doctor-heartbeat-session-target.js";
 
 describe("describeHeartbeatSessionTargetIssues", () => {
   let tmpDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-heartbeat-doctor-"));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-heartbeat-doctor-"));
   });
 
   afterEach(() => {

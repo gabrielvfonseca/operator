@@ -1,15 +1,15 @@
 {
-  "name": "@operator/memory-host-sdk",
+  "name": "@gabrielvfonseca/memory-host-sdk",
   "version": "0.0.0-private",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@operator/normalization-core": "workspace:*",
-    "@operator/retry": "workspace:*",
+    "@gabrielvfonseca/normalization-core": "workspace:*",
+    "@gabrielvfonseca/retry": "workspace:*",
     "p-map": "7.0.5"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "exports": {
     "./runtime-core": "./src/runtime-core.ts",

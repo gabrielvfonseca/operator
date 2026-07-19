@@ -5,4 +5,4 @@ export {
   modelSupportsVision,
   resolveAgentDir,
   resolveDefaultModelForAgent,
-} from "openclaw/plugin-sdk/agent-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";

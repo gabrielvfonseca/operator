@@ -1,5 +1,5 @@
 // Workboard tests cover tools plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi } from "../api.js";
 import type { PersistedWorkboardCard, WorkboardKeyedStore } from "./persistence-types.js";

@@ -3,8 +3,8 @@
  *
  * Merges global and agent settings into normalized Docker, SSH, browser, prune, scope, and tool-policy config.
  */
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { SandboxSshSettings } from "../../config/types.sandbox.js";
 import { normalizeSecretInputString } from "../../config/types.secrets.js";

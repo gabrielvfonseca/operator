@@ -2,7 +2,7 @@
 import {
   parseFiniteNumber,
   resolveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { createTypingKeepaliveLoop } from "./typing-lifecycle.js";
 import { createTypingStartGuard } from "./typing-start-guard.js";
 

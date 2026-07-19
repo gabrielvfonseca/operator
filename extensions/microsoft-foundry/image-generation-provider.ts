@@ -1,21 +1,21 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ProviderRuntimeModel } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ProviderRuntimeModel } from "@gabrielvfonseca/operator/plugin-sdk/core";
 // Microsoft Foundry image provider routes MAI image deployments to the MAI API.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import type {
   ImageGenerationProvider,
   ImageGenerationRequest,
   ImageGenerationResult,
   ImageGenerationSourceImage,
-} from "openclaw/plugin-sdk/image-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
 import {
   imageSourceUploadFileName,
   parseOpenAiCompatibleImageResponse,
   resolveInlineImageJsonResponseMaxBytes,
-} from "openclaw/plugin-sdk/image-generation";
-import { MAX_IMAGE_BYTES } from "openclaw/plugin-sdk/media-runtime";
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -25,11 +25,11 @@ import {
   resolveProviderHttpRequestConfig,
   resolveProviderOperationTimeoutMs,
   sanitizeConfiguredModelProviderRequest,
-} from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { prepareFoundryRuntimeAuth } from "./runtime.js";
 import { extractFoundryEndpoint } from "./shared-runtime.js";
 import {

@@ -1,9 +1,9 @@
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { isRecord as hasRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { isRecord as hasRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ToolPolicyConfig } from "../config/types.tools.js";
 
 export function normalizeToolProviderPolicyKey(value: string): string {

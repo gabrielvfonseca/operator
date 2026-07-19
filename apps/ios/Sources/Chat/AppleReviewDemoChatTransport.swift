@@ -1,6 +1,6 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 
 enum AppleReviewDemoMode {
     static let setupCode = "APPLE-REVIEW-DEMO"
@@ -19,7 +19,7 @@ enum AppleReviewDemoMode {
 }
 
 enum ScreenshotFixtureMode {
-    static let gatewayName = "OpenClaw Gateway"
+    static let gatewayName = "Operator Gateway"
     static let gatewayAddress = "Mac Studio on local network"
     static let gatewayID = "screenshot-fixture-gateway"
 
@@ -77,8 +77,8 @@ struct LocalChatFixture {
         modelProvider: "openai",
         modelID: "gpt-5.6-sol",
         modelName: "GPT-5.6 Sol",
-        responsePrefix: "OpenClaw is connected to your gateway.",
-        seedMessages: ProcessInfo.processInfo.arguments.contains("--openclaw-empty-chat-fixture")
+        responsePrefix: "Operator is connected to your gateway.",
+        seedMessages: ProcessInfo.processInfo.arguments.contains("--operator-empty-chat-fixture")
             ? []
             : ["Ready when you are. I can check a project, coordinate an agent, or prepare the next step."],
         agents: [
@@ -86,7 +86,7 @@ struct LocalChatFixture {
                 id: "main",
                 name: "Molty",
                 identity: ["emoji": AnyCodable("M")],
-                workspace: "OpenClaw",
+                workspace: "Operator",
                 workspacegit: false,
                 model: ["provider": AnyCodable("openai"), "model": AnyCodable("gpt-5.6-sol")],
                 agentruntime: ["kind": AnyCodable("gateway")],
@@ -97,7 +97,7 @@ struct LocalChatFixture {
                 id: "research",
                 name: "Research",
                 identity: ["emoji": AnyCodable("RS")],
-                workspace: "OpenClaw",
+                workspace: "Operator",
                 workspacegit: false,
                 model: ["provider": AnyCodable("openai"), "model": AnyCodable("gpt-5.6-sol")],
                 agentruntime: ["kind": AnyCodable("gateway")],
@@ -108,7 +108,7 @@ struct LocalChatFixture {
                 id: "automation",
                 name: "Automation",
                 identity: ["emoji": AnyCodable("AU")],
-                workspace: "OpenClaw",
+                workspace: "Operator",
                 workspacegit: false,
                 model: ["provider": AnyCodable("openai"), "model": AnyCodable("gpt-5.6-sol")],
                 agentruntime: ["kind": AnyCodable("gateway")],
@@ -118,7 +118,7 @@ struct LocalChatFixture {
         ])
 }
 
-struct LocalFixtureChatTransport: OpenClawChatTransport {
+struct LocalFixtureChatTransport: OperatorChatTransport {
     private let fixture: LocalChatFixture
     private let store: LocalFixtureChatStore
 
@@ -131,18 +131,18 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
         key: String,
         label _: String?,
         parentSessionKey _: String?,
-        worktree _: Bool?) async throws -> OpenClawChatCreateSessionResponse
+        worktree _: Bool?) async throws -> OperatorChatCreateSessionResponse
     {
         try await self.store.createSession(key: key)
     }
 
-    func requestHistory(sessionKey: String) async throws -> OpenClawChatHistoryPayload {
+    func requestHistory(sessionKey: String) async throws -> OperatorChatHistoryPayload {
         try await self.store.history(sessionKey: sessionKey)
     }
 
-    func listModels() async throws -> [OpenClawChatModelChoice] {
+    func listModels() async throws -> [OperatorChatModelChoice] {
         [
-            OpenClawChatModelChoice(
+            OperatorChatModelChoice(
                 modelID: self.fixture.modelID,
                 name: self.fixture.modelName,
                 provider: self.fixture.modelProvider,
@@ -155,7 +155,7 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
         message: String,
         thinking _: String,
         idempotencyKey: String,
-        attachments _: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+        attachments _: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
     {
         try await self.store.sendMessage(
             sessionKey: sessionKey,
@@ -168,7 +168,7 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
     func listSessions(
         limit _: Int?,
         search: String?,
-        archived: Bool) async throws -> OpenClawChatSessionsListResponse
+        archived: Bool) async throws -> OperatorChatSessionsListResponse
     {
         let response = try await self.store.sessions()
         var sessions = response.sessions
@@ -176,9 +176,9 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
             sessions = []
         }
         if let search {
-            sessions = OpenClawChatSessionListOrganizer.filter(sessions, search: search)
+            sessions = OperatorChatSessionListOrganizer.filter(sessions, search: search)
         }
-        return OpenClawChatSessionsListResponse(
+        return OperatorChatSessionsListResponse(
             ts: response.ts,
             path: response.path,
             count: sessions.count,
@@ -196,12 +196,12 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
 
     func waitForRunCompletion(
         runId _: String,
-        timeoutMs _: Int) async -> OpenClawChatRunObservation
+        timeoutMs _: Int) async -> OperatorChatRunObservation
     {
         .terminal(.completed)
     }
 
-    func events() -> AsyncStream<OpenClawChatTransportEvent> {
+    func events() -> AsyncStream<OperatorChatTransportEvent> {
         AsyncStream { continuation in
             continuation.yield(.health(ok: true))
             continuation.finish()
@@ -217,14 +217,14 @@ struct LocalFixtureChatTransport: OpenClawChatTransport {
     func compactSession(sessionKey _: String) async throws {}
 }
 
-struct AppleReviewDemoChatTransport: OpenClawChatTransport {
+struct AppleReviewDemoChatTransport: OperatorChatTransport {
     private let transport = LocalFixtureChatTransport(fixture: .appleReviewDemo)
 
     func createSession(
         key: String,
         label: String?,
         parentSessionKey: String?,
-        worktree: Bool?) async throws -> OpenClawChatCreateSessionResponse
+        worktree: Bool?) async throws -> OperatorChatCreateSessionResponse
     {
         try await self.transport.createSession(
             key: key,
@@ -233,11 +233,11 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
             worktree: worktree)
     }
 
-    func requestHistory(sessionKey: String) async throws -> OpenClawChatHistoryPayload {
+    func requestHistory(sessionKey: String) async throws -> OperatorChatHistoryPayload {
         try await self.transport.requestHistory(sessionKey: sessionKey)
     }
 
-    func listModels() async throws -> [OpenClawChatModelChoice] {
+    func listModels() async throws -> [OperatorChatModelChoice] {
         try await self.transport.listModels()
     }
 
@@ -246,7 +246,7 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
         message: String,
         thinking: String,
         idempotencyKey: String,
-        attachments: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+        attachments: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
     {
         try await self.transport.sendMessage(
             sessionKey: sessionKey,
@@ -263,7 +263,7 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
     func listSessions(
         limit: Int?,
         search: String?,
-        archived: Bool) async throws -> OpenClawChatSessionsListResponse
+        archived: Bool) async throws -> OperatorChatSessionsListResponse
     {
         try await self.transport.listSessions(limit: limit, search: search, archived: archived)
     }
@@ -275,7 +275,7 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
     func patchSessionModel(
         sessionKey: String,
         agentID: String?,
-        model: String?) async throws -> OpenClawChatModelPatchResult?
+        model: String?) async throws -> OperatorChatModelPatchResult?
     {
         try await self.transport.patchSessionModel(
             sessionKey: sessionKey,
@@ -293,12 +293,12 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
 
     func waitForRunCompletion(
         runId: String,
-        timeoutMs: Int) async -> OpenClawChatRunObservation
+        timeoutMs: Int) async -> OperatorChatRunObservation
     {
         await self.transport.waitForRunCompletion(runId: runId, timeoutMs: timeoutMs)
     }
 
-    func events() -> AsyncStream<OpenClawChatTransportEvent> {
+    func events() -> AsyncStream<OperatorChatTransportEvent> {
         self.transport.events()
     }
 
@@ -317,20 +317,20 @@ struct AppleReviewDemoChatTransport: OpenClawChatTransport {
 
 private actor LocalFixtureChatStore {
     private let fixture: LocalChatFixture
-    private var messages: [OpenClawChatMessage]
+    private var messages: [OperatorChatMessage]
 
     init(fixture: LocalChatFixture) {
         self.fixture = fixture
         self.messages = Self.seedMessages(fixture: fixture)
     }
 
-    func createSession(key: String) throws -> OpenClawChatCreateSessionResponse {
+    func createSession(key: String) throws -> OperatorChatCreateSessionResponse {
         try Self.decode(
             CreateSessionPayload(ok: true, key: key, sessionId: "\(self.fixture.sessionIDPrefix)-\(key)"),
-            as: OpenClawChatCreateSessionResponse.self)
+            as: OperatorChatCreateSessionResponse.self)
     }
 
-    func history(sessionKey: String) throws -> OpenClawChatHistoryPayload {
+    func history(sessionKey: String) throws -> OperatorChatHistoryPayload {
         let normalizedSessionKey = Self.normalizedSessionKey(sessionKey, fallback: self.fixture.sessionKey)
         return try Self.decode(
             HistoryPayload(
@@ -338,10 +338,10 @@ private actor LocalFixtureChatStore {
                 sessionId: "\(self.fixture.sessionIDPrefix)-\(normalizedSessionKey)",
                 messages: self.messages,
                 thinkingLevel: "auto"),
-            as: OpenClawChatHistoryPayload.self)
+            as: OperatorChatHistoryPayload.self)
     }
 
-    func sendMessage(sessionKey _: String, message: String, runId: String) throws -> OpenClawChatSendResponse {
+    func sendMessage(sessionKey _: String, message: String, runId: String) throws -> OperatorChatSendResponse {
         let now = Date().timeIntervalSince1970 * 1000
         self.messages.append(
             Self.message(
@@ -361,11 +361,11 @@ private actor LocalFixtureChatStore {
                 timestamp: now + 1))
         return try Self.decode(
             SendPayload(runId: runId, status: "ok"),
-            as: OpenClawChatSendResponse.self)
+            as: OperatorChatSendResponse.self)
     }
 
-    func sessions() throws -> OpenClawChatSessionsListResponse {
-        let entry = OpenClawChatSessionEntry(
+    func sessions() throws -> OperatorChatSessionsListResponse {
+        let entry = OperatorChatSessionEntry(
             key: self.fixture.sessionKey,
             kind: "chat",
             displayName: self.fixture.displayName,
@@ -388,11 +388,11 @@ private actor LocalFixtureChatStore {
             thinkingLevels: Self.thinkingLevels,
             thinkingOptions: Self.thinkingOptions,
             thinkingDefault: "auto")
-        return OpenClawChatSessionsListResponse(
+        return OperatorChatSessionsListResponse(
             ts: Date().timeIntervalSince1970 * 1000,
             path: nil,
             count: 1,
-            defaults: OpenClawChatSessionsDefaults(
+            defaults: OperatorChatSessionsDefaults(
                 modelProvider: self.fixture.modelProvider,
                 model: self.fixture.modelID,
                 contextTokens: 128_000,
@@ -411,16 +411,16 @@ private actor LocalFixtureChatStore {
         ["auto", "low", "medium", "high"]
     }
 
-    private static var thinkingLevels: [OpenClawChatThinkingLevelOption] {
+    private static var thinkingLevels: [OperatorChatThinkingLevelOption] {
         [
-            OpenClawChatThinkingLevelOption(id: "auto", label: "Auto"),
-            OpenClawChatThinkingLevelOption(id: "low", label: "Low"),
-            OpenClawChatThinkingLevelOption(id: "medium", label: "Medium"),
-            OpenClawChatThinkingLevelOption(id: "high", label: "High"),
+            OperatorChatThinkingLevelOption(id: "auto", label: "Auto"),
+            OperatorChatThinkingLevelOption(id: "low", label: "Low"),
+            OperatorChatThinkingLevelOption(id: "medium", label: "Medium"),
+            OperatorChatThinkingLevelOption(id: "high", label: "High"),
         ]
     }
 
-    private static func seedMessages(fixture: LocalChatFixture) -> [OpenClawChatMessage] {
+    private static func seedMessages(fixture: LocalChatFixture) -> [OperatorChatMessage] {
         let now = Date().timeIntervalSince1970 * 1000
         return fixture.seedMessages.enumerated().map { index, text in
             self.message(role: "assistant", text: text, timestamp: now + Double(index))
@@ -431,12 +431,12 @@ private actor LocalFixtureChatStore {
         role: String,
         text: String,
         timestamp: Double,
-        idempotencyKey: String? = nil) -> OpenClawChatMessage
+        idempotencyKey: String? = nil) -> OperatorChatMessage
     {
-        OpenClawChatMessage(
+        OperatorChatMessage(
             role: role,
             content: [
-                OpenClawChatMessageContent(
+                OperatorChatMessageContent(
                     type: "text",
                     text: text,
                     mimeType: nil,
@@ -461,7 +461,7 @@ private actor LocalFixtureChatStore {
     private struct HistoryPayload: Encodable {
         var sessionKey: String
         var sessionId: String?
-        var messages: [OpenClawChatMessage]?
+        var messages: [OperatorChatMessage]?
         var thinkingLevel: String?
     }
 

@@ -3,12 +3,12 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 import {
   hasConfiguredSecretInput,
   normalizeSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { SlackAccountSurfaceFields } from "./account-surface-fields.js";
 import {
   mergeSlackAccountConfig,

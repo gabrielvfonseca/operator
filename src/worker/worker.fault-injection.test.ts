@@ -18,7 +18,7 @@ import {
   resolveSessionTranscriptRuntimeTarget,
   upsertSessionEntry,
 } from "../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   attachWorkerWsMessageHandler,
   type WorkerConnectionService,
@@ -80,7 +80,7 @@ const HOST_KEY = [["ssh", "ed25519"].join("-"), "AAAA"].join(" ");
 const SSH_ENDPOINT: WorkerSshEndpoint = {
   host: "worker.example.test",
   port: 22,
-  user: "openclaw",
+  user: "@gabrielvfonseca/operator",
   hostKey: HOST_KEY,
   keyRef: { source: "file", provider: "worker-fixtures", id: "/development-key" },
 };
@@ -93,7 +93,7 @@ type WorkerEnvironmentServiceOptions = Parameters<typeof createWorkerEnvironment
 const BUNDLE_ARTIFACT = {
   install: "bundle" as const,
   bundleHash: BUNDLE_HASH,
-  openclawVersion: HANDSHAKE.openclawVersion,
+  openclawVersion: HANDSHAKE.operatorVersion,
   protocolFeatures: [...WORKER_PROTOCOL_FEATURES],
   tarballSha256: Array.from({ length: 64 }, () => "b").join(""),
   tarballPath: "/gateway/cache/worker-bundle.tgz",
@@ -231,7 +231,7 @@ class ComposedGatewayHarness {
 
   static async create(): Promise<ComposedGatewayHarness> {
     const root = await fs.mkdtemp(
-      path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-fault-"),
+      path.join(await fs.realpath(os.tmpdir()), "operator-worker-fault-"),
     );
     const sessionsDir = path.join(root, "agents", "main", "sessions");
     const storePath = path.join(sessionsDir, "sessions.json");

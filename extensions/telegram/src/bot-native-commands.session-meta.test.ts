@@ -1,9 +1,9 @@
 // Telegram tests cover bot native commands.session meta plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
-import { resolveChunkMode } from "openclaw/plugin-sdk/reply-dispatch-runtime";
-import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { resolveChunkMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-dispatch-runtime";
+import { resolveThreadSessionKeys } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import type { ResolvedAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TelegramNativeCommandDeps } from "./bot-native-command-deps.runtime.js";
 import {
@@ -651,7 +651,7 @@ function resetSessionMetaMocks() {
     return patch ? { ...current, ...patch } : current;
   });
   sessionMocks.recordSessionMetaFromInbound.mockClear().mockResolvedValue(undefined);
-  sessionMocks.resolveStorePath.mockClear().mockReturnValue("/tmp/openclaw-sessions.json");
+  sessionMocks.resolveStorePath.mockClear().mockReturnValue("/tmp/operator-sessions.json");
   pluginRuntimeMocks.executePluginCommand.mockClear().mockResolvedValue({ text: "ok" });
   pluginRuntimeMocks.matchPluginCommand.mockClear().mockReturnValue(null);
   replyMocks.dispatchReplyWithBufferedBlockDispatcher
@@ -779,7 +779,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       "thinking menu call",
     );
     expect(sessionMocks.getSessionEntry).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-sessions.json",
+      storePath: "/tmp/operator-sessions.json",
       sessionKey: "agent:main:main",
     });
     expectSendMessageCall({
@@ -794,7 +794,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
 
   it.each([
     { sessionRuntime: undefined, expectedRuntime: "codex" },
-    { sessionRuntime: "openclaw", expectedRuntime: "openclaw" },
+    { sessionRuntime: "@gabrielvfonseca/operator", expectedRuntime: "@gabrielvfonseca/operator" },
   ])(
     "uses the effective $expectedRuntime runtime for native /think menus",
     async ({ sessionRuntime, expectedRuntime }) => {
@@ -1602,7 +1602,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("passes persisted topic session identity to plugin commands", async () => {
-    sessionMocks.resolveStorePath.mockReturnValue("/tmp/openclaw-sessions/sessions.json");
+    sessionMocks.resolveStorePath.mockReturnValue("/tmp/operator-sessions/sessions.json");
     sessionMocks.getSessionEntry.mockReturnValue({
       authProfileOverride: "openai:owner@example.com",
       sessionId: "sess-topic",
@@ -1634,7 +1634,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
         name: "codex",
         description: "Codex",
         handler: vi.fn(),
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginName: "Codex",
         requireAuth: true,
       },
@@ -1702,7 +1702,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
     ).toBeUndefined();
     expect(sessionMocks.updateSessionStoreEntry).toHaveBeenCalledWith({
       sessionKey: "agent:main:main",
-      storePath: "/tmp/openclaw-sessions.json",
+      storePath: "/tmp/operator-sessions.json",
       requireWriteSuccess: true,
       skipMaintenance: true,
       update: expect.any(Function),
@@ -1892,7 +1892,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("passes session identity to plugin commands when the entry has no file", async () => {
-    sessionMocks.resolveStorePath.mockReturnValue("/tmp/openclaw-sessions/sessions.json");
+    sessionMocks.resolveStorePath.mockReturnValue("/tmp/operator-sessions/sessions.json");
     sessionMocks.getSessionEntry.mockReturnValue({
       sessionId: "sess-main",
       updatedAt: 1,
@@ -1915,7 +1915,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
         name: "codex",
         description: "Codex",
         handler: vi.fn(),
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginName: "Codex",
         requireAuth: true,
       },
@@ -1929,14 +1929,14 @@ describe("registerTelegramNativeCommands — session metadata", () => {
       {
         sessionKey: "agent:main:main",
         sessionId: "sess-main",
-        sessionFile: "sqlite:main:sess-main:/tmp/openclaw-sessions/sessions.json",
+        sessionFile: "sqlite:main:sess-main:/tmp/operator-sessions/sessions.json",
       },
       "plugin command params",
     );
   });
 
   it("passes SQLite transcript markers to plugin commands without path resolution", async () => {
-    const storePath = "/tmp/openclaw-sessions/sessions.json";
+    const storePath = "/tmp/operator-sessions/sessions.json";
     const marker = `sqlite:main:sess-main:${storePath}`;
     sessionMocks.resolveStorePath.mockReturnValue(storePath);
     sessionMocks.getSessionEntry.mockReturnValue({
@@ -1962,7 +1962,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
         name: "codex",
         description: "Codex",
         handler: vi.fn(),
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginName: "Codex",
         requireAuth: true,
       },
@@ -1983,7 +1983,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("replaces stale legacy transcript paths for plugin commands", async () => {
-    const storePath = "/tmp/openclaw-sessions/sessions.json";
+    const storePath = "/tmp/operator-sessions/sessions.json";
     const marker = `sqlite:main:sess-main:${storePath}`;
     sessionMocks.resolveStorePath.mockReturnValue(storePath);
     sessionMocks.getSessionEntry.mockReturnValue({
@@ -2009,7 +2009,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
         name: "codex",
         description: "Codex",
         handler: vi.fn(),
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginName: "Codex",
         requireAuth: true,
       },
@@ -2049,7 +2049,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
         name: "codex",
         description: "Codex",
         handler: vi.fn(),
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginName: "Codex",
         requireAuth: true,
       },

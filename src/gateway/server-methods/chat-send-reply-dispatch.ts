@@ -1,5 +1,5 @@
-import { isAudioFileName } from "@operator/media-core/mime";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { isAudioFileName } from "@gabrielvfonseca/media-core/mime";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { getReplyPayloadMetadata, type ReplyPayload } from "../../auto-reply/reply-payload.js";
 import { createReplyDispatcher } from "../../auto-reply/reply/reply-dispatcher.js";
 import {

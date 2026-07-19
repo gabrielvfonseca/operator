@@ -19,7 +19,7 @@ export function formatBonjourInstanceName(displayName: string) {
   if (!trimmed) {
     return "Operator";
   }
-  if (/operator/i.test(trimmed)) {
+  if (/openclaw/i.test(trimmed)) {
     return trimmed;
   }
   return `${trimmed} (Operator)`;
@@ -44,7 +44,7 @@ export function resolveBonjourCliPath(opts: ResolveBonjourCliPathOptions = {}): 
 
   const execPath = opts.execPath ?? process.execPath;
   const execDir = path.dirname(execPath);
-  const siblingCli = path.join(execDir, "operator");
+  const siblingCli = path.join(execDir, "@gabrielvfonseca/operator");
   if (isFile(siblingCli)) {
     return siblingCli;
   }
@@ -60,7 +60,7 @@ export function resolveBonjourCliPath(opts: ResolveBonjourCliPathOptions = {}): 
   if (isFile(distCli)) {
     return distCli;
   }
-  const binCli = path.join(cwd, "bin", "operator");
+  const binCli = path.join(cwd, "bin", "@gabrielvfonseca/operator");
   if (isFile(binCli)) {
     return binCli;
   }

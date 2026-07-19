@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveAttachGrant } from "../mcp-grant-store.js";
 import { closeMcpLoopbackServer } from "../mcp-http.js";

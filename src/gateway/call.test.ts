@@ -512,7 +512,7 @@ describe("callGateway url resolution", () => {
     getRuntimeConfig.mockReturnValue({
       gateway: {
         mode: "remote",
-        remote: { url: "wss://openclaw.example.test" },
+        remote: { url: "wss://operator.example.test" },
         auth: { mode: "token", allowTailscale: true },
       },
     });
@@ -520,7 +520,7 @@ describe("callGateway url resolution", () => {
 
     await callGateway({ method: "sessions.list" });
 
-    expect(lastClientOptions?.url).toBe("wss://openclaw.example.test");
+    expect(lastClientOptions?.url).toBe("wss://operator.example.test");
     expect(lastClientOptions?.token).toBeUndefined();
     expect(lastClientOptions?.password).toBeUndefined();
   });
@@ -529,7 +529,7 @@ describe("callGateway url resolution", () => {
     getRuntimeConfig.mockReturnValue({
       gateway: {
         mode: "remote",
-        remote: { url: "wss://openclaw.example.test" },
+        remote: { url: "wss://operator.example.test" },
         auth: { mode: "token" },
         tailscale: { mode: "serve" },
       },
@@ -538,7 +538,7 @@ describe("callGateway url resolution", () => {
 
     await callGateway({ method: "sessions.list" });
 
-    expect(lastClientOptions?.url).toBe("wss://openclaw.example.test");
+    expect(lastClientOptions?.url).toBe("wss://operator.example.test");
     expect(lastClientOptions?.token).toBeUndefined();
     expect(lastClientOptions?.password).toBeUndefined();
   });
@@ -1352,7 +1352,7 @@ describe("buildGatewayConnectionDetails", () => {
   });
 
   it("falls back to the default config loader when test deps drift", () => {
-    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-gateway-call-"));
+    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-gateway-call-"));
     setTestEnvValue("OPERATOR_STATE_DIR", tempStateDir);
     setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(tempStateDir, "missing-config.json"));
     try {
@@ -1441,14 +1441,14 @@ describe("buildGatewayConnectionDetails", () => {
       gateway: {
         mode: "remote",
         bind: "loopback",
-        remote: { url: "ws://openclaw-gateway.ai:18789" },
+        remote: { url: "ws://operator-gateway.ai:18789" },
       },
     });
     resolveGatewayPort.mockReturnValue(18789);
 
     const details = buildGatewayConnectionDetails();
 
-    expect(details.url).toBe("ws://openclaw-gateway.ai:18789");
+    expect(details.url).toBe("ws://operator-gateway.ai:18789");
     expect(details.urlSource).toBe("config gateway.remote.url");
   });
 

@@ -1,5 +1,5 @@
 // Parses execution directives for approval, sandbox, and target settings.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   type ExecAsk,
   type ExecSecurity,

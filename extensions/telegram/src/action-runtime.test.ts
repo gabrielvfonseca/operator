@@ -2,9 +2,9 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { captureEnv } from "openclaw/plugin-sdk/test-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { captureEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { handleTelegramAction, telegramActionRuntime } from "./action-runtime.js";
 import { beginTelegramInboundEventDeliveryCorrelation } from "./inbound-event-delivery.js";
@@ -678,7 +678,7 @@ describe("handleTelegramAction", () => {
   });
 
   it("persists sendMessage action deliveries before Telegram platform send", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-action-durable-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-telegram-action-durable-"));
     const {
       createOutboundTestPlugin,
       createTestRegistry,
@@ -1312,7 +1312,7 @@ describe("handleTelegramAction", () => {
     });
     const cfg = {
       ...telegramConfig({ actions: { createForumTopic: true } }),
-      session: { store: path.join(os.tmpdir(), "openclaw-telegram-action-sessions.json") },
+      session: { store: path.join(os.tmpdir(), "operator-telegram-action-sessions.json") },
     } as OperatorConfig;
 
     await handleTelegramAction(
@@ -1334,7 +1334,7 @@ describe("handleTelegramAction", () => {
     });
     const cfg = {
       ...telegramConfig({ actions: { editForumTopic: true } }),
-      session: { store: path.join(os.tmpdir(), "openclaw-telegram-action-sessions.json") },
+      session: { store: path.join(os.tmpdir(), "operator-telegram-action-sessions.json") },
     } as OperatorConfig;
 
     await handleTelegramAction(

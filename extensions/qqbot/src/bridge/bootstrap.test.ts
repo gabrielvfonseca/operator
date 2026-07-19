@@ -1,5 +1,5 @@
 // Qqbot tests cover the built-in platform adapter boundary.
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getPlatformAdapter } from "../engine/adapter/index.js";
 import { ensurePlatformAdapter } from "./bootstrap.js";

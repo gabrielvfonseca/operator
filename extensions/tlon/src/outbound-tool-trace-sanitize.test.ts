@@ -2,13 +2,13 @@
 // shared delivery hook, target routing, Markdown rendering, and media captions
 // cannot drift apart unnoticed.
 import http from "node:http";
-import { expectDefined } from "@operator/normalization-core";
-import { sendDurableMessageBatch } from "openclaw/plugin-sdk/channel-outbound";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { sendDurableMessageBatch } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   createTestRegistry,
   releasePinnedPluginChannelRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/channel-test-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 import { tlonPlugin } from "./channel.js";

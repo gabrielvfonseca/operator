@@ -1,5 +1,5 @@
 // Resolves provider usage auth tokens from profiles, plugins, and env.
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   dedupeProfileIds,
   ensureAuthProfileStore,

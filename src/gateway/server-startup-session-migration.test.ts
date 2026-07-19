@@ -162,7 +162,7 @@ describe("runStartupSessionMigration", () => {
   it("imports legacy session metadata and transcripts into SQLite during startup", async () => {
     const log = makeLog();
     const cfg = makeCfg();
-    const env = { OPERATOR_STATE_DIR: "/tmp/openclaw-state" };
+    const env = { OPERATOR_STATE_DIR: "/tmp/operator-state" };
     const migrate = vi.fn<MigrateSessionKeys>().mockResolvedValue({ changes: [], warnings: [] });
     const runDoctorSessionSqlite = makeSessionSqliteImport({
       totals: {
@@ -220,7 +220,7 @@ describe("runStartupSessionMigration", () => {
           legacyEntries: 1,
           referencedTranscriptFiles: 1,
           sqliteEntries: 0,
-          sqlitePath: "/tmp/openclaw-agent.sqlite",
+          sqlitePath: "/tmp/operator-agent.sqlite",
           storePath: "/tmp/sessions.json",
           unreferencedJsonlFiles: [],
           validatedEntries: 0,
@@ -302,7 +302,7 @@ describe("runStartupSessionMigration", () => {
           legacyEntries: 1,
           referencedTranscriptFiles: 1,
           sqliteEntries: 1,
-          sqlitePath: "/tmp/openclaw-agent.sqlite",
+          sqlitePath: "/tmp/operator-agent.sqlite",
           storePath: "/tmp/sessions.json",
           unreferencedJsonlFiles: [],
           validatedEntries: 1,
@@ -341,7 +341,7 @@ describe("runStartupSessionMigration", () => {
       trustedTargets: [
         {
           agentId: "main",
-          sqlitePath: "/tmp/openclaw-agent.sqlite",
+          sqlitePath: "/tmp/operator-agent.sqlite",
           storePath: "/tmp/sessions.json",
         },
       ],
@@ -373,7 +373,7 @@ describe("runStartupSessionMigration", () => {
           legacyEntries: 1,
           referencedTranscriptFiles: 1,
           sqliteEntries: 1,
-          sqlitePath: "/tmp/openclaw-agent.sqlite",
+          sqlitePath: "/tmp/operator-agent.sqlite",
           storePath: "/tmp/sessions.json",
           unreferencedJsonlFiles: [],
           validatedEntries: 0,
@@ -426,7 +426,7 @@ describe("runStartupSessionMigration", () => {
           legacyEntries: 1,
           referencedTranscriptFiles: 1,
           sqliteEntries: 1,
-          sqlitePath: "/tmp/openclaw-agent.sqlite",
+          sqlitePath: "/tmp/operator-agent.sqlite",
           storePath: "/tmp/sessions.json",
           unreferencedJsonlFiles: ["/tmp/orphan.jsonl"],
           validatedEntries: 0,

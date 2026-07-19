@@ -1,5 +1,8 @@
-import type { OperatorPluginApi, OperatorPluginService } from "openclaw/plugin-sdk/plugin-entry";
-import { registerSandboxBackend } from "openclaw/plugin-sdk/sandbox";
+import type {
+  OperatorPluginApi,
+  OperatorPluginService,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { registerSandboxBackend } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import { resolveMxcBinaryPath } from "./binary-resolver.js";
 import { resolveConfig } from "./config.js";
 import { createMxcSandboxBackendFactory } from "./mxc-backend-factory.js";

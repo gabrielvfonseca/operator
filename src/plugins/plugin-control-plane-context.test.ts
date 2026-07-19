@@ -16,7 +16,7 @@ function createIndex(pluginId: string): InstalledPluginIndex {
     plugins: [
       {
         pluginId,
-        manifestPath: `/plugins/${pluginId}/openclaw.plugin.json`,
+        manifestPath: `/plugins/${pluginId}/operator.plugin.json`,
         manifestHash: `${pluginId}-manifest-hash`,
         rootDir: `/plugins/${pluginId}`,
         origin: "global",

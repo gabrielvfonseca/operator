@@ -8,7 +8,7 @@ const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("DefaultResourceLoader", () => {
   it("does not use unreadable prompt file paths as prompt content", async () => {
-    const root = tempDirs.make("openclaw-resource-loader-");
+    const root = tempDirs.make("operator-resource-loader-");
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
       const loader = new DefaultResourceLoader({
@@ -36,7 +36,7 @@ describe("DefaultResourceLoader", () => {
   it("keeps deprecated SDK prompt override aliases wired to prompt transforms", async () => {
     // These aliases are deprecated but shipped SDK surface, so they still map
     // through the same transform path as the current options.
-    const root = tempDirs.make("openclaw-resource-loader-");
+    const root = tempDirs.make("operator-resource-loader-");
     const loader = new DefaultResourceLoader({
       cwd: root,
       agentDir: root,

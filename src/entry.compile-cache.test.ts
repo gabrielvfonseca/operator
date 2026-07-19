@@ -37,14 +37,14 @@ describe("entry compile cache", () => {
   });
 
   it("treats git and source entry markers as source checkouts", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-source-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-source-");
     await fs.writeFile(path.join(root, ".git"), "gitdir: .git/worktrees/openclaw\n", "utf8");
 
     expect(isSourceCheckoutInstallRoot(root)).toBe(true);
   });
 
   it("disables compile cache for source-checkout installs", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-src-entry-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-src-entry-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
@@ -57,7 +57,7 @@ describe("entry compile cache", () => {
   });
 
   it("keeps compile cache enabled for packaged installs unless disabled by env", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-package-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-package-");
 
     expect(
       shouldEnableOperatorCompileCache({
@@ -78,7 +78,7 @@ describe("entry compile cache", () => {
   });
 
   it("scopes packaged compile cache by package install metadata", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-package-key-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-package-key-");
     const packageJsonPath = path.join(root, "package.json");
     await fs.writeFile(packageJsonPath, '{"version":"2026.4.29"}\n', "utf8");
 
@@ -87,19 +87,19 @@ describe("entry compile cache", () => {
       installRoot: root,
     });
 
-    expect(directory).toContain(path.join(".node-cache", "openclaw"));
+    expect(directory).toContain(path.join(".node-cache", "@gabrielvfonseca/operator"));
     expect(directory).toContain("2026.4.29");
     expect(path.basename(directory)).toMatch(/^\d+-\d+$/);
   });
 
   it("builds a one-shot no-cache respawn plan when source checkout inherits NODE_COMPILE_CACHE", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-respawn-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-respawn-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
     const plan = buildOperatorCompileCacheRespawnPlan({
       currentFile: path.join(root, "dist", "entry.js"),
-      env: { NODE_COMPILE_CACHE: "/tmp/openclaw-cache" },
+      env: { NODE_COMPILE_CACHE: "/tmp/operator-cache" },
       execArgv: ["--no-warnings"],
       execPath: "/usr/bin/node",
       installRoot: root,
@@ -118,14 +118,14 @@ describe("entry compile cache", () => {
   });
 
   it("keeps interactive no-cache respawn plans attached to the terminal", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-interactive-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-interactive-");
     const entryFile = path.join(root, "dist", "entry.js");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
     const plan = buildOperatorCompileCacheRespawnPlan({
       currentFile: entryFile,
-      env: { NODE_COMPILE_CACHE: "/tmp/openclaw-cache" },
+      env: { NODE_COMPILE_CACHE: "/tmp/operator-cache" },
       execPath: "/usr/bin/node",
       installRoot: root,
       argv: ["/usr/bin/node", entryFile, "tui"],
@@ -135,14 +135,14 @@ describe("entry compile cache", () => {
   });
 
   it("keeps bare-root no-cache respawn plans attached to the terminal", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-root-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-root-");
     const entryFile = path.join(root, "dist", "entry.js");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
     const plan = buildOperatorCompileCacheRespawnPlan({
       currentFile: entryFile,
-      env: { NODE_COMPILE_CACHE: "/tmp/openclaw-cache" },
+      env: { NODE_COMPILE_CACHE: "/tmp/operator-cache" },
       execPath: "/usr/bin/node",
       installRoot: root,
       argv: ["/usr/bin/node", entryFile],
@@ -152,12 +152,12 @@ describe("entry compile cache", () => {
   });
 
   it("does not respawn unaffected packaged installs when NODE_COMPILE_CACHE is configured", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-package-respawn-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-package-respawn-");
 
     expect(
       buildOperatorCompileCacheRespawnPlan({
         currentFile: path.join(root, "dist", "entry.js"),
-        env: { NODE_COMPILE_CACHE: "/tmp/openclaw-cache" },
+        env: { NODE_COMPILE_CACHE: "/tmp/operator-cache" },
         installRoot: root,
         nodeVersion: "24.1.0",
         platform: "linux",
@@ -166,12 +166,12 @@ describe("entry compile cache", () => {
   });
 
   it("builds a no-cache respawn plan for affected Windows packaged installs", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-package-win24-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-package-win24-");
     const entryFile = path.join(root, "dist", "entry.js");
 
     const plan = buildOperatorCompileCacheRespawnPlan({
       currentFile: entryFile,
-      env: { NODE_COMPILE_CACHE: "/tmp/openclaw-cache" },
+      env: { NODE_COMPILE_CACHE: "/tmp/operator-cache" },
       execArgv: ["--no-warnings"],
       execPath: "/usr/bin/node",
       installRoot: root,
@@ -192,7 +192,7 @@ describe("entry compile cache", () => {
   });
 
   it("does not respawn source checkouts twice", async () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-respawn-once-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-respawn-once-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
@@ -200,7 +200,7 @@ describe("entry compile cache", () => {
       buildOperatorCompileCacheRespawnPlan({
         currentFile: path.join(root, "dist", "entry.js"),
         env: {
-          NODE_COMPILE_CACHE: "/tmp/openclaw-cache",
+          NODE_COMPILE_CACHE: "/tmp/operator-cache",
           OPERATOR_COMPILE_CACHE_DISABLED_RESPAWNED: "1",
         },
         installRoot: root,
@@ -325,7 +325,7 @@ describe("entry compile cache", () => {
   });
 
   it("disables compile cache for early Node 24.x versions on Windows", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-node24-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-node24-");
     expect(
       shouldEnableOperatorCompileCache({
         env: {},
@@ -345,7 +345,7 @@ describe("entry compile cache", () => {
   });
 
   it("keeps compile cache enabled for early Node 24.x on non-Windows packaged installs", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-node24-nonwin-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-node24-nonwin-");
     expect(
       shouldEnableOperatorCompileCache({
         env: {},
@@ -365,7 +365,7 @@ describe("entry compile cache", () => {
   });
 
   it("keeps compile cache enabled for Node 24.15+ and other majors on Windows", () => {
-    const root = makeTempDir(tempDirs, "openclaw-compile-cache-node2415-");
+    const root = makeTempDir(tempDirs, "operator-compile-cache-node2415-");
     expect(
       shouldEnableOperatorCompileCache({
         env: {},

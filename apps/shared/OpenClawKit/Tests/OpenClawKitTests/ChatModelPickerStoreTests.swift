@@ -1,10 +1,10 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
-private func pickerModel(_ selectionID: String) -> OpenClawChatModelChoice {
+private func pickerModel(_ selectionID: String) -> OperatorChatModelChoice {
     let parts = selectionID.split(separator: "/", maxSplits: 1).map(String.init)
-    return OpenClawChatModelChoice(
+    return OperatorChatModelChoice(
         modelID: parts.count == 2 ? parts[1] : selectionID,
         name: selectionID,
         provider: parts.count == 2 ? parts[0] : "test",
@@ -35,7 +35,7 @@ private func withPickerStore(_ body: (ChatModelPickerStore, UserDefaults) throws
     @Test func `recents dedupe move to front cap and skip invalid ids`() throws {
         try withPickerStore { store, _ in
             store.recordRecent("")
-            store.recordRecent(OpenClawChatViewModel.defaultModelSelectionID)
+            store.recordRecent(OperatorChatViewModel.defaultModelSelectionID)
             for id in ["one", "two", "three", "four", "five", "six"] {
                 store.recordRecent(id)
             }

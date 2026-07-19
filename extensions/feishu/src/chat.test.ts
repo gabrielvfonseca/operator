@@ -1,5 +1,5 @@
 // Feishu tests cover chat plugin behavior.
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi, PluginRuntime } from "../runtime-api.js";
 

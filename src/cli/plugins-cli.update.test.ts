@@ -99,7 +99,7 @@ function primeUpdateConfigSnapshot(params: {
   includeFileHashesForWrite?: Record<string, string>;
   includeFileTargetsForWrite?: Record<string, string>;
 }): void {
-  const configPath = params.configPath ?? path.join(process.cwd(), "openclaw.json5");
+  const configPath = params.configPath ?? path.join(process.cwd(), "operator.json5");
   const parsed = params.parsed ?? (params.config as Record<string, unknown>);
   const sourceConfig = params.sourceConfig ?? params.config;
   const runtimeConfig = params.runtimeConfig ?? params.config;
@@ -290,7 +290,7 @@ describe("plugins cli update", () => {
             "new-hooks": {
               source: "npm",
               spec: "@acme/new-hooks@1.0.0",
-              installPath: "~/.openclaw/hooks/new-hooks",
+              installPath: "~/.operator/hooks/new-hooks",
             },
           },
         },
@@ -304,7 +304,7 @@ describe("plugins cli update", () => {
     const installRecords = {
       alpha: {
         source: "npm",
-        spec: "@operator/alpha@1.0.0",
+        spec: "@gabrielvfonseca/alpha@1.0.0",
         installPath: "/tmp/alpha",
       },
     } as const;
@@ -319,7 +319,7 @@ describe("plugins cli update", () => {
               "new-hooks": {
                 source: "npm",
                 spec: "@acme/new-hooks@1.0.0",
-                installPath: "/home/test/.openclaw/hooks/new-hooks",
+                installPath: "/home/test/.operator/hooks/new-hooks",
               },
             },
           },
@@ -353,7 +353,7 @@ describe("plugins cli update", () => {
             "new-hooks": {
               source: "npm",
               spec: "@acme/new-hooks@1.0.0",
-              installPath: "/home/test/.openclaw/hooks/new-hooks",
+              installPath: "/home/test/.operator/hooks/new-hooks",
             },
           },
         },
@@ -372,7 +372,7 @@ describe("plugins cli update", () => {
   it("uses resolved shipped install records instead of raw env placeholders", async () => {
     const cfg = createTrackedPluginConfig({
       pluginId: "alpha",
-      spec: "@operator/alpha@1.0.0",
+      spec: "@gabrielvfonseca/alpha@1.0.0",
     });
     primeUpdateConfigSnapshot({
       config: cfg,
@@ -403,7 +403,7 @@ describe("plugins cli update", () => {
   it("rejects invalid config snapshots before updater side effects", async () => {
     const cfg = createTrackedPluginConfig({
       pluginId: "alpha",
-      spec: "@operator/alpha@1.0.0",
+      spec: "@gabrielvfonseca/alpha@1.0.0",
     });
     primeUpdateConfigSnapshot({
       config: cfg,
@@ -452,16 +452,16 @@ describe("plugins cli update", () => {
     const cfg = { plugins: {} } as OperatorConfig;
     const pluginRecords = createTrackedPluginConfig({
       pluginId: "voice-call",
-      spec: "@operator/voice-call@1.0.0",
+      spec: "@gabrielvfonseca/voice-call@1.0.0",
     }).plugins?.installs;
     const nextConfig = {
       ...cfg,
       plugins: {
         ...cfg.plugins,
         installs: {
-          "@operator/voice-call": {
+          "@gabrielvfonseca/voice-call": {
             source: "npm",
-            spec: "@operator/voice-call@1.1.0",
+            spec: "@gabrielvfonseca/voice-call@1.1.0",
           },
         },
       },
@@ -473,9 +473,9 @@ describe("plugins cli update", () => {
       changed: true,
       outcomes: [
         {
-          pluginId: "@operator/voice-call",
+          pluginId: "@gabrielvfonseca/voice-call",
           status: "updated",
-          message: "Updated @operator/voice-call.",
+          message: "Updated @gabrielvfonseca/voice-call.",
         },
       ],
     });
@@ -542,7 +542,7 @@ describe("plugins cli update", () => {
     setInstalledPluginIndexInstallRecords({
       "voice-call": {
         source: "npm",
-        spec: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call",
         installPath: "/tmp/voice-call",
       },
     });
@@ -564,8 +564,8 @@ describe("plugins cli update", () => {
       label: "ClawHub",
       record: {
         source: "clawhub",
-        spec: "clawhub:@operator/voice-call",
-        clawhubPackage: "@operator/voice-call",
+        spec: "clawhub:@gabrielvfonseca/voice-call",
+        clawhubPackage: "@gabrielvfonseca/voice-call",
         installPath: "/tmp/voice-call",
       },
     },
@@ -631,7 +631,7 @@ describe("plugins cli update", () => {
     setInstalledPluginIndexInstallRecords({
       "voice-call": {
         source: "npm",
-        spec: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call",
         installPath: "/tmp/voice-call",
       },
     });
@@ -664,7 +664,7 @@ describe("plugins cli update", () => {
         installs: {
           legacy: {
             source: "npm",
-            spec: "@operator/legacy@1.0.0",
+            spec: "@gabrielvfonseca/legacy@1.0.0",
             installPath: "/tmp/legacy",
           },
         },
@@ -748,17 +748,17 @@ describe("plugins cli update", () => {
   });
 
   it("preserves an include-owned plugins section during legacy-record cleanup", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-update-"));
-    const configPath = path.join(tempRoot, "openclaw.json5");
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-update-"));
+    const configPath = path.join(tempRoot, "operator.json5");
     const pluginsPath = path.join(tempRoot, "plugins.json5");
     const cfg = createTrackedPluginConfig({
       pluginId: "alpha",
-      spec: "@operator/alpha@1.0.0",
+      spec: "@gabrielvfonseca/alpha@1.0.0",
     });
     const pluginsRaw = `${JSON.stringify(cfg.plugins, null, 2)}\n`;
     const nextConfig = createTrackedPluginConfig({
       pluginId: "alpha",
-      spec: "@operator/alpha@1.1.0",
+      spec: "@gabrielvfonseca/alpha@1.1.0",
     });
     fs.writeFileSync(pluginsPath, pluginsRaw);
     primeUpdateConfigSnapshot({
@@ -794,22 +794,22 @@ describe("plugins cli update", () => {
   });
 
   it("migrates included legacy install records while updating another indexed plugin", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-update-"));
-    const configPath = path.join(tempRoot, "openclaw.json5");
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-update-"));
+    const configPath = path.join(tempRoot, "operator.json5");
     const pluginsPath = path.join(tempRoot, "plugins.json5");
     const legacyRecord = {
       source: "npm",
-      spec: "@operator/legacy@1.0.0",
+      spec: "@gabrielvfonseca/legacy@1.0.0",
       installPath: "/tmp/legacy",
     } as const;
     const indexedRecord = {
       source: "npm",
-      spec: "@operator/alpha@1.0.0",
+      spec: "@gabrielvfonseca/alpha@1.0.0",
       installPath: "/tmp/alpha",
     } as const;
     const updatedIndexedRecord = {
       ...indexedRecord,
-      spec: "@operator/alpha@1.1.0",
+      spec: "@gabrielvfonseca/alpha@1.1.0",
     } as const;
     const cfg = {
       plugins: {
@@ -871,8 +871,8 @@ describe("plugins cli update", () => {
   });
 
   it("blocks combined plugin and hook updates when either config section uses an include", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-update-"));
-    const configPath = path.join(tempRoot, "openclaw.json5");
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-update-"));
+    const configPath = path.join(tempRoot, "operator.json5");
     const pluginsPath = path.join(tempRoot, "plugins.json5");
     const pluginsRaw = "{}\n";
     fs.writeFileSync(pluginsPath, pluginsRaw);
@@ -892,7 +892,7 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@operator/alpha@1.0.0",
+            spec: "@gabrielvfonseca/alpha@1.0.0",
             installPath: "/tmp/alpha",
           },
         },
@@ -956,8 +956,8 @@ describe("plugins cli update", () => {
 
   it("passes dangerous force unsafe install to plugin updates", async () => {
     const config = createTrackedPluginConfig({
-      pluginId: "openclaw-codex-app-server",
-      spec: "openclaw-codex-app-server@beta",
+      pluginId: "operator-codex-app-server",
+      spec: "operator-codex-app-server@beta",
     });
     loadConfig.mockReturnValue(config);
     setInstalledPluginIndexInstallRecords(config.plugins?.installs ?? {});
@@ -970,13 +970,13 @@ describe("plugins cli update", () => {
     await runPluginsCommand([
       "plugins",
       "update",
-      "openclaw-codex-app-server",
+      "operator-codex-app-server",
       "--dangerously-force-unsafe-install",
     ]);
 
     const updateParams = expectSingleCallParams(updateNpmInstalledPlugins);
     expect(updateParams.config).toEqual(config);
-    expect(updateParams.pluginIds).toEqual(["openclaw-codex-app-server"]);
+    expect(updateParams.pluginIds).toEqual(["operator-codex-app-server"]);
     expect(updateParams.dangerouslyForceUnsafeInstall).toBe(true);
     expect(
       runtimeLogs.some((message) =>
@@ -990,8 +990,8 @@ describe("plugins cli update", () => {
   it("does not sync official catalog specs for manual plugin updates", async () => {
     const config = createTrackedPluginConfig({
       pluginId: "codex",
-      spec: "@operator/codex@2026.5.28",
-      resolvedName: "@operator/codex",
+      spec: "@gabrielvfonseca/codex@2026.5.28",
+      resolvedName: "@gabrielvfonseca/codex",
     });
     loadConfig.mockReturnValue(config);
     setInstalledPluginIndexInstallRecords(config.plugins?.installs ?? {});
@@ -1013,8 +1013,8 @@ describe("plugins cli update", () => {
   it("syncs official catalog specs with beta channel context for update --all", async () => {
     const config = createTrackedPluginConfig({
       pluginId: "codex",
-      spec: "@operator/codex@2026.6.8-beta.1",
-      resolvedName: "@operator/codex",
+      spec: "@gabrielvfonseca/codex@2026.6.8-beta.1",
+      resolvedName: "@gabrielvfonseca/codex",
     });
     config.update = { channel: "beta" };
     loadConfig.mockReturnValue(config);
@@ -1037,8 +1037,8 @@ describe("plugins cli update", () => {
   it("passes extended-stable channel and installed core version to update --all", async () => {
     const config = createTrackedPluginConfig({
       pluginId: "codex",
-      spec: "@operator/codex",
-      resolvedName: "@operator/codex",
+      spec: "@gabrielvfonseca/codex",
+      resolvedName: "@gabrielvfonseca/codex",
     });
     config.update = { channel: "extended-stable" };
     loadConfig.mockReturnValue(config);
@@ -1062,8 +1062,8 @@ describe("plugins cli update", () => {
 
   it("passes ClawHub risk acknowledgement to plugin updates", async () => {
     const config = createTrackedPluginConfig({
-      pluginId: "openclaw-codex-app-server",
-      spec: "openclaw-codex-app-server@beta",
+      pluginId: "operator-codex-app-server",
+      spec: "operator-codex-app-server@beta",
     });
     loadConfig.mockReturnValue(config);
     setInstalledPluginIndexInstallRecords(config.plugins?.installs ?? {});
@@ -1076,14 +1076,14 @@ describe("plugins cli update", () => {
     await runPluginsCommand([
       "plugins",
       "update",
-      "openclaw-codex-app-server",
+      "operator-codex-app-server",
       "--acknowledge-clawhub-risk",
     ]);
 
     expect(updateNpmInstalledPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config,
-        pluginIds: ["openclaw-codex-app-server"],
+        pluginIds: ["operator-codex-app-server"],
         acknowledgeClawHubRisk: true,
       }),
     );
@@ -1092,8 +1092,8 @@ describe("plugins cli update", () => {
   it("does not pass an interactive ClawHub risk prompt to dry-run plugin updates", async () => {
     setTty(true);
     const config = createTrackedPluginConfig({
-      pluginId: "openclaw-codex-app-server",
-      spec: "clawhub:openclaw-codex-app-server",
+      pluginId: "operator-codex-app-server",
+      spec: "clawhub:operator-codex-app-server",
     });
     loadConfig.mockReturnValue(config);
     setInstalledPluginIndexInstallRecords(config.plugins?.installs ?? {});
@@ -1103,7 +1103,7 @@ describe("plugins cli update", () => {
       outcomes: [],
     });
 
-    await runPluginsCommand(["plugins", "update", "openclaw-codex-app-server", "--dry-run"]);
+    await runPluginsCommand(["plugins", "update", "operator-codex-app-server", "--dry-run"]);
 
     const updateParams = expectSingleCallParams(updateNpmInstalledPlugins);
     expect(updateParams.dryRun).toBe(true);
@@ -1117,7 +1117,7 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@operator/alpha@1.0.0",
+            spec: "@gabrielvfonseca/alpha@1.0.0",
           },
         },
       },
@@ -1127,7 +1127,7 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@operator/alpha@1.1.0",
+            spec: "@gabrielvfonseca/alpha@1.1.0",
           },
         },
       },
@@ -1195,11 +1195,11 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@operator/alpha@1.0.0",
+            spec: "@gabrielvfonseca/alpha@1.0.0",
           },
           beta: {
             source: "npm",
-            spec: "@operator/beta@1.0.0",
+            spec: "@gabrielvfonseca/beta@1.0.0",
           },
         },
       },
@@ -1209,11 +1209,11 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@operator/alpha@1.1.0",
+            spec: "@gabrielvfonseca/alpha@1.1.0",
           },
           beta: {
             source: "npm",
-            spec: "@operator/beta@1.0.0",
+            spec: "@gabrielvfonseca/beta@1.0.0",
           },
         },
       },
@@ -1253,8 +1253,8 @@ describe("plugins cli update", () => {
         installs: {
           demo: {
             source: "clawhub",
-            spec: "clawhub:@operator/plugin-demo@1.0.0",
-            clawhubPackage: "@operator/plugin-demo",
+            spec: "clawhub:@gabrielvfonseca/plugin-demo@1.0.0",
+            clawhubPackage: "@gabrielvfonseca/plugin-demo",
           },
         },
       },
@@ -1292,8 +1292,8 @@ describe("plugins cli update", () => {
         installs: {
           demo: {
             source: "clawhub",
-            spec: "clawhub:@operator/plugin-demo",
-            clawhubPackage: "@operator/plugin-demo",
+            spec: "clawhub:@gabrielvfonseca/plugin-demo",
+            clawhubPackage: "@gabrielvfonseca/plugin-demo",
           },
         },
       },
@@ -1331,8 +1331,8 @@ describe("plugins cli update", () => {
         installs: {
           demo: {
             source: "clawhub",
-            spec: "clawhub:@operator/plugin-demo",
-            clawhubPackage: "@operator/plugin-demo",
+            spec: "clawhub:@gabrielvfonseca/plugin-demo",
+            clawhubPackage: "@gabrielvfonseca/plugin-demo",
           },
         },
       },
@@ -1346,7 +1346,7 @@ describe("plugins cli update", () => {
           status: "skipped",
           code: "clawhub_security_unavailable",
           message:
-            'Skipped demo ClawHub update: ClawHub security data for "@operator/plugin-demo@1.1.0" is unavailable, so Operator left the existing installed plugin unchanged. Try again later or choose a different version.',
+            'Skipped demo ClawHub update: ClawHub security data for "@gabrielvfonseca/plugin-demo@1.1.0" is unavailable, so Operator left the existing installed plugin unchanged. Try again later or choose a different version.',
         },
       ],
       changed: false,

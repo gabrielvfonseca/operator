@@ -5,12 +5,12 @@ import {
   embeddedAgentLog,
   invokeNativeHookRelay,
   nativeHookRelayTesting,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   onInternalDiagnosticEvent,
   type DiagnosticEventPayload,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
-import * as mediaStore from "openclaw/plugin-sdk/media-store";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
+import * as mediaStore from "@gabrielvfonseca/operator/plugin-sdk/media-store";
 import { describe, expect, it, vi } from "vitest";
 import { buildCodexAppServerPromptTimeoutOutcome } from "./attempt-results.js";
 import { createCodexAttemptTurnWatchController } from "./attempt-turn-watches.js";

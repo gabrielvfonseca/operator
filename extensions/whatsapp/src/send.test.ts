@@ -3,10 +3,10 @@ import crypto from "node:crypto";
 import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { PlatformMessageNotDispatchedError } from "openclaw/plugin-sdk/error-runtime";
-import { redactIdentifier } from "openclaw/plugin-sdk/logging-core";
-import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS } from "openclaw/plugin-sdk/media-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { PlatformMessageNotDispatchedError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { redactIdentifier } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createAcceptedWhatsAppSendResult } from "./inbound/send-result.test-helper.js";
 import type { ActiveWebListener } from "./inbound/types.js";
@@ -810,7 +810,7 @@ describe("web outbound", () => {
   });
 
   it("redacts recipients and poll text in outbound logs", async () => {
-    const logPath = path.join(os.tmpdir(), `openclaw-outbound-${crypto.randomUUID()}.log`);
+    const logPath = path.join(os.tmpdir(), `operator-outbound-${crypto.randomUUID()}.log`);
     setLoggerOverride({ level: "trace", file: logPath });
 
     await sendPollWhatsApp(

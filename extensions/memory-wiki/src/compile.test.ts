@@ -105,7 +105,7 @@ describe("compileMemoryWikiVault", () => {
       "[Alpha](alpha.md)",
     );
     const agentDigest = JSON.parse(
-      await fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"), "utf8"),
+      await fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"), "utf8"),
     ) as {
       claimCount: number;
       pages: Array<{ path: string; claimCount: number; topClaims: Array<{ text: string }> }>;
@@ -117,7 +117,7 @@ describe("compileMemoryWikiVault", () => {
       "Alpha is the canonical source page.",
     ]);
     await expect(
-      fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "claims.jsonl"), "utf8"),
+      fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "claims.jsonl"), "utf8"),
     ).resolves.toContain('"text":"Alpha is the canonical source page."');
   });
 
@@ -168,7 +168,7 @@ describe("compileMemoryWikiVault", () => {
       "Broken",
     );
     await expect(
-      fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"), "utf8"),
+      fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"), "utf8"),
     ).resolves.not.toContain("syntheses/broken.md");
   });
 
@@ -696,7 +696,7 @@ describe("compileMemoryWikiVault", () => {
       fs.readFile(path.join(rootDir, "reports", "stale-pages.md"), "utf8"),
     ).resolves.toContain("Tracked Raw Alpha Source");
     const agentDigest = JSON.parse(
-      await fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"), "utf8"),
+      await fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"), "utf8"),
     ) as {
       claimHealth: { missingEvidence: number; freshness: { unknown: number } };
       contradictionClusters: Array<{ key: string }>;
@@ -887,7 +887,7 @@ describe("compileMemoryWikiVault", () => {
     ).resolves.toContain("[Brad Groux](../entities/brad.md)");
 
     const agentDigest = JSON.parse(
-      await fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"), "utf8"),
+      await fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"), "utf8"),
     ) as {
       pages: Array<{
         path: string;
@@ -903,7 +903,7 @@ describe("compileMemoryWikiVault", () => {
     expect(bradPage.personCard?.lane).toBe("Microsoft Teams");
     expect(bradPage.relationshipCount).toBe(1);
     await expect(
-      fs.readFile(path.join(rootDir, ".openclaw-wiki", "cache", "claims.jsonl"), "utf8"),
+      fs.readFile(path.join(rootDir, ".operator-wiki", "cache", "claims.jsonl"), "utf8"),
     ).resolves.toContain('"evidenceKinds":["maintainer-whois"]');
   });
 

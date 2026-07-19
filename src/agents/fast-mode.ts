@@ -1,7 +1,7 @@
 /**
  * Resolves fast-mode state from agent config and runtime defaults.
  */
-import type { FastMode } from "@operator/normalization-core/string-coerce";
+import type { FastMode } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeFastMode } from "../auto-reply/thinking.shared.js";
 import type { SessionEntry } from "../config/sessions.js";
 import type { OperatorConfig } from "../config/types.operator.js";

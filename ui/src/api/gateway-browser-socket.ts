@@ -1,7 +1,7 @@
 import type {
   GatewayProtocolSocket,
   GatewayProtocolSocketHandlers,
-} from "@operator/gateway-client/browser";
+} from "@gabrielvfonseca/gateway-client/browser";
 
 export function createBrowserGatewaySocket(
   url: string,

@@ -1,4 +1,4 @@
-import { parseStreamingJson } from "@operator/ai/internal/runtime";
+import { parseStreamingJson } from "@gabrielvfonseca/ai/internal/runtime";
 import { WORKER_PROTOCOL_MAX_IDENTIFIER_LENGTH } from "../../packages/gateway-protocol/src/schema/worker-admission.js";
 import type {
   WorkerInferenceContext,

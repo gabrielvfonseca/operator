@@ -1,6 +1,6 @@
 // Covers wired hook inbound-claim dispatch behavior.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { createHookRunnerWithRegistry } from "./hooks.test-fixtures.js";
 

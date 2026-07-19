@@ -1,6 +1,6 @@
 // Persists update-control-plane sentinel files used by updater coordination.
 import fs from "node:fs/promises";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   markUpdateRestartSentinelFailure,
   writeRestartSentinel,

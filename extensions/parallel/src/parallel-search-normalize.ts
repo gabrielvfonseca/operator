@@ -6,9 +6,9 @@ import {
   buildSearchCacheKey,
   resolveSiteName,
   wrapWebContent,
-} from "openclaw/plugin-sdk/provider-web-search";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 
 // Internal-only bounds (the model-facing tool schema declares its own copies).
 const PARALLEL_MAX_SEARCH_COUNT = 40;
@@ -109,7 +109,7 @@ export function invalidSearchQueriesPayload() {
     error: "invalid_search_queries",
     message:
       "search_queries must be a non-empty array of keyword strings (max 5, max 200 chars each). See https://docs.parallel.ai/search/best-practices.",
-    docs: "https://docs.openclaw.ai/tools/parallel-search",
+    docs: "https://docs.operator.ai/tools/parallel-search",
   };
 }
 

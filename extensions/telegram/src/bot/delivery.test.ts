@@ -1,6 +1,6 @@
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Telegram tests cover delivery plugin behavior.
 import type { Bot } from "grammy";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createTelegramPromptContextProjectionSequence } from "../prompt-context-projection.js";
 const { loadWebMedia } = vi.hoisted(() => ({

@@ -1,5 +1,5 @@
 // Cleans stale queue state and recent dedupe entries.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveEmbeddedSessionLane } from "../../../agents/embedded-agent-runner/lanes.js";
 import { clearCommandLane } from "../../../process/command-queue.js";
 import { clearFollowupDrainCallback } from "./drain.js";

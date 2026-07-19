@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.Manifest
 import android.content.pm.PackageManager

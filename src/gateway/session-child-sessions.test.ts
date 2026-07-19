@@ -4,7 +4,7 @@
 import { expect, test, vi } from "vitest";
 import { loadCombinedSessionStoreForGateway } from "../config/sessions/combined-store-gateway.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { findDirectChildSessionsForParent } from "./session-child-sessions.js";
 
 vi.mock("../config/sessions/combined-store-gateway.js", () => ({

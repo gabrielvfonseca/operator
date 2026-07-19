@@ -21,10 +21,10 @@ describe("codex package manifest", () => {
       fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"),
     ) as CodexPackageManifest;
 
-    expect(packageJson.devDependencies).toHaveProperty("@operator/plugin-sdk");
+    expect(packageJson.devDependencies).toHaveProperty("@gabrielvfonseca/plugin-sdk");
     expect(packageJson.dependencies?.["@openai/codex"]).toBe("0.144.4");
-    expect(packageJson.openclaw?.release?.requireLatestDependencies).toEqual(["@openai/codex"]);
-    expect(packageJson.openclaw?.install?.requiredPlatformPackages).toEqual([
+    expect(packageJson.operator?.release?.requireLatestDependencies).toEqual(["@openai/codex"]);
+    expect(packageJson.operator?.install?.requiredPlatformPackages).toEqual([
       "@openai/codex-linux-x64",
       "@openai/codex-linux-arm64",
       "@openai/codex-darwin-x64",

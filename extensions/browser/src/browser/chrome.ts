@@ -15,12 +15,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
-import { prepareOomScoreAdjustedSpawn } from "openclaw/plugin-sdk/process-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { prepareOomScoreAdjustedSpawn } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { SsrFPolicy } from "../infra/net/ssrf.js";
 import { ensurePortAvailable } from "../infra/ports.js";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { redactToolPayloadText } from "../logging/redact.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { CONFIG_DIR } from "../utils.js";
@@ -744,7 +744,7 @@ function chromeLaunchHints(params: {
     CHROME_SINGLETON_IN_USE_PATTERN.test(params.stderrOutput);
   if (singletonInUse) {
     hints.push(
-      `The Chromium profile "${params.profile.name}" is locked. Stop the existing browser or remove stale Singleton* lock files under ~/.openclaw/browser/${params.profile.name}/user-data.`,
+      `The Chromium profile "${params.profile.name}" is locked. Stop the existing browser or remove stale Singleton* lock files under ~/.operator/browser/${params.profile.name}/user-data.`,
     );
   }
   return hints.length > 0 ? `\nHint: ${hints.join("\nHint: ")}` : "";

@@ -1,13 +1,13 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Google provider module implements model/runtime integration.
 import type {
   OperatorPluginApi,
   ProviderAuthContext,
   ProviderFetchUsageSnapshotContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { buildOauthProviderAuthResult } from "openclaw/plugin-sdk/provider-auth-result";
-import type { ProviderPlugin } from "openclaw/plugin-sdk/provider-model-shared";
-import { fetchGeminiUsage } from "openclaw/plugin-sdk/provider-usage";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { buildOauthProviderAuthResult } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-result";
+import type { ProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { fetchGeminiUsage } from "@gabrielvfonseca/operator/plugin-sdk/provider-usage";
 import { GOOGLE_GEMINI_CLI_PROVIDER_ID } from "./gemini-cli-auth-home.js";
 import { formatGoogleOauthApiKey, parseGoogleUsageToken } from "./oauth-token-shared.js";
 import { GOOGLE_GEMINI_PROVIDER_HOOKS } from "./provider-hooks.js";

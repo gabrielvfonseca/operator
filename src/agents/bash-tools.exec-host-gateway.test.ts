@@ -717,7 +717,7 @@ describe("processGatewayAllowlist", () => {
   });
 
   it("reviews and executes the same PATH-resolved executable", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auto-review-path-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-auto-review-path-"));
     const shadowGit = path.join(tempDir, "git");
     fs.writeFileSync(shadowGit, "#!/bin/sh\nexit 0\n", { mode: 0o755 });
     try {
@@ -1351,7 +1351,7 @@ describe("processGatewayAllowlist", () => {
   });
 
   it("requests human approval when auto-review cannot resolve the executable", async () => {
-    const command = "openclaw-definitely-missing-executable --version";
+    const command = "operator-definitely-missing-executable --version";
     const { resolvedPath } = await configurePlanBackedCommand({ command });
     expect(resolvedPath).toBeUndefined();
 
@@ -1530,7 +1530,10 @@ describe("processGatewayAllowlist", () => {
       analysisOk: true,
       allowlistSatisfied: true,
       segments: [
-        { resolution: null, argv: ["openclaw", "config", "get", "security.audit.suppressions"] },
+        {
+          resolution: null,
+          argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
+        },
       ],
       segmentAllowlistEntries: [],
       segmentSatisfiedBy: [null],
@@ -1559,7 +1562,14 @@ describe("processGatewayAllowlist", () => {
       segments: [
         {
           resolution: null,
-          argv: ["openclaw", "--profile", "rescue", "config", "get", "security.audit.suppressions"],
+          argv: [
+            "@gabrielvfonseca/operator",
+            "--profile",
+            "rescue",
+            "config",
+            "get",
+            "security.audit.suppressions",
+          ],
         },
       ],
       segmentAllowlistEntries: [],
@@ -1587,10 +1597,13 @@ describe("processGatewayAllowlist", () => {
       analysisOk: true,
       allowlistSatisfied: true,
       segments: [
-        { resolution: null, argv: ["openclaw", "config", "get", "security.audit.suppressions"] },
         {
           resolution: null,
-          argv: ["openclaw", "config", "set", "security.audit.suppressions", "[]"],
+          argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
+        },
+        {
+          resolution: null,
+          argv: ["@gabrielvfonseca/operator", "config", "set", "security.audit.suppressions", "[]"],
         },
       ],
       segmentAllowlistEntries: [],
@@ -1619,7 +1632,10 @@ describe("processGatewayAllowlist", () => {
       analysisOk: true,
       allowlistSatisfied: false,
       segments: [
-        { resolution: null, argv: ["openclaw", "config", "get", "security.audit.suppressions"] },
+        {
+          resolution: null,
+          argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
+        },
       ],
       segmentAllowlistEntries: [],
     });
@@ -1650,12 +1666,12 @@ describe("processGatewayAllowlist", () => {
         {
           raw: "openclaw config get security.audit.suppressions",
           resolution: null,
-          argv: ["openclaw", "config", "get", "security.audit.suppressions"],
+          argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
         },
         {
           raw: "openclaw config patch --stdin <<'EOF'",
           resolution: null,
-          argv: ["openclaw", "config", "patch", "--stdin"],
+          argv: ["@gabrielvfonseca/operator", "config", "patch", "--stdin"],
         },
       ],
       segmentAllowlistEntries: [],
@@ -1759,7 +1775,7 @@ EOF`,
       durationMs: 12,
       timedOut: false,
       aggregated: JSON.stringify({
-        path: "/tmp/openclaw-diagnostics.zip",
+        path: "/tmp/operator-diagnostics.zip",
         bytes: 1234,
         manifest: {
           generatedAt: "2026-04-28T20:58:29.311Z",
@@ -1811,7 +1827,7 @@ EOF`,
     expect(followupTarget?.direct).toBe(true);
     const followupText = requireSentFollowupText(0);
     expect(followupText).toContain("Diagnostics export created.");
-    expect(followupText).toContain("Path: /tmp/openclaw-diagnostics.zip");
+    expect(followupText).toContain("Path: /tmp/operator-diagnostics.zip");
     expect(followupText).toContain("Contents (2 files):");
     expect(followupText).toContain("OpenAI Codex harness:");
     expect(followupText).toContain("Codex diagnostics sent to OpenAI servers:");
@@ -1852,7 +1868,7 @@ EOF`,
       command: "openclaw sessions export-trajectory --json",
       approvalFollowupMode: "agent",
       sessionId: "approval-session",
-      sessionStore: "/tmp/openclaw-sessions.json",
+      sessionStore: "/tmp/operator-sessions.json",
       turnSourceChannel: "webchat",
     });
 
@@ -1863,7 +1879,7 @@ EOF`,
     expect(requireBuildFollowupTargetInput(0)).toMatchObject({
       direct: false,
       expectedSessionId: "approval-session",
-      sessionStore: "/tmp/openclaw-sessions.json",
+      sessionStore: "/tmp/operator-sessions.json",
     });
     expect(requireSentFollowupTarget(0)?.direct).toBe(false);
     expect(requireSentFollowupText(0)).toContain("done");

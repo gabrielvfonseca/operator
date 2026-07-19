@@ -1,3 +1,9 @@
+import {
+  resolveExpiresAtMsFromDurationMs,
+  timestampMsToIsoString,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { loadWebMediaRaw } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 // Discord plugin module implements send.guild behavior.
 import type {
   APIGuild,
@@ -7,12 +13,6 @@ import type {
   APIVoiceState,
   RESTPostAPIGuildScheduledEventJSONBody,
 } from "discord-api-types/v10";
-import {
-  resolveExpiresAtMsFromDurationMs,
-  timestampMsToIsoString,
-} from "openclaw/plugin-sdk/number-runtime";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { loadWebMediaRaw } from "openclaw/plugin-sdk/web-media";
 import {
   addGuildMemberRole,
   createGuildBan,

@@ -48,7 +48,7 @@ describe("tavily client X-Client-Source header", () => {
 
     expect(postTrustedWebToolsJson).toHaveBeenCalledOnce();
     const params = postTrustedWebToolsJson.mock.calls[0]?.[0];
-    expect(params.extraHeaders).toEqual({ "X-Client-Source": "openclaw" });
+    expect(params.extraHeaders).toEqual({ "X-Client-Source": "@gabrielvfonseca/operator" });
   });
 
   it("runTavilySearch reports malformed JSON with a stable provider error", async () => {
@@ -90,7 +90,7 @@ describe("tavily client X-Client-Source header", () => {
 
     expect(postTrustedWebToolsJson).toHaveBeenCalledOnce();
     const params = postTrustedWebToolsJson.mock.calls[0]?.[0];
-    expect(params.extraHeaders).toEqual({ "X-Client-Source": "openclaw" });
+    expect(params.extraHeaders).toEqual({ "X-Client-Source": "@gabrielvfonseca/operator" });
   });
 
   it("runTavilyExtract reports malformed JSON with a stable provider error", async () => {

@@ -1,5 +1,5 @@
 // Media-understanding resolve tests cover timeout clamping and capability filtering.
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../config/types.js";
 import { resolveMediaRuntimeTimeoutMs, resolveModelEntries, resolveTimeoutMs } from "./resolve.js";

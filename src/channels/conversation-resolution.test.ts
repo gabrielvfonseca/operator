@@ -1,6 +1,6 @@
 // Conversation resolution tests cover channel conversation lookup and fallback rules.
 import { afterEach, describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
 import { createChannelTestPluginBase, createTestRegistry } from "../test-utils/channel-plugins.js";
 import {

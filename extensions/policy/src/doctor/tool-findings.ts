@@ -1,5 +1,8 @@
-import type { HealthFinding } from "openclaw/plugin-sdk/health";
-import { isRecord, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { HealthFinding } from "@gabrielvfonseca/operator/plugin-sdk/health";
+import {
+  isRecord,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { PolicyEvidence, PolicyToolPostureEvidence } from "../policy-state.js";
 import { toolPosturePolicyShapeFinding } from "./agent-tool-shapes.js";
 import { CHECK_IDS, POLICY_CHECK_IDS } from "./check-ids.js";

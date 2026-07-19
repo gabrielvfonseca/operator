@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 // Control UI view renders usage render details screen content.
 import { html, svg, nothing } from "lit";
 import { formatDurationCompact } from "../../../../src/infra/format-time/format-duration.ts";
@@ -298,7 +298,7 @@ function renderSessionDetailPanel(
               `
             : nothing}
         </div>
-        <openclaw-tooltip .content=${t("usage.details.close")}>
+        <operator-tooltip .content=${t("usage.details.close")}>
           <button
             class="btn btn--sm btn--ghost"
             @click=${onClose}
@@ -306,7 +306,7 @@ function renderSessionDetailPanel(
           >
             ×
           </button>
-        </openclaw-tooltip>
+        </operator-tooltip>
       </div>
       ${session.scope === "family" && session.includedSessionIds?.length
         ? html`

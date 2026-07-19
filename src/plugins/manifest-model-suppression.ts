@@ -1,6 +1,6 @@
 // Resolves model suppression metadata declared by plugin manifests.
-import { buildModelCatalogMergeKey } from "@operator/model-catalog-core/model-catalog-refs";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { buildModelCatalogMergeKey } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   planManifestModelCatalogSuppressions,

@@ -2,8 +2,8 @@
 import {
   createProviderHttpError,
   readProviderJsonObjectResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildSearchCacheKey,
   buildUnsupportedSearchFilterResponse,
@@ -25,12 +25,12 @@ import {
   withTrustedWebSearchEndpoint,
   wrapWebContent,
   writeCachedSearchPayload,
-} from "openclaw/plugin-sdk/provider-web-search";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import {
   isRecord,
   normalizeOptionalString,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   isNativeMoonshotBaseUrl,
   MOONSHOT_BASE_URL,
@@ -362,7 +362,7 @@ export async function executeKimiWebSearchProviderTool(
       error: "missing_kimi_api_key",
       message:
         "web_search (kimi) needs a Moonshot API key. Set KIMI_API_KEY or MOONSHOT_API_KEY in the Gateway environment, or configure tools.web.search.kimi.apiKey. If you do not want to configure a search API key, use web_fetch for a specific URL or the browser tool for interactive pages.",
-      docs: "https://docs.openclaw.ai/tools/web",
+      docs: "https://docs.operator.ai/tools/web",
     };
   }
 
@@ -404,7 +404,7 @@ export async function executeKimiWebSearchProviderTool(
       query,
       provider: "kimi",
       model,
-      docs: "https://docs.openclaw.ai/tools/kimi-search",
+      docs: "https://docs.operator.ai/tools/kimi-search",
       tookMs: Date.now() - start,
     };
   }

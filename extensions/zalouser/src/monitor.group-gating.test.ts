@@ -1,6 +1,6 @@
 // Zalouser tests cover monitor.group gating plugin behavior.
-import { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/core";
+import { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../runtime-api.js";
 import "./monitor.send.test-mocks.js";

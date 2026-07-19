@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { PassThrough } from "node:stream";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "./test-helpers/schtasks-base-mocks.js";
 import {
@@ -107,7 +107,7 @@ function expectGatewayTermination(pid: number) {
 async function withPreparedGatewayTask(
   run: (context: { env: Record<string, string>; stdout: PassThrough }) => Promise<void>,
 ) {
-  await withWindowsEnv("openclaw-win-stop-", async ({ env }) => {
+  await withWindowsEnv("operator-win-stop-", async ({ env }) => {
     await writeGatewayScript(env, GATEWAY_PORT);
     const stdout = new PassThrough();
     await run({ env, stdout });

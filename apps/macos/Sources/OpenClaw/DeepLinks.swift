@@ -1,10 +1,10 @@
 import AppKit
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 import Security
 
-private let deepLinkLogger = Logger(subsystem: "ai.openclaw", category: "DeepLink")
+private let deepLinkLogger = Logger(subsystem: "ai.operator", category: "DeepLink")
 
 enum DeepLinkAgentPolicy {
     static let maxMessageChars = 20000
@@ -65,13 +65,13 @@ final class DeepLinkHandler {
             return
         case let .agent(link):
             guard !AppStateStore.shared.isPaused else {
-                self.presentAlert(title: "OpenClaw is paused", message: "Unpause OpenClaw to run agent actions.")
+                self.presentAlert(title: "Operator is paused", message: "Unpause Operator to run agent actions.")
                 return
             }
             await self.handleAgent(link: link, originalURL: url)
         case .gateway:
             guard !AppStateStore.shared.isPaused else {
-                self.presentAlert(title: "OpenClaw is paused", message: "Unpause OpenClaw to run agent actions.")
+                self.presentAlert(title: "Operator is paused", message: "Unpause Operator to run agent actions.")
                 return
             }
         }
@@ -104,7 +104,7 @@ final class DeepLinkHandler {
             let urlPreview = urlText.count > 500 ? "\(urlText.prefix(500))…" : urlText
             let body =
                 "Run the agent with this message?\n\n\(messagePreview)\n\nURL:\n\(urlPreview)"
-            guard self.confirm(title: "Run OpenClaw agent?", message: body) else { return }
+            guard self.confirm(title: "Run Operator agent?", message: body) else { return }
         }
 
         if AppStateStore.shared.connectionMode == .local {

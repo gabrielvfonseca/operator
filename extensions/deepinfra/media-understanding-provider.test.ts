@@ -2,7 +2,7 @@
 import {
   describeImagesWithModel,
   describeImageWithModel,
-} from "openclaw/plugin-sdk/media-understanding";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-understanding";
 import { afterAll, describe, expect, it, vi } from "vitest";
 import { deepinfraMediaUnderstandingProvider } from "./media-understanding-provider.js";
 

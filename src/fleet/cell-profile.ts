@@ -3,12 +3,12 @@ import path from "node:path";
 
 export type FleetContainerRuntimeName = "docker" | "podman";
 
-export const DEFAULT_FLEET_IMAGE = "ghcr.io/operator/operator:latest";
+export const DEFAULT_FLEET_IMAGE = "ghcr.io/openclaw/operator:latest";
 const FLEET_BASE_PORT = 19_100;
 export const FLEET_GATEWAY_PORT = 18_789;
 const FLEET_CONTAINER_HOME = "/home/node";
 const FLEET_CONTAINER_STATE_DIR = "/home/node/.operator";
-const FLEET_CONTAINER_AUTH_SECRET_DIR = "/home/node/.config/operator";
+const FLEET_CONTAINER_AUTH_SECRET_DIR = "/home/node/.config/openclaw";
 export const FLEET_TENANT_LABEL = "operator.fleet.tenant";
 export const FLEET_OWNER_LABEL = "operator.fleet.owner";
 export const FLEET_ATTEMPT_LABEL = "operator.fleet.attempt";

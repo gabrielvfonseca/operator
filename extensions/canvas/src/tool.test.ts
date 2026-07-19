@@ -60,7 +60,7 @@ describe("Canvas tool", () => {
   it.skipIf(process.platform === "win32")(
     "rejects jsonlPath symlinks that resolve outside the workspace",
     async () => {
-      tempRoot = await mkdtemp(path.join(os.tmpdir(), "openclaw-canvas-tool-"));
+      tempRoot = await mkdtemp(path.join(os.tmpdir(), "operator-canvas-tool-"));
       const workspaceDir = path.join(tempRoot, "workspace");
       await mkdir(workspaceDir);
       const outsidePath = path.join(tempRoot, "outside.jsonl");
@@ -109,7 +109,7 @@ describe("Canvas tool", () => {
         }
       | undefined;
     expect(imageResultParams?.label).toBe("canvas:snapshot");
-    expect(imageResultParams?.path).toMatch(/openclaw-canvas-snapshot-.*\.png$/);
+    expect(imageResultParams?.path).toMatch(/operator-canvas-snapshot-.*\.png$/);
     expect(imageResultParams?.details).toEqual({ format: "png" });
     expect(imageResultParams?.imageSanitization).toEqual({ maxDimensionPx: 1600 });
   });

@@ -1,11 +1,11 @@
 // Scans plugin manifest metadata without importing runtime entrypoints.
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString as normalizeTrimmedString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString as normalizeTrimmedString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import { resolveHomeRelativePath } from "../infra/home-dir.js";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import { readPersistedInstalledPluginIndexSync } from "./installed-plugin-index-store.js";
@@ -108,7 +108,7 @@ function isSourceCheckoutRoot(packageRoot: string): boolean {
   );
 }
 
-function resolveOperatorPackageRootsForSourceManifestMetadata(): string[] {
+function resolvePackageRootsForSourceManifestMetadata(): string[] {
   const roots: string[] = [];
   for (const params of [
     { argv1: process.argv[1] },
@@ -125,7 +125,7 @@ function resolveOperatorPackageRootsForSourceManifestMetadata(): string[] {
 function listSourceCheckoutPluginDirs(startOrder: number): CandidateDir[] {
   const dirs: CandidateDir[] = [];
   let order = startOrder;
-  for (const packageRoot of resolveOperatorPackageRootsForSourceManifestMetadata()) {
+  for (const packageRoot of resolvePackageRootsForSourceManifestMetadata()) {
     if (!isSourceCheckoutRoot(packageRoot)) {
       continue;
     }

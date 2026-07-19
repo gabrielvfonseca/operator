@@ -1,5 +1,5 @@
 // Discord plugin module implements ui colors behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { inspectDiscordAccount } from "./account-inspect.js";
 
 const DEFAULT_DISCORD_ACCENT_COLOR = "#5865F2";

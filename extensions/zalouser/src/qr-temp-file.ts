@@ -1,7 +1,7 @@
 // Zalouser plugin module implements qr temp file behavior.
 import fsp from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 
 export async function writeQrDataUrlToTempFile(
   qrDataUrl: string,
@@ -16,7 +16,7 @@ export async function writeQrDataUrlToTempFile(
   const safeProfile = profile.replace(/[^a-zA-Z0-9_-]+/g, "-") || "default";
   const filePath = path.join(
     resolvePreferredOperatorTmpDir(),
-    `openclaw-zalouser-qr-${safeProfile}.png`,
+    `operator-zalouser-qr-${safeProfile}.png`,
   );
   await fsp.writeFile(filePath, Buffer.from(base64, "base64"));
   return filePath;

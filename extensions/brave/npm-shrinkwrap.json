@@ -1,11 +1,11 @@
 {
-  "name": "@operator/brave-plugin",
+  "name": "@gabrielvfonseca/brave-plugin",
   "version": "2026.7.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/brave-plugin",
+      "name": "@gabrielvfonseca/brave-plugin",
       "version": "2026.7.2"
     }
   }

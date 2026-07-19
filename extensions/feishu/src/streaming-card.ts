@@ -2,14 +2,17 @@
  * Feishu Streaming Card - Card Kit streaming API for real-time text output
  */
 
-import type { Client } from "@larksuiteoapi/node-sdk";
 import {
   asDateTimestampMs,
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationSeconds,
-} from "openclaw/plugin-sdk/number-runtime";
-import { fetchWithSsrFGuard, type LookupFn } from "openclaw/plugin-sdk/ssrf-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  fetchWithSsrFGuard,
+  type LookupFn,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import type { Client } from "@larksuiteoapi/node-sdk";
 import { FEISHU_HTTP_TIMEOUT_MS } from "./client-timeout.js";
 import { getFeishuUserAgent } from "./client.js";
 import { requestFeishuApi } from "./comment-shared.js";

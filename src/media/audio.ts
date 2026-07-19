@@ -1,6 +1,6 @@
 // Audio media helpers normalize audio mime types, extensions, and load options.
-import { getFileExtension, normalizeMimeType } from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { getFileExtension, normalizeMimeType } from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** File extensions accepted by channel voice-message upload paths. */
 const VOICE_MESSAGE_AUDIO_EXTENSIONS = new Set([".oga", ".ogg", ".opus", ".mp3", ".m4a"]);

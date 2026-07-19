@@ -1,14 +1,14 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
-struct OpenClawMascotAnimatorTests {
-    private func makeAnimator(seed: UInt64 = 7, interactive: Bool = false) -> OpenClawMascotAnimator {
-        OpenClawMascotAnimator(seed: seed, hourOfDay: 12, allowsAutoSleep: interactive)
+struct OperatorMascotAnimatorTests {
+    private func makeAnimator(seed: UInt64 = 7, interactive: Bool = false) -> OperatorMascotAnimator {
+        OperatorMascotAnimator(seed: seed, hourOfDay: 12, allowsAutoSleep: interactive)
     }
 
     @Test func `poses stay inside drawable bounds for every mood`() {
-        for mood in OpenClawMascotMood.allCases {
+        for mood in OperatorMascotMood.allCases {
             let animator = self.makeAnimator()
             _ = animator.pose(at: 0)
             animator.setMood(mood, at: 0)
@@ -187,21 +187,21 @@ struct OpenClawMascotAnimatorTests {
     }
 
     @Test func `static poses carry the mood signature`() {
-        let sad = OpenClawMascotPose.staticPose(for: .sad)
+        let sad = OperatorMascotPose.staticPose(for: .sad)
         #expect(sad.antennaDroop > 0)
         #expect(sad.mouthCurve < 0)
-        let celebrating = OpenClawMascotPose.staticPose(for: .celebrating)
+        let celebrating = OperatorMascotPose.staticPose(for: .celebrating)
         #expect(celebrating.leftClawDegrees > 0)
         #expect(celebrating.mouthCurve > 0)
-        let idle = OpenClawMascotPose.staticPose(for: .idle)
-        #expect(idle == OpenClawMascotPose())
-        let working = OpenClawMascotPose.staticPose(for: .working)
+        let idle = OperatorMascotPose.staticPose(for: .idle)
+        #expect(idle == OperatorMascotPose())
+        let working = OperatorMascotPose.staticPose(for: .working)
         #expect(working.hardHat == 1)
         #expect(working.rightClawDegrees < 0)
     }
 
     @Test func `clamp channels bounds every channel`() {
-        var pose = OpenClawMascotPose()
+        var pose = OperatorMascotPose()
         pose.floatOffset = -100
         pose.bodyStretch = 3
         pose.bodyTilt = -90

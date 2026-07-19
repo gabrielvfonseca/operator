@@ -42,8 +42,8 @@ enum LaunchAgentPlist {
             .trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
         let port = Self.extractFlagInt(programArguments, flag: "--port")
         let bind = Self.extractFlagString(programArguments, flag: "--bind")?.lowercased()
-        let token = env["OPENCLAW_GATEWAY_TOKEN"]?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
-        let password = env["OPENCLAW_GATEWAY_PASSWORD"]?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+        let token = env["OPERATOR_GATEWAY_TOKEN"]?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+        let password = env["OPERATOR_GATEWAY_PASSWORD"]?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
         return LaunchAgentPlistSnapshot(
             programArguments: programArguments,
             environment: env,
@@ -70,7 +70,7 @@ enum LaunchAgentPlist {
         let usesDirectWrapper = programArguments.count >= 2 &&
             programArguments[0] == wrapperPath &&
             programArguments[1] == filePath
-        // Read only the canonical file when the LaunchAgent uses OpenClaw's generated wrapper.
+        // Read only the canonical file when the LaunchAgent uses Operator's generated wrapper.
         // This keeps arbitrary ProgramArguments paths from becoming app-readable secret sources.
         guard usesShellWrapper || usesDirectWrapper,
               FileManager.default.fileExists(atPath: wrapperPath),

@@ -9,12 +9,12 @@ import {
   type EmbeddedRunAttemptParams,
   type NativeHookRelayEvent,
   type NativeHookRelayRegistrationHandle,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { emitTrustedDiagnosticEvent } from "openclaw/plugin-sdk/diagnostic-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { emitTrustedDiagnosticEvent } from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import {
   addTimerTimeoutGraceMs,
   finiteSecondsToTimerSafeMilliseconds,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type { CodexAppServerRuntimeOptions } from "./config.js";
 import { resolveCodexToolAbortTerminalReason } from "./dynamic-tool-execution.js";
 import { nativeHookRelayUnregisterQueue } from "./native-hook-relay-state.js";
@@ -224,7 +224,7 @@ function buildCodexNativeHookRelayId(params: {
   sessionKey: string | undefined;
 }): string {
   const hash = createHash("sha256");
-  hash.update("openclaw:codex:native-hook-relay:v1");
+  hash.update("operator:codex:native-hook-relay:v1");
   hash.update("\0");
   hash.update(params.agentId?.trim() || "");
   hash.update("\0");

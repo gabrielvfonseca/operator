@@ -1,6 +1,6 @@
 // Tests runtime queue settings with mocked provider fallback state.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 
 const getLoadedChannelPluginMock = vi.hoisted(() => vi.fn());
 

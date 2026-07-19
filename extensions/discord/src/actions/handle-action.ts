@@ -1,20 +1,20 @@
 // Discord plugin module implements handle action behavior.
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
+import type { AgentToolResult } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import {
   readPositiveIntegerParam,
   readStringArrayParam,
   readStringParam,
-} from "openclaw/plugin-sdk/agent-runtime";
-import { readBooleanParam } from "openclaw/plugin-sdk/boolean-param";
-import { resolveReactionMessageId } from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionContext } from "openclaw/plugin-sdk/channel-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { readBooleanParam } from "@gabrielvfonseca/operator/plugin-sdk/boolean-param";
+import { resolveReactionMessageId } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelMessageActionContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import {
   adaptMessagePresentationForChannel,
   normalizeInteractiveReply,
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { normalizeOptionalStringifiedId } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { normalizeOptionalStringifiedId } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { handleDiscordAction } from "../../action-runtime-api.js";
 import { notifyDiscordInboundEventOutboundSuccess } from "../inbound-event-delivery.js";
 import {

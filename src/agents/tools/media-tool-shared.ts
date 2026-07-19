@@ -3,14 +3,14 @@
  *
  * Resolves provider/model config, local roots, auth availability, SSRF policy, and media reference inputs.
  */
-import { normalizeInboundPathRoots } from "@operator/media-core/inbound-path-policy";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { parseBoolean } from "@operator/normalization-core/boolean-coercion";
+import { normalizeInboundPathRoots } from "@gabrielvfonseca/media-core/inbound-path-policy";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { parseBoolean } from "@gabrielvfonseca/normalization-core/boolean-coercion";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   findCapabilityProviderById,
   resolveCapabilityModelRefForProviders,

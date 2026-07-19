@@ -1,10 +1,10 @@
 // Discord plugin module implements listeners behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { requestHeartbeat } from "openclaw/plugin-sdk/heartbeat-runtime";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { danger } from "openclaw/plugin-sdk/runtime-env";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { requestHeartbeat } from "@gabrielvfonseca/operator/plugin-sdk/heartbeat-runtime";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
 import {
   type Client,
   GuildCreateListener,

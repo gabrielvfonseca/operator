@@ -1,5 +1,5 @@
 // Enqueues follow-up reply runs and schedules queue drains.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeChatType } from "../../../channels/chat-type.js";
 import { resolveGlobalDedupeCache } from "../../../infra/dedupe.js";
 import { channelRouteDedupeKey } from "../../../plugin-sdk/channel-route.js";

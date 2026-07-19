@@ -1,6 +1,19 @@
 // Whatsapp plugin module implements session behavior.
 import { randomUUID } from "node:crypto";
 import type { Agent } from "node:https";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import { VERSION } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import {
+  createHttp1EnvHttpProxyAgent,
+  createHttp1ProxyAgent,
+  createNodeProxyAgent,
+} from "@gabrielvfonseca/operator/plugin-sdk/fetch-runtime";
+import { danger, success } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { getChildLogger, toPinoLikeLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  ensureDir,
+  resolveUserPath,
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type {
   GroupMetadata,
   SignalDataTypeMap,
@@ -8,16 +21,6 @@ import type {
   WAMessageKey,
   proto,
 } from "baileys";
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import { VERSION } from "openclaw/plugin-sdk/cli-runtime";
-import {
-  createHttp1EnvHttpProxyAgent,
-  createHttp1ProxyAgent,
-  createNodeProxyAgent,
-} from "openclaw/plugin-sdk/fetch-runtime";
-import { danger, success } from "openclaw/plugin-sdk/runtime-env";
-import { getChildLogger, toPinoLikeLogger } from "openclaw/plugin-sdk/runtime-env";
-import { ensureDir, resolveUserPath } from "openclaw/plugin-sdk/text-utility-runtime";
 import {
   readCredsJsonRaw,
   restoreCredsFromBackupIfNeeded,
@@ -322,7 +325,7 @@ export async function createWaSocket(
     version,
     logger,
     printQRInTerminal: false,
-    browser: ["openclaw", "cli", VERSION],
+    browser: ["@gabrielvfonseca/operator", "cli", VERSION],
     syncFullHistory: false,
     markOnlineOnConnect: false,
     ...socketTiming,

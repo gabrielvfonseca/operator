@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   fingerprintAuthProfileCredential,
@@ -10,7 +10,7 @@ import {
   fingerprintResolvedProviderAuth,
 } from "../agents/execution-auth-binding.js";
 import { hashSystemAgentOperation } from "../agents/tools/system-agent-tool.js";
-import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.operator.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 import { runSystemAgentTurnWithDeps } from "./agent-turn.test-support.js";
 import { classifySystemAgentApprovalText } from "./approval-intent.js";
@@ -34,7 +34,7 @@ const mocks = vi.hoisted(() => ({
   readConfigFileSnapshot: vi.fn(async () => ({
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "h",
     config: {},
     sourceConfig: {},
@@ -77,7 +77,7 @@ const sharedVerifiedInferenceConfig = {
       {
         id: "main",
         default: true,
-        agentDir: "/tmp/openclaw-openclaw-chat-engine-agent",
+        agentDir: "/tmp/operator-operator-chat-engine-agent",
         model: "openai/gpt-5.5",
       },
     ],
@@ -98,7 +98,7 @@ let sharedVerifiedInference: SystemAgentVerifiedInferenceBinding | undefined;
 let sharedVerifiedInferenceDeps: SystemAgentVerifiedInferenceDeps | undefined;
 
 function useTempStateDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-engine-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-engine-"));
   tempDirs.push(dir);
   vi.stubEnv("OPERATOR_STATE_DIR", dir);
   return dir;
@@ -108,7 +108,7 @@ function configSnapshot(config: OperatorConfig): ConfigFileSnapshot {
   return {
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "h",
     raw: null,
     parsed: config,
@@ -127,8 +127,10 @@ function testHarnessBinding(route: SystemAgentConfiguredRoute) {
     return { auth: {}, deps: {} };
   }
   const agentHarnessId =
-    route.agentHarnessRuntimeOverride === "auto" ? "openclaw" : route.agentHarnessRuntimeOverride;
-  if (agentHarnessId === "openclaw") {
+    route.agentHarnessRuntimeOverride === "auto"
+      ? "@gabrielvfonseca/operator"
+      : route.agentHarnessRuntimeOverride;
+  if (agentHarnessId === "@gabrielvfonseca/operator") {
     return { auth: { agentHarnessId }, deps: {} };
   }
   return {
@@ -425,7 +427,7 @@ describe("SystemAgentChatEngine", () => {
   it("rejects a setup write without a verified inference binding", async () => {
     useTempStateDir();
     const applySetup = vi.fn(async () => ({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       configHashBefore: null,
       configHashAfter: "after",
       lines: ["Workspace: /tmp/work"],
@@ -558,7 +560,7 @@ describe("SystemAgentChatEngine", () => {
     mocks.readSetupConfigFileSnapshot.mockImplementation(async () => ({
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: currentHash,
       config: structuredClone(currentConfig),
       sourceConfig: structuredClone(currentConfig),
@@ -645,7 +647,7 @@ describe("SystemAgentChatEngine", () => {
     mocks.readSetupConfigFileSnapshot.mockResolvedValue({
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "base-hash",
       config: structuredClone(baseConfig),
       sourceConfig: structuredClone(baseConfig),
@@ -707,7 +709,7 @@ describe("SystemAgentChatEngine", () => {
     mocks.readSetupConfigFileSnapshot.mockResolvedValue({
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "base-hash",
       config: structuredClone(baseConfig),
       sourceConfig: structuredClone(baseConfig),
@@ -1308,7 +1310,7 @@ describe("SystemAgentChatEngine", () => {
       latencyMs: 100,
     }));
     const applySetup = vi.fn(async () => ({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       configHashBefore: "before",
       configHashAfter: "after",
       lines: ["Workspace: /tmp/new-work"],
@@ -1527,7 +1529,7 @@ describe("SystemAgentChatEngine", () => {
     expect(call.surface).toBe("gateway");
     // A question is not consent: mutations stay locked for this turn.
     expect(call.approvalArmed).toBe(false);
-    expect(call.session.sessionId).toMatch(/^openclaw-/);
+    expect(call.session.sessionId).toMatch(/^operator-/);
     // The same session flows into every turn for real multi-turn memory.
     await engine.handle("and the gateway?");
     expect(runAgentTurn.mock.calls[1]?.[0]).toMatchObject({
@@ -1653,7 +1655,7 @@ describe("SystemAgentChatEngine", () => {
       mocks.readConfigFileSnapshot.mockResolvedValue({
         exists: true,
         valid: false,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         hash: "h",
         config: {},
         sourceConfig: {},
@@ -1684,7 +1686,7 @@ describe("SystemAgentChatEngine", () => {
       mocks.readConfigFileSnapshot.mockResolvedValue({
         exists: true,
         valid: false,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         hash: "h",
         config: {},
         sourceConfig: {},
@@ -1714,7 +1716,7 @@ describe("SystemAgentChatEngine", () => {
       mocks.readConfigFileSnapshot.mockResolvedValue({
         exists: false,
         valid: true,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         hash: null,
         config: {},
         sourceConfig: {},
@@ -1729,7 +1731,7 @@ describe("SystemAgentChatEngine", () => {
     expect(runConfigSet).toHaveBeenCalledOnce();
     expect(reply.text).toContain("The write was applied");
     expect(reply.text).toContain("post-write verification is unavailable");
-    expect(reply.text).toContain("openclaw.json was not found");
+    expect(reply.text).toContain("operator.json was not found");
     expect(reply.text).toContain("openclaw doctor --fix");
   });
 
@@ -1738,7 +1740,7 @@ describe("SystemAgentChatEngine", () => {
     const validSnapshot = {
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "h",
       config: {},
       sourceConfig: {},
@@ -1757,7 +1759,7 @@ describe("SystemAgentChatEngine", () => {
     expect(runConfigSet).toHaveBeenCalledOnce();
     expect(reply.text).toContain("The write was applied");
     expect(reply.text).toContain("post-write verification is unavailable");
-    expect(reply.text).toContain("openclaw.json could not be read");
+    expect(reply.text).toContain("operator.json could not be read");
     expect(reply.text).toContain("openclaw doctor --fix");
   });
 
@@ -1903,7 +1905,7 @@ function fakeOverviewLoader(
 ) {
   return async () =>
     ({
-      config: { path: "/tmp/openclaw.json", exists: false, valid: true, issues: [], hash: null },
+      config: { path: "/tmp/operator.json", exists: false, valid: true, issues: [], hash: null },
       agents: [],
       defaultAgentId: "main",
       defaultModel: overrides.defaultModel,
@@ -1915,7 +1917,7 @@ function fakeOverviewLoader(
       },
       gateway: { url: "ws://127.0.0.1:18789", source: "local", reachable: false },
       references: {
-        docsUrl: "https://docs.openclaw.ai",
+        docsUrl: "https://docs.operator.ai",
         sourceUrl: "https://github.com/openclaw/openclaw",
       },
     }) as never;

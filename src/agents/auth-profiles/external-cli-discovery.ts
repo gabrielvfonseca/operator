@@ -3,7 +3,7 @@
  * Converts provider/config lookup contexts into scoped discovery options for
  * auth profile store loading.
  */
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   resolveExternalCliAuthScopeFromConfig,

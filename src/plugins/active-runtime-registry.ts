@@ -1,5 +1,5 @@
 // Stores active runtime plugin registry state and activation metadata.
-import { normalizeSortedUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeSortedUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveCompatibleRuntimePluginRegistry, type PluginLoadOptions } from "./loader.js";
 import type { PluginRecord, PluginRegistry } from "./registry-types.js";
 import {

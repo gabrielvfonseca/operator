@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 struct ExecApprovalEvaluation {
     let displayCommand: String
@@ -85,7 +85,7 @@ struct ExecApprovalPolicySnapshot: Sendable, Equatable {
             allowlist: approvals.allowlist)
     }
 
-    init(portable: OpenClawSystemRunApprovalPolicySnapshot) {
+    init(portable: OperatorSystemRunApprovalPolicySnapshot) {
         self.init(
             security: ExecSecurity(rawValue: portable.security.rawValue)!,
             ask: ExecAsk(rawValue: portable.ask.rawValue)!,
@@ -99,14 +99,14 @@ struct ExecApprovalPolicySnapshot: Sendable, Equatable {
             })
     }
 
-    var portable: OpenClawSystemRunApprovalPolicySnapshot {
-        OpenClawSystemRunApprovalPolicySnapshot(
+    var portable: OperatorSystemRunApprovalPolicySnapshot {
+        OperatorSystemRunApprovalPolicySnapshot(
             security: .init(rawValue: self.security.rawValue)!,
             ask: .init(rawValue: self.ask.rawValue)!,
             askFallback: .init(rawValue: self.askFallback.rawValue)!,
             autoAllowSkills: self.autoAllowSkills,
             allowlistRules: self.allowlistRules.map { rule in
-                OpenClawSystemRunApprovalPolicySnapshot.Rule(
+                OperatorSystemRunApprovalPolicySnapshot.Rule(
                     pattern: Self.portableString(rule.match.pattern),
                     argPattern: rule.match.argPattern.isEmpty
                         ? nil

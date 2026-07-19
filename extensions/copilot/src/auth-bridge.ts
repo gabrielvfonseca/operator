@@ -25,7 +25,7 @@ import { join, resolve } from "node:path";
  *     non-reversible pool fingerprint so token rotation busts the
  *     client pool cleanly.
  *   - Computes a per-agent `copilotHome` default
- *     (`<openClawHome>/.openclaw/agents/<agentId>/copilot`, or
+ *     (`<openClawHome>/.operator/agents/<agentId>/copilot`, or
  *     `<agentDir>/copilot` when an agent directory is supplied) that
  *     respects `OPERATOR_HOME` for the home directory root.
  *   - Defaults to `useLoggedInUser` when no token signal is available.
@@ -271,8 +271,8 @@ function resolveCopilotHome(args: {
   const openClawHome = readString(args.env.OPERATOR_HOME);
   const rootHome = openClawHome ? resolve(openClawHome) : safeHomeDir(args.homeDir);
   // Per-agent isolation per proposal section 3.6:
-  //   <openClawHome>/.openclaw/agents/<agentId>/copilot
-  return resolve(join(rootHome, ".openclaw", "agents", args.agentId, "copilot"));
+  //   <openClawHome>/.operator/agents/<agentId>/copilot
+  return resolve(join(rootHome, ".operator", "agents", args.agentId, "copilot"));
 }
 
 function safeHomeDir(homeDir: () => string): string {

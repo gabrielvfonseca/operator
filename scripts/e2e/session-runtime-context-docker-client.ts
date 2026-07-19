@@ -6,8 +6,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
-import { readSessionTranscriptEvents } from "openclaw/plugin-sdk/session-transcript-runtime";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
+import { readSessionTranscriptEvents } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import {
   buildRuntimeContextCustomMessage,
   resolveRuntimeContextPromptParts,
@@ -51,15 +51,15 @@ function messageText(content: unknown): string {
 }
 
 async function verifyRuntimeContextTranscriptShape(root: string) {
-  const sessionFile = path.join(root, ".openclaw", "agents", "main", "sessions", "runtime.jsonl");
+  const sessionFile = path.join(root, ".operator", "agents", "main", "sessions", "runtime.jsonl");
   await fs.mkdir(path.dirname(sessionFile), { recursive: true });
   const sessionManager = SessionManager.open(sessionFile);
   const effectivePrompt = [
     "visible ask",
     "",
-    "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+    "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
     "secret docker context",
-    "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+    "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
   ].join("\n");
   const promptSubmission = resolveRuntimeContextPromptParts({
     effectivePrompt,
@@ -89,7 +89,7 @@ async function verifyRuntimeContextTranscriptShape(root: string) {
   const customEntry = entries.find((entry) => entry.type === "custom_message");
   assert(!customEntry, "runtime custom message should not be persisted without its user turn");
   assert(
-    runtimeContextMessage.customType === "openclaw.runtime-context",
+    runtimeContextMessage.customType === "operator.runtime-context",
     "unexpected custom message type",
   );
   assert(!runtimeContextMessage.display, "runtime custom message should be hidden");
@@ -103,7 +103,7 @@ async function verifyRuntimeContextTranscriptShape(root: string) {
   const userText = messageText(userEntries[0]?.message?.content);
   assert(userText === "visible ask", `unexpected visible user text: ${JSON.stringify(userText)}`);
   assert(
-    !userText.includes("OPENCLAW_INTERNAL_CONTEXT") && !userText.includes("secret docker context"),
+    !userText.includes("OPERATOR_INTERNAL_CONTEXT") && !userText.includes("secret docker context"),
     "visible user transcript leaked runtime context",
   );
 }
@@ -129,9 +129,9 @@ async function seedBrokenSession(stateDir: string): Promise<string> {
         content: [
           "visible ask",
           "",
-          "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "secret doctor context",
-          "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
         ].join("\n"),
       },
     },
@@ -179,8 +179,8 @@ async function seedBrokenSession(stateDir: string): Promise<string> {
 }
 
 async function verifyDoctorRepair(root: string) {
-  const stateDir = path.join(root, ".openclaw");
-  const configPath = path.join(stateDir, "openclaw.json");
+  const stateDir = path.join(root, ".operator");
+  const configPath = path.join(stateDir, "operator.json");
   const sessionFile = await seedBrokenSession(stateDir);
   await fs.mkdir(path.dirname(configPath), { recursive: true });
   await fs.writeFile(configPath, JSON.stringify({ plugins: { enabled: false } }, null, 2));
@@ -194,15 +194,15 @@ async function verifyDoctorRepair(root: string) {
     env: {
       ...process.env,
       HOME: root,
-      OPENCLAW_CONFIG_PATH: configPath,
-      OPENCLAW_DISABLE_BONJOUR: "1",
-      OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-      OPENCLAW_NO_ONBOARD: "1",
-      OPENCLAW_STATE_DIR: stateDir,
-      OPENCLAW_SKIP_CANVAS_HOST: "1",
-      OPENCLAW_SKIP_CHANNELS: "1",
-      OPENCLAW_SKIP_CRON: "1",
-      OPENCLAW_SKIP_GMAIL_WATCHER: "1",
+      OPERATOR_CONFIG_PATH: configPath,
+      OPERATOR_DISABLE_BONJOUR: "1",
+      OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+      OPERATOR_NO_ONBOARD: "1",
+      OPERATOR_STATE_DIR: stateDir,
+      OPERATOR_SKIP_CANVAS_HOST: "1",
+      OPERATOR_SKIP_CHANNELS: "1",
+      OPERATOR_SKIP_CRON: "1",
+      OPERATOR_SKIP_GMAIL_WATCHER: "1",
     },
     encoding: "utf-8",
     timeout: 120_000,
@@ -212,7 +212,7 @@ async function verifyDoctorRepair(root: string) {
     result.status === 0,
     `doctor --fix failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`,
   );
-  const databasePath = path.join(stateDir, "agents", "main", "agent", "openclaw-agent.sqlite");
+  const databasePath = path.join(stateDir, "agents", "main", "agent", "operator-agent.sqlite");
   const database = new DatabaseSync(databasePath, { readOnly: true });
   let migratedSessionId: string | undefined;
   try {
@@ -250,17 +250,17 @@ async function verifyDoctorRepair(root: string) {
 }
 
 async function main() {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-runtime-context-"));
-  const stateDir = path.join(root, ".openclaw");
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-runtime-context-"));
+  const stateDir = path.join(root, ".operator");
   setEnvValue("HOME", root);
-  setEnvValue("OPENCLAW_STATE_DIR", stateDir);
-  setEnvValue("OPENCLAW_CONFIG_PATH", path.join(stateDir, "openclaw.json"));
+  setEnvValue("OPERATOR_STATE_DIR", stateDir);
+  setEnvValue("OPERATOR_CONFIG_PATH", path.join(stateDir, "operator.json"));
   try {
     await verifyRuntimeContextTranscriptShape(root);
     await verifyDoctorRepair(root);
     console.log("session runtime context Docker E2E passed");
   } finally {
-    if (process.env.OPENCLAW_SESSION_RUNTIME_CONTEXT_KEEP_ARTIFACTS !== "1") {
+    if (process.env.OPERATOR_SESSION_RUNTIME_CONTEXT_KEEP_ARTIFACTS !== "1") {
       await fs.rm(root, { recursive: true, force: true });
     } else {
       console.error(`kept artifacts: ${root}`);

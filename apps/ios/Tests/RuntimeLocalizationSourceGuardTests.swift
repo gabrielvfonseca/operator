@@ -1,23 +1,23 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct RuntimeLocalizationSourceGuardTests {
     @Test func liveActivityStatePersistsSemanticsAndExternalDetail() throws {
-        for status in OpenClawActivityAttributes.ContentState.Status.allCases {
-            let state = OpenClawActivityAttributes.ContentState(
+        for status in OperatorActivityAttributes.ContentState.Status.allCases {
+            let state = OperatorActivityAttributes.ContentState(
                 status: status,
                 verbatimDetail: status == .attention ? "Backend supplied detail" : nil,
                 startedAt: Date(timeIntervalSince1970: 1_234))
             let data = try JSONEncoder().encode(state)
-            let decoded = try JSONDecoder().decode(OpenClawActivityAttributes.ContentState.self, from: data)
+            let decoded = try JSONDecoder().decode(OperatorActivityAttributes.ContentState.self, from: data)
 
             #expect(decoded == state)
         }
     }
 
     @Test func liveActivityStateDecodesShippedLegacyPayloads() throws {
-        let cases: [(LegacyContentState, OpenClawActivityAttributes.ContentState.Status, String?)] = [
+        let cases: [(LegacyContentState, OperatorActivityAttributes.ContentState.Status, String?)] = [
             (LegacyContentState(statusText: "Disconnected", isDisconnected: true), .disconnected, nil),
             (LegacyContentState(statusText: "Idle", isIdle: true), .idle, nil),
             (LegacyContentState(statusText: "Reconnecting...", isConnecting: true), .reconnecting, nil),
@@ -32,7 +32,7 @@ struct RuntimeLocalizationSourceGuardTests {
 
         for (legacy, expectedStatus, expectedDetail) in cases {
             let data = try JSONEncoder().encode(legacy)
-            let decoded = try JSONDecoder().decode(OpenClawActivityAttributes.ContentState.self, from: data)
+            let decoded = try JSONDecoder().decode(OperatorActivityAttributes.ContentState.self, from: data)
 
             #expect(decoded.status == expectedStatus)
             #expect(decoded.verbatimDetail == expectedDetail)
@@ -41,13 +41,13 @@ struct RuntimeLocalizationSourceGuardTests {
     }
 
     @Test func runtimeOwnedCopyRemainsLocalizableAtRenderTime() throws {
-        let attributes = try Self.source("Sources/LiveActivity/OpenClawActivityAttributes.swift")
+        let attributes = try Self.source("Sources/LiveActivity/OperatorActivityAttributes.swift")
         let manager = try Self.source("Sources/LiveActivity/LiveActivityManager.swift")
-        let widget = try Self.source("ActivityWidget/OpenClawLiveActivity.swift")
+        let widget = try Self.source("ActivityWidget/OperatorLiveActivity.swift")
         let project = try Self.source("project.yml")
         let dreaming = try Self.source("Sources/Design/AgentProDreamingDestination.swift")
         let phoneControlHub = try Self.source("Sources/Design/RootTabsPhoneControlHub.swift")
-        let proComponents = try Self.source("Sources/Design/OpenClawProComponents.swift")
+        let proComponents = try Self.source("Sources/Design/OperatorProComponents.swift")
         let skillWorkshop = try Self.source("Sources/Design/IPadSkillWorkshopScreen.swift")
         let workboard = try Self.source("Sources/Design/IPadWorkboardScreen.swift")
         let talkPro = try Self.source("Sources/Design/TalkProTab.swift")
@@ -55,7 +55,7 @@ struct RuntimeLocalizationSourceGuardTests {
         let rootTabs = try Self.source("Sources/RootTabs.swift")
         let rootTabsNavigation = try Self.source("Sources/RootTabsNavigation.swift")
         let watchInbox = try Self.source("WatchApp/Sources/WatchInboxView.swift")
-        let chat = try Self.sharedSource("OpenClawChatUI/ChatMessageViews.swift")
+        let chat = try Self.sharedSource("OperatorChatUI/ChatMessageViews.swift")
 
         #expect(!attributes.contains("var statusText"))
         #expect(attributes.contains("var status: Status"))
@@ -66,7 +66,7 @@ struct RuntimeLocalizationSourceGuardTests {
         #expect(widget.contains("Text(verbatim: detail)"))
         #expect(widget.contains("case .reconnecting: Text(\"Reconnecting...\")"))
         #expect(project.contains("""
-          OpenClawActivityWidget:
+          OperatorActivityWidget:
         """))
         #expect(project.contains("""
               - path: Resources/Localizable.xcstrings
@@ -112,7 +112,7 @@ struct RuntimeLocalizationSourceGuardTests {
             #expect(proComponents.contains("String(localized: \"\(status)\")"))
         }
         #expect(phoneControlHub.contains("String(localized: \"Default Agent\")"))
-        #expect(proComponents.contains("OpenClawStatusBadge(label: .verbatim(self.title)"))
+        #expect(proComponents.contains("OperatorStatusBadge(label: .verbatim(self.title)"))
         #expect(
             skillWorkshop.components(separatedBy: "String(localized: \"Default agent\")").count - 1 == 2)
         #expect(workboard.components(separatedBy: "String(localized: \"Default agent\")").count - 1 == 4)
@@ -143,7 +143,7 @@ struct RuntimeLocalizationSourceGuardTests {
         try String(
             contentsOf: Self.iosRoot
                 .deletingLastPathComponent()
-                .appendingPathComponent("shared/OpenClawKit/Sources")
+                .appendingPathComponent("shared/OperatorKit/Sources")
                 .appendingPathComponent(path),
             encoding: .utf8)
     }

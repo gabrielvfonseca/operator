@@ -1,10 +1,10 @@
 // Gateway RPC handlers for Talk voice, transcription, and speech synthesis surfaces.
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

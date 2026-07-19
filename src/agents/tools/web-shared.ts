@@ -3,13 +3,13 @@
  *
  * Keeps web_fetch and web_search providers aligned on bounded IO and cache semantics.
  */
-import { decodeTextPrefix } from "@operator/normalization-core";
+import { decodeTextPrefix } from "@gabrielvfonseca/normalization-core";
 import {
   asDateTimestampMs,
   MAX_TIMER_TIMEOUT_SECONDS,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 export type CacheEntry<T> = {
   value: T;

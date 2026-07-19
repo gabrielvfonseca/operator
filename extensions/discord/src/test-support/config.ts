@@ -1,5 +1,5 @@
 // Discord helper module supports config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export const EMPTY_DISCORD_TEST_CONFIG = {} as OperatorConfig;
 

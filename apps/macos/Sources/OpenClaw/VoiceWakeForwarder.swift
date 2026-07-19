@@ -1,9 +1,9 @@
 import Foundation
-import OpenClawChatUI
+import OperatorChatUI
 import OSLog
 
 enum VoiceWakeForwarder {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "voicewake.forward")
+    private static let logger = Logger(subsystem: "ai.operator", category: "voicewake.forward")
 
     static func prefixedTranscript(_ transcript: String, machineName: String? = nil) -> String {
         let resolvedMachine = machineName
@@ -141,7 +141,7 @@ enum VoiceWakeForwarder {
 
     private static func loadSessionRouteEntry(sessionKey: String) async -> SessionRouteEntry? {
         do {
-            let request = OpenClawChatGatewayRequests.sessionsList(
+            let request = OperatorChatGatewayRequests.sessionsList(
                 limit: 500,
                 search: nil,
                 archived: false,

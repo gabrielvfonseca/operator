@@ -1,15 +1,15 @@
 // Whatsapp plugin module implements on message behavior.
-import type { AckReactionHandle } from "openclaw/plugin-sdk/channel-feedback";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { AckReactionHandle } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   ensureConfiguredBindingRouteReady,
   resolveConfiguredBindingRoute,
-} from "openclaw/plugin-sdk/conversation-binding-runtime";
-import type { getReplyFromConfig } from "openclaw/plugin-sdk/reply-runtime";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { buildGroupHistoryKey } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-binding-runtime";
+import type { getReplyFromConfig } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { buildGroupHistoryKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { resolveWhatsAppAccount } from "../../accounts.js";
 import { resolveWhatsAppGroupSessionRoute } from "../../group-session-key.js";
 import { getPrimaryIdentityId, getSenderIdentity } from "../../identity.js";

@@ -1,7 +1,7 @@
 // Checks install policy constraints for package and plugin operations.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { OperatorConfig, SecurityConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { runCommandWithTimeout } from "../process/exec.js";
@@ -63,7 +63,7 @@ export type InstallPolicySource = {
     | "npm"
     | "upload"
     | "workspace";
-  authority: "operator" | "official" | "third-party" | "unknown" | "user";
+  authority: "@gabrielvfonseca/operator" | "official" | "third-party" | "unknown" | "user";
   mutable: boolean;
   network: boolean;
 };
@@ -610,7 +610,7 @@ export async function runInstallPolicy(params: {
 
   const input = JSON.stringify({
     protocolVersion: 1,
-    operatorVersion: resolveRuntimeServiceVersion(params.env ?? process.env),
+    openclawVersion: resolveRuntimeServiceVersion(params.env ?? process.env),
     ...params.request,
   });
   if (Buffer.byteLength(input, "utf8") > DEFAULT_MAX_REQUEST_BYTES) {

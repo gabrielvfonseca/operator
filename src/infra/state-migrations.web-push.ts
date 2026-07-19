@@ -3,9 +3,9 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { root, type Root } from "@operator/fs-safe";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { root, type Root } from "@openclaw/fs-safe";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -698,7 +698,7 @@ export async function migrateLegacyWebPush(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`operator doctor --fix\` again.`,
+        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`openclaw doctor --fix\` again.`,
       ],
     };
   }

@@ -1,12 +1,12 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.BuildConfig
-import ai.openclaw.app.GatewayConnectionProblem
-import ai.openclaw.app.GatewayNodeApprovalState
-import ai.openclaw.app.GatewayNodeCapabilityApproval
-import ai.openclaw.app.gateway.normalizeGatewayApprovalRequestId
-import ai.openclaw.app.gatewayConnectionStatusForDisplay
-import ai.openclaw.app.i18n.nativeString
+import ai.operator.app.BuildConfig
+import ai.operator.app.GatewayConnectionProblem
+import ai.operator.app.GatewayNodeApprovalState
+import ai.operator.app.GatewayNodeCapabilityApproval
+import ai.operator.app.gateway.normalizeGatewayApprovalRequestId
+import ai.operator.app.gatewayConnectionStatusForDisplay
+import ai.operator.app.i18n.nativeString
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -98,8 +98,8 @@ internal fun gatewayNodeApprovalCommand(
   when (state) {
     GatewayNodeApprovalState.PendingApproval,
     GatewayNodeApprovalState.PendingReapproval,
-    -> normalizeGatewayApprovalRequestId(requestId)?.let { "openclaw nodes approve $it" } ?: "openclaw nodes status"
-    GatewayNodeApprovalState.Unapproved -> "openclaw nodes status"
+    -> normalizeGatewayApprovalRequestId(requestId)?.let { "operator nodes approve $it" } ?: "operator nodes status"
+    GatewayNodeApprovalState.Unapproved -> "operator nodes status"
     GatewayNodeApprovalState.Loading,
     GatewayNodeApprovalState.Unsupported,
     GatewayNodeApprovalState.Approved,
@@ -139,14 +139,14 @@ internal fun buildGatewayDiagnosticsReport(
   val endpoint = gatewayAddress.trim().ifEmpty { "unknown" }
   val status = statusText.trim().ifEmpty { "Offline" }
   return nativeString(
-    "Help diagnose this OpenClaw Android gateway connection failure.\n\n" +
+    "Help diagnose this Operator Android gateway connection failure.\n\n" +
       "Please:\n" +
       "- pick one route only: same machine, same LAN, Tailscale, or public URL\n" +
       "- classify this as pairing/auth, TLS trust, wrong advertised route, wrong address/port, or gateway down\n" +
       "- remember: public routes require wss:// or Tailscale Serve; ws:// is allowed for localhost, .local hosts, the Android emulator, and private LAN IPs\n" +
       "- quote the exact app status/error below\n" +
-      "- tell me whether `openclaw devices list` should show a pending pairing request\n" +
-      "- if more signal is needed, ask for `openclaw qr --json`, `openclaw devices list`, and `openclaw nodes status`\n" +
+      "- tell me whether `operator devices list` should show a pending pairing request\n" +
+      "- if more signal is needed, ask for `operator qr --json`, `operator devices list`, and `operator nodes status`\n" +
       "- give the next exact command or tap\n\n" +
       "Debug info:\n" +
       "- screen: \$screen\n" +
@@ -174,6 +174,6 @@ internal fun copyGatewayDiagnosticsReport(
 ) {
   val clipboard = context.getSystemService(ClipboardManager::class.java) ?: return
   val report = buildGatewayDiagnosticsReport(screen = screen, gatewayAddress = gatewayAddress, statusText = statusText)
-  clipboard.setPrimaryClip(ClipData.newPlainText("OpenClaw gateway diagnostics", report))
+  clipboard.setPrimaryClip(ClipData.newPlainText("Operator gateway diagnostics", report))
   Toast.makeText(context, nativeString("Copied gateway diagnostics"), Toast.LENGTH_SHORT).show()
 }

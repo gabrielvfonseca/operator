@@ -1,6 +1,6 @@
 // Builds OpenAI-compatible embedding provider entries for plugins.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { readProviderJsonResponse } from "../agents/provider-http-errors.js";
 import type {
   AcquireConfiguredProviderLocalService,

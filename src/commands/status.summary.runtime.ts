@@ -5,7 +5,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { readAcpSessionMeta } from "../acp/runtime/session-meta.js";
 import { resolveModelAgentRuntimeMetadata } from "../agents/agent-runtime-metadata.js";
 import { resolveConfiguredProviderFallback } from "../agents/configured-provider-fallback.js";
@@ -220,7 +220,8 @@ function resolveSessionRuntimeLabel(params: {
   });
   const id = normalizeOptionalLowercaseString(runtime.id);
   // Operator/auto are generic labels; concrete harness ids give better operator signal.
-  const resolvedHarness = id && id !== "operator" && id !== "auto" ? id : undefined;
+  const resolvedHarness =
+    id && id !== "@gabrielvfonseca/operator" && id !== "auto" ? id : undefined;
   return resolveAgentRuntimeLabel({
     config: params.cfg,
     sessionEntry: params.entry,

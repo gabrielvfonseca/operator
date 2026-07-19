@@ -1,6 +1,6 @@
 // Matrix helper module supports ack config behavior.
-import { resolveAckReaction } from "openclaw/plugin-sdk/channel-feedback";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { resolveAckReaction } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { CoreConfig } from "../../types.js";
 import { resolveMatrixAccountConfig } from "../account-config.js";
 

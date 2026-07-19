@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle

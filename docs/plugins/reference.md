@@ -1,7 +1,7 @@
 ---
-summary: "Generated index of OpenClaw plugin reference pages"
+summary: "Generated index of Operator plugin reference pages"
 read_when:
-  - You need a reference page for a specific OpenClaw plugin
+  - You need a reference page for a specific Operator plugin
   - You are auditing plugin docs coverage
 title: "Plugin reference"
 ---
@@ -9,7 +9,7 @@ title: "Plugin reference"
 # Plugin reference
 
 This page is generated from `extensions/*/package.json` and
-`openclaw.plugin.json`. Regenerate it with:
+`operator.plugin.json`. Regenerate it with:
 
 ```bash
 pnpm plugins:inventory:gen

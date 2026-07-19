@@ -1,6 +1,6 @@
 // Narrow response-size reader for plugins that download bounded HTTP bodies.
 
-export { readByteStreamWithLimit } from "@operator/media-core/read-byte-stream-with-limit";
+export { readByteStreamWithLimit } from "@gabrielvfonseca/media-core/read-byte-stream-with-limit";
 export { readResponseTextPrefix, readResponseWithLimit } from "../infra/http-body.js";
 export type {
   ReadResponseTextPrefixOptions,

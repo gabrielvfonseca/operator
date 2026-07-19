@@ -1,13 +1,13 @@
 {
-  "name": "@operator/example-ai-chat",
+  "name": "@gabrielvfonseca/example-ai-chat",
   "version": "0.0.0-private",
   "private": true,
-  "description": "Minimal external-consumer example for @operator/ai",
+  "description": "Minimal external-consumer example for @gabrielvfonseca/ai",
   "type": "module",
   "scripts": {
     "start": "node index.mjs"
   },
   "dependencies": {
-    "@operator/ai": "workspace:*"
+    "@gabrielvfonseca/ai": "workspace:*"
   }
 }

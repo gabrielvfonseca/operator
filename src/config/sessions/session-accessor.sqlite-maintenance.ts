@@ -1,4 +1,4 @@
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { sql } from "kysely";
 import {
   executeSqliteQuerySync,
@@ -9,7 +9,7 @@ import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import type { SessionDiskBudgetSweepResult } from "./disk-budget.js";
 import {
   materializeSqliteSessionStateDeletePlans,

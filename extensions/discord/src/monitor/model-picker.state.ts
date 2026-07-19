@@ -1,11 +1,14 @@
 // Discord plugin module implements model picker.state behavior.
 import { createHash } from "node:crypto";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { ModelsProviderData } from "openclaw/plugin-sdk/models-provider-runtime";
-import { parseStrictInteger, parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { ModelsProviderData } from "@gabrielvfonseca/operator/plugin-sdk/models-provider-runtime";
+import {
+  parseStrictInteger,
+  parseStrictPositiveInteger,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { decodeCustomIdComponent, encodeCustomIdComponent } from "../custom-id-codec.js";
 import type { ComponentData } from "../internal/discord.js";
 

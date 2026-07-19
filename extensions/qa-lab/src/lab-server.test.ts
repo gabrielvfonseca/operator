@@ -467,7 +467,7 @@ describe("qa-lab server", () => {
       path.join(evidenceDir, "qa-evidence.json"),
       `${JSON.stringify(
         {
-          kind: "openclaw.qa.evidence-summary",
+          kind: "operator.qa.evidence-summary",
           schemaVersion: 2,
           generatedAt: "2026-06-17T12:00:00.000Z",
           evidenceMode: "full",
@@ -1026,14 +1026,14 @@ describe("qa-lab server", () => {
       id: "qa-capture-session",
       startedAt: Date.now(),
       mode: "proxy-run",
-      sourceScope: "openclaw",
-      sourceProcess: "openclaw",
+      sourceScope: "@gabrielvfonseca/operator",
+      sourceProcess: "@gabrielvfonseca/operator",
     });
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now(),
-      sourceScope: "openclaw",
-      sourceProcess: "openclaw",
+      sourceScope: "@gabrielvfonseca/operator",
+      sourceProcess: "@gabrielvfonseca/operator",
       protocol: "https",
       direction: "outbound",
       kind: "request",
@@ -1053,8 +1053,8 @@ describe("qa-lab server", () => {
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now() + 1,
-      sourceScope: "openclaw",
-      sourceProcess: "openclaw",
+      sourceScope: "@gabrielvfonseca/operator",
+      sourceProcess: "@gabrielvfonseca/operator",
       protocol: "https",
       direction: "outbound",
       kind: "request",
@@ -1074,8 +1074,8 @@ describe("qa-lab server", () => {
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now() + 2,
-      sourceScope: "openclaw",
-      sourceProcess: "openclaw",
+      sourceScope: "@gabrielvfonseca/operator",
+      sourceProcess: "@gabrielvfonseca/operator",
       protocol: "https",
       direction: "outbound",
       kind: "request",

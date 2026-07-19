@@ -1,10 +1,10 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Command authorization helpers for owner and allowlist checks. */
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   getLoadedChannelPluginById,
   listLoadedChannelPlugins,

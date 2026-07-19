@@ -1,5 +1,5 @@
 // LM Studio embedding provider tests cover preload context-length precedence.
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { lmstudioMemoryEmbeddingProviderAdapter } from "../memory-embedding-adapter.js";
 import { createLmstudioEmbeddingProvider } from "./embedding-provider.js";

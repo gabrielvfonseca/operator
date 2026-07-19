@@ -6,12 +6,12 @@ import {
   mergeSessionIdentity,
   resolveRuntimeHandleIdentifiersFromIdentity,
   resolveSessionIdentityFromMeta,
-} from "@operator/acp-core/runtime/session-identity";
+} from "@gabrielvfonseca/acp-core/runtime/session-identity";
 import type {
   AcpRuntime,
   AcpRuntimeHandle,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import { withAcpRuntimeErrorBoundary } from "../runtime/errors.js";

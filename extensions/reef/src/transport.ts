@@ -1,4 +1,4 @@
-import { readProviderJsonResponse } from "openclaw/plugin-sdk/provider-http";
+import { readProviderJsonResponse } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import { sha256Hex, signDeviceRequest, utf8 } from "../protocol/index.js";
 import type { Envelope, SignedReceipt } from "../protocol/index.js";
 import type { InboxEntry, ReefKeys, RelayFriend } from "./types.js";

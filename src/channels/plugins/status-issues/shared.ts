@@ -3,7 +3,7 @@
  *
  * Formats status metadata and finds enabled/configured account ids for diagnostics.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isRecord } from "../../../utils.js";
 import type { ChannelAccountSnapshot, ChannelStatusIssue } from "../types.public.js";
 export { isRecord };

@@ -1,8 +1,8 @@
 /**
  * BytePlus model provider builders backed by the plugin manifest catalog.
  */
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { BYTEPLUS_CODING_MODEL_CATALOG, BYTEPLUS_MODEL_CATALOG } from "./models.js";
 import manifest from "./operator.plugin.json" with { type: "json" };
 

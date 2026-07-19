@@ -3,8 +3,8 @@
  *
  * Downscales and recompresses oversized base64 image blocks before provider replay.
  */
-import { canonicalizeBase64 } from "@operator/media-core/base64";
-import { formatByteSize, resolveIntegerOption } from "@operator/normalization-core";
+import { canonicalizeBase64 } from "@gabrielvfonseca/media-core/base64";
+import { formatByteSize, resolveIntegerOption } from "@gabrielvfonseca/normalization-core";
 import { toErrorObject } from "../infra/errors.js";
 import type { ImageContent } from "../llm/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";

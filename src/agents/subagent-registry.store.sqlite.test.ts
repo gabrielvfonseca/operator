@@ -58,7 +58,7 @@ describe("subagent registry sqlite store", () => {
   let tempStateDir: string | null = null;
 
   beforeEach(async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-sqlite-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-subagent-sqlite-"));
   });
 
   afterEach(async () => {
@@ -99,7 +99,7 @@ describe("subagent registry sqlite store", () => {
         completion: run.completion,
         delivery: run.delivery,
       });
-      expect(await fs.stat(path.join(tempStateDir!, "state", "openclaw.sqlite"))).toBeTruthy();
+      expect(await fs.stat(path.join(tempStateDir!, "state", "operator.sqlite"))).toBeTruthy();
       await expect(fs.stat(path.join(tempStateDir!, "subagents", "runs.json"))).rejects.toThrow();
     });
   });

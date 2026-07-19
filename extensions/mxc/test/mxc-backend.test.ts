@@ -11,8 +11,8 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import type { CreateSandboxBackendParams } from "openclaw/plugin-sdk/sandbox";
-import { isPathInside } from "openclaw/plugin-sdk/security-runtime";
+import type { CreateSandboxBackendParams } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import { isPathInside } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { resolveConfig, type MxcConfig } from "../src/config.js";
 import { createMxcSandboxBackendFactory } from "../src/mxc-backend-factory.js";
@@ -54,7 +54,7 @@ const baseConfig: MxcConfig = {
 
 const baseParams = {
   config: baseConfig,
-  runtimeId: "openclaw-mxc-test-abc12345",
+  runtimeId: "operator-mxc-test-abc12345",
   workdir: "/workspace",
 };
 
@@ -131,7 +131,7 @@ function createSandboxBackendTestConfig(
     docker: {
       binds: [],
       capDrop: [],
-      containerPrefix: "openclaw-sbx-",
+      containerPrefix: "operator-sbx-",
       env: {},
       image: "unused",
       network: "none",
@@ -255,7 +255,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
     expect(cfg.containment).toBe("process");
     expect(cfg.lxc).toBeUndefined();
     expect(processContainer).toEqual({
-      name: "openclaw-mxc-test-abc12345",
+      name: "operator-mxc-test-abc12345",
       leastPrivilege: true,
       capabilities: [],
       ui: {
@@ -410,7 +410,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
   test("Windows process containment caps long AppContainer names", async () => {
     const handle = createMxcSandboxBackendHandle({
       ...baseParams,
-      runtimeId: `openclaw-mxc-${"a".repeat(80)}-12345678`,
+      runtimeId: `operator-mxc-${"a".repeat(80)}-12345678`,
     });
     const spec = await handle.buildExecSpec({ command: "echo hello", env: {}, usePty: false });
 
@@ -590,7 +590,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
     try {
       mkdirSync(path.join(workdir, "skills", "demo"), { recursive: true });
       mkdirSync(path.join(workdir, ".agents", "skills", "demo"), { recursive: true });
-      mkdirSync(path.join(workdir, ".openclaw", "sandbox-skills", "skills", "demo"), {
+      mkdirSync(path.join(workdir, ".operator", "sandbox-skills", "skills", "demo"), {
         recursive: true,
       });
       mkdirSync(path.join(skillsWorkspaceDir, "skills", "demo"), { recursive: true });
@@ -834,7 +834,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
       const materializedSkillFile = path.join(skillsWorkspaceDir, "skills", "demo", "SKILL.md");
       const shadowSkillFile = path.join(
         workdir,
-        ".openclaw",
+        ".operator",
         "sandbox-skills",
         "skills",
         "demo",
@@ -872,7 +872,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
       expect(existsSync(path.join(workdir, "normal.txt"))).toBe(false);
       await expect(
         bridge?.readFile({
-          filePath: ".openclaw/sandbox-skills/skills/demo/SKILL.md",
+          filePath: ".operator/sandbox-skills/skills/demo/SKILL.md",
           cwd: workdir,
         }),
       ).resolves.toEqual(Buffer.from("# Materialized skill\n"));
@@ -888,7 +888,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
       await expect(
         bridge?.rename({
           from: "normal.txt",
-          to: ".openclaw/sandbox-skills/skills/demo/new.md",
+          to: ".operator/sandbox-skills/skills/demo/new.md",
           cwd: workdir,
         }),
       ).rejects.toThrow(/read-only/u);
@@ -1220,7 +1220,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
 
     const expectedShell = process.env.ComSpec?.trim() || "cmd.exe";
     expect(processConfig?.commandLine).toBe(`${expectedShell} /d /s /c "echo hello"`);
-    expect(String(processConfig?.commandLine)).not.toContain(".openclaw-mxc-cmd-");
+    expect(String(processConfig?.commandLine)).not.toContain(".operator-mxc-cmd-");
   });
 
   test("runShellCommand timeout is capped by sandbox policy", async () => {
@@ -1308,7 +1308,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
         const env = stringArrayField(processConfig, "env");
         const commandLine = String(processConfig.commandLine);
         expect(bridgeScript?.startsWith("@echo off\r\ntype con")).toBe(true);
-        expect(commandLine).toMatch(/ \/c ""[^"]*\.openclaw-mxc-cmd-[^"]+\.cmd" /u);
+        expect(commandLine).toMatch(/ \/c ""[^"]*\.operator-mxc-cmd-[^"]+\.cmd" /u);
         expect(commandLine).toContain(".cmd");
         expect(commandLine).toContain('"C:\\workspace\\%%USERPROFILE%%\\file.txt" "0"');
         expect(env).toContain("SystemRoot=C:\\Windows");
@@ -1462,7 +1462,7 @@ describeOnWindows("createMxcSandboxBackendHandle (Windows-only MXC backend tests
     const skillsWorkspaceDir = mkdtempSync(path.join(tmpdir(), "mxc-factory-skills-"));
     try {
       mkdirSync(path.join(skillsWorkspaceDir, "skills", "demo"), { recursive: true });
-      mkdirSync(path.join(workdir, ".openclaw", "sandbox-skills", "skills", "demo"), {
+      mkdirSync(path.join(workdir, ".operator", "sandbox-skills", "skills", "demo"), {
         recursive: true,
       });
       const createBackend = createMxcSandboxBackendFactory(baseConfig);

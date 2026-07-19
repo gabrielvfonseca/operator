@@ -4,8 +4,8 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { defaultApiRegistry, registerApiProvider } from "@operator/ai/internal/runtime";
-import { resetApiProviders } from "@operator/ai/providers";
+import { defaultApiRegistry, registerApiProvider } from "@gabrielvfonseca/ai/internal/runtime";
+import { resetApiProviders } from "@gabrielvfonseca/ai/providers";
 import { type Static, Type } from "typebox";
 import { Compile } from "typebox/compile";
 import type { TLocalizedValidationError } from "typebox/error";

@@ -4,12 +4,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { getAgentScopedMediaLocalRoots } from "../../media/local-roots.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/operator-test-state.js";
+} from "../../test-utils/openclaw-test-state.js";
 import { createManagedOutgoingImageBlocks } from "../managed-image-attachments.js";
 import { normalizeWebchatReplyMediaPathsForDisplay } from "./chat-reply-media.js";
 
@@ -37,7 +37,7 @@ describe("normalizeWebchatReplyMediaPathsForDisplay", () => {
   beforeEach(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-webchat-reply-media-",
+      prefix: "operator-webchat-reply-media-",
     });
   });
 

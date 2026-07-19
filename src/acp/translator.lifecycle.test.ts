@@ -7,9 +7,9 @@ import type {
   ResumeSessionRequest,
 } from "@agentclientprotocol/sdk";
 import { PROTOCOL_VERSION } from "@agentclientprotocol/sdk";
-import { createInMemorySessionStore } from "@operator/acp-core/session";
+import { createInMemorySessionStore } from "@gabrielvfonseca/acp-core/session";
 /** Tests ACP translator initialize/session lifecycle and prompt bridge behavior. */
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import type { GatewayClient } from "../gateway/client.js";
 import type { GatewaySessionRow } from "../gateway/session-utils.js";

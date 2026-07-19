@@ -2,12 +2,15 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { MAX_DATE_TIMESTAMP_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   testing as sessionBindingTesting,
   registerSessionBindingAdapter,
-} from "openclaw/plugin-sdk/session-binding-runtime";
-import { getSessionEntry, upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-binding-runtime";
+import {
+  getSessionEntry,
+  upsertSessionEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { installMatrixMonitorTestRuntime } from "../../test-runtime.js";
 import { MATRIX_OPERATOR_FINALIZED_PREVIEW_KEY } from "../send/types.js";

@@ -10,7 +10,7 @@ import { readConfiguredLogTail } from "./log-tail.js";
 let tempDirs: string[] = [];
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-log-tail-redaction-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-log-tail-redaction-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -25,8 +25,8 @@ afterEach(async () => {
 describe("readConfiguredLogTail redaction", () => {
   it("redacts raw auth headers before returning log lines", async () => {
     const dir = await makeTempDir();
-    const logFile = path.join(dir, "openclaw.log");
-    const configFile = path.join(dir, "openclaw.json");
+    const logFile = path.join(dir, "operator.log");
+    const configFile = path.join(dir, "operator.json");
     const basicSecret = "c2VjcmV0OnBhc3M=";
     const openClawToken = "supersecretgatewaytoken1234567890";
     const pomeriumJwt = "eyJheaderabcd.eyJpayloadabcd.signatureabcd123456";

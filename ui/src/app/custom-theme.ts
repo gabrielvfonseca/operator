@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 // Control UI module implements custom theme behavior.
 import { z } from "zod";
 import { normalizeOptionalString } from "../lib/string-coerce.ts";
@@ -9,7 +9,7 @@ z.config({ jitless: true });
 
 const TWEAKCN_HOSTS = new Set(["tweakcn.com", "www.tweakcn.com"]);
 const THEME_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
-const CUSTOM_THEME_STYLE_ID = "openclaw-custom-theme";
+const CUSTOM_THEME_STYLE_ID = "operator-custom-theme";
 const MAX_TWEAKCN_THEME_BYTES = 200_000;
 const MAX_CSS_TOKEN_LENGTH = 240;
 const TWEAKCN_FETCH_TIMEOUT_MS = 10_000;

@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { runAgentHarnessBeforeMessageWriteHook } from "../../../agents/harness/hook-helpers.js";
 import { normalizeChatType } from "../../../channels/chat-type.js";
 import { resolveStorePath } from "../../../config/sessions.js";

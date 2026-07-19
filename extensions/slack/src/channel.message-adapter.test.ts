@@ -4,7 +4,7 @@ import {
   verifyChannelMessageAdapterCapabilityProofs,
   verifyChannelMessageLiveCapabilityAdapterProofs,
   verifyChannelMessageLiveFinalizerProofs,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { slackPlugin } from "./channel.js";
 import { SLACK_PRESENTATION_CAPABILITIES } from "./presentation.js";

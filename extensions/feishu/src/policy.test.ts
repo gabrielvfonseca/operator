@@ -1,5 +1,5 @@
 // Feishu tests cover policy plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { describe, expect, it } from "vitest";
 import { FeishuConfigSchema } from "./config-schema.js";
 import {

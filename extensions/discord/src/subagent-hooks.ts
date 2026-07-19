@@ -1,14 +1,14 @@
 // Discord plugin module implements subagent hooks behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
 import {
   formatThreadBindingDisabledError,
   formatThreadBindingSpawnDisabledError,
   resolveThreadBindingSpawnPolicy,
-} from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalStringifiedId,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordAccount } from "./accounts.js";
 import {
   autoBindSpawnedDiscordSubagent,

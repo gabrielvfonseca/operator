@@ -1,8 +1,8 @@
 // Matrix plugin module implements idb persistence behavior.
 import fs from "node:fs";
 import path from "node:path";
+import { withFileLock } from "@gabrielvfonseca/operator/plugin-sdk/file-lock";
 import { indexedDB as fakeIndexedDB } from "fake-indexeddb";
-import { withFileLock } from "openclaw/plugin-sdk/file-lock";
 import {
   MATRIX_IDB_SNAPSHOT_FILENAME,
   readMatrixIdbSnapshotJson,
@@ -224,7 +224,7 @@ async function restoreIndexedDatabases(snapshot: IdbDatabaseSnapshot[]): Promise
 
 function resolveDefaultIdbSnapshotPath(): string {
   const stateDir =
-    process.env.OPERATOR_STATE_DIR || path.join(process.env.HOME || "/tmp", ".openclaw");
+    process.env.OPERATOR_STATE_DIR || path.join(process.env.HOME || "/tmp", ".operator");
   return path.join(stateDir, "matrix", "crypto-idb-snapshot.json");
 }
 

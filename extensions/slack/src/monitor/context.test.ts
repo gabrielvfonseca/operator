@@ -1,7 +1,7 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Slack tests cover context plugin behavior.
 import type { App } from "@slack/bolt";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { describe, expect, it, vi } from "vitest";
 import { createSlackMonitorContext } from "./context.js";
 import type { SlackEventScope } from "./event-scope.js";
@@ -45,7 +45,7 @@ function createTestContext(params?: {
     threadRequireExplicitMention: false,
     slashCommand: {
       enabled: true,
-      name: "openclaw",
+      name: "@gabrielvfonseca/operator",
       ephemeral: true,
       sessionPrefix: "slack:slash",
     },

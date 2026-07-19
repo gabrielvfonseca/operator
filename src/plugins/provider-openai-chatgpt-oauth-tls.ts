@@ -1,7 +1,7 @@
 /** TLS helpers for ChatGPT OAuth provider discovery in plugin runtime code. */
 import path from "node:path";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { asNullableObjectRecord } from "@operator/normalization-core/record-coerce";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { asNullableObjectRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { OperatorConfig } from "../config/types.operator.js";

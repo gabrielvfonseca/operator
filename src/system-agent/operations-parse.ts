@@ -95,7 +95,7 @@ const CONFIG_SET_REF_RE = new RegExp(
   "i",
 );
 const SETUP_RE = new RegExp(
-  String.raw`^(?:setup|set\s+me\s+up|set\s+up\s+operator|onboard(?:\s+me)?|bootstrap|first\s+run)(?:\s+workspace\s+(?<workspace>${ARG_WORD}))?(?:\s+model\s+(?<model>\S+))?$`,
+  String.raw`^(?:setup|set\s+me\s+up|set\s+up\s+openclaw|onboard(?:\s+me)?|bootstrap|first\s+run)(?:\s+workspace\s+(?<workspace>${ARG_WORD}))?(?:\s+model\s+(?<model>\S+))?$`,
   "i",
 );
 const MODEL_SETUP_RE = new RegExp(
@@ -383,7 +383,7 @@ export function describeSystemAgentPersistentOperation(operation: SystemAgentOpe
     case "model-setup":
       return "configure a model provider and default model";
     case "doctor-fix":
-      return "exit Operator and run operator doctor --fix";
+      return "exit Operator and run openclaw doctor --fix";
     case "plugin-install":
       return `install plugin ${operation.spec}`;
     case "plugin-uninstall":

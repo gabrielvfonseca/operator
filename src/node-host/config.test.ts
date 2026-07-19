@@ -144,7 +144,7 @@ describe("node-host SQLite config", () => {
   });
 
   function makeTestEnv(): { env: NodeJS.ProcessEnv; stateDir: string } {
-    const stateDir = tempDirs.make("openclaw-node-host-config-");
+    const stateDir = tempDirs.make("operator-node-host-config-");
     return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir }, stateDir };
   }
 
@@ -159,7 +159,7 @@ describe("node-host SQLite config", () => {
         port: 18443,
         tls: false,
         tlsFingerprint: fixtureDigest,
-        contextPath: "/openclaw-gw",
+        contextPath: "/operator-gw",
       },
       env,
       nowMs: 1_234,
@@ -174,7 +174,7 @@ describe("node-host SQLite config", () => {
         port: 18443,
         tls: false,
         tlsFingerprint: fixtureDigest,
-        contextPath: "/openclaw-gw",
+        contextPath: "/operator-gw",
       },
     });
     closeOperatorStateDatabaseForTest();

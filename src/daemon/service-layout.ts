@@ -105,7 +105,7 @@ async function resolveOperatorPackageRoot(entrypoint: string): Promise<string | 
     const packageJson = path.join(current, "package.json");
     if (await pathExists(packageJson)) {
       const name = await readPackageName(current);
-      if (name === "operator") {
+      if (name === "@gabrielvfonseca/operator") {
         return current;
       }
     }

@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
@@ -245,7 +245,7 @@ internal object AndroidScreenshotFixture {
           add(
             buildJsonObject {
               put("name", JsonPrimitive("status"))
-              put("description", JsonPrimitive("Show current OpenClaw status"))
+              put("description", JsonPrimitive("Show current Operator status"))
               put("acceptsArgs", JsonPrimitive(false))
             },
           )

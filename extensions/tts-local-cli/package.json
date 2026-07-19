@@ -1,13 +1,13 @@
 {
-  "name": "@operator/tts-local-cli",
+  "name": "@gabrielvfonseca/tts-local-cli",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator local CLI TTS plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

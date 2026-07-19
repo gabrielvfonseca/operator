@@ -1,15 +1,15 @@
 import { statSync } from "node:fs";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 import {
   createAccountListHelpers,
   normalizeAccountId,
   resolveMergedAccountConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 // Imessage plugin module implements accounts behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { resolveAccountEntry } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { resolveAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { IMessageAccountConfig } from "./account-types.js";
 import { resolveLocalIMessageChatDbPath } from "./cli-path.js";
 

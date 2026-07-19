@@ -1,7 +1,10 @@
 // Telegram tests cover bot native commands plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type {
+  OperatorConfig,
+  TelegramAccountConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createCommandBot,
@@ -456,7 +459,7 @@ describe("registerTelegramNativeCommands", () => {
     const deliverParams = firstDeliverRepliesParams();
     expect(deliverParams.mediaMaxBytes).toBe(mediaMaxBytes);
     const mediaLocalRoots = deliverParams.mediaLocalRoots as Array<string> | undefined;
-    expect(mediaLocalRoots?.some((root) => /[\\/]\.openclaw[\\/]workspace-work$/.test(root))).toBe(
+    expect(mediaLocalRoots?.some((root) => /[\\/]\.operator[\\/]workspace-work$/.test(root))).toBe(
       true,
     );
     expect(sendMessage).not.toHaveBeenCalledWith(123, "Command not found.");

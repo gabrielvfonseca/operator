@@ -1,7 +1,10 @@
 // Canvas tests cover copy a2ui plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+import {
+  resolvePreferredOperatorTmpDir,
+  withTempWorkspace,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { copyA2uiAssets } from "./copy-a2ui.mjs";
 
@@ -30,7 +33,7 @@ describe("canvas a2ui copy", () => {
 
   async function withA2uiFixture(run: (dir: string) => Promise<void>) {
     await withTempWorkspace(
-      { rootDir: resolvePreferredOperatorTmpDir(), prefix: "openclaw-a2ui-" },
+      { rootDir: resolvePreferredOperatorTmpDir(), prefix: "operator-a2ui-" },
       async ({ dir }) => await run(dir),
     );
   }

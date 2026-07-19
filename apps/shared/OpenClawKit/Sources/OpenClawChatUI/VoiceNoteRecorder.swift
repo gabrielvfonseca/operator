@@ -1,7 +1,7 @@
 import AVFAudio
 import Foundation
 import Observation
-import OpenClawKit
+import OperatorKit
 
 private let voiceNoteMaximumDurationSeconds: TimeInterval = 180
 
@@ -35,7 +35,7 @@ extension VoiceNoteAudioCapture {
 }
 
 /// A completed voice-note recording ready to stage as a chat attachment.
-public struct OpenClawVoiceNoteRecording: Equatable, Sendable {
+public struct OperatorVoiceNoteRecording: Equatable, Sendable {
     public let fileURL: URL
     public let durationSeconds: TimeInterval
 
@@ -48,13 +48,13 @@ public struct OpenClawVoiceNoteRecording: Equatable, Sendable {
 /// Main-actor voice-note recorder with explicit permission and capture states.
 @MainActor
 @Observable
-public final class OpenClawVoiceNoteRecorder {
+public final class OperatorVoiceNoteRecorder {
     public enum State: Equatable {
         case idle
         case requestingPermission
         case recording(startedAt: Date, fileURL: URL)
-        case finished(recording: OpenClawVoiceNoteRecording)
-        case staging(recording: OpenClawVoiceNoteRecording)
+        case finished(recording: OperatorVoiceNoteRecording)
+        case staging(recording: OperatorVoiceNoteRecording)
         case failed(message: String)
     }
 
@@ -76,13 +76,13 @@ public final class OpenClawVoiceNoteRecorder {
 
     /// Creates a recorder backed by the system audio recorder.
     public convenience init() {
-        self.init(capture: OpenClawVoiceNoteAudioCapture())
+        self.init(capture: OperatorVoiceNoteAudioCapture())
     }
 
     /// Creates a recorder with an injectable audio capture seam.
     public init(
         capture: any VoiceNoteAudioCapture,
-        durationLimit: TimeInterval = OpenClawVoiceNoteRecorder.maximumDurationSeconds,
+        durationLimit: TimeInterval = OperatorVoiceNoteRecorder.maximumDurationSeconds,
         timerIntervalNanoseconds: UInt64 = 100_000_000,
         now: @escaping () -> Date = Date.init)
     {
@@ -129,20 +129,20 @@ public final class OpenClawVoiceNoteRecorder {
         return message
     }
 
-    public var completedRecording: OpenClawVoiceNoteRecording? {
+    public var completedRecording: OperatorVoiceNoteRecording? {
         guard case let .finished(recording) = self.state else { return nil }
         return recording
     }
 
     /// Claims a finished recording exactly once while its captured chat stages it.
-    func claimCompletedRecording() -> OpenClawVoiceNoteRecording? {
+    func claimCompletedRecording() -> OperatorVoiceNoteRecording? {
         guard case let .finished(recording) = self.state else { return nil }
         self.state = .staging(recording: recording)
         return recording
     }
 
     /// Releases chat ownership after the claimed recording was consumed.
-    func completeStaging(_ recording: OpenClawVoiceNoteRecording) {
+    func completeStaging(_ recording: OperatorVoiceNoteRecording) {
         guard self.state == .staging(recording: recording) else { return }
         self.state = .idle
         self.elapsedSeconds = 0
@@ -186,13 +186,13 @@ public final class OpenClawVoiceNoteRecorder {
 
     /// Finishes the active recording and publishes its attachment handoff.
     @discardableResult
-    public func finish() -> OpenClawVoiceNoteRecording? {
+    public func finish() -> OperatorVoiceNoteRecording? {
         guard case let .recording(_, fileURL) = self.state else { return nil }
 
         self.timerTask?.cancel()
         self.timerTask = nil
         let duration = max(0, self.capture.stop())
-        let recording = OpenClawVoiceNoteRecording(fileURL: fileURL, durationSeconds: duration)
+        let recording = OperatorVoiceNoteRecording(fileURL: fileURL, durationSeconds: duration)
         self.elapsedSeconds = duration
         self.level = 0
         self.state = .finished(recording: recording)
@@ -276,7 +276,7 @@ public final class OpenClawVoiceNoteRecorder {
 
 /// AVAudioRecorder-backed AAC voice-note capture.
 @MainActor
-public final class OpenClawVoiceNoteAudioCapture: NSObject, VoiceNoteAudioCapture, AVAudioRecorderDelegate {
+public final class OperatorVoiceNoteAudioCapture: NSObject, VoiceNoteAudioCapture, AVAudioRecorderDelegate {
     private var recorder: AVAudioRecorder?
     private var ownsAudioSession = false
     private var failureHandler: (@MainActor () -> Void)?
@@ -342,7 +342,7 @@ public final class OpenClawVoiceNoteAudioCapture: NSObject, VoiceNoteAudioCaptur
             recorder.isMeteringEnabled = true
             guard recorder.record() else {
                 throw NSError(
-                    domain: "OpenClawVoiceNoteAudioCapture",
+                    domain: "OperatorVoiceNoteAudioCapture",
                     code: 1,
                     userInfo: [NSLocalizedDescriptionKey: "Audio recorder refused to start"])
             }

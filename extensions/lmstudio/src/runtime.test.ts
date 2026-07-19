@@ -1,6 +1,6 @@
 // Lmstudio tests cover runtime plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
-import { CUSTOM_LOCAL_AUTH_MARKER } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { CUSTOM_LOCAL_AUTH_MARKER } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { LMSTUDIO_LOCAL_API_KEY_PLACEHOLDER } from "./defaults.js";
 import {

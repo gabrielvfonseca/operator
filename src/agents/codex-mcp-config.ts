@@ -4,7 +4,7 @@
  * compatible with Codex's MCP config shape.
  */
 import crypto from "node:crypto";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   loadEnabledBundleMcpConfig,
   type BundleMcpConfig,
@@ -26,7 +26,7 @@ import { partitionMcpServersByConnectionScope } from "./mcp-connection-resolver.
 
 function isOperatorLoopbackMcpServer(name: string, server: BundleMcpServerConfig): boolean {
   return (
-    name === "operator" &&
+    name === "@gabrielvfonseca/operator" &&
     typeof server.url === "string" &&
     /^https?:\/\/(?:127\.0\.0\.1|localhost):\d+\/mcp(?:[?#].*)?$/.test(server.url)
   );

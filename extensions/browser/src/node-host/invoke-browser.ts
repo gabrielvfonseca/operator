@@ -3,8 +3,8 @@
  * requests.
  */
 import fsPromises from "node:fs/promises";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   assertBrowserProxyFileCountWithinLimit,
   assertBrowserProxyFileBytesWithinLimits,

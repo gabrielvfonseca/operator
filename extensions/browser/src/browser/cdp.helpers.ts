@@ -4,10 +4,13 @@
  * Handles CDP URL normalization, SSRF-guarded HTTP discovery, credential
  * redaction/headers, and request/response correlation over WebSocket.
  */
-import { parseBrowserHttpUrl, redactCdpUrl } from "openclaw/plugin-sdk/browser-config";
-import { readProviderJsonResponse } from "openclaw/plugin-sdk/provider-http";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import {
+  parseBrowserHttpUrl,
+  redactCdpUrl,
+} from "@gabrielvfonseca/operator/plugin-sdk/browser-config";
+import { readProviderJsonResponse } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import WebSocket from "ws";
 import { isLoopbackHost } from "../gateway/net.js";
 import {

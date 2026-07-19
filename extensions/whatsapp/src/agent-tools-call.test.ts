@@ -6,7 +6,7 @@ import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginToolContext,
-} from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWhatsAppCallTool } from "./agent-tools-call.js";
 
@@ -102,7 +102,7 @@ describe("WhatsApp call tool", () => {
   beforeEach(async () => {
     runtimeContextMocks.controllers.clear();
     defaultDependencyMocks.binaryFound = true;
-    rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-whatsapp-call-test-"));
+    rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-whatsapp-call-test-"));
     defaultDependencyMocks.oauthDir = path.join(rootDir, "call dir", "$HOME's");
     stateDir = path.join(defaultDependencyMocks.oauthDir, "whatsapp-calls", "default");
     await fs.mkdir(stateDir, { recursive: true });

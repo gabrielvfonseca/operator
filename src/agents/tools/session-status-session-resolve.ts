@@ -1,5 +1,5 @@
 // Status-tool session resolution helpers keep storage lookup out of the tool body.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveSessionEntryCandidateTarget, type SessionEntry } from "../../config/sessions.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {

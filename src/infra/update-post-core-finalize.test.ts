@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   foldPostCoreFinalizeIntoResult,
@@ -117,7 +117,7 @@ describe("runPostCoreFinalizeAfterGatewayUpdate", () => {
       spawnFinalize,
       env: {
         PATH: "/usr/bin",
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
         OPERATOR_SERVICE_KIND: "gateway",
         OPERATOR_GATEWAY_SERVICE_PID: "4242",
       },
@@ -160,7 +160,7 @@ describe("runPostCoreFinalizeAfterGatewayUpdate", () => {
     )[0];
     // No configured channel → effective channel defaults to the git/dev channel
     // the core update ran on, carried via env (convergence-only, not persisted),
-    // never as `--channel` (which `update finalize` would persist to openclaw.json).
+    // never as `--channel` (which `update finalize` would persist to operator.json).
     expect(call.env.OPERATOR_UPDATE_EFFECTIVE_CHANNEL).toBe("dev");
     expect(call.argv).not.toContain("--channel");
     expect(call.argv).not.toContain("--timeout");

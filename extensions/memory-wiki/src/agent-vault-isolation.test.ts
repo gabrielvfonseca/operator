@@ -4,9 +4,12 @@ import path from "node:path";
 import {
   clearMemoryPluginState,
   registerMemoryCorpusSupplement,
-} from "openclaw/plugin-sdk/memory-host-core";
-import type { AnyAgentTool, OperatorPluginToolFactory } from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-host-core";
+import type {
+  AnyAgentTool,
+  OperatorPluginToolFactory,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { describe, expect, it } from "vitest";
 import memoryCorePlugin from "../../memory-core/index.js";
 import type { OperatorConfig } from "../api.js";

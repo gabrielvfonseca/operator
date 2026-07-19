@@ -155,7 +155,7 @@ describe("openclaw channel mcp server", () => {
                   content: [{ type: "text", text: "hello from transcript" }],
                 },
                 {
-                  __openclaw: {
+                  __operator: {
                     id: "msg-attachment",
                   },
                   role: "assistant",

@@ -7,9 +7,9 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 const fixtureState = vi.hoisted(() => ({ pluginRoot: "" }));
 const originalBundledPluginsDir = process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
 const originalTrustBundledPluginsDir = process.env.OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR;
-const emptyBundledPluginsDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-empty-plugins-"));
+const emptyBundledPluginsDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-empty-plugins-"));
 const externalPluginRoot = fs.mkdtempSync(
-  path.join(os.tmpdir(), "openclaw-provider-policy-external-"),
+  path.join(os.tmpdir(), "operator-provider-policy-external-"),
 );
 fs.writeFileSync(
   path.join(externalPluginRoot, "provider-policy-api.js"),

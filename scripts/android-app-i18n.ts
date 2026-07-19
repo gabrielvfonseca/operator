@@ -16,16 +16,16 @@ const TOOL_DISPLAY_PATH = path.join(
   ROOT,
   "apps",
   "shared",
-  "OpenClawKit",
+  "OperatorKit",
   "Sources",
-  "OpenClawKit",
+  "OperatorKit",
   "Resources",
   "tool-display.json",
 );
 const GENERATED_KOTLIN_PATH = path.join(
   SOURCE_ROOT,
   "ai",
-  "openclaw",
+  "@gabrielvfonseca/operator",
   "app",
   "i18n",
   "NativeStringResources.kt",
@@ -437,7 +437,7 @@ const ALLOWED_UI_LITERALS = new Map<string, ReadonlySet<string>>([
       "OC",
       "OK",
       "OPENCLAW",
-      "OpenClaw",
+      "Operator",
       "U",
       "e.g. America/New_York",
       "current-step-alpha",
@@ -497,7 +497,7 @@ function shouldScanUiLiterals(repoPath: string): boolean {
   if (repoPath.endsWith("/ui/design/ClawComponents.kt")) {
     return false;
   }
-  if (repoPath.endsWith("/ui/design/OpenClawMascot.kt")) {
+  if (repoPath.endsWith("/ui/design/OperatorMascot.kt")) {
     return false;
   }
   return (
@@ -1040,7 +1040,7 @@ function renderStringsXml(
 function renderAssistantXml(items: readonly string[]): string {
   return [
     "<resources>",
-    '    <string-array name="ask_openclaw_query_patterns">',
+    '    <string-array name="ask_operator_query_patterns">',
     ...items.map((item) => `        <item>"${renderAndroidResourceValue(item, item)}"</item>`),
     "    </string-array>",
     "</resources>",
@@ -1052,9 +1052,9 @@ function renderKotlin(sourceToKey: ReadonlyMap<string, string>): string {
   const entries = [...sourceToKey].toSorted(([left], [right]) => compareText(left, right));
   return [
     GENERATED_KOTLIN_HEADER,
-    "package ai.openclaw.app.i18n",
+    "package ai.operator.app.i18n",
     "",
-    "import ai.openclaw.app.R",
+    "import ai.operator.app.R",
     "",
     "internal val nativeStringResourceIds: Map<String, Int> =",
     "  mapOf(",
@@ -1160,7 +1160,7 @@ async function buildCatalog(): Promise<GeneratedCatalog> {
     path.join(RESOURCE_ROOT, "values", "assistant.xml"),
     "utf8",
   );
-  const assistantItems = parseArrays(assistantSource).get("ask_openclaw_query_patterns") ?? [];
+  const assistantItems = parseArrays(assistantSource).get("ask_operator_query_patterns") ?? [];
   for (const [locale, artifactEntries] of artifacts) {
     const translatedBySource = new Map<string, string[]>();
     for (const entry of artifactEntries) {

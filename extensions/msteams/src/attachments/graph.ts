@@ -2,13 +2,16 @@
 import {
   readProviderJsonArrayFieldResponse,
   readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveMSTeamsRequestTimeoutMs,
   type MSTeamsRequestDeadline,

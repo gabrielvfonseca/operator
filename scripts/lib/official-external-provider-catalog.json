@@ -1,11 +1,11 @@
 {
   "entries": [
     {
-      "name": "@operator/amazon-bedrock-provider",
-      "description": "OpenClaw Amazon Bedrock provider plugin",
+      "name": "@gabrielvfonseca/amazon-bedrock-provider",
+      "description": "Operator Amazon Bedrock provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "amazon-bedrock",
           "label": "Amazon Bedrock"
@@ -19,18 +19,18 @@
           }
         ],
         "install": {
-          "npmSpec": "@operator/amazon-bedrock-provider",
+          "npmSpec": "@gabrielvfonseca/amazon-bedrock-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.12-beta.1"
         }
       }
     },
     {
-      "name": "@operator/amazon-bedrock-mantle-provider",
-      "description": "OpenClaw Amazon Bedrock Mantle provider plugin",
+      "name": "@gabrielvfonseca/amazon-bedrock-mantle-provider",
+      "description": "Operator Amazon Bedrock Mantle provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "amazon-bedrock-mantle",
           "label": "Amazon Bedrock Mantle"
@@ -44,18 +44,18 @@
           }
         ],
         "install": {
-          "npmSpec": "@operator/amazon-bedrock-mantle-provider",
+          "npmSpec": "@gabrielvfonseca/amazon-bedrock-mantle-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.12-beta.1"
         }
       }
     },
     {
-      "name": "@operator/anthropic-vertex-provider",
-      "description": "OpenClaw Anthropic Vertex provider plugin",
+      "name": "@gabrielvfonseca/anthropic-vertex-provider",
+      "description": "Operator Anthropic Vertex provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "anthropic-vertex",
           "label": "Anthropic Vertex"
@@ -69,18 +69,18 @@
           }
         ],
         "install": {
-          "npmSpec": "@operator/anthropic-vertex-provider",
+          "npmSpec": "@gabrielvfonseca/anthropic-vertex-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.12-beta.1"
         }
       }
     },
     {
-      "name": "@operator/arcee-provider",
-      "description": "OpenClaw Arcee provider plugin.",
+      "name": "@gabrielvfonseca/arcee-provider",
+      "description": "Operator Arcee provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "arcee",
           "label": "Arcee AI"
@@ -134,19 +134,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/arcee-provider",
-          "npmSpec": "@operator/arcee-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/arcee-provider",
+          "npmSpec": "@gabrielvfonseca/arcee-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/cerebras-provider",
-      "description": "OpenClaw Cerebras provider plugin.",
+      "name": "@gabrielvfonseca/cerebras-provider",
+      "description": "Operator Cerebras provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "cerebras",
           "label": "Cerebras"
@@ -191,19 +191,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/cerebras-provider",
-          "npmSpec": "@operator/cerebras-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/cerebras-provider",
+          "npmSpec": "@gabrielvfonseca/cerebras-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/chutes-provider",
-      "description": "OpenClaw Chutes.ai provider plugin.",
+      "name": "@gabrielvfonseca/chutes-provider",
+      "description": "Operator Chutes.ai provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "chutes",
           "label": "Chutes"
@@ -262,19 +262,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/chutes-provider",
-          "npmSpec": "@operator/chutes-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/chutes-provider",
+          "npmSpec": "@gabrielvfonseca/chutes-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/cohere-provider",
-      "description": "OpenClaw Cohere provider plugin",
+      "name": "@gabrielvfonseca/cohere-provider",
+      "description": "Operator Cohere provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "cohere",
           "label": "Cohere"
@@ -308,19 +308,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/cohere-provider",
-          "npmSpec": "@operator/cohere-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/cohere-provider",
+          "npmSpec": "@gabrielvfonseca/cohere-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/cloudflare-ai-gateway-provider",
-      "description": "OpenClaw Cloudflare AI Gateway provider plugin.",
+      "name": "@gabrielvfonseca/cloudflare-ai-gateway-provider",
+      "description": "Operator Cloudflare AI Gateway provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "cloudflare-ai-gateway",
           "label": "Cloudflare AI Gateway"
@@ -358,19 +358,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/cloudflare-ai-gateway-provider",
-          "npmSpec": "@operator/cloudflare-ai-gateway-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/cloudflare-ai-gateway-provider",
+          "npmSpec": "@gabrielvfonseca/cloudflare-ai-gateway-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/codex",
-      "description": "OpenClaw Codex harness and model provider plugin",
+      "name": "@gabrielvfonseca/codex",
+      "description": "Operator Codex harness and model provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "codex",
           "label": "Codex"
@@ -400,18 +400,18 @@
           }
         ],
         "install": {
-          "npmSpec": "@operator/codex",
+          "npmSpec": "@gabrielvfonseca/codex",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.1-beta.1"
         }
       }
     },
     {
-      "name": "@operator/deepinfra-provider",
-      "description": "OpenClaw DeepInfra provider plugin.",
+      "name": "@gabrielvfonseca/deepinfra-provider",
+      "description": "Operator DeepInfra provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "deepinfra",
           "label": "DeepInfra"
@@ -474,19 +474,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/deepinfra-provider",
-          "npmSpec": "@operator/deepinfra-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/deepinfra-provider",
+          "npmSpec": "@gabrielvfonseca/deepinfra-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/deepseek-provider",
-      "description": "OpenClaw DeepSeek provider plugin.",
+      "name": "@gabrielvfonseca/deepseek-provider",
+      "description": "Operator DeepSeek provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "deepseek",
           "label": "DeepSeek"
@@ -531,19 +531,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/deepseek-provider",
-          "npmSpec": "@operator/deepseek-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/deepseek-provider",
+          "npmSpec": "@gabrielvfonseca/deepseek-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/featherless-provider",
-      "description": "OpenClaw Featherless AI provider plugin.",
+      "name": "@gabrielvfonseca/featherless-provider",
+      "description": "Operator Featherless AI provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "featherless",
           "label": "Featherless AI"
@@ -581,19 +581,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/featherless-provider",
-          "npmSpec": "@operator/featherless-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/featherless-provider",
+          "npmSpec": "@gabrielvfonseca/featherless-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.11"
         }
       }
     },
     {
-      "name": "@operator/gmi-provider",
-      "description": "OpenClaw GMI Cloud provider plugin",
+      "name": "@gabrielvfonseca/gmi-provider",
+      "description": "Operator GMI Cloud provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "gmi",
           "label": "GMI Cloud"
@@ -632,19 +632,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/gmi-provider",
-          "npmSpec": "@operator/gmi-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/gmi-provider",
+          "npmSpec": "@gabrielvfonseca/gmi-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/longcat-provider",
-      "description": "OpenClaw LongCat provider plugin",
+      "name": "@gabrielvfonseca/longcat-provider",
+      "description": "Operator LongCat provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "longcat",
           "label": "LongCat"
@@ -675,19 +675,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/longcat-provider",
-          "npmSpec": "@operator/longcat-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/longcat-provider",
+          "npmSpec": "@gabrielvfonseca/longcat-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/meta-provider",
-      "description": "OpenClaw Meta provider plugin.",
+      "name": "@gabrielvfonseca/meta-provider",
+      "description": "Operator Meta provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "meta",
           "label": "Meta"
@@ -724,19 +724,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/meta-provider",
-          "npmSpec": "@operator/meta-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/meta-provider",
+          "npmSpec": "@gabrielvfonseca/meta-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.11"
         }
       }
     },
     {
-      "name": "@operator/groq-provider",
-      "description": "OpenClaw Groq media-understanding provider.",
+      "name": "@gabrielvfonseca/groq-provider",
+      "description": "Operator Groq media-understanding provider.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "groq",
           "label": "Groq"
@@ -786,19 +786,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/groq-provider",
-          "npmSpec": "@operator/groq-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/groq-provider",
+          "npmSpec": "@gabrielvfonseca/groq-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/kilocode-provider",
-      "description": "OpenClaw Kilo Gateway provider plugin.",
+      "name": "@gabrielvfonseca/kilocode-provider",
+      "description": "Operator Kilo Gateway provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "kilocode",
           "label": "Kilo Gateway"
@@ -836,19 +836,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/kilocode-provider",
-          "npmSpec": "@operator/kilocode-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/kilocode-provider",
+          "npmSpec": "@gabrielvfonseca/kilocode-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/kimi-provider",
-      "description": "OpenClaw Kimi provider plugin.",
+      "name": "@gabrielvfonseca/kimi-provider",
+      "description": "Operator Kimi provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "kimi",
           "label": "Kimi Coding"
@@ -889,19 +889,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/kimi-provider",
-          "npmSpec": "@operator/kimi-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/kimi-provider",
+          "npmSpec": "@gabrielvfonseca/kimi-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/pixverse-provider",
-      "description": "OpenClaw PixVerse video provider plugin",
+      "name": "@gabrielvfonseca/pixverse-provider",
+      "description": "Operator PixVerse video provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "pixverse",
           "label": "PixVerse"
@@ -931,18 +931,18 @@
           }
         ],
         "install": {
-          "npmSpec": "@operator/pixverse-provider",
+          "npmSpec": "@gabrielvfonseca/pixverse-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.5.26"
         }
       }
     },
     {
-      "name": "@operator/qianfan-provider",
-      "description": "OpenClaw Qianfan provider plugin.",
+      "name": "@gabrielvfonseca/qianfan-provider",
+      "description": "Operator Qianfan provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "qianfan",
           "label": "Qianfan"
@@ -979,19 +979,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/qianfan-provider",
-          "npmSpec": "@operator/qianfan-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/qianfan-provider",
+          "npmSpec": "@gabrielvfonseca/qianfan-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/qwen-provider",
-      "description": "OpenClaw Qwen Cloud provider plugin.",
+      "name": "@gabrielvfonseca/qwen-provider",
+      "description": "Operator Qwen Cloud provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "qwen",
           "label": "Qwen Cloud"
@@ -1212,19 +1212,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/qwen-provider",
-          "npmSpec": "@operator/qwen-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/qwen-provider",
+          "npmSpec": "@gabrielvfonseca/qwen-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.8"
         }
       }
     },
     {
-      "name": "@operator/fireworks-provider",
-      "description": "OpenClaw Fireworks provider plugin",
+      "name": "@gabrielvfonseca/fireworks-provider",
+      "description": "Operator Fireworks provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "fireworks",
           "label": "Fireworks"
@@ -1265,19 +1265,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/fireworks-provider",
-          "npmSpec": "@operator/fireworks-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/fireworks-provider",
+          "npmSpec": "@gabrielvfonseca/fireworks-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/moonshot-provider",
-      "description": "OpenClaw Moonshot provider plugin",
+      "name": "@gabrielvfonseca/moonshot-provider",
+      "description": "Operator Moonshot provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "moonshot",
           "label": "Moonshot"
@@ -1367,25 +1367,25 @@
             ],
             "placeholder": "sk-...",
             "signupUrl": "https://platform.moonshot.cn/",
-            "docsUrl": "https://docs.openclaw.ai/tools/web",
+            "docsUrl": "https://docs.operator.ai/tools/web",
             "credentialPath": "plugins.entries.moonshot.config.webSearch.apiKey",
             "autoDetectOrder": 40
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/moonshot-provider",
-          "npmSpec": "@operator/moonshot-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/moonshot-provider",
+          "npmSpec": "@gabrielvfonseca/moonshot-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/tencent-provider",
-      "description": "OpenClaw Tencent Cloud provider plugin (TokenHub + Token Plan)",
+      "name": "@gabrielvfonseca/tencent-provider",
+      "description": "Operator Tencent Cloud provider plugin (TokenHub + Token Plan)",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "tencent",
           "label": "Tencent Cloud"
@@ -1453,19 +1453,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/tencent-provider",
-          "npmSpec": "@operator/tencent-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/tencent-provider",
+          "npmSpec": "@gabrielvfonseca/tencent-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/venice-provider",
-      "description": "OpenClaw Venice provider plugin",
+      "name": "@gabrielvfonseca/venice-provider",
+      "description": "Operator Venice provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "venice",
           "label": "Venice"
@@ -1503,19 +1503,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/venice-provider",
-          "npmSpec": "@operator/venice-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/venice-provider",
+          "npmSpec": "@gabrielvfonseca/venice-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/vercel-ai-gateway-provider",
-      "description": "OpenClaw Vercel AI Gateway provider plugin",
+      "name": "@gabrielvfonseca/vercel-ai-gateway-provider",
+      "description": "Operator Vercel AI Gateway provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "vercel-ai-gateway",
           "label": "Vercel AI Gateway"
@@ -1553,19 +1553,19 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/vercel-ai-gateway-provider",
-          "npmSpec": "@operator/vercel-ai-gateway-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/vercel-ai-gateway-provider",
+          "npmSpec": "@gabrielvfonseca/vercel-ai-gateway-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/zai-provider",
-      "description": "OpenClaw Z.AI provider plugin",
+      "name": "@gabrielvfonseca/zai-provider",
+      "description": "Operator Z.AI provider plugin",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "zai",
           "label": "Z.AI"
@@ -1684,19 +1684,19 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@operator/zai-provider",
-          "npmSpec": "@operator/zai-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/zai-provider",
+          "npmSpec": "@gabrielvfonseca/zai-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }
       }
     },
     {
-      "name": "@operator/stepfun-provider",
-      "description": "OpenClaw StepFun provider plugin.",
+      "name": "@gabrielvfonseca/stepfun-provider",
+      "description": "Operator StepFun provider plugin.",
       "source": "official",
       "kind": "provider",
-      "openclaw": {
+      "@gabrielvfonseca/operator": {
         "plugin": {
           "id": "stepfun",
           "label": "StepFun"
@@ -1796,8 +1796,8 @@
           }
         ],
         "install": {
-          "clawhubSpec": "clawhub:@operator/stepfun-provider",
-          "npmSpec": "@operator/stepfun-provider",
+          "clawhubSpec": "clawhub:@gabrielvfonseca/stepfun-provider",
+          "npmSpec": "@gabrielvfonseca/stepfun-provider",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.6.9"
         }

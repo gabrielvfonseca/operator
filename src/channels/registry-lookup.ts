@@ -1,5 +1,5 @@
 // Cached lookup view for active channel plugin registry entries and aliases.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   ActivePluginChannelRegistration,
   ActivePluginChannelRegistry,

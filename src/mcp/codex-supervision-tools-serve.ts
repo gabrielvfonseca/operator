@@ -90,7 +90,7 @@ function requireCompleteCodexSupervisionToolSet(tools: readonly AnyAgentTool[]):
     return;
   }
   throw new Error(
-    `Codex supervision MCP could not load the official @operator/codex plugin tools (missing: ${missing.join(", ") || "none"}). Install or update @operator/codex, then enable Codex supervision.`,
+    `Codex supervision MCP could not load the official @gabrielvfonseca/codex plugin tools (missing: ${missing.join(", ") || "none"}). Install or update @gabrielvfonseca/codex, then enable Codex supervision.`,
   );
 }
 

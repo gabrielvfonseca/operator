@@ -1,6 +1,6 @@
 /** Doctor diagnostics for pending, paired, and locally cached device auth state. */
 import path from "node:path";
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { sanitizeTerminalText } from "../../packages/terminal-core/src/safe-text.js";
 import { formatCliCommand } from "../cli/command-format.js";
@@ -249,8 +249,13 @@ function resolvePendingPairingIssue(
     displayName: pending.displayName,
     clientId: pending.clientId,
   });
-  const approveCommand = formatCliArgs(["operator", "devices", "approve", pending.requestId]);
-  const inspectCommand = formatCliArgs(["operator", "devices", "list"]);
+  const approveCommand = formatCliArgs([
+    "@gabrielvfonseca/operator",
+    "devices",
+    "approve",
+    pending.requestId,
+  ]);
+  const inspectCommand = formatCliArgs(["@gabrielvfonseca/operator", "devices", "list"]);
   if (!paired) {
     return {
       kind: "first-time",
@@ -267,7 +272,12 @@ function resolvePendingPairingIssue(
       deviceLabel,
       approveCommand,
       inspectCommand,
-      removeCommand: formatCliArgs(["operator", "devices", "remove", pending.deviceId]),
+      removeCommand: formatCliArgs([
+        "@gabrielvfonseca/operator",
+        "devices",
+        "remove",
+        pending.deviceId,
+      ]),
     };
   }
   const requestedRoles = normalizeUniqueSingleOrTrimmedStringList(
@@ -358,7 +368,7 @@ function collectPairedRecordIssues(snapshot: DoctorPairingSnapshot): PairedRecor
     for (const role of approvedRoles) {
       const token = findTokenSummary(device, role);
       const rotateCommand = formatCliArgs([
-        "operator",
+        "@gabrielvfonseca/operator",
         "devices",
         "rotate",
         "--device",
@@ -496,7 +506,7 @@ function collectLocalDeviceAuthIssues(snapshot: DoctorPairingSnapshot): LocalDev
       continue;
     }
     const rotateCommand = formatCliArgs([
-      "operator",
+      "@gabrielvfonseca/operator",
       "devices",
       "rotate",
       "--device",

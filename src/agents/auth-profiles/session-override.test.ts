@@ -12,11 +12,11 @@ import {
   replaceSessionEntry,
 } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type OperatorTestState,
   withOperatorTestState,
-} from "../../test-utils/operator-test-state.js";
+} from "../../test-utils/openclaw-test-state.js";
 import {
   clearSessionAuthProfileOverride,
   resolveSessionAuthProfileOverride,
@@ -127,7 +127,7 @@ async function withAuthState<T>(run: (state: OperatorTestState) => Promise<T>): 
   return await withOperatorTestState(
     {
       layout: "state-only",
-      prefix: "openclaw-auth-",
+      prefix: "operator-auth-",
     },
     run,
   );

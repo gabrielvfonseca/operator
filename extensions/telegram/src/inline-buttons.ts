@@ -1,10 +1,10 @@
 // Telegram plugin module implements inline buttons behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { TelegramInlineButtonsScope } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { TelegramInlineButtonsScope } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { inspectTelegramAccount } from "./account-inspect.js";
 import { listTelegramAccountIds } from "./accounts.js";
 

@@ -2,8 +2,11 @@
 import { mkdtempSync, readFileSync, rmSync, truncateSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { SpeechProviderConfig, SpeechSynthesisRequest } from "openclaw/plugin-sdk/speech-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type {
+  SpeechProviderConfig,
+  SpeechSynthesisRequest,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type SpeechSynthesisTarget = SpeechSynthesisRequest["target"];
@@ -25,7 +28,7 @@ const TEST_CFG = {} as OperatorConfig;
 const MAX_AUDIO_OUTPUT_BYTES = 50 * 1024 * 1024;
 
 function createCliFixture(): { dir: string; script: string } {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "openclaw-cli-tts-test-"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "operator-cli-tts-test-"));
   const script = path.join(dir, "write-audio.mjs");
   writeFileSync(
     script,
@@ -353,7 +356,7 @@ mkdirSync(process.argv[outIndex + 1]);
     "keeps %s debug previews free of lone surrogates",
     async (method) => {
       const text = `${"a".repeat(49)}😀tail`;
-      const providerConfig = { command: "missing-openclaw-tts-test-command" };
+      const providerConfig = { command: "missing-operator-tts-test-command" };
       const run =
         method === "synthesize"
           ? synthesize({ providerConfig, text })

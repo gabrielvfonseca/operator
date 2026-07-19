@@ -3,10 +3,10 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it } from "vitest";
 import type { ModelApi } from "../../config/types.models.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resizeToJpeg } from "../../media/media-services.js";
 import { encodePngRgba, fillPixel } from "../../media/png-encode.js";
 import {
@@ -170,7 +170,7 @@ function createLiveConfig(testCase: LiveProviderCase): OperatorConfig {
 async function withLiveWorkspace<T>(
   run: (ctx: { agentDir: string; workspaceDir: string; imagePath: string }) => Promise<T>,
 ) {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-image-tool-live-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-image-tool-live-"));
   try {
     const agentDir = path.join(root, "agent");
     const workspaceDir = path.join(root, "workspace");

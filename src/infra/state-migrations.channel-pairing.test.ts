@@ -21,7 +21,7 @@ afterEach(async () => {
 });
 
 async function createFixture() {
-  const stateDir = await tempDirs.make("openclaw-pairing-migration-");
+  const stateDir = await tempDirs.make("operator-pairing-migration-");
   const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   const sourceDir = resolveOAuthDir(env, stateDir);
   fs.mkdirSync(sourceDir, { recursive: true });
@@ -78,7 +78,7 @@ describe("legacy channel pairing state migration", () => {
       ],
       allowFrom: { default: ["1001"], alerts: ["1002"], "ops/bot": ["1003"] },
     });
-    expect(fs.existsSync(path.join(path.dirname(sourceDir), "state", "openclaw.sqlite"))).toBe(
+    expect(fs.existsSync(path.join(path.dirname(sourceDir), "state", "operator.sqlite"))).toBe(
       true,
     );
   });

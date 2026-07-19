@@ -2,8 +2,8 @@
 import {
   isProviderAuthProfileConfigured,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   createRealtimeTranscriptionWebSocketSession,
   type RealtimeTranscriptionProviderConfig,
@@ -11,13 +11,13 @@ import {
   type RealtimeTranscriptionSession,
   type RealtimeTranscriptionSessionCreateRequest,
   type RealtimeTranscriptionWebSocketTransport,
-} from "openclaw/plugin-sdk/realtime-transcription";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-transcription";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   normalizeOptionalString,
   parseBooleanValue as readBoolean,
   parseFiniteNumber as readFiniteNumber,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { XAI_BASE_URL } from "./model-definitions.js";
 import { xaiUserAgentHeaderFor } from "./src/xai-user-agent.js";
 

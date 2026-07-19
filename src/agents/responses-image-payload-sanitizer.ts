@@ -3,8 +3,8 @@
  * are replaced with text placeholders so the request remains valid and
  * auditable.
  */
-import { sanitizeInlineImageDataUrl as sanitizeSharedInlineImageDataUrl } from "@operator/media-core/inline-image-data-url";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { sanitizeInlineImageDataUrl as sanitizeSharedInlineImageDataUrl } from "@gabrielvfonseca/media-core/inline-image-data-url";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 const IMAGE_OMITTED_TEXT = "omitted image payload: invalid inline image data";
 

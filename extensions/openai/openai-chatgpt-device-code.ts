@@ -2,8 +2,8 @@
 import {
   positiveSecondsToSafeMilliseconds,
   resolveExpiresAtMsFromDurationSeconds,
-} from "openclaw/plugin-sdk/number-runtime";
-import { readResponseTextLimited } from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { readResponseTextLimited } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import { resolveCodexAccessTokenExpiry } from "./openai-chatgpt-auth-identity.js";
 import { trimNonEmptyString } from "./openai-chatgpt-shared.js";
 
@@ -20,9 +20,9 @@ function resolveOpenAICodexDeviceCodeHeaders(contentType: string): Record<string
   const version = process.env.OPERATOR_VERSION?.trim();
   return {
     "Content-Type": contentType,
-    originator: "openclaw",
+    originator: "@gabrielvfonseca/operator",
     ...(version ? { version } : {}),
-    "User-Agent": version ? `openclaw/${version}` : "openclaw",
+    "User-Agent": version ? `openclaw/${version}` : "@gabrielvfonseca/operator",
   };
 }
 

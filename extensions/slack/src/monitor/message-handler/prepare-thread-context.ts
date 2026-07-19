@@ -1,13 +1,16 @@
 // Slack plugin module implements prepare thread context behavior.
-import { formatInboundEnvelope } from "openclaw/plugin-sdk/channel-inbound";
-import { runTasksWithConcurrency } from "openclaw/plugin-sdk/concurrency-runtime";
-import type { ContextVisibilityMode, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import { formatInboundEnvelope } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { runTasksWithConcurrency } from "@gabrielvfonseca/operator/plugin-sdk/concurrency-runtime";
+import type {
+  ContextVisibilityMode,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   filterSupplementalContextItems,
   shouldIncludeSupplementalContext,
-} from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import type { ResolvedSlackAccount } from "../../accounts.js";
 import type { SlackMessageEvent } from "../../types.js";
 import { resolveSlackAllowListMatch } from "../allow-list.js";

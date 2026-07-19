@@ -247,7 +247,7 @@ async function createMcpSchemaProbePlugin(tempDir: string): Promise<string> {
   await fs.mkdir(pluginDir, { recursive: true });
   const pluginFile = path.join(pluginDir, "index.cjs");
   await fs.writeFile(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     `${JSON.stringify(
       {
         id: MCP_SCHEMA_PROBE_PLUGIN_ID,
@@ -387,7 +387,7 @@ describeLive("gateway live (cli backend)", () => {
         );
       }
 
-      const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-cli-"));
+      const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-cli-"));
       const stateDir = path.join(tempDir, "state");
       await fs.mkdir(stateDir, { recursive: true });
       const schemaProbePluginPath = CLI_MCP_SCHEMA_PROBE
@@ -499,7 +499,7 @@ describeLive("gateway live (cli backend)", () => {
           list: [{ id: "dev", default: true }],
         },
       };
-      const tempConfigPath = path.join(tempDir, "openclaw.json");
+      const tempConfigPath = path.join(tempDir, "operator.json");
       await fs.writeFile(tempConfigPath, `${JSON.stringify(nextCfg, null, 2)}\n`);
       setTestEnvValue("OPERATOR_CONFIG_PATH", tempConfigPath);
       const deviceIdentity = await ensurePairedTestGatewayClientIdentity();

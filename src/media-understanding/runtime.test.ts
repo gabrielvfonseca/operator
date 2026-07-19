@@ -1,7 +1,7 @@
 // Media-understanding runtime tests cover file APIs, provider dispatch, disabled
 // state, cleanup, remote references, and direct model-backed image calls.
-import { expectDefined } from "@operator/normalization-core";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import type { OperatorConfig } from "../config/types.js";

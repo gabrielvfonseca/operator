@@ -1,9 +1,9 @@
 // Transcript append redaction tests cover secret scrubbing when appending transcript entries.
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
 import { resolveSessionTranscriptPathInDir } from "./paths.js";
 import { loadTranscriptEvents, replaceSessionEntry } from "./session-accessor.js";
@@ -474,7 +474,7 @@ describe("appendExactAssistantMessageToSessionTranscript - redaction", () => {
         role: "assistant",
         content: [{ type: "text", text: `Here is your key: ${fakeApiKey}` }],
         api: "openai-responses",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "test-model",
         usage: {
           input: 0,
@@ -519,7 +519,7 @@ describe("appendExactAssistantMessageToSessionTranscript - redaction", () => {
           role: "assistant",
           content: [{ type: "text", text: `Here is your key: ${fakeApiKey}` }],
           api: "openai-responses",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "test-model",
           usage: {
             input: 0,
@@ -602,7 +602,7 @@ describe("appendExactAssistantMessageToSessionTranscript - redaction", () => {
         role: "assistant",
         content: [{ type: "text", text: `Here is your key: ${fakeApiKey}` }],
         api: "openai-responses",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "legacy-assistant",
         usage: {
           input: 0,

@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawChatUI
+import OperatorChatUI
 import SwiftUI
 
 struct GatewaySessionDefaultsRecord: Codable {
@@ -220,7 +220,7 @@ enum SessionLoader {
     static let fallbackContextTokens = 200_000
 
     static let defaultStorePath = standardize(
-        OpenClawPaths.stateDirURL
+        OperatorPaths.stateDirURL
             .appendingPathComponent("sessions/sessions.json").path)
 
     static func loadSnapshot(
@@ -231,7 +231,7 @@ enum SessionLoader {
     {
         let data: Data
         do {
-            let request = OpenClawChatGatewayRequests.sessionsList(
+            let request = OperatorChatGatewayRequests.sessionsList(
                 limit: limit,
                 search: nil,
                 archived: false,

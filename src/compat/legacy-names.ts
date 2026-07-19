@@ -1,6 +1,6 @@
 // Product/package naming constants that bridge current Operator manifests with
 // legacy Clawdbot keys still seen in older configs and packages.
-const PROJECT_NAME = "operator" as const;
+const PROJECT_NAME = "@gabrielvfonseca/operator" as const;
 
 const LEGACY_PROJECT_NAMES = ["clawdbot"] as const;
 

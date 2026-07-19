@@ -1,16 +1,16 @@
 ---
-summary: "Build simple typed agent tools with defineToolPlugin and openclaw plugins init/build/validate"
+summary: "Build simple typed agent tools with defineToolPlugin and operator plugins init/build/validate"
 title: "Tool plugins"
 sidebarTitle: "Tool Plugins"
 read_when:
-  - You want to build a simple OpenClaw plugin that only adds agent tools
+  - You want to build a simple Operator plugin that only adds agent tools
   - You want to use defineToolPlugin instead of hand-writing plugin manifest metadata
   - You need to scaffold, generate, validate, test, or publish a tool-only plugin
 ---
 
 `defineToolPlugin` builds a plugin that only adds agent-callable tools: no
 channel, model provider, hook, service, or setup backend. It generates the
-manifest metadata OpenClaw needs to discover tools without loading plugin
+manifest metadata Operator needs to discover tools without loading plugin
 runtime code.
 
 For provider, channel, hook, service, or mixed-capability plugins, start with
@@ -23,15 +23,15 @@ or [Provider Plugins](/plugins/sdk-provider-plugins) instead.
 - TypeScript ESM package output.
 - `typebox` in `dependencies` (not just `devDependencies` - the generated
   plugin imports it at runtime).
-- `openclaw >=2026.5.17`, the first version that exports
+- `operator >=2026.5.17`, the first version that exports
   `openclaw/plugin-sdk/tool-plugin`.
-- A package root that ships `dist/`, `openclaw.plugin.json`, and
+- A package root that ships `dist/`, `operator.plugin.json`, and
   `package.json`.
 
 ## Quickstart
 
 ```bash
-openclaw plugins init stock-quotes --name "Stock Quotes"
+operator plugins init stock-quotes --name "Stock Quotes"
 cd stock-quotes
 npm install
 npm run plugin:build
@@ -47,19 +47,19 @@ npm test
 | `src/index.test.ts`    | Metadata test asserting the tool list                             |
 | `tsconfig.json`        | NodeNext TypeScript output to `dist/`                             |
 | `vitest.config.ts`     | Vitest config for `src/**/*.test.ts`                              |
-| `package.json`         | Scripts, runtime deps, `openclaw.extensions: ["./dist/index.js"]` |
-| `openclaw.plugin.json` | Generated manifest metadata for the initial tool                  |
+| `package.json`         | Scripts, runtime deps, `operator.extensions: ["./dist/index.js"]` |
+| `operator.plugin.json` | Generated manifest metadata for the initial tool                  |
 
 `npm run plugin:build` runs `npm run build` (tsc) then
-`openclaw plugins build --entry ./dist/index.js`. `npm run plugin:validate`
-rebuilds and runs `openclaw plugins validate --entry ./dist/index.js`.
+`operator plugins build --entry ./dist/index.js`. `npm run plugin:validate`
+rebuilds and runs `operator plugins validate --entry ./dist/index.js`.
 Successful validation prints:
 
 ```text
 Plugin stock-quotes is valid.
 ```
 
-`openclaw plugins init <id>` options:
+`operator plugins init <id>` options:
 
 | Flag                 | Default            | Effect                                 |
 | -------------------- | ------------------ | -------------------------------------- |
@@ -113,8 +113,8 @@ specific enough to avoid collisions with core tools or other plugins.
 ## Optional and factory tools
 
 Set `optional: true` when users should explicitly allowlist the tool before it
-is sent to a model. `openclaw plugins build` writes the matching
-`toolMetadata.<tool>.optional` manifest entry, so OpenClaw can see that the
+is sent to a model. `operator plugins build` writes the matching
+`toolMetadata.<tool>.optional` manifest entry, so Operator can see that the
 tool is optional without loading plugin runtime code.
 
 ```typescript
@@ -153,12 +153,12 @@ with hooks, services, providers, or commands.
 
 ## Return values
 
-`defineToolPlugin` wraps plain return values into the OpenClaw tool-result
+`defineToolPlugin` wraps plain return values into the Operator tool-result
 format:
 
 - Return a string when the model should see that exact text.
 - Return a JSON-compatible value when you want the model to see formatted JSON
-  and OpenClaw to keep the original value in `details`.
+  and Operator to keep the original value in `details`.
 
 ```typescript
 tool({
@@ -187,7 +187,7 @@ existing `api.registerTool` implementation.
 
 ## Configuration
 
-`configSchema` is optional. Omit it and OpenClaw applies a strict empty object
+`configSchema` is optional. Omit it and Operator applies a strict empty object
 schema; the generated manifest still includes `configSchema`.
 
 ```typescript
@@ -222,21 +222,21 @@ export default defineToolPlugin({
 });
 ```
 
-OpenClaw reads plugin config from the plugin's entry in the Gateway config. Do
+Operator reads plugin config from the plugin's entry in the Gateway config. Do
 not hard-code secrets in source or docs examples; use config, environment
 variables, or SecretRefs per the plugin's security model.
 
 ## Generated metadata
 
-OpenClaw must read the plugin manifest before importing plugin runtime code.
+Operator must read the plugin manifest before importing plugin runtime code.
 `defineToolPlugin` exposes static metadata for this, and
-`openclaw plugins build` writes it into the package. Rerun the generator after
+`operator plugins build` writes it into the package. Rerun the generator after
 changing plugin id, name, description, config schema, activation, or tool
 names:
 
 ```bash
 npm run build
-openclaw plugins build --entry ./dist/index.js
+operator plugins build --entry ./dist/index.js
 ```
 
 Generated manifest for a one-tool plugin:
@@ -261,27 +261,27 @@ Generated manifest for a one-tool plugin:
 }
 ```
 
-`contracts.tools` is the important discovery contract: it tells OpenClaw which
+`contracts.tools` is the important discovery contract: it tells Operator which
 plugin owns each tool without loading every installed plugin's runtime. A
 stale manifest means a tool can go missing from discovery, or a registration
 error gets blamed on the wrong plugin.
 
 ## Package metadata
 
-`openclaw plugins build` also aligns `package.json` to the selected runtime
+`operator plugins build` also aligns `package.json` to the selected runtime
 entry:
 
 ```json
 {
   "type": "module",
-  "files": ["dist", "openclaw.plugin.json", "README.md"],
+  "files": ["dist", "operator.plugin.json", "README.md"],
   "dependencies": {
     "typebox": "^1.1.38"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.5.17"
+    "@gabrielvfonseca/operator": ">=2026.5.17"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./dist/index.js"]
   }
 }
@@ -297,34 +297,34 @@ is stale:
 
 ```bash
 npm run build
-openclaw plugins build --entry ./dist/index.js --check
-openclaw plugins validate --entry ./dist/index.js
+operator plugins build --entry ./dist/index.js --check
+operator plugins validate --entry ./dist/index.js
 npm test
 ```
 
 `plugins validate` checks that:
 
-- `openclaw.plugin.json` exists and passes the normal manifest loader.
+- `operator.plugin.json` exists and passes the normal manifest loader.
 - The current entry exports `defineToolPlugin` metadata.
 - Generated manifest fields match the entry metadata.
 - `contracts.tools` matches the declared tool names.
-- `package.json` points `openclaw.extensions` at the selected runtime entry.
+- `package.json` points `operator.extensions` at the selected runtime entry.
 
 ## Install and inspect locally
 
-From a separate OpenClaw checkout or installed CLI, install the package path:
+From a separate Operator checkout or installed CLI, install the package path:
 
 ```bash
-openclaw plugins install ./stock-quotes
-openclaw plugins inspect stock-quotes --runtime
+operator plugins install ./stock-quotes
+operator plugins inspect stock-quotes --runtime
 ```
 
 For a packaged smoke test, pack first and install the tarball:
 
 ```bash
 npm pack
-openclaw plugins install npm-pack:./openclaw-plugin-stock-quotes-0.1.0.tgz
-openclaw plugins inspect stock-quotes --runtime --json
+operator plugins install npm-pack:./operator-plugin-stock-quotes-0.1.0.tgz
+operator plugins inspect stock-quotes --runtime --json
 ```
 
 After installing, restart or reload the Gateway and ask the agent to use the
@@ -345,11 +345,11 @@ clawhub package publish ./stock-quotes
 Install with an explicit ClawHub locator:
 
 ```bash
-openclaw plugins install clawhub:your-org/stock-quotes
+operator plugins install clawhub:your-org/stock-quotes
 ```
 
 Bare npm package specs still install from npm during the launch cutover, but
-ClawHub is the preferred discovery and distribution surface for OpenClaw
+ClawHub is the preferred discovery and distribution surface for Operator
 plugins. See [ClawHub publishing](/clawhub/publishing) for owner scope and
 release review.
 
@@ -358,8 +358,8 @@ release review.
 ### `plugin entry not found: ./dist/index.js`
 
 The selected entry file does not exist. Run `npm run build`, then rerun
-`openclaw plugins build --entry ./dist/index.js` or
-`openclaw plugins validate --entry ./dist/index.js`.
+`operator plugins build --entry ./dist/index.js` or
+`operator plugins validate --entry ./dist/index.js`.
 
 ### `plugin entry does not expose defineToolPlugin metadata`
 
@@ -367,21 +367,21 @@ The entry did not export a value created by `defineToolPlugin`. Confirm the
 module's default export is the `defineToolPlugin(...)` result, or pass the
 correct entry with `--entry`.
 
-### `openclaw.plugin.json generated metadata is stale`
+### `operator.plugin.json generated metadata is stale`
 
 The manifest no longer matches the entry metadata. Run:
 
 ```bash
 npm run build
-openclaw plugins build --entry ./dist/index.js
+operator plugins build --entry ./dist/index.js
 ```
 
-Commit both `openclaw.plugin.json` and `package.json` changes.
+Commit both `operator.plugin.json` and `package.json` changes.
 
-### `package.json openclaw.extensions must include ./dist/index.js`
+### `package.json operator.extensions must include ./dist/index.js`
 
 The package metadata points at a different runtime entry. Run
-`openclaw plugins build --entry ./dist/index.js` so the generator aligns
+`operator plugins build --entry ./dist/index.js` so the generator aligns
 package metadata with the entry you intend to ship.
 
 ### `Cannot find package 'typebox'`
@@ -393,10 +393,10 @@ reinstall, rebuild, and rerun validation.
 
 Check these in order:
 
-1. `openclaw plugins inspect <plugin-id> --runtime`
-2. `openclaw plugins validate --root <plugin-root> --entry ./dist/index.js`
-3. `openclaw.plugin.json` has `contracts.tools` with the expected tool names.
-4. `package.json` has `openclaw.extensions: ["./dist/index.js"]`.
+1. `operator plugins inspect <plugin-id> --runtime`
+2. `operator plugins validate --root <plugin-root> --entry ./dist/index.js`
+3. `operator.plugin.json` has `contracts.tools` with the expected tool names.
+4. `package.json` has `operator.extensions: ["./dist/index.js"]`.
 5. The Gateway was restarted or reloaded after installing the plugin.
 
 ## See also

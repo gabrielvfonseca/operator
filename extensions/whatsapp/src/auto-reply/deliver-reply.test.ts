@@ -3,8 +3,8 @@ import fsSync from "node:fs";
 import {
   createMessageReceiptFromOutboundResults,
   listMessageReceiptPlatformIds,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { createAcceptedWhatsAppSendResult } from "../inbound/send-result.test-helper.js";
 import { createTestWebInboundMessage } from "../inbound/test-message.test-helper.js";

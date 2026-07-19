@@ -1,6 +1,6 @@
 /** Builds web-tool secret metadata from config, plugins, and provider contracts. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { loadInstalledPluginIndexInstallRecordsSync } from "../plugins/installed-plugin-index-records.js";

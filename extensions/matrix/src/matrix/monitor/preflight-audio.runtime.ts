@@ -1,5 +1,5 @@
-import { sendDurableMessageBatch as sendDurableMessageBatchImpl } from "openclaw/plugin-sdk/channel-outbound";
-import { transcribeFirstAudio as transcribeFirstAudioImpl } from "openclaw/plugin-sdk/media-runtime";
+import { sendDurableMessageBatch as sendDurableMessageBatchImpl } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { transcribeFirstAudio as transcribeFirstAudioImpl } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 
 type TranscribeFirstAudio = typeof import("openclaw/plugin-sdk/media-runtime").transcribeFirstAudio;
 type SendDurableMessageBatch =

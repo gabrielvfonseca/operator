@@ -302,7 +302,7 @@ function resolveBrowserBaseUrl(params: {
   }
   if (!resolved.enabled) {
     throw new Error(
-      "Browser control is disabled. Set browser.enabled=true in ~/.openclaw/openclaw.json.",
+      "Browser control is disabled. Set browser.enabled=true in ~/.operator/operator.json.",
     );
   }
   return undefined;

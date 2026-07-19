@@ -1,9 +1,9 @@
 // Imessage plugin module implements media staging behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { isInboundPathAllowed } from "openclaw/plugin-sdk/media-runtime";
-import { saveMediaBuffer } from "openclaw/plugin-sdk/media-store";
-import { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+import { isInboundPathAllowed } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { saveMediaBuffer } from "@gabrielvfonseca/operator/plugin-sdk/media-store";
+import { loadWebMedia } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 import type { IMessageAttachment } from "./types.js";
 
 type StagedIMessageAttachment = {

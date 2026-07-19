@@ -1,5 +1,5 @@
 {
-  "name": "@operator/terminal-core",
+  "name": "@gabrielvfonseca/terminal-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -101,7 +101,7 @@
     }
   },
   "dependencies": {
-    "@operator/normalization-core": "workspace:*",
+    "@gabrielvfonseca/normalization-core": "workspace:*",
     "@clack/prompts": "1.6.0",
     "chalk": "5.6.2"
   }

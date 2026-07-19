@@ -3,4 +3,4 @@ export {
   MediaFetchError,
   saveMediaBuffer,
   saveRemoteMedia,
-} from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";

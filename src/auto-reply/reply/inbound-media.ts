@@ -1,6 +1,6 @@
 /** Detects inbound media and audio markers in channel message context. */
-import { isAudioFileName } from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isAudioFileName } from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Minimal inbound media fields used by media/audio detection. */
 type InboundMediaContext = {

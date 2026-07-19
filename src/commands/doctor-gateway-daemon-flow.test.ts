@@ -45,8 +45,8 @@ vi.mock("../config/config.js", async () => {
 });
 
 vi.mock("../daemon/constants.js", () => ({
-  resolveGatewayLaunchAgentLabel: vi.fn(() => "ai.openclaw.gateway"),
-  resolveNodeLaunchAgentLabel: vi.fn(() => "ai.openclaw.node"),
+  resolveGatewayLaunchAgentLabel: vi.fn(() => "ai.operator.gateway"),
+  resolveNodeLaunchAgentLabel: vi.fn(() => "ai.operator.node"),
 }));
 
 vi.mock("../daemon/diagnostics.js", () => ({
@@ -294,8 +294,8 @@ describe("maybeRepairGatewayDaemon", () => {
     service.readCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway"],
       environment: {
-        OPERATOR_STATE_DIR: "/tmp/openclaw-service",
-        OPERATOR_CONFIG_PATH: "/tmp/openclaw-service/openclaw.json",
+        OPERATOR_STATE_DIR: "/tmp/operator-service",
+        OPERATOR_CONFIG_PATH: "/tmp/operator-service/operator.json",
       },
     });
     readGatewayRestartHandoffSync.mockReturnValueOnce({
@@ -327,8 +327,8 @@ describe("maybeRepairGatewayDaemon", () => {
     const [handoffEnv] = readGatewayRestartHandoffSync.mock.calls[0] as unknown as [
       { OPERATOR_STATE_DIR?: string; OPERATOR_CONFIG_PATH?: string },
     ];
-    expect(handoffEnv?.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-service");
-    expect(handoffEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/openclaw-service/openclaw.json");
+    expect(handoffEnv?.OPERATOR_STATE_DIR).toBe("/tmp/operator-service");
+    expect(handoffEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/operator-service/operator.json");
     expect(note).toHaveBeenCalledWith(
       "Recent restart handoff: full-process via systemd; source=plugin-change; reason=plugin source changed; pid=12345; age=30s; expiresIn=30s",
       "Gateway",
@@ -472,7 +472,7 @@ describe("maybeRepairGatewayDaemon", () => {
 
   it("suppresses busy-port note for expected Gateway listeners", async () => {
     setPlatform("linux");
-    const listeners = [{ pid: 5001, commandLine: "openclaw-gateway", address: "0.0.0.0:18789" }];
+    const listeners = [{ pid: 5001, commandLine: "operator-gateway", address: "0.0.0.0:18789" }];
     inspectPortUsage.mockResolvedValue({
       port: 18789,
       status: "busy",
@@ -494,8 +494,8 @@ describe("maybeRepairGatewayDaemon", () => {
       port: 18789,
       status: "busy",
       listeners: [
-        { pid: 5001, commandLine: "openclaw-gateway", address: "0.0.0.0:18789" },
-        { pid: 5002, commandLine: "openclaw-gateway", address: "127.0.0.1:18789" },
+        { pid: 5001, commandLine: "operator-gateway", address: "0.0.0.0:18789" },
+        { pid: 5002, commandLine: "operator-gateway", address: "127.0.0.1:18789" },
       ],
       hints: ["Multiple listeners detected"],
     });
@@ -594,10 +594,10 @@ describe("maybeRepairGatewayDaemon", () => {
     findSystemGatewayServices.mockResolvedValue([
       {
         platform: "linux",
-        label: "openclaw-gateway.service",
-        detail: "unit: /etc/systemd/system/openclaw-gateway.service",
+        label: "operator-gateway.service",
+        detail: "unit: /etc/systemd/system/operator-gateway.service",
         scope: "system",
-        marker: "openclaw",
+        marker: "@gabrielvfonseca/operator",
         legacy: false,
       },
     ]);
@@ -610,7 +610,7 @@ describe("maybeRepairGatewayDaemon", () => {
     expect(note).toHaveBeenCalledWith(
       [
         "System-level Operator gateway service detected while the user gateway service is not installed.",
-        "- openclaw-gateway.service (unit: /etc/systemd/system/openclaw-gateway.service)",
+        "- operator-gateway.service (unit: /etc/systemd/system/operator-gateway.service)",
         "Operator will not install a second user-level gateway service automatically.",
         "Run `openclaw gateway status --deep` or `openclaw doctor --deep` to inspect duplicate services.",
         `Set ${SERVICE_REPAIR_POLICY_ENV}=external if a system supervisor owns the gateway lifecycle.`,

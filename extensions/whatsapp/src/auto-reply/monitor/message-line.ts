@@ -1,5 +1,5 @@
 // Whatsapp plugin module implements message line behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   getPrimaryIdentityId,
   getReplyContext,

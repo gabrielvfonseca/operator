@@ -5,7 +5,7 @@ Official Operator plugin for OpenAI Codex app-server integration. It exposes the
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/codex
+operator plugins install @gabrielvfonseca/codex
 ```
 
 Use this plugin when you want Operator to run Codex-backed model turns, media understanding, and prompt overlays through the Codex app-server harness, or to browse non-archived Codex Desktop and CLI sessions and paginated transcripts across paired computers.
@@ -15,9 +15,9 @@ Guided onboarding attempts to install and enable supervision after it detects a 
 The Gateway-backed operator CLI is:
 
 ```bash
-openclaw codex sessions [--search <text>] [--host <id>] [--limit <count>] [--cursor <cursor>] [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
-openclaw codex continue <thread-id> [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
-openclaw codex archive <thread-id> --confirm-no-other-runner [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
+operator codex sessions [--search <text>] [--host <id>] [--limit <count>] [--cursor <cursor>] [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
+operator codex continue <thread-id> [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
+operator codex archive <thread-id> --confirm-no-other-runner [--json] [--url <url>] [--token <token>] [--timeout <ms>] [--expect-final]
 ```
 
 The catalog never includes archived threads and has no archived or include-archived option. Rows appear in the normal Control UI sessions sidebar and open in the normal Chat pane. Transcript history requires a recent Codex App Server with `thread/turns/list` and is fetched 20 full-item turns at a time through opaque cursors; Operator does not fall back to an unbounded `thread/read`, and rejects a serialized transcript page above 20 MiB before transport. `--limit` defaults to 50 sessions per host, `--cursor` requires `--host`, and the sessions Gateway timeout defaults to 75,000 ms so cold paired-node catalogs can complete. Continue and archive retain the shared 30,000 ms default. All operator surfaces require `operator.write`. Paired-node rows can be listed and read; continue and archive operate only on the Gateway-local host, and archive requires the no-other-runner confirmation. Catalog registration does not require `supervision.enabled`; that setting gates agent-facing supervision tools.
@@ -32,4 +32,4 @@ For a supervised branch, Codex App Server selects the snapshot fork's model and 
 
 The visible-history mirror keeps at most 200 user or assistant messages, 512 KiB total, and 64 KiB per message. Image inputs become `[Image attachment]`; image data and local paths are not copied.
 
-See the [Codex harness](https://docs.openclaw.ai/plugins/codex-harness) and [Codex supervision](https://docs.openclaw.ai/plugins/codex-supervision) guides.
+See the [Codex harness](https://docs.operator.ai/plugins/codex-harness) and [Codex supervision](https://docs.operator.ai/plugins/codex-supervision) guides.

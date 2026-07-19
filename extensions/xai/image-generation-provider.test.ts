@@ -28,7 +28,7 @@ const {
     if (params.provider === "xai") {
       const version = process.env.OPERATOR_VERSION?.trim() || "unknown";
       headers.set("User-Agent", `openclaw/${version}`);
-      headers.set("originator", "openclaw");
+      headers.set("originator", "@gabrielvfonseca/operator");
       headers.set("version", version);
     }
     return {
@@ -147,10 +147,10 @@ describe("xai image generation provider", () => {
     if (!isConfigured) {
       throw new Error("expected XAI image provider config predicate");
     }
-    expect(isConfigured({ agentDir: "/tmp/openclaw-xai-test" })).toBe(true);
+    expect(isConfigured({ agentDir: "/tmp/operator-xai-test" })).toBe(true);
     expect(isProviderApiKeyConfiguredMock).toHaveBeenCalledWith({
       provider: "xai",
-      agentDir: "/tmp/openclaw-xai-test",
+      agentDir: "/tmp/operator-xai-test",
     });
   });
 
@@ -268,7 +268,7 @@ describe("xai image generation provider", () => {
 
     const request = requirePostJsonCall();
     expect(request.headers?.get("user-agent")).toBe("openclaw/2026.3.22");
-    expect(request.headers?.get("originator")).toBe("openclaw");
+    expect(request.headers?.get("originator")).toBe("@gabrielvfonseca/operator");
     expect(request.headers?.get("version")).toBe("2026.3.22");
     vi.unstubAllEnvs();
   });

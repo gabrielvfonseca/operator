@@ -1,6 +1,6 @@
 // Doctor warnings and repairs for legacy OpenAI Codex model/provider routing.
-import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import { asOptionalRecord as asMutableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { detectWindowsSpawnCommandInlineArgs } from "../../../plugin-sdk/windows-spawn.js";
 import {
@@ -75,7 +75,7 @@ function formatLegacyLosslessCompactionWarning(params: {
     "- Legacy Lossless compaction config should use the Lossless context-engine slot for Codex.",
     ...configLines,
     params.canAutoFix
-      ? "- Run `operator doctor --fix`: it migrates legacy Lossless compaction config to the Lossless context-engine slot."
+      ? "- Run `openclaw doctor --fix`: it migrates legacy Lossless compaction config to the Lossless context-engine slot."
       : "- Move the Lossless config manually; doctor will not overwrite an existing non-Lossless context-engine slot or collapse conflicting per-agent summary models.",
   ].join("\n");
 }
@@ -86,7 +86,7 @@ function formatDisabledCodexPluginWarning(params: {
 }): string {
   const fixHint = params.blockedOutsideEntry
     ? "- Enable plugin loading and remove `codex` from plugins.deny, or set the affected OpenAI models to an Operator runtime policy."
-    : "- Run `operator doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.";
+    : "- Run `openclaw doctor --fix`: it enables plugins.entries.codex, or set the affected OpenAI models to an Operator runtime policy.";
   return [
     "- Codex runtime is selected, but the Codex plugin is disabled.",
     ...params.hits.map(
@@ -221,7 +221,7 @@ export function collectCodexRouteWarnings(params: {
               hit.runtime ? `; current runtime is "${hit.runtime}"` : ""
             }.`,
         ),
-        "- Run `operator doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
+        "- Run `openclaw doctor --fix`: it rewrites configured model refs and stale sessions to `openai/*`, moves Codex intent to provider/model runtime policy, and clears old whole-agent runtime pins.",
       ].join("\n"),
     );
   }
@@ -273,7 +273,7 @@ export function collectCodexRouteWarnings(params: {
       formatUnsupportedCompactionWarning({
         hits: fixableHits,
         fixHint:
-          "- Run `operator doctor --fix`: it removes unsupported Codex compaction overrides.",
+          "- Run `openclaw doctor --fix`: it removes unsupported Codex compaction overrides.",
       }),
     );
   }

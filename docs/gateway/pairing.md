@@ -41,12 +41,12 @@ rather than generating a fresh request (and approval prompt) per attempt.
 ## CLI workflow (headless friendly)
 
 ```bash
-openclaw nodes pending
-openclaw nodes approve <requestId>
-openclaw nodes reject <requestId>
-openclaw nodes status
-openclaw nodes remove --node <id|name|ip>
-openclaw nodes rename --node <id|name|ip> --name "Living Room iPad"
+operator nodes pending
+operator nodes approve <requestId>
+operator nodes reject <requestId>
+operator nodes status
+operator nodes remove --node <id|name|ip>
+operator nodes rename --node <id|name|ip> --name "Living Room iPad"
 ```
 
 `nodes status` shows paired/connected nodes and their capabilities.
@@ -145,7 +145,7 @@ last-seen state.
 First-time `role: node` device pairing from a private/CGNAT address is
 auto-approved when the gateway can **prove machine ownership over SSH**: it
 connects back to the pairing host (`BatchMode`, `StrictHostKeyChecking=yes`),
-runs `openclaw node identity --json` there, and approves only when the remote
+runs `operator node identity --json` there, and approves only when the remote
 device id and public key match the pending request exactly. The key match is
 what makes this safe: reachability alone never approves, so NAT co-tenants,
 other users on a shared host, and LAN spoofing all fall through to the normal
@@ -256,7 +256,7 @@ Boundaries:
   eligible, as trigger and as target. Trusted-CIDR and SSH-verified pairings
   cross hosts where display metadata is not a machine identity, so they are
   never removed automatically — use the Control UI cleanup or
-  `openclaw nodes remove` for those.
+  `operator nodes remove` for those.
 - Owner-approved and QR/setup-code (bootstrap) pairings are never removed
   automatically. Records approved before provenance existed stay protected,
   even after a later silent re-approval of the same device id.
@@ -270,7 +270,7 @@ Boundaries:
 ## Metadata-upgrade auto-approval
 
 When an already-paired device reconnects with only non-sensitive metadata
-changes (for example display name or client platform hints), OpenClaw treats
+changes (for example display name or client platform hints), Operator treats
 that as a `metadata-upgrade`. Silent auto-approval is narrow: it applies only
 to trusted non-browser local reconnects that already proved possession of
 local or shared credentials, including same-host native app reconnects after
@@ -301,20 +301,20 @@ operator auth.
 ## Storage (local, private)
 
 Pairing state lives on the paired device records in the shared SQLite state
-database under the Gateway state directory (default `~/.openclaw`):
+database under the Gateway state directory (default `~/.operator`):
 
-- `~/.openclaw/state/openclaw.sqlite` (paired devices with device auth,
+- `~/.operator/state/operator.sqlite` (paired devices with device auth,
   approved node surfaces, pending surface requests, pending device pairing
   requests, and bootstrap tokens)
 
-If you override `OPENCLAW_STATE_DIR`, the database moves with it. Gateways
+If you override `OPERATOR_STATE_DIR`, the database moves with it. Gateways
 upgraded from releases with JSON stores import them at startup and leave
 `devices/*.json.migrated` and `nodes/*.json.migrated` archives behind.
 
 Security notes:
 
 - Device tokens are secrets; treat the state database as sensitive.
-- Rotating a device token uses `openclaw devices rotate` /
+- Rotating a device token uses `operator devices rotate` /
   `device.token.rotate`.
 
 ## Transport behavior

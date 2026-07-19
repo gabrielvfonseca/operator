@@ -1,4 +1,4 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
 import android.util.Log
 import kotlinx.coroutines.CancellationException
@@ -418,7 +418,7 @@ class GatewaySession(
       // Voice/audio ownership takeover must cancel before a stale node event dispatches.
       throw err
     } catch (err: Throwable) {
-      Log.w("OpenClawGateway", "node.event failed: ${err::class.java.simpleName}")
+      Log.w("OperatorGateway", "node.event failed: ${err::class.java.simpleName}")
       NodeEventSendOutcome.FAILED
     }
   }
@@ -448,7 +448,7 @@ class GatewaySession(
       val res = conn.request(GatewayMethod.NodeEvent.rawValue, params, timeoutMs = timeoutMs)
       return RpcResult(ok = res.ok, payloadJson = res.payloadJson, error = res.error)
     } catch (err: Throwable) {
-      Log.w("OpenClawGateway", "node.event failed: ${err::class.java.simpleName}")
+      Log.w("OperatorGateway", "node.event failed: ${err::class.java.simpleName}")
       return RpcResult(
         ok = false,
         payloadJson = null,
@@ -619,7 +619,7 @@ class GatewaySession(
     private val client: OkHttpClient = buildClient()
     private val listener = Listener()
     private var socket: WebSocket? = null
-    private val loggerTag = "OpenClawGateway"
+    private val loggerTag = "OperatorGateway"
     private val incomingMessages = Channel<String>(Channel.UNLIMITED)
 
     // RPC waiters belong to this socket generation. Closing it must not touch a replacement connection.

@@ -5,12 +5,12 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import { assertSqliteTableIntegrity } from "../infra/sqlite-integrity.js";
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
 import { runSqliteDeferredTransactionSync } from "../infra/sqlite-transaction.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   closeOperatorStateDatabase,
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import { parseDeliveryContextJson } from "./task-registry.sqlite.shared.js";
 import type { TaskRegistryStoreSnapshot } from "./task-registry.store.types.js";
 import {

@@ -2,19 +2,19 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeAgentId } from "@operator/normalization-core/agent-id";
+import { normalizeAgentId } from "@gabrielvfonseca/normalization-core/agent-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 export { normalizeAgentId };
 export { splitShellArgs } from "./openclaw-runtime-io.js";
 
-// Shared Operator config helpers used by memory host, QMD, and agent context code.
+// Shared OpenClaw config helpers used by memory host, QMD, and agent context code.
 
 /** Chat shape used by memory send-policy matching. */
 type ChatType = "direct" | "group" | "channel";
@@ -145,8 +145,8 @@ type AgentConfig = {
   contextLimits?: AgentContextLimitsConfig;
 };
 
-/** Narrow Operator config shape consumed by memory host utilities. */
-export type OperatorConfig = {
+/** Narrow OpenClaw config shape consumed by memory host utilities. */
+export type OpenClawConfig = {
   agents?: {
     defaults?: {
       workspace?: string;
@@ -183,7 +183,7 @@ function normalizeHomeValue(value: string | undefined): string | undefined {
   return trimmed;
 }
 
-/** Resolve the underlying OS home before applying Operator-specific overrides. */
+/** Resolve the underlying OS home before applying OpenClaw-specific overrides. */
 function resolveRawOsHomeDir(env: NodeJS.ProcessEnv, homedir: () => string): string | undefined {
   return (
     normalizeHomeValue(env.HOME) ??
@@ -192,12 +192,12 @@ function resolveRawOsHomeDir(env: NodeJS.ProcessEnv, homedir: () => string): str
   );
 }
 
-/** Resolve OPERATOR_HOME or the OS home, falling back to cwd for hermetic tests. */
+/** Resolve OPENCLAW_HOME or the OS home, falling back to cwd for hermetic tests. */
 function resolveRequiredHomeDir(
   env: NodeJS.ProcessEnv = process.env,
   homedir: () => string = os.homedir,
 ): string {
-  const explicitHome = normalizeHomeValue(env.OPERATOR_HOME);
+  const explicitHome = normalizeHomeValue(env.OPENCLAW_HOME);
   const rawHome = explicitHome
     ? explicitHome.replace(/^~(?=$|[\\/])/, resolveRawOsHomeDir(env, homedir) ?? "")
     : resolveRawOsHomeDir(env, homedir);
@@ -230,13 +230,13 @@ function resolveStateDir(
   env: NodeJS.ProcessEnv = process.env,
   homedir: () => string = os.homedir,
 ): string {
-  const override = env.OPERATOR_STATE_DIR?.trim();
+  const override = env.OPENCLAW_STATE_DIR?.trim();
   if (override) {
     return resolveMemoryHostUserPath(override, env, homedir);
   }
   const effectiveHome = () => resolveRequiredHomeDir(env, homedir);
   const nextDir = path.join(effectiveHome(), NEW_STATE_DIRNAME);
-  if (env.OPERATOR_TEST_FAST === "1" || fs.existsSync(nextDir)) {
+  if (env.OPENCLAW_TEST_FAST === "1" || fs.existsSync(nextDir)) {
     return nextDir;
   }
   // Existing legacy state remains authoritative until an explicit migration creates .openclaw.
@@ -250,10 +250,10 @@ function resolveStateDir(
   return existingLegacy ?? nextDir;
 }
 
-/** Resolve the default agent workspace, partitioned by OPERATOR_PROFILE when set. */
+/** Resolve the default agent workspace, partitioned by OPENCLAW_PROFILE when set. */
 function resolveDefaultAgentWorkspaceDir(env: NodeJS.ProcessEnv = process.env): string {
   const home = resolveRequiredHomeDir(env, os.homedir);
-  const profile = env.OPERATOR_PROFILE?.trim();
+  const profile = env.OPENCLAW_PROFILE?.trim();
   if (profile && normalizeLowercaseStringOrEmpty(profile) !== "default") {
     return path.join(home, ".openclaw", `workspace-${profile}`);
   }
@@ -261,14 +261,14 @@ function resolveDefaultAgentWorkspaceDir(env: NodeJS.ProcessEnv = process.env): 
 }
 
 /** Return configured agent entries after dropping nullish placeholders. */
-function listAgentEntries(cfg: OperatorConfig): AgentConfig[] {
+function listAgentEntries(cfg: OpenClawConfig): AgentConfig[] {
   return Array.isArray(cfg.agents?.list)
     ? cfg.agents.list.filter((entry): entry is AgentConfig => Boolean(entry))
     : [];
 }
 
 /** Resolve the default agent id from explicit default marker or first agent entry. */
-function resolveDefaultAgentId(cfg: OperatorConfig): string {
+function resolveDefaultAgentId(cfg: OpenClawConfig): string {
   const agents = listAgentEntries(cfg);
   if (agents.length === 0) {
     return DEFAULT_AGENT_ID;
@@ -278,7 +278,7 @@ function resolveDefaultAgentId(cfg: OperatorConfig): string {
 }
 
 /** Find one agent config by canonical id. */
-function resolveAgentConfig(cfg: OperatorConfig, agentId: string): AgentConfig | undefined {
+function resolveAgentConfig(cfg: OpenClawConfig, agentId: string): AgentConfig | undefined {
   const id = normalizeAgentId(agentId);
   return listAgentEntries(cfg).find((entry) => normalizeAgentId(entry.id) === id);
 }
@@ -290,7 +290,7 @@ function stripNullBytes(value: string): string {
 
 /** Resolve the workspace directory for an agent id and config defaults. */
 export function resolveMemoryHostAgentWorkspaceDir(
-  cfg: OperatorConfig,
+  cfg: OpenClawConfig,
   agentId: string,
   env: NodeJS.ProcessEnv = process.env,
 ): string {
@@ -313,7 +313,7 @@ export function resolveMemoryHostAgentWorkspaceDir(
 
 /** Resolve context limits for an agent with defaults fallback. */
 export function resolveMemoryHostAgentContextLimits(
-  cfg: OperatorConfig | undefined,
+  cfg: OpenClawConfig | undefined,
   agentId?: string | null,
 ): AgentContextLimitsConfig | undefined {
   const defaults = cfg?.agents?.defaults?.contextLimits;
@@ -325,7 +325,7 @@ export function resolveMemoryHostAgentContextLimits(
 
 /** Resolve enabled memory search config plus deduplicated extra paths for an agent. */
 export function resolveMemoryHostSearchPathConfig(
-  cfg: OperatorConfig,
+  cfg: OpenClawConfig,
   agentId: string,
 ): { enabled: boolean; extraPaths: string[] } | null {
   const defaults = cfg.agents?.defaults?.memorySearch;

@@ -1,5 +1,5 @@
 /** Fallback command-turn detection for mixed native/text channel metadata. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isControlCommandMessage } from "./command-detection.js";
 import {

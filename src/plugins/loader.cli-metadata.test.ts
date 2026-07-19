@@ -148,7 +148,7 @@ describe("plugin loader CLI metadata", () => {
 };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "config-cli",
@@ -198,8 +198,8 @@ describe("plugin loader CLI metadata", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/cli-metadata-channel",
-          openclaw: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
+          name: "@gabrielvfonseca/cli-metadata-channel",
+          operator: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
         },
         null,
         2,
@@ -207,7 +207,7 @@ describe("plugin loader CLI metadata", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "cli-metadata-channel",
@@ -305,8 +305,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/bundled-skip-channel",
-          openclaw: { extensions: ["./index.cjs"] },
+          name: "@gabrielvfonseca/bundled-skip-channel",
+          operator: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -314,7 +314,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-skip-channel",
@@ -373,8 +373,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/bundled-cli-channel",
-          openclaw: { extensions: ["./index.cjs"] },
+          name: "@gabrielvfonseca/bundled-cli-channel",
+          operator: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -382,7 +382,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-cli-channel",
@@ -457,8 +457,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/bundled-skip-provider",
-          openclaw: { extensions: ["./index.cjs"] },
+          name: "@gabrielvfonseca/bundled-skip-provider",
+          operator: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -466,7 +466,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-skip-provider",
@@ -521,8 +521,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/full-cli-metadata-channel",
-          openclaw: { extensions: ["./index.cjs"] },
+          name: "@gabrielvfonseca/full-cli-metadata-channel",
+          operator: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -530,7 +530,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "full-cli-metadata-channel",
@@ -618,8 +618,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/discovery-cli-metadata-channel",
-          openclaw: { extensions: ["./index.cjs"] },
+          name: "@gabrielvfonseca/discovery-cli-metadata-channel",
+          operator: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -627,7 +627,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "discovery-cli-metadata-channel",
@@ -724,8 +724,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/force-runtime-cli-channel",
-          openclaw: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
+          name: "@gabrielvfonseca/force-runtime-cli-channel",
+          operator: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
         },
         null,
         2,
@@ -733,7 +733,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "force-runtime-cli-channel",
@@ -1014,7 +1014,7 @@ module.exports = {
 };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "memory-external",

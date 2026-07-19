@@ -33,13 +33,13 @@ struct ChatDynamicTypeSourceGuardTests {
 
         return try (
             messageViews: String(
-                contentsOf: root.appendingPathComponent("Sources/OpenClawChatUI/ChatMessageViews.swift"),
+                contentsOf: root.appendingPathComponent("Sources/OperatorChatUI/ChatMessageViews.swift"),
                 encoding: .utf8),
             chatView: String(
-                contentsOf: root.appendingPathComponent("Sources/OpenClawChatUI/ChatView.swift"),
+                contentsOf: root.appendingPathComponent("Sources/OperatorChatUI/ChatView.swift"),
                 encoding: .utf8),
             composer: String(
-                contentsOf: root.appendingPathComponent("Sources/OpenClawChatUI/ChatComposer.swift"),
+                contentsOf: root.appendingPathComponent("Sources/OperatorChatUI/ChatComposer.swift"),
                 encoding: .utf8))
     }
 }

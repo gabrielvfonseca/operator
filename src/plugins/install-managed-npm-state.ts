@@ -177,7 +177,7 @@ export async function rollbackManagedNpmPluginInstall(params: {
       );
     }
   }
-  if (params.packageName !== "operator") {
+  if (params.packageName !== "@gabrielvfonseca/operator") {
     try {
       await repairManagedNpmRootOperatorPeer({
         npmRoot: params.npmRoot,
@@ -186,7 +186,7 @@ export async function rollbackManagedNpmPluginInstall(params: {
       });
     } catch (error) {
       params.logger.warn?.(
-        `Failed to repair managed npm operator peer after rollback: ${String(error)}`,
+        `Failed to repair managed npm openclaw peer after rollback: ${String(error)}`,
       );
     }
   }
@@ -374,11 +374,11 @@ async function shouldCopyManagedNpmRollbackSnapshotEntry(params: {
   const isPluginLocalOperatorPeer =
     (relativeParts.length === 3 &&
       relativeParts[1] === "node_modules" &&
-      relativeParts[2] === "operator") ||
+      relativeParts[2] === "@gabrielvfonseca/operator") ||
     (relativeParts.length === 4 &&
       relativeParts[0]?.startsWith("@") &&
       relativeParts[2] === "node_modules" &&
-      relativeParts[3] === "operator");
+      relativeParts[3] === "@gabrielvfonseca/operator");
   if (!isPluginLocalOperatorPeer) {
     return true;
   }
@@ -490,7 +490,7 @@ export async function listManagedNpmRootPackageNames(npmRoot: string): Promise<S
 
   const packageNames = new Set<string>();
   for (const entry of entries.toSorted((left, right) => left.name.localeCompare(right.name))) {
-    if (entry.name === ".bin" || entry.name === "operator") {
+    if (entry.name === ".bin" || entry.name === "@gabrielvfonseca/operator") {
       continue;
     }
     if (entry.name.startsWith("@")) {

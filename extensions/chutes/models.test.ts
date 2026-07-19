@@ -1,6 +1,6 @@
 // Chutes tests cover models plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildChutesModelDefinition,

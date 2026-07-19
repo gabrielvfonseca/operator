@@ -1,5 +1,5 @@
 // Shared compaction formatting and user-facing notice payload helpers.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../../packages/terminal-core/src/ansi.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { ReplyPayload } from "../types.js";

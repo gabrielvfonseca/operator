@@ -1,6 +1,6 @@
 // Openshell plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { registerSandboxBackend } from "openclaw/plugin-sdk/sandbox";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { registerSandboxBackend } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import {
   createOpenShellSandboxBackendFactory,
   createOpenShellSandboxBackendManager,

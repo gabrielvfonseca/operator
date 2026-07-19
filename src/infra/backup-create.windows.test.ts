@@ -9,7 +9,7 @@ const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 describe("writeArchiveStreamToFile", () => {
   it("closes a partial archive before propagating a stream error", async () => {
-    const tempDir = tempDirs.make("openclaw-backup-stream-");
+    const tempDir = tempDirs.make("operator-backup-stream-");
     const archivePath = path.join(tempDir, "partial.tar.gz");
     const archiveStream = new PassThrough();
     const writePromise = writeArchiveStreamToFile({

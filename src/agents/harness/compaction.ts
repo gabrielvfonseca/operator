@@ -1,4 +1,4 @@
-import type { Model } from "operator/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 /**
  * Routes compaction through selected native agent harnesses when supported.
  */
@@ -436,7 +436,7 @@ export async function maybeCompactAgentHarnessSession(
     return undefined;
   }
   if (!options.nativeCompactionRequest && !harness.compact) {
-    if (harness.id !== "operator") {
+    if (harness.id !== "@gabrielvfonseca/operator") {
       return {
         ok: false,
         compacted: false,
@@ -478,7 +478,7 @@ export async function maybeCompactAgentHarnessSession(
     return undefined;
   }
   if (!options.nativeCompactionRequest && !harness.compact) {
-    if (harness.id !== "operator") {
+    if (harness.id !== "@gabrielvfonseca/operator") {
       return {
         ok: false,
         compacted: false,

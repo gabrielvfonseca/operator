@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   buildGatewayProbeConnectionDetails: vi.fn(),
   probeGatewayStatus: vi.fn(),
   readGatewayServiceState: vi.fn(),
-  resolveGatewayService: vi.fn(() => ({ label: "openclaw-gateway" })),
+  resolveGatewayService: vi.fn(() => ({ label: "operator-gateway" })),
   resolvePluginProviders: vi.fn((): Array<Record<string, unknown>> => []),
   resolveDefaultModelForAgent: vi.fn(() => ({ provider: "openai", model: "gpt-5.5" })),
 }));
@@ -112,7 +112,10 @@ describe("doctor runtime tool schema checks", () => {
       loaded: true,
       running: true,
       env: {},
-      command: { programArguments: ["openclaw", "gateway"], sourcePath: "/tmp/gateway.service" },
+      command: {
+        programArguments: ["@gabrielvfonseca/operator", "gateway"],
+        sourcePath: "/tmp/gateway.service",
+      },
       runtime: { status: "running" },
     });
     mocks.resolveGatewayService.mockClear();
@@ -554,10 +557,13 @@ describe("doctor gateway runtime checks", () => {
       loaded: true,
       running: true,
       env: {},
-      command: { programArguments: ["openclaw", "gateway"], sourcePath: "/tmp/gateway.service" },
+      command: {
+        programArguments: ["@gabrielvfonseca/operator", "gateway"],
+        sourcePath: "/tmp/gateway.service",
+      },
       runtime: { status: "running" },
     });
-    mocks.resolveGatewayService.mockReset().mockReturnValue({ label: "openclaw-gateway" });
+    mocks.resolveGatewayService.mockReset().mockReturnValue({ label: "operator-gateway" });
   });
 
   it("reports unreachable gateway health probes", async () => {
@@ -620,7 +626,7 @@ describe("doctor gateway runtime checks", () => {
       severity: "warning",
       message: "Gateway service is not installed.",
       path: "gateway.mode",
-      target: "openclaw-gateway",
+      target: "operator-gateway",
       fixHint: "Run `openclaw doctor --fix` or `openclaw gateway install` to install it.",
     });
   });

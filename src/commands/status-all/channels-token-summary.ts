@@ -1,8 +1,8 @@
-// Summarizes channel token/account credential fields for `operator status --all`.
+// Summarizes channel token/account credential fields for `openclaw status --all`.
 // The display path is intentionally secret-safe unless the caller explicitly requests disclosure.
 
-import { asRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { hasConfiguredUnavailableCredentialStatus } from "../../channels/account-snapshot-fields.js";
 import type { ChannelAccountSnapshot } from "../../channels/plugins/types.public.js";
 import { sha256HexPrefix } from "../../logging/redact-identifier.js";

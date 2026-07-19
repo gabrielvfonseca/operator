@@ -20,9 +20,9 @@ export const DEFAULT_BROWSER_EVALUATE_ENABLED = true;
 /** Default browser profile accent color shown in UI surfaces. */
 export const DEFAULT_OPERATOR_BROWSER_COLOR = "#FF4500";
 /** Default Operator-managed browser profile name. */
-export const DEFAULT_OPERATOR_BROWSER_PROFILE_NAME = "operator";
+export const DEFAULT_OPERATOR_BROWSER_PROFILE_NAME = "@gabrielvfonseca/operator";
 /** Default browser profile selected when config omits a profile name. */
-export const DEFAULT_BROWSER_DEFAULT_PROFILE_NAME = "operator";
+export const DEFAULT_BROWSER_DEFAULT_PROFILE_NAME = "@gabrielvfonseca/operator";
 /** Default timeout for browser actions issued through the browser plugin. */
 export const DEFAULT_BROWSER_ACTION_TIMEOUT_MS = 60_000;
 /** Default maximum AI snapshot text captured from browser pages. */

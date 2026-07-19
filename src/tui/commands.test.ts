@@ -20,7 +20,7 @@ describe("parseCommand", () => {
   it("accepts the hidden retired-name alias", () => {
     const retiredCommand = "/crestodian repair gateway"; // hidden alias
     expect(parseCommand(retiredCommand)).toEqual({
-      name: "openclaw",
+      name: "@gabrielvfonseca/operator",
       args: "repair gateway",
     });
     expect(getSlashCommands().map((command) => command.name)).not.toContain("crestodian"); // hidden alias
@@ -55,7 +55,7 @@ describe("getSlashCommands", () => {
     const commands = getSlashCommands();
     const status = commands.find((command) => command.name === "status");
     const gatewayStatus = commands.find((command) => command.name === "gateway-status");
-    const openclaw = commands.find((command) => command.name === "openclaw");
+    const openclaw = commands.find((command) => command.name === "@gabrielvfonseca/operator");
     expect(status?.description).toBe("Show current status.");
     expect(gatewayStatus?.description).toBe("Show gateway status summary");
     expect(openclaw?.description).toBe("Return to Operator");
@@ -109,7 +109,7 @@ describe("getSlashCommands", () => {
     { model: "gpt-5.6-sol", agentRuntime: "codex", supportsUltra: true },
     { model: "gpt-5.6-terra", agentRuntime: "codex", supportsUltra: true },
     { model: "gpt-5.6-luna", agentRuntime: "codex", supportsUltra: false },
-    { model: "gpt-5.6-luna", agentRuntime: "openclaw", supportsUltra: true },
+    { model: "gpt-5.6-luna", agentRuntime: "@gabrielvfonseca/operator", supportsUltra: true },
   ])(
     "uses the $agentRuntime profile for openai/$model thinking completions",
     ({ model, agentRuntime, supportsUltra }) => {

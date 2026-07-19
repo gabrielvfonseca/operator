@@ -1,5 +1,8 @@
 // Discord type declarations define plugin contracts.
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   ButtonInteraction,
   ChannelSelectMenuInteraction,

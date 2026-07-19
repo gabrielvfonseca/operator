@@ -30,7 +30,7 @@ public struct ShareGatewayRelayConfig: Codable, Sendable, Equatable {
 
 public enum ShareGatewayRelaySettings {
     private static var suiteName: String {
-        OpenClawAppGroup.identifier
+        OperatorAppGroup.identifier
     }
 
     private static let relayConfigKey = "share.gatewayRelay.config.v1"

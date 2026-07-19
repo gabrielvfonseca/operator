@@ -1,6 +1,6 @@
 // Tool-call shaped text helpers detect malformed text that resembles tool calls.
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString as readTrimmedString } from "@operator/normalization-core/string-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString as readTrimmedString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type ToolCallShapedTextDetection = {
   kind: "json_tool_call" | "xml_tool_call" | "bracketed_tool_call" | "react_action";

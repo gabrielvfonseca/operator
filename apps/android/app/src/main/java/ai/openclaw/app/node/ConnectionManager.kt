@@ -1,14 +1,14 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.BuildConfig
-import ai.openclaw.app.LocationMode
-import ai.openclaw.app.SecurePrefs
-import ai.openclaw.app.gateway.GatewayClientInfo
-import ai.openclaw.app.gateway.GatewayConnectOptions
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.gateway.GatewayTlsParams
-import ai.openclaw.app.gateway.isLocalCleartextGatewayHost
-import ai.openclaw.app.gateway.isLoopbackGatewayHost
+import ai.operator.app.BuildConfig
+import ai.operator.app.LocationMode
+import ai.operator.app.SecurePrefs
+import ai.operator.app.gateway.GatewayClientInfo
+import ai.operator.app.gateway.GatewayConnectOptions
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayTlsParams
+import ai.operator.app.gateway.isLocalCleartextGatewayHost
+import ai.operator.app.gateway.isLoopbackGatewayHost
 import android.os.Build
 
 /**
@@ -180,7 +180,7 @@ class ConnectionManager(
         ?.trim()
         .orEmpty()
     val releaseLabel = if (release.isEmpty()) "unknown" else release
-    return "OpenClawAndroid/$version (Android $releaseLabel; SDK ${Build.VERSION.SDK_INT})"
+    return "OperatorAndroid/$version (Android $releaseLabel; SDK ${Build.VERSION.SDK_INT})"
   }
 
   /** Client identity block shared by node and operator gateway sessions. */
@@ -207,7 +207,7 @@ class ConnectionManager(
       caps = buildCapabilities(),
       commands = buildInvokeCommands(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "openclaw-android", clientMode = "node"),
+      client = buildClientInfo(clientId = "operator-android", clientMode = "node"),
       userAgent = buildUserAgent(),
     )
 
@@ -221,7 +221,7 @@ class ConnectionManager(
       caps = emptyList(),
       commands = emptyList(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "openclaw-android", clientMode = "ui"),
+      client = buildClientInfo(clientId = "operator-android", clientMode = "ui"),
       userAgent = buildUserAgent(),
     )
 

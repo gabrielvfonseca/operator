@@ -3,4 +3,4 @@ export {
   definePluginEntry,
   type OperatorPluginApi,
   type OperatorPluginService,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";

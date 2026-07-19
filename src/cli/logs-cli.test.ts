@@ -80,7 +80,7 @@ vi.mock("./logs-cli.runtime.js", () => ({
   ) => execFileUtf8Tail(...args),
   resolveGatewaySystemdServiceName: (
     ..._args: Parameters<typeof import("../daemon/constants.js").resolveGatewaySystemdServiceName>
-  ) => "openclaw-gateway",
+  ) => "operator-gateway",
 }));
 
 vi.mock("../infra/backoff.js", () => ({
@@ -152,7 +152,7 @@ describe("logs cli", () => {
 
   it("writes output directly to stdout/stderr", async () => {
     callGatewayFromCli.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       cursor: 1,
       size: 123,
       lines: ["raw line"],
@@ -173,7 +173,7 @@ describe("logs cli", () => {
 
   it("uses the passive local Gateway client for implicit loopback log reads", async () => {
     callGatewayFromCli.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       lines: ["raw line"],
     });
 
@@ -207,7 +207,7 @@ describe("logs cli", () => {
 
   it("keeps explicit Gateway URLs on the normal CLI client identity", async () => {
     callGatewayFromCli.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       lines: ["raw line"],
     });
 
@@ -226,7 +226,7 @@ describe("logs cli", () => {
   it("emits local timestamps by default", async () => {
     await withTimeZone("America/New_York", async () => {
       callGatewayFromCli.mockResolvedValueOnce({
-        file: "/tmp/openclaw.log",
+        file: "/tmp/operator.log",
         lines: [
           JSON.stringify({
             time: "2025-01-01T12:00:00.000Z",
@@ -249,7 +249,7 @@ describe("logs cli", () => {
   it("keeps --local-time accepted as the compatibility spelling", async () => {
     await withTimeZone("America/New_York", async () => {
       callGatewayFromCli.mockResolvedValueOnce({
-        file: "/tmp/openclaw.log",
+        file: "/tmp/operator.log",
         lines: [
           JSON.stringify({
             time: "2025-01-01T12:00:00.000Z",
@@ -272,7 +272,7 @@ describe("logs cli", () => {
   it("wires --utc through CLI parsing and emits UTC timestamps", async () => {
     await withTimeZone("America/New_York", async () => {
       callGatewayFromCli.mockResolvedValueOnce({
-        file: "/tmp/openclaw.log",
+        file: "/tmp/operator.log",
         lines: [
           JSON.stringify({
             time: "2025-01-01T12:00:00.000Z",
@@ -294,7 +294,7 @@ describe("logs cli", () => {
 
   it("warns when the output pipe closes", async () => {
     callGatewayFromCli.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       lines: ["line one"],
     });
 
@@ -313,7 +313,7 @@ describe("logs cli", () => {
   it("falls back to the local log file on loopback pairing-required errors", async () => {
     callGatewayFromCli.mockRejectedValueOnce(new Error("gateway closed (1008): pairing required"));
     readConfiguredLogTail.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       cursor: 5,
       size: 5,
       lines: ["local fallback line"],
@@ -340,7 +340,7 @@ describe("logs cli", () => {
       new Error("scope upgrade pending approval (requestId: req-123)"),
     );
     readConfiguredLogTail.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       cursor: 5,
       size: 5,
       lines: ["local fallback line"],
@@ -373,7 +373,7 @@ describe("logs cli", () => {
       }),
     );
     readConfiguredLogTail.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       cursor: 5,
       size: 5,
       lines: ["local fallback line"],
@@ -394,7 +394,7 @@ describe("logs cli", () => {
   it("falls back to the configured Gateway file log on post-handshake plain close errors", async () => {
     callGatewayFromCli.mockRejectedValueOnce(new Error("gateway closed (1006): abnormal closure"));
     readConfiguredLogTail.mockResolvedValueOnce({
-      file: "/tmp/openclaw.log",
+      file: "/tmp/operator.log",
       cursor: 5,
       size: 5,
       lines: ["local fallback line"],
@@ -456,7 +456,7 @@ describe("logs cli", () => {
         expect.arrayContaining([
           "--user",
           "--boot",
-          "--user-unit=openclaw-gateway.service",
+          "--user-unit=operator-gateway.service",
           "_PID=2557",
           "--output=cat",
           "--show-cursor",
@@ -471,10 +471,10 @@ describe("logs cli", () => {
       );
       expect(stderrWrites.join("")).toContain("reading active systemd gateway journal");
       expect(stdoutWrites.join("")).toContain(
-        "Log source: journalctl --user --boot --user-unit=openclaw-gateway.service _PID=2557",
+        "Log source: journalctl --user --boot --user-unit=operator-gateway.service _PID=2557",
       );
       expect(stdoutWrites.join("")).toContain("Service PID: 2557");
-      expect(stdoutWrites.join("")).toContain("Service Unit: openclaw-gateway.service");
+      expect(stdoutWrites.join("")).toContain("Service Unit: operator-gateway.service");
       expect(stdoutWrites.join("")).not.toContain("sk-abcdefghijklmnopqrstuvwxyz");
       expect(stdoutWrites.join("")).toContain("Authorization: Bearer");
       expect(stdoutWrites.join("")).toContain("second journal line");
@@ -484,7 +484,7 @@ describe("logs cli", () => {
     it("switches back to Gateway logs.tail after temporary journal fallback", async () => {
       vi.spyOn(process, "platform", "get").mockReturnValue("linux");
       const recoveredPayload = {
-        file: "/tmp/openclaw.log",
+        file: "/tmp/operator.log",
         cursor: 10,
         lines: [
           JSON.stringify({
@@ -554,7 +554,7 @@ describe("logs cli", () => {
       const output = stdoutWrites.join("");
       expect(output).toContain("journal bridge line");
       expect(output).toContain("journal while probing");
-      expect(output).toContain("Log file: /tmp/openclaw.log");
+      expect(output).toContain("Log file: /tmp/operator.log");
       expect(output).toContain("rpc recovered line");
       expect(output).toContain("2026-05-29T20:00:00.000");
       expect(exitSpy).toHaveBeenCalledWith(1);
@@ -651,13 +651,13 @@ describe("logs cli", () => {
       });
       callGatewayFromCli
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 5,
           lines: ["initial rpc line"],
         })
         .mockRejectedValueOnce(closeError)
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 10,
           lines: ["overlap line"],
         })
@@ -698,7 +698,7 @@ describe("logs cli", () => {
       const output = stdoutWrites.join("");
       expect(output.match(/Log file: \/tmp\/openclaw\.log/g)).toHaveLength(2);
       expect(output).toContain(
-        "Log source: journalctl --user --boot --user-unit=openclaw-gateway.service _PID=2557",
+        "Log source: journalctl --user --boot --user-unit=operator-gateway.service _PID=2557",
       );
       expect(output).toContain("initial rpc line");
       expect(output.match(/overlap line/g)).toHaveLength(2);
@@ -722,13 +722,13 @@ describe("logs cli", () => {
       });
       callGatewayFromCli
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 5,
           lines: ["initial rpc line"],
         })
         .mockRejectedValueOnce(closeError)
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 10,
           lines: ["recovered rpc line"],
         })
@@ -756,21 +756,21 @@ describe("logs cli", () => {
       expect(metaRecords).toEqual([
         expect.objectContaining({
           type: "meta",
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           sourceKind: "file",
           cursor: 5,
         }),
         expect.objectContaining({
           type: "meta",
-          source: "journalctl --user --boot --user-unit=openclaw-gateway.service _PID=2557",
+          source: "journalctl --user --boot --user-unit=operator-gateway.service _PID=2557",
           sourceKind: "journal",
-          service: { pid: 2557, unit: "openclaw-gateway.service" },
+          service: { pid: 2557, unit: "operator-gateway.service" },
           cursor: "s=abc",
           localFallback: true,
         }),
         expect.objectContaining({
           type: "meta",
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           sourceKind: "file",
           cursor: 10,
         }),
@@ -803,7 +803,7 @@ describe("logs cli", () => {
         .mockRejectedValueOnce(closeError)
         .mockRejectedValueOnce(closeError)
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 10,
           lines: [
             JSON.stringify({
@@ -944,7 +944,7 @@ describe("logs cli", () => {
           }),
         )
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 10,
           lines: ["line from remote"],
         });
@@ -985,7 +985,7 @@ describe("logs cli", () => {
           }),
         )
         .mockResolvedValueOnce({
-          file: "/tmp/openclaw.log",
+          file: "/tmp/operator.log",
           cursor: 10,
           lines: [],
         });

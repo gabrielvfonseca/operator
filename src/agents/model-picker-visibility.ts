@@ -1,7 +1,7 @@
 /**
  * Filters provider/model refs for model picker visibility.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { listCliRuntimeProviderIds } from "./cli-backends.js";
 

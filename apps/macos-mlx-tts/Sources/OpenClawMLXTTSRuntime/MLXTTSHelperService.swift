@@ -1,6 +1,6 @@
 import Foundation
 import MLXAudioTTS
-import OpenClawMLXTTSProtocol
+import OperatorMLXTTSProtocol
 
 protocol MLXTTSSpeechModel: AnyObject, Sendable {
     var sampleRate: Int { get }

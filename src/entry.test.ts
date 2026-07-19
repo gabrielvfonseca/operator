@@ -6,14 +6,17 @@ describe("entry root help fast path", () => {
   it("prefers precomputed root help text when available", async () => {
     let outputPrecomputedRootHelpTextCalls = 0;
 
-    const handled = await tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
-      env: {},
-      outputPrecomputedRootHelpText: () => {
-        outputPrecomputedRootHelpTextCalls += 1;
-        return true;
+    const handled = await tryHandleRootHelpFastPath(
+      ["node", "@gabrielvfonseca/operator", "--help"],
+      {
+        env: {},
+        outputPrecomputedRootHelpText: () => {
+          outputPrecomputedRootHelpTextCalls += 1;
+          return true;
+        },
+        loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
       },
-      loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
-    });
+    );
 
     expect(handled).toBe(true);
     expect(outputPrecomputedRootHelpTextCalls).toBe(1);
@@ -22,13 +25,16 @@ describe("entry root help fast path", () => {
   it("renders root help without importing the full program", async () => {
     let outputRootHelpCalls = 0;
 
-    const handled = await tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
-      outputRootHelp: () => {
-        outputRootHelpCalls += 1;
+    const handled = await tryHandleRootHelpFastPath(
+      ["node", "@gabrielvfonseca/operator", "--help"],
+      {
+        outputRootHelp: () => {
+          outputRootHelpCalls += 1;
+        },
+        loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
+        env: {},
       },
-      loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
-      env: {},
-    });
+    );
 
     expect(handled).toBe(true);
     expect(outputRootHelpCalls).toBe(1);
@@ -48,17 +54,20 @@ describe("entry root help fast path", () => {
       env: {},
     };
 
-    const handled = await tryHandleRootHelpFastPath(["node", "openclaw", "--help"], {
-      env: {},
-      outputPrecomputedRootHelpText: () => {
-        outputPrecomputedRootHelpTextCalls += 1;
-        return true;
+    const handled = await tryHandleRootHelpFastPath(
+      ["node", "@gabrielvfonseca/operator", "--help"],
+      {
+        env: {},
+        outputPrecomputedRootHelpText: () => {
+          outputPrecomputedRootHelpTextCalls += 1;
+          return true;
+        },
+        outputRootHelp: (options) => {
+          outputRootHelpOptions.push(options);
+        },
+        loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => liveOptions,
       },
-      outputRootHelp: (options) => {
-        outputRootHelpOptions.push(options);
-      },
-      loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => liveOptions,
-    });
+    );
 
     expect(handled).toBe(true);
     expect(outputPrecomputedRootHelpTextCalls).toBe(0);
@@ -68,13 +77,16 @@ describe("entry root help fast path", () => {
   it("ignores non-root help invocations", async () => {
     let outputRootHelpCalls = 0;
 
-    const handled = await tryHandleRootHelpFastPath(["node", "openclaw", "status", "--help"], {
-      outputRootHelp: () => {
-        outputRootHelpCalls += 1;
+    const handled = await tryHandleRootHelpFastPath(
+      ["node", "@gabrielvfonseca/operator", "status", "--help"],
+      {
+        outputRootHelp: () => {
+          outputRootHelpCalls += 1;
+        },
+        loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
+        env: {},
       },
-      loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
-      env: {},
-    });
+    );
 
     expect(handled).toBe(false);
     expect(outputRootHelpCalls).toBe(0);
@@ -84,7 +96,7 @@ describe("entry root help fast path", () => {
     let outputRootHelpCalls = 0;
 
     const handled = await tryHandleRootHelpFastPath(
-      ["node", "openclaw", "--container", "demo", "--help"],
+      ["node", "@gabrielvfonseca/operator", "--container", "demo", "--help"],
       {
         outputRootHelp: () => {
           outputRootHelpCalls += 1;
@@ -104,7 +116,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedBrowserHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "browser", "--help"],
+      ["node", "@gabrielvfonseca/operator", "browser", "--help"],
       {
         env: {},
         outputPrecomputedBrowserHelpText: () => {
@@ -122,7 +134,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedSecretsHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "secrets", "--help"],
+      ["node", "@gabrielvfonseca/operator", "secrets", "--help"],
       {
         env: {},
         outputPrecomputedSecretsHelpText: () => {
@@ -140,7 +152,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedNodesHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "nodes", "--help"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "--help"],
       {
         env: {},
         loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => null,
@@ -161,7 +173,7 @@ describe("entry precomputed command help fast path", () => {
       const outputPrecomputedSubcommandHelpTextCalls: string[] = [];
 
       const handled = await tryHandlePrecomputedCommandHelpFastPath(
-        ["node", "openclaw", commandName, "--help"],
+        ["node", "@gabrielvfonseca/operator", commandName, "--help"],
         {
           env: {},
           outputPrecomputedSubcommandHelpText: (requestedCommandName) => {
@@ -180,7 +192,7 @@ describe("entry precomputed command help fast path", () => {
     const outputPrecomputedSubcommandHelpTextCalls: string[] = [];
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "--profile", "work", "--no-color", "models", "-h"],
+      ["node", "@gabrielvfonseca/operator", "--profile", "work", "--no-color", "models", "-h"],
       {
         env: {},
         outputPrecomputedSubcommandHelpText: (commandName) => {
@@ -196,15 +208,15 @@ describe("entry precomputed command help fast path", () => {
 
   it("keeps subcommand help fast path strict for extra or mixed flags", async () => {
     const invocations = [
-      ["node", "openclaw", "doctor", "--version"],
-      ["node", "openclaw", "gateway", "-V"],
-      ["node", "openclaw", "doctor", "--help", "--version"],
-      ["node", "openclaw", "doctor", "--help", "--bogus"],
-      ["node", "openclaw", "doctor", "--help", "extra"],
-      ["node", "openclaw", "doctor", "--version", "-h"],
-      ["node", "openclaw", "--bogus", "doctor", "--help"],
-      ["node", "openclaw", "gateway", "status", "--help"],
-      ["node", "openclaw", "status", "--help"],
+      ["node", "@gabrielvfonseca/operator", "doctor", "--version"],
+      ["node", "@gabrielvfonseca/operator", "gateway", "-V"],
+      ["node", "@gabrielvfonseca/operator", "doctor", "--help", "--version"],
+      ["node", "@gabrielvfonseca/operator", "doctor", "--help", "--bogus"],
+      ["node", "@gabrielvfonseca/operator", "doctor", "--help", "extra"],
+      ["node", "@gabrielvfonseca/operator", "doctor", "--version", "-h"],
+      ["node", "@gabrielvfonseca/operator", "--bogus", "doctor", "--help"],
+      ["node", "@gabrielvfonseca/operator", "gateway", "status", "--help"],
+      ["node", "@gabrielvfonseca/operator", "status", "--help"],
     ];
     let outputPrecomputedSubcommandHelpTextCalls = 0;
 
@@ -227,7 +239,7 @@ describe("entry precomputed command help fast path", () => {
     let liveConfigChecks = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "nodes", "--help"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "--help"],
       {
         env: {},
         loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => {
@@ -248,7 +260,7 @@ describe("entry precomputed command help fast path", () => {
 
   it("falls through when startup metadata is unavailable", async () => {
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "secrets", "--help"],
+      ["node", "@gabrielvfonseca/operator", "secrets", "--help"],
       {
         env: {},
         outputPrecomputedSecretsHelpText: () => false,
@@ -260,7 +272,7 @@ describe("entry precomputed command help fast path", () => {
 
   it("falls through when startup metadata loading fails", async () => {
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "secrets", "--help"],
+      ["node", "@gabrielvfonseca/operator", "secrets", "--help"],
       {
         env: {},
         outputPrecomputedSecretsHelpText: () => {
@@ -274,7 +286,7 @@ describe("entry precomputed command help fast path", () => {
 
   it("falls through when the nodes live-config probe fails", async () => {
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "nodes", "--help"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "--help"],
       {
         env: {},
         loadRootHelpRenderOptionsForConfigSensitivePlugins: async () => {
@@ -290,7 +302,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedNodesHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "nodes", "invoke", "--help"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "invoke", "--help"],
       {
         env: {},
         outputPrecomputedNodesHelpText: () => {
@@ -308,7 +320,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedNodesHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "nodes", "--version"],
+      ["node", "@gabrielvfonseca/operator", "nodes", "--version"],
       {
         env: {},
         outputPrecomputedNodesHelpText: () => {
@@ -326,7 +338,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedSecretsHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "secrets", "--help"],
+      ["node", "@gabrielvfonseca/operator", "secrets", "--help"],
       {
         env: { OPERATOR_DISABLE_CLI_STARTUP_HELP_FAST_PATH: "1" },
         outputPrecomputedSecretsHelpText: () => {
@@ -346,7 +358,7 @@ describe("entry precomputed command help fast path", () => {
     process.env.OPERATOR_DISABLE_CLI_STARTUP_HELP_FAST_PATH = "1";
     try {
       const handled = await tryHandlePrecomputedCommandHelpFastPath(
-        ["node", "openclaw", "secrets", "--help"],
+        ["node", "@gabrielvfonseca/operator", "secrets", "--help"],
         {
           outputPrecomputedSecretsHelpText: () => {
             outputPrecomputedSecretsHelpTextCalls += 1;
@@ -370,7 +382,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedSecretsHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "--container", "demo", "secrets", "--help"],
+      ["node", "@gabrielvfonseca/operator", "--container", "demo", "secrets", "--help"],
       {
         env: {},
         outputPrecomputedSecretsHelpText: () => {
@@ -388,7 +400,7 @@ describe("entry precomputed command help fast path", () => {
     let outputPrecomputedBrowserHelpTextCalls = 0;
 
     const handled = await tryHandlePrecomputedCommandHelpFastPath(
-      ["node", "openclaw", "browser", "--help"],
+      ["node", "@gabrielvfonseca/operator", "browser", "--help"],
       {
         env: { OPERATOR_CONTAINER: "demo" },
         outputPrecomputedBrowserHelpText: () => {

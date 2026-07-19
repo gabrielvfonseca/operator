@@ -1,2 +1,2 @@
 /** Shared provider diagnostics. */
-export * from "@operator/llm-core/diagnostics";
+export * from "@gabrielvfonseca/llm-core/diagnostics";

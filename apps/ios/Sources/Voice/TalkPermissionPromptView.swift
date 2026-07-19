@@ -34,15 +34,15 @@ struct TalkPermissionPromptView: View {
         VStack(alignment: .leading, spacing: self.style == .sheet ? 16 : 12) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: self.iconSystemName)
-                    .font(OpenClawType.title3)
-                    .foregroundStyle(self.requestIsPending ? OpenClawBrand.warn : OpenClawBrand.accent)
+                    .font(OperatorType.title3)
+                    .foregroundStyle(self.requestIsPending ? OperatorBrand.warn : OperatorBrand.accent)
                     .frame(width: 28, height: 28)
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(self.titleText)
-                        .font(self.style == .sheet ? OpenClawType.title3SemiBold : OpenClawType.headline)
+                        .font(self.style == .sheet ? OperatorType.title3SemiBold : OperatorType.headline)
                     Text(self.messageText)
-                        .font(OpenClawType.footnote)
+                        .font(OperatorType.footnote)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -50,20 +50,20 @@ struct TalkPermissionPromptView: View {
 
             if let failureMessage = self.state.failureMessage {
                 Label(failureMessage, systemImage: "exclamationmark.triangle.fill")
-                    .font(OpenClawType.footnote)
-                    .foregroundStyle(OpenClawBrand.danger)
+                    .font(OperatorType.footnote)
+                    .foregroundStyle(OperatorBrand.danger)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if let requestId = self.state.requestId {
                 LabeledContent {
                     Text(requestId)
-                        .font(OpenClawType.monoSmall)
+                        .font(OperatorType.monoSmall)
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                 } label: {
                     Text("Request ID")
-                        .font(OpenClawType.footnoteSemiBold)
+                        .font(OperatorType.footnoteSemiBold)
                 }
             }
 
@@ -74,13 +74,13 @@ struct TalkPermissionPromptView: View {
                     if case .requestingUpgrade = self.state {
                         Label {
                             Text("Sending...")
-                                .font(OpenClawType.subheadSemiBold)
+                                .font(OperatorType.subheadSemiBold)
                         } icon: {
                             ProgressView()
                         }
                     } else {
                         Label(self.primaryButtonTitle, systemImage: self.primaryButtonSystemImage)
-                            .font(OpenClawType.subheadSemiBold)
+                            .font(OperatorType.subheadSemiBold)
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -90,7 +90,7 @@ struct TalkPermissionPromptView: View {
                     Task { await self.appModel.talkMode.reloadConfig() }
                 } label: {
                     Label("Retry", systemImage: "arrow.triangle.2.circlepath")
-                        .font(OpenClawType.subheadSemiBold)
+                        .font(OperatorType.subheadSemiBold)
                 }
                 .buttonStyle(.bordered)
             }
@@ -98,14 +98,14 @@ struct TalkPermissionPromptView: View {
         .padding(self.style == .card || self.style == .sheet ? 16 : 0)
         .background {
             if self.style == .card || self.style == .sheet {
-                RoundedRectangle(cornerRadius: OpenClawRadius.md, style: .continuous)
+                RoundedRectangle(cornerRadius: OperatorRadius.md, style: .continuous)
                     .fill(.thinMaterial)
             }
         }
         .overlay {
             if self.style == .card || self.style == .sheet {
-                RoundedRectangle(cornerRadius: OpenClawRadius.md, style: .continuous)
-                    .stroke(OpenClawBrand.accent.opacity(0.20), lineWidth: 1)
+                RoundedRectangle(cornerRadius: OperatorRadius.md, style: .continuous)
+                    .stroke(OperatorBrand.accent.opacity(0.20), lineWidth: 1)
             }
         }
         .task(id: self.pollTaskKey) {

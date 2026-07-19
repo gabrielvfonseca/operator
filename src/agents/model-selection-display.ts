@@ -1,7 +1,7 @@
 /**
  * Formats selected model references for UI/session display.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Inputs used to choose the visible model ref/name for status surfaces. */
 type ModelDisplaySelectionParams = {

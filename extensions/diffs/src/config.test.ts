@@ -3,7 +3,7 @@ import fs from "node:fs";
 import {
   validateJsonSchemaValue,
   type JsonSchemaObject,
-} from "openclaw/plugin-sdk/json-schema-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/json-schema-runtime";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
   diffsPluginConfigSchema,
@@ -52,7 +52,7 @@ beforeAll(async () => {
 
 function compileManifestConfigSchema() {
   const manifest = JSON.parse(
-    fs.readFileSync(new URL("../openclaw.plugin.json", import.meta.url), "utf8"),
+    fs.readFileSync(new URL("../operator.plugin.json", import.meta.url), "utf8"),
   ) as { configSchema: JsonSchemaObject };
   return (value: unknown) =>
     validateJsonSchemaValue({
@@ -398,7 +398,7 @@ describe("diffs plugin schema surfaces", () => {
 
   it("keeps the runtime json schema in sync with the manifest config schema", () => {
     const manifest = JSON.parse(
-      fs.readFileSync(new URL("../openclaw.plugin.json", import.meta.url), "utf8"),
+      fs.readFileSync(new URL("../operator.plugin.json", import.meta.url), "utf8"),
     ) as { configSchema?: unknown };
 
     expect(diffsPluginConfigSchema.jsonSchema).toEqual(manifest.configSchema);

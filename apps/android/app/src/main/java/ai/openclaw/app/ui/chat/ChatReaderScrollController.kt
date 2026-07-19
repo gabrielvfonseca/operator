@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState

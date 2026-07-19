@@ -2,14 +2,17 @@
 import {
   registerSessionBindingAdapter,
   unregisterSessionBindingAdapter,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { normalizeAccountId, resolveAgentIdFromSessionKey } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import {
+  normalizeAccountId,
+  resolveAgentIdFromSessionKey,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   getRuntimeConfigSnapshot,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { createDiscordRestClient } from "../client.js";
 import { getChannel } from "../internal/discord.js";
 import {

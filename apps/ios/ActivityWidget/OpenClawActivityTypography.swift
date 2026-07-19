@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum OpenClawActivityType {
+enum OperatorActivityType {
     static var subheadSemiBold: Font {
         display(size: 15, weight: .semibold)
     }

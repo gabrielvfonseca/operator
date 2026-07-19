@@ -1,33 +1,42 @@
-// Line plugin module implements bot handlers behavior.
-import type { webhook } from "@line/bot-sdk";
-import { buildMentionRegexes, matchesMentionPatterns } from "openclaw/plugin-sdk/channel-inbound";
-import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-auth-native";
-import type { GroupPolicy, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import {
+  buildMentionRegexes,
+  matchesMentionPatterns,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { resolveStableChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingChallengeIssuer } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import { hasControlCommand } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type {
+  GroupPolicy,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   readChannelAllowFromStore,
   resolvePairingIdLabel,
   upsertChannelPairingRequest,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { createClaimableDedupe, type ClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import {
+  createClaimableDedupe,
+  type ClaimableDedupe,
+} from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
 import {
   DEFAULT_GROUP_HISTORY_LIMIT,
   createChannelHistoryWindow,
   type HistoryEntry,
-} from "openclaw/plugin-sdk/reply-history";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Line plugin module implements bot handlers behavior.
+import type { webhook } from "@line/bot-sdk";
 import { firstDefined, normalizeLineAllowEntry } from "./bot-access.js";
 import {
   buildLineMessageContext,

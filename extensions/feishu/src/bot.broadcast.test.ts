@@ -1,5 +1,5 @@
 // Feishu tests cover bot.broadcast plugin behavior.
-import type { EnvelopeFormatOptions } from "openclaw/plugin-sdk/channel-inbound";
+import type { EnvelopeFormatOptions } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClawdbotConfig, PluginRuntime } from "../runtime-api.js";
 import { feishuGroupNameCache } from "./bot-group-name-state.js";

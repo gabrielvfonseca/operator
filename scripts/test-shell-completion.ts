@@ -42,7 +42,7 @@ import {
   ensureCompletionCacheExists,
 } from "../src/commands/doctor-completion.js";
 
-const CLI_NAME = "openclaw";
+const CLI_NAME = "@gabrielvfonseca/operator";
 
 interface Options {
   checkOnly: boolean;
@@ -191,7 +191,7 @@ async function main() {
   if (status.profileInstalled && status.cacheExists && !options.force) {
     console.log(theme.muted("Shell completion is fully configured. To test the prompt:"));
     console.log(
-      theme.muted("  1. Remove the '# OpenClaw Completion' block from your shell profile"),
+      theme.muted("  1. Remove the '# Operator Completion' block from your shell profile"),
     );
     console.log(theme.muted("  2. Re-run this script"));
     console.log(theme.muted("  Or use --force to prompt anyway"));

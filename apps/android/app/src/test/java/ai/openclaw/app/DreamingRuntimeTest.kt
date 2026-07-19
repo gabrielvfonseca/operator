@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.NativeText
+import ai.operator.app.i18n.NativeText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

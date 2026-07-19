@@ -7,7 +7,7 @@
 import {
   clampPositiveTimerTimeoutMs,
   resolveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { buildProfileQuery, withBaseUrl } from "./client-actions-url.js";
 import { fetchBrowserJson } from "./client-fetch.js";
 import type {
@@ -85,7 +85,7 @@ export type ProfileStatus = {
   cdpPort: number | null;
   cdpUrl: string | null;
   color: string;
-  driver: "openclaw" | "existing-session" | "extension";
+  driver: "@gabrielvfonseca/operator" | "existing-session" | "extension";
   running: boolean;
   tabCount: number;
   isDefault: boolean;
@@ -281,7 +281,7 @@ export async function browserCreateProfile(
     color?: string;
     cdpUrl?: string;
     userDataDir?: string;
-    driver?: "openclaw" | "existing-session";
+    driver?: "@gabrielvfonseca/operator" | "existing-session";
   },
 ): Promise<BrowserCreateProfileResult> {
   return await fetchBrowserJson<BrowserCreateProfileResult>(

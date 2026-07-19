@@ -1,21 +1,21 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayDeviceTokenSummary
-import ai.openclaw.app.GatewayNodeApprovalState
-import ai.openclaw.app.GatewayNodeSummary
-import ai.openclaw.app.GatewayNodesDevicesSummary
-import ai.openclaw.app.GatewayPairedDeviceSummary
-import ai.openclaw.app.GatewayPendingDeviceSummary
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.currentAppLanguage
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.design.ClawDetailRow
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawSecondaryButton
-import ai.openclaw.app.ui.design.ClawStatus
-import ai.openclaw.app.ui.design.ClawStatusPill
-import ai.openclaw.app.ui.design.ClawTextBadge
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.GatewayDeviceTokenSummary
+import ai.operator.app.GatewayNodeApprovalState
+import ai.operator.app.GatewayNodeSummary
+import ai.operator.app.GatewayNodesDevicesSummary
+import ai.operator.app.GatewayPairedDeviceSummary
+import ai.operator.app.GatewayPendingDeviceSummary
+import ai.operator.app.MainViewModel
+import ai.operator.app.currentAppLanguage
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.design.ClawDetailRow
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawSecondaryButton
+import ai.operator.app.ui.design.ClawStatus
+import ai.operator.app.ui.design.ClawStatusPill
+import ai.operator.app.ui.design.ClawTextBadge
+import ai.operator.app.ui.design.ClawTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -236,7 +236,7 @@ private fun GatewayNodesDevicesSummary.isEmpty(): Boolean = nodes.isEmpty() && p
 
 private fun nodeSubtitle(node: GatewayNodeSummary): String {
   val kind = node.deviceFamily ?: nativeString("Node host")
-  val version = node.version?.let { "OpenClaw $it" }
+  val version = node.version?.let { "Operator $it" }
   val status = if (node.paired) nativeString("Paired") else nativeString("Unpaired")
   val approval = nodeApprovalSubtitle(node.approvalState)
   val commands =

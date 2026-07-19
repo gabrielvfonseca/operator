@@ -11,8 +11,8 @@ Extract text and fallback page images from local document attachments.
 
 ## Distribution
 
-- Package: `@operator/document-extract-plugin`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/document-extract-plugin`
+- Install route: included in Operator
 
 ## Surface
 

@@ -1,7 +1,7 @@
 // In-process gateway run loop, restart signaling, drain, and update respawn handling.
 import { randomUUID } from "node:crypto";
 import net from "node:net";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { clearRuntimeConfigSnapshot } from "../../config/runtime-snapshot.js";
 import {
   captureGatewayRestartTraceHandoff,
@@ -120,7 +120,7 @@ export async function runGatewayLoop(params: {
 }) {
   // macOS/BSD process inspection reports process.title instead of the original
   // argv. Give the long-running Gateway a verifiable identity for lock readers.
-  if (process.title === "operator") {
+  if (process.title === "@gabrielvfonseca/operator") {
     process.title = "operator-gateway";
   }
   let startupStartedAt: number;
@@ -128,7 +128,7 @@ export async function runGatewayLoop(params: {
   // listeners. Without this, every subsequent lifecycle path (SIGUSR1,
   // SIGTERM-with-intent, restart iteration hook, stability bundle writer)
   // depends on a dynamic import() call. After an in-place package upgrade
-  // (e.g. `npm install -g operator@latest` triggered via update.run),
+  // (e.g. `npm install -g openclaw@latest` triggered via update.run),
   // dist/ chunk hashes rotate while the process is still running. The next
   // SIGUSR1 — including the one update.run schedules for itself — would
   // hit ERR_MODULE_NOT_FOUND from inside its async IIFE, reject silently,
@@ -835,7 +835,7 @@ export async function runGatewayLoop(params: {
           gatewayLog.warn("SIGUSR1 restart ignored (not authorized; commands.restart=false).");
           gatewayLog.warn(
             "An unauthorized SIGUSR1 restart signal was received and ignored. " +
-              "If a pending gateway restart needs to be applied, run `operator gateway restart` " +
+              "If a pending gateway restart needs to be applied, run `openclaw gateway restart` " +
               "or restart the gateway through your service manager.",
           );
           return;

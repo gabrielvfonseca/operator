@@ -37,7 +37,7 @@ export function resolveGatewayLogPaths(env: GatewayServiceEnv): GatewayLogPaths 
 
 function resolveMacLaunchAgentLogPaths(env: GatewayServiceEnv): GatewayLogPaths {
   const home = resolveHomeDir(env).replaceAll("\\", "/");
-  const logDir = path.posix.join(home, "Library", "Logs", "operator");
+  const logDir = path.posix.join(home, "Library", "Logs", "@gabrielvfonseca/operator");
   const prefix = resolveMacLaunchAgentLogPrefix(env);
   return {
     logDir,
@@ -89,7 +89,7 @@ export function renderCmdRestartLogSetup(env: GatewayServiceEnv): {
     quotedLogPath,
     lines: [
       `if not exist ${quotedLogDir} mkdir ${quotedLogDir} >nul 2>&1`,
-      `>> ${quotedLogPath} 2>&1 echo [%DATE% %TIME%] operator restart log initialized`,
+      `>> ${quotedLogPath} 2>&1 echo [%DATE% %TIME%] openclaw restart log initialized`,
     ],
   };
 }

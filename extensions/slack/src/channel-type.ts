@@ -1,10 +1,10 @@
 // Slack plugin module implements channel type behavior.
 import { createHash } from "node:crypto";
-import { pruneMapToMaxSize } from "openclaw/plugin-sdk/collection-runtime";
+import { pruneMapToMaxSize } from "@gabrielvfonseca/operator/plugin-sdk/collection-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveSlackAccount, resolveSlackOperationToken } from "./accounts.js";
 import { createSlackWebClient } from "./client.js";
 import { normalizeAllowListLower } from "./monitor/allow-list.js";

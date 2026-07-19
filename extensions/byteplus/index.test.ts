@@ -1,8 +1,8 @@
 // Byteplus tests cover index plugin behavior.
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { registerSingleProviderPlugin } from "openclaw/plugin-sdk/plugin-test-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { registerSingleProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 import { BYTEPLUS_CODING_MODEL_CATALOG, BYTEPLUS_MODEL_CATALOG } from "./models.js";
@@ -36,7 +36,7 @@ describe("byteplus plugin", () => {
 
   it("declares its coding provider auth alias in the manifest", () => {
     const pluginJson = JSON.parse(
-      readFileSync(resolve(import.meta.dirname, "openclaw.plugin.json"), "utf-8"),
+      readFileSync(resolve(import.meta.dirname, "operator.plugin.json"), "utf-8"),
     );
 
     expect(pluginJson.providerAuthAliases).toEqual({

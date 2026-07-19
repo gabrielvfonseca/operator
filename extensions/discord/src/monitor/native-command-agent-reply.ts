@@ -1,12 +1,15 @@
 // Discord plugin module implements native command agent reply behavior.
-import { resolveHumanDelayConfig } from "openclaw/plugin-sdk/agent-runtime";
-import { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
-import { resolveChannelStreamingBlockEnabled } from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
-import { resolveChunkMode, resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import type { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import { resolveHumanDelayConfig } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { resolveChannelStreamingBlockEnabled } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import {
+  resolveChunkMode,
+  resolveTextChunkLimit,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import type { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { resolveDiscordMaxLinesPerMessage } from "../accounts.js";
 import type {
   ButtonInteraction,

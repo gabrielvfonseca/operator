@@ -1,12 +1,12 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.ChatSendAck
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.gateway.chatSendAckHistorySinceSeconds
-import ai.openclaw.app.gateway.parseChatSendAck
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.gateway.ChatSendAck
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.gateway.chatSendAckHistorySinceSeconds
+import ai.operator.app.gateway.parseChatSendAck
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -107,8 +107,8 @@ internal data class RealtimeToolRun(
   val relaySessionId: String,
 )
 
-private const val REALTIME_AGENT_CONSULT_TOOL = "openclaw_agent_consult"
-private const val REALTIME_AGENT_CONTROL_TOOL = "openclaw_agent_control"
+private const val REALTIME_AGENT_CONSULT_TOOL = "operator_agent_consult"
+private const val REALTIME_AGENT_CONTROL_TOOL = "operator_agent_control"
 
 private data class RealtimeToolCompletion(
   val state: String,
@@ -1796,7 +1796,7 @@ class TalkModeManager internal constructor(
           put(
             "message",
             JsonPrimitive(
-              "Tell the person briefly that you are checking, then wait for the final OpenClaw result before answering with the actual result.",
+              "Tell the person briefly that you are checking, then wait for the final Operator result before answering with the actual result.",
             ),
           )
         },

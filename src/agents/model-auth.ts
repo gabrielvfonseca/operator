@@ -7,8 +7,8 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { formatCliCommand } from "../cli/command-format.js";
 import {
   getRuntimeConfigSnapshot,
@@ -1635,7 +1635,7 @@ export async function resolveApiKeyForProvider(params: {
     [
       `No API key found for provider "${provider}".`,
       `Auth store: ${authStorePath} (agentDir: ${resolvedAgentDir}).`,
-      `Configure auth for this agent (${formatCliCommand("operator agents add <id>")}) or copy only portable static auth profiles from the main agentDir.`,
+      `Configure auth for this agent (${formatCliCommand("openclaw agents add <id>")}) or copy only portable static auth profiles from the main agentDir.`,
     ].join(" "),
   );
 }

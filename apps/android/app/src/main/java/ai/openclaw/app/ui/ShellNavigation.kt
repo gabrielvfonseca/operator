@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

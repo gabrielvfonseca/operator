@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct ExecHostRequestEvaluatorTests {
     @Test func `validate request rejects empty command`() {
@@ -564,7 +564,7 @@ struct ExecHostRequestEvaluatorTests {
                 allowlist: []))
     }
 
-    private static let portablePolicySnapshot = OpenClawSystemRunApprovalPolicySnapshot(
+    private static let portablePolicySnapshot = OperatorSystemRunApprovalPolicySnapshot(
         security: .full,
         ask: .off,
         askFallback: .deny,

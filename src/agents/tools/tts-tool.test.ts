@@ -1,7 +1,7 @@
 // TTS tool tests cover guidance, speech runtime arguments, delivery metadata,
 // timeout validation, and reply-directive defusing.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as ttsRuntime from "../../tts/tts.js";
 import { createTtsTool } from "./tts-tool.js";

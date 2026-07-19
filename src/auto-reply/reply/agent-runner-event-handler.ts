@@ -1,4 +1,4 @@
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isMessagingToolSendAction } from "../../agents/embedded-agent-messaging.js";
 import type { RunEmbeddedAgentParams } from "../../agents/embedded-agent-runner/run/params.js";
 import { buildPlanUpdateStepFields } from "../../channels/streaming.js";

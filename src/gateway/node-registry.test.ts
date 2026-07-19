@@ -5,7 +5,7 @@ import { EventEmitter } from "node:events";
 import {
   MAX_DATE_TIMESTAMP_MS,
   MAX_TIMER_TIMEOUT_MS,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getActiveNodeContext, setActiveNodeContext } from "../infra/active-node-context.js";
 import { onDiagnosticEvent, resetDiagnosticEventsForTest } from "../infra/diagnostic-events.js";
@@ -73,7 +73,7 @@ function makeClient(
       minProtocol: 1,
       maxProtocol: 1,
       client: {
-        id: opts.clientId ?? "openclaw-macos",
+        id: opts.clientId ?? "operator-macos",
         version: opts.version ?? "1.0.0",
         platform: opts.platform ?? "darwin",
         mode: "node",
@@ -182,7 +182,7 @@ function nodeSkill(name: string, body = "# Instructions") {
 
 function registerLinuxNode(registry: NodeRegistry) {
   return registerNode(registry, {
-    clientId: "openclaw-node-host",
+    clientId: "operator-node-host",
     platform: "linux",
   });
 }

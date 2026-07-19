@@ -107,7 +107,7 @@ public struct GatewayConnectDeepLink: Codable, Sendable, Equatable {
     /// - device-pair setup code (base64url-encoded JSON)
     /// - raw setup JSON
     /// - a copied message containing a `Setup code:` line
-    /// - an `openclaw://gateway?...` deep link
+    /// - an `operator://gateway?...` deep link
     /// - a raw `ws://` or `wss://` gateway URL
     public static func fromSetupInput(_ input: String) -> GatewayConnectDeepLink? {
         let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -330,7 +330,7 @@ public struct AgentDeepLink: Codable, Sendable, Equatable {
 public enum DeepLinkParser {
     public static func parse(_ url: URL) -> DeepLinkRoute? {
         guard let scheme = url.scheme?.lowercased(),
-              scheme == "openclaw" || scheme == "openclaw-debug"
+              scheme == "@gabrielvfonseca/operator" || scheme == "operator-debug"
         else {
             return nil
         }

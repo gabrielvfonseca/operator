@@ -1,14 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
+import { isFutureDateTimestampMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import type {
   WorkboardArtifact,
   WorkboardCard,
   WorkboardClaim,
   WorkboardNotification,
   WorkboardRunAttempt,
-} from "@operator/workboard-contract";
-import { isFutureDateTimestampMs } from "openclaw/plugin-sdk/number-runtime";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/workboard-contract";
 import {
   appendEvent,
   assertCanMutateClaimedCard,

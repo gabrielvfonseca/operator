@@ -7,7 +7,7 @@ import type {
   WorkerLiveEventParams as Params,
 } from "../../../packages/gateway-protocol/src/schema/worker-admission.js";
 import * as sessions from "../../config/sessions/session-accessor.js";
-import type { OperatorConfig as Config } from "../../config/types.openclaw.js";
+import type { OperatorConfig as Config } from "../../config/types.operator.js";
 import {
   claimAgentRunContext,
   clearAgentRunContext,
@@ -108,7 +108,7 @@ describe("worker live events", () => {
   const deltas = () => events.map((event) => event.data.delta);
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-live-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-live-"));
     store = path.join(root, "agents", "main", "sessions", "sessions.json");
     cfg = {
       agents: { list: [{ id: "main", default: true }] },

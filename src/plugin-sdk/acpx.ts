@@ -17,7 +17,7 @@ export type {
   AcpRuntimeTurnResult,
   AcpRuntimeTurnResultError,
   AcpSessionUpdateTag,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 export type {
   OperatorPluginApi,
   OperatorPluginConfigSchema,

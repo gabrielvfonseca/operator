@@ -2,8 +2,8 @@
  * Resolves whether Codex app-server profiling instrumentation is enabled by
  * Operator diagnostic flags.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isDiagnosticFlagEnabled } from "openclaw/plugin-sdk/diagnostic-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isDiagnosticFlagEnabled } from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 
 const PROFILER_FLAGS = ["profiler", "codex.profiler"] as const;
 

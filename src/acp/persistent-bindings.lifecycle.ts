@@ -1,5 +1,5 @@
 /** Ensures configured channel-to-ACP bindings have live sessions and matching runtime options. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionAcpMeta } from "../config/sessions/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { logVerbose } from "../globals.js";

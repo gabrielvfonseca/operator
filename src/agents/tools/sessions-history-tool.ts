@@ -3,8 +3,8 @@
  *
  * Reads bounded, redacted session transcript history after session visibility filtering.
  */
-import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { Type } from "typebox";
 import { getRuntimeConfig } from "../../config/config.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
@@ -111,7 +111,7 @@ function sanitizeHistoryContentBlock(block: unknown): {
       delete entry.thinkingSignature;
       truncated = true;
     }
-    if ("operatorReasoningReplay" in entry) {
+    if ("openclawReasoningReplay" in entry) {
       delete entry.operatorReasoningReplay;
       truncated = true;
     }
@@ -207,7 +207,7 @@ function readHistoryMessageSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const meta = (message as Record<string, unknown>)["__operator"];
+  const meta = (message as Record<string, unknown>)["__openclaw"];
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return undefined;
   }
@@ -219,7 +219,7 @@ function readHistoryMessageId(message: unknown): string | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const meta = (message as Record<string, unknown>)["__operator"];
+  const meta = (message as Record<string, unknown>)["__openclaw"];
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return undefined;
   }

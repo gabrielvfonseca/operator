@@ -2,7 +2,7 @@
 // filtering, plugin metadata, payload validation, and response shaping.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   GATEWAY_CLIENT_MODES,
@@ -309,8 +309,8 @@ beforeEach(() => {
   vi.mocked(authorizeHttpGatewayConnect).mockResolvedValue({ ok: true });
 });
 
-const gatewayAuthHeaders = () => ({ "x-openclaw-scopes": "operator.write" });
-const gatewayAdminHeaders = () => ({ "x-openclaw-scopes": "operator.admin" });
+const gatewayAuthHeaders = () => ({ "x-operator-scopes": "operator.write" });
+const gatewayAdminHeaders = () => ({ "x-operator-scopes": "operator.admin" });
 
 const allowAgentsListForMain = () => {
   cfg = {
@@ -759,8 +759,8 @@ describe("POST /tools/invoke", () => {
       port: sharedPort,
       headers: {
         ...gatewayAuthHeaders(),
-        "x-openclaw-message-to": "channel:24514",
-        "x-openclaw-thread-id": "thread-24514",
+        "x-operator-message-to": "channel:24514",
+        "x-operator-thread-id": "thread-24514",
       },
       tool: "sessions_spawn",
       sessionKey: "main",
@@ -869,7 +869,7 @@ describe("POST /tools/invoke", () => {
       port: sharedPort,
       headers: {
         authorization: "Bearer secret",
-        "x-openclaw-scopes": "operator.write",
+        "x-operator-scopes": "operator.write",
       },
       tool: "nodes",
       sessionKey: "main",
@@ -991,7 +991,7 @@ describe("POST /tools/invoke", () => {
     const res = await invokeTool({
       port: sharedPort,
       headers: {
-        "x-openclaw-scopes": "",
+        "x-operator-scopes": "",
       },
       tool: "agents_list",
       sessionKey: "main",
@@ -1026,7 +1026,7 @@ describe("POST /tools/invoke", () => {
       port: sharedPort,
       headers: {
         authorization: "Bearer secret",
-        "x-openclaw-scopes": "operator.approvals",
+        "x-operator-scopes": "operator.approvals",
       },
       tool: "write_scoped_test",
       sessionKey: "main",
@@ -1055,7 +1055,7 @@ describe("POST /tools/invoke", () => {
       port: sharedPort,
       headers: {
         ...gatewayAuthHeaders(),
-        "x-openclaw-sender-is-owner": "true",
+        "x-operator-sender-is-owner": "true",
       },
       tool: "session_status",
       sessionKey: "main",

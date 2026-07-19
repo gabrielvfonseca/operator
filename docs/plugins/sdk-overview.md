@@ -4,7 +4,7 @@ title: "Plugin SDK overview"
 sidebarTitle: "Plugin SDK overview"
 read_when:
   - You need to know which SDK subpath to import from
-  - You want a reference for all registration methods on OpenClawPluginApi
+  - You want a reference for all registration methods on OperatorPluginApi
   - You are looking up a specific SDK export
 ---
 
@@ -13,7 +13,7 @@ reference for **what to import** and **what you can register**.
 
 <Note>
   This page is for plugin authors using `openclaw/plugin-sdk/*` inside
-  OpenClaw. For external apps, scripts, dashboards, CI jobs, and IDE extensions
+  Operator. For external apps, scripts, dashboards, CI jobs, and IDE extensions
   that want to run agents through the Gateway, use
   [Gateway integrations for external apps](/gateway/external-apps) instead.
 </Note>
@@ -38,8 +38,8 @@ the broader umbrella surface and shared helpers such as
 `buildChannelConfigSchema`.
 
 For channel config, publish the channel-owned JSON Schema through
-`openclaw.plugin.json#channelConfigs`. The `plugin-sdk/channel-config-schema`
-subpath is for shared schema primitives and the generic builder. OpenClaw's
+`operator.plugin.json#channelConfigs`. The `plugin-sdk/channel-config-schema`
+subpath is for shared schema primitives and the generic builder. Operator's
 bundled plugins use `plugin-sdk/bundled-channel-config-schema` for retained
 bundled-channel schemas. Deprecated compatibility exports remain on
 `plugin-sdk/channel-config-schema-legacy`; neither bundled schema subpath is a
@@ -83,7 +83,7 @@ deprecated re-export barrels are tracked in
 
 ## Registration API
 
-The `register(api)` callback receives an `OpenClawPluginApi` object with these
+The `register(api)` callback receives an `OperatorPluginApi` object with these
 methods:
 
 ### Capability registration
@@ -143,7 +143,7 @@ or fully dynamic tool registration.
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `api.registerTool(tool, opts?)`        | Agent tool (required or `{ optional: true }`)                                                                                            |
 | `api.registerCommand(def)`             | Custom command (bypasses the LLM)                                                                                                        |
-| `api.registerNodeHostCommand(command)` | Command handled by `openclaw node run`; optional `agentTool` metadata can expose it as an agent-visible tool while the node is connected |
+| `api.registerNodeHostCommand(command)` | Command handled by `operator node run`; optional `agentTool` metadata can expose it as an agent-visible tool while the node is connected |
 
 Plugin commands can set `agentPromptGuidance` when the agent needs a short,
 command-owned routing hint. Keep that text about the command itself; do not add
@@ -155,13 +155,13 @@ structured entries:
 ```ts
 agentPromptGuidance: [
   "Global command hint.",
-  { text: "Only show this in the main OpenClaw prompt.", surfaces: ["openclaw_main"] },
+  { text: "Only show this in the main Operator prompt.", surfaces: ["operator_main"] },
 ];
 ```
 
-Structured `surfaces` may include `openclaw_main`, `codex_app_server`,
+Structured `surfaces` may include `operator_main`, `codex_app_server`,
 `cli_backend`, `acp_backend`, or `subagent`. `pi_main` remains a deprecated alias
-for `openclaw_main`. Omit `surfaces` for intentional all-surface guidance. Do
+for `operator_main`. Omit `surfaces` for intentional all-surface guidance. Do
 not pass an empty `surfaces` array; it is rejected so accidental scope loss does
 not become global prompt text.
 
@@ -192,7 +192,7 @@ advertised node command.
 | `api.registerGatewayMethod(name, handler)`      | Gateway RPC method                                                     |
 | `api.registerGatewayDiscoveryService(service)`  | Local Gateway discovery advertiser                                     |
 | `api.registerCli(registrar, opts?)`             | CLI subcommand                                                         |
-| `api.registerNodeCliFeature(registrar, opts?)`  | Node feature CLI under `openclaw nodes`                                |
+| `api.registerNodeCliFeature(registrar, opts?)`  | Node feature CLI under `operator nodes`                                |
 | `api.registerService(service)`                  | Background service                                                     |
 | `api.registerInteractiveHandler(registration)`  | Interactive handler                                                    |
 | `api.registerAgentToolResultMiddleware(...)`    | Runtime tool-result middleware                                         |
@@ -202,12 +202,12 @@ advertised node command.
 | `api.registerMcpServerConnectionResolver(...)`  | Per-requester MCP transport (`url`/`headers`) for a static server name |
 | `api.registerTextTransforms(transforms)`        | Plugin-owned prompt/message compatibility text rewrites                |
 | `api.registerConfigMigration(migrate)`          | Lightweight config migration run before plugin runtime loads           |
-| `api.registerMigrationProvider(provider)`       | Importer for `openclaw migrate`                                        |
+| `api.registerMigrationProvider(provider)`       | Importer for `operator migrate`                                        |
 | `api.registerAutoEnableProbe(probe)`            | Config probe that can auto-enable this plugin                          |
 | `api.registerReload(registration)`              | Restart/hot/noop config-prefix policy for reload handling              |
 | `api.registerNodeHostCommand(command)`          | Command handler exposed to paired nodes                                |
 | `api.registerNodeInvokePolicy(policy)`          | Allowlist/approval policy for node-invoked commands                    |
-| `api.registerSecurityAuditCollector(collector)` | Findings collector for `openclaw security audit`                       |
+| `api.registerSecurityAuditCollector(collector)` | Findings collector for `operator security audit`                       |
 
 #### Requester-scoped MCP connections
 
@@ -277,7 +277,7 @@ Contract notes:
   senders change. Before any requester resolves, no scoped specs are advertised.
 - Unauthenticated requesters on a shared-thread harness still see the advertised
   scoped tools; calling one returns a clean not-connected tool error for that
-  requester. OpenClaw never falls back to another requester's credentials.
+  requester. Operator never falls back to another requester's credentials.
 
 Memory prompt supplement builders receive optional `agentId`,
 `agentSessionKey`, and `sandboxed` context. Memory corpus supplement `search`
@@ -288,7 +288,7 @@ missing in a multi-agent operation, fail closed rather than choosing an
 arbitrary agent.
 
 Telegram interactive handlers can return `{ submitText }` to route text through
-Telegram's normal inbound agent path after the handler succeeds. OpenClaw keeps
+Telegram's normal inbound agent path after the handler succeeds. Operator keeps
 the callback button when inbound policy skips the text or processing fails, so
 the user can retry after the blocking condition changes. This result field is
 Telegram-specific; other channels keep their own interactive result contracts.
@@ -410,9 +410,9 @@ Examples of non-Plan consumers:
   seam for async output reducers such as tokenjuice.
 
 Plugins must declare `contracts.agentToolResultMiddleware` for each targeted
-runtime, for example `["openclaw", "codex"]`. Installed plugins without that
+runtime, for example `["@gabrielvfonseca/operator", "codex"]`. Installed plugins without that
 contract, or without explicit enablement, cannot register this middleware; keep
-normal OpenClaw plugin hooks for work that does not need pre-model tool-result
+normal Operator plugin hooks for work that does not need pre-model tool-result
 timing. The old
 embedded-runner-only extension factory registration path has been removed.
 </Accordion>
@@ -420,7 +420,7 @@ embedded-runner-only extension factory registration path has been removed.
 ### Gateway discovery registration
 
 `api.registerGatewayDiscoveryService(...)` lets a plugin advertise the active
-Gateway on a local discovery transport such as mDNS/Bonjour. OpenClaw calls the
+Gateway on a local discovery transport such as mDNS/Bonjour. Operator calls the
 service during Gateway startup when local discovery is enabled, passes the
 current Gateway ports and non-secret TXT hint data, and calls the returned
 `stop` handler during Gateway shutdown.
@@ -456,7 +456,7 @@ own trust.
 For paired-node features, prefer
 `api.registerNodeCliFeature(registrar, opts?)`. It is a small wrapper around
 `api.registerCli(..., { parentPath: ["nodes"] })` and makes commands such as
-`openclaw nodes canvas` explicit plugin-owned node features.
+`operator nodes canvas` explicit plugin-owned node features.
 
 If you want a plugin command to stay lazy-loaded in the normal root CLI path,
 provide `descriptors` that cover every top-level command root exposed by that
@@ -512,12 +512,12 @@ AI CLI backend such as `claude-cli` or `my-cli`.
 
 - The backend `id` becomes the provider prefix in model refs like `my-cli/gpt-5`.
 - The backend `config` uses the same shape as `agents.defaults.cliBackends.<id>`.
-- User config still wins. OpenClaw merges `agents.defaults.cliBackends.<id>` over the
+- User config still wins. Operator merges `agents.defaults.cliBackends.<id>` over the
   plugin default before running the CLI.
 - Use `normalizeConfig` when a backend needs compatibility rewrites after merge
   (for example normalizing old flag shapes).
 - Use `resolveExecutionArgs` for request-scoped argv rewrites that belong to
-  the CLI dialect, such as mapping OpenClaw thinking levels to a native effort
+  the CLI dialect, such as mapping Operator thinking levels to a native effort
   flag. The hook receives `ctx.executionMode`; use `"side-question"` to add
   backend-native isolation flags for ephemeral `/btw` calls. If those flags
   reliably disable native tools for an otherwise always-on CLI, declare
@@ -530,7 +530,7 @@ AI CLI backend such as `claude-cli` or `my-cli`.
   `nativeToolMode: "selectable"`. Restricted calls pass an empty
   `ctx.toolAvailability.native` tuple plus an exact host-isolated MCP allowlist;
   `resolveExecutionArgs` must enforce both on the final fresh or resume argv.
-  OpenClaw fails closed if the backend cannot do so.
+  Operator fails closed if the backend cannot do so.
 
 For an end-to-end authoring guide, see
 [CLI backend plugins](/plugins/cli-backend-plugins).
@@ -606,7 +606,7 @@ Use `cron_reconciled` as the full-snapshot trigger for durable state loaded at
 Gateway startup or scheduler replacement. It is not replayed for a plugin-only
 hot reload. Observation handlers run in parallel, and fire-and-forget
 dispatches can overlap, so consumers must not depend on event completion order.
-Keep OpenClaw as the source of truth for due checks and execution.
+Keep Operator as the source of truth for due checks and execution.
 
 For a single-flight adapter with durable replacement, retry/backoff, and clean
 shutdown, see [Safe external cron projection](/plugins/hooks#safe-external-cron-projection).
@@ -621,7 +621,7 @@ shutdown, see [Safe external cron projection](/plugins/hooks#safe-external-cron-
 | `api.description`        | `string?`                 | Plugin description (optional)                                                               |
 | `api.source`             | `string`                  | Plugin source path                                                                          |
 | `api.rootDir`            | `string?`                 | Plugin root directory (optional)                                                            |
-| `api.config`             | `OpenClawConfig`          | Current config snapshot (active in-memory runtime snapshot when available)                  |
+| `api.config`             | `OperatorConfig`          | Current config snapshot (active in-memory runtime snapshot when available)                  |
 | `api.pluginConfig`       | `Record<string, unknown>` | Plugin-specific config from `plugins.entries.<id>.config`                                   |
 | `api.runtime`            | `PluginRuntime`           | [Runtime helpers](/plugins/sdk-runtime)                                                     |
 | `api.logger`             | `PluginLogger`            | Scoped logger (`debug`, `info`, `warn`, `error`)                                            |
@@ -648,9 +648,9 @@ my-plugin/
 
 Facade-loaded bundled plugin public surfaces (`api.ts`, `runtime-api.ts`,
 `index.ts`, `setup-entry.ts`, and similar public entry files) prefer the
-active runtime config snapshot when OpenClaw is already running. If no runtime
+active runtime config snapshot when Operator is already running. If no runtime
 snapshot exists yet, they fall back to the resolved config file on disk.
-Packaged bundled plugin facades should be loaded through OpenClaw's plugin
+Packaged bundled plugin facades should be loaded through Operator's plugin
 facade loaders; direct imports from `dist/extensions/...` bypass the manifest
 and runtime sidecar checks that packaged installs use for plugin-owned code.
 
@@ -660,9 +660,9 @@ subpath yet. Bundled examples:
 
 - **Anthropic**: public `api.ts` / `contract-api.ts` seam for Claude
   beta-header and `service_tier` stream helpers.
-- **`@operator/openai-provider`**: `api.ts` exports provider builders,
+- **`@gabrielvfonseca/openai-provider`**: `api.ts` exports provider builders,
   default-model helpers, and realtime provider builders.
-- **`@operator/openrouter-provider`**: `api.ts` exports the provider builder
+- **`@gabrielvfonseca/openrouter-provider`**: `api.ts` exports the provider builder
   plus onboarding/config helpers.
 
 <Warning>

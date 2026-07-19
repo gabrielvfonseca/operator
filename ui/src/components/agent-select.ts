@@ -11,12 +11,12 @@ import {
   resolveAgentTextAvatar,
 } from "../lib/agents/display.ts";
 import { resolveAgentAvatarUrl } from "../lib/avatar.ts";
-import { OpenClawLightDomElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../lit/operator-element.ts";
 import { icons } from "./icons.ts";
 
 type WebAwesomeSelectEvent = Event & { detail: { item: Element } };
 
-export class AgentSelect extends OpenClawLightDomElement {
+export class AgentSelect extends OperatorLightDomElement {
   @property({ attribute: false }) agents: GatewayAgentRow[] = [];
   @property({ attribute: false }) selectedId: string | null = null;
   @property({ attribute: false }) defaultId: string | null = null;

@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 extension NodeAppModel {
-    static func normalizeWatchNotifyParams(_ params: OpenClawWatchNotifyParams) -> OpenClawWatchNotifyParams {
+    static func normalizeWatchNotifyParams(_ params: OperatorWatchNotifyParams) -> OperatorWatchNotifyParams {
         var normalized = params
         normalized.title = params.title.trimmingCharacters(in: .whitespacesAndNewlines)
         normalized.body = params.body.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -23,15 +23,15 @@ extension NodeAppModel {
     }
 
     static func normalizeWatchActions(
-        _ actions: [OpenClawWatchAction]?,
+        _ actions: [OperatorWatchAction]?,
         kind: String?,
-        promptId: String?) -> [OpenClawWatchAction]
+        promptId: String?) -> [OperatorWatchAction]
     {
-        let provided = (actions ?? []).compactMap { action -> OpenClawWatchAction? in
+        let provided = (actions ?? []).compactMap { action -> OperatorWatchAction? in
             let id = action.id.trimmingCharacters(in: .whitespacesAndNewlines)
             let label = action.label.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !id.isEmpty, !label.isEmpty else { return nil }
-            return OpenClawWatchAction(
+            return OperatorWatchAction(
                 id: id,
                 label: label,
                 style: self.trimmedOrNil(action.style))
@@ -48,24 +48,24 @@ extension NodeAppModel {
         let normalizedKind = kind?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? ""
         if normalizedKind.contains("approval") || normalizedKind.contains("approve") {
             return [
-                OpenClawWatchAction(id: "approve", label: "Approve"),
-                OpenClawWatchAction(id: "decline", label: "Decline", style: "destructive"),
-                OpenClawWatchAction(id: "open_phone", label: "Open iPhone"),
-                OpenClawWatchAction(id: "escalate", label: "Escalate"),
+                OperatorWatchAction(id: "approve", label: "Approve"),
+                OperatorWatchAction(id: "decline", label: "Decline", style: "destructive"),
+                OperatorWatchAction(id: "open_phone", label: "Open iPhone"),
+                OperatorWatchAction(id: "escalate", label: "Escalate"),
             ]
         }
 
         return [
-            OpenClawWatchAction(id: "done", label: "Done"),
-            OpenClawWatchAction(id: "snooze_10m", label: "Snooze 10m"),
-            OpenClawWatchAction(id: "open_phone", label: "Open iPhone"),
-            OpenClawWatchAction(id: "escalate", label: "Escalate"),
+            OperatorWatchAction(id: "done", label: "Done"),
+            OperatorWatchAction(id: "snooze_10m", label: "Snooze 10m"),
+            OperatorWatchAction(id: "open_phone", label: "Open iPhone"),
+            OperatorWatchAction(id: "escalate", label: "Escalate"),
         ]
     }
 
     static func normalizedWatchRisk(
-        _ risk: OpenClawWatchRisk?,
-        priority: OpenClawNotificationPriority?) -> OpenClawWatchRisk?
+        _ risk: OperatorWatchRisk?,
+        priority: OperatorNotificationPriority?) -> OperatorWatchRisk?
     {
         if let risk { return risk }
         switch priority {
@@ -81,8 +81,8 @@ extension NodeAppModel {
     }
 
     static func normalizedWatchPriority(
-        _ priority: OpenClawNotificationPriority?,
-        risk: OpenClawWatchRisk?) -> OpenClawNotificationPriority?
+        _ priority: OperatorNotificationPriority?,
+        risk: OperatorWatchRisk?) -> OperatorNotificationPriority?
     {
         if let priority { return priority }
         switch risk {

@@ -3,9 +3,9 @@ import {
   hasSensitiveUrlHintTag,
   isSensitiveUrlConfigPath,
   redactSensitiveUrlLikeString,
-} from "@operator/net-policy/redact-sensitive-url";
-import { isRecord as isObjectRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { isRecord as isObjectRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { ConfigUiHints } from "../shared/config-ui-hints-types.js";
 import {

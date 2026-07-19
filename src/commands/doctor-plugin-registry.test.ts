@@ -1,7 +1,7 @@
 // Doctor plugin registry tests cover plugin registry checks and repair diagnostics.
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { note } from "../../packages/terminal-core/src/note.js";
 import type { PluginCandidate } from "../plugins/discovery.js";
@@ -34,7 +34,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-doctor-plugin-registry", tempDirs);
+  return makeTrackedTempDir("operator-doctor-plugin-registry", tempDirs);
 }
 
 async function readRequiredPersistedInstalledPluginIndex(
@@ -63,7 +63,7 @@ function createCandidate(rootDir: string, id = "demo"): PluginCandidate {
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "openclaw.plugin.json"),
+    path.join(rootDir, "operator.plugin.json"),
     JSON.stringify({
       id,
       name: id,
@@ -92,7 +92,7 @@ function createBundledCandidate(params: {
     "utf8",
   );
   fs.writeFileSync(
-    path.join(params.rootDir, "openclaw.plugin.json"),
+    path.join(params.rootDir, "operator.plugin.json"),
     JSON.stringify({
       id: params.id,
       name: params.id,
@@ -180,14 +180,14 @@ function createManagedNpmPlugin(params: {
       name: params.packageName,
       version: params.version,
       ...(params.peerDependencies ? { peerDependencies: params.peerDependencies } : {}),
-      openclaw: {
+      operator: {
         extensions: ["."],
       },
     }),
     "utf8",
   );
   fs.writeFileSync(
-    path.join(packageDir, "openclaw.plugin.json"),
+    path.join(packageDir, "operator.plugin.json"),
     JSON.stringify({
       id: params.id,
       name: params.id,
@@ -264,7 +264,7 @@ function expectedPluginIndexRecord(params: {
     pluginId: params.pluginId,
     ...(params.packageName ? { packageName: params.packageName } : {}),
     ...(params.packageVersion ? { packageVersion: params.packageVersion } : {}),
-    manifestPath: path.join(params.rootDir, "openclaw.plugin.json"),
+    manifestPath: path.join(params.rootDir, "operator.plugin.json"),
     manifestHash: expect.any(String),
     manifestFile: {
       size: expect.any(Number),
@@ -338,7 +338,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.2",
     });
     await writePersistedInstalledPluginIndex(createCurrentIndex(), { stateDir });
@@ -349,7 +349,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -372,7 +372,7 @@ describe("maybeRepairPluginRegistryState", () => {
     expect(staleIssue).toMatchObject({
       kind: "stale-managed-npm-bundled-plugin",
       pluginId: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       packageDir: managed.packageDir,
       version: "2026.5.2",
     });
@@ -412,7 +412,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "discord",
-          packageName: "@operator/discord",
+          packageName: "@gabrielvfonseca/discord",
           version: "2026.5.20-beta.1",
         }),
       ],
@@ -496,7 +496,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.2",
     });
     await writePersistedInstalledPluginIndex(createCurrentIndex(), { stateDir });
@@ -507,7 +507,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -529,7 +529,9 @@ describe("maybeRepairPluginRegistryState", () => {
     expect(vi.mocked(note).mock.calls.join("\n")).toContain(
       "Managed npm plugin packages shadow bundled plugins",
     );
-    expect(vi.mocked(note).mock.calls.join("\n")).toContain("@operator/google-meet@2026.5.2");
+    expect(vi.mocked(note).mock.calls.join("\n")).toContain(
+      "@gabrielvfonseca/google-meet@2026.5.2",
+    );
     expect(fs.existsSync(managed.packageDir)).toBe(true);
   });
 
@@ -540,7 +542,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.2",
     });
     await writePersistedInstalledPluginIndex(createCurrentIndex(), { stateDir });
@@ -551,7 +553,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -581,7 +583,7 @@ describe("maybeRepairPluginRegistryState", () => {
         pluginId: "google-meet",
         rootDir: bundledDir,
         origin: "bundled",
-        packageName: "@operator/google-meet",
+        packageName: "@gabrielvfonseca/google-meet",
         packageVersion: "2026.5.3",
       }),
     ]);
@@ -597,7 +599,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.2",
     });
     await markRetainedManagedNpmInstall({
@@ -614,7 +616,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -646,13 +648,13 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.3",
     });
     await writePersistedInstalledPluginIndex(
       createCurrentIndexWithNpmRecord({
         pluginId: "google-meet",
-        packageName: "@operator/google-meet",
+        packageName: "@gabrielvfonseca/google-meet",
         packageDir: managed.packageDir,
         version: "2026.5.3",
       }),
@@ -665,7 +667,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -693,7 +695,7 @@ describe("maybeRepairPluginRegistryState", () => {
         pluginId: "google-meet",
         rootDir: bundledDir,
         origin: "bundled",
-        packageName: "@operator/google-meet",
+        packageName: "@gabrielvfonseca/google-meet",
         packageVersion: "2026.5.3",
       }),
     ]);
@@ -721,7 +723,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "discord",
-          packageName: "@operator/discord",
+          packageName: "@gabrielvfonseca/discord",
           version: "2026.5.20-beta.1",
         }),
       ],
@@ -770,7 +772,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "discord",
-          packageName: "@operator/discord",
+          packageName: "@gabrielvfonseca/discord",
           version: "2026.5.20-beta.1",
         }),
       ],
@@ -797,7 +799,7 @@ describe("maybeRepairPluginRegistryState", () => {
         pluginId: "discord",
         rootDir: bundledDir,
         origin: "bundled",
-        packageName: "@operator/discord",
+        packageName: "@gabrielvfonseca/discord",
         packageVersion: "2026.5.20-beta.1",
       }),
     ]);
@@ -813,7 +815,7 @@ describe("maybeRepairPluginRegistryState", () => {
     const managed = createManagedNpmPlugin({
       stateDir,
       id: "google-meet",
-      packageName: "@operator/google-meet",
+      packageName: "@gabrielvfonseca/google-meet",
       version: "2026.5.2",
       packageLock: true,
     });
@@ -825,7 +827,7 @@ describe("maybeRepairPluginRegistryState", () => {
         createBundledCandidate({
           rootDir: bundledDir,
           id: "google-meet",
-          packageName: "@operator/google-meet",
+          packageName: "@gabrielvfonseca/google-meet",
           version: "2026.5.3",
         }),
       ],
@@ -848,8 +850,8 @@ describe("maybeRepairPluginRegistryState", () => {
       fs.readFileSync(path.join(managed.npmRoot, "package-lock.json"), "utf8"),
     );
     expect(packageLock.packages[""].dependencies).toEqual({ "other-plugin": "1.0.0" });
-    expect(packageLock.packages).not.toHaveProperty("node_modules/@operator/google-meet");
-    expect(packageLock.dependencies).not.toHaveProperty("@operator/google-meet");
+    expect(packageLock.packages).not.toHaveProperty("node_modules/@gabrielvfonseca/google-meet");
+    expect(packageLock.dependencies).not.toHaveProperty("@gabrielvfonseca/google-meet");
     expect(packageLock.dependencies).toHaveProperty("other-plugin");
   });
 
@@ -861,7 +863,7 @@ describe("maybeRepairPluginRegistryState", () => {
       packageName: "codex-plugin",
       version: "2026.5.3",
       peerDependencies: {
-        openclaw: ">=2026.5.3",
+        operator: ">=2026.5.3",
       },
     });
     await writePersistedInstalledPluginIndex(
@@ -881,7 +883,7 @@ describe("maybeRepairPluginRegistryState", () => {
       prompter: { shouldRepair: true },
     });
 
-    const linkPath = path.join(managed.packageDir, "node_modules", "openclaw");
+    const linkPath = path.join(managed.packageDir, "node_modules", "@gabrielvfonseca/operator");
     expect(fs.lstatSync(linkPath).isSymbolicLink()).toBe(true);
     expect(fs.realpathSync(linkPath)).toBe(fs.realpathSync(process.cwd()));
     expect(vi.mocked(note).mock.calls.join("\n")).toContain("Repaired Operator host peer link");
@@ -895,7 +897,7 @@ describe("maybeRepairPluginRegistryState", () => {
       packageName: "codex-plugin",
       version: "2026.5.3",
       peerDependencies: {
-        openclaw: ">=2026.5.3",
+        operator: ">=2026.5.3",
       },
     });
     await writePersistedInstalledPluginIndex(
@@ -915,7 +917,7 @@ describe("maybeRepairPluginRegistryState", () => {
       prompter: { shouldRepair: false },
     });
 
-    const linkPath = path.join(managed.packageDir, "node_modules", "openclaw");
+    const linkPath = path.join(managed.packageDir, "node_modules", "@gabrielvfonseca/operator");
     const notes = vi.mocked(note).mock.calls.join("\n");
     expect(notes).toContain("Managed npm Operator host peer links need repair");
     expect(notes).toContain("codex-plugin");

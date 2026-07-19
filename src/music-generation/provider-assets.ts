@@ -1,8 +1,8 @@
 // Validates and normalizes provider asset attachments for music generation.
-import { maxBytesForKind } from "@operator/media-core/constants";
-import { extensionForMime } from "@operator/media-core/mime";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { maxBytesForKind } from "@gabrielvfonseca/media-core/constants";
+import { extensionForMime } from "@gabrielvfonseca/media-core/mime";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { readResponseWithLimit } from "../infra/http-body.js";
 import { fetchProviderDownloadResponse } from "../media-understanding/shared.js";
 import type { GeneratedMusicAsset } from "./types.js";

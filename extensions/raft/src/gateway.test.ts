@@ -2,9 +2,9 @@ import { EventEmitter } from "node:events";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import type { ChannelGatewayContext } from "openclaw/plugin-sdk/channel-contract";
-import { createClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
-import { resetPluginStateStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
+import type { ChannelGatewayContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createClaimableDedupe } from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
+import { resetPluginStateStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ResolvedRaftAccount } from "./accounts.js";
 import { startRaftGatewayAccount } from "./gateway.js";
@@ -16,7 +16,7 @@ class FakeBridge extends EventEmitter {
 const tempDirs = new Set<string>();
 
 function makeTempDir(prefix: string): string {
-  // openclaw-temp-dir: allow extension tests cannot import root test helpers
+  // operator-temp-dir: allow extension tests cannot import root test helpers
   const dir = mkdtempSync(path.join(tmpdir(), prefix));
   tempDirs.add(dir);
   return dir;
@@ -67,7 +67,7 @@ function createContext(accountId = "default") {
       name: null,
       enabled: true,
       configured: true,
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     },
     runtime: {},
     abortSignal: new AbortController().signal,
@@ -92,7 +92,7 @@ function createContext(accountId = "default") {
         buildContext: vi.fn(() => ({})),
       },
       session: {
-        resolveStorePath: vi.fn(() => "/tmp/openclaw-agent.sqlite"),
+        resolveStorePath: vi.fn(() => "/tmp/operator-agent.sqlite"),
         recordInboundSession: vi.fn(),
       },
       reply: {
@@ -405,7 +405,7 @@ describe("Raft wake gateway", () => {
   });
 
   it("persists accepted wake dedupe across restarts without crossing accounts", async () => {
-    const stateDir = makeTempDir("openclaw-raft-wake-dedupe-");
+    const stateDir = makeTempDir("operator-raft-wake-dedupe-");
     try {
       const first = createContext();
       Object.defineProperty(first.ctx, "abortSignal", { value: first.controller.signal });

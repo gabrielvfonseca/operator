@@ -169,7 +169,7 @@ export function makeReplyConfig(home: string) {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
-        workspace: path.join(home, "operator"),
+        workspace: path.join(home, "@gabrielvfonseca/operator"),
       },
     },
     channels: {

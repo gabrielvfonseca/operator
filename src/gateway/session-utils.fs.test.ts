@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { withEnv, withEnvAsync } from "../test-utils/env.js";
 import { estimateStringChars, estimateTokensFromChars } from "../utils/cjk-chars.js";
@@ -107,7 +107,7 @@ function appendBlockedUserMessage(
     content: [{ type: "text", text: params.redactedText }],
     timestamp: Date.now(),
     ...(params.idempotencyKey ? { idempotencyKey: params.idempotencyKey } : {}),
-    __openclaw: {
+    __operator: {
       beforeAgentRunBlocked: {
         blockedBy: params.pluginId,
         blockedAt: Date.now(),
@@ -152,9 +152,9 @@ function expectMessageFields(
   if ("content" in fields) {
     expect(record.content).toEqual(fields.content);
   }
-  if (fields.openclaw) {
-    const metadata = requireRecord(record["__openclaw"], "message metadata");
-    for (const [key, value] of Object.entries(fields.openclaw)) {
+  if (fields.operator) {
+    const metadata = ...
+    for (const [key, value] of Object.entries(fields.operator)) {
       expect(metadata[key]).toEqual(value);
     }
   }
@@ -171,7 +171,7 @@ describe("readSessionTitleFieldsFromTranscript cache", () => {
   let tmpDir: string;
   let storePath: string;
 
-  registerTempSessionStore("openclaw-session-fs-test-", (nextTmpDir, nextStorePath) => {
+  registerTempSessionStore("operator-session-fs-test-", (nextTmpDir, nextStorePath) => {
     tmpDir = nextTmpDir;
     storePath = nextStorePath;
   });
@@ -300,7 +300,7 @@ describe("readSessionMessages", () => {
   let tmpDir: string;
   let storePath: string;
 
-  registerTempSessionStore("openclaw-session-fs-test-", (nextTmpDir, nextStorePath) => {
+  registerTempSessionStore("operator-session-fs-test-", (nextTmpDir, nextStorePath) => {
     tmpDir = nextTmpDir;
     storePath = nextStorePath;
   });
@@ -362,15 +362,15 @@ describe("readSessionMessages", () => {
 
       expect(result.totalMessages).toBe(4);
       expect(result.messages).toHaveLength(2);
-      expectMessageFields(result.messages[0], { content: "recent", openclaw: { seq: 3 } });
-      expectMessageFields(result.messages[1], { content: "latest", openclaw: { seq: 4 } });
+      expectMessageFields(result.messages[0], { content: "recent", operator: { seq: 3 } });
+      expectMessageFields(result.messages[1], { content: "latest", operator: { seq: 4 } });
       expect(readFileSpy).not.toHaveBeenCalled();
     } finally {
       readFileSpy.mockRestore();
     }
   });
 
-  test("forwards the outer JSONL record timestamp to __openclaw.recordTimestampMs (#85648)", async () => {
+  test("forwards the outer JSONL record timestamp to __operator.recordTimestampMs (#85648)", async () => {
     const sessionId = "test-session-record-timestamp";
     const t1 = "2026-05-16T16:00:31.000Z";
     const t2 = "2026-05-23T04:02:33.000Z";
@@ -386,11 +386,11 @@ describe("readSessionMessages", () => {
     expect(result).toHaveLength(2);
     expectMessageFields(result[0], {
       content: "old turn",
-      openclaw: { recordTimestampMs: Date.parse(t1) },
+      operator: { recordTimestampMs: Date.parse(t1) },
     });
     expectMessageFields(result[1], {
       content: "fresh turn",
-      openclaw: { recordTimestampMs: Date.parse(t2) },
+      operator: { recordTimestampMs: Date.parse(t2) },
     });
   });
 
@@ -416,7 +416,7 @@ describe("readSessionMessages", () => {
     expect(result).toHaveLength(1);
     expectMessageFields(result[0], {
       content: "pending optimistic turn",
-      openclaw: { id: "entry-user-1", idempotencyKey: "client-turn-1" },
+      operator: { id: "entry-user-1", idempotencyKey: "client-turn-1" },
     });
   });
 
@@ -535,7 +535,7 @@ describe("readSessionMessages", () => {
         "active branch",
         "latest active",
       ]);
-      expectMessageFields(messages[2], { openclaw: { id: "user-2", seq: 3 } });
+      expectMessageFields(messages[2], { operator: { id: "user-2", seq: 3 } });
       expect(sessionManagerOpenSpy).not.toHaveBeenCalled();
       expect(readFileSpy).not.toHaveBeenCalled();
     } finally {
@@ -675,7 +675,7 @@ describe("readSessionMessages", () => {
     expectMessageFields(recent.messages[0], {
       role: "assistant",
       content: "restored archive",
-      openclaw: { seq: 2 },
+      operator: { seq: 2 },
     });
   });
 
@@ -761,7 +761,7 @@ describe("readSessionMessages", () => {
       { type: "session", version: 1, id: sessionId },
       { message: { role: "assistant", content: "older store archive" } },
     ]);
-    const legacySessionsDir = path.join(tmpDir, ".openclaw", "sessions");
+    const legacySessionsDir = path.join(tmpDir, ".operator", "sessions");
     fs.mkdirSync(legacySessionsDir, { recursive: true });
     writeResetArchive(legacySessionsDir, sessionId, "2026-02-16T22-26-34.000Z", [
       { type: "session", version: 1, id: sessionId },
@@ -933,9 +933,9 @@ describe("readSessionMessages", () => {
       "tree reply",
       "reachable orphan tail",
     ]);
-    expectMessageFields(messages[0], { openclaw: { id: "legacy-user", seq: 1 } });
-    expectMessageFields(messages[1], { openclaw: { id: "tree-assistant", seq: 2 } });
-    expectMessageFields(messages[2], { openclaw: { id: "orphan-tail", seq: 3 } });
+    expectMessageFields(messages[0], { operator: { id: "legacy-user", seq: 1 } });
+    expectMessageFields(messages[1], { operator: { id: "tree-assistant", seq: 2 } });
+    expectMessageFields(messages[2], { operator: { id: "orphan-tail", seq: 3 } });
   });
 
   test("keeps legacy async parents when tree transcripts reference pre-v3 rows", async () => {
@@ -964,8 +964,8 @@ describe("readSessionMessages", () => {
       "legacy hello",
       "tree hello",
     ]);
-    expectMessageFields(messages[0], { openclaw: { id: "legacy-user", seq: 1 } });
-    expectMessageFields(messages[1], { openclaw: { id: "tree-assistant", seq: 2 } });
+    expectMessageFields(messages[0], { operator: { id: "legacy-user", seq: 1 } });
+    expectMessageFields(messages[1], { operator: { id: "tree-assistant", seq: 2 } });
   });
 
   test("caches async transcript indexes by file stats", async () => {
@@ -1070,7 +1070,7 @@ describe("readSessionMessages", () => {
           role: "assistant",
           content: [{ type: "text", text: "clean answer" }],
           api: "chat",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "test",
           usage: {},
           stopReason: "stop",
@@ -1102,11 +1102,11 @@ describe("readSessionMessages", () => {
       const out = readSessionMessages(sessionId, storePath, sessionFile);
       expect(out).toHaveLength(2);
       expect(out).toHaveLength(2);
-      expectMessageFields(out[0], { role: "user", content: "clean prompt", openclaw: { seq: 1 } });
+      expectMessageFields(out[0], { role: "user", content: "clean prompt", operator: { seq: 1 } });
       expectMessageFields(out[1], {
         role: "assistant",
         content: [{ type: "text", text: "clean answer" }],
-        openclaw: { seq: 2 },
+        operator: { seq: 2 },
       });
       expect(JSON.stringify(out)).not.toContain("original wrapped prompt");
       expect(JSON.stringify(out)).not.toContain("side delivery");
@@ -1389,7 +1389,7 @@ describe("readSessionPreviewItemsFromTranscript", () => {
   let tmpDir: string;
   let storePath: string;
 
-  registerTempSessionStore("openclaw-session-preview-test-", (nextTmpDir, nextStorePath) => {
+  registerTempSessionStore("operator-session-preview-test-", (nextTmpDir, nextStorePath) => {
     tmpDir = nextTmpDir;
     storePath = nextStorePath;
   });
@@ -1546,7 +1546,7 @@ describe("readLatestSessionUsageFromTranscript", () => {
   let tmpDir: string;
   let storePath: string;
 
-  registerTempSessionStore("openclaw-session-usage-test-", (nextTmpDir, nextStorePath) => {
+  registerTempSessionStore("operator-session-usage-test-", (nextTmpDir, nextStorePath) => {
     tmpDir = nextTmpDir;
     storePath = nextStorePath;
   });
@@ -1677,11 +1677,11 @@ describe("readLatestSessionUsageFromTranscript", () => {
 
 describe("resolveSessionTranscriptCandidates", () => {
   test("fallback candidate uses OPERATOR_HOME instead of os.homedir()", () => {
-    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+    withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
       const candidates = resolveSessionTranscriptCandidates("sess-1", undefined);
       const fallback = candidates[candidates.length - 1];
       expect(fallback).toBe(
-        path.join(path.resolve("/srv/openclaw-home"), ".openclaw", "sessions", "sess-1.jsonl"),
+        path.join(path.resolve("/srv/operator-home"), ".operator", "sessions", "sess-1.jsonl"),
       );
     });
   });
@@ -1805,7 +1805,7 @@ describe("oversized transcript line guards", () => {
   let tmpDir: string;
   let storePath: string;
 
-  registerTempSessionStore("openclaw-session-fs-oversized-", (nextTmpDir, nextStorePath) => {
+  registerTempSessionStore("operator-session-fs-oversized-", (nextTmpDir, nextStorePath) => {
     tmpDir = nextTmpDir;
     storePath = nextStorePath;
   });

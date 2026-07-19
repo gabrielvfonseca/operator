@@ -1,6 +1,6 @@
 // Imported by dispatch-from-config.test.ts to keep its mocked suite in one Vitest module graph.
 import { AsyncResource } from "node:async_hooks";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
@@ -1319,7 +1319,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: "visible-after-failure",
         To: "telegram:-1003774691294",
-        BodyForAgent: "@operator recover",
+        BodyForAgent: "@openclaw recover",
       }),
       cfg: automaticGroupReplyConfig,
       dispatcher,
@@ -1382,7 +1382,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: messageSid,
         To: "telegram:-1003774691295",
-        BodyForAgent: "@operator recover",
+        BodyForAgent: "@openclaw recover",
       });
 
     const firstTurn = dispatchReplyFromConfig({
@@ -1472,7 +1472,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: messageSid,
         To: "telegram:-1003774691295",
-        BodyForAgent: "@operator recover",
+        BodyForAgent: "@openclaw recover",
       });
 
     const firstTurn = dispatchReplyFromConfig({
@@ -1620,7 +1620,7 @@ describe("dispatchReplyFromConfig", () => {
         SessionKey: sessionKey,
         MessageSid: "visible-after-rotation",
         To: "telegram:-1003774691297",
-        BodyForAgent: "@operator recover",
+        BodyForAgent: "@openclaw recover",
       }),
       cfg: automaticGroupReplyConfig,
       dispatcher,

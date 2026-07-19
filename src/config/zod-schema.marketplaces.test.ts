@@ -1,5 +1,5 @@
 // Verifies marketplace feed and source profile config parsing.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { OperatorSchema } from "./zod-schema.js";
 

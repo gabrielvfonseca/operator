@@ -1,6 +1,6 @@
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { withSessionTranscriptWriteLock } from "openclaw/plugin-sdk/session-transcript-runtime";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { withSessionTranscriptWriteLock } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import { CLAUDE_CLI_BACKEND_ID } from "./cli-constants.js";
 import type { ClaudeTranscriptItem } from "./session-catalog-transcript.js";
 
@@ -17,7 +17,7 @@ function importedClaudeMessage(
       role: "user",
       content: text,
       timestamp,
-      __openclaw: { mirrorOrigin: "claude-catalog-import" },
+      __operator: { mirrorOrigin: "claude-catalog-import" },
     } as AgentMessage;
   }
   const prefix =

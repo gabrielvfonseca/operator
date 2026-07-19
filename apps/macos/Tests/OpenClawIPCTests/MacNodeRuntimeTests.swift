@@ -1,8 +1,8 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct MacNodeRuntimeTests {
     actor AsyncGate {
@@ -57,7 +57,7 @@ struct MacNodeRuntimeTests {
 
         func refresh() -> String? {
             self.calls += 1
-            return "http://127.0.0.1:18789/__openclaw__/cap/refreshed-token"
+            return "http://127.0.0.1:18789/__operator__/cap/refreshed-token"
         }
     }
 
@@ -85,7 +85,7 @@ struct MacNodeRuntimeTests {
             screenIndex: Int?,
             maxWidth: Int?,
             quality: Double?,
-            format: OpenClawScreenSnapshotFormat?) async throws -> ScreenSnapshotResult
+            format: OperatorScreenSnapshotFormat?) async throws -> ScreenSnapshotResult
         {
             self.snapshotCallCount += 1
             self.receivedSnapshotParams = MacNodeScreenSnapshotParams(
@@ -107,7 +107,7 @@ struct MacNodeRuntimeTests {
             outPath _: String?) async throws -> (path: String, hasAudio: Bool)
         {
             let url = FileManager().temporaryDirectory
-                .appendingPathComponent("openclaw-test-screen-record-\(UUID().uuidString).mp4")
+                .appendingPathComponent("operator-test-screen-record-\(UUID().uuidString).mp4")
             try Data("ok".utf8).write(to: url)
             return (path: url.path, hasAudio: false)
         }
@@ -121,7 +121,7 @@ struct MacNodeRuntimeTests {
         }
 
         func currentLocation(
-            desiredAccuracy: OpenClawLocationAccuracy,
+            desiredAccuracy: OperatorLocationAccuracy,
             maxAgeMs: Int?,
             timeoutMs: Int?) async throws -> CLLocation
         {
@@ -132,12 +132,12 @@ struct MacNodeRuntimeTests {
         }
 
         func performComputerAct(
-            _ params: OpenClawComputerActParams,
-            lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+            _ params: OperatorComputerActParams,
+            lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
         {
             _ = params
             _ = lifecycleGeneration
-            return OpenClawComputerActResult(ok: true, cursorX: 0, cursorY: 0)
+            return OperatorComputerActResult(ok: true, cursorX: 0, cursorY: 0)
         }
 
         func releaseHeldInput(lifecycleGeneration: UInt64) async {
@@ -250,30 +250,30 @@ struct MacNodeRuntimeTests {
     @Test func `A2UI host capability refresh uses injected node session refresher`() async {
         let probe = CanvasRefreshProbe()
         let resolver = MacNodeCanvasHostedSurfaceResolver(
-            currentSurfaceURL: { "http://127.0.0.1:18789/__openclaw__/cap/current-token" },
+            currentSurfaceURL: { "http://127.0.0.1:18789/__operator__/cap/current-token" },
             refreshSurfaceURL: { await probe.refresh() })
 
         let current = await resolver.resolveA2UIURL()
         #expect(current ==
-            "http://127.0.0.1:18789/__openclaw__/cap/current-token/__openclaw__/a2ui/?platform=macos")
+            "http://127.0.0.1:18789/__operator__/cap/current-token/__operator__/a2ui/?platform=macos")
         #expect(await probe.calls == 0)
 
         let refreshed = await resolver.resolveA2UIURL(forceRefresh: true)
         #expect(refreshed ==
-            "http://127.0.0.1:18789/__openclaw__/cap/refreshed-token/__openclaw__/a2ui/?platform=macos")
+            "http://127.0.0.1:18789/__operator__/cap/refreshed-token/__operator__/a2ui/?platform=macos")
         #expect(await probe.calls == 1)
     }
 
     @Test func `hosted Canvas commands refresh capability and preserve target components`() async throws {
         let probe = CanvasRefreshProbe()
         let resolver = MacNodeCanvasHostedSurfaceResolver(
-            currentSurfaceURL: { "http://127.0.0.1:18789/__openclaw__/cap/current-token" },
+            currentSurfaceURL: { "http://127.0.0.1:18789/__operator__/cap/current-token" },
             refreshSurfaceURL: { await probe.refresh() })
 
         let resolved = try await resolver.resolveTarget(
-            "/__openclaw__/canvas/demo%20page.html?mode=proof#result")
+            "/__operator__/canvas/demo%20page.html?mode=proof#result")
         #expect(resolved?.url.absoluteString ==
-            "http://127.0.0.1:18789/__openclaw__/cap/refreshed-token/__openclaw__/canvas/demo%20page.html?mode=proof#result")
+            "http://127.0.0.1:18789/__operator__/cap/refreshed-token/__operator__/canvas/demo%20page.html?mode=proof#result")
         #expect(resolved?.allowsA2UIActions == false)
         #expect(await probe.calls == 1)
 
@@ -284,10 +284,10 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke rejects empty notification`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemNotifyParams(title: "", body: "")
+        let params = OperatorSystemNotifyParams(title: "", body: "")
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-3", command: OpenClawSystemCommand.notify.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-3", command: OperatorSystemCommand.notify.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
@@ -295,7 +295,7 @@ struct MacNodeRuntimeTests {
         await TestIsolation.withUserDefaultsValues([cameraEnabledKey: false]) {
             let runtime = MacNodeRuntime()
             let response = await runtime.handleInvoke(
-                BridgeInvokeRequest(id: "req-4", command: OpenClawCameraCommand.list.rawValue))
+                BridgeInvokeRequest(id: "req-4", command: OperatorCameraCommand.list.rawValue))
             #expect(response.ok == false)
             #expect(response.error?.message.contains("CAMERA_DISABLED") == true)
         }
@@ -308,7 +308,7 @@ struct MacNodeRuntimeTests {
                 screenIndex: Int?,
                 maxWidth: Int?,
                 quality: Double?,
-                format: OpenClawScreenSnapshotFormat?) async throws
+                format: OperatorScreenSnapshotFormat?) async throws
                 -> ScreenSnapshotResult
             {
                 _ = screenIndex
@@ -330,7 +330,7 @@ struct MacNodeRuntimeTests {
                 outPath _: String?) async throws -> (path: String, hasAudio: Bool)
             {
                 let url = FileManager().temporaryDirectory
-                    .appendingPathComponent("openclaw-test-screen-record-\(UUID().uuidString).mp4")
+                    .appendingPathComponent("operator-test-screen-record-\(UUID().uuidString).mp4")
                 try Data("ok".utf8).write(to: url)
                 return (path: url.path, hasAudio: false)
             }
@@ -344,7 +344,7 @@ struct MacNodeRuntimeTests {
             }
 
             func currentLocation(
-                desiredAccuracy _: OpenClawLocationAccuracy,
+                desiredAccuracy _: OperatorLocationAccuracy,
                 maxAgeMs _: Int?,
                 timeoutMs _: Int?) async throws -> CLLocation
             {
@@ -352,12 +352,12 @@ struct MacNodeRuntimeTests {
             }
 
             func performComputerAct(
-                _ params: OpenClawComputerActParams,
-                lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+                _ params: OperatorComputerActParams,
+                lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
             {
                 _ = params
                 _ = lifecycleGeneration
-                return OpenClawComputerActResult(ok: true, cursorX: 0, cursorY: 0)
+                return OperatorComputerActResult(ok: true, cursorX: 0, cursorY: 0)
             }
 
             func releaseHeldInput(lifecycleGeneration: UInt64) async {
@@ -393,7 +393,7 @@ struct MacNodeRuntimeTests {
                 screenIndex: Int?,
                 maxWidth: Int?,
                 quality: Double?,
-                format: OpenClawScreenSnapshotFormat?) async throws
+                format: OperatorScreenSnapshotFormat?) async throws
                 -> ScreenSnapshotResult
             {
                 self.snapshotCalledAtMs = Int64(Date().timeIntervalSince1970 * 1000)
@@ -416,7 +416,7 @@ struct MacNodeRuntimeTests {
                 outPath _: String?) async throws -> (path: String, hasAudio: Bool)
             {
                 let url = FileManager().temporaryDirectory
-                    .appendingPathComponent("openclaw-test-screen-record-\(UUID().uuidString).mp4")
+                    .appendingPathComponent("operator-test-screen-record-\(UUID().uuidString).mp4")
                 try Data("ok".utf8).write(to: url)
                 return (path: url.path, hasAudio: false)
             }
@@ -430,7 +430,7 @@ struct MacNodeRuntimeTests {
             }
 
             func currentLocation(
-                desiredAccuracy: OpenClawLocationAccuracy,
+                desiredAccuracy: OperatorLocationAccuracy,
                 maxAgeMs: Int?,
                 timeoutMs: Int?) async throws -> CLLocation
             {
@@ -441,12 +441,12 @@ struct MacNodeRuntimeTests {
             }
 
             func performComputerAct(
-                _ params: OpenClawComputerActParams,
-                lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+                _ params: OperatorComputerActParams,
+                lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
             {
                 _ = params
                 _ = lifecycleGeneration
-                return OpenClawComputerActResult(ok: true, cursorX: 0, cursorY: 0)
+                return OperatorComputerActResult(ok: true, cursorX: 0, cursorY: 0)
             }
 
             func releaseHeldInput(lifecycleGeneration: UInt64) async {
@@ -525,7 +525,7 @@ struct MacNodeRuntimeTests {
 
     @MainActor
     final class ComputerActProbeServices: MacNodeRuntimeMainActorServices, @unchecked Sendable {
-        var receivedParams: OpenClawComputerActParams?
+        var receivedParams: OperatorComputerActParams?
         var actError: Error?
         var performCallCount = 0
         var releaseCallCount = 0
@@ -549,7 +549,7 @@ struct MacNodeRuntimeTests {
             screenIndex _: Int?,
             maxWidth _: Int?,
             quality _: Double?,
-            format: OpenClawScreenSnapshotFormat?) async throws
+            format: OperatorScreenSnapshotFormat?) async throws
             -> ScreenSnapshotResult
         {
             ScreenSnapshotResult(
@@ -579,7 +579,7 @@ struct MacNodeRuntimeTests {
         }
 
         func currentLocation(
-            desiredAccuracy _: OpenClawLocationAccuracy,
+            desiredAccuracy _: OperatorLocationAccuracy,
             maxAgeMs _: Int?,
             timeoutMs _: Int?) async throws -> CLLocation
         {
@@ -587,8 +587,8 @@ struct MacNodeRuntimeTests {
         }
 
         func performComputerAct(
-            _ params: OpenClawComputerActParams,
-            lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+            _ params: OperatorComputerActParams,
+            lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
         {
             self.performCallCount += 1
             self.receivedParams = params
@@ -604,7 +604,7 @@ struct MacNodeRuntimeTests {
             if let actError {
                 throw actError
             }
-            return OpenClawComputerActResult(ok: true, cursorX: params.x ?? 0, cursorY: params.y ?? 0)
+            return OperatorComputerActResult(ok: true, cursorX: params.x ?? 0, cursorY: params.y ?? 0)
         }
 
         func releaseHeldInput(lifecycleGeneration: UInt64) async {
@@ -621,12 +621,12 @@ struct MacNodeRuntimeTests {
             makeMainActorServices: { services },
             computerControlEnabled: { false })
 
-        let params = OpenClawComputerActParams(action: .leftClick, x: 5, y: 6, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftClick, x: 5, y: 6, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-computer-disabled",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
 
         #expect(response.ok == false)
@@ -642,12 +642,12 @@ struct MacNodeRuntimeTests {
             makeMainActorServices: { services },
             computerControlEnabled: { true })
 
-        let params = OpenClawComputerActParams(action: .leftClick, x: 12, y: 34, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftClick, x: 12, y: 34, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-computer-ok",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
 
         #expect(response.ok == true)
@@ -655,7 +655,7 @@ struct MacNodeRuntimeTests {
         #expect(received?.action == .leftClick)
         #expect(received?.x == 12)
         let payloadJSON = try #require(response.payloadJSON)
-        let result = try JSONDecoder().decode(OpenClawComputerActResult.self, from: Data(payloadJSON.utf8))
+        let result = try JSONDecoder().decode(OperatorComputerActResult.self, from: Data(payloadJSON.utf8))
         #expect(result.ok == true)
         #expect(result.cursorX == 12)
     }
@@ -675,20 +675,20 @@ struct MacNodeRuntimeTests {
                 admissionCalls.increment()
                 return true
             })
-        let params = OpenClawComputerActParams(action: .leftClick, x: 12, y: 34, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftClick, x: 12, y: 34, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
 
         let first = Task {
             await runtime.handleInvoke(BridgeInvokeRequest(
                 id: "req-computer-single-flight-1",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
         }
         #expect(await self.waitForCount(1, counter: factoryCalls))
         let second = Task {
             await runtime.handleInvoke(BridgeInvokeRequest(
                 id: "req-computer-single-flight-2",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
         }
         #expect(await self.waitForCount(2, counter: admissionCalls))
@@ -714,12 +714,12 @@ struct MacNodeRuntimeTests {
                 return services
             },
             computerControlEnabled: { true })
-        let params = OpenClawComputerActParams(action: .leftMouseDown, x: 12, y: 34, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftMouseDown, x: 12, y: 34, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let invoke = Task {
             await runtime.handleInvoke(BridgeInvokeRequest(
                 id: "req-computer-release-during-init",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
         }
         #expect(await self.waitForCount(1, counter: factoryCalls))
@@ -749,12 +749,12 @@ struct MacNodeRuntimeTests {
         let runtime = MacNodeRuntime(
             makeMainActorServices: { services },
             computerControlEnabled: { true })
-        let params = OpenClawComputerActParams(action: .leftMouseDown, x: 12, y: 34, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftMouseDown, x: 12, y: 34, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let invoke = Task {
             await runtime.handleInvoke(BridgeInvokeRequest(
                 id: "req-computer-release-after-admission",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
         }
         await performEntered.wait()
@@ -783,17 +783,17 @@ struct MacNodeRuntimeTests {
             makeMainActorServices: { services },
             computerControlEnabled: { true })
 
-        let params = OpenClawComputerActParams(action: .leftClick, x: 1, y: 1, refWidth: 1280)
+        let params = OperatorComputerActParams(action: .leftClick, x: 1, y: 1, refWidth: 1280)
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-computer-ax",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: json))
 
         #expect(response.ok == false)
         #expect(response.error?.code == .unavailable)
-        #expect(response.error?.message == "ACCESSIBILITY_REQUIRED: grant Accessibility permission to OpenClaw")
+        #expect(response.error?.message == "ACCESSIBILITY_REQUIRED: grant Accessibility permission to Operator")
     }
 
     @Test func `handle invoke rejects malformed computer act params`() async {
@@ -805,7 +805,7 @@ struct MacNodeRuntimeTests {
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-computer-bad",
-                command: OpenClawComputerCommand.act.rawValue,
+                command: OperatorComputerCommand.act.rawValue,
                 paramsJSON: #"{"action":"#))
 
         #expect(response.ok == false)

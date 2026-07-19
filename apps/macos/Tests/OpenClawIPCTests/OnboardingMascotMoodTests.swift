@@ -1,10 +1,10 @@
-import OpenClawChatUI
+import OperatorChatUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @MainActor
 struct OnboardingMascotMoodTests {
-    private func mood(_ snapshot: OnboardingView.MascotMoodSnapshot) -> OpenClawMascotMood {
+    private func mood(_ snapshot: OnboardingView.MascotMoodSnapshot) -> OperatorMascotMood {
         OnboardingView.mascotMood(for: snapshot)
     }
 

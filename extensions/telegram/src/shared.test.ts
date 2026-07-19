@@ -1,5 +1,5 @@
 // Telegram tests cover shared plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import type { ResolvedTelegramAccount } from "./accounts.js";
 import { createTelegramPluginBase, telegramConfigAdapter } from "./shared.js";
@@ -174,7 +174,7 @@ describe("createTelegramPluginBase config duplicate token guard", () => {
         providers: {
           telegram_token: {
             source: "file",
-            path: "/tmp/openclaw-missing-telegram-token",
+            path: "/tmp/operator-missing-telegram-token",
             mode: "singleValue",
           },
         },

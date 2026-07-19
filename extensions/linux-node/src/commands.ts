@@ -3,9 +3,12 @@ import path from "node:path";
 import type {
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeHostCommandAvailabilityContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { runCommandWithTimeout } from "openclaw/plugin-sdk/process-runtime";
-import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { runCommandWithTimeout } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import {
+  resolvePreferredOperatorTmpDir,
+  withTempWorkspace,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   assertToolResult,
   clamp,
@@ -139,7 +142,7 @@ async function defaultWithTempFile<T>(
   run: (filePath: string) => Promise<T>,
 ): Promise<T> {
   return await withTempWorkspace(
-    { rootDir: resolvePreferredOperatorTmpDir(), prefix: "openclaw-linux-node-" },
+    { rootDir: resolvePreferredOperatorTmpDir(), prefix: "operator-linux-node-" },
     async ({ dir }) => await run(path.join(dir, `capture${suffix}`)),
   );
 }

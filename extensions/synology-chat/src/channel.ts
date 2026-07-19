@@ -4,34 +4,37 @@
  * Implements the ChannelPlugin interface following the LINE pattern.
  */
 
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/account-resolution";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import type { ChannelOutboundAdapter } from "openclaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin, type ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { waitUntilAbort } from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import type { ChannelOutboundAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import {
+  createChatChannelPlugin,
+  type ChannelPlugin,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { waitUntilAbort } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type MessageReceipt,
   type MessageReceiptPartKind,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   composeWarningCollectors,
   createConditionalWarningCollector,
   projectAccountConfigWarningCollector,
   projectAccountWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
-import { createEmptyChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { createEmptyChannelDirectoryAdapter } from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeStringEntriesLower,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { synologyChatApprovalAuth } from "./approval-auth.js";
 import { sendMessage, sendFileUrl } from "./client.js";

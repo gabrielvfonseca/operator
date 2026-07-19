@@ -6,9 +6,9 @@ import {
   resolveAuthStorePathForDisplay,
   saveAuthProfileStore,
   type AuthProfileStore,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { MigrationProviderContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   HERMES_REASON_AUTH_PROFILE_EXISTS,

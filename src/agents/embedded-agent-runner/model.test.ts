@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { withEnvAsync } from "../../test-utils/env.js";
 import { discoverAuthStorage, discoverModels } from "../agent-model-discovery.js";
@@ -24,7 +24,7 @@ const resolveRuntimeExternalAuthProviderRefsMock = vi.hoisted(() => vi.fn((): st
 
 vi.mock("../model-suppression.js", () => {
   // Mirrors the canonical manifest-driven suppression in
-  // extensions/qwen/openclaw.plugin.json and src/plugins/manifest-model-suppression.ts.
+  // extensions/qwen/operator.plugin.json and src/plugins/manifest-model-suppression.ts.
   function isQwenCodingPlanBaseUrl(value: string | undefined): boolean {
     const trimmed = value?.trim();
     if (!trimmed) {
@@ -123,7 +123,7 @@ vi.mock("../model-suppression.js", () => {
         return `Unknown model: ${provider}/gpt-5.3-codex-spark. gpt-5.3-codex-spark is available only through ChatGPT/Codex OAuth. Run \`openclaw models auth login --provider openai\` and use openai/gpt-5.3-codex-spark with that OAuth profile; OpenAI API-key auth cannot use this model.`;
       }
       if (isUnsupportedXaiMultiAgentModel(provider, id)) {
-        return "Unknown model: xai/grok-4.20-multi-agent-0309. Operator does not currently support xAI multi-agent models; choose another xAI model. See https://docs.openclaw.ai/providers/xai.";
+        return "Unknown model: xai/grok-4.20-multi-agent-0309. Operator does not currently support xAI multi-agent models; choose another xAI model. See https://docs.operator.ai/providers/xai.";
       }
       return undefined;
     },
@@ -354,7 +354,7 @@ describe("resolveModel", () => {
   });
 
   it("invalidates agent discovery stores when generated plugin catalogs change", async () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-cache-plugin-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-cache-plugin-"));
     const agentDir = path.join(rootDir, "agent");
     fs.mkdirSync(agentDir, { recursive: true });
     mockDiscoveredModel(discoverModels, {
@@ -388,7 +388,7 @@ describe("resolveModel", () => {
   });
 
   it("invalidates agent discovery stores when inherited default auth changes", async () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-cache-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-cache-"));
     const agentDir = path.join(rootDir, "agent");
     const defaultAgentDir = path.join(rootDir, "default-agent");
     fs.mkdirSync(agentDir, { recursive: true });
@@ -432,7 +432,7 @@ describe("resolveModel", () => {
   });
 
   it("uses the resolved default agent workspace for cached model discovery", () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-workspace-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-workspace-"));
     const agentDir = path.join(rootDir, "agent");
     const workspaceDir = path.join(rootDir, "workspace");
     fs.mkdirSync(agentDir, { recursive: true });
@@ -507,7 +507,7 @@ describe("resolveModel", () => {
   );
 
   it("invalidates agent discovery stores when implicit main auth changes without config", async () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-cache-state-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-cache-state-"));
     const agentDir = path.join(rootDir, "agents", "worker", "agent");
     const mainAgentDir = path.join(rootDir, "agents", "main", "agent");
     fs.mkdirSync(agentDir, { recursive: true });
@@ -826,7 +826,7 @@ describe("resolveModel", () => {
     );
   });
 
-  it("prefers user openclaw.json config over the Fireworks manifest for the same id", () => {
+  it("prefers user operator.json config over the Fireworks manifest for the same id", () => {
     resolveBundledStaticCatalogModelMock.mockReturnValue({
       ...makeModel("accounts/fireworks/models/kimi-k2p6"),
       provider: "fireworks",
@@ -2991,7 +2991,7 @@ describe("resolveModel", () => {
     });
 
     expect(result.error).toBe(
-      'Unknown model: microsoft-foundry/Kimi-K2.6-1. Found agents.defaults.models["microsoft-foundry/Kimi-K2.6-1"], but no matching models.providers["microsoft-foundry"].models[] entry. Add { "id": "Kimi-K2.6-1", "name": "Kimi-K2.6-1" } to models.providers["microsoft-foundry"].models[] to register this provider model. For custom or proxy providers, also set api and baseUrl so requests route to the intended endpoint. See https://docs.openclaw.ai/concepts/model-providers.',
+      'Unknown model: microsoft-foundry/Kimi-K2.6-1. Found agents.defaults.models["microsoft-foundry/Kimi-K2.6-1"], but no matching models.providers["microsoft-foundry"].models[] entry. Add { "id": "Kimi-K2.6-1", "name": "Kimi-K2.6-1" } to models.providers["microsoft-foundry"].models[] to register this provider model. For custom or proxy providers, also set api and baseUrl so requests route to the intended endpoint. See https://docs.operator.ai/concepts/model-providers.',
     );
   });
 
@@ -3033,7 +3033,7 @@ describe("resolveModel", () => {
     );
 
     expect(result.error).toBe(
-      'Unknown model: openai-codex/gpt-5.4. "openai-codex" is a legacy provider ID. Run `openclaw doctor --fix` to migrate legacy model and provider config to the current OpenAI format. If the provider has no authenticated profile, run `openclaw models status` to check provider auth and re-authenticate if needed. See https://docs.openclaw.ai/concepts/model-providers.',
+      'Unknown model: openai-codex/gpt-5.4. "openai-codex" is a legacy provider ID. Run `openclaw doctor --fix` to migrate legacy model and provider config to the current OpenAI format. If the provider has no authenticated profile, run `openclaw models status` to check provider auth and re-authenticate if needed. See https://docs.operator.ai/concepts/model-providers.',
     );
   });
 
@@ -3054,7 +3054,7 @@ describe("resolveModel", () => {
     });
 
     expect(result.error).toBe(
-      'Unknown model: custom-provider/some-model. Found agents.defaults.models["custom-provider/some-model"], but no matching models.providers["custom-provider"].models[] entry. Add { "id": "some-model", "name": "some-model" } to models.providers["custom-provider"].models[] to register this provider model. For custom or proxy providers, also set api and baseUrl so requests route to the intended endpoint. See https://docs.openclaw.ai/concepts/model-providers.',
+      'Unknown model: custom-provider/some-model. Found agents.defaults.models["custom-provider/some-model"], but no matching models.providers["custom-provider"].models[] entry. Add { "id": "some-model", "name": "some-model" } to models.providers["custom-provider"].models[] to register this provider model. For custom or proxy providers, also set api and baseUrl so requests route to the intended endpoint. See https://docs.operator.ai/concepts/model-providers.',
     );
   });
 
@@ -3077,7 +3077,7 @@ describe("resolveModel", () => {
     });
 
     expect(result.error).toBe(
-      'Unknown model: openai/gpt-5.3-codex. Found agents.defaults.models["openai/gpt-5.3-codex"] bound to the "codex" agent runtime. Models served by an agent runtime come from that runtime and its linked account, not from models.providers["openai"].models[] — registering it there will not make it usable. Confirm "gpt-5.3-codex" is still offered by the "codex" runtime and switch agents.defaults.model.primary to a currently available model (run `openclaw models list --provider openai` to list them). See https://docs.openclaw.ai/concepts/model-providers.',
+      'Unknown model: openai/gpt-5.3-codex. Found agents.defaults.models["openai/gpt-5.3-codex"] bound to the "codex" agent runtime. Models served by an agent runtime come from that runtime and its linked account, not from models.providers["openai"].models[] — registering it there will not make it usable. Confirm "gpt-5.3-codex" is still offered by the "codex" runtime and switch agents.defaults.model.primary to a currently available model (run `openclaw models list --provider openai` to list them). See https://docs.operator.ai/concepts/model-providers.',
     );
   });
 
@@ -3761,7 +3761,7 @@ describe("resolveModel", () => {
 
     expect(result.model).toBeUndefined();
     expect(result.error).toBe(
-      "Unknown model: xai/grok-4.20-multi-agent-0309. Operator does not currently support xAI multi-agent models; choose another xAI model. See https://docs.openclaw.ai/providers/xai.",
+      "Unknown model: xai/grok-4.20-multi-agent-0309. Operator does not currently support xAI multi-agent models; choose another xAI model. See https://docs.operator.ai/providers/xai.",
     );
   });
 

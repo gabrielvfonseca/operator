@@ -14,7 +14,7 @@ afterEach(async () => {
 
 describe("scaffoldWorkspaceWidget", () => {
   it("escapes apostrophes in generated HTML text nodes", async () => {
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-scaffold-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-scaffold-"));
     stateDirs.push(stateDir);
 
     const result = await scaffoldWorkspaceWidget({

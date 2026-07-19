@@ -4,7 +4,7 @@ import path from "node:path";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { tryReadJson } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { parseStrictPositiveInteger } from "../infra/parse-finite-number.js";
 import {
   runInstallPolicy,
@@ -183,11 +183,13 @@ function pathContainsNodeModulesSegment(relativePath: string): boolean {
 
 function isPackageRootOperatorPeerSymlink(segments: string[]): boolean {
   return (
-    (segments.length === 2 && segments[0] === "node_modules" && segments[1] === "operator") ||
+    (segments.length === 2 &&
+      segments[0] === "node_modules" &&
+      segments[1] === "@gabrielvfonseca/operator") ||
     (segments.length === 3 &&
       segments[0] === "node_modules" &&
       segments[1] === ".bin" &&
-      segments[2] === "operator")
+      segments[2] === "@gabrielvfonseca/operator")
   );
 }
 
@@ -354,7 +356,10 @@ function collectManifestRuntimeDependencyNames(manifest: PackageManifest): strin
     }
   }
   for (const dependencyName of Object.keys(manifest.peerDependencies ?? {})) {
-    if (dependencyName !== "operator" && isInstallScannableDependencyName(dependencyName)) {
+    if (
+      dependencyName !== "@gabrielvfonseca/operator" &&
+      isInstallScannableDependencyName(dependencyName)
+    ) {
       dependencyNames.add(dependencyName);
     }
   }
@@ -792,7 +797,12 @@ function resolvePolicySource(params: {
   if (params.requestKind === "skill-install") {
     switch (params.origin?.type) {
       case "clawhub":
-        return { kind: "clawhub", authority: "operator", mutable: false, network: true };
+        return {
+          kind: "clawhub",
+          authority: "@gabrielvfonseca/operator",
+          mutable: false,
+          network: true,
+        };
       case "git":
         return {
           kind: "git",
@@ -805,10 +815,20 @@ function resolvePolicySource(params: {
       case "upload":
         return { kind: "upload", authority: "user", mutable: false, network: false };
       case "operator-bundled":
-        return { kind: "bundled", authority: "operator", mutable: false, network: false };
+        return {
+          kind: "bundled",
+          authority: "@gabrielvfonseca/operator",
+          mutable: false,
+          network: false,
+        };
       case "operator-managed":
       case "operator-extra":
-        return { kind: "managed", authority: "operator", mutable: false, network: false };
+        return {
+          kind: "managed",
+          authority: "@gabrielvfonseca/operator",
+          mutable: false,
+          network: false,
+        };
       default:
         return { kind: "workspace", authority: "user", mutable: true, network: false };
     }
@@ -844,7 +864,8 @@ function shouldBypassOperatorInstallFriction(params: {
     return source.kind === "clawhub" || source.kind === "git" || source.kind === "npm";
   }
   return (
-    source.authority === "operator" && (source.kind === "bundled" || source.kind === "managed")
+    source.authority === "@gabrielvfonseca/operator" &&
+    (source.kind === "bundled" || source.kind === "managed")
   );
 }
 

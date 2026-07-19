@@ -1,8 +1,8 @@
 // Qa Lab plugin module implements slack desktop smoke behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { pathExists } from "openclaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { pathExists } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 import {
   acquireQaCredentialLease,
@@ -634,7 +634,7 @@ slack_url="$slack_url_override"
 if [ -z "$slack_url" ] && [ -n "$team_id" ] && [ -n "\${OPERATOR_QA_SLACK_CHANNEL_ID:-}" ]; then
   slack_url="https://app.slack.com/client/$team_id/$OPERATOR_QA_SLACK_CHANNEL_ID"
 fi
-profile="\${OPERATOR_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/openclaw-mantis/slack-chrome-profile}"
+profile="\${OPERATOR_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/operator-mantis/slack-chrome-profile}"
 mkdir -p "$profile"
 if [ "$setup_gateway" = "1" ]; then
   export SLACK_BOT_TOKEN="\${OPERATOR_MANTIS_SLACK_BOT_TOKEN:-\${SLACK_BOT_TOKEN:-}}"
@@ -721,7 +721,7 @@ run_mantis_remote_body() {
         exit 3
         ;;
     esac
-    node_root="$HOME/.cache/openclaw-mantis/node-v$node_version-linux-$node_arch"
+    node_root="$HOME/.cache/operator-mantis/node-v$node_version-linux-$node_arch"
     if [ ! -x "$node_root/bin/node" ]; then
       node_tmp="$(mktemp -d)"
       node_archive="node-v$node_version-linux-$node_arch.tar.xz"
@@ -809,7 +809,7 @@ console.log(match[1] + " " + match[2]);
     exit 3
   fi
   if [ "$setup_gateway" = "1" ]; then
-    export OPERATOR_HOME="$HOME/.openclaw-mantis/slack-openclaw"
+    export OPERATOR_HOME="$HOME/.operator-mantis/slack-openclaw"
     mkdir -p "$OPERATOR_HOME"
     cat >"$out/slack.socket.patch.json5" <<MANTIS_SLACK_PATCH
 {
@@ -840,9 +840,9 @@ console.log(match[1] + " " + match[2]);
 MANTIS_SLACK_PATCH
     pnpm openclaw config patch --file "$out/slack.socket.patch.json5" --dry-run
     pnpm openclaw config patch --file "$out/slack.socket.patch.json5"
-    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/openclaw-gateway.log" 2>&1 &
+    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &
     gateway_pid="$!"
-    echo "$gateway_pid" >"$out/openclaw-gateway.pid"
+    echo "$gateway_pid" >"$out/operator-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then
       echo "Operator gateway exited during startup." >&2
@@ -1146,8 +1146,8 @@ cat >"$out/remote-metadata.json" <<MANTIS_REMOTE_METADATA
   "openedUrl": "$slack_url",
   "gatewaySetup": $setup_gateway,
   "approvalCheckpoints": $approval_checkpoints,
-  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/openclaw-gateway.pid" ] && kill -0 "$(cat "$out/openclaw-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
-  "gatewayPid": "$(if [ -f "$out/openclaw-gateway.pid" ]; then cat "$out/openclaw-gateway.pid"; fi)",
+  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/operator-gateway.pid" ] && kill -0 "$(cat "$out/operator-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
+  "gatewayPid": "$(if [ -f "$out/operator-gateway.pid" ]; then cat "$out/operator-gateway.pid"; fi)",
   "gatewayPort": 38973,
   "qaExitCode": $qa_status,
   "credentialSource": "$credential_source",
@@ -1338,7 +1338,7 @@ export async function runMantisSlackDesktopSmoke(
   const explicitLeaseId = trimToValue(opts.leaseId) ?? trimToValue(env[CRABBOX_LEASE_ID_ENV]);
   const keepLease = opts.keepLease ?? (gatewaySetup || isTruthyOptIn(env[CRABBOX_KEEP_ENV]));
   const createdLease = explicitLeaseId === undefined;
-  const remoteOutputDir = `/tmp/openclaw-mantis-slack-desktop-${startedAt
+  const remoteOutputDir = `/tmp/operator-mantis-slack-desktop-${startedAt
     .toISOString()
     .replace(/[^0-9A-Za-z]/gu, "-")}`;
   let credentialLease: SlackGatewayCredentialLease | undefined;

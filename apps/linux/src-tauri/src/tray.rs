@@ -56,7 +56,7 @@ pub fn build(app: &App, state: DesktopState) -> tauri::Result<TrayHandles> {
     let start = MenuItem::with_id(app, START_ID, "Start Gateway", false, None::<&str>)?;
     let stop = MenuItem::with_id(app, STOP_ID, "Stop Gateway", false, None::<&str>)?;
     let restart = MenuItem::with_id(app, RESTART_ID, "Restart Gateway", false, None::<&str>)?;
-    let quit = MenuItem::with_id(app, QUIT_ID, "Quit OpenClaw", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, QUIT_ID, "Quit Operator", true, None::<&str>)?;
     let separator_one = PredefinedMenuItem::separator(app)?;
     let separator_two = PredefinedMenuItem::separator(app)?;
     let separator_three = PredefinedMenuItem::separator(app)?;
@@ -78,7 +78,7 @@ pub fn build(app: &App, state: DesktopState) -> tauri::Result<TrayHandles> {
 
     let tray_icon = tauri::image::Image::from_bytes(include_bytes!("../icons/32x32.png"))?;
     let menu_state = state.clone();
-    let tray_builder = TrayIconBuilder::with_id("openclaw-main")
+    let tray_builder = TrayIconBuilder::with_id("operator-main")
         .icon(tray_icon)
         .menu(&menu)
         .show_menu_on_left_click(false)

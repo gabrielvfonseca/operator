@@ -1,5 +1,5 @@
 // Node-host daemon lifecycle commands for install, status, start, stop, and restart.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { colorize } from "../../../packages/terminal-core/src/theme.js";
 import {
   DEFAULT_GATEWAY_DAEMON_RUNTIME,
@@ -61,8 +61,8 @@ type NodeDaemonStatusOptions = {
 
 function renderNodeServiceStartHints(): string[] {
   return buildPlatformServiceStartHints({
-    installCommand: formatCliCommand("operator node install"),
-    startCommand: formatCliCommand("operator node start"),
+    installCommand: formatCliCommand("openclaw node install"),
+    startCommand: formatCliCommand("openclaw node start"),
     launchAgentPlistPath: `~/Library/LaunchAgents/${resolveNodeLaunchAgentLabel()}.plist`,
     systemdServiceName: resolveNodeSystemdServiceName(),
     windowsTaskName: resolveNodeWindowsTaskName(),
@@ -142,7 +142,7 @@ export async function runNodeDaemonInstall(opts: NodeDaemonInstallOptions) {
     });
     if (!json) {
       defaultRuntime.log(`Node service already ${service.loadedText}.`);
-      defaultRuntime.log(`Reinstall with: ${formatCliCommand("operator node install --force")}`);
+      defaultRuntime.log(`Reinstall with: ${formatCliCommand("openclaw node install --force")}`);
     }
     return;
   }

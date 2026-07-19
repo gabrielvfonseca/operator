@@ -2,14 +2,14 @@
 import type {
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
 import {
   buildLiveModelProviderConfig,
   getCachedLiveProviderModelRows,
   type LiveModelCatalogFetchGuard,
-} from "openclaw/plugin-sdk/provider-catalog-live-runtime";
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import {
   DEFAULT_CONTEXT_TOKENS,
   normalizeModelCompat,
@@ -17,11 +17,11 @@ import {
   type ModelDefinitionConfig,
   type ModelProviderConfig,
   type ProviderPlugin,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { OPENAI_ACCOUNT_WIZARD_GROUP, OPENAI_API_KEY_LABEL } from "./auth-choice-copy.js";
 import {
   OPENAI_CODEX_RESPONSES_BASE_URL,

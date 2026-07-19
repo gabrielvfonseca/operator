@@ -51,8 +51,8 @@ describe("exportTrajectoryCommand", () => {
     mocks.resolveStorePath.mockReturnValue("/tmp/openclaw/sessions.json");
     mocks.loadSessionEntry.mockReturnValue(undefined);
     mocks.exportTrajectoryForCommand.mockResolvedValue({
-      outputDir: "/tmp/workspace/.openclaw/trajectory-exports/export",
-      displayPath: ".openclaw/trajectory-exports/export",
+      outputDir: "/tmp/workspace/.operator/trajectory-exports/export",
+      displayPath: ".operator/trajectory-exports/export",
       sessionId: "session-1",
       eventCount: 2,
       runtimeEventCount: 0,
@@ -68,7 +68,7 @@ describe("exportTrajectoryCommand", () => {
     await exportTrajectoryCommand({}, runtime);
 
     expect(runtime.error).toHaveBeenCalledWith(
-      "--session-key is required. Run openclaw sessions to choose a session.",
+      "--session-key is ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
   });

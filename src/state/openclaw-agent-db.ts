@@ -43,25 +43,25 @@ import { normalizeAgentId } from "../routing/session-key.js";
 import {
   migrateSessionEntryStatusProjection,
   readSqliteTableColumns,
-} from "./operator-agent-db-session-migrations.js";
+} from "./openclaw-agent-db-session-migrations.js";
 import {
   addSessionProvenanceColumns,
   backfillSessionEntryProvenance,
   backfillTranscriptMutationWatermarks,
-} from "./operator-agent-db-session-provenance.js";
-import type { DB as OperatorAgentKyselyDatabase } from "./operator-agent-db.generated.js";
-import { resolveOperatorAgentSqlitePath } from "./operator-agent-db.paths.js";
-import { OPERATOR_AGENT_SCHEMA_SQL } from "./operator-agent-schema.generated.js";
-import type { DB as OperatorStateKyselyDatabase } from "./operator-state-db.generated.js";
+} from "./openclaw-agent-db-session-provenance.js";
+import type { DB as OperatorAgentKyselyDatabase } from "./openclaw-agent-db.generated.js";
+import { resolveOperatorAgentSqlitePath } from "./openclaw-agent-db.paths.js";
+import { OPERATOR_AGENT_SCHEMA_SQL } from "./openclaw-agent-schema.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "./openclaw-state-db.generated.js";
 import {
   detectOperatorStateDatabaseSchemaMigrations,
   OPERATOR_STATE_SCHEMA_VERSION,
   OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabaseOptions,
-} from "./operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "./operator-state-db.paths.js";
-export { resolveOperatorAgentSqlitePath } from "./operator-agent-db.paths.js";
+} from "./openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "./openclaw-state-db.paths.js";
+export { resolveOperatorAgentSqlitePath } from "./openclaw-agent-db.paths.js";
 
 /**
  * Per-agent SQLite database lifecycle and shared-state registration.
@@ -616,12 +616,12 @@ export function assertOperatorAgentDatabaseForMaintenance(
   }
   if (userVersion !== OPERATOR_AGENT_SCHEMA_VERSION) {
     throw new Error(
-      `Operator agent database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
+      `Operator agent database ${options.pathname} uses schema version ${userVersion}; run openclaw doctor --fix before compacting it.`,
     );
   }
   if (metadata.schemaVersion !== OPERATOR_AGENT_SCHEMA_VERSION) {
     throw new Error(
-      `Operator agent database ${options.pathname} metadata schema version ${metadata.schemaVersion ?? "invalid"} does not match ${OPERATOR_AGENT_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
+      `Operator agent database ${options.pathname} metadata schema version ${metadata.schemaVersion ?? "invalid"} does not match ${OPERATOR_AGENT_SCHEMA_VERSION}; run openclaw doctor --fix before compacting it.`,
     );
   }
   assertSqliteSchemaContains(
@@ -866,7 +866,7 @@ export function listOperatorRegisteredAgentDatabases(
   }
   if (detectOperatorStateDatabaseSchemaMigrations(options).length > 0) {
     throw new Error(
-      `Operator state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy agent database registry schema; run openclaw doctor --fix to migrate it.`,
     );
   }
 

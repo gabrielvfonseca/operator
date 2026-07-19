@@ -52,7 +52,7 @@ When `hooks.enabled=true`, the Gateway also exposes a webhook endpoint on the sa
     Start the gateway:
 
     ```bash
-    openclaw gateway
+    operator gateway
     ```
 
     Open `https://<magicdns>/` (or your configured `gateway.controlUi.basePath`).
@@ -72,7 +72,7 @@ When `hooks.enabled=true`, the Gateway also exposes a webhook endpoint on the sa
     Start the gateway (this non-loopback example uses shared-secret token auth):
 
     ```bash
-    openclaw gateway
+    operator gateway
     ```
 
     Open `http://<tailscale-ip>:18789/` (or your configured `gateway.controlUi.basePath`).
@@ -84,7 +84,7 @@ When `hooks.enabled=true`, the Gateway also exposes a webhook endpoint on the sa
       gateway: {
         bind: "loopback",
         tailscale: { mode: "funnel" },
-        auth: { mode: "password" }, // or OPENCLAW_GATEWAY_PASSWORD
+        auth: { mode: "password" }, // or OPERATOR_GATEWAY_PASSWORD
       },
     }
     ```

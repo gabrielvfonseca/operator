@@ -1,7 +1,11 @@
 // Ollama tests cover setup plugin behavior.
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import type { WizardPrompter } from "openclaw/plugin-sdk/setup";
-import { jsonResponse, requestBodyText, requestUrl } from "openclaw/plugin-sdk/test-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { WizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import {
+  jsonResponse,
+  requestBodyText,
+  requestUrl,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   checkOllamaCloudAuth,

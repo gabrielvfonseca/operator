@@ -1,8 +1,8 @@
-import { getApiProvider } from "@operator/ai/internal/runtime";
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
+import { getApiProvider } from "@gabrielvfonseca/ai/internal/runtime";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
 // Stream resolution tests cover how embedded runs choose provider, boundary,
 // native Codex, or custom stream functions and pass auth/cache/signal options.
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { streamSimple } from "../../llm/stream.js";
 import { mintSecretSentinel } from "../../secrets/sentinel.js";
@@ -112,7 +112,7 @@ describe("describeEmbeddedAgentStreamStrategy", () => {
           id: "codex-mini-latest",
         } as never,
       }),
-    ).toBe("openclaw-native-codex-responses");
+    ).toBe("operator-native-codex-responses");
   });
 
   it("keeps custom session streams labeled as custom", () => {

@@ -1,3 +1,4 @@
+import type { MarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { Bot } from "grammy";
 import type {
   ForceReply,
@@ -7,7 +8,6 @@ import type {
   ReplyKeyboardRemove,
   ReplyParameters,
 } from "grammy/types";
-import type { MarkdownTableMode } from "openclaw/plugin-sdk/config-contracts";
 // Telegram rich message helpers isolate Bot API 10.2 calls until grammY types catch up.
 import {
   inputRichBlocksToPlainText,

@@ -12,14 +12,14 @@ import {
 function createOverview(defaultModel?: string): SystemAgentOverview {
   return {
     config: {
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       exists: true,
       valid: true,
       issues: [],
       hash: null,
     },
     references: {
-      docsUrl: "https://docs.openclaw.ai",
+      docsUrl: "https://docs.operator.ai",
       sourceUrl: "https://github.com/openclaw/openclaw",
     },
     agents: [{ id: "main", isDefault: true, ...(defaultModel ? { model: defaultModel } : {}) }],
@@ -52,7 +52,7 @@ describe("loadSystemAgentOverview", () => {
       gateway: { port: 19001 },
     };
     const snapshot: ConfigFileSnapshot = {
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       exists: true,
       raw: "{}",
       parsed: runtimeConfig,
@@ -70,7 +70,7 @@ describe("loadSystemAgentOverview", () => {
       env: { OPERATOR_TEST_FAST: "1" },
       deps: {
         readConfigFileSnapshot: async () => snapshot,
-        resolveConfigPath: () => "/tmp/openclaw.json",
+        resolveConfigPath: () => "/tmp/operator.json",
         resolveGatewayPort: (cfg) => cfg?.gateway?.port ?? 8765,
         buildGatewayConnectionDetails: (input) => ({
           url: `ws://127.0.0.1:${input.config.gateway?.port ?? 8765}`,

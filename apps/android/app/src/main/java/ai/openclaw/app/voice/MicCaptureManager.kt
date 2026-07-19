@@ -1,9 +1,9 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.ChatSendAck
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.gateway.ChatSendAck
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context

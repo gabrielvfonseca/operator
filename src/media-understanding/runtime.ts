@@ -1,8 +1,8 @@
 // Public file-oriented media-understanding runtime for image, audio, video, and
 // structured extraction calls outside normal channel message handling.
 import path from "node:path";
-import { detectMime, kindFromMime, mimeTypeFromFilePath } from "@operator/media-core/mime";
-import { hasHttpUrlPrefix } from "@operator/net-policy/url-protocol";
+import { detectMime, kindFromMime, mimeTypeFromFilePath } from "@gabrielvfonseca/media-core/mime";
+import { hasHttpUrlPrefix } from "@gabrielvfonseca/net-policy/url-protocol";
 import type { OperatorConfig } from "../config/types.js";
 import { readLocalFileSafely } from "../infra/fs-safe.js";
 import { DEFAULT_MAX_BYTES } from "./defaults.constants.js";

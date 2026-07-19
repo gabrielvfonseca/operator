@@ -7,7 +7,7 @@ import { readStateDirDotEnvFromStateDir } from "./state-dir-dotenv.js";
 
 describe("readStateDirDotEnvFromStateDir", () => {
   async function withDotEnv<T>(content: string, run: (dir: string) => T | Promise<T>): Promise<T> {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-dotenv-test-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-dotenv-test-"));
     await fs.writeFile(path.join(dir, ".env"), content, "utf8");
     try {
       return await run(dir);
@@ -84,7 +84,7 @@ describe("readStateDirDotEnvFromStateDir", () => {
   });
 
   it("returns empty object when .env is missing", async () => {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-dotenv-missing-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-dotenv-missing-"));
     try {
       expect(readStateDirDotEnvFromStateDir(dir).entries).toEqual({});
     } finally {

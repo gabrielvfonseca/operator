@@ -1,14 +1,14 @@
 // Deepinfra provider module implements model/runtime integration.
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   getCachedLiveProviderModelRows,
   LiveModelCatalogHttpError,
-} from "openclaw/plugin-sdk/provider-catalog-live-runtime";
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input";
-import { asPositiveSafeInteger } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { hasConfiguredSecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { asPositiveSafeInteger } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import manifest from "./operator.plugin.json" with { type: "json" };
 
 const log = createSubsystemLogger("deepinfra-models");

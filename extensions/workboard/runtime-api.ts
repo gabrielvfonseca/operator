@@ -7,4 +7,4 @@ export type {
   WorkboardListResult,
   WorkboardPriority,
   WorkboardStatus,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";

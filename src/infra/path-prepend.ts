@@ -3,7 +3,7 @@ import path from "node:path";
 import {
   normalizeStringEntries,
   normalizeUniqueStringEntries,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 
 /**
  * Find the actual key used for PATH in the env object.

@@ -14,7 +14,7 @@ import { acquireGatewayLock, GatewayLockError, readActiveGatewayLockPort } from 
 type GatewayLock = NonNullable<Awaited<ReturnType<typeof acquireGatewayLock>>>;
 type GatewayLockOptions = NonNullable<Parameters<typeof acquireGatewayLock>[0]>;
 
-const fixtureRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-gateway-lock-" });
+const fixtureRootTracker = createSuiteTempRootTracker({ prefix: "operator-gateway-lock-" });
 let fixtureRoot = "";
 const realNow = Date.now.bind(Date);
 
@@ -24,7 +24,7 @@ function resolveTestLockDir() {
 
 async function makeEnv() {
   const dir = await fixtureRootTracker.make("case");
-  const configPath = path.join(dir, "openclaw.json");
+  const configPath = path.join(dir, "operator.json");
   await fs.writeFile(configPath, "{}", "utf8");
   return {
     ...process.env,
@@ -177,7 +177,7 @@ describe("gateway lock", () => {
 
     const pending = acquireForTest(env, {
       timeoutMs: 15,
-      readProcessCmdline: () => ["openclaw", "gateway", "run"],
+      readProcessCmdline: () => ["@gabrielvfonseca/operator", "gateway", "run"],
     });
     await expect(pending).rejects.toBeInstanceOf(GatewayLockError);
 
@@ -212,7 +212,7 @@ describe("gateway lock", () => {
       await expect(
         acquireForTest(envB, {
           platform: "darwin",
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
           timeoutMs: 15,
         }),
       ).rejects.toBeInstanceOf(GatewayLockError);
@@ -248,7 +248,7 @@ describe("gateway lock", () => {
         await expect(
           acquireForTest(envB, {
             platform: "darwin",
-            readProcessCmdline: () => ["openclaw-gateway"],
+            readProcessCmdline: () => ["operator-gateway"],
             timeoutMs: 15,
           }),
         ).rejects.toBeInstanceOf(GatewayLockError);
@@ -264,7 +264,7 @@ describe("gateway lock", () => {
       await acquireForTest(env, {
         platform: "darwin",
         port: 48789,
-        readProcessCmdline: () => ["openclaw-gateway"],
+        readProcessCmdline: () => ["operator-gateway"],
       }),
     );
 
@@ -274,7 +274,7 @@ describe("gateway lock", () => {
           env,
           lockDir: resolveTestLockDir(),
           platform: "darwin",
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
         }),
       ).resolves.toBe(48789);
     } finally {
@@ -292,7 +292,7 @@ describe("gateway lock", () => {
       await acquireForTest(env, {
         platform: "darwin",
         port: 48789,
-        readProcessCmdline: () => ["openclaw-gateway"],
+        readProcessCmdline: () => ["operator-gateway"],
       }),
     );
 
@@ -304,7 +304,7 @@ describe("gateway lock", () => {
           env,
           lockDir: resolveTestLockDir(),
           platform: "darwin",
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
         }),
       ).resolves.toBe(48789);
     } finally {
@@ -321,7 +321,7 @@ describe("gateway lock", () => {
       await acquireForTest(envA, {
         platform: "darwin",
         port: 48789,
-        readProcessCmdline: () => ["openclaw-gateway"],
+        readProcessCmdline: () => ["operator-gateway"],
       }),
     );
 
@@ -333,7 +333,7 @@ describe("gateway lock", () => {
           env: envB,
           lockDir: resolveTestLockDir(),
           platform: "darwin",
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
         }),
       ).resolves.toBe(48789);
     } finally {
@@ -352,7 +352,7 @@ describe("gateway lock", () => {
           platform: "darwin",
           port: 48789,
           timeoutMs: 15,
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
         }),
       ).rejects.toBeInstanceOf(GatewayLockError);
       expect(connectSpy).not.toHaveBeenCalled();
@@ -377,7 +377,7 @@ describe("gateway lock", () => {
           platform: "darwin",
           port: 28789,
           timeoutMs: 15,
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
         }),
       ).rejects.toBeInstanceOf(GatewayLockError);
       expect(connectSpy).not.toHaveBeenCalled();
@@ -403,7 +403,12 @@ describe("gateway lock", () => {
           platform: "darwin",
           port: 18789,
           timeoutMs: 15,
-          readProcessCmdline: () => ["openclaw", "doctor", "--state-sqlite", "compact"],
+          readProcessCmdline: () => [
+            "@gabrielvfonseca/operator",
+            "doctor",
+            "--state-sqlite",
+            "compact",
+          ],
         }),
       ).rejects.toBeInstanceOf(GatewayLockError);
       expect(connectSpy).not.toHaveBeenCalled();
@@ -536,7 +541,7 @@ describe("gateway lock", () => {
           platform: "linux",
           readProcessCmdline: () => [
             "node",
-            "/srv/openclaw/openclaw.mjs",
+            "/srv/openclaw/operator.mjs",
             "doctor",
             "--state-sqlite",
             "compact",
@@ -595,7 +600,12 @@ describe("gateway lock", () => {
 
     const lock = await acquireForTest(env, {
       platform: "win32",
-      readProcessCmdline: () => ["openclaw", "doctor", "--state-sqlite", "compact"],
+      readProcessCmdline: () => [
+        "@gabrielvfonseca/operator",
+        "doctor",
+        "--state-sqlite",
+        "compact",
+      ],
       readProcessStartTime: () => 222,
       timeoutMs: 80,
     });
@@ -797,7 +807,7 @@ describe("gateway lock", () => {
           env,
           lockDir: resolveTestLockDir(),
           platform: "darwin",
-          readProcessCmdline: () => ["openclaw-gateway"],
+          readProcessCmdline: () => ["operator-gateway"],
           timeoutMs: 15,
         }),
       ).rejects.toBeInstanceOf(GatewayLockError);
@@ -918,7 +928,7 @@ describe("gateway lock", () => {
       platform: "win32",
       port: 18789,
       readProcessCmdline: () => [
-        "C:\\Users\\me\\AppData\\Roaming\\npm\\openclaw.cmd",
+        "C:\\Users\\me\\AppData\\Roaming\\npm\\operator.cmd",
         "gateway",
         "run",
       ],

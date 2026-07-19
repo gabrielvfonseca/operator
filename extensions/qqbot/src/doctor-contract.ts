@@ -2,10 +2,10 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { GroupToolPolicyConfig } from "openclaw/plugin-sdk/channel-policy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { asObjectRecord } from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { GroupToolPolicyConfig } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { asObjectRecord } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 
 const RESTRICTED_GROUP_TOOLS: GroupToolPolicyConfig = {
   deny: ["exec", "read", "write"],

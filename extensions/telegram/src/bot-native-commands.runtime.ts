@@ -2,16 +2,16 @@
 export {
   ensureConfiguredBindingRouteReady,
   recordInboundSessionMetaSafe,
-} from "openclaw/plugin-sdk/conversation-runtime";
-export { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+export { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 export {
   executePluginCommand,
   getPluginCommandSpecs,
   matchPluginCommand,
-} from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 export {
   finalizeInboundContext,
   resolveChunkMode,
-} from "openclaw/plugin-sdk/reply-dispatch-runtime";
-export { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-export { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-dispatch-runtime";
+export { resolveThreadSessionKeys } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+export { getSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";

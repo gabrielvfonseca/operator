@@ -6,7 +6,7 @@ export const MAX_PUBLIC_PLUGIN_SDK_DECLARATION_BYTES = 5_200_000;
 export const MAX_PRIVATE_QA_PUBLIC_PLUGIN_SDK_DECLARATION_BYTES = 5_225_000;
 
 export function isPrivateQaPluginSdkBuild(env) {
-  return env.OPENCLAW_BUILD_PRIVATE_QA === "1";
+  return env.OPERATOR_BUILD_PRIVATE_QA === "1";
 }
 
 export function evaluatePluginSdkDeclarationBudget({ declarationBytes, buildPrivateQa }) {

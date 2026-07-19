@@ -1,13 +1,13 @@
 // Workboard plugin module implements dispatcher behavior.
 import path from "node:path";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { canonicalPathFromExistingAncestor } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import type {
   WorkboardCard,
   WorkboardExecution,
   WorkboardWorkspace,
-} from "@operator/workboard-contract";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import { canonicalPathFromExistingAncestor } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/workboard-contract";
 import {
   assertRestrictedWorkboardTarget,
   managedWorktreeName,

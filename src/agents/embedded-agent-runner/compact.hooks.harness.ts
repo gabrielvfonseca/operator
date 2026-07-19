@@ -102,14 +102,19 @@ export const resolveSessionAgentIdsMock = vi.fn(() => ({
   sessionAgentId: "main",
 }));
 export const estimateTokensMock = vi.fn((_message?: unknown) => 10);
-export const resolveAgentHarnessPolicyMock = vi.fn(() => ({ runtime: "operator" }));
+export const resolveAgentHarnessPolicyMock = vi.fn(() => ({
+  runtime: "@gabrielvfonseca/operator",
+}));
 function createSelectedAgentHarnessMock(params: {
   agentHarnessId?: string;
   agentHarnessRuntimeOverride?: string;
 }): AgentHarness {
   const configured = resolveAgentHarnessPolicyMock() as { runtime?: string };
   const id =
-    params.agentHarnessId ?? params.agentHarnessRuntimeOverride ?? configured.runtime ?? "operator";
+    params.agentHarnessId ??
+    params.agentHarnessRuntimeOverride ??
+    configured.runtime ??
+    "@gabrielvfonseca/operator";
   return {
     id,
     label: `${id} test harness`,
@@ -482,7 +487,7 @@ export function resetCompactSessionStateMocks(): void {
   maybeCompactAgentHarnessSessionMock.mockReset();
   maybeCompactAgentHarnessSessionMock.mockResolvedValue(undefined);
   resolveAgentHarnessPolicyMock.mockReset();
-  resolveAgentHarnessPolicyMock.mockReturnValue({ runtime: "operator" });
+  resolveAgentHarnessPolicyMock.mockReturnValue({ runtime: "@gabrielvfonseca/operator" });
   selectAgentHarnessMock.mockReset();
   selectAgentHarnessMock.mockImplementation(createSelectedAgentHarnessMock);
   selectAgentHarnessForPreparedModelProvidersMock.mockReset();
@@ -556,7 +561,7 @@ export function resetCompactHooksHarnessMocks(): void {
       resolveModelMock(provider, modelId, agentDir, cfg),
   );
   resolveAgentHarnessPolicyMock.mockReset();
-  resolveAgentHarnessPolicyMock.mockReturnValue({ runtime: "operator" });
+  resolveAgentHarnessPolicyMock.mockReturnValue({ runtime: "@gabrielvfonseca/operator" });
   resolveContextWindowInfoMock.mockReset();
   resolveContextWindowInfoMock.mockReturnValue({ tokens: 128_000 });
 
@@ -923,16 +928,6 @@ export async function loadCompactHooksHarness(): Promise<{
   vi.doMock("./history.js", () => ({
     getHistoryLimitFromSessionKey: vi.fn(() => undefined),
     limitHistoryTurns: vi.fn((msgs: unknown[]) => msgs.slice(0, 2)),
-  }));
-
-  vi.doMock("../../skills/runtime/env-overrides.js", () => ({
-    applySkillEnvOverrides: vi.fn(() => () => {}),
-    applySkillEnvOverridesFromSnapshot: vi.fn(() => () => {}),
-  }));
-
-  vi.doMock("../../skills/loading/workspace.js", () => ({
-    loadWorkspaceSkillEntries: vi.fn(() => []),
-    resolveSkillsPromptForRun: vi.fn(() => undefined),
   }));
 
   vi.doMock("../agent-scope.js", () => ({

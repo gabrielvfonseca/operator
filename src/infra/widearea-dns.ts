@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { CONFIG_DIR, ensureDir } from "../utils.js";
 
 const DNS_LABEL_RE = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/;
@@ -139,8 +139,8 @@ export type WideAreaGatewayZoneOpts = {
 };
 
 function renderZone(opts: WideAreaGatewayZoneOpts & { serial: number }): string {
-  const hostname = os.hostname().split(".")[0] ?? "operator";
-  const hostLabel = dnsLabel(opts.hostLabel ?? hostname, "operator");
+  const hostname = os.hostname().split(".")[0] ?? "@gabrielvfonseca/operator";
+  const hostLabel = dnsLabel(opts.hostLabel ?? hostname, "@gabrielvfonseca/operator");
   const instanceLabel = dnsLabel(opts.instanceLabel ?? `${hostname}-gateway`, "operator-gw");
   const domain = normalizeWideAreaDomain(opts.domain) ?? "local.";
 

@@ -109,7 +109,7 @@ describe("runCli profile env bootstrap", () => {
 
   it("applies --profile before dotenv loading", async () => {
     fileState.hasCliDotEnv = true;
-    await runCli(["node", "openclaw", "--profile", "rawdog", "status"]);
+    await runCli(["node", "@gabrielvfonseca/operator", "--profile", "rawdog", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(dotenvState.state.profileAtDotenvLoad).toBe("rawdog");
@@ -118,7 +118,15 @@ describe("runCli profile env bootstrap", () => {
 
   it("rejects --container combined with --profile", async () => {
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "--profile", "rawdog", "status"]),
+      runCli([
+        "node",
+        "@gabrielvfonseca/operator",
+        "--container",
+        "demo",
+        "--profile",
+        "rawdog",
+        "status",
+      ]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
 
     expect(dotenvState.loadDotEnv).not.toHaveBeenCalled();
@@ -127,13 +135,21 @@ describe("runCli profile env bootstrap", () => {
 
   it("rejects --container combined with interleaved --profile", async () => {
     await expect(
-      runCli(["node", "openclaw", "status", "--container", "demo", "--profile", "rawdog"]),
+      runCli([
+        "node",
+        "@gabrielvfonseca/operator",
+        "status",
+        "--container",
+        "demo",
+        "--profile",
+        "rawdog",
+      ]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
   });
 
   it("rejects --container combined with interleaved --dev", async () => {
     await expect(
-      runCli(["node", "openclaw", "status", "--container", "demo", "--dev"]),
+      runCli(["node", "@gabrielvfonseca/operator", "status", "--container", "demo", "--dev"]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
   });
 
@@ -145,15 +161,19 @@ describe("runCli profile env bootstrap", () => {
       dotenvState.state.containerAtDotenvLoad = process.env.OPERATOR_CONTAINER;
     });
 
-    await runCli(["node", "openclaw", "status"]);
+    await runCli(["node", "@gabrielvfonseca/operator", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(process.env.OPERATOR_CONTAINER).toBe("demo");
     expect(dotenvState.state.containerAtDotenvLoad).toBe("demo");
-    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "openclaw", "status"]);
+    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith([
+      "node",
+      "@gabrielvfonseca/operator",
+      "status",
+    ]);
     expect(maybeRunCliInContainerMock).toHaveReturnedWith({
       handled: false,
-      argv: ["node", "openclaw", "status"],
+      argv: ["node", "@gabrielvfonseca/operator", "status"],
     });
   });
 
@@ -161,7 +181,7 @@ describe("runCli profile env bootstrap", () => {
     setTestEnvValue("OPERATOR_PROFILE", "work");
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "@gabrielvfonseca/operator", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
@@ -174,23 +194,23 @@ describe("runCli profile env bootstrap", () => {
     setTestEnvValue(key, value);
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "@gabrielvfonseca/operator", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
   it("allows container mode when only OPERATOR_STATE_DIR is set in env", async () => {
-    setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/openclaw-host-state");
+    setTestEnvValue("OPERATOR_STATE_DIR", "/tmp/operator-host-state");
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "@gabrielvfonseca/operator", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
   it("allows container mode when only OPERATOR_CONFIG_PATH is set in env", async () => {
-    setTestEnvValue("OPERATOR_CONFIG_PATH", "/tmp/openclaw-host-state/openclaw.json");
+    setTestEnvValue("OPERATOR_CONFIG_PATH", "/tmp/operator-host-state/operator.json");
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "@gabrielvfonseca/operator", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 });

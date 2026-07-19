@@ -1,4 +1,4 @@
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildGoogleChatApprovalActionParameters,
@@ -91,7 +91,7 @@ function createCardClickEvent(token: string, userName = "users/123"): GoogleChat
     message: { name: "spaces/AAA/messages/msg-1" },
     user: { name: userName },
     action: {
-      actionMethodName: "openclaw.approval",
+      actionMethodName: "operator.approval",
       parameters: buildGoogleChatApprovalActionParameters(token),
     },
   };
@@ -196,7 +196,7 @@ describe("maybeHandleGoogleChatApprovalCardClick", () => {
           user: { name: "users/123" },
           commonEventObject: {
             parameters: {
-              openclaw_action: "approval",
+              operator_action: "approval",
               token: "token-addon",
             },
           },
@@ -234,9 +234,9 @@ describe("maybeHandleGoogleChatApprovalCardClick", () => {
           message: { name: "spaces/AAA/messages/msg-1" },
           user: { name: "users/123" },
           common: {
-            invokedFunction: "openclaw.approval",
+            invokedFunction: "operator.approval",
             parameters: {
-              openclaw_action: "approval",
+              operator_action: "approval",
               token: "token-common",
             },
           },
@@ -277,7 +277,7 @@ describe("maybeHandleGoogleChatApprovalCardClick", () => {
           commonEventObject: {
             invokedFunction: "https://chat-app.example.test/googlechat",
             parameters: {
-              openclaw_action: "approval",
+              operator_action: "approval",
               token: "token-url",
             },
           },

@@ -13,7 +13,7 @@ import {
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/operator-test-state.js";
+} from "../../test-utils/openclaw-test-state.js";
 import type { GatewayRequestHandlers } from "./types.js";
 
 const agentScopeState = vi.hoisted(() => ({
@@ -53,7 +53,7 @@ vi.mock("../../infra/replace-file.js", async (importOriginal) => {
       if (
         replaceFileState.publishFailures === 0 &&
         replaceFileState.publishFailureTarget &&
-        options.from.includes(".openclaw-install-stage-") &&
+        options.from.includes(".operator-install-stage-") &&
         options.to === replaceFileState.publishFailureTarget
       ) {
         replaceFileState.publishFailures += 1;
@@ -80,7 +80,7 @@ async function makeHarness(): Promise<{
 }> {
   const testState = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-skill-upload-handler-",
+    prefix: "operator-skill-upload-handler-",
   });
   testStates.push(testState);
   const stateDir = testState.stateDir;

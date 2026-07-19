@@ -1,6 +1,6 @@
 // Telegram plugin module implements action runtime behavior.
-import type { AgentToolResult } from "openclaw/plugin-sdk/agent-core";
-import { readBooleanParam } from "openclaw/plugin-sdk/boolean-param";
+import type { AgentToolResult } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import { readBooleanParam } from "@gabrielvfonseca/operator/plugin-sdk/boolean-param";
 import {
   jsonResult,
   readPositiveIntegerParam,
@@ -10,21 +10,21 @@ import {
   readStringParam,
   resolvePollMaxSelections,
   resolveReactionMessageId,
-} from "openclaw/plugin-sdk/channel-actions";
-import { normalizeOutboundLocation } from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import { normalizeOutboundLocation } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   buildOutboundSessionContext,
   sendDurableMessageBatch,
   type DurableMessageBatchSendResult,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import type { MessagePresentation } from "openclaw/plugin-sdk/interactive-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import type { MessagePresentation } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import {
   createTelegramActionGate,
   resolveDefaultTelegramAccountId,

@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { WorktreeSnapshotError } from "../../agents/worktrees/service.js";
 import type { ManagedWorktreeRecord } from "../../agents/worktrees/types.js";
@@ -122,7 +122,7 @@ describe("worktrees gateway methods", () => {
     const path = await import("node:path");
     const fs = await import("node:fs/promises");
     const workspace = await fs.mkdtemp(
-      path.join(await fs.realpath(os.tmpdir()), "openclaw-branches-scope-"),
+      path.join(await fs.realpath(os.tmpdir()), "operator-branches-scope-"),
     );
     try {
       const service = {

@@ -4,11 +4,17 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import type { EventEmitter } from "node:events";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import type { Socket } from "node:net";
-import type { ChannelGatewayContext } from "openclaw/plugin-sdk/channel-contract";
-import { keepHttpServerTaskAlive, waitUntilAbort } from "openclaw/plugin-sdk/channel-outbound";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
-import { createClaimableDedupe, type ClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
+import type { ChannelGatewayContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import {
+  keepHttpServerTaskAlive,
+  waitUntilAbort,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
+import {
+  createClaimableDedupe,
+  type ClaimableDedupe,
+} from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { RAFT_CHANNEL_ID, type ResolvedRaftAccount } from "./accounts.js";
 import { dispatchRaftWake } from "./inbound.js";
 

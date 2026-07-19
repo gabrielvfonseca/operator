@@ -6,9 +6,9 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   DEFAULT_OAUTH_REFRESH_MARGIN_MS,

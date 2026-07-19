@@ -1,4 +1,4 @@
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { markAutoFallbackPrimaryProbe } from "../../agents/agent-scope.js";
 import { mergeEmbeddedAgentRunResultForModelFallbackExhaustion } from "../../agents/embedded-agent-runner/result-fallback-classifier.js";
 import type { FastModeAutoProgressState } from "../../agents/fast-mode.js";

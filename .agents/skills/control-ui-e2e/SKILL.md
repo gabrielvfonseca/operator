@@ -1,6 +1,6 @@
 ---
 name: control-ui-e2e
-description: Use when testing, fixing, or extending the OpenClaw Control UI GUI with Vitest + Playwright end-to-end checks, mocked Gateway WebSocket flows, mocked dashboard runs, screenshots/videos, or agent-verifiable browser proof.
+description: Use when testing, fixing, or extending the Operator Control UI GUI with Vitest + Playwright end-to-end checks, mocked Gateway WebSocket flows, mocked dashboard runs, screenshots/videos, or agent-verifiable browser proof.
 ---
 
 # Control UI E2E
@@ -9,8 +9,8 @@ Use this for Control UI changes that need a real browser flow with deterministic
 
 ## Test Shape
 
-- Use `ui/src/**/*.e2e.test.ts` for full GUI flows.
-- Use `ui/src/test-helpers/control-ui-e2e.ts` to start the Vite Control UI and install a mocked Gateway WebSocket.
+- Use `ui/tests/**/*.e2e.test.ts` for full GUI flows.
+- Use `ui/tests/helpers/control-ui-e2e.ts` to start the Vite Control UI and install a mocked Gateway WebSocket.
 - Keep scenarios deterministic. Do not use live provider keys, real channel credentials, or a real Gateway unless the user explicitly asks for live proof.
 - Prefer existing `.browser.test.ts` or unit tests for narrow rendering logic; use this E2E lane when the proof should cover routing, app boot, Gateway handshake, requests, and visible UI behavior together.
 
@@ -19,7 +19,7 @@ Use this for Control UI changes that need a real browser flow with deterministic
 - Target one E2E test in a Codex worktree:
 
 ```bash
-node scripts/run-vitest.mjs run --config test/vitest/vitest.ui-e2e.config.ts --configLoader runner ui/src/ui/e2e/chat-flow.e2e.test.ts
+node scripts/run-vitest.mjs run --config test/vitest/vitest.ui-e2e.config.ts --configLoader runner ui/tests/e2e/chat-flow.e2e.test.ts
 ```
 
 - Run the whole local lane in a normal checkout:

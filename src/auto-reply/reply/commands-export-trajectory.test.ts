@@ -9,7 +9,7 @@ import type { HandleCommandsParams } from "./commands-types.js";
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-export-command-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-export-command-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -24,7 +24,7 @@ function makeParams(workspaceDir = makeTempDir()): HandleCommandsParams {
   return {
     cfg: {
       session: {
-        store: "/tmp/openclaw-sessions.json",
+        store: "/tmp/operator-sessions.json",
       },
     },
     ctx: {
@@ -149,7 +149,7 @@ describe("buildExportTrajectoryCommandReply", () => {
     expect(reply.text).toContain(
       "Trajectory exports can include prompts, model messages, tool schemas",
     );
-    expect(reply.text).toContain("https://docs.openclaw.ai/tools/trajectory");
+    expect(reply.text).toContain("https://docs.operator.ai/tools/trajectory");
     expect(reply.text).toContain("do not use allow-all");
     expect(reply.text).toContain("Allowed decisions: allow-once, deny");
     expect(execCalls).toHaveLength(1);
@@ -160,7 +160,7 @@ describe("buildExportTrajectoryCommandReply", () => {
     expect(execCall.defaults.trigger).toBe("export-trajectory");
     expect(execCall.defaults.approvalFollowupMode).toBe("agent");
     expect(execCall.defaults.sessionId).toBe("session-1");
-    expect(execCall.defaults.sessionStore).toBe("/tmp/openclaw-sessions.json");
+    expect(execCall.defaults.sessionStore).toBe("/tmp/operator-sessions.json");
     expect(execCall.defaults.currentChannelId).toBe("bot");
     expect(execCall.defaults.accountId).toBe("account-1");
     expect(execCall.params.security).toBe("allowlist");
@@ -176,7 +176,7 @@ describe("buildExportTrajectoryCommandReply", () => {
     const request = readEncodedRequestFromCommand(command);
     expect(request.sessionKey).toBe("agent:target:session");
     expect(request.workspace).toBe(params.workspaceDir);
-    expect(String(request.workspace)).toContain("openclaw-export-command-");
+    expect(String(request.workspace)).toContain("operator-export-command-");
   });
 
   it("uses the originating Telegram route for native trajectory export followups", async () => {

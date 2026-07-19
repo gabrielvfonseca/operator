@@ -1,7 +1,7 @@
 // Voice Call plugin module implements outbound behavior.
 import crypto from "node:crypto";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   resolveVoiceCallEffectiveConfig,
   resolveVoiceCallNumberRouteKeyForCall,

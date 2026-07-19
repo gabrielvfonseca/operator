@@ -6,5 +6,5 @@ export {
   getFileExtension,
   mimeTypeFromFilePath,
   normalizeMimeType,
-} from "@operator/media-core/mime";
-export { mediaKindFromMime, type MediaKind } from "@operator/media-core/constants";
+} from "@gabrielvfonseca/media-core/mime";
+export { mediaKindFromMime, type MediaKind } from "@gabrielvfonseca/media-core/constants";

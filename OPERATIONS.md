@@ -6,8 +6,8 @@ This document provides comprehensive guidance for operating and maintaining Oper
 
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Website:** https://operator.ai
-- **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **Discord:** https://discord.gg/operator
+- **X/Twitter:** [@gabfon_](https://x.com/gabfon_)
 
 ## Operations Overview
 

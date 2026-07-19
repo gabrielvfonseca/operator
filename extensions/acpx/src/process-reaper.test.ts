@@ -8,7 +8,7 @@ import {
   reapStaleOperatorOwnedAcpxOrphans,
 } from "./process-reaper.js";
 
-const WRAPPER_ROOT = "/tmp/openclaw-state/acpx";
+const WRAPPER_ROOT = "/tmp/operator-state/acpx";
 const CODEX_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/codex-acp-wrapper.mjs`;
 const CODEX_WRAPPER_COMMAND_WITH_LEASE = `${CODEX_WRAPPER_COMMAND} ${OPERATOR_ACPX_LEASE_ID_ARG} lease-1 ${OPERATOR_GATEWAY_INSTANCE_ID_ARG} gateway-1`;
 const CLAUDE_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/claude-agent-acp-wrapper.mjs`;
@@ -144,7 +144,7 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [113],
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     });
     expect(killed).toStrictEqual([]);
   });
@@ -187,7 +187,7 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [250],
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     });
     expect(killed).toStrictEqual([]);
   });
@@ -211,7 +211,7 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [260],
       terminatedPids: [],
-      skippedReason: "not-openclaw-owned",
+      skippedReason: "not-operator-owned",
     });
     expect(killed).toStrictEqual([]);
   });
@@ -226,7 +226,7 @@ describe("process reaper", () => {
       deps,
     });
 
-    expect(result.skippedReason).toBe("not-openclaw-owned");
+    expect(result.skippedReason).toBe("not-operator-owned");
     expect(killed).toStrictEqual([]);
   });
 

@@ -50,8 +50,8 @@ describe("runDaemonInstall integration", () => {
       "OPERATOR_GATEWAY_TOKEN",
       "OPERATOR_GATEWAY_PASSWORD",
     ]);
-    tempHome = await makeTempWorkspace("openclaw-daemon-install-int-");
-    configPath = path.join(tempHome, "openclaw.json");
+    tempHome = await makeTempWorkspace("operator-daemon-install-int-");
+    configPath = path.join(tempHome, "operator.json");
     process.env.HOME = tempHome;
     process.env.OPERATOR_STATE_DIR = tempHome;
     process.env.OPERATOR_CONFIG_PATH = configPath;

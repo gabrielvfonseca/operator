@@ -3,7 +3,7 @@ import {
   callGatewayTool,
   embeddedAgentLog,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handleCodexAppServerElicitationRequest } from "./elicitation-bridge.js";
 

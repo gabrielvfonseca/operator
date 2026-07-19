@@ -2,7 +2,7 @@ import CoreGraphics
 import ImageIO
 import Testing
 import UniformTypeIdentifiers
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct JPEGTranscoderTests {
     private func makeSolidJPEG(width: Int, height: Int, orientation: Int? = nil) throws -> Data {

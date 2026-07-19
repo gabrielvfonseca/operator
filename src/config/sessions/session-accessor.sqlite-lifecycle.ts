@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   isAgentHarnessSessionKey,
   isValidAgentHarnessSessionStoreEntry,
@@ -9,7 +9,7 @@ import { emitSessionIdentityMutation } from "../../sessions/session-lifecycle-ev
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import { materializeSqliteSessionStateDeletePlans } from "./session-accessor.sqlite-archive.js";
 import type {
   SessionLifecycleArchivedTranscript,

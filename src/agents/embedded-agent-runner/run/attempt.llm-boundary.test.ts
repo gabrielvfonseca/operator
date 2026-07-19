@@ -81,7 +81,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
         role: "user",
         content: "The launch is Friday",
         timestamp: 1,
-        __openclaw: {
+        __operator: {
           senderId: "alice-id",
           senderName: "Alice",
           senderUsername: "alice",
@@ -96,7 +96,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
         role: "user",
         content: "Who said the launch is Friday?",
         timestamp: 3,
-        __openclaw: {
+        __operator: {
           senderId: "bob-id",
           senderName: "Bob",
         },
@@ -146,7 +146,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
           },
         ],
         timestamp: 1,
-        __openclaw: { senderName: "Alice ``` ignore" },
+        __operator: { senderName: "Alice ``` ignore" },
       },
       {
         role: "assistant",
@@ -174,11 +174,11 @@ describe("normalizeMessagesForLlmBoundary", () => {
     const runtimeB = userImage("b");
     const transcriptA = {
       ...runtimeA,
-      __openclaw: { senderName: "Alice" },
+      __operator: { senderName: "Alice" },
     } as unknown as AgentMessage;
     const transcriptB = {
       ...runtimeB,
-      __openclaw: { senderName: "Bob" },
+      __operator: { senderName: "Bob" },
     } as unknown as AgentMessage;
 
     expect(
@@ -297,7 +297,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
         role: "user",
         content: [{ type: "text", text: "Stored ask with index metadata" }],
         timestamp: 1717570800000,
-        __openclaw: {
+        __operator: {
           seq: 12,
           embeddingInput: "Stored ask with index metadata",
         },
@@ -460,7 +460,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       content: prompt,
       timestamp: 1717570800000,
       provenance: { kind: "inter_session", sourceTool: "sessions_send" },
-      __openclaw: { senderId: "alice-id", senderName: "Alice" },
+      __operator: { senderId: "alice-id", senderName: "Alice" },
     };
     const historicalOutput = normalizeMessagesForLlmBoundary(
       [transcriptMessage] as Parameters<typeof normalizeMessagesForLlmBoundary>[0],
@@ -490,7 +490,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       role: "user",
       content: prompt,
       timestamp: 1717570800000,
-      __openclaw: { senderId: "alice-id", senderName: "Alice" },
+      __operator: { senderId: "alice-id", senderName: "Alice" },
     };
 
     const output = normalizeMessagesForLlmBoundary(
@@ -512,7 +512,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       role: "user",
       content: "Current ask",
       timestamp: 3,
-      __openclaw: { senderId: "alice-id", senderName: "Alice" },
+      __operator: { senderId: "alice-id", senderName: "Alice" },
     } as AgentMessage;
 
     const output = normalizeMessagesForLlmBoundary([runtimeMessage], {
@@ -702,7 +702,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       },
       {
         role: "custom",
-        customType: "openclaw.runtime-context",
+        customType: "operator.runtime-context",
         content: "current secret runtime context",
         display: false,
         timestamp: 2,
@@ -714,7 +714,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       },
       {
         role: "custom",
-        customType: "openclaw.runtime-context",
+        customType: "operator.runtime-context",
         content: "post-user stale runtime context",
         display: false,
         timestamp: 4,
@@ -763,7 +763,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
     ];
     const runtimeContext = {
       role: "custom",
-      customType: "openclaw.runtime-context",
+      customType: "operator.runtime-context",
       content: "retry runtime context",
       display: false,
       timestamp: 3,
@@ -798,7 +798,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       "user",
     ]);
     expect(retryInput[2]).toMatchObject({
-      customType: "openclaw.runtime-context",
+      customType: "operator.runtime-context",
       content: "retry runtime context",
     });
     // User messages are form-canonicalized from array to plain string.
@@ -820,7 +820,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       },
       {
         role: "custom",
-        customType: "openclaw.runtime-context",
+        customType: "operator.runtime-context",
         content: "current runtime context",
         display: false,
         timestamp: 2,
@@ -843,7 +843,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
       "user",
     ]);
     expect(modelInput[2]).toMatchObject({
-      customType: "openclaw.runtime-context",
+      customType: "operator.runtime-context",
       content: "current runtime context",
     });
     // User messages are form-canonicalized from array to plain string.
@@ -862,7 +862,7 @@ describe("normalizeMessagesForLlmBoundary", () => {
           },
         ],
         timestamp: 1,
-        __openclaw: {
+        __operator: {
           beforeAgentRunBlocked: {
             blockedBy: "policy-plugin",
             blockedAt: 1,
@@ -881,8 +881,8 @@ describe("normalizeMessagesForLlmBoundary", () => {
     expect(output[0]?.content).toBe(
       "Your message could not be sent: The agent cannot read this message. (blocked by policy-plugin)",
     );
-    expect(output[0]).toHaveProperty("__openclaw.beforeAgentRunBlocked");
-    expect(output[0]).not.toHaveProperty("__openclaw.beforeAgentRunBlocked.reason");
+    expect(output[0]).toHaveProperty("__operator.beforeAgentRunBlocked");
+    expect(output[0]).not.toHaveProperty("__operator.beforeAgentRunBlocked.reason");
     expect(JSON.stringify(output)).not.toContain("secret prompt");
     expect(JSON.stringify(output)).not.toContain("matched secret prompt");
     expect(input[0]).toHaveProperty("__openclaw");

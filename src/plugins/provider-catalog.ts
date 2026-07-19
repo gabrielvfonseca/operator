@@ -1,9 +1,9 @@
 // Builds provider catalog entries from plugin manifest metadata.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ModelProviderConfig } from "../config/types.js";
 import { copyRecordEntries } from "../shared/safe-record.js";
 import type { ProviderCatalogContext, ProviderCatalogResult } from "./types.js";

@@ -3,8 +3,8 @@
 // Control UI diff panel can render without shelling out client-side.
 import fs from "node:fs/promises";
 import nodePath from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   validateSessionsDiffParams,
   type SessionDiffFile,

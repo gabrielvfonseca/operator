@@ -1,6 +1,6 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Slack tests cover listener-scoped Enterprise Grid delivery through the canonical sender.
 import type { WebClient } from "@slack/web-api";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearSlackThreadParticipationCache,

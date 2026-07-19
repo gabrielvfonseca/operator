@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import SQLite3
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 private func makeDatabaseURL() throws -> URL {
     let dir = FileManager.default.temporaryDirectory
@@ -15,12 +15,12 @@ private func cacheMessage(
     role: String,
     text: String,
     timestamp: Double,
-    idempotencyKey: String? = nil) -> OpenClawChatMessage
+    idempotencyKey: String? = nil) -> OperatorChatMessage
 {
-    OpenClawChatMessage(
+    OperatorChatMessage(
         role: role,
         content: [
-            OpenClawChatMessageContent(
+            OperatorChatMessageContent(
                 type: "text",
                 text: text,
                 mimeType: nil,
@@ -31,8 +31,8 @@ private func cacheMessage(
         idempotencyKey: idempotencyKey)
 }
 
-private func cacheSessionEntry(key: String, updatedAt: Double) -> OpenClawChatSessionEntry {
-    OpenClawChatSessionEntry(
+private func cacheSessionEntry(key: String, updatedAt: Double) -> OperatorChatSessionEntry {
+    OperatorChatSessionEntry(
         key: key,
         kind: nil,
         displayName: nil,
@@ -54,7 +54,7 @@ private func cacheSessionEntry(key: String, updatedAt: Double) -> OpenClawChatSe
         contextTokens: nil)
 }
 
-private func messageTexts(_ messages: [OpenClawChatMessage]) -> [String] {
+private func messageTexts(_ messages: [OperatorChatMessage]) -> [String] {
     messages.map { $0.content.compactMap(\.text).joined() }
 }
 
@@ -62,11 +62,11 @@ private func outboxCommand(
     id: String = UUID().uuidString,
     sessionKey: String = "main",
     text: String,
-    attachments: [OpenClawChatOutboxAttachment] = [],
+    attachments: [OperatorChatOutboxAttachment] = [],
     thinking: String = "off",
-    createdAt: Double = Date().timeIntervalSince1970) -> OpenClawChatOutboxCommand
+    createdAt: Double = Date().timeIntervalSince1970) -> OperatorChatOutboxCommand
 {
-    OpenClawChatOutboxCommand(
+    OperatorChatOutboxCommand(
         id: id,
         sessionKey: sessionKey,
         text: text,
@@ -82,18 +82,18 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `verified routing identity survives a cold store reopen`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let identity = try #require(OpenClawChatSessionRoutingIdentity(
+        let identity = try #require(OperatorChatSessionRoutingIdentity(
             scope: " Per-Sender ",
             mainSessionKey: " Work ",
             defaultAgentID: " Main "))
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
 
         await store.storeSessionRoutingIdentity(identity)
-        #expect(OpenClawChatSQLiteTranscriptCache.loadSessionRoutingIdentity(
+        #expect(OperatorChatSQLiteTranscriptCache.loadSessionRoutingIdentity(
             databaseURL: url,
             gatewayID: "gw-a") == identity)
 
-        let reopened = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let reopened = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await reopened.loadSessionRoutingIdentity() == identity)
         #expect(identity.contract == "per-sender|work|main")
     }
@@ -101,7 +101,7 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `transcript and sessions round trip`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
 
         let messages = [
             cacheMessage(role: "user", text: "hello", timestamp: 1000, idempotencyKey: "run-1:user"),
@@ -125,8 +125,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `transcript keeps only most recent messages within bound`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let bound = OpenClawChatSQLiteTranscriptCache.maxCachedMessagesPerSession
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let bound = OperatorChatSQLiteTranscriptCache.maxCachedMessagesPerSession
 
         let messages = (0..<(bound + 50)).map { index in
             cacheMessage(role: "user", text: "m\(index)", timestamp: Double(index))
@@ -142,8 +142,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `sessions list is bounded to most recently updated`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let bound = OpenClawChatSQLiteTranscriptCache.maxCachedSessions
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let bound = OperatorChatSQLiteTranscriptCache.maxCachedSessions
 
         let sessions = (0..<(bound + 10)).map { index in
             cacheSessionEntry(key: "s\(index)", updatedAt: Double(index))
@@ -160,8 +160,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `transcript eviction keeps most recent sessions`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let bound = OpenClawChatSQLiteTranscriptCache.maxCachedTranscripts
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let bound = OperatorChatSQLiteTranscriptCache.maxCachedTranscripts
 
         for index in 0..<(bound + 5) {
             await store.storeTranscript(
@@ -181,8 +181,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `transcripts are scoped per gateway identity`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let storeA = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let storeB = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
+        let storeA = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let storeB = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
 
         await storeA.storeTranscript(
             sessionKey: "main",
@@ -202,7 +202,7 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `global transcripts are scoped per agent identity`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
 
         await store.storeTranscript(
             sessionKey: "global",
@@ -223,7 +223,7 @@ struct ChatTranscriptCacheStoreTests {
         #expect(messageTexts(agentBMessages) == ["agent B"])
         #expect(await store.loadTranscript(sessionKey: "global").isEmpty)
 
-        #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+        #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
             id: "c-agent-a",
             sessionKey: "global",
             agentID: "agent-a",
@@ -242,7 +242,7 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `empty transcript store clears cached row`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
 
         await store.storeTranscript(
             sessionKey: "main",
@@ -254,8 +254,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `reset retirement permits physical removal of all gateway rows`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let storeA = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let storeB = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
+        let storeA = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let storeB = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
         await storeA.storeTranscript(
             sessionKey: "main",
             messages: [cacheMessage(role: "user", text: "gateway A", timestamp: 1)])
@@ -266,13 +266,13 @@ struct ChatTranscriptCacheStoreTests {
 
         await storeA.retire()
         await storeB.retire()
-        OpenClawChatSQLiteTranscriptCache.removeDatabaseFiles(at: url)
+        OperatorChatSQLiteTranscriptCache.removeDatabaseFiles(at: url)
         await storeA.storeTranscript(
             sessionKey: "main",
             messages: [cacheMessage(role: "user", text: "late write", timestamp: 3)])
 
-        let readerA = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let readerB = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
+        let readerA = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let readerB = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
         #expect(await storeA.loadTranscript(sessionKey: "main").isEmpty)
         #expect(await storeA.loadSessions().isEmpty)
         #expect(await readerA.loadTranscript(sessionKey: "main").isEmpty)
@@ -284,8 +284,8 @@ struct ChatTranscriptCacheStoreTests {
         let directory = urlA.deletingLastPathComponent()
         let urlB = directory.appendingPathComponent("chat-cache-b.sqlite", isDirectory: false)
         defer { try? FileManager.default.removeItem(at: directory) }
-        let storeA = OpenClawChatSQLiteTranscriptCache(databaseURL: urlA, gatewayID: "gw-a")
-        let storeB = OpenClawChatSQLiteTranscriptCache(databaseURL: urlB, gatewayID: "gw-b")
+        let storeA = OperatorChatSQLiteTranscriptCache(databaseURL: urlA, gatewayID: "gw-a")
+        let storeB = OperatorChatSQLiteTranscriptCache(databaseURL: urlB, gatewayID: "gw-b")
         await storeA.storeSessions([cacheSessionEntry(key: "a", updatedAt: 1)])
         await storeA.storeTranscript(
             sessionKey: "a",
@@ -296,9 +296,9 @@ struct ChatTranscriptCacheStoreTests {
             messages: [cacheMessage(role: "user", text: "gateway B", timestamp: 2)])
 
         await storeA.retire()
-        OpenClawChatSQLiteTranscriptCache.removeDatabaseFiles(at: urlA)
+        OperatorChatSQLiteTranscriptCache.removeDatabaseFiles(at: urlA)
 
-        let readerA = OpenClawChatSQLiteTranscriptCache(databaseURL: urlA, gatewayID: "gw-a")
+        let readerA = OperatorChatSQLiteTranscriptCache(databaseURL: urlA, gatewayID: "gw-a")
         #expect(await readerA.loadSessions().isEmpty)
         #expect(await readerA.loadTranscript(sessionKey: "a").isEmpty)
         #expect(await storeB.loadSessions().map(\.key) == ["b"])
@@ -308,18 +308,18 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `attachment payloads are not persisted`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
 
-        let message = OpenClawChatMessage(
+        let message = OperatorChatMessage(
             role: "user",
             content: [
-                OpenClawChatMessageContent(
+                OperatorChatMessageContent(
                     type: "text",
                     text: "See attached.",
                     mimeType: nil,
                     fileName: nil,
                     content: nil),
-                OpenClawChatMessageContent(
+                OperatorChatMessageContent(
                     type: "image",
                     text: nil,
                     mimeType: "image/png",
@@ -342,7 +342,7 @@ struct ChatTranscriptCacheStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             await store.storeTranscript(
                 sessionKey: "main",
                 messages: [cacheMessage(role: "user", text: "old-schema", timestamp: 1)])
@@ -355,7 +355,7 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 1", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let migrated = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let migrated = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await messageTexts(migrated.loadTranscript(sessionKey: "main")) == ["old-schema"])
         #expect(await migrated.enqueueCommand(outboxCommand(id: "c-1", text: "preserved migration")))
         #expect(await migrated.loadCommands().map(\.text) == ["preserved migration"])
@@ -366,8 +366,8 @@ struct ChatTranscriptCacheStoreTests {
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         let now = Date().timeIntervalSince1970
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-            #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
                 id: "c-global",
                 sessionKey: "global",
                 agentID: "agent-a",
@@ -447,7 +447,7 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 2", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let migrated = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let migrated = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let commands = await migrated.loadCommands()
         #expect(commands.map(\.agentID) == [nil, nil, nil, nil, nil, nil])
         #expect(commands.map(\.deliverySessionKey) == [
@@ -460,12 +460,12 @@ struct ChatTranscriptCacheStoreTests {
         ])
         #expect(commands.map(\.status) == [.failed, .failed, .failed, .failed, .failed, .failed])
         #expect(commands.map(\.lastError) == [
-            OpenClawChatSQLiteTranscriptCache.outboxUnknownTargetError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnknownTargetError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnknownTargetError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnknownTargetError,
+            OperatorChatSQLiteTranscriptCache.outboxUnknownTargetError,
+            OperatorChatSQLiteTranscriptCache.outboxUnknownTargetError,
+            OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError,
+            OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError,
+            OperatorChatSQLiteTranscriptCache.outboxUnknownTargetError,
+            OperatorChatSQLiteTranscriptCache.outboxUnknownTargetError,
         ])
         #expect(await migrated.markCommandRetriedIfPresent(
             id: "c-global",
@@ -482,8 +482,8 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `unknown failed command can retry without an agent`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
             id: "c-unknown",
             sessionKey: "unknown",
             deliverySessionKey: "unknown",
@@ -511,7 +511,7 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `retargeted retry removes optimistic row from previous agent cache`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         await store.storeTranscript(
             sessionKey: "main",
             agentID: "agent-a",
@@ -522,7 +522,7 @@ struct ChatTranscriptCacheStoreTests {
                     timestamp: 1,
                     idempotencyKey: "c-retarget:user"),
             ])
-        #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+        #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
             id: "c-retarget",
             sessionKey: "main",
             deliverySessionKey: "agent:agent-a:main",
@@ -550,8 +550,8 @@ struct ChatTranscriptCacheStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-            #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
                 id: "c-v3",
                 sessionKey: "main",
                 deliverySessionKey: "agent:agent-a:main",
@@ -563,7 +563,7 @@ struct ChatTranscriptCacheStoreTests {
                 status: .queued,
                 retryCount: 0,
                 lastError: nil)))
-            #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+            #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
                 id: "c-v3-acked",
                 sessionKey: "main",
                 deliverySessionKey: "agent:agent-a:main",
@@ -601,15 +601,15 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 3", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let migrated = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let migrated = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let commands = await migrated.loadCommands()
         #expect(commands.map(\.status) == [.failed, .failed])
         #expect(commands.map(\.agentID) == [nil, nil])
         #expect(commands.map(\.deliverySessionKey) == ["", ""])
         #expect(commands.map(\.routingContract) == [nil, nil])
         #expect(commands.map(\.lastError) == [
-            OpenClawChatSQLiteTranscriptCache.outboxUnknownTargetError,
-            OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError,
+            OperatorChatSQLiteTranscriptCache.outboxUnknownTargetError,
+            OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError,
         ])
     }
 
@@ -617,7 +617,7 @@ struct ChatTranscriptCacheStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(outboxCommand(id: "c-v4", text: "preserve me")))
             await store.retire()
         }
@@ -640,10 +640,10 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 4", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let migrated = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let migrated = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await migrated.loadCommands().map(\.id) == ["c-v4"])
         #expect(await migrated.loadSessionRoutingIdentity() == nil)
-        let identity = try #require(OpenClawChatSessionRoutingIdentity(
+        let identity = try #require(OperatorChatSessionRoutingIdentity(
             scope: "global",
             mainSessionKey: "main",
             defaultAgentID: "main"))
@@ -655,7 +655,7 @@ struct ChatTranscriptCacheStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(outboxCommand(id: "c-v5", text: "preserve me")))
             await store.retire()
         }
@@ -677,7 +677,7 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 5", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let migrated = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let migrated = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let command = try #require(await migrated.loadCommands().first)
         #expect(command.id == "c-v5")
         #expect(command.attachments.isEmpty)
@@ -687,7 +687,7 @@ struct ChatTranscriptCacheStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(outboxCommand(id: "c-1", text: "do not delete")))
             await store.retire()
         }
@@ -697,7 +697,7 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_exec(raw, "PRAGMA user_version = 99", nil, nil, nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let blocked = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let blocked = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await blocked.loadCommands().isEmpty)
         #expect(await !blocked.enqueueCommand(outboxCommand(id: "c-2", text: "must fail closed")))
 
@@ -707,12 +707,12 @@ struct ChatTranscriptCacheStoreTests {
         #expect(sqlite3_open(url.path, &raw) == SQLITE_OK)
         #expect(sqlite3_exec(
             raw,
-            "PRAGMA user_version = \(OpenClawChatSQLiteTranscriptCache.schemaVersion)",
+            "PRAGMA user_version = \(OperatorChatSQLiteTranscriptCache.schemaVersion)",
             nil,
             nil,
             nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
-        let recovered = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let recovered = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await recovered.loadCommands().map(\.text) == ["do not delete"])
     }
 
@@ -722,7 +722,7 @@ struct ChatTranscriptCacheStoreTests {
         let original = Data("this is not a sqlite database".utf8)
         try original.write(to: url)
 
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.loadTranscript(sessionKey: "main").isEmpty)
         await store.storeTranscript(
             sessionKey: "main",
@@ -734,7 +734,7 @@ struct ChatTranscriptCacheStoreTests {
     @Test func `undecodable row is dropped and treated as miss`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         await store.storeTranscript(
             sessionKey: "main",
             messages: [cacheMessage(role: "user", text: "seed", timestamp: 1)])
@@ -749,7 +749,7 @@ struct ChatTranscriptCacheStoreTests {
             nil) == SQLITE_OK)
         sqlite3_close_v2(raw)
 
-        let reader = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let reader = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await reader.loadTranscript(sessionKey: "main").isEmpty)
         // The bad row was deleted, not just skipped.
         #expect(await reader.loadTranscript(sessionKey: "main").isEmpty)
@@ -763,7 +763,7 @@ struct ChatCommandOutboxStoreTests {
         // Recent timestamps: rows older than the staleness gate would expire.
         let now = Date().timeIntervalSince1970
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(
                 outboxCommand(id: "c-2", text: "second", thinking: "high", createdAt: now - 10)))
             #expect(await store.enqueueCommand(
@@ -771,7 +771,7 @@ struct ChatCommandOutboxStoreTests {
         }
 
         // New instance = simulated app relaunch: rows are durable.
-        let reopened = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let reopened = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let loaded = await reopened.loadCommands()
         #expect(loaded.map(\.id) == ["c-1", "c-2"])
         #expect(loaded.map(\.text) == ["first", "second"])
@@ -785,7 +785,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `claims are FIFO and exclusive until the sender advances`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let now = Date().timeIntervalSince1970
         #expect(await store.enqueueCommand(outboxCommand(id: "c-1", text: "first", createdAt: now)))
         #expect(await store.enqueueCommand(outboxCommand(id: "c-2", text: "second", createdAt: now + 1)))
@@ -799,7 +799,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `user cancellation cannot delete a claimed command`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-1", text: "claimed")))
         #expect(await store.claimNextCommand()?.id == "c-1")
 
@@ -812,7 +812,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `queued cancellation atomically scrubs and suppresses its cached bubble`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-cancel", text: "cancel me")))
         let staleSnapshot = [
             cacheMessage(
@@ -861,7 +861,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `canonical message merge preserves a newer cached snapshot`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         await store.storeTranscript(sessionKey: "main", messages: [
             cacheMessage(role: "assistant", text: "newer row", timestamp: 2, idempotencyKey: "newer-run"),
         ])
@@ -882,9 +882,9 @@ struct ChatCommandOutboxStoreTests {
     @Test func `scoped cancellation scrubs the canonical transcript partition`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let sessionKey = "agent:agent-a:matrix:channel:!MixedRoomAbCdEf:example.org"
-        #expect(await store.enqueueCommand(OpenClawChatOutboxCommand(
+        #expect(await store.enqueueCommand(OperatorChatOutboxCommand(
             id: "c-scoped-cancel",
             sessionKey: sessionKey,
             agentID: "agent-a",
@@ -911,7 +911,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `cancellation lookup failure preserves the queued command`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-lookup", text: "keep me")))
 
         var raw: OpaquePointer?
@@ -941,7 +941,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `transcript lookup failure rolls back queued cancellation`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-cache", text: "keep me")))
         await store.storeTranscript(
             sessionKey: "main",
@@ -969,7 +969,7 @@ struct ChatCommandOutboxStoreTests {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(outboxCommand(id: "c-1", text: "in flight")))
             #expect(await store.claimNextCommand()?.id == "c-1")
             #expect(await store.loadCommands().map(\.status) == [.sending])
@@ -977,11 +977,11 @@ struct ChatCommandOutboxStoreTests {
 
         // Simulated crash mid-send: the durable result is ambiguous, so a
         // fresh process requires explicit user retry instead of replaying it.
-        let reopened = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let reopened = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await reopened.recoverInterruptedSends())
         let recovered = await reopened.loadCommands()
         #expect(recovered.map(\.status) == [.failed])
-        #expect(recovered.map(\.lastError) == [OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError])
+        #expect(recovered.map(\.lastError) == [OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError])
 
         // An unreachable store must report failure so callers do not burn
         // their once-per-launch recovery gate while the DB is locked.
@@ -992,7 +992,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `failed post-claim transition reopens same-process recovery`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-claim", text: "recover me")))
         #expect(await store.recoverInterruptedSends())
         #expect(await store.claimNextCommand()?.id == "c-claim")
@@ -1026,7 +1026,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `failed terminal transition reports unavailable and reopens recovery`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-terminal", text: "stop retrying")))
         #expect(await store.recoverInterruptedSends())
         #expect(await store.claimNextCommand()?.id == "c-terminal")
@@ -1059,13 +1059,13 @@ struct ChatCommandOutboxStoreTests {
         let command = await store.loadCommands().first
         #expect(command?.status == .failed)
         #expect(command?.retryCount == 0)
-        #expect(command?.lastError == OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError)
+        #expect(command?.lastError == OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError)
     }
 
     @Test func `unknown row status is skipped without blocking later commands`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-valid", text: "send me", createdAt: 2)))
 
         var raw: OpaquePointer?
@@ -1088,15 +1088,15 @@ struct ChatCommandOutboxStoreTests {
     @Test func `queued commands expire to failed at the staleness boundary`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         let now = Date().timeIntervalSince1970
-        let maxAge = OpenClawChatSQLiteTranscriptCache.outboxCommandMaxAge
+        let maxAge = OperatorChatSQLiteTranscriptCache.outboxCommandMaxAge
         #expect(await store.enqueueCommand(
             outboxCommand(id: "c-stale", text: "stale", createdAt: now - maxAge - 60)))
         #expect(await store.enqueueCommand(
             outboxCommand(id: "c-fresh", text: "fresh", createdAt: now - maxAge + 60)))
         #expect(await store.enqueueCommand(
-            OpenClawChatOutboxCommand(
+            OperatorChatOutboxCommand(
                 id: "c-unconfirmed",
                 sessionKey: "main",
                 text: "unconfirmed",
@@ -1112,18 +1112,18 @@ struct ChatCommandOutboxStoreTests {
         let fresh = try #require(loaded.first { $0.id == "c-fresh" })
         let unconfirmed = try #require(loaded.first { $0.id == "c-unconfirmed" })
         #expect(stale.status == .failed)
-        #expect(stale.lastError == OpenClawChatSQLiteTranscriptCache.outboxExpiredError)
+        #expect(stale.lastError == OperatorChatSQLiteTranscriptCache.outboxExpiredError)
         #expect(fresh.status == .queued)
         #expect(fresh.lastError == nil)
         #expect(unconfirmed.status == .failed)
-        #expect(unconfirmed.lastError == OpenClawChatSQLiteTranscriptCache.outboxUnconfirmedError)
+        #expect(unconfirmed.lastError == OperatorChatSQLiteTranscriptCache.outboxUnconfirmedError)
     }
 
     @Test func `enqueue refuses beyond the queue bound`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let bound = OpenClawChatSQLiteTranscriptCache.maxQueuedCommands
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let bound = OperatorChatSQLiteTranscriptCache.maxQueuedCommands
 
         for index in 0..<bound {
             #expect(await store.enqueueCommand(outboxCommand(id: "c-\(index)", text: "m\(index)")))
@@ -1137,19 +1137,19 @@ struct ChatCommandOutboxStoreTests {
     }
 
     @Test func `attachment byte admission enforces command and gateway bounds`() {
-        let commandBound = OpenClawChatSQLiteTranscriptCache.maxAttachmentBytesPerCommand
-        let gatewayBound = OpenClawChatSQLiteTranscriptCache.maxQueuedAttachmentBytes
+        let commandBound = OperatorChatSQLiteTranscriptCache.maxAttachmentBytesPerCommand
+        let gatewayBound = OperatorChatSQLiteTranscriptCache.maxQueuedAttachmentBytes
 
-        #expect(OpenClawChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
+        #expect(OperatorChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
             commandBytes: commandBound,
             queuedBytes: gatewayBound - commandBound))
-        #expect(!OpenClawChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
+        #expect(!OperatorChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
             commandBytes: commandBound + 1,
             queuedBytes: 0))
-        #expect(!OpenClawChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
+        #expect(!OperatorChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
             commandBytes: 1,
             queuedBytes: gatewayBound))
-        #expect(!OpenClawChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
+        #expect(!OperatorChatSQLiteTranscriptCache.canEnqueueAttachmentBytes(
             commandBytes: -1,
             queuedBytes: 0))
     }
@@ -1157,13 +1157,13 @@ struct ChatCommandOutboxStoreTests {
     @Test func `enqueue persists attachment bytes and refuses a full byte budget`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let attachment = OpenClawChatOutboxAttachment(
+        let attachment = OperatorChatOutboxAttachment(
             type: "file",
             mimeType: "audio/mp4",
             fileName: "voice-note.m4a",
             data: Data([0x01]))
         do {
-            let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+            let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
             #expect(await store.enqueueCommand(outboxCommand(
                 id: "c-audio",
                 text: "voice note",
@@ -1177,7 +1177,7 @@ struct ChatCommandOutboxStoreTests {
             raw,
             """
             UPDATE outbox_commands
-            SET attachment_bytes = \(OpenClawChatSQLiteTranscriptCache.maxQueuedAttachmentBytes)
+            SET attachment_bytes = \(OperatorChatSQLiteTranscriptCache.maxQueuedAttachmentBytes)
             WHERE client_uuid = 'c-audio' AND attachment_bytes = 1
             """,
             nil,
@@ -1186,7 +1186,7 @@ struct ChatCommandOutboxStoreTests {
         #expect(sqlite3_changes(raw) == 1)
         sqlite3_close_v2(raw)
 
-        let fullStore = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let fullStore = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await !fullStore.enqueueCommand(outboxCommand(
             id: "c-overflow",
             text: "one byte too many",
@@ -1197,8 +1197,8 @@ struct ChatCommandOutboxStoreTests {
     @Test func `outbox rows are scoped per gateway identity`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let storeA = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
-        let storeB = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
+        let storeA = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let storeB = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-b")
 
         #expect(await storeA.enqueueCommand(outboxCommand(id: "c-a", text: "for gateway A")))
         #expect(await storeB.loadCommands().isEmpty)
@@ -1215,7 +1215,7 @@ struct ChatCommandOutboxStoreTests {
     @Test func `retry and failure marks persist retry count and last error`() async throws {
         let url = try makeDatabaseURL()
         defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: url, gatewayID: "gw-a")
         #expect(await store.enqueueCommand(outboxCommand(id: "c-1", text: "retry me")))
 
         await store.markCommandQueued(id: "c-1", retryCount: 2, lastError: "socket closed")

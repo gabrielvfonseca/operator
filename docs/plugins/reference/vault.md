@@ -11,8 +11,8 @@ HashiCorp Vault SecretRef provider integration.
 
 ## Distribution
 
-- Package: `@operator/vault`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/vault`
+- Install route: included in Operator
 
 ## Surface
 

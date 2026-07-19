@@ -1,6 +1,6 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 
 struct AgentOverviewRefreshGate {
     private var generation: UInt64 = 0

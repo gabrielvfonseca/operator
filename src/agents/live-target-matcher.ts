@@ -3,12 +3,12 @@
  * follow plugin ownership aliases so scoped live runs include equivalent
  * provider IDs.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeGooglePreviewModelId } from "@operator/model-catalog-core/provider-model-id-normalize";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeGooglePreviewModelId } from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalize";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { liveProvidersShareOwningPlugin } from "./live-provider-owner.js";
 

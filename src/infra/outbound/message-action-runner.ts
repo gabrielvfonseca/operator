@@ -3,8 +3,8 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/schema/error-codes.js";
 import { stripPlainTextToolCallBlocks } from "../../../packages/tool-call-repair/src/index.js";
 import { resolveSessionAgentId } from "../../agents/agent-scope.js";

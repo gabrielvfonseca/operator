@@ -1,4 +1,7 @@
-import { clampThinkingLevel, getSupportedThinkingLevels } from "@operator/ai/internal/runtime";
+import {
+  clampThinkingLevel,
+  getSupportedThinkingLevels,
+} from "@gabrielvfonseca/ai/internal/runtime";
 import { describe, expect, it } from "vitest";
 import type { Model } from "./types.js";
 

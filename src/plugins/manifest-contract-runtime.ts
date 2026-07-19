@@ -1,5 +1,5 @@
 // Resolves manifest contracts into runtime-facing plugin capabilities.
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   hasManifestContractValue,

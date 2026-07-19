@@ -5,8 +5,8 @@
 
 import type { IncomingMessage, ServerResponse } from "node:http";
 import * as querystring from "node:querystring";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   beginWebhookRequestPipelineOrReject,
   createWebhookInFlightLimiter,
@@ -14,7 +14,7 @@ import {
   readRequestBodyWithLimit,
   resolveRequestClientIp,
   requestBodyErrorToText,
-} from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import * as synologyClient from "./client.js";
 import {
   validateToken,
@@ -245,7 +245,7 @@ function extractTokenFromHeaders(req: IncomingMessage): string | undefined {
   const explicit =
     headerValue(req.headers["x-synology-token"]) ??
     headerValue(req.headers["x-webhook-token"]) ??
-    headerValue(req.headers["x-openclaw-token"]);
+    headerValue(req.headers["x-operator-token"]);
   if (explicit) {
     return explicit;
   }

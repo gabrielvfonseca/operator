@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
-import { runOperatorStateWriteTransaction } from "../state/operator-state-db.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import { resolveRequiredHomeDir } from "./home-dir.js";
 import {
   executeSqliteQuerySync,
@@ -32,7 +32,7 @@ type LegacyCurrentConversationBindingsImportDatabase = Pick<
 >;
 
 const VOICEWAKE_CONFIG_KEY = "default";
-const DEFAULT_VOICEWAKE_TRIGGERS = ["operator", "claude", "computer"];
+const DEFAULT_VOICEWAKE_TRIGGERS = ["@gabrielvfonseca/operator", "claude", "computer"];
 
 export function resolveLegacyVoiceWakeTriggersPath(stateDir: string): string {
   return path.join(stateDir, "settings", "voicewake.json");

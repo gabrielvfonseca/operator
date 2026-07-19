@@ -11,10 +11,10 @@ import {
 const roots: string[] = [];
 
 function createFixture(config: Record<string, unknown>, stateEntries: string[] = []) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-pristine-startup-"));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-pristine-startup-"));
   roots.push(root);
   const stateDir = path.join(root, "state");
-  const configPath = path.join(root, "openclaw.json");
+  const configPath = path.join(root, "operator.json");
   fs.writeFileSync(configPath, `${JSON.stringify(config)}\n`);
   fs.mkdirSync(stateDir, { recursive: true });
   for (const entry of stateEntries) {
@@ -37,7 +37,7 @@ function addBundledPlugin(
   const pluginDir = path.join(bundledPluginsDir, pluginId);
   fs.mkdirSync(pluginDir, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     `${JSON.stringify({ id: pluginId })}\n`,
   );
   if (options.doctorContract) {
@@ -83,7 +83,7 @@ describe("pristine startup state", () => {
         agents: {
           defaults: {
             model: { primary: "openai/gpt-5.6" },
-            models: { "openai/gpt-5.6": { agentRuntime: { id: "openclaw" } } },
+            models: { "openai/gpt-5.6": { agentRuntime: { id: "@gabrielvfonseca/operator" } } },
             workspace: "/tmp/workspace",
           },
           list: [{ id: "main", workspace: "/tmp/workspace" }],

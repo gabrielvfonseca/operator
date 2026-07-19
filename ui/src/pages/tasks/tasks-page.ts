@@ -20,7 +20,7 @@ import {
   normalizeTasksListResult,
   type TaskSummary,
 } from "../../lib/tasks/data.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import { renderTasks } from "./view.ts";
 
@@ -43,7 +43,7 @@ function taskMatchesAgentScope(task: TaskSummary, agentId: string | null): boole
   );
 }
 
-class TasksPage extends OpenClawLightDomElement {
+class TasksPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -318,6 +318,6 @@ class TasksPage extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-tasks-page")) {
-  customElements.define("openclaw-tasks-page", TasksPage);
+if (!customElements.get("operator-tasks-page")) {
+  customElements.define("operator-tasks-page", TasksPage);
 }

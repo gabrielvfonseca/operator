@@ -5,7 +5,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../shared/transcript-only-openclaw-assistant.js";
 import { repairSessionFileIfNeeded } from "./session-file-repair.js";
@@ -45,7 +45,7 @@ async function readTrustedSnapshot(file: string) {
 }
 
 async function createTempSessionPath() {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-repair-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-repair-"));
   tempDirs.push(dir);
   return { dir, file: path.join(dir, "session.jsonl") };
 }
@@ -848,7 +848,7 @@ describe("repairSessionFileIfNeeded", () => {
       timestamp: new Date().toISOString(),
       message: {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         api: OPERATOR_TRANSCRIPT_ARTIFACT_API,
         content: [{ type: "text", text: "Process: `wild-wharf`" }],
@@ -908,7 +908,7 @@ describe("repairSessionFileIfNeeded", () => {
       timestamp: new Date().toISOString(),
       message: {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         api: OPERATOR_TRANSCRIPT_ARTIFACT_API,
         content: [{ type: "text", text: "visible reply" }],

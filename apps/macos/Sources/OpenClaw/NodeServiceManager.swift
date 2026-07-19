@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 enum NodeServiceManager {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "node.service")
+    private static let logger = Logger(subsystem: "ai.operator", category: "node.service")
     private static var launchdPlistURL: URL {
         FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Library/LaunchAgents/\(nodeLaunchdLabel).plist")
@@ -78,7 +78,7 @@ enum NodeServiceManager {
 
 extension NodeServiceManager {
     private static func serviceCommand(_ args: [String]) -> [String] {
-        CommandResolver.openclawCommand(
+        CommandResolver.operatorCommand(
             subcommand: "node",
             extraArgs: self.withJsonFlag(args),
             // Service management must always run locally, even if remote mode is configured.

@@ -1,7 +1,7 @@
 // Xai provider module implements model/runtime integration.
-import { toImageDataUrl } from "openclaw/plugin-sdk/image-generation";
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+import { toImageDataUrl } from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -12,13 +12,16 @@ import {
   resolveProviderHttpRequestConfig,
   sanitizeConfiguredModelProviderRequest,
   waitProviderOperationPollInterval,
-} from "openclaw/plugin-sdk/provider-http";
-import { isRecord, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  isRecord,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type {
   VideoGenerationProvider,
   VideoGenerationProviderCapabilities,
   VideoGenerationRequest,
-} from "openclaw/plugin-sdk/video-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/video-generation";
 import {
   downloadXaiVideo,
   fetchXaiVideoResponse,

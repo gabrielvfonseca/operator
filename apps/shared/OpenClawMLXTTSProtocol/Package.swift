@@ -3,16 +3,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "OpenClawMLXTTSProtocol",
+    name: "OperatorMLXTTSProtocol",
     platforms: [
         .macOS(.v15),
     ],
     products: [
-        .library(name: "OpenClawMLXTTSProtocol", targets: ["OpenClawMLXTTSProtocol"]),
+        .library(name: "OperatorMLXTTSProtocol", targets: ["OperatorMLXTTSProtocol"]),
     ],
     targets: [
-        .target(name: "OpenClawMLXTTSProtocol"),
+        .target(name: "OperatorMLXTTSProtocol"),
         .testTarget(
-            name: "OpenClawMLXTTSProtocolTests",
-            dependencies: ["OpenClawMLXTTSProtocol"]),
+            name: "OperatorMLXTTSProtocolTests",
+            dependencies: ["OperatorMLXTTSProtocol"]),
     ])

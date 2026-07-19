@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 @Suite("DeviceAuthPayload")
 struct DeviceAuthPayloadTests {
@@ -11,7 +11,7 @@ struct DeviceAuthPayloadTests {
         let payload = GatewayDeviceAuthPayload.buildConnectCompatibilityPayload(
             fields: .init(
                 deviceId: "dev-1",
-                client: .init(id: "openclaw-macos", mode: "ui"),
+                client: .init(id: "operator-macos", mode: "ui"),
                 role: "operator",
                 scopes: ["operator.admin", "operator.read"],
                 signedAtMs: signedAtMs,
@@ -19,7 +19,7 @@ struct DeviceAuthPayloadTests {
                 nonce: "nonce-abc"))
         #expect(
             payload
-                == "v2|dev-1|openclaw-macos|ui|operator|operator.admin,operator.read|1800000000000|tok-123|nonce-abc")
+                == "v2|dev-1|operator-macos|ui|operator|operator.admin,operator.read|1800000000000|tok-123|nonce-abc")
     }
 
     @Test
@@ -28,7 +28,7 @@ struct DeviceAuthPayloadTests {
         let payload = GatewayDeviceAuthPayload.buildV3(
             fields: .init(
                 deviceId: "dev-1",
-                client: .init(id: "openclaw-macos", mode: "ui"),
+                client: .init(id: "operator-macos", mode: "ui"),
                 role: "operator",
                 scopes: ["operator.admin", "operator.read"],
                 signedAtMs: signedAtMs,
@@ -39,7 +39,7 @@ struct DeviceAuthPayloadTests {
         #expect(
             payload
                 ==
-                "v3|dev-1|openclaw-macos|ui|operator|operator.admin,operator.read|1800000000000|tok-123|nonce-abc|ios|iphone")
+                "v3|dev-1|operator-macos|ui|operator|operator.admin,operator.read|1800000000000|tok-123|nonce-abc|ios|iphone")
     }
 
     @Test
@@ -53,7 +53,7 @@ struct DeviceAuthPayloadTests {
         let payload = GatewayDeviceAuthPayload.buildV3(
             fields: .init(
                 deviceId: identity.deviceId,
-                client: .init(id: "openclaw-watchos", mode: "node"),
+                client: .init(id: "operator-watchos", mode: "node"),
                 role: "node",
                 scopes: [],
                 signedAtMs: signedAtMs,

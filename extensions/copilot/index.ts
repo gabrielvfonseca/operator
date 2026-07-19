@@ -1,6 +1,6 @@
 // Copilot plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { createCopilotAgentHarness, type CopilotSessionBinding } from "./harness.js";
 
 function readPoolOptions(pluginConfig: unknown): { idleTtlMs: number } | undefined {

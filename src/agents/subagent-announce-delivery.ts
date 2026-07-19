@@ -3,12 +3,12 @@
  *
  * Routes completion payloads through gateway/channel/session paths and records delivery evidence.
  */
-import { clampTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { clampTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { completionRequiresMessageToolDelivery } from "../auto-reply/reply/completion-delivery-policy.js";
 import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { getLoadedChannelPluginForRead } from "../channels/plugins/registry-loaded.js";

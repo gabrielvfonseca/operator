@@ -1,6 +1,6 @@
 import AVFoundation
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 import Speech
 import SwabbleKit
@@ -12,7 +12,7 @@ import AppKit
 actor VoiceWakeRuntime {
     static let shared = VoiceWakeRuntime()
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "voicewake.runtime")
+    private let logger = Logger(subsystem: "ai.operator", category: "voicewake.runtime")
 
     private var recognizer: SFSpeechRecognizer?
     // Lazily created on start to avoid creating an AVAudioEngine at app launch, which can switch Bluetooth

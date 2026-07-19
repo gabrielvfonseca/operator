@@ -1,5 +1,5 @@
 // Link-understanding formatter appends normalized fetched-link summaries to the agent-visible message body.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 /** Appends normalized link-understanding outputs to the agent-visible body. */
 export function formatLinkUnderstandingBody(params: { body?: string; outputs: string[] }): string {

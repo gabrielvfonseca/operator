@@ -1,8 +1,8 @@
 import Foundation
 
 enum GatewayLaunchAgentManager {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "gateway.launchd")
-    private static let disableLaunchAgentMarker = ".openclaw/disable-launchagent"
+    private static let logger = Logger(subsystem: "ai.operator", category: "gateway.launchd")
+    private static let disableLaunchAgentMarker = ".operator/disable-launchagent"
 
     private static var disableLaunchAgentMarkerURL: URL {
         #if DEBUG
@@ -20,7 +20,7 @@ enum GatewayLaunchAgentManager {
     }
 
     private static var generatedEnvironmentDirectoryURL: URL {
-        OpenClawPaths.stateDirURL.appendingPathComponent("service-env", isDirectory: true)
+        OperatorPaths.stateDirURL.appendingPathComponent("service-env", isDirectory: true)
     }
 
     static func isLaunchAgentWriteDisabled() -> Bool {
@@ -203,7 +203,7 @@ extension GatewayLaunchAgentManager {
                 message: nil)
         }
         #endif
-        let command = CommandResolver.openclawCommand(
+        let command = CommandResolver.operatorCommand(
             subcommand: "gateway",
             extraArgs: self.withJsonFlag(args),
             // Launchd management must always run locally, even if remote mode is configured.

@@ -6,11 +6,11 @@
 import {
   asOptionalObjectRecord,
   asOptionalRecord as readRecordField,
-} from "@operator/normalization-core/record-coerce";
+} from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeOptionalLowercaseString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   HEARTBEAT_RESPONSE_TOOL_NAME,
   normalizeHeartbeatToolResponse,
@@ -455,12 +455,12 @@ function extractLiveExecOutput(result: unknown): string | undefined {
 
 function isOperatorExecutable(token: string | undefined): boolean {
   const executable = normalizeOptionalLowercaseString(token);
-  return executable?.split(/[\\/]/).at(-1) === "operator";
+  return executable?.split(/[\\/]/).at(-1) === "@gabrielvfonseca/operator";
 }
 
 function isOperatorPackageSpec(token: string | undefined): boolean {
   const packageSpec = normalizeOptionalLowercaseString(token);
-  return packageSpec?.startsWith("operator@") === true && packageSpec.length > "operator@".length;
+  return packageSpec?.startsWith("openclaw@") === true && packageSpec.length > "openclaw@".length;
 }
 
 function skipOperatorPackageRunner(
@@ -1491,7 +1491,7 @@ export async function handleToolExecutionEnd(
       data: {
         phase: "update",
         title: "Plan updated",
-        source: "operator",
+        source: "@gabrielvfonseca/operator",
         ...planUpdate,
       },
     };

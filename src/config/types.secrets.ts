@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Defines secret reference and resolution configuration types.
 import { isRecord } from "../utils.js";
 

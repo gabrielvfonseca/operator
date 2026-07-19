@@ -1,9 +1,9 @@
 import { normalizeAgentId } from "../routing/session-key.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../state/operator-agent-db.js";
+} from "../state/openclaw-agent-db.js";
 // Per-agent SQLite storage for the rebuildable session cost/usage cache.
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 

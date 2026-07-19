@@ -27,8 +27,8 @@ const testing = {
   ): AnyAgentTool[] {
     const actualTools = createOperatorCodingTools({
       ...options,
-      cwd: "/tmp/openclaw-agent-tools-policy-test",
-      workspaceDir: "/tmp/openclaw-agent-tools-policy-test",
+      cwd: "/tmp/operator-agent-tools-policy-test",
+      workspaceDir: "/tmp/operator-agent-tools-policy-test",
       toolConstructionPlan: {
         includeBaseCodingTools: true,
         includeShellTools: true,

@@ -33,7 +33,7 @@ export function makeCatalogEntry(
     id,
     pluginId: overrides.pluginId ?? id,
     meta: makeMeta(id, label, overrides.meta),
-    install: overrides.install ?? { npmSpec: `@operator/${id}` },
+    install: overrides.install ?? { npmSpec: `@gabrielvfonseca/${id}` },
     ...overrides,
   };
 }

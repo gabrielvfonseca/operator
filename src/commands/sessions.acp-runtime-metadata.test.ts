@@ -1,13 +1,13 @@
 // Sessions ACP runtime metadata tests cover agent runtime metadata derived from model and session keys.
 import { describe, expect, it } from "vitest";
 import { resolveModelAgentRuntimeMetadata } from "../agents/agent-runtime-metadata.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { parseAgentSessionKey } from "../routing/session-key.js";
 
 /**
- * Catalog #18 — `openclaw sessions --json` reports `agentRuntime.id: "openclaw"` for
+ * Catalog #18 — `openclaw sessions --json` reports `agentRuntime.id: "@gabrielvfonseca/operator"` for
  * ACP sessions because the old metadata resolver only consulted agent-config
- * policies (env / agent / defaults / implicit fallback to "openclaw"). The session
+ * policies (env / agent / defaults / implicit fallback to "@gabrielvfonseca/operator"). The session
  * key clearly carries the ACP runtime indicator (the `:acp:` segment), but
  * `sessions.ts:294` used to ignore it.
  *
@@ -17,7 +17,7 @@ import { parseAgentSessionKey } from "../routing/session-key.js";
  *   {
  *     "key": "agent:copilot:acp:86b7b5af-3773-4a56-b244-069d6c5d3db9",
  *     "agentId": "copilot",
- *     "agentRuntime": { "id": "openclaw", "source": "implicit" },
+ *     "agentRuntime": { "id": "@gabrielvfonseca/operator", "source": "implicit" },
  *     "kind": "direct"
  *   }
  *
@@ -28,7 +28,7 @@ import { parseAgentSessionKey } from "../routing/session-key.js";
  * This test mirrors the exact computation `sessionsCommand` performs at
  * `src/commands/sessions.ts:294` and proves the bug in two parts:
  *
- *   - RED: ACP-keyed session resolves to `id: "openclaw"`, `source: "implicit"`.
+ *   - RED: ACP-keyed session resolves to `id: "@gabrielvfonseca/operator"`, `source: "implicit"`.
  *   - GREEN control: a non-ACP `agent:main:main` session resolves to the
  *     same implicit-native metadata, which IS correct in that case. The control
  *     proves the assertion infrastructure is not masking the RED case.
@@ -51,7 +51,7 @@ const NON_ACP_SESSION_KEY = "agent:main:main";
  * - it has NO explicit `agentRuntime.id` policy
  * - no top-level `agents.defaults.agentRuntime` either
  *
- * Result: the old metadata resolver fell through to the implicit "openclaw"
+ * Result: the old metadata resolver fell through to the implicit "@gabrielvfonseca/operator"
  * branch — which is the bug under test.
  */
 function buildConfigWithoutAgentRuntimePolicy(): OperatorConfig {
@@ -110,12 +110,12 @@ describe("sessions --json agentRuntime classifier (catalog #18)", () => {
     });
 
     // The bug was: the session key plainly contains `:acp:` and yet the
-    // resolved metadata said id="openclaw", source="implicit".
+    // resolved metadata said id="@gabrielvfonseca/operator", source="implicit".
     // After the fix (applyAcpRuntimeOverlay in resolveModelAgentRuntimeMetadata),
     // the ACP session key overrides the runtime to id="acpx", source="session-key".
     expect(
       agentRuntime.id,
-      `ACP session ${ACP_SESSION_KEY} should no longer be misclassified as "auto" or "openclaw". ` +
+      `ACP session ${ACP_SESSION_KEY} should no longer be misclassified as "auto" or "@gabrielvfonseca/operator". ` +
         `Got "${agentRuntime.id}". resolveModelAgentRuntimeMetadata must pass sessionKey to ` +
         `applyAcpRuntimeOverlay so ACP sessions are classified as "acpx".`,
     ).not.toBe("auto");
@@ -151,7 +151,7 @@ describe("sessions --json agentRuntime classifier (catalog #18)", () => {
     //
     // Note: the exact id ("acpx" vs another label) is a design choice for
     // the fix author. What matters is that it is meaningfully different
-    // from "openclaw" and reflects the actual runtime driving the session.
+    // from "@gabrielvfonseca/operator" and reflects the actual runtime driving the session.
     // If the fix picks a different label, update this assertion to match —
     // the structural point (session-key-aware classification) is the
     // load-bearing part.
@@ -224,7 +224,7 @@ describe("sessions --json agentRuntime classifier (catalog #18)", () => {
         agents: {
           defaults: {
             models: {
-              "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },
@@ -235,7 +235,7 @@ describe("sessions --json agentRuntime classifier (catalog #18)", () => {
       sessionKey: NON_ACP_SESSION_KEY,
       sessionEntry: {
         agentHarnessId: "codex",
-        agentRuntimeOverride: "openclaw",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
         modelSelectionLocked: true,
       },
     });

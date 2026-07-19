@@ -3,7 +3,7 @@
  *
  * Lists, resolves, and normalizes active channel plugins with bundled fallback.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeAnyChannelId } from "../registry.js";
 import { getBundledChannelPlugin } from "./bundled.js";
 import {

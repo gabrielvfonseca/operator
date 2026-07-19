@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawMLXTTSProtocol
+import OperatorMLXTTSProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 #if arch(arm64)
 @Suite(.serialized)

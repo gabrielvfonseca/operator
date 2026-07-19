@@ -27,12 +27,12 @@ describe("config io invalid config formatting", () => {
   });
 
   it("creates INVALID_CONFIG errors with inline details", () => {
-    const err = createInvalidConfigError("/tmp/openclaw.json", "- gateway.port: bad") as Error & {
+    const err = createInvalidConfigError("/tmp/operator.json", "- gateway.port: bad") as Error & {
       code?: string;
       details?: string;
     };
 
-    expect(err.message).toBe("Invalid config at /tmp/openclaw.json:\n- gateway.port: bad");
+    expect(err.message).toBe("Invalid config at /tmp/operator.json:\n- gateway.port: bad");
     expect(err.name).toBe("InvalidConfigError");
     expect(err.code).toBe("INVALID_CONFIG");
     expect(err.details).toBe("- gateway.port: bad");
@@ -48,21 +48,21 @@ describe("config io invalid config formatting", () => {
     const loggedConfigPaths = new Set<string>();
     const throwInvalid = () =>
       throwInvalidConfig({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         issues: [{ path: "nope", message: "Unknown key(s): nope" }],
         logger,
         loggedConfigPaths,
       });
 
     expect(throwInvalid).toThrowError(
-      "Invalid config at /tmp/openclaw.json:\n- nope: Unknown key(s): nope",
+      "Invalid config at /tmp/operator.json:\n- nope: Unknown key(s): nope",
     );
     expect(throwInvalid).toThrowError(
-      "Invalid config at /tmp/openclaw.json:\n- nope: Unknown key(s): nope",
+      "Invalid config at /tmp/operator.json:\n- nope: Unknown key(s): nope",
     );
     expect(logger.error).toHaveBeenCalledOnce();
     expect(logger.error).toHaveBeenCalledWith(
-      "Invalid config at /tmp/openclaw.json:\\n- nope: Unknown key(s): nope",
+      "Invalid config at /tmp/operator.json:\\n- nope: Unknown key(s): nope",
     );
   });
 });

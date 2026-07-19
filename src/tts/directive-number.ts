@@ -1,5 +1,5 @@
 // TTS directive number helpers parse strict numeric directive values.
-import { parseStrictFiniteNumber } from "@operator/normalization-core/number-coercion";
+import { parseStrictFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechDirectiveTokenParseResult,

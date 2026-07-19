@@ -1,7 +1,7 @@
 /**
  * Formats configured model aliases for prompt-visible model guidance.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 /** Builds deterministic prompt lines for configured model aliases. */

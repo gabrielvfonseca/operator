@@ -1,12 +1,12 @@
 /**
  * Orchestrates one agent attempt across embedded, CLI, and ACP runtimes.
  */
-import type { AcpRuntimeEvent } from "@operator/acp-core/runtime/types";
+import type { AcpRuntimeEvent } from "@gabrielvfonseca/acp-core/runtime/types";
 import {
   normalizeOptionalLowercaseString,
   type FastMode,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { sanitizeForLog } from "../../../packages/terminal-core/src/ansi.js";
 import { ACP_TURN_TIMEOUT_DETAIL_CODE } from "../../acp/control-plane/manager.turn-timeout.js";
 import { formatAcpErrorChain } from "../../acp/runtime/errors.js";
@@ -42,7 +42,6 @@ import {
   type UserTurnInput,
   type UserTurnTranscriptRecorder,
 } from "../../sessions/user-turn-transcript.js";
-import { buildWorkspaceSkillSnapshot } from "../../skills/loading/workspace.js";
 import {
   getGeneratedMediaTaskIdsForSessionKey,
   hasNewGeneratedMediaTaskForSessionKey,
@@ -392,7 +391,7 @@ export async function persistAcpTurnTranscript(params: {
     ...(params.userInput ? { userMessage: buildPersistedUserTurnMessage(params.userInput) } : {}),
     assistant: {
       api: "openai-responses",
-      provider: "operator",
+      provider: "@gabrielvfonseca/operator",
       model: "acp-runtime",
     },
   });
@@ -478,7 +477,6 @@ export function runAgentAttempt(params: {
   runContext: ReturnType<typeof resolveAgentRunContext>;
   spawnedBy: string | undefined;
   messageChannel: ReturnType<typeof resolveMessageChannel>;
-  skillsSnapshot: ReturnType<typeof buildWorkspaceSkillSnapshot> | undefined;
   resolvedVerboseLevel: VerboseLevel | undefined;
   agentDir: string;
   onAgentEvent: (evt: {
@@ -537,7 +535,7 @@ export function runAgentAttempt(params: {
   );
   const bootstrapPromptWarningSignature =
     bootstrapPromptWarningSignaturesSeen[bootstrapPromptWarningSignaturesSeen.length - 1];
-  const requestedAgentHarnessId = isRawModelRun ? "operator" : undefined;
+  const requestedAgentHarnessId = isRawModelRun ? "@gabrielvfonseca/operator" : undefined;
   const sessionRuntimeOverride = isRawModelRun ? undefined : params.agentHarnessRuntimeOverride;
   const locksSessionRuntimeOverride =
     sessionRuntimeOverride !== undefined && params.sessionEntry?.modelSelectionLocked === true;
@@ -577,7 +575,7 @@ export function runAgentAttempt(params: {
       agentId: params.sessionAgentId,
     });
   const agentHarnessPolicy = isRawModelRun
-    ? ({ runtime: "operator", runtimeSource: "model" } as const)
+    ? ({ runtime: "@gabrielvfonseca/operator", runtimeSource: "model" } as const)
     : sessionRuntimeOverride
       ? ({ runtime: sessionRuntimeOverride, runtimeSource: "model" } as const)
       : resolveAvailableAgentHarnessPolicy({
@@ -638,8 +636,9 @@ export function runAgentAttempt(params: {
   const embeddedAgentHarnessOverride =
     requestedAgentHarnessId ??
     sessionRuntimeOverride ??
-    (agentHarnessPolicy.runtime === "operator" && agentHarnessPolicy.runtimeSource !== "implicit"
-      ? "operator"
+    (agentHarnessPolicy.runtime === "@gabrielvfonseca/operator" &&
+    agentHarnessPolicy.runtimeSource !== "implicit"
+      ? "@gabrielvfonseca/operator"
       : undefined);
   if (!isRawModelRun && isCliExecutionProvider) {
     const cliSessionBinding = getCliSessionBinding(params.sessionEntry, cliExecutionProvider);
@@ -800,7 +799,6 @@ export function runAgentAttempt(params: {
             // accompany every CLI process. Native dedupe requires a runtime receipt.
             images: params.opts.images,
             imageOrder: params.opts.imageOrder,
-            skillsSnapshot: params.skillsSnapshot,
             messageChannel: params.messageChannel,
             streamParams: params.opts.streamParams,
             messageProvider: params.opts.messageProvider ?? params.messageChannel,

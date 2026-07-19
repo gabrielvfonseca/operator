@@ -41,8 +41,8 @@ describe("Nix integration (U3, U5, U9)", () => {
   });
 
   describe("U5: CONFIG_PATH and STATE_DIR env var overrides", () => {
-    it("STATE_DIR defaults to ~/.openclaw when env not set", () => {
-      expect(resolveStateDir(envWith({ OPERATOR_STATE_DIR: undefined }))).toMatch(/\.openclaw$/);
+    it("STATE_DIR defaults to ~/.operator when env not set", () => {
+      expect(resolveStateDir(envWith({ OPERATOR_STATE_DIR: undefined }))).toMatch(/\.operator$/);
     });
 
     it("STATE_DIR respects OPERATOR_STATE_DIR override", () => {
@@ -55,10 +55,10 @@ describe("Nix integration (U3, U5, U9)", () => {
       const customHome = path.join(path.sep, "custom", "home");
       expect(
         resolveStateDir(envWith({ OPERATOR_HOME: customHome, OPERATOR_STATE_DIR: undefined })),
-      ).toBe(path.join(path.resolve(customHome), ".openclaw"));
+      ).toBe(path.join(path.resolve(customHome), ".operator"));
     });
 
-    it("CONFIG_PATH defaults to OPERATOR_HOME/.openclaw/openclaw.json", () => {
+    it("CONFIG_PATH defaults to OPERATOR_HOME/.operator/operator.json", () => {
       const customHome = path.join(path.sep, "custom", "home");
       expect(
         resolveConfigPathCandidate(
@@ -68,33 +68,33 @@ describe("Nix integration (U3, U5, U9)", () => {
             OPERATOR_STATE_DIR: undefined,
           }),
         ),
-      ).toBe(path.join(path.resolve(customHome), ".openclaw", "openclaw.json"));
+      ).toBe(path.join(path.resolve(customHome), ".operator", "operator.json"));
     });
 
-    it("CONFIG_PATH defaults to ~/.openclaw/openclaw.json when env not set", () => {
+    it("CONFIG_PATH defaults to ~/.operator/operator.json when env not set", () => {
       expect(
         resolveConfigPathCandidate(
           envWith({ OPERATOR_CONFIG_PATH: undefined, OPERATOR_STATE_DIR: undefined }),
         ),
-      ).toMatch(/\.openclaw[\\/]openclaw\.json$/);
+      ).toMatch(/\.operator[\\/]openclaw\.json$/);
     });
 
     it("CONFIG_PATH respects OPERATOR_CONFIG_PATH override", () => {
       expect(
         resolveConfigPathCandidate(
-          envWith({ OPERATOR_CONFIG_PATH: "/nix/store/abc/openclaw.json" }),
+          envWith({ OPERATOR_CONFIG_PATH: "/nix/store/abc/operator.json" }),
         ),
-      ).toBe(path.resolve("/nix/store/abc/openclaw.json"));
+      ).toBe(path.resolve("/nix/store/abc/operator.json"));
     });
 
     it("CONFIG_PATH expands ~ in OPERATOR_CONFIG_PATH override", async () => {
       await withTempHome(async (home) => {
         expect(
           resolveConfigPathCandidate(
-            envWith({ OPERATOR_HOME: home, OPERATOR_CONFIG_PATH: "~/.openclaw/custom.json" }),
+            envWith({ OPERATOR_HOME: home, OPERATOR_CONFIG_PATH: "~/.operator/custom.json" }),
             () => home,
           ),
-        ).toBe(path.join(home, ".openclaw", "custom.json"));
+        ).toBe(path.join(home, ".operator", "custom.json"));
       });
     });
 
@@ -102,9 +102,9 @@ describe("Nix integration (U3, U5, U9)", () => {
       expect(
         resolveConfigPathCandidate(
           envWith({ OPERATOR_STATE_DIR: "/custom/state", OPERATOR_TEST_FAST: "1" }),
-          () => path.join(path.sep, "tmp", "openclaw-config-home"),
+          () => path.join(path.sep, "tmp", "operator-config-home"),
         ),
-      ).toBe(path.join(path.resolve("/custom/state"), "openclaw.json"));
+      ).toBe(path.join(path.resolve("/custom/state"), "operator.json"));
     });
   });
 

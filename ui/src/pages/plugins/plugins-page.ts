@@ -1,6 +1,6 @@
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { asNullableRecord as asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { consume } from "@lit/context";
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { asNullableRecord as asRecord } from "@operator/normalization-core/record-coerce";
 import { html, type PropertyValues } from "lit";
 import { property, state } from "lit/decorators.js";
 import type { GatewayBrowserClient } from "../../api/gateway.ts";
@@ -30,7 +30,7 @@ import {
   type PluginMutationResult,
   type PluginSearchResult,
 } from "../../lib/plugins/index.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import type { ConnectorSuggestion } from "./presentation.ts";
 import {
@@ -127,7 +127,7 @@ function parseMcpTarget(target: string): Record<string, unknown> | null {
   return args.length > 0 ? { command, args } : { command };
 }
 
-class PluginsPage extends OpenClawLightDomElement {
+class PluginsPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -902,13 +902,13 @@ class PluginsPage extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-plugins-page")) {
-  customElements.define("openclaw-plugins-page", PluginsPage);
+if (!customElements.get("operator-plugins-page")) {
+  customElements.define("operator-plugins-page", PluginsPage);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "openclaw-plugins-page": PluginsPage;
+    "operator-plugins-page": PluginsPage;
   }
 }
 

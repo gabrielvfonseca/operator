@@ -16,27 +16,27 @@ describe("SUPERVISOR_HINT_ENV_VARS", () => {
 describe("detectRespawnSupervisor", () => {
   it("detects launchd from Operator's explicit marker or current gateway launchd job", () => {
     expect(
-      detectRespawnSupervisor({ OPERATOR_LAUNCHD_LABEL: " ai.openclaw.gateway " }, "darwin"),
+      detectRespawnSupervisor({ OPERATOR_LAUNCHD_LABEL: " ai.operator.gateway " }, "darwin"),
     ).toBe("launchd");
     expect(detectRespawnSupervisor({ OPERATOR_LAUNCHD_LABEL: "   " }, "darwin")).toBeNull();
-    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.openclaw.gateway" }, "darwin")).toBe(
+    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.operator.gateway" }, "darwin")).toBe(
       "launchd",
     );
     expect(
       detectRespawnSupervisor(
-        { LAUNCH_JOB_NAME: "ai.openclaw.work", OPERATOR_PROFILE: "work" },
+        { LAUNCH_JOB_NAME: "ai.operator.work", OPERATOR_PROFILE: "work" },
         "darwin",
       ),
     ).toBe("launchd");
-    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.openclaw.mac" }, "darwin")).toBeNull();
-    expect(detectRespawnSupervisor({ XPC_SERVICE_NAME: "ai.openclaw.mac" }, "darwin")).toBeNull();
+    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.operator.mac" }, "darwin")).toBeNull();
+    expect(detectRespawnSupervisor({ XPC_SERVICE_NAME: "ai.operator.mac" }, "darwin")).toBeNull();
     expect(
       detectRespawnSupervisor(
-        { XPC_SERVICE_NAME: "ai.openclaw.mac", OPERATOR_PROFILE: "mac" },
+        { XPC_SERVICE_NAME: "ai.operator.mac", OPERATOR_PROFILE: "mac" },
         "darwin",
       ),
     ).toBeNull();
-    expect(detectRespawnSupervisor({ XPC_SERVICE_NAME: "ai.openclaw.gateway" }, "darwin")).toBe(
+    expect(detectRespawnSupervisor({ XPC_SERVICE_NAME: "ai.operator.gateway" }, "darwin")).toBe(
       "launchd",
     );
   });
@@ -60,7 +60,7 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          OPERATOR_SERVICE_MARKER: "openclaw",
+          OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
           OPERATOR_SERVICE_KIND: "worker",
         },
         "linux",
@@ -86,7 +86,7 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          OPERATOR_SERVICE_MARKER: "openclaw",
+          OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
           OPERATOR_SERVICE_KIND: "gateway",
         },
         "win32",
@@ -95,7 +95,7 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          OPERATOR_SERVICE_MARKER: "openclaw",
+          OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
           OPERATOR_SERVICE_KIND: "worker",
         },
         "win32",
@@ -107,14 +107,14 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          OPERATOR_SERVICE_MARKER: "openclaw",
+          OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
           OPERATOR_SERVICE_KIND: "gateway",
         },
         "linux",
       ),
     ).toBeNull();
     expect(
-      detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.openclaw.gateway" }, "freebsd"),
+      detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.operator.gateway" }, "freebsd"),
     ).toBeNull();
   });
 });

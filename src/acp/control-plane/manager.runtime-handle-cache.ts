@@ -2,13 +2,13 @@
 import {
   resolveRuntimeHandleIdentifiersFromIdentity,
   resolveSessionIdentityFromMeta,
-} from "@operator/acp-core/runtime/session-identity";
+} from "@gabrielvfonseca/acp-core/runtime/session-identity";
 import type {
   AcpRuntime,
   AcpRuntimeHandle,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/acp-core/runtime/types";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import type { ActiveTurnState, SessionAcpMeta } from "./manager.types.js";

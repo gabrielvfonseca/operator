@@ -96,15 +96,15 @@ struct GatewayCommandResolution {
 }
 
 enum GatewayEnvironment {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "gateway.env")
+    private static let logger = Logger(subsystem: "ai.operator", category: "gateway.env")
     private static let supportedBindModes: Set<String> = ["loopback", "tailnet", "lan", "auto"]
 
     static func gatewayPort() -> Int {
-        if let raw = ProcessInfo.processInfo.environment["OPENCLAW_GATEWAY_PORT"] {
+        if let raw = ProcessInfo.processInfo.environment["OPERATOR_GATEWAY_PORT"] {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
             if let parsed = Int(trimmed), parsed > 0 { return parsed }
         }
-        if let configPort = OpenClawConfigFile.gatewayPort(), configPort > 0 {
+        if let configPort = OperatorConfigFile.gatewayPort(), configPort > 0 {
             return configPort
         }
         let stored = UserDefaults.standard.integer(forKey: "gatewayPort")
@@ -157,7 +157,7 @@ enum GatewayEnvironment {
                 requiredGateway: expectedString,
                 message: RuntimeLocator.describeFailure(err))
         case let .success(runtime):
-            let gatewayBin = CommandResolver.openclawExecutable()
+            let gatewayBin = CommandResolver.operatorExecutable()
 
             if gatewayBin == nil, projectEntrypoint == nil {
                 return GatewayEnvironmentStatus(
@@ -165,7 +165,7 @@ enum GatewayEnvironment {
                     nodeVersion: runtime.version.description,
                     gatewayVersion: nil,
                     requiredGateway: expectedString,
-                    message: "openclaw CLI not found in PATH; install the CLI.")
+                    message: "operator CLI not found in PATH; install the CLI.")
             }
 
             let installedRaw = gatewayBin.flatMap { self.readGatewayVersion(binary: $0) }
@@ -218,7 +218,7 @@ enum GatewayEnvironment {
         let projectRoot = CommandResolver.projectRoot()
         let projectEntrypoint = CommandResolver.gatewayEntrypoint(in: projectRoot)
         let status = self.check()
-        let gatewayBin = CommandResolver.openclawExecutable()
+        let gatewayBin = CommandResolver.operatorExecutable()
         let runtime = RuntimeLocator.resolve(searchPaths: CommandResolver.preferredPaths())
 
         guard case .ok = status.kind else {
@@ -247,14 +247,14 @@ enum GatewayEnvironment {
         if CommandResolver.connectionModeIsRemote() {
             return nil
         }
-        if let env = ProcessInfo.processInfo.environment["OPENCLAW_GATEWAY_BIND"] {
+        if let env = ProcessInfo.processInfo.environment["OPERATOR_GATEWAY_BIND"] {
             let trimmed = env.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             if self.supportedBindModes.contains(trimmed) {
                 return trimmed
             }
         }
 
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         if let gateway = root["gateway"] as? [String: Any],
            let bind = gateway["bind"] as? String
         {
@@ -274,8 +274,8 @@ enum GatewayEnvironment {
         guard var normalized = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !normalized.isEmpty else {
             return nil
         }
-        if normalized.lowercased().hasPrefix("openclaw ") {
-            normalized = String(normalized.dropFirst("openclaw ".count))
+        if normalized.lowercased().hasPrefix("operator ") {
+            normalized = String(normalized.dropFirst("operator ".count))
         }
         // Strip trailing commit metadata, e.g. "2026.4.2 (d74a122)" → "2026.4.2"
         if let parenRange = normalized.range(of: #"\s*\([0-9a-fA-F]+\)\s*$"#, options: .regularExpression) {

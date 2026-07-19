@@ -3,26 +3,26 @@ import type {
   ChannelApprovalCapabilityHandlerContext,
   PendingApprovalView,
   ResolvedApprovalView,
-} from "openclaw/plugin-sdk/approval-handler-runtime";
-import { createChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
-import { buildChannelApprovalNativeTargetKey } from "openclaw/plugin-sdk/approval-native-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { createChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { buildChannelApprovalNativeTargetKey } from "@gabrielvfonseca/operator/plugin-sdk/approval-native-runtime";
 import {
   buildExecApprovalPendingReplyPayload,
   buildPluginApprovalPendingReplyPayload,
   type ExecApprovalReplyDecision,
-} from "openclaw/plugin-sdk/approval-reply-runtime";
-import { buildPluginApprovalResolvedReplyPayload } from "openclaw/plugin-sdk/approval-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import { buildPluginApprovalResolvedReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "openclaw/plugin-sdk/approval-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
 import {
   listMessageReceiptPlatformIds,
   resolveMessageReceiptPrimaryId,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { retryAsync } from "openclaw/plugin-sdk/retry-runtime";
-import { normalizeAccountId } from "openclaw/plugin-sdk/routing";
-import { normalizeUniqueStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { retryAsync } from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   buildMatrixApprovalReactionHint,
   listMatrixApprovalReactionBindings,
@@ -46,7 +46,7 @@ import { resolveMatrixTargetIdentity } from "./matrix/target-ids.js";
 import type { CoreConfig } from "./types.js";
 
 // Operator Matrix custom event content for capable clients; body and reactions remain fallback.
-const MATRIX_APPROVAL_METADATA_KEY = "com.openclaw.approval" as const;
+const MATRIX_APPROVAL_METADATA_KEY = "com.operator.approval" as const;
 
 type PendingMessage = {
   roomId: string;

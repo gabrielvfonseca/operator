@@ -1,4 +1,4 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import { resolveTelegramMiniAppUrls, TELEGRAM_MINIAPP_URL_ERROR } from "./url.js";
 
@@ -16,7 +16,7 @@ describe("resolveTelegramMiniAppUrls", () => {
     } satisfies OperatorConfig;
 
     await expect(resolveTelegramMiniAppUrls({ cfg, runCommand })).resolves.toEqual({
-      pageUrl: "https://host.tailnet.ts.net/__openclaw_tg_miniapp/",
+      pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
       controlUiUrl: "https://host.tailnet.ts.net/openclaw",
       gatewayUrl: "wss://host.tailnet.ts.net/openclaw",
     });
@@ -37,8 +37,8 @@ describe("resolveTelegramMiniAppUrls", () => {
     } satisfies OperatorConfig;
 
     await expect(resolveTelegramMiniAppUrls({ cfg, runCommand })).resolves.toMatchObject({
-      pageUrl: "https://openclaw.tailnet.ts.net/__openclaw_tg_miniapp/",
-      gatewayUrl: "wss://openclaw.tailnet.ts.net",
+      pageUrl: "https://operator.tailnet.ts.net/__operator_tg_miniapp/",
+      gatewayUrl: "wss://operator.tailnet.ts.net",
     });
   });
 

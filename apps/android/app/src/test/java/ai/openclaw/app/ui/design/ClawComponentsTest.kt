@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

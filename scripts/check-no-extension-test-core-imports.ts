@@ -1,4 +1,4 @@
-// Check No Extension Test Core Imports script supports OpenClaw repository automation.
+// Check No Extension Test Core Imports script supports Operator repository automation.
 import fs from "node:fs";
 import path from "node:path";
 import { collectFilesSync, isCodeFile, relativeToCwd } from "./check-file-utils.js";
@@ -149,7 +149,7 @@ const RETIRED_EXTENSION_TEST_HELPER_BRIDGE_FILES = [
   "test/helpers/temp-home.ts",
   "test/helpers/agents/auth-profile-runtime-contract.ts",
   "test/helpers/agents/delivery-no-reply-runtime-contract.ts",
-  "test/helpers/agents/openclaw-owned-tool-runtime-contract.ts",
+  "test/helpers/agents/operator-owned-tool-runtime-contract.ts",
   "test/helpers/agents/outcome-fallback-runtime-contract.ts",
   "test/helpers/agents/prompt-overlay-runtime-contract.ts",
   "test/helpers/agents/schema-normalization-runtime-contract.ts",

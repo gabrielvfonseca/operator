@@ -1,11 +1,11 @@
-import OpenClawKit
+import OperatorKit
 import Foundation
 import Testing
 
 @Suite struct CanvasSnapshotFormatTests {
     @Test func acceptsJpgAlias() throws {
         struct Wrapper: Codable {
-            var format: OpenClawCanvasSnapshotFormat
+            var format: OperatorCanvasSnapshotFormat
         }
 
         let data = try #require("{\"format\":\"jpg\"}".data(using: .utf8))

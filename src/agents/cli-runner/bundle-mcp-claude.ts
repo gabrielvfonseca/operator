@@ -2,8 +2,8 @@
  * Claude CLI argument helpers for Operator-managed bundle MCP config.
  */
 import fs from "node:fs/promises";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Find existing Claude `--mcp-config` argument values. */
 export function findClaudeMcpConfigPaths(args?: string[]): string[] {
@@ -77,9 +77,9 @@ export async function writeClaudeMcpCaptureConfig(params: {
     throw new Error("Claude MCP capture requires an object config");
   }
   const mcpServers = isRecord(raw.mcpServers) ? raw.mcpServers : {};
-  const operator = isRecord(mcpServers.operator) ? mcpServers.operator : undefined;
-  if (!operator) {
-    throw new Error("Claude MCP capture requires an operator server config");
+  const openclaw = isRecord(mcpServers.operator) ? mcpServers.operator : undefined;
+  if (!openclaw) {
+    throw new Error("Claude MCP capture requires an openclaw server config");
   }
   const headers = isRecord(operator.headers) ? operator.headers : {};
   await fs.writeFile(

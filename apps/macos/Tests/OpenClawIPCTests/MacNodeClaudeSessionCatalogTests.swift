@@ -1,12 +1,12 @@
 import Foundation
-@testable import OpenClaw
+@testable import Operator
 import Testing
 
 @Suite(.serialized)
 struct MacNodeClaudeSessionCatalogTests {
     private func makeHome() throws -> URL {
         let home = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-claude-home-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-claude-home-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: home, withIntermediateDirectories: true)
         return home
     }

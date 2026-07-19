@@ -3,7 +3,7 @@ import {
   clampOpenAIPromptCacheKey,
   type OpenAICompletionsToolChoice,
   type OpenAIReasoningEffort,
-} from "@operator/ai/internal/openai";
+} from "@gabrielvfonseca/ai/internal/openai";
 import type { ModelCompatConfig } from "../config/types.models.js";
 import type { Api, Model, Usage } from "../llm/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -29,7 +29,7 @@ export type BaseOpenAIStreamOptions = {
   headers?: Record<string, string>;
   firstEventTimeoutMs?: number;
   onFirstEventTimeout?: (reason: Error) => void;
-  operatorCodeModeToolSurface?: boolean;
+  openclawCodeModeToolSurface?: boolean;
   responseFormat?: Record<string, unknown>;
   frequencyPenalty?: number;
   presencePenalty?: number;

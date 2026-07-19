@@ -1,7 +1,7 @@
 import {
   createModelCatalogPresetAppliers,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildCohereModelDefinition,
   COHERE_BASE_URL,

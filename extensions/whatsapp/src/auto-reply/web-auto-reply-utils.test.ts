@@ -1,8 +1,8 @@
 // Whatsapp tests cover web auto reply utils plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeMainKey } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeMainKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   evaluateSessionFreshness,
   getSessionEntry,
@@ -13,8 +13,8 @@ import {
   resolveStorePath,
   resolveThreadFlag,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { withTempDir } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { withTempDir } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
 import { createTestWebInboundMessage } from "../inbound/test-message.test-helper.js";
 import type { AdmittedWebInboundMessage } from "../inbound/types.js";
@@ -244,7 +244,7 @@ describe("isBotMentionedFromTargets", () => {
 
 describe("resolveMentionTargets with @lid mapping", () => {
   it("uses @lid reverse mapping for mentions and self identity", async () => {
-    await withTempDir("openclaw-lid-mapping-", async (authDir) => {
+    await withTempDir("operator-lid-mapping-", async (authDir) => {
       await fs.writeFile(
         path.join(authDir, "lid-mapping-777_reverse.json"),
         JSON.stringify("+1777"),
@@ -284,7 +284,7 @@ describe("getSessionSnapshot", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(2026, 0, 18, 5, 0, 0));
     try {
-      await withTempDir("openclaw-snapshot-", async (root) => {
+      await withTempDir("operator-snapshot-", async (root) => {
         const storePath = path.join(root, "sessions.json");
         const sessionKey = "agent:main:whatsapp:dm:s1";
 

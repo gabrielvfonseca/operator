@@ -1,6 +1,6 @@
 // Binds plugin conversations to stable channel and agent identifiers.
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ReplyPayload } from "../auto-reply/reply-payload.js";
 import {
   createConversationBindingRecord,
@@ -13,11 +13,11 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import type { ConversationRef } from "../infra/outbound/session-binding-service.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveGlobalMap, resolveGlobalSingleton } from "../shared/global-singleton.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import {
   buildPluginBindingSessionKey,
   normalizeChannel,
@@ -651,7 +651,7 @@ function buildDetachHintSuffix(detachHint?: string): string {
 }
 
 export function buildPluginBindingUnavailableText(binding: PluginConversationBinding): string {
-  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to Operator instead. If this started after an update, run "operator doctor --fix"; otherwise reinstall or enable the plugin.${buildDetachHintSuffix(binding.detachHint)}`;
+  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to Operator instead. If this started after an update, run "openclaw doctor --fix"; otherwise reinstall or enable the plugin.${buildDetachHintSuffix(binding.detachHint)}`;
 }
 
 export function buildPluginBindingDeclinedText(binding: PluginConversationBinding): string {

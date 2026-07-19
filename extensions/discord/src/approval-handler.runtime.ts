@@ -1,5 +1,3 @@
-// Discord plugin module implements approval handler behavior.
-import { ButtonStyle } from "discord-api-types/v10";
 import type {
   ChannelApprovalCapabilityHandlerContext,
   ExecApprovalExpiredView,
@@ -9,15 +7,17 @@ import type {
   PluginApprovalExpiredView,
   PluginApprovalPendingView,
   PluginApprovalResolvedView,
-} from "openclaw/plugin-sdk/approval-handler-runtime";
-import { createChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
-import type { ExecApprovalActionDescriptor } from "openclaw/plugin-sdk/approval-reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { createChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import type { ExecApprovalActionDescriptor } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 import type {
   DiscordExecApprovalConfig,
   OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { logDebug, logError } from "openclaw/plugin-sdk/logging-core";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logDebug, logError } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Discord plugin module implements approval handler behavior.
+import { ButtonStyle } from "discord-api-types/v10";
 import { buildExecApprovalCustomId } from "./approval-custom-id.js";
 import {
   DISCORD_APPROVAL_ALLOWED_MENTIONS,

@@ -1,10 +1,10 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Normalizes slash-command text aliases and builds command detection caches. */
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.js";
 import { escapeRegExp } from "../utils.js";
 import { getChatCommands } from "./commands-registry.data.js";

@@ -16,7 +16,7 @@ import {
   makeRegistry,
   resetPluginAutoEnableTestState,
 } from "./plugin-auto-enable.test-helpers.js";
-import type { OperatorConfig } from "./types.openclaw.js";
+import type { OperatorConfig } from "./types.operator.js";
 import { validateConfigObject } from "./validation.js";
 
 vi.mock("../channels/plugins/configured-state.js", async (importOriginal) => {
@@ -408,7 +408,7 @@ describe("applyPluginAutoEnable core", () => {
     expect(result.changes).toStrictEqual([]);
     expect(
       readFileSync.mock.calls.some(
-        ([filePath]) => typeof filePath === "string" && filePath.endsWith("openclaw.plugin.json"),
+        ([filePath]) => typeof filePath === "string" && filePath.endsWith("operator.plugin.json"),
       ),
     ).toBe(false);
   });
@@ -436,7 +436,7 @@ describe("applyPluginAutoEnable core", () => {
     expect(result.changes).toStrictEqual([]);
     expect(
       readFileSync.mock.calls.some(
-        ([filePath]) => typeof filePath === "string" && filePath.endsWith("openclaw.plugin.json"),
+        ([filePath]) => typeof filePath === "string" && filePath.endsWith("operator.plugin.json"),
       ),
     ).toBe(false);
   });
@@ -836,7 +836,7 @@ describe("applyPluginAutoEnable core", () => {
           },
         },
         agents: {
-          list: [{ id: "openclaw" }],
+          list: [{ id: "@gabrielvfonseca/operator" }],
         },
       },
       env,
@@ -850,7 +850,7 @@ describe("applyPluginAutoEnable core", () => {
         },
       },
       agents: {
-        list: [{ id: "openclaw" }],
+        list: [{ id: "@gabrielvfonseca/operator" }],
       },
     });
     expect(result.changes).toStrictEqual([]);
@@ -1312,7 +1312,7 @@ describe("applyPluginAutoEnable core", () => {
       env: {
         ...makeIsolatedEnv(),
         IRC_HOST: "irc.libera.chat",
-        IRC_NICK: "openclaw-bot",
+        IRC_NICK: "operator-bot",
       },
     });
 

@@ -12,7 +12,7 @@ import {
 const tempDirs: string[] = [];
 
 function createDatabaseOptions() {
-  const stateDir = makeTempDir(tempDirs, "openclaw-session-upstream-links-");
+  const stateDir = makeTempDir(tempDirs, "operator-session-upstream-links-");
   vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
   return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }

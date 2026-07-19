@@ -3,7 +3,7 @@
  *
  * Applies shared config write authorization to concrete Operator channel config.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   authorizeConfigWriteShared,

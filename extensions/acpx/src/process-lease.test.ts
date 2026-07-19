@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   createAcpxProcessLeaseStore,
@@ -39,7 +39,7 @@ describe("createAcpxProcessLeaseStore", () => {
 
   beforeEach(async () => {
     resetPluginStateStoreForTests();
-    stateDir = await mkdtemp(path.join(tmpdir(), "openclaw-acpx-leases-"));
+    stateDir = await mkdtemp(path.join(tmpdir(), "operator-acpx-leases-"));
     env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   });
 

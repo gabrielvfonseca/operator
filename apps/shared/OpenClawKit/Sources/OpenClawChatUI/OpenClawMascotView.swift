@@ -1,21 +1,21 @@
 import SwiftUI
 
-/// Animated OpenClaw mascot. Redraws the canonical 120x120 vector from
+/// Animated Operator mascot. Redraws the canonical 120x120 vector from
 /// `ui/public/favicon.svg` so individual parts (claws, antennae, eyes) can
-/// animate like the openclaw.ai hero mark; the bundled PNG asset cannot.
-/// Styling (palette, glow colors, float depth) follows the openclaw.ai hero
+/// animate like the operator.ai hero mark; the bundled PNG asset cannot.
+/// Styling (palette, glow colors, float depth) follows the operator.ai hero
 /// (`src/pages/index.astro` + `Layout.astro` theme variables).
 ///
-/// Beyond the site's loop, an `OpenClawMascotAnimator` layers on moods
+/// Beyond the site's loop, an `OperatorMascotAnimator` layers on moods
 /// (thinking, celebrating, sad, …), randomized micro-behaviors, and — when
 /// `interactive` — click Easter eggs. Eyes follow the pointer on hover.
-public struct OpenClawMascotView: View {
+public struct OperatorMascotView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.colorScheme) private var colorScheme
-    @State private var animator: OpenClawMascotAnimator
+    @State private var animator: OperatorMascotAnimator
 
     private let floats: Bool
-    private let mood: OpenClawMascotMood
+    private let mood: OperatorMascotMood
     private let interactive: Bool
 
     /// - Parameters:
@@ -27,33 +27,33 @@ public struct OpenClawMascotView: View {
     ///     for an enclosing control.
     public init(
         floats: Bool = true,
-        mood: OpenClawMascotMood = .idle,
+        mood: OperatorMascotMood = .idle,
         interactive: Bool = false)
     {
         self.floats = floats
         self.mood = mood
         self.interactive = interactive
-        self._animator = State(initialValue: OpenClawMascotAnimator(allowsAutoSleep: interactive))
+        self._animator = State(initialValue: OperatorMascotAnimator(allowsAutoSleep: interactive))
     }
 
     public var body: some View {
-        let palette = OpenClawMascotPalette.forScheme(self.colorScheme)
+        let palette = OperatorMascotPalette.forScheme(self.colorScheme)
         if self.reduceMotion {
-            OpenClawMascotCanvas(pose: .staticPose(for: self.mood), palette: palette)
+            OperatorMascotCanvas(pose: .staticPose(for: self.mood), palette: palette)
         } else {
             self.animatedMascot(palette: palette)
         }
     }
 
     @ViewBuilder
-    private func animatedMascot(palette: OpenClawMascotPalette) -> some View {
+    private func animatedMascot(palette: OperatorMascotPalette) -> some View {
         let core = TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
             let pose = self.animator.pose(at: timeline.date.timeIntervalSinceReferenceDate)
             // Float translates the whole canvas like the site floats the hero
             // container; drawing the offset inside the canvas would clip the
             // antennae (art starts at y~5 of 120) at the float/hop peak.
             GeometryReader { proxy in
-                OpenClawMascotCanvas(pose: pose, palette: palette)
+                OperatorMascotCanvas(pose: pose, palette: palette)
                     .offset(
                         y: self.floats
                             ? pose.floatOffset * min(proxy.size.width, proxy.size.height) / 120
@@ -85,7 +85,7 @@ public struct OpenClawMascotView: View {
         Date().timeIntervalSinceReferenceDate
     }
 
-    /// openclaw.ai hero drop-shadow color (`--logo-glow` / `--logo-glow-hover`).
+    /// operator.ai hero drop-shadow color (`--logo-glow` / `--logo-glow-hover`).
     /// Pair with a shadow radius of ~10% of the mascot size (15% while hovering)
     /// to match the site's `drop-shadow(0 0 20px)` on a 100px mark.
     public static func heroGlowColor(for colorScheme: ColorScheme, hovering: Bool = false) -> Color {
@@ -123,33 +123,33 @@ extension View {
     }
 }
 
-/// Body/antenna colors from the openclaw.ai theme variables: `:root` (dark)
+/// Body/antenna colors from the operator.ai theme variables: `:root` (dark)
 /// and `html[data-theme='light']` in `Layout.astro`. Eye colors are fixed in
 /// the site markup and shared by both themes.
-struct OpenClawMascotPalette: Equatable {
+struct OperatorMascotPalette: Equatable {
     let gradientTop: Color
     let gradientBottom: Color
     let antenna: Color
 
-    static let dark = OpenClawMascotPalette(
+    static let dark = OperatorMascotPalette(
         gradientTop: Color(red: 1, green: 77 / 255, blue: 77 / 255),
         gradientBottom: Color(red: 153 / 255, green: 27 / 255, blue: 27 / 255),
         antenna: Color(red: 1, green: 77 / 255, blue: 77 / 255))
 
-    static let light = OpenClawMascotPalette(
+    static let light = OperatorMascotPalette(
         gradientTop: Color(red: 255 / 255, green: 112 / 255, blue: 121 / 255),
         gradientBottom: Color(red: 234 / 255, green: 76 / 255, blue: 89 / 255),
         antenna: Color(red: 239 / 255, green: 75 / 255, blue: 88 / 255))
 
-    static func forScheme(_ colorScheme: ColorScheme) -> OpenClawMascotPalette {
+    static func forScheme(_ colorScheme: ColorScheme) -> OperatorMascotPalette {
         colorScheme == .light ? .light : .dark
     }
 }
 
 /// Part transforms and expression channels for one animation frame, produced
-/// by `OpenClawMascotAnimator` (or `staticPose` under Reduce Motion) and
-/// consumed by `OpenClawMascotCanvas`.
-struct OpenClawMascotPose: Equatable {
+/// by `OperatorMascotAnimator` (or `staticPose` under Reduce Motion) and
+/// consumed by `OperatorMascotCanvas`.
+struct OperatorMascotPose: Equatable {
     var floatOffset: CGFloat = 0
     var antennaDegrees: CGFloat = 0
     /// 0..1: antennae fold outward and down (sadness, sneeze flop).
@@ -180,12 +180,12 @@ struct OpenClawMascotPose: Equatable {
     /// 0..1: glow dots orbit instead of shining — too many clicks.
     var dizzy: CGFloat = 0
     var dizzyPhase: CGFloat = 0
-    var effect: OpenClawMascotEffect = .none
+    var effect: OperatorMascotEffect = .none
     var effectPhase: CGFloat = 0
 
     /// Motionless expression per mood for Reduce Motion users.
-    static func staticPose(for mood: OpenClawMascotMood) -> OpenClawMascotPose {
-        var pose = OpenClawMascotPose()
+    static func staticPose(for mood: OperatorMascotMood) -> OperatorMascotPose {
+        var pose = OperatorMascotPose()
         switch mood {
         case .idle, .curious, .attentive:
             break
@@ -247,9 +247,9 @@ struct OpenClawMascotPose: Equatable {
 }
 
 /// Internal (not private) so tests and render harnesses can draw exact poses.
-struct OpenClawMascotCanvas: View {
-    let pose: OpenClawMascotPose
-    let palette: OpenClawMascotPalette
+struct OperatorMascotCanvas: View {
+    let pose: OperatorMascotPose
+    let palette: OperatorMascotPalette
 
     var body: some View {
         Canvas { context, size in
@@ -327,8 +327,8 @@ struct OpenClawMascotCanvas: View {
     private static func draw(
         context: inout GraphicsContext,
         size: CGSize,
-        pose: OpenClawMascotPose,
-        palette: OpenClawMascotPalette)
+        pose: OperatorMascotPose,
+        palette: OperatorMascotPalette)
     {
         let scale = min(size.width, size.height) / 120
         context.scaleBy(x: scale, y: scale)
@@ -393,7 +393,7 @@ struct OpenClawMascotCanvas: View {
         context: GraphicsContext,
         center: CGPoint,
         openness: CGFloat,
-        pose: OpenClawMascotPose)
+        pose: OperatorMascotPose)
     {
         let shifted = CGPoint(
             x: center.x + pose.gaze.width * 2.0,
@@ -460,7 +460,7 @@ struct OpenClawMascotCanvas: View {
             with: .color(self.eyeGlowColor))
     }
 
-    private static func drawMouth(context: GraphicsContext, pose: OpenClawMascotPose) {
+    private static func drawMouth(context: GraphicsContext, pose: OperatorMascotPose) {
         if pose.mouthRound > 0.05 {
             let rx = 1 + 3.2 * pose.mouthRound
             let ry = 1 + 4.2 * pose.mouthRound
@@ -491,7 +491,7 @@ struct OpenClawMascotCanvas: View {
             style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
     }
 
-    private static func drawBlush(context: GraphicsContext, pose: OpenClawMascotPose) {
+    private static func drawBlush(context: GraphicsContext, pose: OperatorMascotPose) {
         guard pose.blush > 0.02 else { return }
         var blushContext = context
         blushContext.opacity = Double(pose.blush * 0.55)
@@ -536,8 +536,8 @@ struct OpenClawMascotCanvas: View {
 
     private static func drawEffect(
         context: GraphicsContext,
-        pose: OpenClawMascotPose,
-        palette: OpenClawMascotPalette)
+        pose: OperatorMascotPose,
+        palette: OperatorMascotPalette)
     {
         switch pose.effect {
         case .none:
@@ -546,7 +546,7 @@ struct OpenClawMascotCanvas: View {
             for index in 0..<6 {
                 let phase = (pose.effectPhase + CGFloat(index) * 0.37)
                     .truncatingRemainder(dividingBy: 1)
-                let alpha = OpenClawMascotGesture.bell(phase)
+                let alpha = OperatorMascotGesture.bell(phase)
                 guard alpha > 0.05 else { continue }
                 // Fan the stars across the upper hemisphere.
                 let angle = CGFloat.pi + CGFloat.pi * (CGFloat(index) + 0.5) / 6
@@ -586,7 +586,7 @@ struct OpenClawMascotCanvas: View {
                     y: 24 - 20 * phase)
                 var text = context.resolve(
                     Text("z")
-                        .font(OpenClawChatTypography.display(
+                        .font(OperatorChatTypography.display(
                             size: 6 + 4 * phase,
                             weight: .bold,
                             relativeTo: .caption2)))
@@ -613,7 +613,7 @@ struct OpenClawMascotCanvas: View {
                     with: .color(index.isMultiple(of: 2) ? self.eyeGlowColor : self.hatAmber))
             }
         case .sweat:
-            let alpha = OpenClawMascotGesture.bell(pose.effectPhase)
+            let alpha = OperatorMascotGesture.bell(pose.effectPhase)
             guard alpha > 0.02 else { return }
             let center = CGPoint(x: 42, y: 24 + 7 * pose.effectPhase)
             var drop = Path()
@@ -668,7 +668,7 @@ struct OpenClawMascotCanvas: View {
     /// one canvas-wide gradient would leave the claws nearly flat-colored.
     private static func gradient(
         for path: Path,
-        palette: OpenClawMascotPalette) -> GraphicsContext.Shading
+        palette: OperatorMascotPalette) -> GraphicsContext.Shading
     {
         let box = path.boundingRect
         return .linearGradient(

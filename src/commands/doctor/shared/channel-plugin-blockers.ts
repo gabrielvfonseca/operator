@@ -1,5 +1,5 @@
 // Doctor warnings for configured channels blocked by disabled channel plugins.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../../../packages/terminal-core/src/ansi.js";
 import { listExplicitlyDisabledChannelIdsForConfig } from "../../../channels/config-presence.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";

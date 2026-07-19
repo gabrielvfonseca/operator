@@ -1,18 +1,21 @@
 // Voice Call helper module supports config behavior.
-import { mergeDeep } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { REALTIME_VOICE_AGENT_CONSULT_TOOL_POLICIES } from "openclaw/plugin-sdk/realtime-voice";
-import { normalizeAgentId, parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
+import { mergeDeep } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { REALTIME_VOICE_AGENT_CONSULT_TOOL_POLICIES } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import {
+  normalizeAgentId,
+  parseAgentSessionKey,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   buildSecretInputSchema,
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   type SecretInput,
-} from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   canonicalizeMainSessionAlias,
   type SessionScope,
-} from "openclaw/plugin-sdk/session-store-runtime";
-import { normalizeWebhookPath } from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { normalizeWebhookPath } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { z } from "zod";
 import { TtsConfigSchema } from "../api.js";
 import { TWILIO_REGIONS } from "./providers/twilio-region.js";

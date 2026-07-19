@@ -41,8 +41,8 @@ function expectRuntimeLogIncludes(fragment: string) {
 
 const installWriteOptions = {
   assertConfigPathForWrite: () => {},
-  expectedConfigPath: "/tmp/openclaw.json",
-  ownedConfigPathForWrite: "/tmp/openclaw.json",
+  expectedConfigPath: "/tmp/operator.json",
+  ownedConfigPathForWrite: "/tmp/operator.json",
 };
 
 describe("persistPluginInstall", () => {
@@ -78,8 +78,8 @@ describe("persistPluginInstall", () => {
         baseHash: "config-1",
         writeOptions: {
           assertConfigPathForWrite: installWriteOptions.assertConfigPathForWrite,
-          expectedConfigPath: "/tmp/openclaw.json",
-          ownedConfigPathForWrite: "/tmp/openclaw.json",
+          expectedConfigPath: "/tmp/operator.json",
+          ownedConfigPathForWrite: "/tmp/operator.json",
           includeFileHashesForWrite: { "/tmp/plugins.json5": "include-1" },
           includeFileTargetsForWrite: { "/tmp/plugins.json5": "/tmp/plugins.json5" },
         },
@@ -109,8 +109,8 @@ describe("persistPluginInstall", () => {
       baseHash: "config-1",
       writeOptions: {
         assertConfigPathForWrite: installWriteOptions.assertConfigPathForWrite,
-        expectedConfigPath: "/tmp/openclaw.json",
-        ownedConfigPathForWrite: "/tmp/openclaw.json",
+        expectedConfigPath: "/tmp/operator.json",
+        ownedConfigPathForWrite: "/tmp/operator.json",
         includeFileHashesForWrite: { "/tmp/plugins.json5": "include-1" },
         includeFileTargetsForWrite: { "/tmp/plugins.json5": "/tmp/plugins.json5" },
         afterWrite: { mode: "restart", reason: "plugin source changed" },
@@ -185,7 +185,7 @@ describe("persistPluginInstall", () => {
     setInstalledPluginIndexInstallRecords({
       codex: {
         source: "clawhub",
-        spec: "clawhub:@operator/codex",
+        spec: "clawhub:@gabrielvfonseca/codex",
         installPath: "/tmp/openclaw/extensions/codex",
       },
     });
@@ -222,8 +222,8 @@ describe("persistPluginInstall", () => {
       pluginId: "codex",
       install: {
         source: "npm",
-        spec: "@operator/codex",
-        installPath: "/tmp/openclaw/npm/node_modules/@operator/codex",
+        spec: "@gabrielvfonseca/codex",
+        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -233,7 +233,7 @@ describe("persistPluginInstall", () => {
           installs: {
             codex: {
               source: "clawhub",
-              spec: "clawhub:@operator/codex",
+              spec: "clawhub:@gabrielvfonseca/codex",
               installPath: "/tmp/openclaw/extensions/codex",
             },
           },
@@ -272,8 +272,8 @@ describe("persistPluginInstall", () => {
     setInstalledPluginIndexInstallRecords({
       codex: {
         source: "npm",
-        spec: "@operator/codex",
-        installPath: "/tmp/openclaw/npm/node_modules/@operator/codex",
+        spec: "@gabrielvfonseca/codex",
+        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -286,8 +286,8 @@ describe("persistPluginInstall", () => {
       pluginId: "codex",
       install: {
         source: "npm",
-        spec: "@operator/codex@latest",
-        installPath: "/tmp/openclaw/npm/node_modules/@operator/codex",
+        spec: "@gabrielvfonseca/codex@latest",
+        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/codex",
       },
     });
 
@@ -310,7 +310,7 @@ describe("persistPluginInstall", () => {
       },
     } as OperatorConfig;
     enablePluginInConfig.mockReturnValue({ config: enabledConfig });
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-persist-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-persist-"));
     const previousProjectRoot = path.join(tempRoot, "npm", "projects", "codex-v1");
     const previousInstallPath = path.join(
       previousProjectRoot,
@@ -331,7 +331,7 @@ describe("persistPluginInstall", () => {
     setInstalledPluginIndexInstallRecords({
       codex: {
         source: "npm",
-        spec: "@operator/codex@1.0.0",
+        spec: "@gabrielvfonseca/codex@1.0.0",
         installPath: previousInstallPath,
       },
     });
@@ -355,7 +355,7 @@ describe("persistPluginInstall", () => {
         cleanup: {
           kind: "npm",
           npmRoot: previousProjectRoot,
-          packageName: "@operator/codex",
+          packageName: "@gabrielvfonseca/codex",
         },
       },
     });
@@ -370,7 +370,7 @@ describe("persistPluginInstall", () => {
         pluginId: "codex",
         install: {
           source: "npm",
-          spec: "@operator/codex@2.0.0",
+          spec: "@gabrielvfonseca/codex@2.0.0",
           installPath: nextInstallPath,
         },
       });
@@ -381,7 +381,7 @@ describe("persistPluginInstall", () => {
             installs: {
               codex: {
                 source: "npm",
-                spec: "@operator/codex@1.0.0",
+                spec: "@gabrielvfonseca/codex@1.0.0",
                 installPath: previousInstallPath,
               },
             },
@@ -417,7 +417,7 @@ describe("persistPluginInstall", () => {
         {
           id: "discord",
           origin: "config",
-          source: "/tmp/openclaw-upstream/extensions/discord/index.ts",
+          source: "/tmp/operator-upstream/extensions/discord/index.ts",
           status: "error",
         },
       ],
@@ -433,8 +433,8 @@ describe("persistPluginInstall", () => {
       pluginId: "discord",
       install: {
         source: "npm",
-        spec: "@operator/discord",
-        installPath: "/tmp/openclaw/npm/node_modules/@operator/discord/index.ts",
+        spec: "@gabrielvfonseca/discord",
+        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/index.ts",
       },
     });
 
@@ -448,10 +448,10 @@ describe("persistPluginInstall", () => {
       'Warning: installed plugin "discord" is not the active source',
     );
     expect(runtimeLogs.join("\n")).toContain(
-      "active config source: /tmp/openclaw-upstream/extensions/discord/index.ts",
+      "active config source: /tmp/operator-upstream/extensions/discord/index.ts",
     );
     expect(runtimeLogs.join("\n")).toContain(
-      "installed npm source: /tmp/openclaw/npm/node_modules/@operator/discord/index.ts",
+      "installed npm source: /tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/index.ts",
     );
     expect(runtimeLogs.join("\n")).toContain("openclaw plugins doctor");
   });
@@ -476,7 +476,7 @@ describe("persistPluginInstall", () => {
         {
           id: "discord",
           origin: "config",
-          source: "/tmp/openclaw/npm/node_modules/@operator/discord/dist/index.js",
+          source: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord/dist/index.js",
           status: "loaded",
         },
       ],
@@ -492,8 +492,8 @@ describe("persistPluginInstall", () => {
       pluginId: "discord",
       install: {
         source: "npm",
-        spec: "@operator/discord",
-        installPath: "/tmp/openclaw/npm/node_modules/@operator/discord",
+        spec: "@gabrielvfonseca/discord",
+        installPath: "/tmp/openclaw/npm/node_modules/@gabrielvfonseca/discord",
       },
     });
 

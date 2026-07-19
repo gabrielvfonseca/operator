@@ -7,13 +7,13 @@ import {
   MIGRATION_REASON_TARGET_EXISTS,
   readMigrationConfigPath,
   summarizeMigrationItems,
-} from "openclaw/plugin-sdk/migration";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration";
 import type {
   MigrationItem,
   MigrationPlan,
   MigrationProviderContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { asBoolean, isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { asBoolean, isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { CODEX_PLUGINS_MARKETPLACE_NAME } from "../app-server/config.js";
 import { buildCodexAuthItems } from "./auth.js";
 import { sanitizeName } from "./helpers.js";

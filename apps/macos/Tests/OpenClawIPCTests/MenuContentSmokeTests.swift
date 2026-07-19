@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -204,7 +204,7 @@ struct MenuContentSmokeTests {
         #expect(shouldOpen)
     }
 
-    @Test func `pending OpenClaw handoff survives relaunch and keeps onboarding`() {
+    @Test func `pending Operator handoff survives relaunch and keeps onboarding`() {
         let shouldOpen = AppDelegate.shouldOpenDashboardInsteadOfOnboarding(
             connectionMode: .local,
             onboardingSeen: false,

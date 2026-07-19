@@ -5,8 +5,8 @@ import {
   detectMime,
   FILE_TYPE_SNIFF_MAX_BYTES,
   normalizeMimeType,
-} from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
 import { resolvePathFromInput } from "../agents/path-policy.js";
 import { resolveWorkspaceRoot } from "../agents/workspace-dir.js";

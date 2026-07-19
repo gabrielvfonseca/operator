@@ -2,26 +2,26 @@
 summary: "Vercel AI Gateway setup (auth + model selection)"
 title: "Vercel AI gateway"
 read_when:
-  - You want to use Vercel AI Gateway with OpenClaw
+  - You want to use Vercel AI Gateway with Operator
   - You need the API key env var or CLI auth choice
 ---
 
 The [Vercel AI Gateway](https://vercel.com/ai-gateway) provides a unified API to
 access hundreds of models through a single endpoint.
 
-| Property      | Value                                  |
-| ------------- | -------------------------------------- |
-| Provider      | `vercel-ai-gateway`                    |
-| Package       | `@operator/vercel-ai-gateway-provider` |
-| Auth          | `AI_GATEWAY_API_KEY`                   |
-| API           | Anthropic Messages compatible          |
-| Base URL      | `https://ai-gateway.vercel.sh`         |
-| Model catalog | Auto-discovered via `/v1/models`       |
+| Property      | Value                                         |
+| ------------- | --------------------------------------------- |
+| Provider      | `vercel-ai-gateway`                           |
+| Package       | `@gabrielvfonseca/vercel-ai-gateway-provider` |
+| Auth          | `AI_GATEWAY_API_KEY`                          |
+| API           | Anthropic Messages compatible                 |
+| Base URL      | `https://ai-gateway.vercel.sh`                |
+| Model catalog | Auto-discovered via `/v1/models`              |
 
 <Tip>
-OpenClaw auto-discovers the Gateway `/v1/models` catalog, so both the
+Operator auto-discovers the Gateway `/v1/models` catalog, so both the
 `/models vercel-ai-gateway` chat command and
-`openclaw models list --provider vercel-ai-gateway` include current model
+`operator models list --provider vercel-ai-gateway` include current model
 refs such as `vercel-ai-gateway/openai/gpt-5.5` and
 `vercel-ai-gateway/moonshotai/kimi-k2.6`.
 </Tip>
@@ -31,12 +31,12 @@ refs such as `vercel-ai-gateway/openai/gpt-5.5` and
 <Steps>
   <Step title="Install the plugin">
     ```bash
-    openclaw plugins install @operator/vercel-ai-gateway-provider
+    operator plugins install @gabrielvfonseca/vercel-ai-gateway-provider
     ```
   </Step>
   <Step title="Set the API key">
     ```bash
-    openclaw onboard --auth-choice ai-gateway-api-key
+    operator onboard --auth-choice ai-gateway-api-key
     ```
   </Step>
   <Step title="Set a default model">
@@ -52,7 +52,7 @@ refs such as `vercel-ai-gateway/openai/gpt-5.5` and
   </Step>
   <Step title="Verify the model is available">
     ```bash
-    openclaw models list --provider vercel-ai-gateway
+    operator models list --provider vercel-ai-gateway
     ```
   </Step>
 </Steps>
@@ -60,7 +60,7 @@ refs such as `vercel-ai-gateway/openai/gpt-5.5` and
 ## Non-interactive example
 
 ```bash
-openclaw onboard --non-interactive \
+operator onboard --non-interactive \
   --mode local \
   --auth-choice ai-gateway-api-key \
   --ai-gateway-api-key "$AI_GATEWAY_API_KEY"
@@ -68,7 +68,7 @@ openclaw onboard --non-interactive \
 
 ## Model ID shorthand
 
-OpenClaw normalizes Claude shorthand model refs at runtime:
+Operator normalizes Claude shorthand model refs at runtime:
 
 | Shorthand input                     | Normalized model ref                          |
 | ----------------------------------- | --------------------------------------------- |
@@ -76,7 +76,7 @@ OpenClaw normalizes Claude shorthand model refs at runtime:
 | `vercel-ai-gateway/opus-4.6`        | `vercel-ai-gateway/anthropic/claude-opus-4-6` |
 
 <Tip>
-Use either form in your configuration; OpenClaw resolves the canonical
+Use either form in your configuration; Operator resolves the canonical
 `anthropic/...` ref automatically.
 </Tip>
 
@@ -84,13 +84,13 @@ Use either form in your configuration; OpenClaw resolves the canonical
 
 <AccordionGroup>
   <Accordion title="Environment variable for daemon processes">
-    If the OpenClaw Gateway runs as a daemon (launchd/systemd), make sure
+    If the Operator Gateway runs as a daemon (launchd/systemd), make sure
     `AI_GATEWAY_API_KEY` is available to that process.
 
     <Warning>
     A key exported only in an interactive shell will not be visible to a
     launchd/systemd daemon unless that environment is explicitly imported. Set
-    the key in `~/.openclaw/.env` or via `env.shellEnv` to ensure the gateway
+    the key in `~/.operator/.env` or via `env.shellEnv` to ensure the gateway
     process can read it.
     </Warning>
 
@@ -104,7 +104,7 @@ Use either form in your configuration; OpenClaw resolves the canonical
     MoonshotAI. One `AI_GATEWAY_API_KEY` authenticates all upstream providers.
   </Accordion>
   <Accordion title="Thinking levels">
-    `/think` options follow the upstream model prefix when OpenClaw recognizes
+    `/think` options follow the upstream model prefix when Operator recognizes
     it. `vercel-ai-gateway/anthropic/...` uses the Claude thinking profile,
     including the adaptive default for Claude 4.6 models. Trusted
     `vercel-ai-gateway/openai/...` refs (`gpt-5.2` and newer, plus Codex

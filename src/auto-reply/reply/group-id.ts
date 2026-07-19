@@ -2,8 +2,8 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getLoadedChannelPluginForRead } from "../../channels/plugins/registry-loaded.js";
 import type { ChannelMessagingAdapter } from "../../channels/plugins/types.public.js";
 import { normalizeAnyChannelId } from "../../channels/registry.js";

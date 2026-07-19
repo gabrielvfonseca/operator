@@ -1,5 +1,5 @@
 /** Tests auth-profile backed MCP bearer projection. */
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveMcpBearerBundleConfig, withMcpAuthProfileBearer } from "./mcp-auth-profile.js";
 import * as mcpHttpFetch from "./mcp-http-fetch.js";

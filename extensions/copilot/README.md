@@ -5,7 +5,7 @@ External Operator plugin that registers a `copilot` agent harness backed by `@gi
 ## Install
 
 ```bash
-openclaw plugins install @operator/copilot
+operator plugins install @gabrielvfonseca/copilot
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -23,5 +23,5 @@ questions, replay, and the supported-surface contract.
 ## Package
 
 - Plugin id: `copilot`
-- Package: `@operator/copilot`
+- Package: `@gabrielvfonseca/copilot`
 - Minimum Operator host: `2026.5.28`

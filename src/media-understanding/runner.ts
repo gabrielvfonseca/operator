@@ -4,17 +4,17 @@ import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { mergeInboundPathRoots } from "@operator/media-core/inbound-path-policy";
-import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
+import { mergeInboundPathRoots } from "@gabrielvfonseca/media-core/inbound-path-policy";
+import { findNormalizedProviderValue } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeNullableString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { ActiveMediaModel } from "../../packages/media-understanding-common/src/active-model.js";
 import { isMediaUnderstandingSkipError } from "../../packages/media-understanding-common/src/errors.js";
 import { providerSupportsCapability } from "../../packages/media-understanding-common/src/provider-supports.js";

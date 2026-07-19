@@ -2,8 +2,8 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { resetPluginStateStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import type { Message } from "grammy/types";
-import { resetPluginStateStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   buildTelegramMessageDispatchAccountReplayKey,
@@ -22,7 +22,7 @@ const tempDirs: string[] = [];
 let previousStateDir: string | undefined;
 
 function createStateDir(): string {
-  const dir = mkdtempSync(path.join(tmpdir(), "openclaw-telegram-dispatch-dedupe-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "operator-telegram-dispatch-dedupe-"));
   tempDirs.push(dir);
   return dir;
 }

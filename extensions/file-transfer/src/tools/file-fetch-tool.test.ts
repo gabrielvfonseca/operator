@@ -4,8 +4,8 @@ import {
   callGatewayTool,
   listNodes,
   resolveNodeIdFromList,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { saveMediaBuffer } from "openclaw/plugin-sdk/media-store";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { saveMediaBuffer } from "@gabrielvfonseca/operator/plugin-sdk/media-store";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createFileFetchTool } from "./file-fetch-tool.js";
 

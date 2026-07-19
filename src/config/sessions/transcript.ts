@@ -14,7 +14,7 @@ import {
   OPERATOR_TRANSCRIPT_ARTIFACT_API,
   OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
   isTranscriptOnlyOperatorAssistantModel,
-} from "../../shared/transcript-only-operator-assistant.js";
+} from "../../shared/transcript-only-openclaw-assistant.js";
 import type { OperatorConfig } from "../types.operator.js";
 import {
   resolveDefaultSessionStorePath,
@@ -177,7 +177,7 @@ function parseRecentConversationText(
         provenance?: unknown;
         provider?: unknown;
         model?: unknown;
-        __operator?: unknown;
+        __openclaw?: unknown;
       }
     | undefined;
   if (
@@ -493,7 +493,7 @@ export async function appendAssistantMessageToSessionTranscript(params: {
       },
       stopReason: "stop" as const,
       timestamp: Date.now(),
-      ...(params.deliveryMirror ? { operatorDeliveryMirror: params.deliveryMirror } : {}),
+      ...(params.deliveryMirror ? { openclawDeliveryMirror: params.deliveryMirror } : {}),
     } as SessionTranscriptAssistantMessage,
   });
 }
@@ -754,7 +754,7 @@ async function readLatestVisibleTranscriptMessage(scope: {
 }
 
 function isIdentifiedDeliveryMirror(message: SessionTranscriptAssistantMessage): boolean {
-  const marker = (message as { operatorDeliveryMirror?: InternalSessionTranscriptDeliveryMirror })
+  const marker = (message as { openclawDeliveryMirror?: InternalSessionTranscriptDeliveryMirror })
     .operatorDeliveryMirror;
   return (
     isRedundantDeliveryMirror(message) &&

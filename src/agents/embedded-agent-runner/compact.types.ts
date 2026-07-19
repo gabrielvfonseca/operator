@@ -1,4 +1,4 @@
-import type { Model } from "operator/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 /**
  * Shared parameter and metric types for embedded-agent compaction.
  */

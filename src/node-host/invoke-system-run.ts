@@ -1,6 +1,6 @@
 /** Policy and execution pipeline for approved node-host system.run requests. */
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   describeInterpreterInlineEval,

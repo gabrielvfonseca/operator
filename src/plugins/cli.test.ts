@@ -190,7 +190,7 @@ describe("registerPluginCliCommands", () => {
   });
 
   it("forwards an explicit env to plugin loading", async () => {
-    const env = { OPERATOR_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { OPERATOR_HOME: "/srv/operator-home" } as NodeJS.ProcessEnv;
 
     await registerPluginCliCommands(createProgram(), {} as OperatorConfig, env);
 

@@ -5,7 +5,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

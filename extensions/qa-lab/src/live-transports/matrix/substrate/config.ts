@@ -1,6 +1,9 @@
 // Qa Lab Matrix helper module supports config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeStringEntries, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  normalizeStringEntries,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { MatrixQaProvisionedTopology } from "./topology.js";
 
 type MatrixQaReplyToMode = "off" | "first" | "all" | "batched";

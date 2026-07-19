@@ -1,6 +1,6 @@
 // Irc tests cover send plugin behavior.
-import { verifyChannelMessageAdapterCapabilityProofs } from "openclaw/plugin-sdk/channel-outbound";
-import { createSendCfgThreadingRuntime } from "openclaw/plugin-sdk/channel-test-helpers";
+import { verifyChannelMessageAdapterCapabilityProofs } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createSendCfgThreadingRuntime } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { IrcClient } from "./client.js";
 import { setIrcRuntime } from "./runtime.js";
@@ -100,7 +100,7 @@ describe("sendMessageIrc cfg threading", () => {
       channels: {
         irc: {
           host: "irc.example.com",
-          nick: "openclaw",
+          nick: "@gabrielvfonseca/operator",
           accounts: {
             work: {
               host: "irc.example.com",
@@ -179,7 +179,7 @@ describe("sendMessageIrc cfg threading", () => {
       channels: {
         irc: {
           host: "irc.example.com",
-          nick: "openclaw",
+          nick: "@gabrielvfonseca/operator",
         },
       },
     } as unknown as CoreConfig;
@@ -208,7 +208,7 @@ describe("sendMessageIrc cfg threading", () => {
       channels: {
         irc: {
           host: "irc.example.com",
-          nick: "openclaw",
+          nick: "@gabrielvfonseca/operator",
         },
       },
     } as unknown as CoreConfig;
@@ -259,7 +259,7 @@ describe("sendMessageIrc cfg threading", () => {
       channels: {
         irc: {
           host: "irc.example.com",
-          nick: "openclaw",
+          nick: "@gabrielvfonseca/operator",
         },
       },
     } as unknown as CoreConfig;

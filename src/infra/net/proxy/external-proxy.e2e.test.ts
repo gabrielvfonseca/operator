@@ -12,7 +12,7 @@ import { WebSocketServer } from "ws";
 import { withTempDir } from "../../../test-helpers/temp-dir.js";
 import { createNodeEvalArgs } from "../../../test-utils/node-process.js";
 import { resolveSystemBin } from "../../resolve-system-bin.js";
-import { resolvePreferredOperatorTmpDir } from "../../tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../tmp-operator-dir.js";
 
 const CHILD_PROCESS_TIMEOUT_MS = process.env.CI ? 45_000 : 15_000;
 const PROBE_TIMEOUT_MS = process.env.CI ? 15_000 : 5_000;
@@ -106,7 +106,7 @@ async function withDiscordTlsFixture<T>(
 ): Promise<T> {
   return await withTempDir(
     {
-      prefix: "openclaw-discord-tls-",
+      prefix: "operator-discord-tls-",
       parentDir: resolvePreferredOperatorTmpDir(),
     },
     async (dir) => {

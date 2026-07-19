@@ -8,7 +8,7 @@ import { validateWorkspaceDoc, type WorkspaceDoc } from "./schema.js";
 import { WorkspaceStore } from "./store.js";
 
 async function withStore<T>(run: (store: WorkspaceStore) => Promise<T> | T): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-"));
   const store = new WorkspaceStore({ stateDir });
   try {
     return await run(store);
@@ -66,7 +66,7 @@ describe("WorkspaceStore", () => {
 
   it("closes its WAL maintenance timer", async () => {
     vi.useFakeTimers();
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-timer-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-timer-"));
     try {
       const store = new WorkspaceStore({ stateDir });
       expect(vi.getTimerCount()).toBe(1);
@@ -79,7 +79,7 @@ describe("WorkspaceStore", () => {
   });
 
   it("migrates an existing workspace and undo history to STRICT", async () => {
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-legacy-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-legacy-"));
     const workspaceDir = path.join(stateDir, "workspaces");
     const databasePath = path.join(workspaceDir, "workspaces.sqlite");
     await fs.mkdir(workspaceDir, { recursive: true });

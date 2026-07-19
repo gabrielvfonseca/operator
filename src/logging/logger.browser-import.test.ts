@@ -1,5 +1,5 @@
 // Logger browser import tests cover safe import behavior in browser-like runtimes.
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 type LoggerModule = typeof import("./logger.js");
@@ -20,9 +20,9 @@ async function importBrowserSafeLogger(params?: {
       throw new Error("resolvePreferredOperatorTmpDir should not run during browser-safe import");
     });
 
-  vi.doMock("../infra/tmp-openclaw-dir.js", async () => {
-    const actual = await vi.importActual<typeof import("../infra/tmp-openclaw-dir.js")>(
-      "../infra/tmp-openclaw-dir.js",
+  vi.doMock("../infra/tmp-operator-dir.js", async () => {
+    const actual = await vi.importActual<typeof import("../infra/tmp-operator-dir.js")>(
+      "../infra/tmp-operator-dir.js",
     );
     return {
       ...actual,
@@ -44,7 +44,7 @@ async function importBrowserSafeLogger(params?: {
 
 describe("logging/logger browser-safe import", () => {
   afterEach(() => {
-    vi.doUnmock("../infra/tmp-openclaw-dir.js");
+    vi.doUnmock("../infra/tmp-operator-dir.js");
     Object.defineProperty(process, "getBuiltinModule", {
       configurable: true,
       value: originalGetBuiltinModule,
@@ -56,7 +56,7 @@ describe("logging/logger browser-safe import", () => {
 
     expect(resolvePreferredOperatorTmpDir).not.toHaveBeenCalled();
     expect(module.DEFAULT_LOG_DIR).toBe("/tmp/openclaw");
-    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/openclaw/openclaw.log");
+    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/openclaw/operator.log");
   });
 
   it("disables file logging when imported in a browser-like environment", async () => {
@@ -64,7 +64,7 @@ describe("logging/logger browser-safe import", () => {
 
     expect(module.getResolvedLoggerSettings()).toStrictEqual({
       level: "silent",
-      file: "/tmp/openclaw/openclaw.log",
+      file: "/tmp/openclaw/operator.log",
       maxFileBytes: 100 * 1024 * 1024,
     });
     expect(module.isFileLogLevelEnabled("info")).toBe(false);

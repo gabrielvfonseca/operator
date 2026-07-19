@@ -1,10 +1,10 @@
-import type { CallbackQuery, Message } from "grammy/types";
 import {
   buildPluginBindingResolvedText,
   parsePluginBindingApprovalCustomId,
   resolvePluginConversationBindingApproval,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { logVerbose, sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { logVerbose, sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { CallbackQuery, Message } from "grammy/types";
 import type {
   TelegramCallbackButton,
   TelegramCallbackMessageActions,

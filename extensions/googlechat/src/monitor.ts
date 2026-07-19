@@ -2,9 +2,9 @@
 import {
   recordChannelBotPairLoopAndCheckSuppression,
   type ChannelBotLoopProtectionFacts,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { mergePairLoopGuardConfig } from "openclaw/plugin-sdk/pair-loop-guard-runtime";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { mergePairLoopGuardConfig } from "@gabrielvfonseca/operator/plugin-sdk/pair-loop-guard-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { OperatorConfig } from "../runtime-api.js";
 import {
   resolveInboundRouteEnvelopeBuilderWithRuntime,

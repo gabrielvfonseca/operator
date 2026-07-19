@@ -5,7 +5,7 @@
  */
 import os from "node:os";
 import path from "node:path";
-import { addTimerTimeoutGraceMs } from "@operator/normalization-core/number-coercion";
+import { addTimerTimeoutGraceMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ToolLoopDetectionConfig } from "../config/types.tools.js";
 import { GatewayClientRequestError } from "../gateway/client.js";

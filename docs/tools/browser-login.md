@@ -20,7 +20,7 @@ Back to the main browser docs: [Browser](/tools/browser).
 
 ## Which Chrome profile is used?
 
-OpenClaw controls a dedicated Chrome profile named `openclaw` (orange-tinted
+Operator controls a dedicated Chrome profile named `openclaw` (orange-tinted
 UI), separate from your daily browser profile.
 
 For agent browser tool calls:
@@ -37,15 +37,15 @@ Two ways to access the `openclaw` profile:
 2. Open it via CLI:
 
 ```bash
-openclaw browser start
-openclaw browser open https://x.com
+operator browser start
+operator browser open https://x.com
 ```
 
 For a non-default profile, put `--browser-profile <name>` before the
 subcommand (default is `openclaw`):
 
 ```bash
-openclaw browser --browser-profile <name> open https://x.com
+operator browser --browser-profile <name> open https://x.com
 ```
 
 ## Sandboxing: allow host browser access
@@ -72,7 +72,7 @@ CLI invocations always target the host browser, never the sandbox, so you can
 open the host browser yourself regardless of this setting:
 
 ```bash
-openclaw browser --browser-profile openclaw open https://x.com
+operator browser --browser-profile operator open https://x.com
 ```
 
 Once `sandbox.browser.allowHostControl: true` is set, the agent's `browser`

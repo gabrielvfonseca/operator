@@ -1,6 +1,6 @@
 /** Provider-index-backed model catalog rows for bundled model-list output. */
-import { normalizeModelCatalogProviderId } from "@operator/model-catalog-core/model-catalog-refs";
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
+import { normalizeModelCatalogProviderId } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   loadOperatorProviderIndex,

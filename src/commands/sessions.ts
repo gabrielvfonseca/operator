@@ -7,7 +7,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isRich, theme } from "../../packages/terminal-core/src/theme.js";
 import { readAcpSessionMetaForEntry } from "../acp/runtime/session-meta.js";
 import { resolveModelAgentRuntimeMetadata } from "../agents/agent-runtime-metadata.js";
@@ -215,7 +215,8 @@ function resolveSessionRuntimeLabel(params: {
   sessionKey: string;
 }): string {
   const id = normalizeOptionalLowercaseString(params.agentRuntime.id);
-  const resolvedHarness = id && id !== "operator" && id !== "auto" ? id : undefined;
+  const resolvedHarness =
+    id && id !== "@gabrielvfonseca/operator" && id !== "auto" ? id : undefined;
   return resolveAgentRuntimeLabel({
     config: params.cfg,
     sessionEntry: params.entry,

@@ -1,20 +1,20 @@
 ---
-name: openclaw-debugging
-description: Debug OpenClaw model, provider, tool-surface, code-mode, streaming, and live/Crabbox behavior by choosing the right logs, probes, and proof path before changing code.
+name: operator-debugging
+description: Debug Operator model, provider, tool-surface, code-mode, streaming, and live/Crabbox behavior by choosing the right logs, probes, and proof path before changing code.
 ---
 
-# OpenClaw Debugging
+# Operator Debugging
 
-Use this skill when OpenClaw behavior differs between local tests, live models,
+Use this skill when Operator behavior differs between local tests, live models,
 providers, code mode, Tool Search, Crabbox, or CI, and the next move should be a
 debug signal rather than a guess.
 
 ## Read First
 
-- `docs/logging.md` for log files, `openclaw logs`, and targeted debug flags.
+- `docs/logging.md` for log files, `operator logs`, and targeted debug flags.
 - `docs/reference/test.md` for local test commands.
 - `docs/reference/code-mode.md` for code-mode exec/wait and tool catalog rules.
-- Use `$openclaw-testing` for choosing test lanes.
+- Use `$operator-testing` for choosing test lanes.
 - Use `$crabbox` for broad, Docker, package, Linux, live-key, or CI-parity proof.
 
 ## Default Loop
@@ -34,27 +34,27 @@ Use targeted env flags instead of global debug when the model request shape or
 stream timing matters:
 
 ```bash
-OPENCLAW_DEBUG_MODEL_TRANSPORT=1 openclaw gateway
-OPENCLAW_DEBUG_MODEL_PAYLOAD=tools OPENCLAW_DEBUG_SSE=events openclaw gateway
-OPENCLAW_DEBUG_MODEL_PAYLOAD=full-redacted OPENCLAW_DEBUG_SSE=peek openclaw gateway
+OPERATOR_DEBUG_MODEL_TRANSPORT=1 operator gateway
+OPERATOR_DEBUG_MODEL_PAYLOAD=tools OPERATOR_DEBUG_SSE=events operator gateway
+OPERATOR_DEBUG_MODEL_PAYLOAD=full-redacted OPERATOR_DEBUG_SSE=peek operator gateway
 ```
 
 Useful flags:
 
-- `OPENCLAW_DEBUG_MODEL_TRANSPORT=1`: request start, fetch response, SDK
+- `OPERATOR_DEBUG_MODEL_TRANSPORT=1`: request start, fetch response, SDK
   headers, first SSE event, stream done, and transport errors at `info`.
-- `OPENCLAW_DEBUG_MODEL_PAYLOAD=summary`: bounded payload summary.
-- `OPENCLAW_DEBUG_MODEL_PAYLOAD=tools`: all model-facing tool names.
-- `OPENCLAW_DEBUG_MODEL_PAYLOAD=full-redacted`: capped, redacted JSON payload.
+- `OPERATOR_DEBUG_MODEL_PAYLOAD=summary`: bounded payload summary.
+- `OPERATOR_DEBUG_MODEL_PAYLOAD=tools`: all model-facing tool names.
+- `OPERATOR_DEBUG_MODEL_PAYLOAD=full-redacted`: capped, redacted JSON payload.
   Use only while debugging; prompts/message text may still appear.
-- `OPENCLAW_DEBUG_SSE=events`: first-event and stream-completion timing.
-- `OPENCLAW_DEBUG_SSE=peek`: first five redacted SSE events.
-- `OPENCLAW_DEBUG_CODE_MODE=1`: code-mode tool-surface diagnostics.
+- `OPERATOR_DEBUG_SSE=events`: first-event and stream-completion timing.
+- `OPERATOR_DEBUG_SSE=peek`: first five redacted SSE events.
+- `OPERATOR_DEBUG_CODE_MODE=1`: code-mode tool-surface diagnostics.
 
 Watch logs with:
 
 ```bash
-openclaw logs --follow
+operator logs --follow
 ```
 
 ## Common Boundaries

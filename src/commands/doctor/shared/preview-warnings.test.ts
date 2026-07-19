@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../../config/config.js";
 import { collectDoctorPreviewNotes } from "./preview-warnings.js";
@@ -239,8 +239,8 @@ vi.mock("./stale-plugin-config.js", () => ({
       ...(cfg.plugins?.allow ?? []).map((id) => ({ id, surface: "allow" })),
       ...Object.keys(cfg.plugins?.entries ?? {}).map((id) => ({ id, surface: "entries" })),
     ].filter((hit) => !knownIds.has(hit.id));
-    if (cfg.channels?.["openclaw-weixin"]) {
-      hits.push({ id: "openclaw-weixin", surface: "channel" });
+    if (cfg.channels?.["operator-weixin"]) {
+      hits.push({ id: "operator-weixin", surface: "channel" });
     }
     return hits.filter(
       (hit, index) =>
@@ -406,7 +406,7 @@ describe("doctor preview warnings", () => {
   });
 
   it("routes personal Codex asset notices to info instead of warnings", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-preview-codex-assets-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-preview-codex-assets-"));
     tempRoots.add(root);
     const codexHome = path.join(root, ".codex");
     await fs.mkdir(path.join(root, ".agents", "skills", "agent-helper"), { recursive: true });
@@ -620,7 +620,7 @@ describe("doctor preview warnings", () => {
     const warnings = await collectDoctorPreviewWarnings({
       cfg: {
         channels: {
-          "openclaw-weixin": {
+          "operator-weixin": {
             enabled: true,
           },
         },
@@ -628,11 +628,11 @@ describe("doctor preview warnings", () => {
       doctorFixCommand: "openclaw doctor --fix",
     });
 
-    expectSingleWarningContaining(warnings, "channels.openclaw-weixin: dangling channel config");
+    expectSingleWarningContaining(warnings, "channels.operator-weixin: dangling channel config");
   });
 
   it("includes bundled plugin load path migration warnings", async () => {
-    const packageRoot = path.resolve("app-node-modules", "openclaw");
+    const packageRoot = path.resolve("app-node-modules", "@gabrielvfonseca/operator");
     const legacyPath = path.join(packageRoot, "extensions", "feishu");
     manifestState.plugins = [manifest("feishu")];
 
@@ -656,7 +656,7 @@ describe("doctor preview warnings", () => {
 
   it("includes stale OAuth profile shadow warnings", async () => {
     staleOAuthShadowState.warnings = [
-      '- ~/.openclaw/agents/telegram/agent/auth-profiles.json has stale OAuth auth profile openai-codex:default. Run "openclaw doctor --fix".',
+      '- ~/.operator/agents/telegram/agent/auth-profiles.json has stale OAuth auth profile openai-codex:default. Run "openclaw doctor --fix".',
     ];
 
     const warnings = await collectDoctorPreviewWarnings({

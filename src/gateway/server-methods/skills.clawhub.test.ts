@@ -69,7 +69,7 @@ async function callSkillsHandler(method: SkillsHandlerName, params: Record<strin
 
 function expectEmptySecurityVerdicts(response: unknown): void {
   expect(response).toEqual({
-    schema: "openclaw.skills.security-verdicts.v1",
+    schema: "operator.skills.security-verdicts.v1",
     items: [],
   });
 }
@@ -183,7 +183,7 @@ describe("skills gateway handlers (clawhub)", () => {
     expect(ok).toBe(true);
     expect(error).toBeUndefined();
     expect(response).toEqual({
-      schema: "openclaw.skills.security-verdicts.v1",
+      schema: "operator.skills.security-verdicts.v1",
       items: [
         expect.objectContaining({
           registry: "https://clawhub.ai",
@@ -251,7 +251,7 @@ describe("skills gateway handlers (clawhub)", () => {
       "/tmp/workspace/skills/agentreceipt",
     );
     expect(response).toEqual({
-      schema: "openclaw.skills.skill-card.v1",
+      schema: "operator.skills.skill-card.v1",
       skillKey: "agentreceipt",
       path: "/tmp/workspace/skills/agentreceipt/skill-card.md",
       sizeBytes: 34,

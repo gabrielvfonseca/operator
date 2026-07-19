@@ -3,7 +3,7 @@ summary: "Install the official llama.cpp provider for local GGUF memory embeddin
 read_when:
   - You want memory search embeddings from a local GGUF model
   - You are configuring memorySearch.provider = "local"
-  - You need the OpenClaw plugin that owns the node-llama-cpp runtime
+  - You need the Operator plugin that owns the node-llama-cpp runtime
 title: "llama.cpp Provider"
 sidebarTitle: "llama.cpp Provider"
 ---
@@ -15,12 +15,12 @@ embeddings. It registers embedding provider id `local` and owns the
 Install it before using local memory embeddings:
 
 ```bash
-openclaw plugins install @operator/llama-cpp-provider
+operator plugins install @gabrielvfonseca/llama-cpp-provider
 ```
 
 The main `openclaw` npm package does not include `node-llama-cpp`. Keeping the
-native dependency in this plugin prevents normal OpenClaw npm updates from
-deleting a manually installed runtime inside the OpenClaw package directory.
+native dependency in this plugin prevents normal Operator npm updates from
+deleting a manually installed runtime inside the Operator package directory.
 
 ## Configuration
 
@@ -64,22 +64,22 @@ pnpm rebuild node-llama-cpp
 
 ## Runtime diagnostics
 
-Run `openclaw memory status --deep` after the provider has loaded to inspect
+Run `operator memory status --deep` after the provider has loaded to inspect
 the selected backend and build, device names, GPU offloaded layers, requested
 context size, and the last observed VRAM or unified-memory snapshot. The VRAM
 values include an observation timestamp because passive status reads do not
 reload the model or poll the device.
 
-The same last-known facts can appear in `openclaw doctor` when the running
+The same last-known facts can appear in `operator doctor` when the running
 Gateway has already used the local provider. A normal status or doctor command
 does not load a model just to collect diagnostics.
 
 ## Troubleshooting
 
-If `node-llama-cpp` is missing or fails to load, OpenClaw reports the failure
+If `node-llama-cpp` is missing or fails to load, Operator reports the failure
 with:
 
-1. Install the plugin: `openclaw plugins install @operator/llama-cpp-provider`.
+1. Install the plugin: `operator plugins install @gabrielvfonseca/llama-cpp-provider`.
 2. Use Node 24 for native installs/updates.
 3. From a pnpm source checkout: `pnpm approve-builds`, then `pnpm rebuild node-llama-cpp`.
 

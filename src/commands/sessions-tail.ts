@@ -7,7 +7,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { StringDecoder } from "node:string_decoder";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { readAcpSessionMeta } from "../acp/runtime/session-meta.js";
 import { getRuntimeConfig } from "../config/config.js";
 import { resolveSessionFilePath } from "../config/sessions/paths.js";

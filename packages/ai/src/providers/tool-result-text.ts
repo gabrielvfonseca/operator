@@ -1,5 +1,5 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { getAiTransportHost } from "../host.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
 

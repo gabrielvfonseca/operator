@@ -9,7 +9,7 @@ import type { GatewayBrowserClient } from "../../api/gateway.ts";
 import { titleForRoute } from "../../app-navigation.ts";
 import { applicationContext, type ApplicationContext } from "../../app/context.ts";
 import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import { renderMemoryImport } from "./view.ts";
 
@@ -40,7 +40,7 @@ function createIdempotencyKey(): string {
     .join("");
 }
 
-export class MemoryImportPage extends OpenClawLightDomElement {
+export class MemoryImportPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -353,4 +353,4 @@ export class MemoryImportPage extends OpenClawLightDomElement {
   }
 }
 
-customElements.define("openclaw-memory-import-page", MemoryImportPage);
+customElements.define("operator-memory-import-page", MemoryImportPage);

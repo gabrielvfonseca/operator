@@ -7,7 +7,7 @@ import { createPinnedLookup } from "../infra/net/ssrf.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import { saveMediaSource } from "./store.js";
 import { setMediaStoreNetworkDepsForTest } from "./store.test-support.js";
 
@@ -124,7 +124,7 @@ describe("media store redirects", () => {
   beforeAll(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-media-store-redirect-",
+      prefix: "operator-media-store-redirect-",
     });
   });
 

@@ -1,5 +1,5 @@
 // Audits channel configuration for exposure, auth, and trust risks.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   hasConfiguredUnavailableCredentialStatus,
   hasResolvedCredentialValue,
@@ -262,7 +262,7 @@ export async function collectChannelSecurityFindings(params: {
           "Multiple DM senders currently share the main session, which can leak context across users.",
         remediation:
           "Run: " +
-          formatCliCommand('operator config set session.dmScope "per-channel-peer"') +
+          formatCliCommand('openclaw config set session.dmScope "per-channel-peer"') +
           ' (or "per-account-channel-peer" for multi-account channels) to isolate DM sessions per sender.',
       });
     }

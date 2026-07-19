@@ -5,12 +5,12 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { SessionUpstreamJsonValue, SessionUpstreamKind } from "../plugins/session-catalog.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabaseOptions,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 
 type SessionUpstreamDatabase = Pick<
   OperatorStateKyselyDatabase,

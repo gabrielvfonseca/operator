@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { bundledDistPluginFile } from "openclaw/plugin-sdk/test-fixtures";
+import { bundledDistPluginFile } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { discoverOperatorPlugins } from "./discovery.js";
@@ -25,7 +25,7 @@ vi.mock("./bundled-dir.js", async (importOriginal) => {
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-plugins", tempDirs);
+  return makeTrackedTempDir("operator-plugins", tempDirs);
 }
 
 const mkdirSafe = mkdirSafeDir;
@@ -42,9 +42,16 @@ function countMatching<T>(items: readonly T[], predicate: (item: T) => boolean):
 
 function withOperatorPackageArgv<T>(packageRoot: string, fn: () => T): T {
   mkdirSafe(path.join(packageRoot, "bin"));
-  fs.writeFileSync(path.join(packageRoot, "package.json"), '{"name":"openclaw"}\n', "utf-8");
+  fs.writeFileSync(
+    path.join(packageRoot, "package.json"),
+    '{"name":"@gabrielvfonseca/operator"}\n',
+    "utf-8",
+  );
   const originalArgv = process.argv;
-  process.argv = [originalArgv[0] ?? "node", path.join(packageRoot, "bin", "openclaw")];
+  process.argv = [
+    originalArgv[0] ?? "node",
+    path.join(packageRoot, "bin", "@gabrielvfonseca/operator"),
+  ];
   try {
     return fn();
   } finally {
@@ -57,7 +64,7 @@ function symlinkDirectory(target: string, linkPath: string): void {
 }
 
 const canCreateDirectorySymlinks = (() => {
-  const probeDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-symlink-probe-"));
+  const probeDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-symlink-probe-"));
   const targetDir = path.join(probeDir, "target");
   const linkDir = path.join(probeDir, "link");
   try {
@@ -145,7 +152,7 @@ function writePluginPackageManifest(params: {
     path.join(params.packageDir, "package.json"),
     JSON.stringify({
       name: params.packageName,
-      openclaw: {
+      operator: {
         extensions: params.extensions,
         ...(params.runtimeExtensions ? { runtimeExtensions: params.runtimeExtensions } : {}),
         ...(params.setupEntry ? { setupEntry: params.setupEntry } : {}),
@@ -163,7 +170,7 @@ function writePluginManifest(params: {
   requiresPlugins?: string[];
 }) {
   fs.writeFileSync(
-    path.join(params.pluginDir, "openclaw.plugin.json"),
+    path.join(params.pluginDir, "operator.plugin.json"),
     JSON.stringify({
       id: params.id,
       ...(params.requiresPlugins ? { requiresPlugins: params.requiresPlugins } : {}),
@@ -473,12 +480,12 @@ describe("discoverOperatorPlugins", () => {
 
     createPackagePluginWithEntry({
       packageDir: path.join(stateDir, "extensions", "alpha"),
-      packageName: "@operator/alpha",
+      packageName: "@gabrielvfonseca/alpha",
       pluginId: "alpha",
     });
     createPackagePluginWithEntry({
-      packageDir: path.join(workspaceDir, ".openclaw", "extensions", "beta"),
-      packageName: "@operator/beta",
+      packageDir: path.join(workspaceDir, ".operator", "extensions", "beta"),
+      packageName: "@gabrielvfonseca/beta",
       pluginId: "beta",
     });
 
@@ -490,7 +497,7 @@ describe("discoverOperatorPlugins", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
     const globalExt = path.join(stateDir, "extensions");
-    const workspaceExt = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceExt = path.join(workspaceDir, ".operator", "extensions");
     mkdirSafe(globalExt);
     mkdirSafe(workspaceExt);
     fs.writeFileSync(path.join(globalExt, "my-helper.mjs"), "export default {}", "utf-8");
@@ -507,7 +514,7 @@ describe("discoverOperatorPlugins", () => {
     const pluginDir = path.join(stateDir, "extensions", "diffs-language-pack");
     createPackagePluginWithEntry({
       packageDir: pluginDir,
-      packageName: "@operator/diffs-language-pack",
+      packageName: "@gabrielvfonseca/diffs-language-pack",
       pluginId: "diffs-language-pack",
     });
     writePluginManifest({
@@ -533,7 +540,7 @@ describe("discoverOperatorPlugins", () => {
     const languagePackDir = path.join(extensionsDir, "diffs-language-pack");
     createPackagePluginWithEntry({
       packageDir: languagePackDir,
-      packageName: "@operator/diffs-language-pack",
+      packageName: "@gabrielvfonseca/diffs-language-pack",
       pluginId: "diffs-language-pack",
     });
     writePluginManifest({
@@ -543,7 +550,7 @@ describe("discoverOperatorPlugins", () => {
     });
     createPackagePluginWithEntry({
       packageDir: path.join(extensionsDir, "diffs"),
-      packageName: "@operator/diffs",
+      packageName: "@gabrielvfonseca/diffs",
       pluginId: "diffs",
     });
 
@@ -567,7 +574,7 @@ describe("discoverOperatorPlugins", () => {
       const linkedPluginDir = path.join(stateDir, "linked-plugin-src");
       createPackagePluginWithEntry({
         packageDir: linkedPluginDir,
-        packageName: "@operator/linked-plugin",
+        packageName: "@gabrielvfonseca/linked-plugin",
         pluginId: "linked-plugin",
       });
 
@@ -587,13 +594,13 @@ describe("discoverOperatorPlugins", () => {
     async () => {
       const stateDir = makeTempDir();
       const workspaceDir = path.join(stateDir, "workspace");
-      const workspaceExt = path.join(workspaceDir, ".openclaw", "extensions");
+      const workspaceExt = path.join(workspaceDir, ".operator", "extensions");
       mkdirSafe(workspaceExt);
 
       const linkedPluginDir = path.join(stateDir, "workspace-linked-plugin-src");
       createPackagePluginWithEntry({
         packageDir: linkedPluginDir,
-        packageName: "@operator/workspace-linked-plugin",
+        packageName: "@gabrielvfonseca/workspace-linked-plugin",
         pluginId: "workspace-linked-plugin",
       });
 
@@ -626,19 +633,19 @@ describe("discoverOperatorPlugins", () => {
   it("does not recurse arbitrary workspace directories for plugin auto-discovery", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
-    const workspaceExt = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceExt = path.join(workspaceDir, ".operator", "extensions");
 
     const expectedWorkspacePluginDir = path.join(workspaceExt, "workspace-plugin");
     createPackagePluginWithEntry({
       packageDir: expectedWorkspacePluginDir,
-      packageName: "@operator/workspace-plugin",
+      packageName: "@gabrielvfonseca/workspace-plugin",
       pluginId: "workspace-plugin",
     });
 
     const unrelatedWorkspaceDir = path.join(workspaceDir, "lobster-integrations", "bin");
     createPackagePluginWithEntry({
       packageDir: unrelatedWorkspaceDir,
-      packageName: "@operator/stray-workspace-plugin",
+      packageName: "@gabrielvfonseca/stray-workspace-plugin",
     });
 
     const result = discoverOperatorPlugins({
@@ -658,8 +665,8 @@ describe("discoverOperatorPlugins", () => {
     const homeDir = makeTempDir();
     const workspaceRoot = path.join(homeDir, "workspace");
     createPackagePluginWithEntry({
-      packageDir: path.join(workspaceRoot, ".openclaw", "extensions", "tilde-workspace"),
-      packageName: "@operator/tilde-workspace",
+      packageDir: path.join(workspaceRoot, ".operator", "extensions", "tilde-workspace"),
+      packageName: "@gabrielvfonseca/tilde-workspace",
       pluginId: "tilde-workspace",
     });
 
@@ -716,10 +723,10 @@ describe("discoverOperatorPlugins", () => {
     );
     fs.writeFileSync(
       path.join(extensionDir, "package.json"),
-      '{"name":"@operator/twitch"}\n',
+      '{"name":"@gabrielvfonseca/twitch"}\n',
       "utf-8",
     );
-    fs.writeFileSync(path.join(extensionDir, "openclaw.plugin.json"), '{"id":"twitch"}\n', "utf-8");
+    fs.writeFileSync(path.join(extensionDir, "operator.plugin.json"), '{"id":"twitch"}\n', "utf-8");
 
     const result = withOperatorPackageArgv(packageRoot, () =>
       discoverOperatorPlugins({ env: buildDiscoveryEnv(stateDir) }),
@@ -732,7 +739,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("does not treat repo-level live or test files as plugin entrypoints", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledDir = path.join(packageRoot, "dist", "extensions");
     mkdirSafe(bundledDir);
 
@@ -746,7 +753,7 @@ describe("discoverOperatorPlugins", () => {
     );
     createPackagePluginWithEntry({
       packageDir: path.join(bundledDir, "real-plugin"),
-      packageName: "@operator/real-plugin",
+      packageName: "@gabrielvfonseca/real-plugin",
       pluginId: "real-plugin",
     });
 
@@ -766,7 +773,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("ignores packaged bundled plugin paths in configured load paths", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledRoot = path.join(packageRoot, "dist", "extensions");
     const bundledPluginDir = path.join(bundledRoot, "feishu");
     mkdirSafe(bundledPluginDir);
@@ -797,7 +804,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("ignores legacy bundled plugin load paths that would shadow packaged bundled plugins", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledRoot = path.join(packageRoot, "dist-runtime", "extensions");
     const bundledPluginDir = path.join(bundledRoot, "telegram");
     const legacyPluginDir = path.join(packageRoot, "extensions", "telegram");
@@ -833,19 +840,19 @@ describe("discoverOperatorPlugins", () => {
 
   it("discovers bind-mounted bundled source overlays before packaged dist bundles", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledRoot = path.join(packageRoot, "dist", "extensions");
     const bundledPluginDir = path.join(bundledRoot, "synology-chat");
     const sourcePluginDir = path.join(packageRoot, "extensions", "synology-chat");
     createPackagePluginWithEntry({
       packageDir: bundledPluginDir,
-      packageName: "@operator/synology-chat",
+      packageName: "@gabrielvfonseca/synology-chat",
       pluginId: "synology-chat",
       entryPath: "index.js",
     });
     createPackagePluginWithEntry({
       packageDir: sourcePluginDir,
-      packageName: "@operator/synology-chat",
+      packageName: "@gabrielvfonseca/synology-chat",
       pluginId: "synology-chat",
     });
     mockLinuxMountInfo([sourcePluginDir]);
@@ -887,19 +894,19 @@ describe("discoverOperatorPlugins", () => {
 
   it("keeps copied source plugin dirs inert when they are not mounted overlays", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledRoot = path.join(packageRoot, "dist", "extensions");
     const bundledPluginDir = path.join(bundledRoot, "synology-chat");
     const sourcePluginDir = path.join(packageRoot, "extensions", "synology-chat");
     createPackagePluginWithEntry({
       packageDir: bundledPluginDir,
-      packageName: "@operator/synology-chat",
+      packageName: "@gabrielvfonseca/synology-chat",
       pluginId: "synology-chat",
       entryPath: "index.js",
     });
     createPackagePluginWithEntry({
       packageDir: sourcePluginDir,
-      packageName: "@operator/synology-chat",
+      packageName: "@gabrielvfonseca/synology-chat",
       pluginId: "synology-chat",
     });
     mockLinuxMountInfo([]);
@@ -951,7 +958,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/local-source-pack",
+      packageName: "@gabrielvfonseca/local-source-pack",
       extensions: ["./index.ts"],
     });
     writePluginManifest({ pluginDir, id: "local-source-pack" });
@@ -978,7 +985,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/linked-source-pack",
+      packageName: "@gabrielvfonseca/linked-source-pack",
       extensions: ["./src/index.ts"],
       setupEntry: "./src/setup-entry.ts",
     });
@@ -1017,7 +1024,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/source-only-pack",
+      packageName: "@gabrielvfonseca/source-only-pack",
       extensions: ["./src/index.ts"],
     });
     writePluginEntry(path.join(pluginDir, "src", "index.ts"));
@@ -1060,7 +1067,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: sourceDir,
-      packageName: "@operator/source-path-pack",
+      packageName: "@gabrielvfonseca/source-path-pack",
       extensions: ["./src/index.ts"],
     });
     writePluginEntry(path.join(sourceDir, "src", "index.ts"));
@@ -1099,7 +1106,7 @@ describe("discoverOperatorPlugins", () => {
 
       writePluginPackageManifest({
         packageDir: actualSourceDir,
-        packageName: "@operator/source-path-symlink-pack",
+        packageName: "@gabrielvfonseca/source-path-symlink-pack",
         extensions: ["./src/index.ts"],
       });
       writePluginEntry(path.join(actualSourceDir, "src", "index.ts"));
@@ -1132,7 +1139,7 @@ describe("discoverOperatorPlugins", () => {
     mkdirSafe(pluginDir);
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
-      JSON.stringify({ name: "@operator/metadata-only-pack", version: "0.0.1" }),
+      JSON.stringify({ name: "@gabrielvfonseca/metadata-only-pack", version: "0.0.1" }),
       "utf-8",
     );
     writePluginManifest({ pluginDir, id: "metadata-only-pack" });
@@ -1152,7 +1159,7 @@ describe("discoverOperatorPlugins", () => {
     const pluginDir = path.join(stateDir, "extensions", "guardrail-bridge");
     mkdirSafe(pluginDir);
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.extension.json"),
+      path.join(pluginDir, "operator.extension.json"),
       JSON.stringify({
         name: "guardrail-bridge",
         type: "npm",
@@ -1168,7 +1175,7 @@ describe("discoverOperatorPlugins", () => {
       diagnostics: result.diagnostics,
       level: "warn",
       pluginId: "guardrail-bridge",
-      source: path.join(pluginDir, "openclaw.extension.json"),
+      source: path.join(pluginDir, "operator.extension.json"),
       messageIncludes: 'run "openclaw doctor --fix"',
     });
   });
@@ -1180,7 +1187,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/missing-runtime-pack",
+      packageName: "@gabrielvfonseca/missing-runtime-pack",
       extensions: ["./index.ts"],
       runtimeExtensions: ["./dist/index.js"],
     });
@@ -1208,7 +1215,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: bundledPluginDir,
-      packageName: "@operator/discord",
+      packageName: "@gabrielvfonseca/discord",
       extensions: ["./index.js"],
     });
     writePluginManifest({ pluginDir: bundledPluginDir, id: "discord" });
@@ -1216,7 +1223,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: installedPluginDir,
-      packageName: "@operator/discord",
+      packageName: "@gabrielvfonseca/discord",
       extensions: ["./src/index.ts"],
     });
     writePluginManifest({ pluginDir: installedPluginDir, id: "discord" });
@@ -1325,7 +1332,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/runtime-pack",
+      packageName: "@gabrielvfonseca/runtime-pack",
       extensions: ["./src/index.ts"],
       runtimeExtensions: ["./dist/index.js"],
       setupEntry: "./src/setup-entry.ts",
@@ -1354,7 +1361,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/missing-runtime-setup-pack",
+      packageName: "@gabrielvfonseca/missing-runtime-setup-pack",
       extensions: ["./dist/index.js"],
       setupEntry: "./src/setup-entry.ts",
       runtimeSetupEntry: "./dist/setup-entry.js",
@@ -1383,7 +1390,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/missing-setup-pack",
+      packageName: "@gabrielvfonseca/missing-setup-pack",
       extensions: ["./dist/index.js"],
       setupEntry: "./src/setup-entry.ts",
     });
@@ -1409,7 +1416,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/runtime-mismatch-pack",
+      packageName: "@gabrielvfonseca/runtime-mismatch-pack",
       extensions: ["./src/one.ts", "./src/two.ts"],
       runtimeExtensions: ["./dist/one.js"],
     });
@@ -1438,7 +1445,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/runtime-blank-pack",
+      packageName: "@gabrielvfonseca/runtime-blank-pack",
       extensions: ["./src/index.ts"],
       runtimeExtensions: [" "],
     });
@@ -1452,7 +1459,7 @@ describe("discoverOperatorPlugins", () => {
       result.diagnostics.some(
         (entry) =>
           entry.level === "error" &&
-          entry.message.includes("openclaw.runtimeExtensions[0]") &&
+          entry.message.includes("operator.runtimeExtensions[0]") &&
           entry.message.includes("non-empty string"),
       ),
     ).toBe(true);
@@ -1465,7 +1472,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/extension-blank-pack",
+      packageName: "@gabrielvfonseca/extension-blank-pack",
       extensions: ["./dist/index.js", " "],
     });
     writePluginEntry(path.join(pluginDir, "dist", "index.js"));
@@ -1477,7 +1484,7 @@ describe("discoverOperatorPlugins", () => {
       result.diagnostics.some(
         (entry) =>
           entry.level === "error" &&
-          entry.message.includes("openclaw.extensions[1]") &&
+          entry.message.includes("operator.extensions[1]") &&
           entry.message.includes("non-empty string"),
       ),
     ).toBe(true);
@@ -1491,7 +1498,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/built-peer-pack",
+      packageName: "@gabrielvfonseca/built-peer-pack",
       extensions: ["src/index.ts"],
       setupEntry: "src/setup-entry.ts",
     });
@@ -1520,7 +1527,7 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/nested-pack",
+      packageName: "@gabrielvfonseca/nested-pack",
       extensions: ["./plugin/index.ts"],
     });
     writePluginEntry(path.join(pluginDir, "plugin", "index.ts"));
@@ -1536,13 +1543,13 @@ describe("discoverOperatorPlugins", () => {
   it("keeps workspace package TypeScript entries unless runtime entries are explicit", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
-    const pluginDir = path.join(workspaceDir, ".openclaw", "extensions", "workspace-pack");
+    const pluginDir = path.join(workspaceDir, ".operator", "extensions", "workspace-pack");
     mkdirSafe(path.join(pluginDir, "src"));
     mkdirSafe(path.join(pluginDir, "dist"));
 
     writePluginPackageManifest({
       packageDir: pluginDir,
-      packageName: "@operator/workspace-pack",
+      packageName: "@gabrielvfonseca/workspace-pack",
       extensions: ["./src/index.ts"],
     });
     writePluginEntry(path.join(pluginDir, "src", "index.ts"));
@@ -1563,7 +1570,7 @@ describe("discoverOperatorPlugins", () => {
     const pluginDir = path.join(globalExt, "future-channel");
     createPackagePluginWithEntry({
       packageDir: pluginDir,
-      packageName: "@operator/future-channel",
+      packageName: "@gabrielvfonseca/future-channel",
       pluginId: "future-channel",
       compatPluginApi: ">=2026.5.27-beta.2",
     });
@@ -1593,8 +1600,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/malformed-channel",
-        openclaw: {
+        name: "@gabrielvfonseca/malformed-channel",
+        operator: {
           extensions: ["./index.js"],
           plugin: { id: "malformed-channel" },
           compat: { pluginApi: 20260527 },
@@ -1617,7 +1624,7 @@ describe("discoverOperatorPlugins", () => {
       pluginId: "malformed-channel",
       source: path.join(pluginDir, "package.json"),
       messageIncludes:
-        "invalid package plugin API metadata: package.json openclaw.compat.pluginApi must be a string; skipping discovery",
+        "invalid package plugin API metadata: package.json operator.compat.pluginApi must be a string; skipping discovery",
     });
   });
 
@@ -1629,8 +1636,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/future-shape",
-        openclaw: {
+        name: "@gabrielvfonseca/future-shape",
+        operator: {
           extensions: { runtime: "./src/index.ts" },
           compat: { pluginApi: ">=2026.5.27-beta.2" },
         },
@@ -1653,7 +1660,7 @@ describe("discoverOperatorPlugins", () => {
       messageIncludes:
         "plugin requires plugin API >=2026.5.27-beta.2, but this host is 2026.5.27-beta.1; skipping discovery",
     });
-    expectNoDiagnostic({ diagnostics, messageIncludes: "openclaw.extensions" });
+    expectNoDiagnostic({ diagnostics, messageIncludes: "operator.extensions" });
   });
 
   it("discovers same-floor beta non-bundled package plugin API candidates", () => {
@@ -1661,7 +1668,7 @@ describe("discoverOperatorPlugins", () => {
     const globalExt = path.join(stateDir, "extensions");
     createPackagePluginWithEntry({
       packageDir: path.join(globalExt, "current-channel"),
-      packageName: "@operator/current-channel",
+      packageName: "@gabrielvfonseca/current-channel",
       pluginId: "current-channel",
       compatPluginApi: ">=2026.5.27-beta.1",
     });
@@ -1684,8 +1691,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/downloadable",
-        openclaw: {
+        name: "@gabrielvfonseca/downloadable",
+        operator: {
           extensions: ["./index.ts"],
           compat: { pluginApi: ">=2099.1.1" },
         },
@@ -1712,8 +1719,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/downloadable",
-        openclaw: {
+        name: "@gabrielvfonseca/downloadable",
+        operator: {
           extensions: ["./index.ts"],
         },
       }),
@@ -1738,7 +1745,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("discovers source-checkout-only bundled plugins alongside built bundled plugins", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "openclaw");
+    const packageRoot = path.join(stateDir, "@gabrielvfonseca/operator");
     const bundledDir = path.join(packageRoot, "dist", "extensions");
     const sourceDir = path.join(packageRoot, "extensions");
     const builtPluginDir = path.join(bundledDir, "shipped");
@@ -1753,14 +1760,14 @@ describe("discoverOperatorPlugins", () => {
 
     writePluginPackageManifest({
       packageDir: builtPluginDir,
-      packageName: "@operator/shipped",
+      packageName: "@gabrielvfonseca/shipped",
       extensions: ["./index.js"],
     });
     writePluginManifest({ pluginDir: builtPluginDir, id: "shipped" });
     writePluginEntry(path.join(builtPluginDir, "index.js"));
     writePluginPackageManifest({
       packageDir: sourceBuiltPluginDir,
-      packageName: "@operator/shipped",
+      packageName: "@gabrielvfonseca/shipped",
       extensions: ["./index.ts"],
     });
     writePluginManifest({ pluginDir: sourceBuiltPluginDir, id: "shipped" });
@@ -1768,8 +1775,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(sourceOnlyPluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/downloadable",
-        openclaw: {
+        name: "@gabrielvfonseca/downloadable",
+        operator: {
           extensions: ["./index.ts"],
         },
       }),
@@ -1799,7 +1806,7 @@ describe("discoverOperatorPlugins", () => {
     const nestedDiffsDir = path.join(
       pluginDir,
       "node_modules",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "dist",
       "extensions",
       "diffs",
@@ -1826,8 +1833,8 @@ describe("discoverOperatorPlugins", () => {
     );
 
     writePluginPackageManifest({
-      packageDir: path.join(pluginDir, "node_modules", "openclaw"),
-      packageName: "openclaw",
+      packageDir: path.join(pluginDir, "node_modules", "@gabrielvfonseca/operator"),
+      packageName: "@gabrielvfonseca/operator",
       extensions: [`./${bundledDistPluginFile("diffs", "index.js")}`],
     });
     writePluginManifest({ pluginDir: nestedDiffsDir, id: "diffs" });
@@ -1844,9 +1851,13 @@ describe("discoverOperatorPlugins", () => {
   it("skips dependency and build directories while scanning workspace roots", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
-    const workspaceRoot = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceRoot = path.join(workspaceDir, ".operator", "extensions");
     const workspacePluginDir = path.join(workspaceRoot, "workspace-plugin");
-    const nestedNodeModulesDir = path.join(workspaceRoot, "node_modules", "openclaw");
+    const nestedNodeModulesDir = path.join(
+      workspaceRoot,
+      "node_modules",
+      "@gabrielvfonseca/operator",
+    );
     const nestedDistDir = path.join(workspaceRoot, "dist", "extensions", "diffs");
     mkdirSafe(path.join(workspacePluginDir, "src"));
     mkdirSafe(path.join(nestedNodeModulesDir, "src"));
@@ -1854,13 +1865,13 @@ describe("discoverOperatorPlugins", () => {
 
     createPackagePluginWithEntry({
       packageDir: workspacePluginDir,
-      packageName: "@operator/workspace-plugin",
+      packageName: "@gabrielvfonseca/workspace-plugin",
       pluginId: "workspace-plugin",
     });
 
     createPackagePluginWithEntry({
       packageDir: nestedNodeModulesDir,
-      packageName: "openclaw",
+      packageName: "@gabrielvfonseca/operator",
       pluginId: "node-modules-copy",
     });
 
@@ -1886,7 +1897,7 @@ describe("discoverOperatorPlugins", () => {
         const packageDir = path.join(stateDir, "extensions", "voice-call-pack");
         createPackagePluginWithEntry({
           packageDir,
-          packageName: "@operator/voice-call",
+          packageName: "@gabrielvfonseca/voice-call",
           entryPath: "src/index.ts",
         });
         return {};
@@ -1912,8 +1923,8 @@ describe("discoverOperatorPlugins", () => {
       name: "normalizes bundled speech package ids to canonical plugin ids",
       setup: (stateDir: string) => {
         for (const [dirName, packageName, pluginId] of [
-          ["elevenlabs-speech-pack", "@operator/elevenlabs-speech", "elevenlabs"],
-          ["microsoft-speech-pack", "@operator/microsoft-speech", "microsoft"],
+          ["elevenlabs-speech-pack", "@gabrielvfonseca/elevenlabs-speech", "elevenlabs"],
+          ["microsoft-speech-pack", "@gabrielvfonseca/microsoft-speech", "microsoft"],
         ] as const) {
           const packageDir = path.join(stateDir, "extensions", dirName);
           createPackagePluginWithEntry({
@@ -1934,7 +1945,7 @@ describe("discoverOperatorPlugins", () => {
         const packageDir = path.join(stateDir, "packs", "demo-plugin-dir");
         createPackagePluginWithEntry({
           packageDir,
-          packageName: "@operator/demo-plugin-dir",
+          packageName: "@gabrielvfonseca/demo-plugin-dir",
           entryPath: "index.js",
         });
         return { extraPaths: [packageDir] };
@@ -2034,7 +2045,7 @@ describe("discoverOperatorPlugins", () => {
     const result = await discoverWithStateDir(stateDir, setup(stateDir));
     const legacy = findCandidateById(result.candidates, "legacy-with-bad-bundle");
 
-    expect(legacy?.format).toBe("openclaw");
+    expect(legacy?.format).toBe("@gabrielvfonseca/operator");
     expect(hasDiagnosticSourceSuffix(result.diagnostics, bundleMarker)).toBe(true);
   });
 
@@ -2048,7 +2059,7 @@ describe("discoverOperatorPlugins", () => {
         mkdirSafe(globalExt);
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/escape-pack",
+          packageName: "@gabrielvfonseca/escape-pack",
           extensions: ["../../outside.js"],
         });
         fs.writeFileSync(outside, "export default function () {}", "utf-8");
@@ -2062,7 +2073,7 @@ describe("discoverOperatorPlugins", () => {
         mkdirSafe(path.join(globalExt, "src"));
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/escape-pack",
+          packageName: "@gabrielvfonseca/escape-pack",
           extensions: ["../src/index.ts"],
         });
         fs.writeFileSync(path.join(globalExt, "src", "index.js"), "export default {}", "utf-8");
@@ -2076,7 +2087,7 @@ describe("discoverOperatorPlugins", () => {
         mkdirSafe(path.join(globalExt, "dist"));
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/escape-pack",
+          packageName: "@gabrielvfonseca/escape-pack",
           extensions: ["../src/index.ts"],
           runtimeExtensions: ["./dist/index.js"],
         });
@@ -2091,7 +2102,7 @@ describe("discoverOperatorPlugins", () => {
         mkdirSafe(globalExt);
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/missing-entry-pack",
+          packageName: "@gabrielvfonseca/missing-entry-pack",
           extensions: ["./missing.ts"],
         });
         return true;
@@ -2115,7 +2126,7 @@ describe("discoverOperatorPlugins", () => {
         }
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/pack",
+          packageName: "@gabrielvfonseca/pack",
           extensions: ["./linked/escape.ts"],
         });
         return true;
@@ -2147,7 +2158,7 @@ describe("discoverOperatorPlugins", () => {
         }
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/pack",
+          packageName: "@gabrielvfonseca/pack",
           extensions: ["./escape.ts"],
         });
         return true;
@@ -2179,7 +2190,7 @@ describe("discoverOperatorPlugins", () => {
         }
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/pack",
+          packageName: "@gabrielvfonseca/pack",
           extensions: ["./escape.ts"],
         });
         return true;
@@ -2212,7 +2223,7 @@ describe("discoverOperatorPlugins", () => {
         }
         writePluginPackageManifest({
           packageDir: globalExt,
-          packageName: "@operator/pack",
+          packageName: "@gabrielvfonseca/pack",
           extensions: ["./src/index.ts"],
         });
         return true;
@@ -2234,7 +2245,7 @@ describe("discoverOperatorPlugins", () => {
     mkdirSafe(path.join(globalExt, "dist"));
     writePluginPackageManifest({
       packageDir: globalExt,
-      packageName: "@operator/escape-pack",
+      packageName: "@gabrielvfonseca/escape-pack",
       extensions: ["./dist/index.js"],
       setupEntry: "../src/setup-entry.ts",
       runtimeSetupEntry: "./dist/setup-entry.js",
@@ -2264,8 +2275,8 @@ describe("discoverOperatorPlugins", () => {
     fs.writeFileSync(
       outsideManifest,
       JSON.stringify({
-        name: "@operator/pack",
-        openclaw: { extensions: ["./entry.ts"] },
+        name: "@gabrielvfonseca/pack",
+        operator: { extensions: ["./entry.ts"] },
       }),
       "utf-8",
     );
@@ -2288,7 +2299,7 @@ describe("discoverOperatorPlugins", () => {
     const pluginDir = path.join(stateDir, "extensions", "world-open");
     createPackagePluginWithEntry({
       packageDir: pluginDir,
-      packageName: "@operator/world-open",
+      packageName: "@gabrielvfonseca/world-open",
       pluginId: "world-open",
     });
     fs.chmodSync(pluginDir, 0o777);
@@ -2306,7 +2317,7 @@ describe("discoverOperatorPlugins", () => {
     "repairs world-writable bundled plugin dirs before loading them",
     async () => {
       const stateDir = makeTempDir();
-      const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+      const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
       const bundledDir = path.join(packageRoot, "dist", "extensions");
       const packDir = path.join(bundledDir, "demo-pack");
       mkdirSafe(packDir);
@@ -2335,7 +2346,7 @@ describe("discoverOperatorPlugins", () => {
       const stateDir = makeTempDir();
       createPackagePluginWithEntry({
         packageDir: path.join(stateDir, "extensions", "owner-mismatch"),
-        packageName: "@operator/owner-mismatch",
+        packageName: "@gabrielvfonseca/owner-mismatch",
         pluginId: "owner-mismatch",
       });
 
@@ -2422,7 +2433,7 @@ describe("discoverOperatorPlugins", () => {
     const pluginDir = path.join(stateDir, "extensions", "fresh");
     createPackagePluginWithEntry({
       packageDir: pluginDir,
-      packageName: "@operator/fresh",
+      packageName: "@gabrielvfonseca/fresh",
       pluginId: "fresh",
     });
 
@@ -2438,7 +2449,7 @@ describe("discoverOperatorPlugins", () => {
 
   it("discovers bundled and global plugins for each workspace-specific scan", () => {
     const stateDir = makeTempDir();
-    const packageRoot = path.join(stateDir, "node_modules", "openclaw");
+    const packageRoot = path.join(stateDir, "node_modules", "@gabrielvfonseca/operator");
     const bundledDir = path.join(packageRoot, "dist", "extensions");
     const globalExt = path.join(stateDir, "extensions");
     const workspaceA = path.join(stateDir, "workspace-a");
@@ -2446,22 +2457,22 @@ describe("discoverOperatorPlugins", () => {
 
     createPackagePluginWithEntry({
       packageDir: path.join(bundledDir, "bundled-plugin"),
-      packageName: "@operator/bundled-plugin",
+      packageName: "@gabrielvfonseca/bundled-plugin",
       pluginId: "bundled-plugin",
     });
     createPackagePluginWithEntry({
       packageDir: path.join(globalExt, "global-plugin"),
-      packageName: "@operator/global-plugin",
+      packageName: "@gabrielvfonseca/global-plugin",
       pluginId: "global-plugin",
     });
     createPackagePluginWithEntry({
-      packageDir: path.join(workspaceA, ".openclaw", "extensions", "workspace-a-plugin"),
-      packageName: "@operator/workspace-a-plugin",
+      packageDir: path.join(workspaceA, ".operator", "extensions", "workspace-a-plugin"),
+      packageName: "@gabrielvfonseca/workspace-a-plugin",
       pluginId: "workspace-a-plugin",
     });
     createPackagePluginWithEntry({
-      packageDir: path.join(workspaceB, ".openclaw", "extensions", "workspace-b-plugin"),
-      packageName: "@operator/workspace-b-plugin",
+      packageDir: path.join(workspaceB, ".operator", "extensions", "workspace-b-plugin"),
+      packageName: "@gabrielvfonseca/workspace-b-plugin",
       pluginId: "workspace-b-plugin",
     });
 
@@ -2495,12 +2506,12 @@ describe("discoverOperatorPlugins", () => {
         const stateDirB = makeTempDir();
         createPackagePluginWithEntry({
           packageDir: path.join(stateDirA, "extensions", "alpha"),
-          packageName: "@operator/alpha",
+          packageName: "@gabrielvfonseca/alpha",
           pluginId: "alpha",
         });
         createPackagePluginWithEntry({
           packageDir: path.join(stateDirB, "extensions", "beta"),
-          packageName: "@operator/beta",
+          packageName: "@gabrielvfonseca/beta",
           pluginId: "beta",
         });
         return {

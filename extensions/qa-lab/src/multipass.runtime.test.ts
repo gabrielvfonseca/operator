@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const runExecMock = vi.hoisted(() => vi.fn());
@@ -105,7 +105,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("rejects repo-local symlink output directories that escape the repo root", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-multipass-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-multipass-"));
     const repoRoot = path.join(tempRoot, "repo");
     const outsideRoot = path.join(tempRoot, "outside");
     const symlinkPath = path.join(repoRoot, "artifacts-link");
@@ -151,7 +151,7 @@ describe("qa multipass runtime", () => {
     expect(script).toContain("'--provider-mode' 'live-frontier'");
     expect(script).toContain("'--scenario' 'channel-chat-baseline'");
     expect(script).toContain("'--scenario' 'thread-follow-up'");
-    expect(script).toContain("/workspace/openclaw-host/.artifacts/qa-e2e/multipass-default-test");
+    expect(script).toContain("/workspace/operator-host/.artifacts/qa-e2e/multipass-default-test");
   });
 
   it("redacts persisted credentials while forwarding them to the executable script", async () => {
@@ -179,7 +179,7 @@ describe("qa multipass runtime", () => {
   it("persists runtime, channel-driver, and plugin selections", async () => {
     const script = await renderPersistedGuestScript({
       outputDirName: "multipass-selection-test",
-      runtimePair: ["openclaw", "codex"],
+      runtimePair: ["@gabrielvfonseca/operator", "codex"],
       channelDriverSelection: {
         capabilityMatrixPath: "crabline-fake-provider-capabilities.json",
         channel: "telegram",
@@ -218,7 +218,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("omits stale CODEX_HOME values", async () => {
-    vi.stubEnv("CODEX_HOME", "/tmp/does-not-exist-openclaw-codex-home");
+    vi.stubEnv("CODEX_HOME", "/tmp/does-not-exist-operator-codex-home");
     const script = await renderPersistedGuestScript({
       outputDirName: "multipass-stale-codex-home-test",
       providerMode: "live-frontier",
@@ -228,7 +228,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("uses os.homedir() when HOME is unset for CODEX_HOME discovery", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-multipass-home-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-multipass-home-"));
     const fakeHome = path.join(tempRoot, "home");
     fs.mkdirSync(path.join(fakeHome, ".codex"), { recursive: true });
     vi.stubEnv("HOME", "");
@@ -240,7 +240,7 @@ describe("qa multipass runtime", () => {
         outputDirName: "multipass-home-test",
         providerMode: "live-frontier",
       });
-      expect(script).toContain("CODEX_HOME='/workspace/openclaw-codex-home'");
+      expect(script).toContain("CODEX_HOME='/workspace/operator-codex-home'");
       expect(script).not.toContain(fakeHome);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });

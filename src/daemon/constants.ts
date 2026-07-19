@@ -1,17 +1,17 @@
 /** Cross-platform daemon service names, labels, and profile-aware descriptions. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 // Default service labels (canonical + legacy compatibility)
 export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.operator.gateway";
 const GATEWAY_SYSTEMD_SERVICE_NAME = "operator-gateway";
 const GATEWAY_WINDOWS_TASK_NAME = "Operator Gateway";
-export const GATEWAY_SERVICE_MARKER = "operator";
+export const GATEWAY_SERVICE_MARKER = "@gabrielvfonseca/operator";
 export const GATEWAY_SERVICE_KIND = "gateway";
 export const GATEWAY_SERVICE_RUNTIME_PID_ENV = "OPERATOR_GATEWAY_SERVICE_PID";
 const NODE_LAUNCH_AGENT_LABEL = "ai.operator.node";
 const NODE_SYSTEMD_SERVICE_NAME = "operator-node";
 const NODE_WINDOWS_TASK_NAME = "Operator Node";
-export const NODE_SERVICE_MARKER = "operator";
+export const NODE_SERVICE_MARKER = "@gabrielvfonseca/operator";
 export const NODE_SERVICE_KIND = "node";
 export const NODE_WINDOWS_TASK_SCRIPT_NAME = "node.cmd";
 export const LEGACY_GATEWAY_SYSTEMD_SERVICE_NAMES: string[] = ["clawdbot-gateway"];

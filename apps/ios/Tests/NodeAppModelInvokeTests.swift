@@ -1,11 +1,11 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import Testing
 import UIKit
 import UserNotifications
-@testable import OpenClaw
-@testable import OpenClawChatUI
+@testable import Operator
+@testable import OperatorChatUI
 
 @MainActor
 private final class MockVoiceNoteAudioCapture: VoiceNoteAudioCapture {
@@ -34,11 +34,11 @@ private actor CancellingCameraService: CameraServicing {
         []
     }
 
-    func snap(params: OpenClawCameraSnapParams) async throws -> OpenClawCameraSnapResult {
+    func snap(params: OperatorCameraSnapParams) async throws -> OperatorCameraSnapResult {
         throw CancellationError()
     }
 
-    func clip(params: OpenClawCameraClipParams) async throws -> OpenClawCameraClipResult {
+    func clip(params: OperatorCameraClipParams) async throws -> OperatorCameraClipResult {
         throw CancellationError()
     }
 }
@@ -50,11 +50,11 @@ private actor RecordingCameraService: CameraServicing {
         []
     }
 
-    func snap(params _: OpenClawCameraSnapParams) async throws -> OpenClawCameraSnapResult {
+    func snap(params _: OperatorCameraSnapParams) async throws -> OperatorCameraSnapResult {
         (format: "jpg", base64: "", width: 1, height: 1)
     }
 
-    func clip(params _: OpenClawCameraClipParams) async throws -> OpenClawCameraClipResult {
+    func clip(params _: OperatorCameraClipParams) async throws -> OperatorCameraClipResult {
         self.clipCalls += 1
         return (format: "mp4", base64: "", durationMs: 1, hasAudio: true)
     }
@@ -65,11 +65,11 @@ private actor RecordingCameraService: CameraServicing {
 }
 
 private actor MockHealthSummaryService: HealthSummaryServicing {
-    private(set) var periods: [OpenClawHealthSummaryPeriod] = []
+    private(set) var periods: [OperatorHealthSummaryPeriod] = []
 
-    func summary(params: OpenClawHealthSummaryParams) async throws -> OpenClawHealthSummaryPayload {
+    func summary(params: OperatorHealthSummaryParams) async throws -> OperatorHealthSummaryPayload {
         self.periods.append(params.period)
-        return OpenClawHealthSummaryPayload(
+        return OperatorHealthSummaryPayload(
             period: params.period,
             startISO: "2026-07-06T00:00:00Z",
             endISO: "2026-07-12T18:30:00Z",
@@ -93,11 +93,11 @@ private actor BlockingAudioCameraService: CameraServicing {
         []
     }
 
-    func snap(params _: OpenClawCameraSnapParams) async throws -> OpenClawCameraSnapResult {
+    func snap(params _: OperatorCameraSnapParams) async throws -> OperatorCameraSnapResult {
         (format: "jpg", base64: "", width: 1, height: 1)
     }
 
-    func clip(params _: OpenClawCameraClipParams) async throws -> OpenClawCameraClipResult {
+    func clip(params _: OperatorCameraClipParams) async throws -> OperatorCameraClipResult {
         await self.barrier.suspendFirstPreparation()
         try Task.checkCancellation()
         return (format: "mp4", base64: "", durationMs: 1, hasAudio: true)
@@ -123,7 +123,7 @@ private actor BlockingAudioScreenRecorder: ScreenRecordingServicing {
         await self.barrier.suspendFirstPreparation()
         try Task.checkCancellation()
         let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-screen-test-\(UUID().uuidString).mp4")
+            .appendingPathComponent("operator-screen-test-\(UUID().uuidString).mp4")
         try Data().write(to: url)
         return url.path
     }
@@ -174,7 +174,7 @@ private actor OverlappingCameraService: CameraServicing {
         []
     }
 
-    func snap(params: OpenClawCameraSnapParams) async throws -> OpenClawCameraSnapResult {
+    func snap(params: OperatorCameraSnapParams) async throws -> OperatorCameraSnapResult {
         self.snapCount += 1
         if self.snapCount == 1 {
             self.firstStarted.yield()
@@ -189,7 +189,7 @@ private actor OverlappingCameraService: CameraServicing {
         return (format: "jpg", base64: "", width: 1, height: 1)
     }
 
-    func clip(params: OpenClawCameraClipParams) async throws -> OpenClawCameraClipResult {
+    func clip(params: OperatorCameraClipParams) async throws -> OperatorCameraClipResult {
         throw CancellationError()
     }
 
@@ -246,7 +246,7 @@ private func waitForTalkCondition(_ condition: @MainActor () -> Bool) async {
     Issue.record("Timed out waiting for Talk state")
 }
 
-private func talkRequest(id: String, command: OpenClawTalkCommand) -> BridgeInvokeRequest {
+private func talkRequest(id: String, command: OperatorTalkCommand) -> BridgeInvokeRequest {
     BridgeInvokeRequest(id: id, command: command.rawValue)
 }
 
@@ -263,7 +263,7 @@ private func makeAgentDeepLinkURL(
     key: String? = nil) -> URL
 {
     var components = URLComponents()
-    components.scheme = "openclaw"
+    components.scheme = "@gabrielvfonseca/operator"
     components.host = "agent"
     var queryItems: [URLQueryItem] = [URLQueryItem(name: "message", value: message)]
     if deliver {
@@ -290,10 +290,10 @@ private func makeWatchChatRawMessage(
     idempotencyKey: String? = nil,
     stopReason: String? = nil) throws -> AnyCodable
 {
-    let message = OpenClawChatMessage(
+    let message = OperatorChatMessage(
         role: role,
         content: [
-            OpenClawChatMessageContent(
+            OperatorChatMessageContent(
                 type: type,
                 text: text,
                 mimeType: nil,
@@ -371,18 +371,18 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
         queuedForDelivery: false,
         transport: "sendMessage")
     var sendError: Error?
-    var lastSent: (id: String, params: OpenClawWatchNotifyParams, gatewayStableID: String?)?
+    var lastSent: (id: String, params: OperatorWatchNotifyParams, gatewayStableID: String?)?
     var lastDirectNodeSetupCode: String?
-    var lastSentExecApprovalPrompt: OpenClawWatchExecApprovalPromptMessage?
-    var sentExecApprovalPrompts: [OpenClawWatchExecApprovalPromptMessage] = []
-    var lastSentExecApprovalResolved: OpenClawWatchExecApprovalResolvedMessage?
-    var lastSentExecApprovalExpired: OpenClawWatchExecApprovalExpiredMessage?
-    var lastSentExecApprovalSnapshot: OpenClawWatchExecApprovalSnapshotMessage?
-    var sentExecApprovalSnapshots: [OpenClawWatchExecApprovalSnapshotMessage] = []
-    var lastSentAppSnapshot: OpenClawWatchAppSnapshotMessage?
-    var syncExecApprovalSnapshotHandler: ((OpenClawWatchExecApprovalSnapshotMessage) async throws
+    var lastSentExecApprovalPrompt: OperatorWatchExecApprovalPromptMessage?
+    var sentExecApprovalPrompts: [OperatorWatchExecApprovalPromptMessage] = []
+    var lastSentExecApprovalResolved: OperatorWatchExecApprovalResolvedMessage?
+    var lastSentExecApprovalExpired: OperatorWatchExecApprovalExpiredMessage?
+    var lastSentExecApprovalSnapshot: OperatorWatchExecApprovalSnapshotMessage?
+    var sentExecApprovalSnapshots: [OperatorWatchExecApprovalSnapshotMessage] = []
+    var lastSentAppSnapshot: OperatorWatchAppSnapshotMessage?
+    var syncExecApprovalSnapshotHandler: ((OperatorWatchExecApprovalSnapshotMessage) async throws
         -> WatchNotificationSendResult)?
-    var lastSentChatCompletion: OpenClawWatchChatCompletionMessage?
+    var lastSentChatCompletion: OperatorWatchChatCompletionMessage?
     private var statusHandler: (@Sendable (WatchMessagingStatus) -> Void)?
     private var replyHandler: (@Sendable (WatchQuickReplyEvent) -> Void)?
     private var execApprovalResolveHandler: (@Sendable (WatchExecApprovalResolveEvent) -> Void)?
@@ -427,7 +427,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
 
     func sendNotification(
         id: String,
-        params: OpenClawWatchNotifyParams,
+        params: OperatorWatchNotifyParams,
         gatewayStableID: String?) async throws -> WatchNotificationSendResult
     {
         self.lastSent = (id: id, params: params, gatewayStableID: gatewayStableID)
@@ -446,7 +446,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func sendExecApprovalPrompt(
-        _ message: OpenClawWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentExecApprovalPrompt = message
         self.sentExecApprovalPrompts.append(message)
@@ -457,7 +457,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func sendExecApprovalResolved(
-        _ message: OpenClawWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentExecApprovalResolved = message
         if let sendError {
@@ -467,7 +467,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func sendExecApprovalExpired(
-        _ message: OpenClawWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentExecApprovalExpired = message
         if let sendError {
@@ -477,7 +477,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func syncExecApprovalSnapshot(
-        _ message: OpenClawWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentExecApprovalSnapshot = message
         self.sentExecApprovalSnapshots.append(message)
@@ -491,7 +491,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func syncAppSnapshot(
-        _ message: OpenClawWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentAppSnapshot = message
         if let sendError {
@@ -501,7 +501,7 @@ private final class MockWatchMessagingService: @preconcurrency WatchMessagingSer
     }
 
     func sendChatCompletion(
-        _ message: OpenClawWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
     {
         self.lastSentChatCompletion = message
         if let sendError {
@@ -686,7 +686,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 @Suite(.serialized) struct NodeAppModelInvokeTests {
     @Test @MainActor func `decode params fails without JSON`() {
         #expect(throws: Error.self) {
-            _ = try NodeAppModel._test_decodeParams(OpenClawCanvasNavigateParams.self, from: nil)
+            _ = try NodeAppModel._test_decodeParams(OperatorCanvasNavigateParams.self, from: nil)
         }
     }
 
@@ -703,11 +703,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let appModel = NodeAppModel(healthSummaryService: service)
         let request = BridgeInvokeRequest(
             id: "health-1",
-            command: OpenClawHealthCommand.summary.rawValue,
+            command: OperatorHealthCommand.summary.rawValue,
             paramsJSON: #"{"period":"today"}"#)
 
         let response = await appModel._test_handleInvoke(request)
-        let payload = try decodeTalkPayload(OpenClawHealthSummaryPayload.self, from: response)
+        let payload = try decodeTalkPayload(OperatorHealthSummaryPayload.self, from: response)
 
         #expect(response.ok)
         #expect(payload.period == .today)
@@ -720,7 +720,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let appModel = NodeAppModel(healthSummaryService: service)
         let request = BridgeInvokeRequest(
             id: "health-invalid",
-            command: OpenClawHealthCommand.summary.rawValue,
+            command: OperatorHealthCommand.summary.rawValue,
             paramsJSON: #"{"period":"90d"}"#)
 
         let response = await appModel._test_handleInvoke(request)
@@ -1293,7 +1293,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             NotificationSnapshot(
                 identifier: "old-requested-approval",
                 userInfo: [
-                    "openclaw": [
+                    "@gabrielvfonseca/operator": [
                         "kind": ExecApprovalNotificationBridge.requestedKind,
                         "approvalId": "recovery-a",
                         "gatewayDeviceId": "device-a",
@@ -1302,7 +1302,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             NotificationSnapshot(
                 identifier: "new-requested-approval",
                 userInfo: [
-                    "openclaw": [
+                    "@gabrielvfonseca/operator": [
                         "kind": ExecApprovalNotificationBridge.requestedKind,
                         "approvalId": "recovery-b",
                         "gatewayDeviceId": "device-b",
@@ -1410,7 +1410,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             expiresAtMs: 4_000_000_000_000))
         appModel._test_presentExecApprovalPrompt(prompt)
 
-        let uncertainMessage = "Decision status is unknown. Actions remain locked until OpenClaw reconnects."
+        let uncertainMessage = "Decision status is unknown. Actions remain locked until Operator reconnects."
         appModel._test_setPendingExecApprovalPromptUncertain(uncertainMessage)
 
         #expect(appModel._test_pendingExecApprovalState().resolving)
@@ -1835,7 +1835,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         // owner-frozen uncertain contract with a durable readback record.
         #expect(appModel._test_pendingExecApprovalState().resolving)
         #expect(appModel._test_pendingExecApprovalState().error ==
-            "Decision status is unknown. Actions remain locked until OpenClaw reconnects.")
+            "Decision status is unknown. Actions remain locked until Operator reconnects.")
         #expect(appModel._test_pendingPersistedExecApprovalReadbacks().contains { readback in
             readback.approvalId == approvalID && readback.gatewayStableID == gatewayA.effectiveStableID
         })
@@ -2053,7 +2053,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         notificationCenter.delivered = [NotificationSnapshot(
             identifier: "offline-request-alert",
             userInfo: [
-                "openclaw": [
+                "@gabrielvfonseca/operator": [
                     "kind": ExecApprovalNotificationBridge.requestedKind,
                     "approvalId": push.approvalId,
                     "gatewayDeviceId": "gateway-device-a",
@@ -2110,7 +2110,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let request = BridgeInvokeRequest(
             id: "ptt-start",
-            command: OpenClawTalkCommand.pttStart.rawValue)
+            command: OperatorTalkCommand.pttStart.rawValue)
         let response = await appModel._test_handleInvoke(request)
 
         #expect(response.ok == false)
@@ -2121,7 +2121,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `PTT start preserves an active voice note`() async {
         let capture = MockVoiceNoteAudioCapture()
-        let recorder = OpenClawVoiceNoteRecorder(capture: capture)
+        let recorder = OperatorVoiceNoteRecorder(capture: capture)
         #expect(await recorder.start())
         let appModel = NodeAppModel(
             talkMode: TalkModeManager(allowSimulatorCapture: true),
@@ -2129,7 +2129,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let request = BridgeInvokeRequest(
             id: "ptt-start-with-voice-note",
-            command: OpenClawTalkCommand.pttStart.rawValue)
+            command: OperatorTalkCommand.pttStart.rawValue)
         let response = await appModel._test_handleInvoke(request)
 
         #expect(response.ok == false)
@@ -2165,7 +2165,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let activeResponse = await active.value
         let queuedResponse = await queued.value
-        let activePayload = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: activeResponse)
+        let activePayload = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: activeResponse)
         #expect(activeResponse.ok)
         #expect(!queuedResponse.ok)
         #expect(talkMode._test_activePushToTalkCaptureId() == activePayload.captureId)
@@ -2224,7 +2224,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         #expect(await stale.value.ok == false)
         let freshResponse = await fresh.value
-        let freshPayload = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: freshResponse)
+        let freshPayload = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: freshResponse)
         #expect(freshResponse.ok)
         #expect(talkMode._test_activePushToTalkCaptureId() == freshPayload.captureId)
 
@@ -2303,11 +2303,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let barrier = TalkPreparationBarrier()
         let stableID = "talk-routing-restore-\(UUID().uuidString)"
         let databaseURL = try #require(NodeAppModel.chatTranscriptCacheDatabaseURL(gatewayID: stableID))
-        let identity = try #require(OpenClawChatSessionRoutingIdentity(
+        let identity = try #require(OperatorChatSessionRoutingIdentity(
             scope: "per-sender",
             mainSessionKey: "restored-main",
             defaultAgentID: "main"))
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: stableID)
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: stableID)
         await store.storeSessionRoutingIdentity(identity)
         await store.retire()
         appModel._test_setChatSessionRoutingRestoreHandler {
@@ -2316,7 +2316,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         defer {
             barrier.release()
             appModel._test_setChatSessionRoutingRestoreHandler(nil)
-            OpenClawChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
+            OperatorChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
             appModel.voiceWake.stop()
         }
 
@@ -2341,11 +2341,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let barrier = TalkPreparationBarrier()
         let stableID = "cancelled-routing-restore-\(UUID().uuidString)"
         let databaseURL = try #require(NodeAppModel.chatTranscriptCacheDatabaseURL(gatewayID: stableID))
-        let identity = try #require(OpenClawChatSessionRoutingIdentity(
+        let identity = try #require(OperatorChatSessionRoutingIdentity(
             scope: "per-sender",
             mainSessionKey: "stale-main",
             defaultAgentID: "main"))
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: stableID)
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: stableID)
         await store.storeSessionRoutingIdentity(identity)
         await store.retire()
         appModel._test_setConnectedGatewayID(stableID)
@@ -2355,7 +2355,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         defer {
             barrier.release()
             appModel._test_setChatSessionRoutingRestoreHandler(nil)
-            OpenClawChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
+            OperatorChatSQLiteTranscriptCache.removeDatabaseFiles(at: databaseURL)
             appModel.voiceWake.stop()
         }
 
@@ -2507,7 +2507,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let activeResponse = await appModel._test_handleInvoke(
             talkRequest(id: "node-route-active", command: .pttStart))
-        let active = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: activeResponse)
+        let active = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: activeResponse)
         #expect(talkMode._test_activePushToTalkCaptureId() == active.captureId)
 
         appModel._test_invalidateNodePushToTalkRoute()
@@ -2540,7 +2540,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         }
         let startResponse = await appModel._test_handleInvoke(
             talkRequest(id: "fresh-before-stale-cancel", command: .pttStart))
-        let active = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: startResponse)
+        let active = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: startResponse)
         let staleCancel = Task { @MainActor in
             await barrier.suspendFirstPreparation()
             return await appModel._test_handleInvoke(
@@ -2627,9 +2627,9 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         await waitForTalkCondition { talkMode._test_activePushToTalkCaptureId() != nil }
         let cancelledCaptureId = try #require(talkMode._test_activePushToTalkCaptureId())
         let cancelResponse = await appModel._test_handleInvoke(talkRequest(id: "cancel", command: .pttCancel))
-        let cancelPayload = try decodeTalkPayload(OpenClawTalkPTTStopPayload.self, from: cancelResponse)
+        let cancelPayload = try decodeTalkPayload(OperatorTalkPTTStopPayload.self, from: cancelResponse)
         let cancelledOncePayload = try await decodeTalkPayload(
-            OpenClawTalkPTTStopPayload.self,
+            OperatorTalkPTTStopPayload.self,
             from: cancelledOnce.value)
         #expect(cancelPayload.captureId == cancelledCaptureId)
         #expect(cancelPayload.status == "cancelled")
@@ -2641,8 +2641,8 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         await waitForTalkCondition { talkMode._test_activePushToTalkCaptureId() != nil }
         let stoppedCaptureId = try #require(talkMode._test_activePushToTalkCaptureId())
         let stopResponse = await appModel._test_handleInvoke(talkRequest(id: "stop", command: .pttStop))
-        let stopPayload = try decodeTalkPayload(OpenClawTalkPTTStopPayload.self, from: stopResponse)
-        let stoppedOncePayload = try await decodeTalkPayload(OpenClawTalkPTTStopPayload.self, from: stoppedOnce.value)
+        let stopPayload = try decodeTalkPayload(OperatorTalkPTTStopPayload.self, from: stopResponse)
+        let stoppedOncePayload = try await decodeTalkPayload(OperatorTalkPTTStopPayload.self, from: stoppedOnce.value)
         #expect(stopPayload.captureId == stoppedCaptureId)
         #expect(stopPayload.status == "empty")
         #expect(stoppedOncePayload == stopPayload)
@@ -3012,7 +3012,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         talkMode.suspendForBackground()
 
-        let payload = try await decodeTalkPayload(OpenClawTalkPTTStopPayload.self, from: once.value)
+        let payload = try await decodeTalkPayload(OperatorTalkPTTStopPayload.self, from: once.value)
         #expect(payload.captureId == captureId)
         #expect(payload.status == "cancelled")
         #expect(talkMode._test_activePushToTalkCaptureId() == nil)
@@ -3029,7 +3029,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         defer { appModel.voiceWake.stop() }
 
         let startResponse = await appModel._test_handleInvoke(talkRequest(id: "background-start", command: .pttStart))
-        let start = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: startResponse)
+        let start = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: startResponse)
         #expect(appModel._test_pttVoiceWakeLeaseCaptureIds() == [start.captureId])
 
         appModel.setScenePhase(.background)
@@ -3065,7 +3065,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         }
 
         let response = await appModel._test_handleInvoke(talkRequest(id: "background-pref-start", command: .pttStart))
-        let start = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: response)
+        let start = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: response)
         #expect(talkMode._test_activePushToTalkCaptureId() == start.captureId)
 
         appModel.setScenePhase(.background)
@@ -3143,14 +3143,14 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let startResponse = await appModel._test_handleInvoke(
             talkRequest(id: "background-finalizer-start", command: .pttStart))
-        let start = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: startResponse)
+        let start = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: startResponse)
         await talkMode._test_handlePushToTalkTranscript(
             "finish in background",
             isFinal: false,
             captureId: start.captureId)
         let stopResponse = await appModel._test_handleInvoke(
             talkRequest(id: "background-finalizer-stop", command: .pttStop))
-        #expect(try decodeTalkPayload(OpenClawTalkPTTStopPayload.self, from: stopResponse).status == "queued")
+        #expect(try decodeTalkPayload(OperatorTalkPTTStopPayload.self, from: stopResponse).status == "queued")
         await barrier.waitUntilEntered()
 
         appModel.setScenePhase(.background)
@@ -3267,7 +3267,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         let response = await appModel._test_handleInvoke(
             talkRequest(id: "disconnect-ptt-start", command: .pttStart))
-        let start = try decodeTalkPayload(OpenClawTalkPTTStartPayload.self, from: response)
+        let start = try decodeTalkPayload(OperatorTalkPTTStartPayload.self, from: response)
         #expect(appModel._test_pttVoiceWakeLeaseCaptureIds() == [start.captureId])
 
         talkMode.updateGatewayConnected(false)
@@ -3347,7 +3347,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `voice note start cannot race an acquired PTT lease`() async {
         let capture = MockVoiceNoteAudioCapture()
-        let recorder = OpenClawVoiceNoteRecorder(capture: capture)
+        let recorder = OperatorVoiceNoteRecorder(capture: capture)
         let appModel = NodeAppModel(
             talkMode: TalkModeManager(allowSimulatorCapture: true),
             voiceNoteRecorder: recorder)
@@ -3362,7 +3362,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `voice note cannot start after the app backgrounds`() async {
         let capture = MockVoiceNoteAudioCapture()
-        let recorder = OpenClawVoiceNoteRecorder(capture: capture)
+        let recorder = OperatorVoiceNoteRecorder(capture: capture)
         let appModel = NodeAppModel(voiceNoteRecorder: recorder)
         defer { appModel.setScenePhase(.active) }
 
@@ -3376,7 +3376,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `voice note cannot start during PTT preparation`() async {
         let capture = MockVoiceNoteAudioCapture()
-        let recorder = OpenClawVoiceNoteRecorder(capture: capture)
+        let recorder = OperatorVoiceNoteRecorder(capture: capture)
         let talkMode = TalkModeManager(allowSimulatorCapture: true)
         let appModel = NodeAppModel(talkMode: talkMode, voiceNoteRecorder: recorder)
         let barrier = TalkPreparationBarrier()
@@ -3408,10 +3408,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             talkMode: TalkModeManager(allowSimulatorCapture: true))
         appModel._test_acquirePttVoiceWakeLease(captureId: "camera-audio-ptt")
         defer { appModel._test_releasePttVoiceWakeLease(captureId: "camera-audio-ptt") }
-        let params = try JSONEncoder().encode(OpenClawCameraClipParams(includeAudio: true))
+        let params = try JSONEncoder().encode(OperatorCameraClipParams(includeAudio: true))
         let request = try BridgeInvokeRequest(
             id: "camera-audio-during-ptt",
-            command: OpenClawCameraCommand.clip.rawValue,
+            command: OperatorCameraCommand.clip.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
 
         let response = await appModel._test_handleInvoke(request)
@@ -3425,7 +3425,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let barrier = TalkPreparationBarrier()
         let talkMode = TalkModeManager(allowSimulatorCapture: true)
         let voiceNoteCapture = MockVoiceNoteAudioCapture()
-        let voiceNoteRecorder = OpenClawVoiceNoteRecorder(capture: voiceNoteCapture)
+        let voiceNoteRecorder = OperatorVoiceNoteRecorder(capture: voiceNoteCapture)
         let appModel = NodeAppModel(
             camera: BlockingAudioCameraService(barrier: barrier),
             talkMode: talkMode,
@@ -3435,10 +3435,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             barrier.release()
             talkMode.stop()
         }
-        let params = try JSONEncoder().encode(OpenClawCameraClipParams(includeAudio: true))
+        let params = try JSONEncoder().encode(OperatorCameraClipParams(includeAudio: true))
         let clipRequest = try BridgeInvokeRequest(
             id: "blocking-camera-audio",
-            command: OpenClawCameraCommand.clip.rawValue,
+            command: OperatorCameraCommand.clip.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
         let clip = Task { @MainActor in await appModel._test_handleInvoke(clipRequest) }
         await barrier.waitUntilEntered()
@@ -3471,10 +3471,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             barrier.release()
             talkMode.stop()
         }
-        let params = try JSONEncoder().encode(OpenClawScreenRecordParams(includeAudio: true))
+        let params = try JSONEncoder().encode(OperatorScreenRecordParams(includeAudio: true))
         let recordRequest = try BridgeInvokeRequest(
             id: "blocking-screen-audio",
-            command: OpenClawScreenCommand.record.rawValue,
+            command: OperatorScreenCommand.record.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
         let recording = Task { @MainActor in await appModel._test_handleInvoke(recordRequest) }
         await barrier.waitUntilEntered()
@@ -3495,16 +3495,16 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             let recorder = BlockingAudioScreenRecorder(barrier: barrier)
             let appModel = NodeAppModel(screenRecorder: recorder)
             let firstParams = try JSONEncoder().encode(
-                OpenClawScreenRecordParams(includeAudio: firstIncludesAudio))
+                OperatorScreenRecordParams(includeAudio: firstIncludesAudio))
             let secondParams = try JSONEncoder().encode(
-                OpenClawScreenRecordParams(includeAudio: secondIncludesAudio))
+                OperatorScreenRecordParams(includeAudio: secondIncludesAudio))
             let firstRequest = try BridgeInvokeRequest(
                 id: "screen-first-\(firstIncludesAudio)",
-                command: OpenClawScreenCommand.record.rawValue,
+                command: OperatorScreenCommand.record.rawValue,
                 paramsJSON: #require(String(data: firstParams, encoding: .utf8)))
             let secondRequest = try BridgeInvokeRequest(
                 id: "screen-second-\(secondIncludesAudio)",
-                command: OpenClawScreenCommand.record.rawValue,
+                command: OperatorScreenCommand.record.rawValue,
                 paramsJSON: #require(String(data: secondParams, encoding: .utf8)))
 
             let first = Task { @MainActor in await appModel._test_handleInvoke(firstRequest) }
@@ -3533,10 +3533,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         }
         appModel.voiceWake.isEnabled = true
         appModel.voiceWake.statusText = "Listening"
-        let params = try JSONEncoder().encode(OpenClawCameraClipParams(includeAudio: true))
+        let params = try JSONEncoder().encode(OperatorCameraClipParams(includeAudio: true))
         let request = try BridgeInvokeRequest(
             id: "background-camera-audio",
-            command: OpenClawCameraCommand.clip.rawValue,
+            command: OperatorCameraCommand.clip.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
         let capture = Task { @MainActor in await appModel._test_handleInvoke(request) }
         await barrier.waitUntilEntered()
@@ -3557,10 +3557,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             barrier.release()
             appModel.setScenePhase(.active)
         }
-        let params = try JSONEncoder().encode(OpenClawScreenRecordParams(includeAudio: false))
+        let params = try JSONEncoder().encode(OperatorScreenRecordParams(includeAudio: false))
         let request = try BridgeInvokeRequest(
             id: "background-screen-no-audio",
-            command: OpenClawScreenCommand.record.rawValue,
+            command: OperatorScreenCommand.record.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
         let capture = Task { @MainActor in await appModel._test_handleInvoke(request) }
         await barrier.waitUntilEntered()
@@ -3585,10 +3585,10 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             barrier.release()
             appModel.setScenePhase(.active)
         }
-        let params = try JSONEncoder().encode(OpenClawScreenRecordParams(includeAudio: false))
+        let params = try JSONEncoder().encode(OperatorScreenRecordParams(includeAudio: false))
         let request = try BridgeInvokeRequest(
             id: "late-cancelled-screen",
-            command: OpenClawScreenCommand.record.rawValue,
+            command: OperatorScreenCommand.record.rawValue,
             paramsJSON: #require(String(data: params, encoding: .utf8)))
         let capture = Task { @MainActor in await appModel._test_handleInvoke(request) }
         await barrier.waitUntilEntered()
@@ -4895,7 +4895,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
                 id: "main",
                 name: "Main",
                 identity: [
-                    "avatarUrl": AnyCodable("https://example.com/openclaw.png"),
+                    "avatarUrl": AnyCodable("https://example.com/operator.png"),
                     "emoji": AnyCodable("OC"),
                 ],
                 workspace: nil,
@@ -4912,7 +4912,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         await Task.yield()
 
         let snapshot = try #require(watchService.lastSentAppSnapshot)
-        #expect(snapshot.agentAvatarURL == "https://example.com/openclaw.png")
+        #expect(snapshot.agentAvatarURL == "https://example.com/operator.png")
         #expect(snapshot.agentAvatarText == "OC")
     }
 
@@ -4997,7 +4997,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         appModel._test_setConnectedGatewayID("gateway-current")
         appModel.setTalkEnabled(false)
 
-        for command in [OpenClawWatchAppCommand.openChat, .startTalk] {
+        for command in [OperatorWatchAppCommand.openChat, .startTalk] {
             watchService.emitAppCommand(
                 WatchAppCommandEvent(
                     commandId: "watch-stale-\(command.rawValue)",
@@ -5188,7 +5188,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     }
 
     @Test func `watch chat completion bounds reply text`() {
-        let message = OpenClawWatchChatCompletionMessage(
+        let message = OperatorWatchChatCompletionMessage(
             commandId: "watch-voice",
             replyText: String(repeating: "x", count: 5000))
 
@@ -5675,7 +5675,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         notificationCenter.delivered = [NotificationSnapshot(
             identifier: "delivered-approval",
             userInfo: [
-                "openclaw": [
+                "@gabrielvfonseca/operator": [
                     "kind": ExecApprovalNotificationBridge.requestedKind,
                     "approvalId": "approval-delivered-recovery",
                     "gatewayDeviceId": "gateway-device-a",
@@ -5921,7 +5921,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         notificationCenter.delivered = [NotificationSnapshot(
             identifier: "approval-event-notification",
             userInfo: [
-                "openclaw": [
+                "@gabrielvfonseca/operator": [
                     "kind": ExecApprovalNotificationBridge.requestedKind,
                     "approvalId": "approval-event-resolved",
                     "gatewayDeviceId": "gateway-device-a",
@@ -6238,7 +6238,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let appModel = NodeAppModel()
         appModel.setScenePhase(.background)
 
-        let req = BridgeInvokeRequest(id: "bg", command: OpenClawCanvasCommand.present.rawValue)
+        let req = BridgeInvokeRequest(id: "bg", command: OperatorCanvasCommand.present.rawValue)
         let res = await appModel._test_handleInvoke(req)
         #expect(res.ok == false)
         #expect(res.error?.code == .backgroundUnavailable)
@@ -6250,7 +6250,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `handle invoke rejects camera when disabled`() async {
         let appModel = NodeAppModel()
-        let req = BridgeInvokeRequest(id: "cam", command: OpenClawCameraCommand.snap.rawValue)
+        let req = BridgeInvokeRequest(id: "cam", command: OperatorCameraCommand.snap.rawValue)
 
         let defaults = UserDefaults.standard
         let key = "camera.enabled"
@@ -6283,7 +6283,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             }
         }
         let appModel = NodeAppModel(camera: CancellingCameraService())
-        let request = BridgeInvokeRequest(id: "cancelled-camera", command: OpenClawCameraCommand.snap.rawValue)
+        let request = BridgeInvokeRequest(id: "cancelled-camera", command: OperatorCameraCommand.snap.rawValue)
 
         let response = await appModel._test_handleInvoke(request)
 
@@ -6314,14 +6314,14 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let appModel = NodeAppModel(camera: camera)
         let firstTask = Task {
             await appModel._test_handleInvoke(
-                BridgeInvokeRequest(id: "camera-first", command: OpenClawCameraCommand.snap.rawValue))
+                BridgeInvokeRequest(id: "camera-first", command: OperatorCameraCommand.snap.rawValue))
         }
         for await _ in firstStarted.stream {
             break
         }
         let secondTask = Task {
             await appModel._test_handleInvoke(
-                BridgeInvokeRequest(id: "camera-second", command: OpenClawCameraCommand.snap.rawValue))
+                BridgeInvokeRequest(id: "camera-second", command: OperatorCameraCommand.snap.rawValue))
         }
         for await _ in secondStarted.stream {
             break
@@ -6342,11 +6342,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let center = MockBootstrapNotificationCenter()
         center.status = .notDetermined
         let appModel = NodeAppModel(notificationCenter: center)
-        let params = OpenClawSystemNotifyParams(title: "Approval", body: "Review request")
+        let params = OperatorSystemNotifyParams(title: "Approval", body: "Review request")
         let paramsData = try JSONEncoder().encode(params)
         let req = BridgeInvokeRequest(
             id: "notify-off",
-            command: OpenClawSystemCommand.notify.rawValue,
+            command: OperatorSystemCommand.notify.rawValue,
             paramsJSON: String(decoding: paramsData, as: UTF8.self))
 
         let res = await appModel._test_handleInvoke(req)
@@ -6363,11 +6363,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let center = MockBootstrapNotificationCenter()
         center.status = .authorized
         let appModel = NodeAppModel(notificationCenter: center)
-        let params = OpenClawSystemNotifyParams(title: "Approval", body: "Review request")
+        let params = OperatorSystemNotifyParams(title: "Approval", body: "Review request")
         let paramsData = try JSONEncoder().encode(params)
         let req = BridgeInvokeRequest(
             id: "notify-on",
-            command: OpenClawSystemCommand.notify.rawValue,
+            command: OperatorSystemCommand.notify.rawValue,
             paramsJSON: String(decoding: paramsData, as: UTF8.self))
 
         let res = await appModel._test_handleInvoke(req)
@@ -6382,11 +6382,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let center = MockBootstrapNotificationCenter()
         center.status = .authorized
         let appModel = NodeAppModel(notificationCenter: center)
-        let params = OpenClawSystemNotifyParams(title: "Approval", body: "Review request")
+        let params = OperatorSystemNotifyParams(title: "Approval", body: "Review request")
         let paramsData = try JSONEncoder().encode(params)
         let req = BridgeInvokeRequest(
             id: "notify-disabled",
-            command: OpenClawSystemCommand.notify.rawValue,
+            command: OperatorSystemCommand.notify.rawValue,
             paramsJSON: String(decoding: paramsData, as: UTF8.self))
 
         let res = await appModel._test_handleInvoke(req)
@@ -6424,11 +6424,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let center = MockBootstrapNotificationCenter()
         center.status = .notDetermined
         let appModel = NodeAppModel(notificationCenter: center)
-        let params = OpenClawChatPushParams(text: "Build finished", speak: false)
+        let params = OperatorChatPushParams(text: "Build finished", speak: false)
         let paramsData = try JSONEncoder().encode(params)
         let req = BridgeInvokeRequest(
             id: "chat-push-off",
-            command: OpenClawChatCommand.push.rawValue,
+            command: OperatorChatCommand.push.rawValue,
             paramsJSON: String(decoding: paramsData, as: UTF8.self))
 
         let res = await appModel._test_handleInvoke(req)
@@ -6445,11 +6445,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let center = MockBootstrapNotificationCenter()
         center.status = .authorized
         let appModel = NodeAppModel(notificationCenter: center)
-        let params = OpenClawChatPushParams(text: "Build finished", speak: false)
+        let params = OperatorChatPushParams(text: "Build finished", speak: false)
         let paramsData = try JSONEncoder().encode(params)
         let req = BridgeInvokeRequest(
             id: "chat-push-on",
-            command: OpenClawChatCommand.push.rawValue,
+            command: OperatorChatCommand.push.rawValue,
             paramsJSON: String(decoding: paramsData, as: UTF8.self))
 
         let res = await appModel._test_handleInvoke(req)
@@ -6460,13 +6460,13 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `handle invoke rejects invalid screen format`() async {
         let appModel = NodeAppModel()
-        let params = OpenClawScreenRecordParams(format: "gif")
+        let params = OperatorScreenRecordParams(format: "gif")
         let data = try? JSONEncoder().encode(params)
         let json = data.flatMap { String(data: $0, encoding: .utf8) }
 
         let req = BridgeInvokeRequest(
             id: "screen",
-            command: OpenClawScreenCommand.record.rawValue,
+            command: OperatorScreenCommand.record.rawValue,
             paramsJSON: json)
 
         let res = await appModel._test_handleInvoke(req)
@@ -6481,29 +6481,29 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
         appModel.screen.navigate(to: "http://example.com")
 
-        let present = BridgeInvokeRequest(id: "present", command: OpenClawCanvasCommand.present.rawValue)
+        let present = BridgeInvokeRequest(id: "present", command: OperatorCanvasCommand.present.rawValue)
         let presentRes = await appModel._test_handleInvoke(present)
         #expect(presentRes.ok == true)
         #expect(appModel.screen.urlString.isEmpty)
 
         // Loopback URLs are rejected (they are not meaningful for a remote gateway).
-        let navigateParams = OpenClawCanvasNavigateParams(url: "http://example.com/")
+        let navigateParams = OperatorCanvasNavigateParams(url: "http://example.com/")
         let navData = try JSONEncoder().encode(navigateParams)
         let navJSON = String(decoding: navData, as: UTF8.self)
         let navigate = BridgeInvokeRequest(
             id: "nav",
-            command: OpenClawCanvasCommand.navigate.rawValue,
+            command: OperatorCanvasCommand.navigate.rawValue,
             paramsJSON: navJSON)
         let navRes = await appModel._test_handleInvoke(navigate)
         #expect(navRes.ok == true)
         #expect(appModel.screen.urlString == "http://example.com/")
 
-        let evalParams = OpenClawCanvasEvalParams(javaScript: "1+1")
+        let evalParams = OperatorCanvasEvalParams(javaScript: "1+1")
         let evalData = try JSONEncoder().encode(evalParams)
         let evalJSON = String(decoding: evalData, as: UTF8.self)
         let eval = BridgeInvokeRequest(
             id: "eval",
-            command: OpenClawCanvasCommand.evalJS.rawValue,
+            command: OperatorCanvasCommand.evalJS.rawValue,
             paramsJSON: evalJSON)
         var evalRes = await appModel._test_handleInvoke(eval)
         let deadline = ContinuousClock().now.advanced(by: .seconds(3))
@@ -6519,14 +6519,14 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `pending foreground actions replay canvas navigate`() async throws {
         let appModel = NodeAppModel()
-        let navigateParams = OpenClawCanvasNavigateParams(url: "http://example.com/")
+        let navigateParams = OperatorCanvasNavigateParams(url: "http://example.com/")
         let navData = try JSONEncoder().encode(navigateParams)
         let navJSON = String(decoding: navData, as: UTF8.self)
 
         await appModel._test_applyPendingForegroundNodeActions([
             (
                 id: "pending-nav-1",
-                command: OpenClawCanvasCommand.navigate.rawValue,
+                command: OperatorCanvasCommand.navigate.rawValue,
                 paramsJSON: navJSON),
         ])
 
@@ -6536,14 +6536,14 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `pending foreground actions do not apply while backgrounded`() async throws {
         let appModel = NodeAppModel()
         appModel.setScenePhase(.background)
-        let navigateParams = OpenClawCanvasNavigateParams(url: "http://example.com/")
+        let navigateParams = OperatorCanvasNavigateParams(url: "http://example.com/")
         let navData = try JSONEncoder().encode(navigateParams)
         let navJSON = String(decoding: navData, as: UTF8.self)
 
         await appModel._test_applyPendingForegroundNodeActions([
             (
                 id: "pending-nav-bg",
-                command: OpenClawCanvasCommand.navigate.rawValue,
+                command: OperatorCanvasCommand.navigate.rawValue,
                 paramsJSON: navJSON),
         ])
 
@@ -6553,18 +6553,18 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle invoke A 2 UI commands fail when local host unavailable`() async throws {
         let appModel = NodeAppModel()
 
-        let reset = BridgeInvokeRequest(id: "reset", command: OpenClawCanvasA2UICommand.reset.rawValue)
+        let reset = BridgeInvokeRequest(id: "reset", command: OperatorCanvasA2UICommand.reset.rawValue)
         let resetRes = await appModel._test_handleInvoke(reset)
         #expect(resetRes.ok == false)
         #expect(resetRes.error?.message.contains("A2UI_HOST_UNAVAILABLE") == true)
 
         let jsonl = "{\"beginRendering\":{}}"
-        let pushParams = OpenClawCanvasA2UIPushJSONLParams(jsonl: jsonl)
+        let pushParams = OperatorCanvasA2UIPushJSONLParams(jsonl: jsonl)
         let pushData = try JSONEncoder().encode(pushParams)
         let pushJSON = String(decoding: pushData, as: UTF8.self)
         let push = BridgeInvokeRequest(
             id: "push",
-            command: OpenClawCanvasA2UICommand.pushJSONL.rawValue,
+            command: OperatorCanvasA2UICommand.pushJSONL.rawValue,
             paramsJSON: pushJSON)
         let pushRes = await appModel._test_handleInvoke(push)
         #expect(pushRes.ok == false)
@@ -6588,13 +6588,13 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             reachable: false,
             activationState: "inactive")
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let req = BridgeInvokeRequest(id: "watch-status", command: OpenClawWatchCommand.status.rawValue)
+        let req = BridgeInvokeRequest(id: "watch-status", command: OperatorWatchCommand.status.rawValue)
 
         let res = await appModel._test_handleInvoke(req)
         #expect(res.ok == true)
 
         let payloadData = try #require(res.payloadJSON?.data(using: .utf8))
-        let payload = try JSONDecoder().decode(OpenClawWatchStatusPayload.self, from: payloadData)
+        let payload = try JSONDecoder().decode(OperatorWatchStatusPayload.self, from: payloadData)
         #expect(payload.supported == true)
         #expect(payload.reachable == false)
         #expect(payload.activationState == "inactive")
@@ -6640,33 +6640,33 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             transport: "transferUserInfo")
         let appModel = NodeAppModel(watchMessagingService: watchService)
         appModel._test_setConnectedGatewayID("gateway-watch-notify")
-        let params = OpenClawWatchNotifyParams(
-            title: "OpenClaw",
+        let params = OperatorWatchNotifyParams(
+            title: "Operator",
             body: "Meeting with Peter is at 4pm",
             priority: .timeSensitive)
         let paramsData = try JSONEncoder().encode(params)
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req, gatewayStableID: "gateway-a")
         #expect(res.ok == true)
-        #expect(watchService.lastSent?.params.title == "OpenClaw")
+        #expect(watchService.lastSent?.params.title == "Operator")
         #expect(watchService.lastSent?.params.body == "Meeting with Peter is at 4pm")
         #expect(watchService.lastSent?.params.priority == .timeSensitive)
         #expect(watchService.lastSent?.gatewayStableID == "gateway-watch-notify")
 
         let payloadData = try #require(res.payloadJSON?.data(using: .utf8))
-        let payload = try JSONDecoder().decode(OpenClawWatchNotifyPayload.self, from: payloadData)
+        let payload = try JSONDecoder().decode(OperatorWatchNotifyPayload.self, from: payloadData)
         #expect(payload.deliveredImmediately == false)
         #expect(payload.queuedForDelivery == true)
         #expect(payload.transport == "transferUserInfo")
     }
 
     @Test @MainActor func `watch reply codec preserves prompt gateway owner`() throws {
-        let params = OpenClawWatchNotifyParams(
+        let params = OperatorWatchNotifyParams(
             title: "Approval",
             body: "Allow?",
             promptId: "prompt-a",
@@ -6679,7 +6679,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         #expect(notification["gatewayStableID"] as? String == "gateway-a")
 
         let reply = try #require(WatchMessagingPayloadCodec.parseQuickReplyPayload([
-            "type": OpenClawWatchPayloadType.reply.rawValue,
+            "type": OperatorWatchPayloadType.reply.rawValue,
             "replyId": "reply-a",
             "promptId": "prompt-a",
             "actionId": "approve",
@@ -6689,35 +6689,35 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     }
 
     @Test @MainActor func `watch exec approval codec preserves gateway owner`() throws {
-        let approval = OpenClawWatchExecApprovalItem(
+        let approval = OperatorWatchExecApprovalItem(
             id: "approval-a",
             gatewayStableID: "gateway-a",
             commandText: "echo safe",
             warningText: "Review shell expansion",
             allowedDecisions: [.allowOnce, .deny])
         let prompt = WatchMessagingPayloadCodec.encodeExecApprovalPromptPayload(
-            OpenClawWatchExecApprovalPromptMessage(approval: approval))
+            OperatorWatchExecApprovalPromptMessage(approval: approval))
         let encodedApproval = try #require(prompt["approval"] as? [String: Any])
         #expect(encodedApproval["gatewayStableID"] as? String == "gateway-a")
         #expect(encodedApproval["warningText"] as? String == "Review shell expansion")
 
         let reply = try #require(WatchMessagingPayloadCodec.parseExecApprovalResolvePayload([
-            "type": OpenClawWatchPayloadType.execApprovalResolve.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalResolve.rawValue,
             "replyId": "reply-a",
             "approvalId": "approval-a",
             "gatewayStableID": "gateway-a",
-            "decision": OpenClawWatchExecApprovalDecision.allowOnce.rawValue,
+            "decision": OperatorWatchExecApprovalDecision.allowOnce.rawValue,
         ], transport: "sendMessage"))
         #expect(reply.gatewayStableID == "gateway-a")
 
         let resolved = WatchMessagingPayloadCodec.encodeExecApprovalResolvedPayload(
-            OpenClawWatchExecApprovalResolvedMessage(
+            OperatorWatchExecApprovalResolvedMessage(
                 approvalId: "approval-a",
                 gatewayStableID: "gateway-a",
                 outcome: .allowedAlways,
                 outcomeText: "This approval was already set to Always Allow."))
         let expired = WatchMessagingPayloadCodec.encodeExecApprovalExpiredPayload(
-            OpenClawWatchExecApprovalExpiredMessage(
+            OperatorWatchExecApprovalExpiredMessage(
                 approvalId: "approval-a",
                 gatewayStableID: "gateway-a",
                 reason: .notFound))
@@ -6731,7 +6731,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let activeResolutionAttemptID = "\u{0085}resolution-attempt-a\u{0085}"
         let snapshotRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
                 "requestId": requestID,
                 "gatewayStableID": "gateway-a",
                 "heldApprovals": [
@@ -6751,7 +6751,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         #expect(snapshotRequest.heldApprovals[1].activeResolutionAttemptId == nil)
 
         let snapshot = WatchMessagingPayloadCodec.encodeExecApprovalSnapshotPayload(
-            OpenClawWatchExecApprovalSnapshotMessage(
+            OperatorWatchExecApprovalSnapshotMessage(
                 approvals: [approval],
                 gatewayStableID: "gateway-a",
                 requestId: requestID,
@@ -6760,51 +6760,51 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         #expect(snapshot["requestGatewayStableID"] as? String == "gateway-a")
 
         let legacySnapshot = try JSONDecoder().decode(
-            OpenClawWatchExecApprovalSnapshotMessage.self,
+            OperatorWatchExecApprovalSnapshotMessage.self,
             from: Data(#"{"type":"watch.execApproval.snapshot","approvals":[]}"#.utf8))
         #expect(legacySnapshot.requestId == nil)
         #expect(legacySnapshot.requestGatewayStableID == nil)
         #expect(throws: DecodingError.self) {
             _ = try JSONDecoder().decode(
-                OpenClawWatchExecApprovalSnapshotRequestMessage.self,
+                OperatorWatchExecApprovalSnapshotRequestMessage.self,
                 from: Data(#"{"type":"watch.execApproval.snapshotRequest","requestId":"legacy"}"#.utf8))
         }
         // Shipped Watch binaries request snapshots with neither requestId nor heldApprovals.
         let shippedShapeRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
             ], transport: "sendMessage"))
         #expect(!shippedShapeRequest.requestId.isEmpty)
         #expect(shippedShapeRequest.heldApprovals.isEmpty)
         #expect(shippedShapeRequest.gatewayStableID == nil)
         let missingHeldApprovalsRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
                 "requestId": "missing-held-approvals",
             ], transport: "applicationContext"))
         #expect(missingHeldApprovalsRequest.requestId == "missing-held-approvals")
         #expect(missingHeldApprovalsRequest.heldApprovals.isEmpty)
         let missingRequestIdRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
                 "heldApprovals": [],
             ], transport: "applicationContext"))
         #expect(!missingRequestIdRequest.requestId.isEmpty)
         let emptyRequestIdRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
                 "requestId": "",
                 "heldApprovals": [],
             ], transport: "applicationContext"))
         #expect(!emptyRequestIdRequest.requestId.isEmpty)
         // A present heldApprovals key keeps strict rejection when malformed.
         #expect(WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-            "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
             "requestId": "malformed-held-approvals-shape",
             "heldApprovals": "not-an-array",
         ], transport: "applicationContext") == nil)
         #expect(WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-            "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
             "requestId": "malformed-held-approval",
             "heldApprovals": [
                 ["approvalId": "valid"],
@@ -6812,7 +6812,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             ],
         ], transport: "applicationContext") == nil)
         #expect(WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-            "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
             "requestId": "malformed-attempt",
             "heldApprovals": [[
                 "approvalId": "valid",
@@ -6826,7 +6826,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let gatewayID = "\u{0085}gateway-a\u{0085}"
         let replyID = "\u{0085}reply-e\u{0301}\u{0085}"
         let prompt = WatchMessagingPayloadCodec.encodeExecApprovalPromptPayload(
-            OpenClawWatchExecApprovalPromptMessage(approval: OpenClawWatchExecApprovalItem(
+            OperatorWatchExecApprovalPromptMessage(approval: OperatorWatchExecApprovalItem(
                 id: approvalID,
                 gatewayStableID: gatewayID,
                 commandText: "echo exact",
@@ -6835,11 +6835,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let encodedApprovalID = try #require(encodedApproval["id"] as? String)
         let encodedGatewayID = try #require(encodedApproval["gatewayStableID"] as? String)
         let reply = try #require(WatchMessagingPayloadCodec.parseExecApprovalResolvePayload([
-            "type": OpenClawWatchPayloadType.execApprovalResolve.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalResolve.rawValue,
             "replyId": replyID,
             "approvalId": encodedApprovalID,
             "gatewayStableID": encodedGatewayID,
-            "decision": OpenClawWatchExecApprovalDecision.allowOnce.rawValue,
+            "decision": OperatorWatchExecApprovalDecision.allowOnce.rawValue,
         ], transport: "sendMessage"))
 
         #expect(Array(reply.replyId.utf8) == Array(replyID.utf8))
@@ -6851,7 +6851,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let payload = WatchMessagingPayloadCodec.encodeDirectNodeSetupPayload(
             setupCode: "opaque-bootstrap-code")
 
-        #expect(payload["type"] as? String == OpenClawWatchPayloadType.directNodeSetup.rawValue)
+        #expect(payload["type"] as? String == OperatorWatchPayloadType.directNodeSetup.rawValue)
         #expect(payload["setupCode"] as? String == "opaque-bootstrap-code")
         #expect(payload["sentAtMs"] is Int64)
         #expect(payload["token"] == nil)
@@ -6863,30 +6863,30 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let encodedTimestamp = NSNumber(value: sentAtMs)
 
         let reply = try #require(WatchMessagingPayloadCodec.parseQuickReplyPayload([
-            "type": OpenClawWatchPayloadType.reply.rawValue,
+            "type": OperatorWatchPayloadType.reply.rawValue,
             "actionId": "approve",
             "sentAtMs": encodedTimestamp,
         ], transport: "sendMessage"))
         let resolution = try #require(WatchMessagingPayloadCodec.parseExecApprovalResolvePayload([
-            "type": OpenClawWatchPayloadType.execApprovalResolve.rawValue,
+            "type": OperatorWatchPayloadType.execApprovalResolve.rawValue,
             "approvalId": "approval-a",
-            "decision": OpenClawWatchExecApprovalDecision.allowOnce.rawValue,
+            "decision": OperatorWatchExecApprovalDecision.allowOnce.rawValue,
             "sentAtMs": encodedTimestamp,
         ], transport: "sendMessage"))
         let approvalSnapshotRequest = try #require(
             WatchMessagingPayloadCodec.parseExecApprovalSnapshotRequestPayload([
-                "type": OpenClawWatchPayloadType.execApprovalSnapshotRequest.rawValue,
+                "type": OperatorWatchPayloadType.execApprovalSnapshotRequest.rawValue,
                 "requestId": "timestamp-request",
                 "sentAtMs": encodedTimestamp,
                 "heldApprovals": [],
             ], transport: "sendMessage"))
         let appSnapshotRequest = try #require(WatchMessagingPayloadCodec.parseAppSnapshotRequestPayload([
-            "type": OpenClawWatchPayloadType.appSnapshotRequest.rawValue,
+            "type": OperatorWatchPayloadType.appSnapshotRequest.rawValue,
             "sentAtMs": encodedTimestamp,
         ], transport: "sendMessage"))
         let appCommand = try #require(WatchMessagingPayloadCodec.parseAppCommandPayload([
-            "type": OpenClawWatchPayloadType.appCommand.rawValue,
-            "command": OpenClawWatchAppCommand.refresh.rawValue,
+            "type": OperatorWatchPayloadType.appCommand.rawValue,
+            "command": OperatorWatchAppCommand.refresh.rawValue,
             "sentAtMs": encodedTimestamp,
         ], transport: "sendMessage"))
 
@@ -6899,27 +6899,27 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `watch application context retains app and approval snapshots`() throws {
         let appPayload = WatchMessagingPayloadCodec.encodeAppSnapshotPayload(
-            OpenClawWatchAppSnapshotMessage(
-                gatewayStatus: OpenClawWatchAppStatus(code: .gatewayConnected),
+            OperatorWatchAppSnapshotMessage(
+                gatewayStatus: OperatorWatchAppStatus(code: .gatewayConnected),
                 gatewayStatusText: "Connected",
                 gatewayConnected: true,
                 agentName: "Main",
                 agentAvatarURL: "https://example.com/avatar.png",
                 sessionKey: "main",
                 gatewayStableID: "gateway-a",
-                talkStatus: OpenClawWatchAppStatus(code: .talkOff),
+                talkStatus: OperatorWatchAppStatus(code: .talkOff),
                 talkStatusText: "Off",
                 talkEnabled: false,
                 talkListening: false,
                 talkSpeaking: false,
                 pendingApprovalCount: 1,
-                chatStatus: OpenClawWatchAppStatus(code: .chatConnectIPhone),
+                chatStatus: OperatorWatchAppStatus(code: .chatConnectIPhone),
                 chatStatusText: "Connect iPhone chat to read messages",
                 snapshotId: "app-a"))
         let approvalPayload = WatchMessagingPayloadCodec.encodeExecApprovalSnapshotPayload(
-            OpenClawWatchExecApprovalSnapshotMessage(
+            OperatorWatchExecApprovalSnapshotMessage(
                 approvals: [
-                    OpenClawWatchExecApprovalItem(
+                    OperatorWatchExecApprovalItem(
                         id: "approval-a",
                         gatewayStableID: "gateway-a",
                         commandText: "echo safe",
@@ -6936,11 +6936,11 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             approvalPayload,
             merging: appContext)
 
-        #expect(combined["type"] as? String == OpenClawWatchPayloadType.execApprovalSnapshot.rawValue)
+        #expect(combined["type"] as? String == OperatorWatchPayloadType.execApprovalSnapshot.rawValue)
         let nestedApp = try #require(
-            combined[OpenClawWatchPayloadType.appSnapshot.rawValue] as? [String: Any])
+            combined[OperatorWatchPayloadType.appSnapshot.rawValue] as? [String: Any])
         let nestedApprovals = try #require(
-            combined[OpenClawWatchPayloadType.execApprovalSnapshot.rawValue] as? [String: Any])
+            combined[OperatorWatchPayloadType.execApprovalSnapshot.rawValue] as? [String: Any])
         #expect(nestedApp["gatewayStableID"] as? String == "gateway-a")
         #expect(nestedApp["agentAvatarUrl"] as? String == "https://example.com/avatar.png")
         #expect(nestedApp["agentAvatarURL"] == nil)
@@ -6958,12 +6958,12 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle invoke watch notify rejects empty message`() async throws {
         let watchService = MockWatchMessagingService()
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let params = OpenClawWatchNotifyParams(title: "   ", body: "\n")
+        let params = OperatorWatchNotifyParams(title: "   ", body: "\n")
         let paramsData = try JSONEncoder().encode(params)
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify-empty",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req)
@@ -6975,7 +6975,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle invoke watch notify adds default actions for prompt`() async throws {
         let watchService = MockWatchMessagingService()
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let params = OpenClawWatchNotifyParams(
+        let params = OperatorWatchNotifyParams(
             title: "Task",
             body: "Action needed",
             priority: .passive,
@@ -6984,7 +6984,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify-default-actions",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req)
@@ -6998,14 +6998,14 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let watchService = MockWatchMessagingService()
         let appModel = NodeAppModel(watchMessagingService: watchService)
         appModel._test_setConnectedGatewayID("gateway-a")
-        let params = OpenClawWatchNotifyParams(
+        let params = OperatorWatchNotifyParams(
             title: "Task",
             body: "Action needed",
             promptId: "prompt-legacy")
         let paramsJSON = try String(decoding: JSONEncoder().encode(params), as: UTF8.self)
         let request = BridgeInvokeRequest(
             id: "watch-notify-legacy-owner",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
         #expect(await appModel._test_handleInvoke(request, gatewayStableID: "gateway-a").ok)
 
@@ -7027,7 +7027,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle invoke watch notify adds approval defaults`() async throws {
         let watchService = MockWatchMessagingService()
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let params = OpenClawWatchNotifyParams(
+        let params = OperatorWatchNotifyParams(
             title: "Approval",
             body: "Allow command?",
             promptId: "prompt-approval",
@@ -7036,7 +7036,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify-approval-defaults",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req)
@@ -7049,22 +7049,22 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle invoke watch notify derives priority from risk and caps actions`() async throws {
         let watchService = MockWatchMessagingService()
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let params = OpenClawWatchNotifyParams(
+        let params = OperatorWatchNotifyParams(
             title: "Urgent",
             body: "Check now",
             risk: .high,
             actions: [
-                OpenClawWatchAction(id: "a1", label: "A1"),
-                OpenClawWatchAction(id: "a2", label: "A2"),
-                OpenClawWatchAction(id: "a3", label: "A3"),
-                OpenClawWatchAction(id: "a4", label: "A4"),
-                OpenClawWatchAction(id: "a5", label: "A5"),
+                OperatorWatchAction(id: "a1", label: "A1"),
+                OperatorWatchAction(id: "a2", label: "A2"),
+                OperatorWatchAction(id: "a3", label: "A3"),
+                OperatorWatchAction(id: "a4", label: "A4"),
+                OperatorWatchAction(id: "a5", label: "A5"),
             ])
         let paramsData = try JSONEncoder().encode(params)
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify-derive-priority",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req)
@@ -7082,12 +7082,12 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
             code: 1,
             userInfo: [NSLocalizedDescriptionKey: "WATCH_UNAVAILABLE: no paired Apple Watch"])
         let appModel = NodeAppModel(watchMessagingService: watchService)
-        let params = OpenClawWatchNotifyParams(title: "OpenClaw", body: "Delivery check")
+        let params = OperatorWatchNotifyParams(title: "Operator", body: "Delivery check")
         let paramsData = try JSONEncoder().encode(params)
         let paramsJSON = String(decoding: paramsData, as: UTF8.self)
         let req = BridgeInvokeRequest(
             id: "watch-notify-fail",
-            command: OpenClawWatchCommand.notify.rawValue,
+            command: OperatorWatchCommand.notify.rawValue,
             paramsJSON: paramsJSON)
 
         let res = await appModel._test_handleInvoke(req)
@@ -7318,7 +7318,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
 
     @Test @MainActor func `handle deep link sets error when not connected`() async throws {
         let appModel = NodeAppModel()
-        let url = try #require(URL(string: "openclaw://agent?message=hello"))
+        let url = try #require(URL(string: "operator://agent?message=hello"))
         await appModel.handleDeepLink(url: url)
         #expect(appModel.screen.errorText?.contains("Gateway not connected") == true)
     }
@@ -7326,7 +7326,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
     @Test @MainActor func `handle deep link rejects oversized message`() async throws {
         let appModel = NodeAppModel()
         let msg = String(repeating: "a", count: 20001)
-        let url = try #require(URL(string: "openclaw://agent?message=\(msg)"))
+        let url = try #require(URL(string: "operator://agent?message=\(msg)"))
         await appModel.handleDeepLink(url: url)
         #expect(appModel.screen.errorText?.contains("Deep link too large") == true)
     }
@@ -7405,13 +7405,13 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
         let tempDir = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
-        let previousStateDir = ProcessInfo.processInfo.environment["OPENCLAW_STATE_DIR"]
-        setenv("OPENCLAW_STATE_DIR", tempDir.path, 1)
+        let previousStateDir = ProcessInfo.processInfo.environment["OPERATOR_STATE_DIR"]
+        setenv("OPERATOR_STATE_DIR", tempDir.path, 1)
         defer {
             if let previousStateDir {
-                setenv("OPENCLAW_STATE_DIR", previousStateDir, 1)
+                setenv("OPERATOR_STATE_DIR", previousStateDir, 1)
             } else {
-                unsetenv("OPENCLAW_STATE_DIR")
+                unsetenv("OPERATOR_STATE_DIR")
             }
             try? FileManager.default.removeItem(at: tempDir)
         }
@@ -7433,7 +7433,7 @@ private func overrideNotificationServingPreference(_ enabled: Bool) -> () -> Voi
                 caps: [],
                 commands: [],
                 permissions: [:],
-                clientId: "openclaw-ios",
+                clientId: "operator-ios",
                 clientMode: "node",
                 clientDisplayName: nil,
                 deviceAuthGatewayID: authenticationOwnerID))

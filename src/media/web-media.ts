@@ -1,8 +1,8 @@
 // Web media helpers load local and remote media for web-facing surfaces.
 import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
-import { maxBytesForKind, type MediaKind } from "@operator/media-core/constants";
-import { basenameFromAnyPath, extnameFromAnyPath } from "@operator/media-core/file-name";
+import { maxBytesForKind, type MediaKind } from "@gabrielvfonseca/media-core/constants";
+import { basenameFromAnyPath, extnameFromAnyPath } from "@gabrielvfonseca/media-core/file-name";
 import {
   detectMime,
   extensionForMime,
@@ -10,9 +10,9 @@ import {
   kindFromMime,
   mimeTypeFromFilePath,
   normalizeMimeType,
-} from "@operator/media-core/mime";
-import { hasHttpUrlPrefix } from "@operator/net-policy/url-protocol";
-import { uniqueValues } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/media-core/mime";
+import { hasHttpUrlPrefix } from "@gabrielvfonseca/net-policy/url-protocol";
+import { uniqueValues } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { logVerbose, shouldLogVerbose } from "../globals.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { FsSafeError, readLocalFileSafely } from "../infra/fs-safe.js";

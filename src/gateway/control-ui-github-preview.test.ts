@@ -49,10 +49,15 @@ describe("parseControlUiGitHubPreviewTarget", () => {
     const target = parseControlUiGitHubPreviewTarget({
       kind: "pull",
       number: 99816,
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
     });
-    expect(target).toEqual({ kind: "pull", number: 99816, owner: "openclaw", repo: "openclaw" });
+    expect(target).toEqual({
+      kind: "pull",
+      number: 99816,
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
+    });
   });
 
   it("rejects invalid repository paths and item numbers", () => {
@@ -61,14 +66,14 @@ describe("parseControlUiGitHubPreviewTarget", () => {
         kind: "issue",
         number: 1,
         owner: "openclaw/evil",
-        repo: "openclaw",
+        repo: "@gabrielvfonseca/operator",
       }),
     ).toBeNull();
     expect(
       parseControlUiGitHubPreviewTarget({
         kind: "issue",
         number: 0,
-        owner: "openclaw",
+        owner: "@gabrielvfonseca/operator",
         repo: "..",
       }),
     ).toBeNull();
@@ -94,7 +99,12 @@ describe("loadControlUiGitHubPreview", () => {
           headers: { "Content-Type": "image/png" },
         }),
       );
-    const target = { kind: "pull" as const, number: 99816, owner: "openclaw", repo: "openclaw" };
+    const target = {
+      kind: "pull" as const,
+      number: 99816,
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
+    };
 
     const first = await loadControlUiGitHubPreview(target, fetchMock);
     const second = await loadControlUiGitHubPreview(target, fetchMock);
@@ -108,8 +118,8 @@ describe("loadControlUiGitHubPreview", () => {
       login: "steipete",
       mergedAt: "2026-07-04T09:53:52Z",
       number: 99816,
-      owner: "openclaw",
-      repo: "openclaw",
+      owner: "@gabrielvfonseca/operator",
+      repo: "@gabrielvfonseca/operator",
     });
     expect(second).toEqual(first);
     expect(fetchMock).toHaveBeenCalledTimes(2);
@@ -134,7 +144,7 @@ describe("loadControlUiGitHubPreview", () => {
     );
 
     const preview = await loadControlUiGitHubPreview(
-      { kind: "issue", number: 70001, owner: "openclaw", repo: "avatar-safety" },
+      { kind: "issue", number: 70001, owner: "@gabrielvfonseca/operator", repo: "avatar-safety" },
       fetchMock,
     );
 
@@ -152,7 +162,7 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(avatarResponse);
 
     const preview = await loadControlUiGitHubPreview(
-      { kind: "pull", number: 70009, owner: "openclaw", repo: "bad-avatar" },
+      { kind: "pull", number: 70009, owner: "@gabrielvfonseca/operator", repo: "bad-avatar" },
       fetchMock,
     );
 
@@ -174,7 +184,12 @@ describe("loadControlUiGitHubPreview", () => {
         ),
       )
       .mockResolvedValueOnce(githubJson({ private: false }));
-    const target = { kind: "issue" as const, number: 70003, owner: "openclaw", repo: "public" };
+    const target = {
+      kind: "issue" as const,
+      number: 70003,
+      owner: "@gabrielvfonseca/operator",
+      repo: "public",
+    };
 
     await loadControlUiGitHubPreview(target, fetchMock);
 
@@ -212,7 +227,7 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(githubJson({ private: false }));
 
     const preview = await loadControlUiGitHubPreview(
-      { kind: "issue", number: 70007, owner: "openclaw", repo: "old-name" },
+      { kind: "issue", number: 70007, owner: "@gabrielvfonseca/operator", repo: "old-name" },
       fetchMock,
     );
 
@@ -245,7 +260,12 @@ describe("loadControlUiGitHubPreview", () => {
 
     await expect(
       loadControlUiGitHubPreview(
-        { kind: "pull", number: 70008, owner: "openclaw", repo: "unsafe-redirect" },
+        {
+          kind: "pull",
+          number: 70008,
+          owner: "@gabrielvfonseca/operator",
+          repo: "unsafe-redirect",
+        },
         fetchMock,
       ),
     ).rejects.toMatchObject({ statusCode: 502 } satisfies Partial<ControlUiGitHubError>);
@@ -266,7 +286,10 @@ describe("loadControlUiGitHubPreview", () => {
       ["missing", 70011],
     ] as const) {
       await expect(
-        loadControlUiGitHubPreview({ kind: "issue", number, owner: "openclaw", repo }, fetchMock),
+        loadControlUiGitHubPreview(
+          { kind: "issue", number, owner: "@gabrielvfonseca/operator", repo },
+          fetchMock,
+        ),
       ).rejects.toMatchObject({ statusCode: 404 } satisfies Partial<ControlUiGitHubError>);
     }
 
@@ -292,7 +315,7 @@ describe("loadControlUiGitHubPreview", () => {
 
     await expect(
       loadControlUiGitHubPreview(
-        { kind: "issue", number: 70004, owner: "openclaw", repo: "public-source" },
+        { kind: "issue", number: 70004, owner: "@gabrielvfonseca/operator", repo: "public-source" },
         fetchMock,
       ),
     ).rejects.toMatchObject({ statusCode: 404 } satisfies Partial<ControlUiGitHubError>);
@@ -324,12 +347,22 @@ describe("loadControlUiGitHubPreview", () => {
       .mockResolvedValueOnce(githubJson({ private: true }));
 
     await loadControlUiGitHubPreview(
-      { kind: "issue", number: 70005, owner: "openclaw", repo: "visibility-change" },
+      {
+        kind: "issue",
+        number: 70005,
+        owner: "@gabrielvfonseca/operator",
+        repo: "visibility-change",
+      },
       fetchMock,
     );
     await expect(
       loadControlUiGitHubPreview(
-        { kind: "issue", number: 70006, owner: "openclaw", repo: "visibility-change" },
+        {
+          kind: "issue",
+          number: 70006,
+          owner: "@gabrielvfonseca/operator",
+          repo: "visibility-change",
+        },
         fetchMock,
       ),
     ).rejects.toMatchObject({ statusCode: 404 } satisfies Partial<ControlUiGitHubError>);
@@ -342,7 +375,12 @@ describe("loadControlUiGitHubPreview", () => {
 
     await expect(
       loadControlUiGitHubPreview(
-        { kind: "issue", number: 70002, owner: "openclaw", repo: "missing-preview" },
+        {
+          kind: "issue",
+          number: 70002,
+          owner: "@gabrielvfonseca/operator",
+          repo: "missing-preview",
+        },
         fetchMock,
       ),
     ).rejects.toMatchObject({ statusCode: 404 } satisfies Partial<ControlUiGitHubError>);

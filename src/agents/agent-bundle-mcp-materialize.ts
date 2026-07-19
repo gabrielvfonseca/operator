@@ -1,8 +1,8 @@
 /** Materializes configured MCP catalog entries into agent tools and runtime helpers. */
 import crypto from "node:crypto";
+import { normalizeToolParameterSchema } from "@gabrielvfonseca/ai/internal/openai";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { normalizeToolParameterSchema } from "@operator/ai/internal/openai";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { logWarn } from "../logger.js";
 import { getPluginToolMeta, setPluginToolMeta, type PluginToolMcpMeta } from "../plugins/tools.js";

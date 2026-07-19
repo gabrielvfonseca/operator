@@ -29,7 +29,7 @@ describe("doctor command", () => {
           list: [
             {
               id: "work",
-              workspace: "~/openclaw-work",
+              workspace: "~/operator-work",
               sandbox: {
                 mode: "all",
                 scope: "shared",
@@ -67,7 +67,7 @@ describe("doctor command", () => {
 
     const homedirSpy = vi.spyOn(os, "homedir").mockReturnValue("/Users/steipete");
     const realExists = fs.existsSync;
-    const legacyPath = path.join("/Users/steipete", "openclaw");
+    const legacyPath = path.join("/Users/steipete", "@gabrielvfonseca/operator");
     const legacyAgentsPath = path.join(legacyPath, "AGENTS.md");
     const existsSpy = vi.spyOn(fs, "existsSync").mockImplementation((value) => {
       if (

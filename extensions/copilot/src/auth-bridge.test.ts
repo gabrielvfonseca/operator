@@ -100,7 +100,7 @@ describe("resolveCopilotAuth - copilotHome resolution", () => {
       homeDir: fakeHomeDir,
     });
     expect(result.copilotHome).toBe(
-      resolve(join(FAKE_HOME, ".openclaw", "agents", "agent-1", "copilot")),
+      resolve(join(FAKE_HOME, ".operator", "agents", "agent-1", "copilot")),
     );
   });
 
@@ -111,7 +111,7 @@ describe("resolveCopilotAuth - copilotHome resolution", () => {
       homeDir: fakeHomeDir,
     });
     expect(result.copilotHome).toBe(
-      resolve(join("/custom/openclaw", ".openclaw", "agents", "agent-1", "copilot")),
+      resolve(join("/custom/openclaw", ".operator", "agents", "agent-1", "copilot")),
     );
   });
 
@@ -123,7 +123,7 @@ describe("resolveCopilotAuth - copilotHome resolution", () => {
     });
     expect(result.agentId).toBe(COPILOT_DEFAULT_AGENT_ID);
     expect(result.copilotHome).toBe(
-      resolve(join(FAKE_HOME, ".openclaw", "agents", COPILOT_DEFAULT_AGENT_ID, "copilot")),
+      resolve(join(FAKE_HOME, ".operator", "agents", COPILOT_DEFAULT_AGENT_ID, "copilot")),
     );
   });
 
@@ -327,14 +327,14 @@ describe("resolveCopilotAuth - env var fallbacks", () => {
     const result = resolveCopilotAuth({
       agentId: "agent-1",
       env: {
-        OPERATOR_GITHUB_TOKEN: "openclaw-tok",
+        OPERATOR_GITHUB_TOKEN: "operator-tok",
         GITHUB_TOKEN: "github-tok",
       } as NodeJS.ProcessEnv,
       homeDir: fakeHomeDir,
     });
-    expect(result.gitHubToken).toBe("openclaw-tok");
+    expect(result.gitHubToken).toBe("operator-tok");
     expect(result.authProfileId).toBe("env:OPERATOR_GITHUB_TOKEN");
-    expect(result.authProfileVersion).toBe(tokenFingerprint("openclaw-tok"));
+    expect(result.authProfileVersion).toBe(tokenFingerprint("operator-tok"));
   });
 
   it("falls back to COPILOT_GITHUB_TOKEN with synthesised profile id + fingerprint", () => {
@@ -365,14 +365,14 @@ describe("resolveCopilotAuth - env var fallbacks", () => {
     const result = resolveCopilotAuth({
       agentId: "agent-1",
       env: {
-        OPERATOR_GITHUB_TOKEN: "openclaw-tok",
+        OPERATOR_GITHUB_TOKEN: "operator-tok",
         COPILOT_GITHUB_TOKEN: "copilot-tok",
         GH_TOKEN: "gh-tok",
         GITHUB_TOKEN: "github-tok",
       } as NodeJS.ProcessEnv,
       homeDir: fakeHomeDir,
     });
-    expect(result.gitHubToken).toBe("openclaw-tok");
+    expect(result.gitHubToken).toBe("operator-tok");
     expect(result.authProfileId).toBe("env:OPERATOR_GITHUB_TOKEN");
   });
 
@@ -488,7 +488,7 @@ describe("resolveCopilotAuth - defaults wiring", () => {
     });
     // We don't know the actual home, just that the resolver did not throw and
     // produced an absolute path containing the per-agent suffix.
-    expect(result.copilotHome.endsWith(join(".openclaw", "agents", "agent-1", "copilot"))).toBe(
+    expect(result.copilotHome.endsWith(join(".operator", "agents", "agent-1", "copilot"))).toBe(
       true,
     );
   });
@@ -502,7 +502,7 @@ describe("resolveCopilotAuth - defaults wiring", () => {
       },
     });
     // Should not throw; should produce a path under cwd.
-    expect(result.copilotHome.includes(join(".openclaw", "agents", "agent-1", "copilot"))).toBe(
+    expect(result.copilotHome.includes(join(".operator", "agents", "agent-1", "copilot"))).toBe(
       true,
     );
   });

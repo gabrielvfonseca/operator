@@ -163,7 +163,7 @@ describe("prepareEmbeddedAttemptPromptContext", () => {
         role: "user",
         content: "Visible request",
         timestamp: 123,
-        __openclaw: { senderId: "alice-id", senderName: "Alice" },
+        __operator: { senderId: "alice-id", senderName: "Alice" },
       } as AgentMessage,
     });
 

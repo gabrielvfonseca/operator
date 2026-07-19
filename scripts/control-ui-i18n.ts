@@ -1,11 +1,15 @@
-// Control Ui I18N script supports OpenClaw repository automation.
+// Control Ui I18N script supports Operator repository automation.
 import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { completeSimple, type AssistantMessage, type Model } from "openclaw/plugin-sdk/llm";
+import {
+  completeSimple,
+  type AssistantMessage,
+  type Model,
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { expectDefined } from "../packages/normalization-core/src/expect.js";
 import { formatErrorMessage } from "../src/infra/errors.ts";
 import { formatDurationCompact } from "../src/infra/format-time/format-duration.ts";
@@ -71,12 +75,12 @@ const RUN_PROCESS_TIMEOUT_MS = 120_000;
 const RUN_PROCESS_KILL_GRACE_MS = 5_000;
 const activeRunProcessParentSignals = new Set<RunProcessParentSignalState>();
 const PROGRESS_HEARTBEAT_MS = 30_000;
-const ENV_PROVIDER = "OPENCLAW_CONTROL_UI_I18N_PROVIDER";
-const ENV_MODEL = "OPENCLAW_CONTROL_UI_I18N_MODEL";
-const ENV_THINKING = "OPENCLAW_CONTROL_UI_I18N_THINKING";
-const ENV_BATCH_CHAR_BUDGET = "OPENCLAW_CONTROL_UI_I18N_BATCH_CHAR_BUDGET";
-const ENV_PROMPT_TIMEOUT = "OPENCLAW_CONTROL_UI_I18N_PROMPT_TIMEOUT";
-const ENV_AUTH_OPTIONAL = "OPENCLAW_CONTROL_UI_I18N_AUTH_OPTIONAL";
+const ENV_PROVIDER = "OPERATOR_CONTROL_UI_I18N_PROVIDER";
+const ENV_MODEL = "OPERATOR_CONTROL_UI_I18N_MODEL";
+const ENV_THINKING = "OPERATOR_CONTROL_UI_I18N_THINKING";
+const ENV_BATCH_CHAR_BUDGET = "OPERATOR_CONTROL_UI_I18N_BATCH_CHAR_BUDGET";
+const ENV_PROMPT_TIMEOUT = "OPERATOR_CONTROL_UI_I18N_PROMPT_TIMEOUT";
+const ENV_AUTH_OPTIONAL = "OPERATOR_CONTROL_UI_I18N_AUTH_OPTIONAL";
 
 type TranslationProvider = "openai" | "anthropic";
 
@@ -106,7 +110,7 @@ const TRANSLATION_PROVIDER_DEFAULTS: Record<TranslationProvider, Omit<Model, "id
 const LOCALE_ENTRIES: readonly LocaleEntry[] = CONTROL_UI_LOCALE_ENTRIES;
 
 const DEFAULT_GLOSSARY: readonly GlossaryEntry[] = [
-  { source: "OpenClaw", target: "OpenClaw" },
+  { source: "Operator", target: "Operator" },
   { source: "Gateway", target: "Gateway" },
   { source: "Control UI", target: "Control UI" },
   { source: "Skills", target: "Skills" },
@@ -271,7 +275,7 @@ function hashText(text: string): string {
 function cacheNamespace(): string {
   return [
     `wf=${CONTROL_UI_I18N_WORKFLOW}`,
-    "engine=openclaw-llm",
+    "engine=operator-llm",
     `provider=${resolveConfiguredProvider()}`,
     `model=${resolveConfiguredModel()}`,
   ].join("|");

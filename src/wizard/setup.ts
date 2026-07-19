@@ -148,7 +148,7 @@ async function runSetupWizardOnce(
   baseConfig = await requireRiskAcknowledgement({ opts, prompter, config: baseConfig });
   // Ordinary onboard reruns must preserve existing agents.list / bindings. Only
   // explicit reset or import flows are allowed to shrink the config — see issue
-  // operator#84692.
+  // openclaw#84692.
   let pendingPluginInstallMigrationBaseConfig: OperatorConfig | undefined = baseConfig;
   const writeSetupConfigFile = async (
     config: OperatorConfig,
@@ -178,7 +178,7 @@ async function runSetupWizardOnce(
       );
     }
     await prompter.outro(
-      `Config invalid. Run \`${formatCliCommand("operator doctor")}\` to repair it, then re-run setup.`,
+      `Config invalid. Run \`${formatCliCommand("openclaw doctor")}\` to repair it, then re-run setup.`,
     );
     runtime.exit(1);
     return;
@@ -198,15 +198,15 @@ async function runSetupWizardOnce(
           ? [`- ... +${compatibilityNotices.length - 4} more`]
           : []),
         "",
-        `Review: ${formatCliCommand("operator doctor")}`,
-        `Inspect: ${formatCliCommand("operator plugins inspect --all")}`,
+        `Review: ${formatCliCommand("openclaw doctor")}`,
+        `Inspect: ${formatCliCommand("openclaw plugins inspect --all")}`,
       ].join("\n"),
       t("wizard.setup.pluginCompatibilityTitle"),
     );
   }
 
   const quickstartHint = t("wizard.setup.flowQuickstartHint", {
-    command: formatCliCommand("operator configure"),
+    command: formatCliCommand("openclaw configure"),
   });
   const manualHint = t("wizard.setup.flowAdvancedHint");
   const hasExistingModelConfig = hasConfiguredDefaultModel(baseConfig);
@@ -234,7 +234,7 @@ async function runSetupWizardOnce(
     normalizedExplicitFlow !== "import"
   ) {
     runtime.error(
-      "Invalid --flow. Use quickstart, manual, advanced, or import. Example: operator onboard --flow quickstart",
+      "Invalid --flow. Use quickstart, manual, advanced, or import. Example: openclaw onboard --flow quickstart",
     );
     runtime.exit(1);
     return;
@@ -301,7 +301,7 @@ async function runSetupWizardOnce(
     });
     const migratedSnapshot = await readSetupConfigFileSnapshot();
     if (!migratedSnapshot.valid) {
-      throw new Error("Migration produced an invalid Operator config. Run `operator doctor`.");
+      throw new Error("Migration produced an invalid Operator config. Run `openclaw doctor`.");
     }
     baseConfig = migratedSnapshot.sourceConfig ?? migratedSnapshot.config;
     pendingPluginInstallMigrationBaseConfig = baseConfig;

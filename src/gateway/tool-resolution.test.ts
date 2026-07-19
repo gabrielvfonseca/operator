@@ -2,7 +2,7 @@
  * Gateway tool-resolution tests.
  */
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveGatewayScopedTools } from "./tool-resolution.js";
 
 describe("resolveGatewayScopedTools", () => {

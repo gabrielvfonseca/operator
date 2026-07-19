@@ -599,7 +599,7 @@ async function runVitestJsonReport(params) {
       ...params.env,
       // The JSON reporter can stay silent for the entire config. The profiler
       // owns the wall-clock timeout and process-group cleanup for this child.
-      OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "0",
+      OPERATOR_VITEST_NO_OUTPUT_TIMEOUT_MS: "0",
       NODE_OPTIONS: [
         (params.env?.NODE_OPTIONS ?? process.env.NODE_OPTIONS)?.trim(),
         ...resolveVitestNodeArgs({ ...process.env, ...params.env }).filter(
@@ -842,15 +842,15 @@ function withUniqueLabels(plans) {
 }
 
 function buildFullSuiteLeafRunPlans() {
-  const previousLeafShards = process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
-  process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS = "1";
+  const previousLeafShards = process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS;
+  process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS = "1";
   try {
     return buildFullSuiteVitestRunPlans([], process.cwd());
   } finally {
     if (previousLeafShards === undefined) {
-      delete process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+      delete process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS;
     } else {
-      process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS = previousLeafShards;
+      process.env.OPERATOR_TEST_PROJECTS_LEAF_SHARDS = previousLeafShards;
     }
   }
 }
@@ -885,14 +885,14 @@ export function resolveRunPlans(args) {
 export function resolveFullSuiteVitestEnv(args, env = process.env, label = "") {
   if (
     !args.fullSuite ||
-    env.OPENCLAW_VITEST_MAX_WORKERS?.trim() ||
-    env.OPENCLAW_TEST_WORKERS?.trim()
+    env.OPERATOR_VITEST_MAX_WORKERS?.trim() ||
+    env.OPERATOR_TEST_WORKERS?.trim()
   ) {
     return {};
   }
 
   return {
-    OPENCLAW_VITEST_MAX_WORKERS: label === "commands" ? "1" : "2",
+    OPERATOR_VITEST_MAX_WORKERS: label === "commands" ? "1" : "2",
   };
 }
 

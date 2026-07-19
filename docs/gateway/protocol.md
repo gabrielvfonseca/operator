@@ -8,7 +8,7 @@ title: "Gateway protocol"
 ---
 
 The Gateway WS protocol is the single control plane and node transport for
-OpenClaw. Operator and node clients (CLI, web UI, macOS app, iOS/Android nodes,
+Operator. Operator and node clients (CLI, web UI, macOS app, iOS/Android nodes,
 headless nodes) connect over WebSocket and declare a **role** and **scope** at
 handshake time.
 
@@ -67,7 +67,7 @@ Client replies with `connect`:
     "permissions": {},
     "auth": { "token": "…" },
     "locale": "en-US",
-    "userAgent": "openclaw-cli/1.2.3",
+    "userAgent": "operator-cli/1.2.3",
     "device": {
       "id": "device_fingerprint",
       "publicKey": "…",
@@ -223,7 +223,7 @@ Client capabilities describe the connected client, not authorization. Agent tool
     "permissions": { "camera.capture": true, "screen.record": false },
     "auth": { "token": "…" },
     "locale": "en-US",
-    "userAgent": "openclaw-ios/1.2.3",
+    "userAgent": "operator-ios/1.2.3",
     "device": {
       "id": "device_fingerprint",
       "publicKey": "…",
@@ -477,7 +477,7 @@ methods. Treat this as feature discovery, not a full enumeration of
     - `talk.session.close` closes a gateway-owned relay, transcription, or managed-room session and emits terminal Talk events.
     - `talk.mode` sets/broadcasts the current Talk mode state for WebChat/Control UI clients.
     - `talk.client.create` creates a client-owned realtime provider session using `webrtc` or `provider-websocket` while the gateway owns config, credentials, instructions, and tool policy.
-    - `talk.client.toolCall` lets client-owned realtime transports forward provider tool calls to gateway policy. The first supported tool is `openclaw_agent_consult`; clients get a run id and wait for normal chat lifecycle events before submitting the provider-specific tool result.
+    - `talk.client.toolCall` lets client-owned realtime transports forward provider tool calls to gateway policy. The first supported tool is `operator_agent_consult`; clients get a run id and wait for normal chat lifecycle events before submitting the provider-specific tool result.
     - `talk.client.steer` sends active-run voice control for client-owned realtime transports. The gateway resolves the active embedded run from `sessionKey` and returns a structured accepted/rejected result instead of silently dropping steering.
     - `talk.event` is the single Talk event channel for realtime, transcription, STT/TTS, managed-room, telephony, and meeting adapters.
     - `talk.speak` synthesizes speech through the active Talk speech provider.
@@ -499,7 +499,7 @@ methods. Treat this as feature discovery, not a full enumeration of
     - `config.apply` validates + replaces the full config payload.
     - `config.schema` returns the live config schema payload used by Control UI and CLI tooling: schema, `uiHints`, version, generation metadata, plugin + channel schema metadata when loadable. It includes `title` / `description` metadata from the same labels/help text as the UI, including nested object, wildcard, array-item, and `anyOf` / `oneOf` / `allOf` composition branches when matching field documentation exists.
     - `config.schema.lookup` returns a path-scoped lookup payload for one config path: normalized path, a shallow schema node, matched hint + `hintPath`, optional `reloadKind`, and immediate child summaries for UI/CLI drill-down. `reloadKind` is one of `restart`, `hot`, or `none` (`src/config/schema.ts`) and mirrors the gateway config reload planner for the requested path. Lookup schema nodes keep the user-facing docs and common validation fields (`title`, `description`, `type`, `enum`, `const`, `format`, `pattern`, numeric/string/array/object bounds, `additionalProperties`, `deprecated`, `readOnly`, `writeOnly`). Child summaries expose `key`, normalized `path`, `type`, `required`, `hasChildren`, optional `reloadKind`, plus the matched `hint` / `hintPath`.
-    - `update.run` runs the gateway update flow and schedules a restart only if the update succeeded; callers with a session can include `continuationMessage` so startup resumes one follow-up agent turn through the restart continuation queue. Package-manager updates and supervised git-checkout updates from the control plane use a detached managed-service handoff instead of replacing the package tree or mutating checkout/build output inside the live gateway. A started handoff returns `ok: true` with `result.reason: "managed-service-handoff-started"` and `handoff.status: "started"`; unavailable or failed handoffs return `ok: false` with `managed-service-handoff-unavailable` or `managed-service-handoff-failed`, plus `handoff.command` when a manual shell update is required. Unavailable means OpenClaw lacks a safe supervisor boundary or durable service identity, such as `OPENCLAW_SYSTEMD_UNIT` for systemd. During a started handoff, the restart sentinel may briefly report `stats.reason: "restart-health-pending"`; the continuation is delayed until the CLI verifies the restarted gateway and writes the final `ok` sentinel.
+    - `update.run` runs the gateway update flow and schedules a restart only if the update succeeded; callers with a session can include `continuationMessage` so startup resumes one follow-up agent turn through the restart continuation queue. Package-manager updates and supervised git-checkout updates from the control plane use a detached managed-service handoff instead of replacing the package tree or mutating checkout/build output inside the live gateway. A started handoff returns `ok: true` with `result.reason: "managed-service-handoff-started"` and `handoff.status: "started"`; unavailable or failed handoffs return `ok: false` with `managed-service-handoff-unavailable` or `managed-service-handoff-failed`, plus `handoff.command` when a manual shell update is required. Unavailable means Operator lacks a safe supervisor boundary or durable service identity, such as `OPERATOR_SYSTEMD_UNIT` for systemd. During a started handoff, the restart sentinel may briefly report `stats.reason: "restart-health-pending"`; the continuation is delayed until the CLI verifies the restarted gateway and writes the final `ok` sentinel.
     - `update.status` refreshes and returns the latest update restart sentinel, including the post-restart running version when available.
     - `wizard.start`, `wizard.next`, `wizard.status`, and `wizard.cancel` expose the onboarding wizard over WS RPC.
 
@@ -528,7 +528,7 @@ methods. Treat this as feature discovery, not a full enumeration of
     - `sessions.describe` returns one gateway session row for an exact session key.
     - `sessions.resolve` resolves or canonicalizes a session target.
     - `sessions.create` creates a new session entry. Optional `model` and `thinkingLevel` values persist the initial model and reasoning overrides atomically. `worktree: true` provisions a managed worktree; optional `worktreeBaseRef`/`worktreeName` select the base ref and branch name, and `execNode` (`operator.admin`) binds session exec to a node host. The created worktree is echoed in the result and persisted on the session row (`worktree: { id, branch, repoRoot }`). When the entry is created but its nested initial `chat.send` is rejected, the successful result includes `runStarted: false` and `runError`; clients can preserve the prompt and retry against the returned session key.
-    - `sessions.dispatch` (`operator.admin`) moves an existing local OpenClaw session with a session-owned managed worktree to a configured cloud-worker profile. Pass `{ key, profileId, agentId? }`. The method is absent when no worker profile is configured, closes local turn admission before draining active work, and returns only after placement reaches `active` worker ownership. Dispatch is one-way; worker-to-local pull-back is not part of this RPC.
+    - `sessions.dispatch` (`operator.admin`) moves an existing local Operator session with a session-owned managed worktree to a configured cloud-worker profile. Pass `{ key, profileId, agentId? }`. The method is absent when no worker profile is configured, closes local turn admission before draining active work, and returns only after placement reaches `active` worker ownership. Dispatch is one-way; worker-to-local pull-back is not part of this RPC.
     - `sessions.groups.list`, `sessions.groups.put`, `sessions.groups.rename`, and `sessions.groups.delete` manage the gateway-owned custom session group catalog (names + display order). Membership stays on each session's `category` field; rename and delete update member sessions server-side.
     - `sessions.send` sends a message into an existing session.
     - `sessions.steer` is the interrupt-and-steer variant for an active session.
@@ -738,7 +738,7 @@ only when the method was not advertised. A client may then retry `audit.list`
 only when its filters do not require message kind, direction, or channel
 support.
 
-Use [`openclaw audit`](/cli/audit) for text queries and bounded JSON exports.
+Use [`operator audit`](/cli/audit) for text queries and bounded JSON exports.
 
 ## Task ledger RPCs
 
@@ -846,7 +846,7 @@ context.
     `skills.install.allowUploadedArchives` is enabled; the setting does not
     affect ClawHub installs.
   - Gateway installer mode: `{ name, installId, timeoutMs? }` runs a declared
-    `metadata.openclaw.install` action on the gateway host. Older clients may
+    `metadata.operator.install` action on the gateway host. Older clients may
     still send `dangerouslyForceUnsafeInstall`; this field is deprecated,
     accepted only for protocol compatibility, and ignored. Use
     `security.installPolicy` for operator-owned install decisions.
@@ -903,7 +903,7 @@ context.
 - Final `agent` results may include `result.deliveryStatus` when delivery was
   requested, using the same `sent`, `suppressed`, `partial_failed`, and
   `failed` statuses documented for
-  [`openclaw agent --json --deliver`](/cli/agent#json-delivery-status).
+  [`operator agent --json --deliver`](/cli/agent#json-delivery-status).
 
 ## Versioning
 
@@ -927,7 +927,7 @@ context.
 ### Client constants
 
 The reference client implementation lives in `packages/gateway-client/src/`
-(OpenClaw wraps it via the thin `src/gateway/client.ts` facade). These
+(Operator wraps it via the thin `src/gateway/client.ts` facade). These
 defaults are stable across protocol v4 and are the expected baseline for
 third-party clients.
 
@@ -938,7 +938,7 @@ third-party clients.
 | `MIN_NODE_PROTOCOL_VERSION`               | `3`                                                   | `packages/gateway-protocol/src/version.ts`                                                                                |
 | `MIN_PROBE_PROTOCOL_VERSION`              | `3`                                                   | `packages/gateway-protocol/src/version.ts`                                                                                |
 | Request timeout (per RPC)                 | `30_000` ms                                           | `packages/gateway-client/src/client.ts` (`requestTimeoutMs`)                                                              |
-| Preauth / connect-challenge timeout       | `15_000` ms                                           | `packages/gateway-client/src/timeouts.ts` (`OPENCLAW_HANDSHAKE_TIMEOUT_MS` env can raise the paired server/client budget) |
+| Preauth / connect-challenge timeout       | `15_000` ms                                           | `packages/gateway-client/src/timeouts.ts` (`OPERATOR_HANDSHAKE_TIMEOUT_MS` env can raise the paired server/client budget) |
 | Initial reconnect backoff                 | `1_000` ms                                            | `packages/gateway-client/src/client.ts` (`GATEWAY_RECONNECT_POLICY`)                                                      |
 | Max reconnect backoff                     | `30_000` ms                                           | `packages/gateway-client/src/client.ts` (`GATEWAY_RECONNECT_POLICY`)                                                      |
 | Fast-retry clamp after device-token close | `250` ms                                              | `packages/gateway-client/src/client.ts`                                                                                   |
@@ -1045,7 +1045,7 @@ not replay rejected requests after reconnecting.
 - Pairing approvals are required for new device IDs unless local
   auto-approval is enabled.
 - Pairing auto-approval is centered on direct local loopback connects.
-- OpenClaw also has a narrow backend/container-local self-connect path for
+- Operator also has a narrow backend/container-local self-connect path for
   trusted shared-secret helper flows.
 - Same-host tailnet or LAN connects are still treated as remote for pairing
   and require approval.
@@ -1059,7 +1059,7 @@ not replay rejected requests after reconnecting.
   - direct-loopback `gateway-client` backend RPCs on the reserved internal
     helper path.
 - Omitting device identity has scope consequences. When a device-less
-  operator connection is allowed through an explicit trust path, OpenClaw
+  operator connection is allowed through an explicit trust path, Operator
   still clears self-declared scopes to an empty set unless that path has a
   named scope-preservation exception. Scope-gated methods then fail with
   `missing scope`.

@@ -1,9 +1,9 @@
 // Update method tests cover update.run/status, restart sentinel metadata,
 // managed-service handoff, restart scheduling, and delivery context preservation.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { ConfigFileSnapshot, OperatorConfig } from "../../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../../config/types.operator.js";
 import type { RestartSentinelPayload } from "../../infra/restart-sentinel.js";
 import type { RespawnSupervisor } from "../../infra/supervisor-markers.js";
 import type { UpdateChannel } from "../../infra/update-channels.js";
@@ -38,7 +38,7 @@ const startManagedServiceUpdateHandoffMock = vi.fn(async () => ({
   status: "started" as const,
   pid: 12345,
   command: "openclaw update --yes --timeout 1800",
-  logPath: "/tmp/openclaw-update-run-handoff/handoff.log",
+  logPath: "/tmp/operator-update-run-handoff/handoff.log",
 }));
 
 const scheduleGatewaySigusr1RestartMock = vi.fn(() => ({ scheduled: true }));
@@ -173,7 +173,7 @@ vi.mock("./restart-request.js", () => ({
 vi.mock("../../infra/update-managed-service-handoff.js", () => ({
   startManagedServiceUpdateHandoff: startManagedServiceUpdateHandoffMock,
   formatManagedServiceUpdateCommand: (params?: { timeoutMs?: number; channel?: UpdateChannel }) => {
-    const args = ["openclaw", "update", "--yes"];
+    const args = ["@gabrielvfonseca/operator", "update", "--yes"];
     if (params?.channel) {
       args.push("--channel", params.channel);
     }
@@ -204,7 +204,7 @@ beforeEach(() => {
   normalizeUpdateChannelMock.mockReturnValue(null);
   readConfigFileSnapshotMock.mockReset();
   readConfigFileSnapshotMock.mockResolvedValue({
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     exists: true,
     raw: "{}",
     parsed: {},
@@ -309,8 +309,8 @@ function mockGlobalInstallSurface() {
   resolveUpdateInstallSurfaceMock.mockResolvedValueOnce({
     kind: "global",
     mode: "npm",
-    root: "/tmp/openclaw-global",
-    packageRoot: "/tmp/openclaw-global",
+    root: "/tmp/operator-global",
+    packageRoot: "/tmp/operator-global",
   });
 }
 
@@ -457,7 +457,7 @@ describe("update.run restart scheduling", () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
     mockGlobalInstallSurface();
 
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload({}, { gateway: { reload: { deferralTimeoutMs: 60_000 } } }),
     );
 
@@ -523,7 +523,7 @@ describe("update.run restart scheduling", () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
     mockGlobalInstallSurface();
 
-    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload({}, { gateway: { reload: { deferralTimeoutMs: 0 } } }),
     );
 
@@ -537,7 +537,7 @@ describe("update.run restart scheduling", () => {
     mockGlobalInstallSurface();
     restartSentinelWriteError = new Error("state database unavailable");
 
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -554,7 +554,7 @@ describe("update.run restart scheduling", () => {
       Object.assign(new Error("spawn ENOENT"), { code: "ENOENT" }),
     );
 
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -571,7 +571,7 @@ describe("update.run restart scheduling", () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("systemd");
     mockGlobalInstallSurface();
 
-    await withProcessEnv({ OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service" }, () =>
+    await withProcessEnv({ OPERATOR_SYSTEMD_UNIT: "operator-gateway.service" }, () =>
       invokeUpdateRun({ restartDelayMs: 0 }),
     );
 
@@ -598,7 +598,7 @@ describe("update.run restart scheduling", () => {
       throw Object.assign(new Error("uv_cwd"), { code: "ENOENT", syscall: "uv_cwd" });
     });
     try {
-      await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+      await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
         invokeUpdateRun({}),
       );
     } finally {
@@ -615,8 +615,8 @@ describe("update.run restart scheduling", () => {
 
   it("hands supervised git/dev updates to the CLI path instead of rebuilding live dist in-process", async () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
-    mockGitInstallSurface("/tmp/openclaw-git");
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    mockGitInstallSurface("/tmp/operator-git");
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -651,7 +651,7 @@ describe("update.run restart scheduling", () => {
 
     const payload = await withProcessEnv(
       {
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
         OPERATOR_SERVICE_KIND: "gateway",
       },
       () => captureUpdateRunPayload(),
@@ -671,9 +671,9 @@ describe("update.run restart scheduling", () => {
   it("does not pass the stored stable channel to supervised git handoff CLI", async () => {
     normalizeUpdateChannelMock.mockReturnValueOnce("stable");
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
-    mockGitInstallSurface("/tmp/openclaw-git");
+    mockGitInstallSurface("/tmp/operator-git");
 
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -690,9 +690,9 @@ describe("update.run restart scheduling", () => {
   it("rejects stored extended-stable on Git without starting a handoff or mutation", async () => {
     normalizeUpdateChannelMock.mockReturnValueOnce("extended-stable");
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
-    mockGitInstallSurface("/tmp/openclaw-git");
+    mockGitInstallSurface("/tmp/operator-git");
 
-    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    const payload = await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -712,7 +712,7 @@ describe("update.run restart scheduling", () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
     mockGlobalInstallSurface();
 
-    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 
@@ -729,7 +729,7 @@ describe("update.run restart scheduling", () => {
       steps: [],
       durationMs: 100,
     });
-    mockGitInstallSurface("/tmp/openclaw-git");
+    mockGitInstallSurface("/tmp/operator-git");
 
     const payload = await captureUpdateRunPayload();
 
@@ -744,11 +744,11 @@ describe("update.run restart scheduling", () => {
 
   it("hands systemd-supervised git/dev updates to handoff from the durable unit identity", async () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("systemd");
-    mockGitInstallSurface("/tmp/openclaw-git");
+    mockGitInstallSurface("/tmp/operator-git");
 
     const payload = await withProcessEnv(
       {
-        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service",
+        OPERATOR_SYSTEMD_UNIT: "operator-gateway.service",
         INVOCATION_ID: "8a77e69a8f604bf0b7984879b9f17a7c",
       },
       () => captureUpdateRunPayload(),
@@ -771,7 +771,7 @@ describe("update.run restart scheduling", () => {
 
   it("does not hand off systemd-supervised git/dev updates from generic systemd markers alone", async () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("systemd");
-    mockGitInstallSurface("/tmp/openclaw-git");
+    mockGitInstallSurface("/tmp/operator-git");
 
     const payload = await withProcessEnv(
       {
@@ -845,9 +845,9 @@ describe("update.run post-core plugin finalize", () => {
   it("resumes official plugin convergence after a git/source core update", async () => {
     runPostCoreFinalizeAfterGatewayUpdateMock.mockResolvedValueOnce({
       status: "ok",
-      entrypoint: "/tmp/openclaw-git/dist/index.mjs",
+      entrypoint: "/tmp/operator-git/dist/index.mjs",
     });
-    mockGitOkUpdate("/tmp/openclaw-git");
+    mockGitOkUpdate("/tmp/operator-git");
 
     const payload = await captureUpdateRunPayload();
 
@@ -874,7 +874,7 @@ describe("update.run post-core plugin finalize", () => {
       },
     } as OperatorConfig;
     readConfigFileSnapshotMock.mockResolvedValueOnce({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       exists: true,
       raw: JSON.stringify(preUpdateConfig),
       parsed: preUpdateConfig,
@@ -889,9 +889,9 @@ describe("update.run post-core plugin finalize", () => {
     });
     runPostCoreFinalizeAfterGatewayUpdateMock.mockResolvedValueOnce({
       status: "ok",
-      entrypoint: "/tmp/openclaw-git/dist/index.mjs",
+      entrypoint: "/tmp/operator-git/dist/index.mjs",
     });
-    mockGitOkUpdate("/tmp/openclaw-git");
+    mockGitOkUpdate("/tmp/operator-git");
 
     await captureUpdateRunPayload();
 
@@ -909,11 +909,11 @@ describe("update.run post-core plugin finalize", () => {
     runPostCoreFinalizeAfterGatewayUpdateMock.mockResolvedValueOnce({
       status: "error",
       reason: "nonzero-exit",
-      entrypoint: "/tmp/openclaw-git/dist/index.mjs",
+      entrypoint: "/tmp/operator-git/dist/index.mjs",
       exitCode: 1,
       message: "convergence failed",
     });
-    mockGitOkUpdate("/tmp/openclaw-git");
+    mockGitOkUpdate("/tmp/operator-git");
 
     const payload = await captureUpdateRunPayload();
 
@@ -929,7 +929,7 @@ describe("update.run post-core plugin finalize", () => {
     detectRespawnSupervisorMock.mockReturnValueOnce("launchd");
     mockGlobalInstallSurface();
 
-    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway" }, () =>
+    await withProcessEnv({ OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway" }, () =>
       captureUpdateRunPayload(),
     );
 

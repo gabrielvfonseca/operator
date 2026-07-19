@@ -1,4 +1,4 @@
-// Bundled Extension Manifest script supports OpenClaw repository automation.
+// Bundled Extension Manifest script supports Operator repository automation.
 import { checkMinHostVersion } from "../../src/plugins/min-host-version.ts";
 import { isRecord } from "../../src/utils.js";
 
@@ -19,10 +19,10 @@ export function collectBundledExtensionManifestErrors(extensions: BundledExtensi
   const errors: string[] = [];
 
   for (const extension of extensions) {
-    const install = extension.packageJson.openclaw?.install;
+    const install = extension.packageJson.operator?.install;
     if (install !== undefined && !isRecord(install)) {
       errors.push(
-        `bundled extension '${extension.id}' manifest invalid | openclaw.install must be an object`,
+        `bundled extension '${extension.id}' manifest invalid | operator.install must be an object`,
       );
       continue;
     }
@@ -32,7 +32,7 @@ export function collectBundledExtensionManifestErrors(extensions: BundledExtensi
       (!install.npmSpec || typeof install.npmSpec !== "string" || !install.npmSpec.trim())
     ) {
       errors.push(
-        `bundled extension '${extension.id}' manifest invalid | openclaw.install.npmSpec must be a non-empty string`,
+        `bundled extension '${extension.id}' manifest invalid | operator.install.npmSpec must be a non-empty string`,
       );
     }
     const minHostVersionCheck =

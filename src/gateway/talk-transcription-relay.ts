@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import {
   parseFiniteNumber as readFiniteNumber,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { RealtimeTranscriptionProviderPlugin } from "../plugins/types.js";
 import type { RealtimeTranscriptionProviderConfig } from "../realtime-transcription/provider-types.js";
 import { recordTalkObservabilityEvent } from "../talk/observability.js";

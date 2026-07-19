@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 
 export function parseCronThreadIdOption(value: unknown): number | undefined {
   const raw = normalizeOptionalString(value);

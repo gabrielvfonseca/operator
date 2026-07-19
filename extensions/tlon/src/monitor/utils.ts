@@ -1,10 +1,10 @@
 import {
   resolveStableChannelMessageIngress,
   type StableChannelIngressIdentityParams,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { formatErrorMessage as sharedFormatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { formatErrorMessage as sharedFormatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 // Tlon helper module supports utils behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import { normalizeShip } from "../targets.js";
 
 export interface ParsedCite {

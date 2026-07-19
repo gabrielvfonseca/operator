@@ -2,13 +2,13 @@
 import {
   resolveApiKeyForProvider,
   resolveDefaultAgentDir,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 import {
   DEFAULT_LIVE_MUSIC_MODELS,
   collectProviderApiKeys,
@@ -29,7 +29,7 @@ import {
   redactLiveApiKey,
   resolveConfiguredLiveMusicModels,
   resolveLiveMusicAuthStore,
-} from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import falPlugin from "./fal/index.js";
 import googlePlugin from "./google/index.js";

@@ -3,9 +3,12 @@ import {
   createPluginSetupWizardStatus,
   createQueuedWizardPrompter,
   runSetupWizardFinalize,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { DEFAULT_ACCOUNT_ID, type OperatorConfig } from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  DEFAULT_ACCOUNT_ID,
+  type OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { whatsappSetupWizard } from "./setup-surface.js";
 import {
@@ -40,7 +43,7 @@ const hoisted = vi.hoisted(() => ({
   resolveWhatsAppAuthDir: vi.fn<
     (params: { cfg: OperatorConfig; accountId: string }) => { authDir: string }
   >(() => ({
-    authDir: "/tmp/openclaw-whatsapp-test",
+    authDir: "/tmp/operator-whatsapp-test",
   })),
 }));
 
@@ -169,7 +172,7 @@ describe("whatsapp setup wizard", () => {
     hoisted.readWebAuthState.mockReset();
     hoisted.readWebAuthState.mockResolvedValue("not-linked");
     hoisted.resolveWhatsAppAuthDir.mockReset();
-    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/openclaw-whatsapp-test" });
+    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/operator-whatsapp-test" });
   });
 
   it("applies owner allowlist when forceAllowFrom is enabled", async () => {

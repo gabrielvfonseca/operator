@@ -1,5 +1,5 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createNonExitingRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createNonExitingRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { lookupTelegramChatId } from "./api-fetch.js";
 import { telegramPlugin } from "./channel.js";

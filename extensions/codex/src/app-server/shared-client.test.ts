@@ -1,7 +1,7 @@
 // Codex tests cover shared client plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempDir } from "openclaw/plugin-sdk/test-env";
+import { withTempDir } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { WebSocketServer, type RawData } from "ws";
 import { CodexAppServerClient } from "./client.js";
@@ -46,7 +46,7 @@ const mocks = vi.hoisted(() => ({
   resolveManagedCodexAppServerStartOptions: vi.fn(async (startOptions) => startOptions),
   resolveManagedCodexNativeCommand: vi.fn((command: string) => `${command}.native`),
   embeddedAgentLog: { debug: vi.fn(), warn: vi.fn() },
-  resolveDefaultAgentDir: vi.fn(() => "/tmp/openclaw-agent"),
+  resolveDefaultAgentDir: vi.fn(() => "/tmp/operator-agent"),
 }));
 
 vi.mock("./auth-bridge.js", () => ({
@@ -415,7 +415,7 @@ describe("shared Codex app-server client", () => {
   });
 
   it("keeps capture clients separate from ordinary shared clients", async () => {
-    await withTempDir("openclaw-codex-capture-client-", async (root) => {
+    await withTempDir("operator-codex-capture-client-", async (root) => {
       const command = path.join(root, "codex");
       await fs.writeFile(command, "native-v1");
       const normal = createClientHarness();
@@ -456,7 +456,7 @@ describe("shared Codex app-server client", () => {
   });
 
   it("binds the managed fallback candidate that actually initialized", async () => {
-    await withTempDir("openclaw-codex-capture-fallback-", async (root) => {
+    await withTempDir("operator-codex-capture-fallback-", async (root) => {
       const desktopCommand = path.join(root, "desktop-codex");
       const fallbackCommand = path.join(root, "package-codex");
       await Promise.all([
@@ -529,7 +529,7 @@ describe("shared Codex app-server client", () => {
   });
 
   it("detects persisted Computer Use enabled after managed client startup", async () => {
-    await withTempDir("openclaw-codex-managed-selection-", async (root) => {
+    await withTempDir("operator-codex-managed-selection-", async (root) => {
       const harness = createClientHarness();
       vi.spyOn(CodexAppServerClient, "start").mockReturnValue(harness.client);
       mocks.resolveManagedCodexAppServerStartOptions.mockImplementationOnce(
@@ -626,7 +626,7 @@ describe("shared Codex app-server client", () => {
   it.each(["abort", "timeout"] as const)(
     "holds the native config fence through process exit after a post-write %s",
     async (mode) => {
-      await withTempDir("openclaw-codex-guarded-request-cancel-", async (root) => {
+      await withTempDir("operator-codex-guarded-request-cancel-", async (root) => {
         const harness = createClientHarness();
         vi.spyOn(CodexAppServerClient, "start").mockReturnValue(harness.client);
         mocks.resolveManagedCodexAppServerStartOptions.mockImplementationOnce(
@@ -871,7 +871,7 @@ describe("shared Codex app-server client", () => {
 
     await expect(clientPromise).resolves.toBe(harness.client);
     expect(mocks.resolveCodexAppServerAuthProfileStore).toHaveBeenCalledWith({
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
       authProfileId: undefined,
       authProfileStore,
       config: undefined,
@@ -889,7 +889,7 @@ describe("shared Codex app-server client", () => {
     await vi.waitFor(() => expect(harness.writes.length).toBeGreaterThan(priorWriteCount));
 
     expect(mocks.refreshCodexAppServerAuthTokens).toHaveBeenCalledWith({
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
       authProfileId: "openai:scoped",
       authProfileStore: preparedAuthProfileStore,
       config: undefined,
@@ -959,7 +959,7 @@ describe("shared Codex app-server client", () => {
     });
     await vi.waitFor(() => expect(harness.writes.length).toBeGreaterThan(priorWriteCount));
     expect(mocks.refreshCodexAppServerAuthTokens).toHaveBeenCalledWith({
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
       authProfileId: "openai:scoped",
       authProfileStore,
       config: undefined,
@@ -1147,7 +1147,7 @@ describe("shared Codex app-server client", () => {
     const clientPromise = createIsolatedCodexAppServerClient({
       timeoutMs: 1000,
       authProfileId: "openai:persisted",
-      agentDir: "/tmp/openclaw-persisted-agent",
+      agentDir: "/tmp/operator-persisted-agent",
     });
     await sendInitializeResult(harness, "openclaw/0.143.0 (macOS; test)");
 
@@ -1161,7 +1161,7 @@ describe("shared Codex app-server client", () => {
     await vi.waitFor(() => expect(harness.writes.length).toBeGreaterThan(priorWriteCount));
 
     expect(mocks.refreshCodexAppServerAuthTokens).toHaveBeenCalledWith({
-      agentDir: "/tmp/openclaw-persisted-agent",
+      agentDir: "/tmp/operator-persisted-agent",
       authProfileId: "openai:persisted",
       config: undefined,
     });
@@ -1183,7 +1183,7 @@ describe("shared Codex app-server client", () => {
     const clientPromise = getSharedCodexAppServerClient({
       timeoutMs: 1000,
       authProfileId: null,
-      agentDir: "/tmp/openclaw-target-agent",
+      agentDir: "/tmp/operator-target-agent",
       config,
     });
     await sendInitializeResult(harness, "openclaw/0.143.0 (macOS; test)");
@@ -1191,11 +1191,11 @@ describe("shared Codex app-server client", () => {
     await expect(clientPromise).resolves.toBe(harness.client);
     expect(mocks.resolveCodexAppServerAuthProfileIdForAgent).not.toHaveBeenCalled();
     const bridgeCall = bridgeStartOptionsCall();
-    expect(bridgeCall.agentDir).toBe("/tmp/openclaw-target-agent");
+    expect(bridgeCall.agentDir).toBe("/tmp/operator-target-agent");
     expect(bridgeCall.authProfileId).toBeNull();
     expect(bridgeCall.config).toBe(config);
     const applyCall = applyAuthProfileCall();
-    expect(applyCall.agentDir).toBe("/tmp/openclaw-target-agent");
+    expect(applyCall.agentDir).toBe("/tmp/operator-target-agent");
     expect(applyCall.authProfileId).toBeNull();
     expect(applyCall.config).toBe(config);
   });
@@ -1240,7 +1240,7 @@ describe("shared Codex app-server client", () => {
     const resolveCall = resolveAuthProfileCall();
     expect(resolveCall).toStrictEqual({
       authProfileId: undefined,
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
       config,
     });
     const bridgeCall = bridgeStartOptionsCall();
@@ -1258,17 +1258,17 @@ describe("shared Codex app-server client", () => {
     const listPromise = listCodexAppServerModels({
       timeoutMs: 1000,
       authProfileId: "openai:work",
-      agentDir: "/tmp/openclaw-agent-nova",
+      agentDir: "/tmp/operator-agent-nova",
     });
     await sendInitializeResult(harness, "openclaw/0.143.0 (macOS; test)");
     await sendEmptyModelList(harness);
 
     await expect(listPromise).resolves.toEqual({ models: [] });
     const bridgeCall = bridgeStartOptionsCall();
-    expect(bridgeCall?.agentDir).toBe("/tmp/openclaw-agent-nova");
+    expect(bridgeCall?.agentDir).toBe("/tmp/operator-agent-nova");
     expect(bridgeCall?.authProfileId).toBe("openai:work");
     const applyCall = applyAuthProfileCall();
-    expect(applyCall?.agentDir).toBe("/tmp/openclaw-agent-nova");
+    expect(applyCall?.agentDir).toBe("/tmp/operator-agent-nova");
     expect(applyCall?.authProfileId).toBe("openai:work");
   });
 
@@ -1282,7 +1282,7 @@ describe("shared Codex app-server client", () => {
 
     const firstList = listCodexAppServerModels({
       timeoutMs: 1000,
-      agentDir: "/tmp/openclaw-agent-one",
+      agentDir: "/tmp/operator-agent-one",
     });
     await sendInitializeResult(first, "openclaw/0.143.0 (macOS; test)");
     await sendEmptyModelList(first);
@@ -1290,7 +1290,7 @@ describe("shared Codex app-server client", () => {
 
     const secondList = listCodexAppServerModels({
       timeoutMs: 1000,
-      agentDir: "/tmp/openclaw-agent-two",
+      agentDir: "/tmp/operator-agent-two",
     });
     await sendInitializeResult(second, "openclaw/0.143.0 (macOS; test)");
     await sendEmptyModelList(second);
@@ -1327,7 +1327,7 @@ describe("shared Codex app-server client", () => {
   });
 
   it("rechecks persisted native Computer Use before managed binary resolution", async () => {
-    await withTempDir("openclaw-codex-shared-native-", async (agentDir) => {
+    await withTempDir("operator-codex-shared-native-", async (agentDir) => {
       const codexHome = path.join(agentDir, "codex-home");
       await fs.mkdir(codexHome);
       await fs.writeFile(
@@ -1814,7 +1814,7 @@ describe("shared Codex app-server client", () => {
 
     const firstList = listCodexAppServerModels({
       timeoutMs: 1000,
-      agentDir: "/tmp/openclaw-agent-one",
+      agentDir: "/tmp/operator-agent-one",
     });
     await sendInitializeResult(first, "openclaw/0.143.0 (macOS; test)");
     await sendEmptyModelList(first);
@@ -1822,7 +1822,7 @@ describe("shared Codex app-server client", () => {
 
     const secondList = listCodexAppServerModels({
       timeoutMs: 1000,
-      agentDir: "/tmp/openclaw-agent-two",
+      agentDir: "/tmp/operator-agent-two",
     });
     await sendInitializeResult(second, "openclaw/0.143.0 (macOS; test)");
     await sendEmptyModelList(second);

@@ -10,9 +10,9 @@
  * parameterized by `RetryPolicy` and optional `PersistentRetryPolicy`.
  */
 
-import { retryAsync } from "openclaw/plugin-sdk/retry-runtime";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { retryAsync } from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { EngineLogger } from "../types.js";
 import { formatErrorMessage } from "../utils/format.js";
 

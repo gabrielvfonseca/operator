@@ -9,14 +9,14 @@ title: "Android app"
 ---
 
 <Note>
-The official Android app is available on [Google Play](https://play.google.com/store/apps/details?id=ai.openclaw.app&hl=en_IN) and as a signed standalone APK on supported [GitHub Releases](https://github.com/openclaw/openclaw/releases). It is a companion node and requires a running OpenClaw Gateway. Source: [apps/android](https://github.com/openclaw/openclaw/tree/main/apps/android) ([build instructions](https://github.com/openclaw/openclaw/blob/main/apps/android/README.md)).
+The official Android app is available on [Google Play](https://play.google.com/store/apps/details?id=ai.operator.app&hl=en_IN) and as a signed standalone APK on supported [GitHub Releases](https://github.com/gabrielvfonseca/operator/releases). It is a companion node and requires a running Operator Gateway. Source: [apps/android](https://github.com/gabrielvfonseca/operator/tree/main/apps/android) ([build instructions](https://github.com/gabrielvfonseca/operator/blob/main/apps/android/README.md)).
 </Note>
 
 ## Support snapshot
 
 - Role: companion node app (Android does not host the Gateway).
 - Gateway required: yes (run it on macOS, Linux, or Windows via WSL2).
-- Install: [Google Play](https://play.google.com/store/apps/details?id=ai.openclaw.app&hl=en_IN) or `OpenClaw-Android.apk` from a supported [GitHub Release](https://github.com/openclaw/openclaw/releases), [Getting Started](/start/getting-started) for the Gateway, then [Pairing](/channels/pairing).
+- Install: [Google Play](https://play.google.com/store/apps/details?id=ai.operator.app&hl=en_IN) or `Operator-Android.apk` from a supported [GitHub Release](https://github.com/gabrielvfonseca/operator/releases), [Getting Started](/start/getting-started) for the Gateway, then [Pairing](/channels/pairing).
 - Gateway: [Runbook](/gateway) + [Configuration](/gateway/configuration).
   - Protocols: [Gateway protocol](/gateway/protocol) (nodes + control plane).
 
@@ -24,19 +24,19 @@ System control (launchd/systemd) lives on the Gateway host — see [Gateway](/ga
 
 ## Install outside Google Play
 
-Regular final and correction GitHub Releases include a universal `OpenClaw-Android.apk` and `OpenClaw-Android-SHA256SUMS.txt`. The APK is built from the release tag, signed with the OpenClaw Android release key, and carries GitHub Actions provenance.
+Regular final and correction GitHub Releases include a universal `Operator-Android.apk` and `Operator-Android-SHA256SUMS.txt`. The APK is built from the release tag, signed with the Operator Android release key, and carries GitHub Actions provenance.
 
-Choose a [release](https://github.com/openclaw/openclaw/releases) that lists both assets, then download and verify that exact tag before sideloading:
+Choose a [release](https://github.com/gabrielvfonseca/operator/releases) that lists both assets, then download and verify that exact tag before sideloading:
 
 ```bash
 release_tag=vYYYY.M.PATCH
 gh release download "$release_tag" \
-  --repo openclaw/openclaw \
-  --pattern OpenClaw-Android.apk \
-  --pattern OpenClaw-Android-SHA256SUMS.txt
-sha256sum --check OpenClaw-Android-SHA256SUMS.txt
-gh attestation verify OpenClaw-Android.apk \
-  --repo openclaw/openclaw \
+  --repo openclaw/operator \
+  --pattern Operator-Android.apk \
+  --pattern Operator-Android-SHA256SUMS.txt
+sha256sum --check Operator-Android-SHA256SUMS.txt
+gh attestation verify Operator-Android.apk \
+  --repo openclaw/operator \
   --signer-workflow openclaw/openclaw/.github/workflows/android-release.yml \
   --source-ref "refs/tags/${release_tag}" \
   --deny-self-hosted-runners
@@ -50,7 +50,7 @@ Google Play and standalone APK installs use different update channels and may ha
 
 [scrcpy](https://github.com/Genymobile/scrcpy) mirrors an Android screen in a macOS window and
 forwards keyboard and pointer input through Android Debug Bridge (ADB). This is an operator-side
-workflow, separate from the OpenClaw node connection. It is useful when the Android device and the
+workflow, separate from the Operator node connection. It is useful when the Android device and the
 Mac are in different locations but share a private Tailscale network.
 
 ### Before you begin
@@ -165,7 +165,7 @@ For Tailscale or public hosts, Android requires a secure endpoint:
 ### 1. Start the Gateway
 
 ```bash
-openclaw gateway --port 18789 --verbose
+operator gateway --port 18789 --verbose
 ```
 
 Confirm in logs you see something like:
@@ -175,7 +175,7 @@ Confirm in logs you see something like:
 For remote Android access over Tailscale, prefer Serve/Funnel instead of a raw tailnet bind:
 
 ```bash
-openclaw gateway --tailscale serve
+operator gateway --tailscale serve
 ```
 
 This gives Android a secure `wss://` / `https://` endpoint. A plain `gateway.bind: "tailnet"` setup is not enough for first-time remote Android pairing unless you also terminate TLS separately.
@@ -185,7 +185,7 @@ This gives Android a secure `wss://` / `https://` endpoint. A plain `gateway.bin
 From the gateway machine:
 
 ```bash
-dns-sd -B _openclaw-gw._tcp local.
+dns-sd -B _operator-gw._tcp local.
 ```
 
 More debugging notes: [Bonjour](/gateway/bonjour).
@@ -193,7 +193,7 @@ More debugging notes: [Bonjour](/gateway/bonjour).
 If you also configured a wide-area discovery domain, compare against:
 
 ```bash
-openclaw gateway discover --json
+operator gateway discover --json
 ```
 
 That shows `local.` plus the configured wide-area domain in one pass, using the resolved service endpoint instead of TXT-only hints.
@@ -202,7 +202,7 @@ That shows `local.` plus the configured wide-area domain in one pass, using the 
 
 Android NSD/mDNS discovery does not cross networks. If the Android node and the gateway are on different networks but connected via Tailscale, use Wide-Area Bonjour / unicast DNS-SD instead. Discovery alone is not sufficient for tailnet/public Android pairing — the discovered route still needs a secure endpoint (`wss://` or Tailscale Serve):
 
-1. Set up a DNS-SD zone (example `openclaw.internal.`) on the gateway host and publish `_openclaw-gw._tcp` records.
+1. Set up a DNS-SD zone (example `operator.internal.`) on the gateway host and publish `_operator-gw._tcp` records.
 2. Configure Tailscale split DNS for your chosen domain pointing at that DNS server.
 
 Details and example CoreDNS config: [Bonjour](/gateway/bonjour).
@@ -223,9 +223,9 @@ access by default over `wss://`. Plaintext non-loopback `ws://` setup
 automatically uses limited access for bearer-token safety. **Settings → Gateway**
 shows **Full** or **Limited** access. For a limited connection, configure
 `wss://` or Tailscale Serve, generate a new full-access code in Control UI or
-with `openclaw qr`, then scan or paste it on that page and reconnect. Operators
+with `operator qr`, then scan or paste it on that page and reconnect. Operators
 who want the reduced profile can select **Limited access** in Control UI or run
-`openclaw qr --limited`.
+`operator qr --limited`.
 
 ### Multiple gateways
 
@@ -247,9 +247,9 @@ The app counts the beacon as successfully recorded only when the gateway respons
 On the gateway machine:
 
 ```bash
-openclaw devices list
-openclaw devices approve <requestId>
-openclaw devices reject <requestId>
+operator devices list
+operator devices approve <requestId>
+operator devices reject <requestId>
 ```
 
 Pairing details: [Pairing](/channels/pairing).
@@ -273,8 +273,8 @@ This is disabled by default. It applies only to fresh `role: node` pairing with 
 ### 5. Verify the node is connected
 
 ```bash
-openclaw nodes status
-openclaw gateway call node.list --params "{}"
+operator nodes status
+operator gateway call node.list --params "{}"
 ```
 
 ### 6. Chat + history
@@ -297,16 +297,16 @@ To have the node show real HTML/CSS/JS that the agent can edit on disk, point th
 Nodes load canvas from the Gateway HTTP server (same port as `gateway.port`, default `18789`).
 </Note>
 
-1. Create `~/.openclaw/workspace/canvas/index.html` on the gateway host.
+1. Create `~/.operator/workspace/canvas/index.html` on the gateway host.
 2. Navigate the node to it (LAN):
 
 ```bash
-openclaw nodes invoke --node "<Android Node>" --command canvas.navigate --params '{"url":"http://<gateway-hostname>.local:18789/__openclaw__/canvas/"}'
+operator nodes invoke --node "<Android Node>" --command canvas.navigate --params '{"url":"http://<gateway-hostname>.local:18789/__operator__/canvas/"}'
 ```
 
-Tailnet (optional): if both devices are on Tailscale, use a MagicDNS name or tailnet IP instead of `.local`, e.g. `http://<gateway-magicdns>:18789/__openclaw__/canvas/`.
+Tailnet (optional): if both devices are on Tailscale, use a MagicDNS name or tailnet IP instead of `.local`, e.g. `http://<gateway-magicdns>:18789/__operator__/canvas/`.
 
-This server injects a live-reload client into HTML and reloads on file changes. The Gateway also serves `/__openclaw__/a2ui/`, but the Android app treats remote A2UI pages as render-only. Action-capable A2UI commands use the bundled app-owned A2UI page.
+This server injects a live-reload client into HTML and reloads on file changes. The Gateway also serves `/__operator__/a2ui/`, but the Android app treats remote A2UI pages as render-only. Action-capable A2UI commands use the bundled app-owned A2UI page.
 
 Canvas commands (foreground only):
 
@@ -358,22 +358,22 @@ and the richer cross-surface result require an updated Gateway.
 
 ## Assistant entrypoints
 
-Android supports launching OpenClaw from the system assistant trigger (Google Assistant). Holding the home button (or another `ACTION_ASSIST` trigger) opens the app; saying "Hey Google, ask OpenClaw `<prompt>`" matches the app's declared App Actions query pattern and hands the prompt into the chat composer without auto-sending it.
+Android supports launching Operator from the system assistant trigger (Google Assistant). Holding the home button (or another `ACTION_ASSIST` trigger) opens the app; saying "Hey Google, ask Operator `<prompt>`" matches the app's declared App Actions query pattern and hands the prompt into the chat composer without auto-sending it.
 
 This uses Android **App Actions** (`shortcuts.xml` capability) declared in the app manifest. No gateway-side configuration is needed — the assistant intent is handled entirely by the Android app.
 
 <Note>
-App Actions availability depends on the device, Google Play Services version, and whether the user has set OpenClaw as the default assistant app.
+App Actions availability depends on the device, Google Play Services version, and whether the user has set Operator as the default assistant app.
 </Note>
 
 ## Notification forwarding
 
-Android can forward device notifications to the gateway as `node.event` items. This is configured **on the device**, in the app's Settings sheet — not in gateway/`openclaw.json` config.
+Android can forward device notifications to the gateway as `node.event` items. This is configured **on the device**, in the app's Settings sheet — not in gateway/`operator.json` config.
 
 | Setting                     | Description                                                                                                                                                                                            |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Forward Notification Events | Master toggle. Off by default; requires Notification Listener Access to be granted first.                                                                                                              |
-| Package Filter              | **Allowlist** (only listed package IDs forwarded) or **Blocklist** (default: all packages except listed IDs). OpenClaw's own package is always excluded in Blocklist mode to prevent forwarding loops. |
+| Package Filter              | **Allowlist** (only listed package IDs forwarded) or **Blocklist** (default: all packages except listed IDs). Operator's own package is always excluded in Blocklist mode to prevent forwarding loops. |
 | Quiet Hours                 | Local HH:mm start/end window that suppresses forwarding. Disabled by default; defaults to `22:00`-`07:00` once enabled.                                                                                |
 | Max Events / Minute         | Per-device rate limit on forwarded notifications. Default 20.                                                                                                                                          |
 | Route Session Key           | Optional. Pins forwarded notification events into a specific session instead of the device's default notification route.                                                                               |
@@ -382,7 +382,7 @@ Android can forward device notifications to the gateway as `node.event` items. T
 Notification forwarding requires the Android Notification Listener permission. The app prompts for this during setup.
 </Note>
 
-WhatsApp, WhatsApp Business, Telegram, Telegram X, Discord, and Signal notifications are always excluded. Their messages are already owned by native OpenClaw channel sessions; forwarding the Android notification as a separate node event could route a reply through the wrong conversation.
+WhatsApp, WhatsApp Business, Telegram, Telegram X, Discord, and Signal notifications are always excluded. Their messages are already owned by native Operator channel sessions; forwarding the Android notification as a separate node event could route a reply through the wrong conversation.
 
 ## Related
 

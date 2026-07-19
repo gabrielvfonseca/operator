@@ -1,6 +1,6 @@
 // Msteams plugin module implements sdk behavior.
 import * as fs from "node:fs";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import { normalizeBotFrameworkServiceUrl } from "./bot-framework-service-url.js";
 import type { MSTeamsCloudName } from "./cloud.js";
 import { MSTEAMS_REQUEST_TIMEOUT_MS } from "./request-timeout.js";

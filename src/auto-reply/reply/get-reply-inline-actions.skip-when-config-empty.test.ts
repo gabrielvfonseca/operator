@@ -1214,7 +1214,7 @@ describe("handleInlineActions", () => {
   });
 
   it("applies subagent policy to ACP envelope inline dispatch sessions", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-inline-acp-policy-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-inline-acp-policy-"));
     try {
       const storeTemplate = path.join(tmpDir, "sessions-{agentId}.json");
       await writeSessionStore(storeTemplate, "main", {

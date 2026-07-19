@@ -1,4 +1,6 @@
 import { randomUUID } from "node:crypto";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   WORKBOARD_STATUSES,
   type WorkboardAttemptStatus,
@@ -13,9 +15,7 @@ import {
   type WorkboardNotification,
   type WorkboardRunAttempt,
   type WorkboardStatus,
-} from "@operator/workboard-contract";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/workboard-contract";
 import {
   BLOCKED_TOO_LONG_MS,
   MAX_CARD_ATTEMPTS,

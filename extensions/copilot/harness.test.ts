@@ -1,16 +1,16 @@
-// Copilot tests cover harness plugin behavior.
-import type { CopilotClient } from "@github/copilot-sdk";
-import { attachModelProviderRequestTransport } from "openclaw/plugin-sdk/agent-harness-runtime";
+import { attachModelProviderRequestTransport } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import type {
   AgentHarnessAttemptParams,
   AgentHarnessAttemptResult,
   AgentHarnessCompactParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   initializeGlobalHookRunner,
   resetGlobalHookRunner,
-} from "openclaw/plugin-sdk/hook-runtime";
-import { createMockPluginRegistry } from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import { createMockPluginRegistry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+// Copilot tests cover harness plugin behavior.
+import type { CopilotClient } from "@github/copilot-sdk";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createCopilotAgentHarness, type CopilotSessionBinding } from "./harness.js";
 import type { resolvePoolAcquire } from "./src/attempt.js";
@@ -283,7 +283,7 @@ describe("createCopilotAgentHarness", () => {
       ["deepinfra", ["deepinfra"]],
       ["fireworks", ["fireworks"]],
       ["github", ["github"]],
-      ["openclaw", ["openclaw"]],
+      ["@gabrielvfonseca/operator", ["@gabrielvfonseca/operator"]],
       ["sglang", ["sglang"]],
       ["together", ["together"]],
       ["vllm", ["vllm"]],

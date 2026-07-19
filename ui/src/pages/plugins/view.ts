@@ -1051,9 +1051,9 @@ function renderDetailOverlay(props: PluginsViewProps) {
   const key = pluginRowKey(plugin.id);
   const busy = props.busy[key] ?? false;
   return html`
-    <openclaw-modal-dialog
+    <operator-modal-dialog
       label=${plugin.name}
-      style="--openclaw-modal-width: min(580px, calc(100vw - 32px));"
+      style="--operator-modal-width: min(580px, calc(100vw - 32px));"
       @modal-cancel=${() => props.onShowDetails(null)}
     >
       <section class="plugins-detail" data-detail-plugin-id=${plugin.id}>
@@ -1139,7 +1139,7 @@ function renderDetailOverlay(props: PluginsViewProps) {
           </div>
         </div>
       </section>
-    </openclaw-modal-dialog>
+    </operator-modal-dialog>
   `;
 }
 

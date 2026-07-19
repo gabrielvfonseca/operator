@@ -7,11 +7,11 @@ import { titleForRoute } from "../../app-navigation.ts";
 import { applicationContext, type ApplicationContext } from "../../app/context.ts";
 import { loadGatewaySessionSelection, loadSettings, type UiSettings } from "../../app/settings.ts";
 import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import { renderConnection } from "./view.ts";
 
-class ConnectionPage extends OpenClawLightDomElement {
+class ConnectionPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -132,6 +132,6 @@ class ConnectionPage extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-connection-page")) {
-  customElements.define("openclaw-connection-page", ConnectionPage);
+if (!customElements.get("operator-connection-page")) {
+  customElements.define("operator-connection-page", ConnectionPage);
 }

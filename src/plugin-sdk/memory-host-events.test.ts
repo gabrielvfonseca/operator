@@ -152,7 +152,7 @@ describe("memory host event journal helpers", () => {
 
 describe("createPersistentDedupe", () => {
   it("deduplicates keys, persists across instances, warms up, and checks recent keys", async () => {
-    const root = await createTempDir("openclaw-dedupe-");
+    const root = await createTempDir("operator-dedupe-");
     const first = createDedupe(root);
     expect(await first.checkAndRecord("m1", { namespace: "a" })).toBe(true);
     expect(await first.checkAndRecord("m1", { namespace: "a" })).toBe(false);
@@ -173,7 +173,7 @@ describe("createPersistentDedupe", () => {
   });
 
   it("bounds non-finite persistent dedupe options", async () => {
-    const root = await createTempDir("openclaw-dedupe-");
+    const root = await createTempDir("operator-dedupe-");
     const dedupe = createPersistentDedupe({
       ttlMs: Number.NaN,
       memoryMaxSize: Number.NaN,
@@ -190,7 +190,7 @@ describe("createPersistentDedupe", () => {
   });
 
   it("uses legacy JSON paths only as SQLite namespace identifiers", async () => {
-    const root = await createTempDir("openclaw-legacy-dedupe-");
+    const root = await createTempDir("operator-legacy-dedupe-");
     const legacyPath = path.join(root, "legacy.json");
     const dedupe = createPersistentDedupe({
       ttlMs: 10_000,
@@ -206,7 +206,7 @@ describe("createPersistentDedupe", () => {
   });
 
   it("lists retired JSON cache files as persistent dedupe entries", async () => {
-    const root = await createTempDir("openclaw-legacy-dedupe-");
+    const root = await createTempDir("operator-legacy-dedupe-");
     const legacyPath = path.join(root, "legacy.json");
     await fs.writeFile(
       legacyPath,
@@ -233,7 +233,7 @@ describe("createPersistentDedupe", () => {
   });
 
   it("treats malformed legacy JSON cache files as empty", async () => {
-    const root = await createTempDir("openclaw-legacy-dedupe-malformed-");
+    const root = await createTempDir("operator-legacy-dedupe-malformed-");
     const legacyPath = path.join(root, "legacy.json");
     await fs.writeFile(legacyPath, "{not valid json");
 
@@ -247,7 +247,7 @@ describe("createPersistentDedupe", () => {
   });
 
   it("warms empty namespaces and ignores retired JSON cache files", async () => {
-    const root = await createTempDir("openclaw-dedupe-");
+    const root = await createTempDir("operator-dedupe-");
     const emptyReader = createDedupe(root, { ttlMs: 10_000 });
     expect(await emptyReader.warmup("nonexistent")).toBe(0);
 
@@ -323,7 +323,7 @@ describe("createClaimableDedupe", () => {
   });
 
   it("supports persistent-backed recent checks and warmup", async () => {
-    const root = await createTempDir("openclaw-claimable-dedupe-");
+    const root = await createTempDir("operator-claimable-dedupe-");
     const writer = createClaimableDedupe({
       ttlMs: 10_000,
       memoryMaxSize: 100,

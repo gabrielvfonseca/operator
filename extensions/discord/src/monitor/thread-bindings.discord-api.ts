@@ -1,9 +1,9 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Discord API module exposes the plugin public contract.
 import { ChannelType } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { createDiscordRestClient } from "../client.js";
 import { createChannelWebhook, getChannel } from "../internal/discord.js";
 import { sendMessageDiscord, sendWebhookMessageDiscord } from "../send.js";

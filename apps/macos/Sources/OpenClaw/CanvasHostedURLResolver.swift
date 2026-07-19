@@ -6,9 +6,9 @@ struct CanvasHostedTarget: Equatable {
 }
 
 enum CanvasHostedURLResolver {
-    private static let canvasPath = "/__openclaw__/canvas"
-    private static let a2uiPath = "/__openclaw__/a2ui"
-    private static let capabilityMarker = "/__openclaw__/cap/"
+    private static let canvasPath = "/__operator__/canvas"
+    private static let a2uiPath = "/__operator__/a2ui"
+    private static let capabilityMarker = "/__operator__/cap/"
 
     static func resolve(surfaceURL rawSurfaceURL: String?, target rawTarget: String) -> CanvasHostedTarget? {
         guard let target = self.relativeHostedTarget(rawTarget),
@@ -90,7 +90,7 @@ enum CanvasHostedURLResolver {
 
         let segments = components.percentEncodedPath.split(separator: "/", omittingEmptySubsequences: true)
         guard segments.count >= 3,
-              segments[segments.count - 3] == "__openclaw__",
+              segments[segments.count - 3] == "__operator__",
               segments[segments.count - 2] == "cap",
               let capability = String(segments[segments.count - 1]).removingPercentEncoding,
               !capability.isEmpty

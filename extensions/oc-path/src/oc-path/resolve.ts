@@ -7,7 +7,7 @@
  *   { file, section, item }          → item
  *   { file, section, item, field }   → kv.value
  *
- * @module @operator/oc-path/resolve
+ * @module @gabrielvfonseca/oc-path/resolve
  */
 
 import type { AstBlock, AstItem, FrontmatterEntry, MdAst } from "./ast.js";

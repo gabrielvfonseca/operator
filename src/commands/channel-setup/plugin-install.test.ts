@@ -1,6 +1,9 @@
 // Channel setup plugin install tests cover install decisions, registry reloads, scoped snapshots, and trust boundaries.
 import path from "node:path";
-import { bundledPluginRoot, bundledPluginRootAt } from "openclaw/plugin-sdk/test-fixtures";
+import {
+  bundledPluginRoot,
+  bundledPluginRootAt,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("node:fs", async () => {
@@ -106,7 +109,7 @@ import {
   loadChannelSetupPluginRegistrySnapshotForChannel,
 } from "./plugin-install.js";
 
-const bundledChatNpmSpec = "@operator/bundled-chat@1.2.3";
+const bundledChatNpmSpec = "@gabrielvfonseca/bundled-chat@1.2.3";
 const bundledChatIntegrity = "sha512-bundled-chat";
 const bundledChatForkNpmSpec = "@vendor/bundled-chat-fork@1.2.3";
 const bundledChatForkIntegrity = "sha512-vendor-bundled-chat-fork";
@@ -183,9 +186,9 @@ function createManifestRecord(
     skills: [],
     hooks: [],
     origin: "bundled",
-    rootDir: `/tmp/openclaw-test/${id}`,
-    source: `/tmp/openclaw-test/${id}/index.ts`,
-    manifestPath: `/tmp/openclaw-test/${id}/openclaw.plugin.json`,
+    rootDir: `/tmp/operator-test/${id}`,
+    source: `/tmp/operator-test/${id}/index.ts`,
+    manifestPath: `/tmp/operator-test/${id}/operator.plugin.json`,
     ...rest,
   };
 }
@@ -199,7 +202,7 @@ function expectSetupSnapshotDoesNotScopeToPlugin(params: {
     cfg: params.cfg,
     runtime: params.runtime,
     channel: "external-chat",
-    workspaceDir: "/tmp/openclaw-workspace",
+    workspaceDir: "/tmp/operator-workspace",
   });
 
   expect(loadOperatorPlugins).toHaveBeenCalledTimes(1);
@@ -396,7 +399,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const prompter = makePrompter({
       select: vi.fn(async () => "npm") as WizardPrompter["select"],
     });
-    const profileStateDir = "/tmp/openclaw-ledger-channel";
+    const profileStateDir = "/tmp/operator-ledger-channel";
     process.env.OPERATOR_STATE_DIR = profileStateDir;
     vi.mocked(fs.existsSync).mockReturnValue(false);
     installPluginFromNpmSpec.mockResolvedValue({
@@ -477,13 +480,13 @@ describe("ensureChannelSetupPluginInstalled", () => {
     vi.mocked(fs.existsSync).mockReturnValue(false);
     installPluginFromNpmSpec.mockResolvedValue({
       ok: true,
-      pluginId: "wecom-openclaw-plugin",
-      targetDir: "/tmp/wecom-openclaw-plugin",
+      pluginId: "wecom-operator-plugin",
+      targetDir: "/tmp/wecom-operator-plugin",
       version: "2026.5.4-beta.1",
       npmResolution: {
-        name: "@operator/wecom",
+        name: "@gabrielvfonseca/wecom",
         version: "2026.5.4-beta.1",
-        resolvedSpec: "@operator/wecom@2026.5.4-beta.1",
+        resolvedSpec: "@gabrielvfonseca/wecom@2026.5.4-beta.1",
       },
     });
 
@@ -491,7 +494,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       entry: {
         id: "wecom",
-        pluginId: "wecom-openclaw-plugin",
+        pluginId: "wecom-operator-plugin",
         meta: {
           id: "wecom",
           label: "WeCom",
@@ -500,7 +503,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
           blurb: "WeCom channel",
         },
         install: {
-          npmSpec: "@operator/wecom",
+          npmSpec: "@gabrielvfonseca/wecom",
         },
       },
       prompter,
@@ -510,10 +513,12 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
     expect(select).not.toHaveBeenCalled();
     expectRecordFields(requireMockCallArg(installPluginFromNpmSpec, 0), "npm install args", {
-      spec: "@operator/wecom@beta",
-      expectedPluginId: "wecom-openclaw-plugin",
+      spec: "@gabrielvfonseca/wecom@beta",
+      expectedPluginId: "wecom-operator-plugin",
     });
-    expect(result.cfg.plugins?.installs?.["wecom-openclaw-plugin"]?.spec).toBe("@operator/wecom");
+    expect(result.cfg.plugins?.installs?.["wecom-operator-plugin"]?.spec).toBe(
+      "@gabrielvfonseca/wecom",
+    );
   });
 
   it("defaults to bundled local path on beta channel when available", async () => {
@@ -679,7 +684,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     // npm-only entry (no local path)
     const npmOnlyEntry: ChannelPluginCatalogEntry = {
       id: "wecom",
-      pluginId: "wecom-openclaw-plugin",
+      pluginId: "wecom-operator-plugin",
       meta: {
         id: "wecom",
         label: "WeCom",
@@ -688,13 +693,13 @@ describe("ensureChannelSetupPluginInstalled", () => {
         blurb: "WeCom channel",
       },
       install: {
-        npmSpec: "@operator/wecom@2026.4.23",
+        npmSpec: "@gabrielvfonseca/wecom@2026.4.23",
       },
     };
     installPluginFromNpmSpec.mockResolvedValue({
       ok: true,
-      pluginId: "wecom-openclaw-plugin",
-      installPath: "/tmp/wecom-openclaw-plugin",
+      pluginId: "wecom-operator-plugin",
+      installPath: "/tmp/wecom-operator-plugin",
     });
     vi.mocked(fs.existsSync).mockReturnValue(false);
     resolveBundledPluginSources.mockReturnValue(new Map());
@@ -709,7 +714,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
     expect(select).not.toHaveBeenCalled();
     expect(result.installed).toBe(true);
-    expect(result.pluginId).toBe("wecom-openclaw-plugin");
+    expect(result.pluginId).toBe("wecom-operator-plugin");
   });
 
   it("loads setup snapshots from the auto-enabled config snapshot", () => {
@@ -736,7 +741,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expect(applyPluginAutoEnable).toHaveBeenCalledWith({
@@ -760,21 +765,21 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
       config: cfg,
       activationSourceConfig: cfg,
       autoEnabledReasons: {},
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       cache: false,
       onlyPluginIds: ["@vendor/external-chat-plugin"],
       includeSetupOnlyChannelPlugins: true,
       activate: false,
     });
     expect(getChannelPluginCatalogEntry).toHaveBeenCalledWith("external-chat", {
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
   });
 
@@ -789,17 +794,17 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
       onlyPluginIds: ["@vendor/external-chat-plugin"],
     });
     expect(getChannelPluginCatalogEntry).toHaveBeenNthCalledWith(1, "external-chat", {
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     expect(getChannelPluginCatalogEntry).toHaveBeenNthCalledWith(2, "external-chat", {
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       env: undefined,
       excludePluginRefs: [{ pluginId: "evil-external-chat-shadow", origin: "workspace" }],
     });
@@ -822,7 +827,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
@@ -839,7 +844,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
@@ -864,14 +869,14 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
       config: cfg,
       activationSourceConfig: cfg,
       autoEnabledReasons: {},
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       cache: false,
       onlyPluginIds: ["custom-external-chat-plugin"],
       includeSetupOnlyChannelPlugins: true,
@@ -887,7 +892,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       if (
         isRecord(args) &&
         args.config === cfg &&
-        args.workspaceDir === "/tmp/openclaw-workspace" &&
+        args.workspaceDir === "/tmp/operator-workspace" &&
         Array.isArray(args.candidates)
       ) {
         sawTrustedCandidate ||= args.candidates.some((candidate) => {
@@ -912,7 +917,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
@@ -930,7 +935,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       cfg,
       runtime,
       channel: "external-chat",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expect(loadPluginManifestRegistry).toHaveBeenCalled();
@@ -1062,14 +1067,14 @@ describe("ensureChannelSetupPluginInstalled", () => {
       runtime,
       channel: "external-chat",
       pluginId: "@vendor/external-chat-plugin",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
 
     expectLoadOperatorPluginFields({
       config: cfg,
       activationSourceConfig: cfg,
       autoEnabledReasons: {},
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       cache: false,
       onlyPluginIds: ["@vendor/external-chat-plugin"],
       includeSetupOnlyChannelPlugins: true,

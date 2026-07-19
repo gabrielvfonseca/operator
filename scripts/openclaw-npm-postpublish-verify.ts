@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// Openclaw Npm Postpublish Verify script supports OpenClaw repository automation.
+// Openclaw Npm Postpublish Verify script supports Operator repository automation.
 
 import { createPublicKey, verify as verifySignature } from "node:crypto";
 import {
@@ -36,7 +36,7 @@ import {
   packageNameFromSpecifier,
 } from "./lib/plugin-package-dependencies.mjs";
 import { runInstalledWorkspaceBootstrapSmoke } from "./lib/workspace-bootstrap-smoke.mjs";
-import { parseReleaseVersion, resolveNpmCommandInvocation } from "./openclaw-npm-release-check.ts";
+import { parseReleaseVersion, resolveNpmCommandInvocation } from "./operator-npm-release-check.ts";
 import { buildCmdExeCommandLine, resolveWindowsCmdExePath } from "./windows-cmd-helpers.mjs";
 
 type InstalledPackageJson = {
@@ -101,7 +101,7 @@ type PublishedInstallScenario = {
   expectedVersion: string;
 };
 
-type OpenClawNpmPostpublishVerifyArgs =
+type OperatorNpmPostpublishVerifyArgs =
   | {
       help: false;
       version: string;
@@ -112,12 +112,12 @@ type OpenClawNpmPostpublishVerifyArgs =
     };
 
 export function openClawNpmPostpublishVerifyUsage(): string {
-  return "Usage: node --import tsx scripts/openclaw-npm-postpublish-verify.ts <version>";
+  return "Usage: node --import tsx scripts/operator-npm-postpublish-verify.ts <version>";
 }
 
-export function parseOpenClawNpmPostpublishVerifyArgs(
+export function parseOperatorNpmPostpublishVerifyArgs(
   argv: readonly string[],
-): OpenClawNpmPostpublishVerifyArgs {
+): OperatorNpmPostpublishVerifyArgs {
   const args = argv[0] === "--" ? argv.slice(1) : argv;
   const version = args[0]?.trim() ?? "";
   if (version === "--help" || version === "-h") {
@@ -222,7 +222,7 @@ type NpmProvenanceStatement = {
 
 const NPM_PROVENANCE_PREDICATE_TYPE = "https://slsa.dev/provenance/v1";
 const NPM_PROVENANCE_REPOSITORY = "https://github.com/openclaw/openclaw";
-const NPM_PROVENANCE_WORKFLOW_PATH = ".github/workflows/openclaw-npm-release.yml";
+const NPM_PROVENANCE_WORKFLOW_PATH = ".github/workflows/operator-npm-release.yml";
 const NPM_PROVENANCE_CERTIFICATE_ISSUER = "https://token.actions.githubusercontent.com";
 const NPM_PROVENANCE_BUILDER_ID = "https://github.com/actions/runner/github-hosted";
 const NPM_REGISTRY_REQUEST_TIMEOUT_MS = 30_000;
@@ -338,7 +338,7 @@ function resolveNpmProvenanceVerificationPolicy(
     statement.predicate?.runDetails?.builder?.id !== NPM_PROVENANCE_BUILDER_ID
   ) {
     throw new Error(
-      `npm provenance attestation does not bind ${version} to the trusted OpenClaw GitHub release workflow.`,
+      `npm provenance attestation does not bind ${version} to the trusted Operator GitHub release workflow.`,
     );
   }
 
@@ -694,7 +694,7 @@ export function collectInstalledPluginSdkZodArtifactErrors(packageRoot: string):
 function collectInstalledPluginSdkDeclarationErrors(packageRoot: string): string[] {
   const pluginSdkDistRoot = join(packageRoot, "dist", "plugin-sdk");
   const errors: string[] = [];
-  const forbiddenPrivateWorkspaceSpecifiers = ["@operator/llm-core"];
+  const forbiddenPrivateWorkspaceSpecifiers = ["@gabrielvfonseca/llm-core"];
 
   if (!existsSync(pluginSdkDistRoot)) {
     return [];
@@ -909,8 +909,8 @@ function isBundledExtensionOwnedRuntimeImport(params: {
 
 export function resolveInstalledBinaryPath(prefixDir: string, platform = process.platform): string {
   return platform === "win32"
-    ? pathWin32.join(prefixDir, "openclaw.cmd")
-    : pathPosix.join(prefixDir, "bin", "openclaw");
+    ? pathWin32.join(prefixDir, "operator.cmd")
+    : pathPosix.join(prefixDir, "bin", "@gabrielvfonseca/operator");
 }
 
 export function resolveInstalledBinaryCommandInvocation(
@@ -1130,7 +1130,7 @@ async function verifyPublishedRegistryProvenanceOnce(version: string): Promise<v
   if (!registry.pathname.endsWith("/")) {
     registry.pathname = `${registry.pathname}/`;
   }
-  const packageName = "openclaw";
+  const packageName = "@gabrielvfonseca/operator";
   const packageDocument = (await fetchRegistryJson(
     new URL(
       `${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`,
@@ -1200,11 +1200,11 @@ async function verifyPublishedRegistryProvenanceOnce(version: string): Promise<v
     version,
     integrity,
     attestations,
-    expectedWorkflowRef: process.env.OPENCLAW_NPM_EXPECTED_WORKFLOW_REF,
-    expectedWorkflowSha: process.env.OPENCLAW_NPM_EXPECTED_WORKFLOW_SHA,
+    expectedWorkflowRef: process.env.OPERATOR_NPM_EXPECTED_WORKFLOW_REF,
+    expectedWorkflowSha: process.env.OPERATOR_NPM_EXPECTED_WORKFLOW_SHA,
   });
   console.log(
-    `openclaw-npm-postpublish-verify: registry signature and provenance attestation verified (${version})`,
+    `operator-npm-postpublish-verify: registry signature and provenance attestation verified (${version})`,
   );
 }
 
@@ -1218,7 +1218,7 @@ function readInstalledBinaryVersion(prefixDir: string, cwd: string): string {
 }
 
 function verifyScenario(version: string, scenario: PublishedInstallScenario): void {
-  const workingDir = mkdtempSync(join(tmpdir(), `openclaw-postpublish-${scenario.name}.`));
+  const workingDir = mkdtempSync(join(tmpdir(), `operator-postpublish-${scenario.name}.`));
   const prefixDir = join(workingDir, "prefix");
 
   try {
@@ -1227,7 +1227,7 @@ function verifyScenario(version: string, scenario: PublishedInstallScenario): vo
     }
 
     const globalRoot = resolveGlobalRoot(prefixDir, workingDir);
-    const packageRoot = join(globalRoot, "openclaw");
+    const packageRoot = join(globalRoot, "@gabrielvfonseca/operator");
     const pkg = JSON.parse(
       readFileSync(join(packageRoot, "package.json"), "utf8"),
     ) as InstalledPackageJson;
@@ -1252,14 +1252,14 @@ function verifyScenario(version: string, scenario: PublishedInstallScenario): vo
       throw new Error(`${scenario.name} failed:\n- ${errors.join("\n- ")}`);
     }
 
-    console.log(`openclaw-npm-postpublish-verify: ${scenario.name} OK (${version})`);
+    console.log(`operator-npm-postpublish-verify: ${scenario.name} OK (${version})`);
   } finally {
     rmSync(workingDir, { force: true, recursive: true });
   }
 }
 
 async function main(argv = process.argv.slice(2)): Promise<void> {
-  const args = parseOpenClawNpmPostpublishVerifyArgs(argv);
+  const args = parseOperatorNpmPostpublishVerifyArgs(argv);
   if (args.help) {
     console.log(openClawNpmPostpublishVerifyUsage());
     return;
@@ -1273,7 +1273,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
   }
 
   console.log(
-    `openclaw-npm-postpublish-verify: verified published npm install paths for ${version}.`,
+    `operator-npm-postpublish-verify: verified published npm install paths for ${version}.`,
   );
 }
 
@@ -1282,7 +1282,7 @@ if (entrypoint !== null && import.meta.url === entrypoint) {
   try {
     await main();
   } catch (error) {
-    console.error(`openclaw-npm-postpublish-verify: ${formatErrorMessage(error)}`);
+    console.error(`operator-npm-postpublish-verify: ${formatErrorMessage(error)}`);
     process.exitCode = 1;
   }
 }

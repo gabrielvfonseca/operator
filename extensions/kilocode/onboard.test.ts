@@ -1,7 +1,7 @@
 // Kilocode tests cover onboard plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveEnvApiKey } from "openclaw/plugin-sdk/provider-auth-runtime";
-import { resolveAgentModelPrimaryValue } from "openclaw/plugin-sdk/provider-onboard";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveEnvApiKey } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import { resolveAgentModelPrimaryValue } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildKilocodeModelDefinition,

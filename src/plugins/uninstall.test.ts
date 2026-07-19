@@ -385,7 +385,7 @@ describe("removePluginFromConfig", () => {
   it("removes absolute load path for a workspace-relative install source path", async () => {
     const tempRoot = path.join(process.cwd(), ".tmp");
     await fs.mkdir(tempRoot, { recursive: true });
-    const tempDir = await fs.mkdtemp(path.join(tempRoot, "openclaw-uninstall-portable-source-"));
+    const tempDir = await fs.mkdtemp(path.join(tempRoot, "operator-uninstall-portable-source-"));
     try {
       const pluginDir = path.join(tempDir, "plugins", "demo");
       await fs.mkdir(pluginDir, { recursive: true });
@@ -1021,7 +1021,7 @@ describe("uninstallPlugin", () => {
         {
           private: true,
           dependencies: {
-            "@operator/kitchen-sink": "1.0.0",
+            "@gabrielvfonseca/kitchen-sink": "1.0.0",
             "is-number": "7.0.0",
           },
         },
@@ -1034,16 +1034,16 @@ describe("uninstallPlugin", () => {
 
     const plan = planPluginUninstall({
       config: createPluginConfig({
-        entries: createSinglePluginEntries("openclaw-kitchen-sink-fixture"),
+        entries: createSinglePluginEntries("operator-kitchen-sink-fixture"),
         installs: {
-          "openclaw-kitchen-sink-fixture": {
+          "operator-kitchen-sink-fixture": {
             source: "npm",
-            spec: "@operator/kitchen-sink@1.0.0",
+            spec: "@gabrielvfonseca/kitchen-sink@1.0.0",
             installPath: pluginDir,
           },
         },
       }),
-      pluginId: "openclaw-kitchen-sink-fixture",
+      pluginId: "operator-kitchen-sink-fixture",
       deleteFiles: true,
       extensionsDir,
     });
@@ -1057,14 +1057,14 @@ describe("uninstallPlugin", () => {
       cleanup: {
         kind: "npm",
         npmRoot,
-        packageName: "@operator/kitchen-sink",
+        packageName: "@gabrielvfonseca/kitchen-sink",
       },
     });
 
     const applied = await applyPluginUninstallDirectoryRemoval(plan.directoryRemoval);
 
     expect(applied).toEqual({ directoryRemoved: true, warnings: [] });
-    expectNpmUninstallCommand({ packageName: "@operator/kitchen-sink", npmRoot });
+    expectNpmUninstallCommand({ packageName: "@gabrielvfonseca/kitchen-sink", npmRoot });
     await expectPathAccessState(pluginDir, "missing");
   });
 
@@ -1074,7 +1074,7 @@ describe("uninstallPlugin", () => {
     const npmBaseDir = path.join(stateDir, "npm");
     const npmRoot = resolvePluginNpmProjectDir({
       npmDir: npmBaseDir,
-      packageName: "@operator/kitchen-sink",
+      packageName: "@gabrielvfonseca/kitchen-sink",
     });
     const pluginDir = path.join(npmRoot, "node_modules", "@openclaw", "kitchen-sink");
     const hoistedDir = path.join(npmRoot, "node_modules", "is-number");
@@ -1086,7 +1086,7 @@ describe("uninstallPlugin", () => {
         {
           private: true,
           dependencies: {
-            "@operator/kitchen-sink": "1.0.0",
+            "@gabrielvfonseca/kitchen-sink": "1.0.0",
             "is-number": "7.0.0",
           },
         },
@@ -1099,16 +1099,16 @@ describe("uninstallPlugin", () => {
 
     const plan = planPluginUninstall({
       config: createPluginConfig({
-        entries: createSinglePluginEntries("openclaw-kitchen-sink-fixture"),
+        entries: createSinglePluginEntries("operator-kitchen-sink-fixture"),
         installs: {
-          "openclaw-kitchen-sink-fixture": {
+          "operator-kitchen-sink-fixture": {
             source: "npm",
-            spec: "@operator/kitchen-sink@1.0.0",
+            spec: "@gabrielvfonseca/kitchen-sink@1.0.0",
             installPath: pluginDir,
           },
         },
       }),
-      pluginId: "openclaw-kitchen-sink-fixture",
+      pluginId: "operator-kitchen-sink-fixture",
       deleteFiles: true,
       extensionsDir,
     });
@@ -1122,14 +1122,14 @@ describe("uninstallPlugin", () => {
       cleanup: {
         kind: "npm",
         npmRoot,
-        packageName: "@operator/kitchen-sink",
+        packageName: "@gabrielvfonseca/kitchen-sink",
       },
     });
 
     const applied = await applyPluginUninstallDirectoryRemoval(plan.directoryRemoval);
 
     expect(applied).toEqual({ directoryRemoved: true, warnings: [] });
-    expectNpmUninstallCommand({ packageName: "@operator/kitchen-sink", npmRoot });
+    expectNpmUninstallCommand({ packageName: "@gabrielvfonseca/kitchen-sink", npmRoot });
     await expectPathAccessState(pluginDir, "missing");
   });
 
@@ -1138,7 +1138,7 @@ describe("uninstallPlugin", () => {
     const npmRoot = path.join(stateDir, "npm");
     const removedPluginDir = path.join(npmRoot, "node_modules", "removed-plugin");
     const peerPluginDir = path.join(npmRoot, "node_modules", "peer-plugin");
-    const peerLink = path.join(peerPluginDir, "node_modules", "openclaw");
+    const peerLink = path.join(peerPluginDir, "node_modules", "@gabrielvfonseca/operator");
     await fs.mkdir(removedPluginDir, { recursive: true });
     await fs.mkdir(path.dirname(peerLink), { recursive: true });
     await fs.writeFile(
@@ -1162,7 +1162,7 @@ describe("uninstallPlugin", () => {
         {
           name: "peer-plugin",
           version: "1.0.0",
-          peerDependencies: { openclaw: ">=2026.0.0" },
+          peerDependencies: { operator: ">=2026.0.0" },
         },
         null,
         2,
@@ -1172,7 +1172,9 @@ describe("uninstallPlugin", () => {
     runCommandWithTimeoutMock.mockImplementationOnce(async (argv: string[]) => {
       await fs.rm(peerLink, { recursive: true, force: true });
       if (!argv.includes("--legacy-peer-deps")) {
-        await fs.mkdir(path.join(npmRoot, "node_modules", "openclaw"), { recursive: true });
+        await fs.mkdir(path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator"), {
+          recursive: true,
+        });
       }
       return {
         code: 0,
@@ -1195,7 +1197,10 @@ describe("uninstallPlugin", () => {
 
     expect(applied).toEqual({ directoryRemoved: true, warnings: [] });
     await expectPathAccessState(removedPluginDir, "missing");
-    await expectPathAccessState(path.join(npmRoot, "node_modules", "openclaw"), "missing");
+    await expectPathAccessState(
+      path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator"),
+      "missing",
+    );
     await expect(fs.lstat(peerLink).then((stat) => stat.isSymbolicLink())).resolves.toBe(true);
   });
 
@@ -1215,7 +1220,7 @@ describe("uninstallPlugin", () => {
             "removed-plugin": "1.0.0",
             "runtime-peer": "1.0.0",
           },
-          openclaw: {
+          operator: {
             managedPeerDependencies: ["runtime-peer"],
           },
         },
@@ -1312,7 +1317,7 @@ describe("uninstallPlugin", () => {
     };
     expect(rootManifest.dependencies?.["removed-plugin"]).toBeUndefined();
     expect(rootManifest.dependencies?.["runtime-peer"]).toBeUndefined();
-    expect(rootManifest.openclaw?.managedPeerDependencies ?? []).not.toContain("runtime-peer");
+    expect(rootManifest.operator?.managedPeerDependencies ?? []).not.toContain("runtime-peer");
     expect(runCommandWithTimeoutMock).toHaveBeenCalledTimes(3);
   });
 
@@ -1321,7 +1326,7 @@ describe("uninstallPlugin", () => {
     const npmRoot = path.join(stateDir, "npm");
     const pluginDir = path.join(npmRoot, "node_modules", "missing-plugin");
     const peerPluginDir = path.join(npmRoot, "node_modules", "peer-plugin");
-    const peerLink = path.join(peerPluginDir, "node_modules", "openclaw");
+    const peerLink = path.join(peerPluginDir, "node_modules", "@gabrielvfonseca/operator");
     await fs.mkdir(path.dirname(peerLink), { recursive: true });
     await fs.writeFile(
       path.join(npmRoot, "package.json"),
@@ -1343,7 +1348,7 @@ describe("uninstallPlugin", () => {
         {
           name: "peer-plugin",
           version: "1.0.0",
-          peerDependencies: { openclaw: ">=2026.0.0" },
+          peerDependencies: { operator: ">=2026.0.0" },
         },
         null,
         2,

@@ -3,13 +3,13 @@ import {
   decodeNodePtyResumeParams,
   resolveNodeHostExecutable,
   runNodePtyCommand,
-} from "openclaw/plugin-sdk/node-host";
-import type { OperatorPluginNodeHostCommand } from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/node-host";
+import type { OperatorPluginNodeHostCommand } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import type {
   SessionCatalogSession,
   SessionCatalogTerminalPlan,
-} from "openclaw/plugin-sdk/session-catalog";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
 import {
   OPENCODE_LOCAL_SESSION_HOST_ID,
   OPENCODE_NODE_INVOKE_TIMEOUT_MS,

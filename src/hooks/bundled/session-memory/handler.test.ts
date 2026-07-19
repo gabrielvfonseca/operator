@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../../config/config.js";
 import { replaceTranscriptEvents } from "../../../config/sessions/session-accessor.js";
@@ -43,7 +43,7 @@ async function createCaseWorkspace(prefix = "case"): Promise<string> {
 
 beforeAll(async () => {
   ({ default: handler, flushSessionMemoryWritesForTest } = await import("./handler.js"));
-  suiteWorkspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-memory-"));
+  suiteWorkspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-memory-"));
 });
 
 afterAll(async () => {
@@ -948,7 +948,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "Lights turned on" }],
         },
@@ -969,7 +969,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "claude",
           content: [
             { type: "thinking", text: "..." },
@@ -981,7 +981,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "2+2 = 4" }],
         },
@@ -990,7 +990,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "gateway-injected",
           content: [{ type: "text", text: "standalone gateway reply" }],
         },
@@ -1017,7 +1017,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "Your number is 123-4567" }],
         },
@@ -1033,7 +1033,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "Your number is 123-4567" }],
         },
@@ -1058,7 +1058,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "Done" }],
         },
@@ -1071,7 +1071,7 @@ describe("session-memory hook", () => {
         type: "message",
         message: {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "delivery-mirror",
           content: [{ type: "text", text: "Done" }],
         },

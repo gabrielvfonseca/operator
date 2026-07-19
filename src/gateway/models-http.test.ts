@@ -6,7 +6,7 @@ import { getFreePort, installGatewayTestHooks } from "./test-helpers.js";
 
 installGatewayTestHooks({ scope: "suite" });
 
-const READ_SCOPE_HEADER = { "x-openclaw-scopes": "operator.read" };
+const READ_SCOPE_HEADER = { "x-operator-scopes": "operator.read" };
 
 let startGatewayServer: typeof import("./server.js").startGatewayServer;
 let enabledServer: Awaited<ReturnType<typeof startOpenAiCompatGatewayServer>>;
@@ -66,10 +66,13 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
     expect(json.object).toBe("list");
     expect(Array.isArray(json.data)).toBe(true);
     expect((json.data?.length ?? 0) > 0).toBe(true);
-    expect(json.data?.map((entry) => entry.id)).toContain("openclaw");
+    expect(json.data?.map((entry) => entry.id)).toContain("@gabrielvfonseca/operator");
     expect(json.data?.map((entry) => entry.id)).toContain("openclaw/default");
     expect(
-      json.data?.every((entry) => typeof entry.id === "string" && entry.id?.startsWith("openclaw")),
+      json.data?.every(
+        (entry) =>
+          typeof entry.id === "string" && entry.id?.startsWith("@gabrielvfonseca/operator"),
+      ),
     ).toBe(true);
   });
 
@@ -91,19 +94,19 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
   });
 
   it("rejects operator scopes that lack read access", async () => {
-    const res = await getModels("/v1/models", { "x-openclaw-scopes": "operator.approvals" });
+    const res = await getModels("/v1/models", { "x-operator-scopes": "operator.approvals" });
     await expectMissingReadScope(res);
   });
 
   it("rejects requests with no declared operator scopes", async () => {
-    const res = await getModels("/v1/models", { "x-openclaw-scopes": "" });
+    const res = await getModels("/v1/models", { "x-operator-scopes": "" });
     await expectMissingReadScope(res);
   });
 
   it("rejects /v1/models/{id} without read access", async () => {
     const firstId = await expectFirstModelId();
     const res = await getModels(`/v1/models/${encodeURIComponent(firstId)}`, {
-      "x-openclaw-scopes": "operator.approvals",
+      "x-operator-scopes": "operator.approvals",
     });
     await expectMissingReadScope(res);
   });
@@ -138,7 +141,7 @@ describe("OpenAI-compatible models HTTP API (e2e)", () => {
       const res = await fetch(`http://127.0.0.1:${port}/v1/models`, {
         headers: {
           authorization: "Bearer secret",
-          "x-openclaw-scopes": "operator.approvals",
+          "x-operator-scopes": "operator.approvals",
         },
       });
       expect(res.status).toBe(200);

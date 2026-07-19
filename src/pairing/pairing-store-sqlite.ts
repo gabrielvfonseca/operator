@@ -1,15 +1,15 @@
 // Internal SQLite persistence for channel pairing requests and allow entries.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
   type OperatorStateDatabaseOptions,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 import {
   dedupePreserveOrder,
   resolveAllowFromAccountId,

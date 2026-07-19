@@ -1,11 +1,11 @@
 // Nvidia tests cover index plugin behavior.
 import fs from "node:fs";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import {
   registerSingleProviderPlugin,
   resolveProviderPluginChoice,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import plugin from "./index.js";
 
@@ -30,7 +30,7 @@ type RegisteredModelCatalogProvider = Parameters<
 
 function readManifest(): NvidiaManifest {
   return JSON.parse(
-    fs.readFileSync(new URL("./openclaw.plugin.json", import.meta.url), "utf8"),
+    fs.readFileSync(new URL("./operator.plugin.json", import.meta.url), "utf8"),
   ) as NvidiaManifest;
 }
 

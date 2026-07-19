@@ -6,8 +6,8 @@ import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { formatPluginConfigIssue } from "openclaw/plugin-sdk/extension-shared";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { formatPluginConfigIssue } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { AcpxPluginConfigSchema, DEFAULT_ACPX_TIMEOUT_SECONDS } from "./config-schema.js";
 import type {
   AcpxPluginConfig,

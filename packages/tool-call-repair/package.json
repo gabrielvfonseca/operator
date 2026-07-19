@@ -1,5 +1,5 @@
 {
-  "name": "@operator/tool-call-repair",
+  "name": "@gabrielvfonseca/tool-call-repair",
   "version": "0.0.0-private",
   "private": true,
   "type": "module",
@@ -7,6 +7,6 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@operator/normalization-core": "workspace:*"
+    "@gabrielvfonseca/normalization-core": "workspace:*"
   }
 }

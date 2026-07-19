@@ -1,6 +1,6 @@
 // Covers Moonshot-specific extra-params thinking payload behavior.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   createMoonshotThinkingWrapper,

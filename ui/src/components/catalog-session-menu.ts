@@ -1,14 +1,14 @@
 import { html } from "lit";
 import { property } from "lit/decorators.js";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../lit/operator-element.ts";
 import { icons } from "./icons.ts";
 import { promoteToPopoverTopLayer } from "./menu-surface.ts";
 import "./web-awesome.ts";
 
 export type CatalogSessionMenuAction = "viewer" | "terminal";
 
-class CatalogSessionMenu extends OpenClawLightDomElement {
+class CatalogSessionMenu extends OperatorLightDomElement {
   @property({ attribute: false }) x = 0;
   @property({ attribute: false }) y = 0;
   @property({ attribute: false }) trigger: HTMLElement | null = null;
@@ -95,7 +95,7 @@ class CatalogSessionMenu extends OpenClawLightDomElement {
           <span slot="icon" class="session-menu__icon" aria-hidden="true"
             >${icons.messageSquare}</span
           >
-          <span class="session-menu__text">${t("chat.catalog.openInOpenClaw")}</span>
+          <span class="session-menu__text">${t("chat.catalog.openInOperator")}</span>
         </wa-dropdown-item>
         <wa-dropdown-item
           class="session-menu__item"
@@ -111,6 +111,6 @@ class CatalogSessionMenu extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-catalog-session-menu")) {
-  customElements.define("openclaw-catalog-session-menu", CatalogSessionMenu);
+if (!customElements.get("operator-catalog-session-menu")) {
+  customElements.define("operator-catalog-session-menu", CatalogSessionMenu);
 }

@@ -1,5 +1,5 @@
 ---
-summary: "Launch self-contained OpenClaw HTML widgets inside Discord Activities"
+summary: "Launch self-contained Operator HTML widgets inside Discord Activities"
 read_when:
   - Setting up or troubleshooting Discord Activity widgets
 title: "Discord Activities"
@@ -7,12 +7,12 @@ title: "Discord Activities"
 
 Discord Activities let an agent post an interactive, self-contained HTML widget to the current Discord channel. The message includes an **Open widget** button; clicking it launches the widget inside Discord.
 
-The feature is off by default. OpenClaw registers the Activity HTTP routes, `discord_widget` agent tool, and launch-button handler only when `channels.discord.activities` is present and a client secret resolves.
+The feature is off by default. Operator registers the Activity HTTP routes, `discord_widget` agent tool, and launch-button handler only when `channels.discord.activities` is present and a client secret resolves.
 
 ## Prerequisites
 
-- an existing [OpenClaw Discord bot](/channels/discord)
-- a public HTTPS hostname that reaches the OpenClaw gateway
+- an existing [Operator Discord bot](/channels/discord)
+- a public HTTPS hostname that reaches the Operator gateway
 - permission to configure Activities and OAuth2 for the bot's Discord application
 - an existing Discord user allowlist (`allowFrom` or `dm.allowFrom`), unless the account intentionally uses open DMs
 
@@ -20,19 +20,19 @@ Any HTTPS reverse proxy or tunnel works. A named Cloudflare Tunnel provides a st
 
 ```yaml
 # ~/.cloudflared/config.yml
-tunnel: openclaw-discord
+tunnel: operator-discord
 credentials-file: /home/you/.cloudflared/TUNNEL-ID.json
 ingress:
-  - hostname: openclaw.example.com
+  - hostname: operator.example.com
     service: http://127.0.0.1:18789
   - service: http_status:404
 ```
 
 ```bash
 cloudflared tunnel login
-cloudflared tunnel create openclaw-discord
-cloudflared tunnel route dns openclaw-discord openclaw.example.com
-cloudflared tunnel run openclaw-discord
+cloudflared tunnel create operator-discord
+cloudflared tunnel route dns operator-discord operator.example.com
+cloudflared tunnel run operator-discord
 ```
 
 Keep normal gateway authentication enabled. Only the Activity prefix is public, and the plugin validates OAuth, allowlists, sessions, and one-time document capabilities itself.
@@ -41,14 +41,14 @@ Keep normal gateway authentication enabled. Only the Activity prefix is public, 
 
 <Steps>
   <Step title="Expose the gateway over HTTPS">
-    Start your tunnel or reverse proxy and verify that `https://openclaw.example.com/discord/activity/` reaches the gateway after Activities configuration is added. Replace the example hostname with your own.
+    Start your tunnel or reverse proxy and verify that `https://operator.example.com/discord/activity/` reaches the gateway after Activities configuration is added. Replace the example hostname with your own.
   </Step>
 
   <Step title="Enable Activities in Discord">
     Open the existing bot application in the [Discord Developer Portal](https://discord.com/developers/applications). Open **Activities**, enable Activities, and create a URL mapping:
 
     - prefix: `ROOT` (`/`)
-    - target: `openclaw.example.com/discord/activity`
+    - target: `operator.example.com/discord/activity`
 
     The target is the public hostname plus `/discord/activity`, without a trailing slash.
 
@@ -58,7 +58,7 @@ Keep normal gateway authentication enabled. Only the Activity prefix is public, 
     Open **OAuth2** in the Developer Portal. Discord requires at least one redirect URI, so add a local placeholder such as the loopback address if the application has none yet; the Embedded App SDK handles the Activity return flow. Copy or reset the application client secret. Treat it as a credential: do not paste it into chat, logs, or a committed configuration file.
   </Step>
 
-  <Step title="Configure OpenClaw">
+  <Step title="Configure Operator">
     Add one block to the Discord account that should offer widgets:
 
     ```json5
@@ -104,7 +104,7 @@ The public Activity shell and token-exchange route become reachable through your
 
 - confirm the tunnel is running and routes to the gateway's actual bind port
 - confirm the Developer Portal target includes `/discord/activity`
-- restart the gateway after changing Discord or OpenClaw configuration
+- restart the gateway after changing Discord or Operator configuration
 - check gateway logs for the one-line warning about a missing Activities client secret
 
 ### Discord opens a blank page or reports `blocked:csp`
@@ -121,8 +121,8 @@ Add the user's stable Discord ID to `allowFrom` or `dm.allowFrom` on the same Di
 
 ### “Widget unavailable”
 
-Launch the button from the channel where the agent posted it. If Discord does not carry the button's custom ID into the Activity, OpenClaw falls back only when that channel has exactly one live widget; multiple widgets fail closed as unavailable.
+Launch the button from the channel where the agent posted it. If Discord does not carry the button's custom ID into the Activity, Operator falls back only when that channel has exactly one live widget; multiple widgets fail closed as unavailable.
 
 ### “You cannot launch Activities in this channel”
 
-Discord does not launch Activities from forum-post threads. OpenClaw can post the widget message and button there, but launch the Activity from a regular text channel instead. This restriction comes from Discord, not OpenClaw.
+Discord does not launch Activities from forum-post threads. Operator can post the widget message and button there, but launch the Activity from a regular text channel instead. This restriction comes from Discord, not Operator.

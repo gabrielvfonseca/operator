@@ -4,8 +4,8 @@ import {
   loadModelCatalog,
   modelSupportsVision,
   resolveDefaultModelForAgent,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export async function resolveStickerVisionSupportRuntime(params: {
   cfg: OperatorConfig;

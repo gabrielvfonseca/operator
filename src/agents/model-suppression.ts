@@ -3,7 +3,7 @@
  * Resolves plugin manifest suppression rules with process-local caching so
  * built-in catalog entries can be hidden or blocked consistently.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { normalizeLowercaseStringOrEmpty } from "../../packages/normalization-core/src/string-coerce.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getCurrentPluginMetadataSnapshotState } from "../plugins/current-plugin-metadata-state.js";

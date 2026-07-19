@@ -1,6 +1,6 @@
 // Policy doctor checks and findings for MCP, model provider, and network policy.
-import type { HealthCheck, HealthFinding } from "openclaw/plugin-sdk/health";
-import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
+import type { HealthCheck, HealthFinding } from "@gabrielvfonseca/operator/plugin-sdk/health";
+import { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import type { PolicyEvidence } from "../../policy-state.js";
 import { CHECK_IDS } from "../check-ids.js";
 import type { PolicyDoctorCheckDeps } from "../types.js";

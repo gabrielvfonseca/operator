@@ -1,9 +1,9 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 import os
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct GatewayConnectionTests {
     private func makeConnection(
@@ -89,7 +89,7 @@ struct GatewayConnectionTests {
     }
 
     @Test func `first connection admits hello capabilities before lease readiness`() async throws {
-        let session = self.makeSession(serverCapabilities: ["openclaw-setup-model-ref"])
+        let session = self.makeSession(serverCapabilities: ["operator-setup-model-ref"])
         let (conn, _) = try makeConnection(session: session)
 
         let lease = try await conn.acquireServerLease()
@@ -105,18 +105,18 @@ struct GatewayConnectionTests {
     }
 
     @Test func `disconnected server lease rejects before dispatch`() async throws {
-        let session = self.makeSession(serverCapabilities: ["openclaw-setup-model-ref"])
+        let session = self.makeSession(serverCapabilities: ["operator-setup-model-ref"])
         let (conn, _) = try makeConnection(session: session)
         let lease = try await conn.acquireServerLease()
 
         await conn._test_handleDisconnect(socketGeneration: 1)
         do {
             _ = try await conn.request(
-                method: "openclaw.setup.detect",
+                method: "operator.setup.detect",
                 params: [:],
                 ifCurrentServerLease: lease)
             Issue.record("expected disconnected server lease rejection")
-        } catch is OpenClawChatTransportSendError {} catch {
+        } catch is OperatorChatTransportSendError {} catch {
             Issue.record("unexpected disconnected lease error: \(error)")
         }
 
@@ -146,14 +146,14 @@ struct GatewayConnectionTests {
                         let id = task.snapshotConnectRequestID() ?? "connect"
                         return .data(Self.connectOkData(
                             id: id,
-                            capabilities: ["openclaw-setup-model-ref"]))
+                            capabilities: ["operator-setup-model-ref"]))
                     })
             })
         let (conn, _) = try makeConnection(session: session)
         let lease = try await conn.acquireServerLease()
         let request = Task {
             try await conn.request(
-                method: "openclaw.setup.activate",
+                method: "operator.setup.activate",
                 params: [:],
                 timeoutMs: 5000,
                 ifCurrentServerLease: lease)
@@ -206,7 +206,7 @@ struct GatewayConnectionTests {
                 ifCurrentRoute: route,
                 distinguishPreDispatchRouteChange: true)
             Issue.record("expected typed stale route rejection")
-        } catch is OpenClawChatTransportSendError {}
+        } catch is OperatorChatTransportSendError {}
 
         #expect(session.snapshotMakeCount() == 1)
         #expect(session.snapshotCancelCount() == 0)

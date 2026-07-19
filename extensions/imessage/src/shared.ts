@@ -1,12 +1,12 @@
 // Imessage plugin module implements shared behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
   formatTrimmedAllowFromEntries,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { createRestrictSendersChannelSecurity } from "openclaw/plugin-sdk/channel-policy";
-import { createChannelPluginBase } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import { createRestrictSendersChannelSecurity } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { createChannelPluginBase } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import {
   listIMessageAccountIds,
   resolveDefaultIMessageAccountId,

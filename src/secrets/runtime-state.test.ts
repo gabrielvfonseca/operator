@@ -20,7 +20,7 @@ import {
   getRuntimeConfigSnapshotMetadata,
   getRuntimeConfigSourceSnapshot,
 } from "../config/runtime-snapshot.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { SecretRef } from "../config/types.secrets.js";
 import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { captureEnv } from "../test-utils/env.js";
@@ -127,7 +127,7 @@ describe("secrets runtime state", () => {
   });
 
   it("preserves live auth bookkeeping when prepared credentials activate", () => {
-    const agentDir = "/tmp/openclaw-auth-bookkeeping-merge";
+    const agentDir = "/tmp/operator-auth-bookkeeping-merge";
     const credential = {
       type: "api_key" as const,
       provider: "openai",
@@ -185,7 +185,7 @@ describe("secrets runtime state", () => {
   });
 
   it("removes candidate-only auth profiles when rolling config back", () => {
-    const agentDir = "/tmp/openclaw-auth-rollback-cas";
+    const agentDir = "/tmp/operator-auth-rollback-cas";
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -250,7 +250,7 @@ describe("secrets runtime state", () => {
   });
 
   it("rolls back candidate credentials against the activation-time auth baseline", () => {
-    const agentDir = "/tmp/openclaw-auth-activation-baseline";
+    const agentDir = "/tmp/operator-auth-activation-baseline";
     const profile = (provider: string, key: string) => ({
       type: "api_key" as const,
       provider,
@@ -359,7 +359,7 @@ describe("secrets runtime state", () => {
 
   it("preserves an auth rotation captured by the candidate", () => {
     const finalKey = "sk-candidate";
-    const agentDir = "/tmp/openclaw-auth-rollback-sk-candidate";
+    const agentDir = "/tmp/operator-auth-rollback-sk-candidate";
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -469,7 +469,7 @@ describe("secrets runtime state", () => {
   ])(
     "resolves per-profile ownership for $label while preserving post-activation profile B",
     ({ label, baselineAKey, candidateAKey, currentAKey, currentAExternal, expectedAKey }) => {
-      const agentDir = `/tmp/openclaw-auth-post-activation-${label}`;
+      const agentDir = `/tmp/operator-auth-post-activation-${label}`;
       const profile = (provider: string, key: string) => ({
         type: "api_key" as const,
         provider,
@@ -557,7 +557,7 @@ describe("secrets runtime state", () => {
     { label: "local override", runtimeLocalProfileIds: ["openai:default"], expected: "sk-old" },
     { label: "inherited profile", runtimeLocalProfileIds: [], expected: "sk-candidate" },
   ])("uses the effective owner token for a $label", ({ runtimeLocalProfileIds, expected }) => {
-    const agentDir = `/tmp/openclaw-auth-effective-owner-${runtimeLocalProfileIds.length}`;
+    const agentDir = `/tmp/operator-auth-effective-owner-${runtimeLocalProfileIds.length}`;
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -618,7 +618,7 @@ describe("secrets runtime state", () => {
   });
 
   it("invalidates a partial store when an omitted candidate owner mutates", () => {
-    const agentDir = "/tmp/openclaw-auth-external-omission";
+    const agentDir = "/tmp/operator-auth-external-omission";
     const snapshot = (
       profiles: AuthProfileStore["profiles"],
       externalProfileIds: string[],
@@ -700,7 +700,7 @@ describe("secrets runtime state", () => {
   ] as const)(
     "handles baseline external to $candidateOwner with mutation=$mutateCandidateOwner",
     ({ candidateOwner, mutateCandidateOwner }) => {
-      const agentDir = `/tmp/openclaw-auth-external-to-${candidateOwner}-${mutateCandidateOwner}`;
+      const agentDir = `/tmp/operator-auth-external-to-${candidateOwner}-${mutateCandidateOwner}`;
       const snapshot = (
         key: string,
         owner: "external" | "inherited" | "local",
@@ -782,7 +782,7 @@ describe("secrets runtime state", () => {
   it.each(["absent", "inherited", "local"] as const)(
     "invalidates candidate external ownership after a baseline $baselineOwner mutation",
     (baselineOwner) => {
-      const agentDir = `/tmp/openclaw-auth-${baselineOwner}-to-external`;
+      const agentDir = `/tmp/operator-auth-${baselineOwner}-to-external`;
       const snapshot = (
         key: string | null,
         owner: "external" | "inherited" | "local",
@@ -866,7 +866,7 @@ describe("secrets runtime state", () => {
   it.each(["absent", "inherited", "local"] as const)(
     "restores unchanged $baselineOwner ownership after a candidate external refresh",
     (baselineOwner) => {
-      const agentDir = `/tmp/openclaw-auth-${baselineOwner}-external-refresh`;
+      const agentDir = `/tmp/operator-auth-${baselineOwner}-external-refresh`;
       const snapshot = (
         key: string | null,
         owner: "external" | "inherited" | "local",
@@ -955,7 +955,7 @@ describe("secrets runtime state", () => {
   ] as const)(
     "preserves $currentOwner owner metadata when bytes equal the $candidateOwner candidate",
     ({ candidateOwner, currentOwner }) => {
-      const agentDir = `/tmp/openclaw-auth-${candidateOwner}-${currentOwner}-equal-bytes`;
+      const agentDir = `/tmp/operator-auth-${candidateOwner}-${currentOwner}-equal-bytes`;
       const snapshot = (
         key: string,
         owner: "external" | "local",
@@ -1026,7 +1026,7 @@ describe("secrets runtime state", () => {
   );
 
   it("preserves an authoritative empty external overlay on rollback", () => {
-    const agentDir = "/tmp/openclaw-auth-authoritative-empty-external";
+    const agentDir = "/tmp/operator-auth-authoritative-empty-external";
     const snapshot = (authoritative: boolean, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1081,7 +1081,7 @@ describe("secrets runtime state", () => {
   });
 
   it("does not import rejected external authority from a selected current credential", () => {
-    const agentDir = "/tmp/openclaw-auth-rejected-external-authority";
+    const agentDir = "/tmp/operator-auth-rejected-external-authority";
     const snapshot = (
       key: string,
       authoritative: boolean,
@@ -1149,7 +1149,7 @@ describe("secrets runtime state", () => {
     { current: "sk-candidate", expected: "sk-old" },
     { current: "sk-external-refresh", expected: "sk-external-refresh" },
   ])("keeps external profile ownership separate from main mutations", ({ current, expected }) => {
-    const agentDir = `/tmp/openclaw-auth-external-owner-${current}`;
+    const agentDir = `/tmp/operator-auth-external-owner-${current}`;
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1212,7 +1212,7 @@ describe("secrets runtime state", () => {
   });
 
   it("removes a rejected candidate credential when its bounded lineage was evicted", () => {
-    const agentDir = "/tmp/openclaw-auth-evicted-lineage";
+    const agentDir = "/tmp/operator-auth-evicted-lineage";
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1279,7 +1279,7 @@ describe("secrets runtime state", () => {
   it.each(["owner", "profile"] as const)(
     "drops a changed-ref descendant after $eviction lineage eviction",
     (eviction) => {
-      const root = autoCleanupTempDirs.make("openclaw-auth-evicted-ref-");
+      const root = autoCleanupTempDirs.make("operator-auth-evicted-ref-");
       const agentDir = path.join(root, eviction);
       fs.mkdirSync(agentDir, { recursive: true });
       const previousRef = {
@@ -1341,7 +1341,7 @@ describe("secrets runtime state", () => {
         );
         for (let index = 0; index < 300; index += 1) {
           noteRuntimeAuthProfileStorePersistedMutation(
-            eviction === "owner" ? `/tmp/openclaw-auth-unrelated-owner-${index}` : agentDir,
+            eviction === "owner" ? `/tmp/operator-auth-unrelated-owner-${index}` : agentDir,
             {
               credentialsChanged: true,
               stateChanged: false,
@@ -1446,7 +1446,7 @@ describe("secrets runtime state", () => {
       inheritsMainState,
       expectMissing,
     }) => {
-      const agentDir = `/tmp/openclaw-auth-store-removal-${label}`;
+      const agentDir = `/tmp/operator-auth-store-removal-${label}`;
       const snapshot = (includeStore: boolean, port: number): PreparedSecretsRuntimeSnapshot => ({
         sourceConfig: {},
         config: { gateway: { port } },
@@ -1523,7 +1523,7 @@ describe("secrets runtime state", () => {
   );
 
   it("does not resurrect a baseline external store after a new main profile is added", () => {
-    const agentDir = "/tmp/openclaw-auth-external-store-omission-mutation";
+    const agentDir = "/tmp/operator-auth-external-store-omission-mutation";
     const snapshot = (includeStore: boolean, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1588,7 +1588,7 @@ describe("secrets runtime state", () => {
   });
 
   it("does not resurrect an auth store cleared after candidate activation", () => {
-    const agentDir = "/tmp/openclaw-auth-post-activation-clear";
+    const agentDir = "/tmp/operator-auth-post-activation-clear";
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1644,7 +1644,7 @@ describe("secrets runtime state", () => {
     { label: "retains a resolved value for the same auth-store SecretRef", changedRef: false },
     { label: "restores the predecessor when the auth-store SecretRef changed", changedRef: true },
   ])("$label", ({ changedRef }) => {
-    const agentDir = `/tmp/openclaw-auth-ref-rollback-${changedRef}`;
+    const agentDir = `/tmp/operator-auth-ref-rollback-${changedRef}`;
     const previousRef = {
       source: "env" as const,
       provider: "default",
@@ -1719,7 +1719,7 @@ describe("secrets runtime state", () => {
   });
 
   it("preserves live credentials when the captured predecessor is stale", () => {
-    const agentDir = "/tmp/openclaw-auth-stale-predecessor-rollback";
+    const agentDir = "/tmp/operator-auth-stale-predecessor-rollback";
     const snapshot = (key: string, port: number): PreparedSecretsRuntimeSnapshot => ({
       sourceConfig: {},
       config: { gateway: { port } },
@@ -1959,7 +1959,7 @@ describe("secrets runtime state", () => {
   }>)(
     "restores resolved values when a same-ref $label was rejected",
     ({ keyRef, previousSourceConfig, candidateSourceConfig, evictLineage }) => {
-      const agentDir = `/tmp/openclaw-auth-provider-dependency-${keyRef.provider}`;
+      const agentDir = `/tmp/operator-auth-provider-dependency-${keyRef.provider}`;
       const snapshot = (params: {
         sourceConfig: OperatorConfig;
         apiKey: string;
@@ -2090,7 +2090,7 @@ describe("secrets runtime state", () => {
   ] as const)(
     "invalidates a same-ref provider change after a durable $label",
     ({ capturedOwner, currentOwner }) => {
-      const agentDir = `/tmp/openclaw-auth-provider-owner-${capturedOwner}-${currentOwner}`;
+      const agentDir = `/tmp/operator-auth-provider-owner-${capturedOwner}-${currentOwner}`;
       const keyRef = {
         source: "file" as const,
         provider: "vault",
@@ -2193,7 +2193,7 @@ describe("secrets runtime state", () => {
   ] as const)(
     "handles a durable ref-id update through $currentProvider with affected=$affectedProvider",
     ({ affectedProvider, currentProvider }) => {
-      const agentDir = `/tmp/openclaw-auth-provider-ref-update-${currentProvider}`;
+      const agentDir = `/tmp/operator-auth-provider-ref-update-${currentProvider}`;
       const previousSourceConfig = {
         secrets: {
           providers: {
@@ -2315,7 +2315,7 @@ describe("secrets runtime state", () => {
   it.each(["external", "local"] as const)(
     "invalidates an absent-profile $currentOwner upsert under a rejected provider",
     (currentOwner) => {
-      const agentDir = `/tmp/openclaw-auth-provider-absent-upsert-${currentOwner}`;
+      const agentDir = `/tmp/operator-auth-provider-absent-upsert-${currentOwner}`;
       const snapshot = (params: {
         includeProfile: boolean;
         providerPath: string;

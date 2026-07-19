@@ -1,6 +1,6 @@
 // Gateway model-pricing refresh and normalization.
 // Fetches, normalizes, and schedules cached pricing for model usage estimates.
-import type { ModelCatalogCost } from "@operator/model-catalog-core/model-catalog-types";
+import type { ModelCatalogCost } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import {
   normalizeOptionalString,
   resolvePrimaryStringValue,

@@ -1,15 +1,15 @@
 import Foundation
 
 enum CommandResolver {
-    private static let projectRootDefaultsKey = "openclaw.gatewayProjectRootPath"
-    private static let helperName = "openclaw"
+    private static let projectRootDefaultsKey = "operator.gatewayProjectRootPath"
+    private static let helperName = "@gabrielvfonseca/operator"
 
     static func gatewayEntrypoint(in root: URL) -> String? {
         let distEntry = root.appendingPathComponent("dist/index.js").path
         if FileManager().isReadableFile(atPath: distEntry) { return distEntry }
-        let openclawEntry = root.appendingPathComponent("openclaw.mjs").path
+        let openclawEntry = root.appendingPathComponent("operator.mjs").path
         if FileManager().isReadableFile(atPath: openclawEntry) { return openclawEntry }
-        let binEntry = root.appendingPathComponent("bin/openclaw.js").path
+        let binEntry = root.appendingPathComponent("bin/operator.js").path
         if FileManager().isReadableFile(atPath: binEntry) { return binEntry }
         return nil
     }
@@ -34,9 +34,9 @@ enum CommandResolver {
 
     static func errorCommand(with message: String) -> [String] {
         let script = """
-        cat <<'__OPENCLAW_ERR__' >&2
+        cat <<'__OPERATOR_ERR__' >&2
         \(message)
-        __OPENCLAW_ERR__
+        __OPERATOR_ERR__
         exit 1
         """
         return ["/bin/sh", "-c", script]
@@ -70,7 +70,7 @@ enum CommandResolver {
             .split(separator: ":").map(String.init) ?? []
         let home = FileManager().homeDirectoryForCurrentUser
         let projectRoot = self.projectRoot()
-        let validatedExecutable = self.validatedOpenClawExecutable(
+        let validatedExecutable = self.validatedOperatorExecutable(
             defaults: .standard,
             fileManager: .default,
             requiredVersion: GatewayEnvironment.expectedGatewayVersionString())
@@ -95,7 +95,7 @@ enum CommandResolver {
         validatedExecutable: String? = nil) -> [String]
     {
         var preferredPaths: [String] = []
-        let managedPaths = self.openclawManagedPaths(home: home)
+        let managedPaths = self.operatorManagedPaths(home: home)
         if let validatedExecutable {
             let validatedBin = URL(fileURLWithPath: validatedExecutable).deletingLastPathComponent().path
             if managedPaths.contains(validatedBin) {
@@ -122,7 +122,7 @@ enum CommandResolver {
         return (preferredPaths + fallbackPaths + current).filter { seen.insert($0).inserted }
     }
 
-    static func validatedOpenClawExecutable(
+    static func validatedOperatorExecutable(
         defaults: UserDefaults,
         fileManager: FileManager,
         requiredVersion: String?) -> String?
@@ -141,7 +141,7 @@ enum CommandResolver {
 
     private static func openclawManagedPaths(home: URL) -> [String] {
         let bases = [
-            home.appendingPathComponent(".openclaw"),
+            home.appendingPathComponent(".operator"),
         ]
         var paths: [String] = []
         for base in bases {
@@ -237,7 +237,7 @@ enum CommandResolver {
         self.findExecutable(named: self.helperName, searchPaths: searchPaths)
     }
 
-    static func projectOpenClawExecutable(projectRoot: URL? = nil) -> String? {
+    static func projectOperatorExecutable(projectRoot: URL? = nil) -> String? {
         #if DEBUG
         let root = projectRoot ?? self.projectRoot()
         let candidate = root.appendingPathComponent("node_modules/.bin").appendingPathComponent(self.helperName).path
@@ -247,7 +247,7 @@ enum CommandResolver {
         // pnpm does not create a self-referential node_modules/.bin link for
         // this package. Source builds still need the checkout CLI, not a stale
         // globally installed binary with a different private command surface.
-        let sourceEntrypoint = root.appendingPathComponent("openclaw.mjs").path
+        let sourceEntrypoint = root.appendingPathComponent("operator.mjs").path
         return FileManager().isExecutableFile(atPath: sourceEntrypoint) ? sourceEntrypoint : nil
         #else
         return nil
@@ -275,7 +275,7 @@ enum CommandResolver {
         }
 
         let root = projectRoot ?? self.projectRoot()
-        if let openclawPath = projectOpenClawExecutable(projectRoot: root) {
+        if let openclawPath = projectOperatorExecutable(projectRoot: root) {
             return [openclawPath, subcommand] + extraArgs
         }
         if let openclawPath = openclawExecutable(searchPaths: searchPaths) {
@@ -298,13 +298,13 @@ enum CommandResolver {
 
         if let pnpm = findExecutable(named: "pnpm", searchPaths: searchPaths) {
             // Use --silent to avoid pnpm lifecycle banners that would corrupt JSON outputs.
-            return [pnpm, "--silent", "openclaw", subcommand] + extraArgs
+            return [pnpm, "--silent", "@gabrielvfonseca/operator", subcommand] + extraArgs
         }
 
         switch runtimeResult {
         case .success:
             let missingEntry = """
-            openclaw CLI not found. Install the CLI, or run pnpm build in an OpenClaw source checkout.
+            operator CLI not found. Install the CLI, or run pnpm build in an Operator source checkout.
             """
             return self.errorCommand(with: missingEntry)
         case let .failure(error):
@@ -320,7 +320,7 @@ enum CommandResolver {
         searchPaths: [String]? = nil,
         projectRoot: URL? = nil) -> [String]
     {
-        self.openclawNodeCommand(
+        self.operatorNodeCommand(
             subcommand: subcommand,
             extraArgs: extraArgs,
             defaults: defaults,
@@ -344,7 +344,7 @@ enum CommandResolver {
         guard !settings.target.isEmpty else { return nil }
         guard let parsed = parseSSHTarget(settings.target) else { return nil }
 
-        // Run the real openclaw CLI on the remote host.
+        // Run the real operator CLI on the remote host.
         let exportedPath = [
             "/opt/homebrew/bin",
             "/usr/local/bin",
@@ -400,9 +400,9 @@ enum CommandResolver {
         CLI="";
         \(cliSection)
         \(projectSection)
-        if command -v openclaw >/dev/null 2>&1; then
+        if command -v operator >/dev/null 2>&1; then
           CLI="$(command -v openclaw)"
-          openclaw \(quotedArgs);
+          operator \(quotedArgs);
         elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/dist/index.js" ]; then
           if command -v node >/dev/null 2>&1; then
             CLI="node $PRJ/dist/index.js"
@@ -410,25 +410,25 @@ enum CommandResolver {
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/openclaw.mjs" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/operator.mjs" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/openclaw.mjs"
-            node "$PRJ/openclaw.mjs" \(quotedArgs);
+            CLI="node $PRJ/operator.mjs"
+            node "$PRJ/operator.mjs" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/openclaw.js" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/operator.js" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/bin/openclaw.js"
-            node "$PRJ/bin/openclaw.js" \(quotedArgs);
+            CLI="node $PRJ/bin/operator.js"
+            node "$PRJ/bin/operator.js" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
         elif command -v pnpm >/dev/null 2>&1; then
           CLI="pnpm --silent openclaw"
-          pnpm --silent openclaw \(quotedArgs);
+          pnpm --silent operator \(quotedArgs);
         else
-          echo "openclaw CLI missing on remote host"; exit 127;
+          echo "operator CLI missing on remote host"; exit 127;
         fi
         """
         // Remote credentials require strict host verification unless config explicitly opts into OpenSSH policy.
@@ -483,7 +483,7 @@ enum CommandResolver {
         defaults: UserDefaults = .standard,
         configRoot: [String: Any]? = nil) -> RemoteSettings
     {
-        let root = configRoot ?? OpenClawConfigFile.loadDict()
+        let root = configRoot ?? OperatorConfigFile.loadDict()
         let mode = ConnectionModeResolver.resolve(root: root, defaults: defaults).mode
         let transport = GatewayRemoteConfig.resolveTransport(root: root)
         let remote = (root["gateway"] as? [String: Any])?["remote"] as? [String: Any]

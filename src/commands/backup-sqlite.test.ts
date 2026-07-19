@@ -119,11 +119,11 @@ function createAgentDatabase(databasePath: string, agentId: string): void {
 
 describe("SQLite backup commands", () => {
   it("creates, lists, verifies, and fresh-restores the global database", async () => {
-    const tempDir = tempDirs.make("openclaw-backup-sqlite-");
+    const tempDir = tempDirs.make("operator-backup-sqlite-");
     const stateDir = path.join(tempDir, "state");
     const repositoryPath = path.join(tempDir, "snapshots");
     const scratchPath = path.join(tempDir, "scratch");
-    const restorePath = path.join(tempDir, "restore", "openclaw.sqlite");
+    const restorePath = path.join(tempDir, "restore", "operator.sqlite");
     process.env.OPERATOR_STATE_DIR = stateDir;
     const databasePath = resolveOperatorStateSqlitePath();
     await fs.mkdir(path.dirname(databasePath), { recursive: true });
@@ -139,7 +139,7 @@ describe("SQLite backup commands", () => {
     });
     expect(created.manifest.database).toMatchObject({
       role: "global",
-      basename: "openclaw.sqlite",
+      basename: "operator.sqlite",
       userVersion: OPERATOR_STATE_SCHEMA_VERSION,
     });
     expect(JSON.parse(runtime.logs.shift() ?? "{}")).toEqual(created);
@@ -184,7 +184,7 @@ describe("SQLite backup commands", () => {
   });
 
   it("creates a snapshot for a normalized per-agent database", async () => {
-    const tempDir = tempDirs.make("openclaw-backup-sqlite-");
+    const tempDir = tempDirs.make("operator-backup-sqlite-");
     const stateDir = path.join(tempDir, "state");
     const repositoryPath = path.join(tempDir, "snapshots");
     process.env.OPERATOR_STATE_DIR = stateDir;
@@ -201,7 +201,7 @@ describe("SQLite backup commands", () => {
     expect(created.manifest.database).toEqual({
       role: "agent",
       agentId: "ops-team",
-      basename: "openclaw-agent.sqlite",
+      basename: "operator-agent.sqlite",
       userVersion: OPERATOR_AGENT_SCHEMA_VERSION,
     });
     expect(runtime.logs).toEqual([expect.stringContaining("Database: agent:ops-team")]);
@@ -238,7 +238,7 @@ describe("SQLite backup commands", () => {
   });
 
   it("rejects generic provider artifacts before verify or restore", async () => {
-    const tempDir = tempDirs.make("openclaw-backup-sqlite-");
+    const tempDir = tempDirs.make("operator-backup-sqlite-");
     const databasePath = path.join(tempDir, "generic.sqlite");
     const repositoryPath = path.join(tempDir, "snapshots");
     const restorePath = path.join(tempDir, "restore", "generic.sqlite");

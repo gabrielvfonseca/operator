@@ -13,7 +13,7 @@ import {
   Text,
   TUI,
 } from "@earendil-works/pi-tui";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { CommandEntry } from "../../packages/gateway-protocol/src/index.js";
 import { resolveAgentIdByWorkspacePath, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { getRuntimeConfig, type OperatorConfig } from "../config/config.js";
@@ -255,8 +255,8 @@ export function resolveGatewayDisconnectState(reason?: string): {
       connectionStatus: `gateway disconnected: ${reasonLabel}`,
       activityStatus: "device approval needed: preview latest request",
       pairingHint:
-        "Device approval needed. Run `operator devices approve --latest` to preview the pending request, " +
-        "then rerun the printed `operator devices approve <requestId>` command " +
+        "Device approval needed. Run `openclaw devices approve --latest` to preview the pending request, " +
+        "then rerun the printed `openclaw devices approve <requestId>` command " +
         "(reuse `--token` or other auth flags if needed), then reconnect.",
     };
   }
@@ -468,7 +468,7 @@ export function scheduleProcessExitAfterTuiReturn(
     });
   const timer = setTimeoutFn(() => {
     try {
-      writeStderr("operator tui forcing process exit after return\n");
+      writeStderr("openclaw tui forcing process exit after return\n");
     } catch {
       // Best effort only; forced exit must not depend on stderr.
     }
@@ -977,7 +977,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
   const updateHeader = () => {
     const sessionLabel = formatSessionKey(currentSessionKey);
     const agentLabel = formatAgentLabel(currentAgentId);
-    const title = opts.title ?? "operator tui";
+    const title = opts.title ?? "openclaw tui";
     header.setText(
       theme.header(
         `${title} - ${client.connection.url} - agent ${agentLabel} - session ${sessionLabel}`,
@@ -1349,7 +1349,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
   const deferredFinish = createDeferredTuiFinish();
   const forceExit = () => {
     try {
-      process.stderr.write("operator tui forcing exit\n");
+      process.stderr.write("openclaw tui forcing exit\n");
     } catch {
       // Best effort only; force exit must not depend on stderr.
     }
@@ -1382,7 +1382,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
       .catch((err: unknown) => {
         if (!isTuiTerminalLossError(err)) {
           try {
-            process.stderr.write(`operator tui shutdown failed: ${String(err)}\n`);
+            process.stderr.write(`openclaw tui shutdown failed: ${String(err)}\n`);
           } catch {
             // Best effort only; exit must still complete.
           }

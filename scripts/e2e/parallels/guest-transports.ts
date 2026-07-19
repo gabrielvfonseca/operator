@@ -1,4 +1,4 @@
-// Guest Transports script supports OpenClaw repository automation.
+// Guest Transports script supports Operator repository automation.
 import { randomUUID } from "node:crypto";
 import { sleep } from "../../lib/sleep.mjs";
 import { run } from "./host-command.ts";
@@ -26,7 +26,7 @@ interface WindowsBackgroundPowerShellOptions {
 }
 
 function guestScriptName(extension: string): string {
-  return `openclaw-parallels-${randomUUID()}.${extension}`;
+  return `operator-parallels-${randomUUID()}.${extension}`;
 }
 
 function appendOutput(
@@ -110,32 +110,32 @@ export async function runWindowsBackgroundPowerShell(
   const runCommand = options.runCommand ?? run;
   const safeLabel = options.label.replaceAll(/[^A-Za-z0-9_-]/g, "-");
   const nonce = `${safeLabel}-${randomUUID()}`;
-  const guestRunDir = `openclaw-parallels\\${nonce}`;
+  const guestRunDir = `operator-parallels\\${nonce}`;
   const windowsDonePath = `%WINDIR%\\Temp\\${guestRunDir}\\done`;
   const windowsLogPath = `%WINDIR%\\Temp\\${guestRunDir}\\run.log`;
-  const backgroundExitPrefix = `__OPENCLAW_BACKGROUND_EXIT__:${nonce}:`;
-  const backgroundDoneMarker = `__OPENCLAW_BACKGROUND_DONE__:${nonce}`;
+  const backgroundExitPrefix = `__OPERATOR_BACKGROUND_EXIT__:${nonce}:`;
+  const backgroundDoneMarker = `__OPERATOR_BACKGROUND_DONE__:${nonce}`;
   const deadline = Date.now() + options.timeoutMs;
-  const pathsScript = `$runDir = Join-Path (Join-Path $env:WINDIR 'Temp\\openclaw-parallels') ${psSingleQuote(nonce)}
+  const pathsScript = `$runDir = Join-Path (Join-Path $env:WINDIR 'Temp\\operator-parallels') ${psSingleQuote(nonce)}
 $scriptPath = Join-Path $runDir 'run.ps1'
 $logPath = Join-Path $runDir 'run.log'
 $donePath = Join-Path $runDir 'done'
 $exitPath = Join-Path $runDir 'exit'
 $pidPath = Join-Path $runDir 'pid'
-function Write-OpenClawUtf8File([string]$Path, [string]$Value) {
+function Write-OperatorUtf8File([string]$Path, [string]$Value) {
   [System.IO.File]::WriteAllText($Path, $Value, [System.Text.UTF8Encoding]::new($false))
 }`;
   const payload = `$ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 ${pathsScript}
-Write-OpenClawUtf8File $pidPath ([string]$PID)
-$script:OpenClawBackgroundLogBytes = 0
-function Add-OpenClawBackgroundLog {
+Write-OperatorUtf8File $pidPath ([string]$PID)
+$script:OperatorBackgroundLogBytes = 0
+function Add-OperatorBackgroundLog {
   param([Parameter(ValueFromPipeline=$true)]$InputObject)
   process {
     $text = $InputObject | Out-String
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($text)
-    $remaining = [int64]${WINDOWS_BACKGROUND_LOG_MAX_BYTES} - $script:OpenClawBackgroundLogBytes
+    $remaining = [int64]${WINDOWS_BACKGROUND_LOG_MAX_BYTES} - $script:OperatorBackgroundLogBytes
     if ($remaining -le 0) {
       return
     }
@@ -148,11 +148,11 @@ function Add-OpenClawBackgroundLog {
     try {
       if ($count -gt 0) {
         $stream.Write($bytes, 0, $count)
-        $script:OpenClawBackgroundLogBytes += $count
+        $script:OperatorBackgroundLogBytes += $count
       }
       if ($needsBoundaryNewline) {
         $stream.WriteByte(10)
-        $script:OpenClawBackgroundLogBytes++
+        $script:OperatorBackgroundLogBytes++
       }
     } finally {
       $stream.Dispose()
@@ -162,13 +162,13 @@ function Add-OpenClawBackgroundLog {
 try {
   & {
 ${options.script}
-  } *>&1 | Add-OpenClawBackgroundLog
-  Write-OpenClawUtf8File $exitPath '0'
+  } *>&1 | Add-OperatorBackgroundLog
+  Write-OperatorUtf8File $exitPath '0'
 } catch {
-  $_ | Add-OpenClawBackgroundLog
-  Write-OpenClawUtf8File $exitPath '1'
+  $_ | Add-OperatorBackgroundLog
+  Write-OperatorUtf8File $exitPath '1'
 } finally {
-  Write-OpenClawUtf8File $donePath 'done'
+  Write-OperatorUtf8File $donePath 'done'
 }`;
   const writeArgs = [
     "exec",
@@ -400,16 +400,16 @@ function cleanupWindowsBackground(
   },
 ): void {
   const stopProcessTree = options.stopProcessTree
-    ? `function Stop-OpenClawBackgroundProcessTree([int]$ProcessId) {
+    ? `function Stop-OperatorBackgroundProcessTree([int]$ProcessId) {
   Get-CimInstance Win32_Process -Filter "ParentProcessId=$ProcessId" -ErrorAction SilentlyContinue | ForEach-Object {
-    Stop-OpenClawBackgroundProcessTree ([int]$_.ProcessId)
+    Stop-OperatorBackgroundProcessTree ([int]$_.ProcessId)
   }
   Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
 }
 if (Test-Path $pidPath) {
   $backgroundPid = (Get-Content -Path $pidPath -Raw).Trim()
   if ($backgroundPid) {
-    Stop-OpenClawBackgroundProcessTree ([int]$backgroundPid)
+    Stop-OperatorBackgroundProcessTree ([int]$backgroundPid)
   }
 }
 `
@@ -483,7 +483,7 @@ export class LinuxGuest {
   }
 
   private transportArgs(args: string[]): string[] {
-    return ["exec", this.vmName, "/usr/bin/env", "HOME=/root", "OPENCLAW_ALLOW_ROOT=1", ...args];
+    return ["exec", this.vmName, "/usr/bin/env", "HOME=/root", "OPERATOR_ALLOW_ROOT=1", ...args];
   }
 
   bash(script: string): string {

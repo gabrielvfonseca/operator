@@ -14,7 +14,7 @@ import {
   updateDeliveryQueueEntry,
   upsertDeliveryQueueEntry,
 } from "./delivery-queue-sqlite.js";
-import { resolvePreferredOperatorTmpDir } from "./tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "./tmp-operator-dir.js";
 
 describe("delivery-queue-sqlite corrupt JSON resilience", () => {
   let stateDir: string;
@@ -22,7 +22,7 @@ describe("delivery-queue-sqlite corrupt JSON resilience", () => {
   const QUEUE = "test-q";
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), "openclaw-dq-case-"));
+    tmpDir = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), "operator-dq-case-"));
     stateDir = path.join(tmpDir, "state");
     fs.mkdirSync(stateDir, { recursive: true });
   });
@@ -228,7 +228,7 @@ describe("countFailedDeliveryQueueEntries", () => {
   let stateDir: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), "openclaw-dq-count-"));
+    tmpDir = fs.mkdtempSync(path.join(resolvePreferredOperatorTmpDir(), "operator-dq-count-"));
     stateDir = path.join(tmpDir, "state");
     fs.mkdirSync(stateDir, { recursive: true });
   });

@@ -6,8 +6,8 @@ OpenAI-compatible API.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/gmi-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/gmi-provider
+operator gateway restart
 ```
 
 Configure a GMI Cloud API key, then select models with refs such as

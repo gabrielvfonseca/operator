@@ -1,5 +1,5 @@
 /** Metadata lookup helpers for plugin setup CLI backend descriptors. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isInstalledPluginEnabled } from "./installed-plugin-index.js";
 import {

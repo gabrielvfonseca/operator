@@ -1,9 +1,9 @@
 // Msteams plugin module implements channel.setup behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
-import { createTopLevelChannelConfigAdapter } from "openclaw/plugin-sdk/channel-config-helpers";
-import type { ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { createTopLevelChannelConfigAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import type { ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { MSTeamsChannelConfigSchema } from "./config-schema.js";
 import { msteamsSetupAdapter } from "./setup-core.js";
 import { msteamsSetupWizard } from "./setup-surface.js";

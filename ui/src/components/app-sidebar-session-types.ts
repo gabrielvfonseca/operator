@@ -79,10 +79,10 @@ export function sidebarSessionMetaId(key: string): string {
   return `sidebar-session-meta-${encodeURIComponent(key)}`;
 }
 
-const SIDEBAR_SESSION_GROUPING_STORAGE_KEY = "openclaw:sidebar:sessions:grouping";
-const SIDEBAR_SESSION_SHOW_CRON_STORAGE_KEY = "openclaw:sidebar:sessions:show-cron";
+const SIDEBAR_SESSION_GROUPING_STORAGE_KEY = "operator:sidebar:sessions:grouping";
+const SIDEBAR_SESSION_SHOW_CRON_STORAGE_KEY = "operator:sidebar:sessions:show-cron";
 const SIDEBAR_SESSION_COLLAPSED_SECTIONS_STORAGE_KEY =
-  "openclaw:sidebar:sessions:collapsed-sections";
+  "operator:sidebar:sessions:collapsed-sections";
 
 export function limitSidebarSessionRows(rows: SidebarRecentSession[], limit: number) {
   const requiredCount = rows.filter((row) => row.active || row.pinned).length;

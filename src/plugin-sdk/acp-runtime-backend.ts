@@ -30,7 +30,7 @@ export type {
   AcpRuntimeTurnResult,
   AcpRuntimeTurnResultError,
   AcpSessionUpdateTag,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 
 // ACP dispatch pulls in session/media/manager code; keep it lazy so
 // startup-loaded plugin surfaces stay light and concurrent hooks share one load.

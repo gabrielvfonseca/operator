@@ -1,25 +1,25 @@
 {
-  "name": "@operator/firecrawl-plugin",
+  "name": "@gabrielvfonseca/firecrawl-plugin",
   "version": "2026.7.2",
   "description": "Operator Firecrawl plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
     "typebox": "1.3.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/firecrawl-plugin",
-      "npmSpec": "@operator/firecrawl-plugin",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/firecrawl-plugin",
+      "npmSpec": "@gabrielvfonseca/firecrawl-plugin",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

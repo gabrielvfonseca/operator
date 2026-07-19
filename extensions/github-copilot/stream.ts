@@ -1,12 +1,15 @@
 // Github Copilot plugin module implements stream behavior.
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import type { Context } from "openclaw/plugin-sdk/llm";
-import type { ProviderWrapStreamFnContext } from "openclaw/plugin-sdk/plugin-entry";
-import { buildCopilotIdeHeaders, COPILOT_INTEGRATION_ID } from "openclaw/plugin-sdk/provider-auth";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { Context } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import type { ProviderWrapStreamFnContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  buildCopilotIdeHeaders,
+  COPILOT_INTEGRATION_ID,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   applyAnthropicEphemeralCacheControlMarkers,
   streamWithPayloadPatch,
-} from "openclaw/plugin-sdk/provider-stream-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
 import { rewriteCopilotResponsePayloadConnectionBoundIds } from "./connection-bound-ids.js";
 import { stripCopilotAssistantThinkingMessages } from "./replay-policy.js";
 

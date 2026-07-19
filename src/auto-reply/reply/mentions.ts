@@ -3,7 +3,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentConfig } from "../../agents/agent-scope.js";
 import { resolveMentionPatternPolicy } from "../../channels/mention-pattern-policy.js";
 import type { ChannelId } from "../../channels/plugins/channel-id.types.js";

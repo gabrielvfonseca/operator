@@ -1,4 +1,4 @@
-package ai.openclaw.app.i18n
+package ai.operator.app.i18n
 
 import android.content.Context
 import android.content.res.Configuration

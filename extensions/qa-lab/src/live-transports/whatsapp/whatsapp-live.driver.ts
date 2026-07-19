@@ -1,10 +1,10 @@
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 // QA Lab WhatsApp driver lifecycle and no-reply waits.
 import {
   startWhatsAppQaDriverSession,
   type WhatsAppQaDriverObservedMessage,
   type WhatsAppQaDriverSession,
-} from "@operator/whatsapp/api.js";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/whatsapp/api.js";
 import type { WhatsAppQaMessageScenarioContext } from "./whatsapp-live.contracts.js";
 import {
   isWhatsAppScenarioSutMessage,

@@ -1,7 +1,7 @@
 // Prepares config writes by diffing current state and preserving metadata.
 import { isDeepStrictEqual } from "node:util";
-import { normalizeConfiguredProviderCatalogModelId } from "@operator/model-catalog-core/provider-model-id-normalization";
-import { expectDefined } from "@operator/normalization-core";
+import { normalizeConfiguredProviderCatalogModelId } from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 import { parseConfigPathArrayIndex } from "../shared/path-array-index.js";
 import { isRecord } from "../utils.js";
@@ -984,10 +984,10 @@ export function formatConfigValidationFailure(pathLabel: string, issueMessage: s
     `Configuration mismatch: ${policyPath} is "open", but ${allowPath} does not include "*".`,
     "",
     "Fix with:",
-    `  operator config set ${allowPath} '["*"]'`,
+    `  openclaw config set ${allowPath} '["*"]'`,
     "",
     "Or switch policy:",
-    `  operator config set ${policyPath} "pairing"`,
+    `  openclaw config set ${policyPath} "pairing"`,
   ].join("\n");
 }
 

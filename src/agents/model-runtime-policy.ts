@@ -4,8 +4,8 @@
  * Agent execution uses this to choose a model/provider-specific runtime policy
  * from agent entries, model catalog config, provider config, or QA overrides.
  */
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { AgentModelEntryConfig } from "../config/types.agent-defaults.js";
 import type { AgentRuntimePolicyConfig } from "../config/types.agents-shared.js";
 import type { ModelDefinitionConfig, ModelProviderConfig } from "../config/types.models.js";
@@ -252,7 +252,7 @@ export function resolveModelRuntimePolicy(params: {
   const inferredMatchedProvider = callerProvider ? undefined : effectiveProvider;
   if (process.env.OPERATOR_BUILD_PRIVATE_QA === "1") {
     const forcedRuntime = process.env.OPERATOR_QA_FORCE_RUNTIME?.trim().toLowerCase();
-    if (forcedRuntime === "operator" || forcedRuntime === "codex") {
+    if (forcedRuntime === "@gabrielvfonseca/operator" || forcedRuntime === "codex") {
       return { policy: { id: forcedRuntime }, source: "model" };
     }
   }

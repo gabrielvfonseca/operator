@@ -1,5 +1,8 @@
-import type { Context, Model } from "@operator/ai";
-import { streamOpenAICompletions, streamOpenAIResponses } from "@operator/ai/internal/openai";
+import type { Context, Model } from "@gabrielvfonseca/ai";
+import {
+  streamOpenAICompletions,
+  streamOpenAIResponses,
+} from "@gabrielvfonseca/ai/internal/openai";
 // OpenAI-compatible auth tests cover API key and base URL normalization.
 // Lives in core: it proves the facade-installed guarded fetch routes provider
 // requests through Operator's SSRF guard.

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+import { upsertSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../../runtime-api.js";
 import {

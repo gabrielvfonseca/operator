@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { afterEach, beforeEach, vi } from "vitest";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import type { MockFn } from "../test-utils/vitest-mock-fn.js";
@@ -306,7 +306,7 @@ function createLegacyStateMigrationDetectionResult(params?: {
       hasLegacy: false,
     },
     rescuePending: {
-      sourcePaths: ["/tmp/state/crestodian/rescue-pending", "/tmp/state/operator/rescue-pending"],
+      sourcePaths: ["/tmp/state/crestodian/rescue-pending", "/tmp/state/openclaw/rescue-pending"],
       hasLegacy: false,
     },
     channelPairing: {
@@ -438,22 +438,22 @@ vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout,
 }));
 
-vi.mock("operator/plugin-sdk/provider-auth", () => ({
+vi.mock("openclaw/plugin-sdk/provider-auth", () => ({
   isNonSecretApiKeyMarker: () => false,
 }));
 
-vi.mock("operator/plugin-sdk/provider-model-shared", () => ({
+vi.mock("openclaw/plugin-sdk/provider-model-shared", () => ({
   DEFAULT_CONTEXT_TOKENS: 32768,
   normalizeProviderId: (value: string) => normalizeLowercaseStringOrEmpty(value),
 }));
 
-vi.mock("operator/plugin-sdk/provider-stream-shared", () => ({
+vi.mock("openclaw/plugin-sdk/provider-stream-shared", () => ({
   createMoonshotThinkingWrapper: () => undefined,
   resolveMoonshotThinkingType: () => undefined,
   streamWithPayloadPatch: () => undefined,
 }));
 
-vi.mock("operator/plugin-sdk/runtime-env", () => ({
+vi.mock("openclaw/plugin-sdk/runtime-env", () => ({
   createSubsystemLogger: () => ({
     debug: () => {},
     info: () => {},
@@ -462,8 +462,8 @@ vi.mock("operator/plugin-sdk/runtime-env", () => ({
   }),
 }));
 
-vi.mock("../infra/operator-root.js", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../infra/operator-root.js")>();
+vi.mock("../infra/openclaw-root.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../infra/openclaw-root.js")>();
   return {
     ...actual,
     resolveOperatorPackageRoot,

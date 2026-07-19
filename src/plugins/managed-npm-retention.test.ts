@@ -11,9 +11,9 @@ import {
 
 describe("managed npm retention", () => {
   it("cleans retired generations while preserving the active install root", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-retention-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-retention-"));
     const npmDir = path.join(stateDir, "npm");
-    const packageName = "@operator/codex";
+    const packageName = "@gabrielvfonseca/codex";
     const oldProjectRoot = resolvePluginNpmGenerationProjectDir({
       npmDir,
       packageName,
@@ -50,7 +50,7 @@ describe("managed npm retention", () => {
   });
 
   it("cleans retained packages from the legacy shared npm root", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-retention-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-retention-"));
     const npmDir = path.join(stateDir, "npm");
     const packageDir = path.join(npmDir, "node_modules", "@openclaw", "codex");
     fs.mkdirSync(packageDir, { recursive: true });

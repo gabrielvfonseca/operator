@@ -1,7 +1,7 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.VoiceCaptureMode
-import ai.openclaw.app.ui.design.TalkWaveformPhase
+import ai.operator.app.VoiceCaptureMode
+import ai.operator.app.ui.design.TalkWaveformPhase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -6,8 +6,8 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.js";
 import type { DirectoryConfigParams } from "./directory-types.js";
 import type { ChannelDirectoryEntry } from "./types.public.js";

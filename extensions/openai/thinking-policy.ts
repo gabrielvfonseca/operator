@@ -2,7 +2,7 @@
 import type {
   ProviderDefaultThinkingPolicyContext,
   ProviderThinkingProfile,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 type OpenAIThinkingCompat = ProviderDefaultThinkingPolicyContext["compat"];
 type OpenAIThinkingApi = ProviderDefaultThinkingPolicyContext["api"];
@@ -107,7 +107,7 @@ function buildOpenAIThinkingProfile(params: {
   // come only from the selected ChatGPT route's catalog metadata.
   const supportsUltra =
     (isBare || isSol || isTerra || isLuna) &&
-    (agentRuntime === "openclaw" ||
+    (agentRuntime === "@gabrielvfonseca/operator" ||
       agentRuntime === "auto" ||
       (agentRuntime === "codex" && codexSupportsUltra));
   const defaultLevel = isSol || isTerra || isLuna ? "medium" : undefined;

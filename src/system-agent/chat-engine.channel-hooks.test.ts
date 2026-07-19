@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "../config/types.operator.js";
 import { SystemAgentChatEngine } from "./chat-engine.js";
 import { createSystemAgentVerifiedInferenceTestFixture } from "./system-agent.test-helpers.js";
 import type {
@@ -29,7 +29,7 @@ function verifiedConfigSnapshot(): ConfigFileSnapshot {
   return {
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "hash",
     raw: null,
     parsed: config,
@@ -86,7 +86,7 @@ vi.mock("../config/config.js", async (importOriginal) => ({
   readConfigFileSnapshot: vi.fn(async () => ({
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "hash",
     config: {},
     sourceConfig: {},
@@ -112,7 +112,7 @@ describe("Operator chat channel setup", () => {
         loadOverview: async () =>
           ({
             config: {
-              path: "/tmp/openclaw.json",
+              path: "/tmp/operator.json",
               exists: true,
               valid: true,
               issues: [],
@@ -128,7 +128,7 @@ describe("Operator chat channel setup", () => {
             },
             gateway: { url: "ws://127.0.0.1:18789", source: "local", reachable: false },
             references: {
-              docsUrl: "https://docs.openclaw.ai",
+              docsUrl: "https://docs.operator.ai",
               sourceUrl: "https://github.com/openclaw/openclaw",
             },
           }) as never,

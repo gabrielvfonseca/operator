@@ -45,8 +45,8 @@ describe("applyPluginAutoEnable channels", () => {
       JSON.stringify({
         entries: [
           {
-            name: "@operator/env-secondary",
-            openclaw: {
+            name: "@gabrielvfonseca/env-secondary",
+            operator: {
               channel: {
                 id: "env-secondary",
                 label: "Env Secondary",
@@ -56,7 +56,7 @@ describe("applyPluginAutoEnable channels", () => {
                 preferOver: ["env-primary"],
               },
               install: {
-                npmSpec: "@operator/env-secondary",
+                npmSpec: "@gabrielvfonseca/env-secondary",
               },
             },
           },
@@ -105,8 +105,8 @@ describe("applyPluginAutoEnable channels", () => {
       JSON.stringify({
         entries: [
           {
-            name: "@operator/env-primary",
-            openclaw: {
+            name: "@gabrielvfonseca/env-primary",
+            operator: {
               channel: {
                 id: "env-primary",
                 label: "Env Primary",
@@ -115,13 +115,13 @@ describe("applyPluginAutoEnable channels", () => {
                 blurb: "Env primary entry",
               },
               install: {
-                npmSpec: "@operator/env-primary",
+                npmSpec: "@gabrielvfonseca/env-primary",
               },
             },
           },
           {
-            name: "@operator/env-secondary",
-            openclaw: {
+            name: "@gabrielvfonseca/env-secondary",
+            operator: {
               channel: {
                 id: "env-secondary",
                 label: "Env Secondary",
@@ -131,7 +131,7 @@ describe("applyPluginAutoEnable channels", () => {
                 preferOver: ["env-primary"],
               },
               install: {
-                npmSpec: "@operator/env-secondary",
+                npmSpec: "@gabrielvfonseca/env-secondary",
               },
             },
           },
@@ -348,7 +348,7 @@ describe("applyPluginAutoEnable channels", () => {
             },
           },
           {
-            id: "openclaw-modern-chat",
+            id: "operator-modern-chat",
             channels: ["legacy-bundled-chat"],
             channelConfigs: {
               "legacy-bundled-chat": {
@@ -361,7 +361,7 @@ describe("applyPluginAutoEnable channels", () => {
         ]),
       });
 
-      expect(result.config.plugins?.entries?.["openclaw-modern-chat"]?.enabled).toBe(true);
+      expect(result.config.plugins?.entries?.["operator-modern-chat"]?.enabled).toBe(true);
       expect(result.config.plugins?.entries?.["legacy-bundled-chat"]?.enabled).toBe(false);
       expect(result.changes.join("\n")).toContain("Modern Chat configured, enabled automatically.");
     });
@@ -370,7 +370,7 @@ describe("applyPluginAutoEnable channels", () => {
       const result = applyPluginAutoEnable({
         config: {
           channels: { "legacy-bundled-chat": { token: "legacy" } },
-          plugins: { entries: { "openclaw-modern-chat": { enabled: false } } },
+          plugins: { entries: { "operator-modern-chat": { enabled: false } } },
         },
         env: makeIsolatedEnv(),
         manifestRegistry: makeRegistry([
@@ -386,7 +386,7 @@ describe("applyPluginAutoEnable channels", () => {
             },
           },
           {
-            id: "openclaw-modern-chat",
+            id: "operator-modern-chat",
             channels: ["legacy-bundled-chat"],
             channelConfigs: {
               "legacy-bundled-chat": {
@@ -399,7 +399,7 @@ describe("applyPluginAutoEnable channels", () => {
         ]),
       });
 
-      expect(result.config.plugins?.entries?.["openclaw-modern-chat"]?.enabled).toBe(false);
+      expect(result.config.plugins?.entries?.["operator-modern-chat"]?.enabled).toBe(false);
       expect(result.config.plugins?.entries?.["legacy-bundled-chat"]).toBeUndefined();
       expect(result.config.channels?.["legacy-bundled-chat"]?.enabled).toBe(true);
       expect(result.changes.join("\n")).toContain(
@@ -421,7 +421,7 @@ describe("applyPluginAutoEnable channels", () => {
         manifestRegistry: makeRegistry([
           { id: "qqbot", channels: ["qqbot"] },
           {
-            id: "openclaw-qqbot",
+            id: "operator-qqbot",
             channels: ["qqbot"],
             channelConfigs: {
               qqbot: {
@@ -433,7 +433,7 @@ describe("applyPluginAutoEnable channels", () => {
         ]),
       });
 
-      expect(result.config.plugins?.entries?.["openclaw-qqbot"]?.enabled).toBe(true);
+      expect(result.config.plugins?.entries?.["operator-qqbot"]?.enabled).toBe(true);
       expect(result.config.plugins?.entries?.qqbot?.enabled).toBe(true);
     });
 
@@ -466,15 +466,15 @@ describe("applyPluginAutoEnable channels", () => {
         env: makeIsolatedEnv(),
         manifestRegistry: makeRegistry([
           {
-            id: "wecom-openclaw-plugin",
+            id: "wecom-operator-plugin",
             channels: ["wecom"],
           },
         ]),
       });
 
-      expect(result.config.plugins?.entries?.["wecom-openclaw-plugin"]?.enabled).toBe(true);
+      expect(result.config.plugins?.entries?.["wecom-operator-plugin"]?.enabled).toBe(true);
       expect(result.config.plugins?.entries?.wecom).toBeUndefined();
-      expect(result.config.plugins?.allow).toEqual(["existing-plugin", "wecom-openclaw-plugin"]);
+      expect(result.config.plugins?.allow).toEqual(["existing-plugin", "wecom-operator-plugin"]);
       expect(result.changes.join("\n")).toContain("enabled automatically.");
     });
 

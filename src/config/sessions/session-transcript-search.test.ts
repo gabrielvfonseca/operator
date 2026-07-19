@@ -29,7 +29,7 @@ type TestPaths = { stateDir: string; tempDir: string };
 let paths: TestPaths;
 
 beforeEach(() => {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-session-search-"));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-session-search-"));
   paths = {
     stateDir: path.join(tempDir, "state"),
     tempDir,

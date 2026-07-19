@@ -138,7 +138,7 @@ export function loadGlobalRuntimeDotEnvFiles(opts?: GlobalRuntimeDotEnvOptions) 
       filePath: path.join(
         resolveRequiredHomeDir(process.env, os.homedir),
         ".config",
-        "operator",
+        "@gabrielvfonseca/operator",
         "gateway.env",
       ),
       quiet,

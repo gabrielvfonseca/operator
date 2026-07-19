@@ -1,7 +1,7 @@
 // Model pricing cache tests protect provider/model normalization, manifest
 // metadata lookup, fetch preconnect behavior, cache refresh, and logging.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { normalizeProviderModelIdWithRuntime } from "../agents/provider-model-normalization.runtime.js";
 import type { OperatorConfig } from "../config/config.js";
@@ -1259,7 +1259,7 @@ function createManifestRecord(overrides: Partial<PluginManifestRecord>): PluginM
     origin: "global",
     rootDir: "/tmp/plugin",
     source: "/tmp/plugin/index.js",
-    manifestPath: "/tmp/plugin/openclaw.plugin.json",
+    manifestPath: "/tmp/plugin/operator.plugin.json",
     ...overrides,
   };
 }

@@ -4,8 +4,8 @@
 
 /** Tab group shown to the user; membership == what the agent may touch. */
 export const OPERATOR_TAB_GROUP_TITLE = "Operator";
-const EXTENSION_RELAY_PROTOCOL = "openclaw-extension-relay";
-const EXTENSION_RELAY_TOKEN_PROTOCOL_PREFIX = "openclaw-extension-token.";
+const EXTENSION_RELAY_PROTOCOL = "operator-extension-relay";
+const EXTENSION_RELAY_TOKEN_PROTOCOL_PREFIX = "operator-extension-token.";
 
 const CHROME_GROUP_COLORS = {
   grey: [128, 128, 128],

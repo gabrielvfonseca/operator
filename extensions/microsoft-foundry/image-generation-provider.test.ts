@@ -1,5 +1,5 @@
 // Microsoft Foundry image provider tests cover MAI request construction.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildMicrosoftFoundryImageGenerationProvider } from "./image-generation-provider.js";
 import { PROVIDER_ID } from "./shared.js";

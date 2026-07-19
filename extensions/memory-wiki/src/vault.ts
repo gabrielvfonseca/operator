@@ -4,8 +4,12 @@ import path from "node:path";
 import {
   replaceManagedMarkdownBlock,
   withTrailingNewline,
-} from "openclaw/plugin-sdk/memory-host-markdown";
-import { FsSafeError, pathExists, root as fsRoot } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-host-markdown";
+import {
+  FsSafeError,
+  pathExists,
+  root as fsRoot,
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import { appendMemoryWikiLog } from "./log.js";
 import { WIKI_RAW_SOURCE_MARKER } from "./markdown.js";
@@ -19,8 +23,8 @@ const WIKI_VAULT_DIRECTORIES = [
   "reports",
   "_attachments",
   "_views",
-  ".openclaw-wiki",
-  ".openclaw-wiki/cache",
+  ".operator-wiki",
+  ".operator-wiki/cache",
 ] as const;
 
 type InitializeMemoryWikiVaultResult = {
@@ -35,8 +39,8 @@ function buildIndexMarkdown(): string {
     replaceManagedMarkdownBlock({
       original: "# Wiki Index\n",
       heading: "## Generated",
-      startMarker: "<!-- openclaw:wiki:index:start -->",
-      endMarker: "<!-- openclaw:wiki:index:end -->",
+      startMarker: "<!-- operator:wiki:index:start -->",
+      endMarker: "<!-- operator:wiki:index:end -->",
       body: "- No compiled pages yet.",
     }),
   );
@@ -50,7 +54,7 @@ function buildAgentsMarkdown(): string {
 - Preserve human notes outside managed markers.
 - Prefer source-backed claims over wiki-to-wiki citation loops.
 - Prefer structured \`claims\` with evidence over burying key beliefs only in prose.
-- Use \`.openclaw-wiki/cache/agent-digest.json\` and \`claims.jsonl\` for machine reads; markdown pages are the human view.
+- Use \`.operator-wiki/cache/agent-digest.json\` and \`claims.jsonl\` for machine reads; markdown pages are the human view.
 `);
 }
 
@@ -68,11 +72,11 @@ This vault is maintained by the Operator memory-wiki plugin.
 - Raw sources remain the evidence layer.
 - To keep unmanaged raw Markdown in \`sources/\`, add \`${WIKI_RAW_SOURCE_MARKER}\` near the top of the page.
 - Wiki pages are the human-readable synthesis layer.
-- \`.openclaw-wiki/cache/agent-digest.json\` is the agent-facing compiled digest.
+- \`.operator-wiki/cache/agent-digest.json\` is the agent-facing compiled digest.
 
 ## Notes
-<!-- openclaw:human:start -->
-<!-- openclaw:human:end -->
+<!-- operator:human:start -->
+<!-- operator:human:end -->
 `);
 }
 
@@ -124,7 +128,7 @@ export async function initializeMemoryWikiVault(
     withTrailingNewline("# Inbox\n\nDrop raw ideas, questions, and source links here.\n"),
     createdFiles,
   );
-  await writeFileIfMissing(rootDir, ".openclaw-wiki/log.jsonl", "", createdFiles);
+  await writeFileIfMissing(rootDir, ".operator-wiki/log.jsonl", "", createdFiles);
 
   if (createdDirectories.length > 0 || createdFiles.length > 0) {
     await appendMemoryWikiLog(rootDir, {

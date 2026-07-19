@@ -4,7 +4,7 @@ import type {
   AcpRuntimeCapabilities,
   AcpRuntimeHandle,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import { toErrorObject } from "../../infra/errors.js";

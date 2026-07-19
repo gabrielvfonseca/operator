@@ -1,5 +1,5 @@
 // ACP Core module implements session interaction mode behavior.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type AcpSessionInteractionMode = "interactive" | "parent-owned-background";
 

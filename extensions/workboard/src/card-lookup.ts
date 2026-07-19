@@ -1,5 +1,5 @@
 // Workboard plugin module implements card lookup behavior.
-import type { WorkboardCard } from "@operator/workboard-contract";
+import type { WorkboardCard } from "@gabrielvfonseca/workboard-contract";
 
 type WorkboardCardLookupResult =
   | { card: WorkboardCard; error?: undefined }

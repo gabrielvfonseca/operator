@@ -204,7 +204,7 @@ const defaultPublicDeprecatedExportsByEntrypointBudget = Object.freeze({
 export function readPluginSdkSurfaceBudgets(env = process.env) {
   const budgets = {
     publicEntrypoints: readPluginSdkSurfaceBudgetEnv(
-      "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_ENTRYPOINTS",
+      "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_ENTRYPOINTS",
       // Registry sweep: 77 packages, zero fetch failures; retired dead channel-ingress facade.
       328,
       env,
@@ -216,7 +216,7 @@ export function readPluginSdkSurfaceBudgets(env = process.env) {
     // The focused HTML entity runtime and quote-aware HTML tokenizer add one public function each.
     // Plugin service Gateway event scope and emitter types add four facade exports.
     publicExports: readPluginSdkSurfaceBudgetEnv(
-      "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_EXPORTS",
+      "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_EXPORTS",
       // +4: registerMcpServerConnectionResolver context/result/resolver/registration types (#106229).
       // +2: materializeRequesterScopedMcpToolsForHarnessRun (agent-harness-runtime + compat mirror).
       // +1: matchesNoProxy exposes canonical Undici-compatible bypass selection to plugins.
@@ -236,7 +236,7 @@ export function readPluginSdkSurfaceBudgets(env = process.env) {
       env,
     ),
     publicFunctionExports: readPluginSdkSurfaceBudgetEnv(
-      "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_FUNCTION_EXPORTS",
+      "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_FUNCTION_EXPORTS",
       // +2: materializeRequesterScopedMcpToolsForHarnessRun (agent-harness-runtime + compat mirror).
       // +4: group scope encoder/key builder (channel-policy + compat mirror).
       // +1: atomic SQLite STRICT migration for plugin stores.
@@ -251,7 +251,7 @@ export function readPluginSdkSurfaceBudgets(env = process.env) {
       env,
     ),
     publicDeprecatedExports: readPluginSdkSurfaceBudgetEnv(
-      "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_DEPRECATED_EXPORTS",
+      "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_DEPRECATED_EXPORTS",
       // +2: group scope encoder/key builder mirrored by deprecated compat.
       // Harvest: channel-ingress -8; dead channel-message dispatch aliases -23.
       // +77: five zero-consumer subpaths enter their removal window.
@@ -264,14 +264,14 @@ export function readPluginSdkSurfaceBudgets(env = process.env) {
       env,
     ),
     publicWildcardReexports: readPluginSdkSurfaceBudgetEnv(
-      "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_WILDCARD_REEXPORTS",
+      "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_WILDCARD_REEXPORTS",
       // Used-union narrowing removes 103 wildcard re-exports.
       106,
       env,
     ),
   };
   const publicDeprecatedExportsByEntrypointBudget = readPluginSdkEntrypointBudgetEnv(
-    "OPENCLAW_PLUGIN_SDK_MAX_PUBLIC_DEPRECATED_EXPORTS_BY_ENTRYPOINT",
+    "OPERATOR_PLUGIN_SDK_MAX_PUBLIC_DEPRECATED_EXPORTS_BY_ENTRYPOINT",
     defaultPublicDeprecatedExportsByEntrypointBudget,
     env,
   );

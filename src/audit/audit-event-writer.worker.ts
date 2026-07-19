@@ -1,6 +1,6 @@
 /** Worker-thread entrypoint for serialized audit writes and retention maintenance. */
 import { parentPort, workerData } from "node:worker_threads";
-import { closeOperatorStateDatabase } from "../state/operator-state-db.js";
+import { closeOperatorStateDatabase } from "../state/openclaw-state-db.js";
 import { pruneExpiredAuditEvents, recordAuditEvent } from "./audit-event-store.js";
 import type { AuditEventInput } from "./audit-event-types.js";
 

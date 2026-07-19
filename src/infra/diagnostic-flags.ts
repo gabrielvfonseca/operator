@@ -1,6 +1,6 @@
 // Resolves diagnostics feature flags from config and environment.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntriesLower } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntriesLower } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 
 const DIAGNOSTICS_ENV = "OPERATOR_DIAGNOSTICS";

@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 // Control UI view renders usage render overview screen content.
 import { html, nothing } from "lit";
 import { formatDurationCompact } from "../../../../src/infra/format-time/format-duration.ts";
@@ -124,7 +124,7 @@ function renderFilterChips(
         ? html`
             <div class="filter-chip">
               <span class="filter-chip-label">${t("usage.filters.days")}: ${daysLabel}</span>
-              <openclaw-tooltip .content=${t("usage.filters.remove")}>
+              <operator-tooltip .content=${t("usage.filters.remove")}>
                 <button
                   class="filter-chip-remove"
                   @click=${onClearDays}
@@ -132,7 +132,7 @@ function renderFilterChips(
                 >
                   ×
                 </button>
-              </openclaw-tooltip>
+              </operator-tooltip>
             </div>
           `
         : nothing}
@@ -140,7 +140,7 @@ function renderFilterChips(
         ? html`
             <div class="filter-chip">
               <span class="filter-chip-label">${t("usage.filters.hours")}: ${hoursLabel}</span>
-              <openclaw-tooltip .content=${t("usage.filters.remove")}>
+              <operator-tooltip .content=${t("usage.filters.remove")}>
                 <button
                   class="filter-chip-remove"
                   @click=${onClearHours}
@@ -148,7 +148,7 @@ function renderFilterChips(
                 >
                   ×
                 </button>
-              </openclaw-tooltip>
+              </operator-tooltip>
             </div>
           `
         : nothing}
@@ -156,7 +156,7 @@ function renderFilterChips(
         ? html`
             <div class="filter-chip" title="${sessionsFullName}">
               <span class="filter-chip-label">${t("usage.filters.session")}: ${sessionsLabel}</span>
-              <openclaw-tooltip .content=${t("usage.filters.remove")}>
+              <operator-tooltip .content=${t("usage.filters.remove")}>
                 <button
                   class="filter-chip-remove"
                   @click=${onClearSessions}
@@ -164,7 +164,7 @@ function renderFilterChips(
                 >
                   ×
                 </button>
-              </openclaw-tooltip>
+              </operator-tooltip>
             </div>
           `
         : nothing}
@@ -388,7 +388,7 @@ function renderDailyChartCompact(
                 breakdownLines,
               };
               return html`
-                <openclaw-tooltip
+                <operator-tooltip
                   .content=${[
                     tooltipContent.dateLabel,
                     tooltipContent.tokensLabel,
@@ -435,7 +435,7 @@ function renderDailyChartCompact(
                         ></div>`}
                     <div class="${labelClass}">${shortLabel}</div>
                   </div>
-                </openclaw-tooltip>
+                </operator-tooltip>
               `;
             })}
           </div>
@@ -1071,7 +1071,7 @@ function renderSessionsCard(
               </option>
             </select>
           </label>
-          <openclaw-tooltip
+          <operator-tooltip
             .content=${sessionSortDir === "desc"
               ? t("usage.sessions.descending")
               : t("usage.sessions.ascending")}
@@ -1085,7 +1085,7 @@ function renderSessionsCard(
             >
               ${sessionSortDir === "desc" ? "↓" : "↑"}
             </button>
-          </openclaw-tooltip>
+          </operator-tooltip>
           ${selectedCount > 0
             ? html`
                 <button class="btn btn--sm" @click=${onClearSessions}>

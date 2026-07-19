@@ -1,4 +1,4 @@
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 
 type GatewayConfigClient = {
   call: (method: string, params?: unknown, options?: { timeoutMs?: number }) => Promise<unknown>;

@@ -4,15 +4,15 @@
 import {
   getCachedLiveProviderModelRows,
   LiveModelCatalogHttpError,
-} from "openclaw/plugin-sdk/provider-catalog-live-runtime";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   asPositiveSafeInteger,
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { isChutesModelDiscoveryTestEnvironment } from "./model-discovery-env.js";
 
 const log = createSubsystemLogger("chutes-models");

@@ -1,5 +1,5 @@
 // Extracts document extractor public artifacts from plugin manifests.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type {
   DocumentExtractorPlugin,
   PluginDocumentExtractorEntry,

@@ -1,5 +1,8 @@
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { normalizeOptionalString, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  normalizeOptionalString,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   ACTIVE_MEMORY_DEBUG_PREFIX,
   ACTIVE_MEMORY_STATUS_PREFIX,

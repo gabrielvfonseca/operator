@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 #if canImport(Darwin)
 import Darwin
@@ -95,8 +95,8 @@ struct RemotePortTunnelTests {
 
     @Test @MainActor func `remote port override prefers explicit remote port`() async {
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configPath]) {
-            OpenClawConfigFile.saveDict([
+        await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configPath]) {
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "ws://127.0.0.1:19089",
@@ -113,8 +113,8 @@ struct RemotePortTunnelTests {
 
     @Test @MainActor func `remote port override can read loopback url port`() async {
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configPath]) {
-            OpenClawConfigFile.saveDict([
+        await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configPath]) {
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "ws://127.0.0.1:18789",

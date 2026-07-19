@@ -1,11 +1,11 @@
 import AppKit
 import CryptoKit
 import Observation
-import OpenClawDiscovery
+import OperatorDiscovery
 import SwiftUI
 
 enum UIStrings {
-    static let welcomeTitle = "Welcome to OpenClaw"
+    static let welcomeTitle = "Welcome to Operator"
 }
 
 enum RemoteOnboardingProbeState: Equatable {
@@ -78,7 +78,7 @@ enum OnboardingSystemAgentResumeStore {
             remoteTransport: state.remoteTransport,
             remoteURL: state.remoteUrl,
             remoteTarget: state.remoteTarget,
-            localStateDir: OpenClawConfigFile.stateDirURL(),
+            localStateDir: OperatorConfigFile.stateDirURL(),
             sshRemotePort: sshRemotePort)
     }
 
@@ -88,7 +88,7 @@ enum OnboardingSystemAgentResumeStore {
         remoteTransport: AppState.RemoteTransport,
         remoteURL: String,
         remoteTarget: String,
-        localStateDir: URL = OpenClawConfigFile.stateDirURL(),
+        localStateDir: URL = OperatorConfigFile.stateDirURL(),
         sshRemotePort: Int = GatewayEnvironment.gatewayPort()) -> String?
     {
         switch connectionMode {
@@ -97,7 +97,7 @@ enum OnboardingSystemAgentResumeStore {
         case .local:
             let stateDir = localStateDir.resolvingSymlinksInPath().standardizedFileURL.path
             let defaultStateDir = FileManager.default.homeDirectoryForCurrentUser
-                .appendingPathComponent(".openclaw", isDirectory: true)
+                .appendingPathComponent(".operator", isDirectory: true)
                 .resolvingSymlinksInPath()
                 .standardizedFileURL.path
             if stateDir == defaultStateDir {

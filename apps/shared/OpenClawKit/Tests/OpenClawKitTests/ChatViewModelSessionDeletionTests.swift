@@ -1,10 +1,10 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 /// Minimal transport for delete-session flows; unrelated protocol methods keep
 /// their throwing defaults.
-private final class DeleteSessionTestTransport: @unchecked Sendable, OpenClawChatTransport {
+private final class DeleteSessionTestTransport: @unchecked Sendable, OperatorChatTransport {
     private let lock = NSLock()
     private var deletedKeysStorage: [String] = []
     private var historyRequestsStorage: [String] = []
@@ -17,12 +17,12 @@ private final class DeleteSessionTestTransport: @unchecked Sendable, OpenClawCha
         self.lock.withLock { self.historyRequestsStorage }
     }
 
-    func requestHistory(sessionKey: String) async throws -> OpenClawChatHistoryPayload {
+    func requestHistory(sessionKey: String) async throws -> OperatorChatHistoryPayload {
         self.lock.withLock { self.historyRequestsStorage.append(sessionKey) }
         let json = """
         {"sessionKey":"\(sessionKey)","sessionId":null,"messages":[],"thinkingLevel":"off"}
         """
-        return try JSONDecoder().decode(OpenClawChatHistoryPayload.self, from: Data(json.utf8))
+        return try JSONDecoder().decode(OperatorChatHistoryPayload.self, from: Data(json.utf8))
     }
 
     func sendMessage(
@@ -30,19 +30,19 @@ private final class DeleteSessionTestTransport: @unchecked Sendable, OpenClawCha
         message _: String,
         thinking _: String,
         idempotencyKey _: String,
-        attachments _: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+        attachments _: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
     {
         let json = """
         {"runId":"\(UUID().uuidString)","status":"ok"}
         """
-        return try JSONDecoder().decode(OpenClawChatSendResponse.self, from: Data(json.utf8))
+        return try JSONDecoder().decode(OperatorChatSendResponse.self, from: Data(json.utf8))
     }
 
     func requestHealth(timeoutMs _: Int) async throws -> Bool {
         true
     }
 
-    func events() -> AsyncStream<OpenClawChatTransportEvent> {
+    func events() -> AsyncStream<OperatorChatTransportEvent> {
         AsyncStream { continuation in
             continuation.finish()
         }
@@ -57,7 +57,7 @@ private final class DeleteSessionTestTransport: @unchecked Sendable, OpenClawCha
 struct ChatViewModelSessionDeletionTests {
     @Test func `deleting the active main session re-bootstraps in place`() async throws {
         let transport = DeleteSessionTestTransport()
-        let vm = OpenClawChatViewModel(sessionKey: "main", transport: transport)
+        let vm = OperatorChatViewModel(sessionKey: "main", transport: transport)
         vm.load()
         try await waitUntil("initial bootstrap history") {
             await MainActor.run { transport.historyRequests.contains("main") }
@@ -79,7 +79,7 @@ struct ChatViewModelSessionDeletionTests {
 
     @Test func `deleting the active non-main session switches to main`() async throws {
         let transport = DeleteSessionTestTransport()
-        let vm = OpenClawChatViewModel(sessionKey: "scratch", transport: transport)
+        let vm = OperatorChatViewModel(sessionKey: "scratch", transport: transport)
         vm.load()
         try await waitUntil("initial bootstrap history") {
             await MainActor.run { transport.historyRequests.contains("scratch") }
@@ -97,7 +97,7 @@ struct ChatViewModelSessionDeletionTests {
 
     @Test func `deleting the canonical selected global row treats its alias as active`() async throws {
         let transport = DeleteSessionTestTransport()
-        let vm = OpenClawChatViewModel(
+        let vm = OperatorChatViewModel(
             sessionKey: "global",
             transport: transport,
             activeAgentId: "ops")
@@ -118,7 +118,7 @@ struct ChatViewModelSessionDeletionTests {
 
     @Test func `deleting an inactive session keeps the active one`() async throws {
         let transport = DeleteSessionTestTransport()
-        let vm = OpenClawChatViewModel(sessionKey: "main", transport: transport)
+        let vm = OperatorChatViewModel(sessionKey: "main", transport: transport)
         vm.load()
         try await waitUntil("initial bootstrap history") {
             await MainActor.run { transport.historyRequests.contains("main") }

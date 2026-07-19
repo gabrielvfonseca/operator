@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   cleanupPluginLoaderFixturesForTest,
   EMPTY_PLUGIN_SCHEMA,
@@ -16,7 +16,7 @@ import { createCapturingTestRuntime } from "./test-runtime-config-helpers.js";
 
 const mocks = vi.hoisted(() => ({
   callGateway: vi.fn(),
-  readConfigFileSnapshot: vi.fn(async () => ({ path: "/tmp/openclaw.json" })),
+  readConfigFileSnapshot: vi.fn(async () => ({ path: "/tmp/operator.json" })),
   requireValidConfigSnapshot: vi.fn(),
   resolveCommandConfigWithSecrets: vi.fn(),
 }));
@@ -56,9 +56,9 @@ function writeExternalEnvChannelPlugin() {
     path.join(pluginDir, "package.json"),
     JSON.stringify(
       {
-        name: "@example/openclaw-external-env-channel",
+        name: "@example/operator-external-env-channel",
         version: "1.0.0",
-        openclaw: {
+        operator: {
           extensions: ["./index.cjs"],
         },
       },
@@ -68,7 +68,7 @@ function writeExternalEnvChannelPlugin() {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: "external-env-channel-plugin",

@@ -1,8 +1,8 @@
 /**
  * Meta provider plugin entrypoint.
  */
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { applyMetaConfig, META_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildMetaProvider } from "./provider-catalog.js";
 import { wrapMetaProviderStream } from "./stream.js";

@@ -6,7 +6,7 @@ read_when:
 title: "Agent send"
 ---
 
-`openclaw agent` runs a single agent turn from the command line without an
+`operator agent` runs a single agent turn from the command line without an
 inbound chat message. Use it for scripted workflows, testing, and
 programmatic delivery. Full flag and behavior reference:
 [Agent CLI reference](/cli/agent).
@@ -16,7 +16,7 @@ programmatic delivery. Full flag and behavior reference:
 <Steps>
   <Step title="Run a simple agent turn">
     ```bash
-    openclaw agent --agent main --message "What is the weather today?"
+    operator agent --agent main --message "What is the weather today?"
     ```
 
     Sends the message through the Gateway and prints the reply.
@@ -25,7 +25,7 @@ programmatic delivery. Full flag and behavior reference:
 
   <Step title="Send a multiline prompt from a file">
     ```bash
-    openclaw agent --agent ops --message-file ./task.md
+    operator agent --agent ops --message-file ./task.md
     ```
 
     Reads a valid UTF-8 file as the agent message body.
@@ -35,16 +35,16 @@ programmatic delivery. Full flag and behavior reference:
   <Step title="Target a specific agent or session">
     ```bash
     # Target a specific agent
-    openclaw agent --agent ops --message "Summarize logs"
+    operator agent --agent ops --message "Summarize logs"
 
     # Target a phone number (derives session key)
-    openclaw agent --to +15555550123 --message "Status update"
+    operator agent --to +15555550123 --message "Status update"
 
     # Reuse an existing session
-    openclaw agent --session-id abc123 --message "Continue the task"
+    operator agent --session-id abc123 --message "Continue the task"
 
     # Target an exact session key
-    openclaw agent --session-key agent:ops:incident-42 --message "Summarize status"
+    operator agent --session-key agent:ops:incident-42 --message "Summarize status"
     ```
 
   </Step>
@@ -52,10 +52,10 @@ programmatic delivery. Full flag and behavior reference:
   <Step title="Deliver the reply to a channel">
     ```bash
     # Deliver to WhatsApp (default channel)
-    openclaw agent --to +15555550123 --message "Report ready" --deliver
+    operator agent --to +15555550123 --message "Report ready" --deliver
 
     # Deliver to Slack
-    openclaw agent --agent ops --message "Generate report" \
+    operator agent --agent ops --message "Generate report" \
       --deliver --reply-channel slack --reply-to "#reports"
     ```
 
@@ -117,32 +117,32 @@ programmatic delivery. Full flag and behavior reference:
 
 ```bash
 # Simple turn with JSON output
-openclaw agent --to +15555550123 --message "Trace logs" --verbose on --json
+operator agent --to +15555550123 --message "Trace logs" --verbose on --json
 
 # Turn with a model override
-openclaw agent --agent ops --model openai/gpt-5.4 --message "Summarize logs"
+operator agent --agent ops --model openai/gpt-5.4 --message "Summarize logs"
 
 # Turn with thinking level
-openclaw agent --session-id 1234 --message "Summarize inbox" --thinking medium
+operator agent --session-id 1234 --message "Summarize inbox" --thinking medium
 
 # Multiline prompt from a file
-openclaw agent --agent ops --message-file ./task.md
+operator agent --agent ops --message-file ./task.md
 
 # Exact session key
-openclaw agent --session-key agent:ops:incident-42 --message "Summarize status"
+operator agent --session-key agent:ops:incident-42 --message "Summarize status"
 
 # Legacy key scoped to an agent
-openclaw agent --agent ops --session-key incident-42 --message "Summarize status"
+operator agent --agent ops --session-key incident-42 --message "Summarize status"
 
 # Deliver to a different channel than the session
-openclaw agent --agent ops --message "Alert" --deliver --reply-channel telegram --reply-to "@admin"
+operator agent --agent ops --message "Alert" --deliver --reply-channel telegram --reply-to "@admin"
 ```
 
 ## Related
 
 <CardGroup cols={2}>
   <Card title="Agent CLI reference" href="/cli/agent" icon="terminal">
-    Full `openclaw agent` flag and option reference.
+    Full `operator agent` flag and option reference.
   </Card>
   <Card title="Sub-agents" href="/tools/subagents" icon="users">
     Background sub-agent spawning.

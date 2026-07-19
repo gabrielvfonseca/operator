@@ -1,16 +1,19 @@
 // Discord plugin module implements agent componentsispatch behavior.
-import { resolveHumanDelayConfig } from "openclaw/plugin-sdk/agent-runtime";
+import { resolveHumanDelayConfig } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import {
   formatInboundEnvelope,
   resolveEnvelopeFormatOptions,
   runChannelInboundEvent,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { logError } from "openclaw/plugin-sdk/logging-core";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
-import { createNonExitingRuntime, logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { logError } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import {
+  createNonExitingRuntime,
+  logVerbose,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { resolveDiscordMaxLinesPerMessage } from "../accounts.js";
 import { createDiscordRestClient } from "../client.js";
 import { resolveDiscordConversationIdentity } from "../conversation-identity.js";

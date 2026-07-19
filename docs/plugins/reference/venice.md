@@ -1,5 +1,5 @@
 ---
-summary: "Adds Venice model provider support to OpenClaw."
+summary: "Adds Venice model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the venice plugin
 title: "Venice plugin"
@@ -7,12 +7,12 @@ title: "Venice plugin"
 
 # Venice plugin
 
-Adds Venice model provider support to OpenClaw.
+Adds Venice model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/venice-provider`
-- Install route: npm; ClawHub: `clawhub:@operator/venice-provider`
+- Package: `@gabrielvfonseca/venice-provider`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/venice-provider`
 
 ## Surface
 

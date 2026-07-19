@@ -2,8 +2,8 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolveTimestampMsToIsoString } from "@operator/normalization-core/number-coercion";
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { resolveTimestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 import type { AgentMessage } from "../../agents/runtime/index.js";
 import {
   acquireSessionWriteLock,
@@ -12,7 +12,7 @@ import {
 import { redactTranscriptMessage } from "../../agents/transcript-redact.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { redactSecrets } from "../../logging/redact.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../shared/transcript-only-openclaw-assistant.js";
 import { createSessionTranscriptHeader } from "./transcript-header.js";
 import { serializeJsonlEntry, serializeJsonlLine, writeJsonlLines } from "./transcript-jsonl.js";
 import {

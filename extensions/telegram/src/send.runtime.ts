@@ -1,8 +1,8 @@
 // Telegram plugin module implements send behavior.
-export { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-export { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-export type { PollInput, MediaKind } from "openclaw/plugin-sdk/media-runtime";
+export { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+export { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+export type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+export type { PollInput, MediaKind } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 export {
   buildOutboundMediaLoadOptions,
   getImageMetadata,
@@ -10,5 +10,5 @@ export {
   kindFromMime,
   normalizePollInput,
   probeVideoDimensions,
-} from "openclaw/plugin-sdk/media-runtime";
-export { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+export { loadWebMedia } from "@gabrielvfonseca/operator/plugin-sdk/web-media";

@@ -1,5 +1,5 @@
 /** Resolves manifest-declared command and tool ownership at runtime. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveManifestActivationPluginIds } from "./activation-planner.js";
 import {

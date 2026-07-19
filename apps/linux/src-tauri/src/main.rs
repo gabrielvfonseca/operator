@@ -7,7 +7,7 @@ mod installer;
 mod tray;
 mod updater;
 
-use cli::{CliError, OpenClawCli};
+use cli::{CliError, OperatorCli};
 use gateway::{GatewayAction, GatewaySnapshot};
 use installer::InstallChannel;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -64,7 +64,7 @@ impl NavigationState {
 }
 
 struct DesktopInner {
-    cli: Mutex<Option<OpenClawCli>>,
+    cli: Mutex<Option<OperatorCli>>,
     navigation: Mutex<NavigationState>,
     operation: Mutex<()>,
     local_url: Url,
@@ -130,7 +130,7 @@ impl DesktopState {
             .lock()
             .map_err(|_| "Installer lock is unavailable.".to_string())?;
         installer::install(app, channel)?;
-        let cli = OpenClawCli::discover().map_err(|error| error.to_string())?;
+        let cli = OperatorCli::discover().map_err(|error| error.to_string())?;
         *self.inner.cli.lock().expect("CLI mutex poisoned") = Some(cli.clone());
         let ready = gateway::ensure_ready(&cli)?;
         let navigated = self.navigate_local(app, &ready.dashboard_url, false, None, true)?;
@@ -192,11 +192,11 @@ impl DesktopState {
         self.inner.quitting.load(Ordering::SeqCst)
     }
 
-    fn resolve_cli(&self) -> Result<OpenClawCli, CliError> {
+    fn resolve_cli(&self) -> Result<OperatorCli, CliError> {
         if let Some(cli) = self.inner.cli.lock().expect("CLI mutex poisoned").clone() {
             return Ok(cli);
         }
-        let cli = OpenClawCli::discover()?;
+        let cli = OperatorCli::discover()?;
         *self.inner.cli.lock().expect("CLI mutex poisoned") = Some(cli.clone());
         Ok(cli)
     }
@@ -528,7 +528,7 @@ fn main() {
             }
         })
         .build(tauri::generate_context!())
-        .expect("OpenClaw desktop app failed");
+        .expect("Operator desktop app failed");
     app.run(|app, event| {
         #[cfg(target_os = "linux")]
         if matches!(event, tauri::RunEvent::Exit) {

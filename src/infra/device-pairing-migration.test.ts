@@ -15,7 +15,7 @@ import {
 import { migrateLegacyNodePairingStore } from "./node-pairing-migration.js";
 
 const suiteRootTracker = createSuiteTempRootTracker({
-  prefix: "openclaw-device-pairing-migration-",
+  prefix: "operator-device-pairing-migration-",
 });
 
 beforeAll(async () => {
@@ -32,7 +32,7 @@ function legacyPairedDevice(deviceId: string, extra: Partial<PairedDevice> = {})
     deviceId,
     publicKey: `pk-${deviceId}`,
     displayName: `Device ${deviceId}`,
-    clientId: "openclaw-ios",
+    clientId: "operator-ios",
     clientMode: "node",
     role: "node",
     roles: ["node"],

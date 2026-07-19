@@ -4,8 +4,13 @@ export * from "./device-auth.js";
 export * from "./connect-auth.js";
 export * from "./protocol-client.js";
 export * from "./reconnect-policy.js";
-export * from "@operator/gateway-protocol/client-info";
-export * from "@operator/gateway-protocol/connect-error-details";
-export * from "@operator/gateway-protocol/startup-unavailable";
-export * from "@operator/gateway-protocol/version";
-export type { ConnectParams, ErrorShape, EventFrame, HelloOk } from "@operator/gateway-protocol";
+export * from "@gabrielvfonseca/gateway-protocol/client-info";
+export * from "@gabrielvfonseca/gateway-protocol/connect-error-details";
+export * from "@gabrielvfonseca/gateway-protocol/startup-unavailable";
+export * from "@gabrielvfonseca/gateway-protocol/version";
+export type {
+  ConnectParams,
+  ErrorShape,
+  EventFrame,
+  HelloOk,
+} from "@gabrielvfonseca/gateway-protocol";

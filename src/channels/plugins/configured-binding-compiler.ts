@@ -6,7 +6,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { listConfiguredBindings } from "../../config/bindings.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { pickFirstExistingAgentId } from "../../routing/resolve-route.js";

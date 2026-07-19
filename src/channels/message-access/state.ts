@@ -6,7 +6,7 @@
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { parseAccessGroupAllowFromEntry } from "../allow-from.js";
 import type {
   AccessGroupMembershipFact,

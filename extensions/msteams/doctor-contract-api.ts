@@ -6,15 +6,15 @@ import path from "node:path";
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   archiveLegacyStateSource,
   defineChannelAliasMigration,
   type PluginDoctorStateMigration,
-} from "openclaw/plugin-sdk/runtime-doctor";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { normalizeStoredConversationId } from "./src/conversation-store-helpers.js";
 import {
   buildMSTeamsConversationStateKey,

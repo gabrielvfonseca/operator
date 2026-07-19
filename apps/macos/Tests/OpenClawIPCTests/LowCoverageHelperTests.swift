@@ -1,12 +1,12 @@
 import AppKit
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 struct LowCoverageHelperTests {
-    private typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
+    private typealias ProtoAnyCodable = OperatorProtocol.AnyCodable
 
     @Test func `any codable helper accessors`() throws {
         let payload: [String: ProtoAnyCodable] = [
@@ -185,7 +185,7 @@ struct LowCoverageHelperTests {
 
         #expect(PortGuardian._testIsExpected(
             command: "node",
-            fullCommand: "openclaw-gateway",
+            fullCommand: "operator-gateway",
             port: 18789, mode: .local) == true)
 
         #expect(PortGuardian._testIsExpected(
@@ -253,7 +253,7 @@ struct LowCoverageHelperTests {
         #expect(PortGuardian.classifyTunnelRecord(
             record,
             process: .init(parentPid: 1, startedAt: spawnedBeforeRecord, fullCommand: tunnel)) == .reap)
-        // Parent alive (e.g. a concurrent OpenClaw instance) → hands off.
+        // Parent alive (e.g. a concurrent Operator instance) → hands off.
         #expect(PortGuardian.classifyTunnelRecord(
             record,
             process: .init(parentPid: 987, startedAt: spawnedBeforeRecord, fullCommand: tunnel)) == .keep)
@@ -410,7 +410,7 @@ struct LowCoverageHelperTests {
         #expect(loaded?.size.width == rect.size.width)
 
         let trusted = try #require(URL(string:
-            "http://127.0.0.1:18789/__openclaw__/cap/token/__openclaw__/a2ui/?platform=macos"))
+            "http://127.0.0.1:18789/__operator__/cap/token/__operator__/a2ui/?platform=macos"))
         #expect(CanvasA2UIActionMessageHandler.isTrustedSourceURL(trusted, expectedRemoteURL: trusted))
     }
 }

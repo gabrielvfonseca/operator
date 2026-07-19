@@ -6,8 +6,8 @@ import { createHash } from "node:crypto";
 import { type BigIntStats, readFileSync, statSync } from "node:fs";
 import fs from "node:fs/promises";
 import { isDeepStrictEqual } from "node:util";
-import { clampTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { clampTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { parseSqliteSessionFileMarker } from "../../../config/sessions/sqlite-marker.js";
 import {
   type OwnedSessionTranscriptPublishedEntry,
@@ -17,7 +17,7 @@ import {
 } from "../../../config/sessions/transcript-write-context.js";
 import { toErrorObject } from "../../../infra/errors.js";
 import { resolveGlobalSingleton } from "../../../shared/global-singleton.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-openclaw-assistant.js";
 import { isSessionWriteLockAcquireError } from "../../session-write-lock-error.js";
 import type { acquireSessionWriteLock } from "../../session-write-lock.js";
 import type {
@@ -113,7 +113,7 @@ type SessionWithAgentPrompt = {
 };
 
 type PromptReleaseStreamFn = ((...args: unknown[]) => unknown) & {
-  __operatorSessionLockPromptReleaseInstalled?: boolean;
+  __openclawSessionLockPromptReleaseInstalled?: boolean;
 };
 
 type SessionFileFingerprint =
@@ -2184,7 +2184,7 @@ export function installPromptSubmissionLockRelease(params: {
     return;
   }
   const currentStreamFn = agent.streamFn;
-  if (currentStreamFn["__operatorSessionLockPromptReleaseInstalled"] === true) {
+  if (currentStreamFn["__openclawSessionLockPromptReleaseInstalled"] === true) {
     return;
   }
   const originalStreamFn = currentStreamFn.bind(agent);
@@ -2210,7 +2210,7 @@ export function installPromptSubmissionLockRelease(params: {
       await params.reacquireAfterPrompt();
     }
   };
-  wrappedStreamFn["__operatorSessionLockPromptReleaseInstalled"] = true;
+  wrappedStreamFn["__openclawSessionLockPromptReleaseInstalled"] = true;
   agent.streamFn = wrappedStreamFn;
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

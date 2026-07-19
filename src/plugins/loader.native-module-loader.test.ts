@@ -2,13 +2,13 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-loader-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-loader-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -16,7 +16,7 @@ function makeTempDir() {
 function writeBundledPluginFixture(id: string) {
   const pluginRoot = makeTempDir();
   fs.writeFileSync(
-    path.join(pluginRoot, "openclaw.plugin.json"),
+    path.join(pluginRoot, "operator.plugin.json"),
     JSON.stringify(
       {
         id,
@@ -47,7 +47,7 @@ function writePackagedPluginFixture(id: string) {
       {
         name: id,
         type: "commonjs",
-        openclaw: {
+        operator: {
           extensions: ["./index.cjs"],
         },
       },
@@ -57,7 +57,7 @@ function writePackagedPluginFixture(id: string) {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginRoot, "openclaw.plugin.json"),
+    path.join(pluginRoot, "operator.plugin.json"),
     JSON.stringify(
       {
         id,

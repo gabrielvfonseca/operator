@@ -1,9 +1,14 @@
-import type { ErrorShape, EventFrame, HelloOk, ResponseFrame } from "@operator/gateway-protocol";
+import type {
+  ErrorShape,
+  EventFrame,
+  HelloOk,
+  ResponseFrame,
+} from "@gabrielvfonseca/gateway-protocol";
 import {
   isGatewayEventFrame,
   isGatewayResponseFrame,
-} from "@operator/gateway-protocol/frame-guards";
-import { RetrySupervisor, sleepWithAbort } from "@operator/retry";
+} from "@gabrielvfonseca/gateway-protocol/frame-guards";
+import { RetrySupervisor, sleepWithAbort } from "@gabrielvfonseca/retry";
 
 export type GatewayProtocolSocket = {
   isOpen: () => boolean;

@@ -1,8 +1,8 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.mainActivityPendingIntent
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.mainActivityPendingIntent
 import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
@@ -18,7 +18,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 
-private const val NOTIFICATION_CHANNEL_BASE_ID = "openclaw.system.notify"
+private const val NOTIFICATION_CHANNEL_BASE_ID = "operator.system.notify"
 private const val NOTIFICATION_CONTENT_REQUEST_CODE = 3
 
 /** Parsed payload for system.notify invocations. */
@@ -71,15 +71,15 @@ private class AndroidSystemNotificationPoster(
     val (suffix, importance, name) =
       when (normalizedPriority) {
         "passive" ->
-          Triple("passive", NotificationManager.IMPORTANCE_LOW, nativeString("OpenClaw Passive"))
+          Triple("passive", NotificationManager.IMPORTANCE_LOW, nativeString("Operator Passive"))
         "timesensitive" ->
           Triple(
             "timesensitive",
             NotificationManager.IMPORTANCE_HIGH,
-            nativeString("OpenClaw Time Sensitive"),
+            nativeString("Operator Time Sensitive"),
           )
         else ->
-          Triple("active", NotificationManager.IMPORTANCE_DEFAULT, nativeString("OpenClaw Active"))
+          Triple("active", NotificationManager.IMPORTANCE_DEFAULT, nativeString("Operator Active"))
       }
     val channelId = "$NOTIFICATION_CHANNEL_BASE_ID.$suffix"
     val manager = appContext.getSystemService(NotificationManager::class.java)

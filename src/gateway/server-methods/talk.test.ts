@@ -2,7 +2,7 @@
  * Tests for talk gateway methods that coordinate speech and audio providers.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import type { OperatorConfig } from "../../config/config.js";
@@ -743,7 +743,7 @@ describe("talk.speak handler", () => {
 
     mocks.getRuntimeConfig.mockReturnValue(runtimeConfig);
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: diskConfig,
@@ -826,7 +826,7 @@ describe("talk.config handler", () => {
 
   it("projects the runtime realtime transport when source config is invalid", async () => {
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: false,
       config: {},
@@ -933,7 +933,7 @@ describe("talk.config handler", () => {
       },
     } as OperatorConfig;
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1015,7 +1015,7 @@ describe("talk.config handler", () => {
     } as OperatorConfig;
 
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1085,7 +1085,7 @@ describe("talk.config handler", () => {
 
     mocks.getSpeechProvider.mockReturnValue(undefined);
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1171,7 +1171,7 @@ describe("talk.config handler", () => {
 
     mocks.getSpeechProvider.mockReturnValue(undefined);
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1243,7 +1243,7 @@ describe("talk.config handler", () => {
       }),
     });
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1329,7 +1329,7 @@ describe("talk.config handler", () => {
 
     mocks.getSpeechProvider.mockReturnValue(undefined);
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -1377,7 +1377,7 @@ describe("talk.config handler", () => {
 
     mocks.getSpeechProvider.mockReturnValue(undefined);
     mocks.readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       hash: "test-hash",
       valid: true,
       config: sourceConfig,
@@ -2427,7 +2427,7 @@ describe("talk.client.toolCall handler", () => {
       params: {
         sessionKey: "main",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "What is in this repo?", responseStyle: "one sentence" },
       },
       client: { connId: "conn-1" } as never,
@@ -2469,7 +2469,7 @@ describe("talk.client.toolCall handler", () => {
       params: {
         sessionKey: "main",
         callId: "call-active",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "What is running?" },
       },
       client: { connId: "conn-1" } as never,
@@ -2496,7 +2496,7 @@ describe("talk.client.toolCall handler", () => {
       params: {
         sessionKey: "main",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "Are the basement lights off?" },
       },
       client: { connId: "conn-1" } as never,
@@ -2533,7 +2533,7 @@ describe("talk.client.toolCall handler", () => {
         sessionKey: "main",
         relaySessionId: "relay-1",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "What now?" },
       },
       client: { connId: "conn-1" } as never,
@@ -2581,7 +2581,7 @@ describe("talk.client.toolCall handler", () => {
           sessionKey: "main",
           relaySessionId: "relay-1",
           callId: "call-1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           args: { question: "What now?" },
         },
         client: { connId: "conn-1" } as never,

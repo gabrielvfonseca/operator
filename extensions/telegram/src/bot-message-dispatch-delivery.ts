@@ -1,22 +1,22 @@
-// Telegram plugin module owns final payload projection and Telegram delivery.
-import type { Bot } from "grammy";
-import type { Message } from "grammy/types";
 import {
   createOutboundPayloadPlan,
   deriveDurableFinalDeliveryRequirements,
   projectOutboundPayloadPlanForDelivery,
   resolveTranscriptBackedChannelFinalText,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import type {
   OperatorConfig,
   ReplyToMode,
   TelegramAccountConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { isSingleUseReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-reference";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram plugin module owns final payload projection and Telegram delivery.
+import type { Bot } from "grammy";
+import type { Message } from "grammy/types";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import type { TelegramMessageContext } from "./bot-message-context.js";
 import type { TelegramDraftController } from "./bot-message-dispatch-draft.js";

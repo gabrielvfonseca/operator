@@ -1,6 +1,6 @@
 // Msteams plugin module implements sqlite state behavior.
 import path from "node:path";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 import { getMSTeamsRuntime } from "./runtime.js";
 import { withFileLock } from "./store-fs.js";
 

@@ -1,13 +1,13 @@
 ---
-summary: "The @operator/ai npm package: reusable model transports, isolated runtimes, and host policy ports"
-title: "@operator/ai package"
+summary: "The @gabrielvfonseca/ai npm package: reusable model transports, isolated runtimes, and host policy ports"
+title: "@gabrielvfonseca/ai package"
 read_when:
-  - You want to reuse OpenClaw's model transports in another application
+  - You want to reuse Operator's model transports in another application
   - You are changing packages/ai or the AI transport host ports
-  - You are reviewing what the openclaw release publishes to npm besides the root package
+  - You are reviewing what the operator release publishes to npm besides the root package
 ---
 
-`@operator/ai` is the publishable library form of OpenClaw's model execution
+`@gabrielvfonseca/ai` is the publishable library form of Operator's model execution
 layer: provider-neutral message/tool/stream contracts, validation, diagnostics,
 event streams, an isolated runtime registry, and lazy adapters for the eight
 built-in API families (Anthropic Messages, OpenAI Completions, OpenAI
@@ -17,14 +17,14 @@ AI, Google Vertex, Mistral Conversations).
 It publishes alongside the root `openclaw` package on every release, pinned to
 the same version, with its own `npm-shrinkwrap.json` so its transitive
 dependency tree is locked at install time. Installing `openclaw` installs the
-matching `@operator/ai` automatically; library consumers can depend on it
-directly without any OpenClaw application code.
+matching `@gabrielvfonseca/ai` automatically; library consumers can depend on it
+directly without any Operator application code.
 
 ## Quick start
 
 ```js
-import { createLlmRuntime } from "@operator/ai";
-import { registerBuiltInApiProviders } from "@operator/ai/providers";
+import { createLlmRuntime } from "@gabrielvfonseca/ai";
+import { registerBuiltInApiProviders } from "@gabrielvfonseca/ai/providers";
 
 const runtime = createLlmRuntime();
 registerBuiltInApiProviders(runtime.registry);
@@ -48,14 +48,14 @@ A runnable version lives in the repository at `examples/ai-chat`.
   example SSRF policy), secret redaction of tool-result replay text, OpenAI
   strict-tool defaults, and diagnostics logging are `AiTransportHost` ports
   configured with `configureAiTransportHost`. The library defaults are inert;
-  OpenClaw installs its real implementations in its stream facade.
-- **One event-stream identity.** `@operator/ai/event-stream` is the canonical
-  `EventStream` constructor shared by OpenClaw core, agent-core, and external
+  Operator installs its real implementations in its stream facade.
+- **One event-stream identity.** `@gabrielvfonseca/ai/event-stream` is the canonical
+  `EventStream` constructor shared by Operator core, agent-core, and external
   consumers.
-- **`internal/*` subpaths are not API.** They exist for the OpenClaw
+- **`internal/*` subpaths are not API.** They exist for the Operator
   application itself and carry no semver guarantee.
 - Provider ids, credentials, model catalogs, retries, and failover remain
-  application concerns. OpenClaw layers those around this package; a library
+  application concerns. Operator layers those around this package; a library
   consumer supplies a `Model` object and options directly.
 
 ## Subpath exports
@@ -68,4 +68,4 @@ A runnable version lives in the repository at `examples/ai-chat`.
 | `./validation`   | Tool argument validation                                                       |
 | `./diagnostics`  | Diagnostics contracts                                                          |
 | `./event-stream` | Shared `EventStream` implementation                                            |
-| `./internal/*`   | OpenClaw-internal, no semver guarantee                                         |
+| `./internal/*`   | Operator-internal, no semver guarantee                                         |

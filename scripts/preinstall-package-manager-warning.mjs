@@ -14,7 +14,7 @@ const NODE_VERSION_RE = /^v?(\d+)\.(\d+)\.(\d+)(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z
 const NODE_RUNTIME_PROBE_SOURCE =
   "process.stdout.write(JSON.stringify({version:process.versions.node??null,bunVersion:process.versions.bun??null,execPath:process.execPath??null}))";
 const PACKAGE_CLI_NODE_PROBE_TIMEOUT_MS = 10_000;
-export const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/openclaw-install-guard";
+export const PACKAGE_INSTALL_GUARD_RELATIVE_PATH = "dist/operator-install-guard";
 
 function normalizeEnvValue(value) {
   return typeof value === "string" ? value.trim() : "";
@@ -235,14 +235,14 @@ export function enforceSupportedNodeRuntime(
   }
 
   const requirement = engine
-    ? `this OpenClaw release requires Node ${engine}.`
-    : "could not read this OpenClaw release's Node requirement.";
+    ? `this Operator release requires Node ${engine}.`
+    : "could not read this Operator release's Node requirement.";
   reportError(
     [
       `[openclaw] error: ${requirement}`,
       `[openclaw] detected Node ${detectedRuntime?.version ?? "missing"} (exec: ${detectedRuntime?.execPath || "unknown"}).`,
       "[openclaw] install Node: https://nodejs.org/en/download",
-      "[openclaw] upgrade Node, then retry the OpenClaw update.",
+      "[openclaw] upgrade Node, then retry the Operator update.",
     ].join("\n"),
   );
   return false;

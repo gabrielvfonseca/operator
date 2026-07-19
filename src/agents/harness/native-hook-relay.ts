@@ -23,12 +23,12 @@ import path from "node:path";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { stripAnsi } from "../../../packages/terminal-core/src/ansi.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { toErrorObject } from "../../infra/errors.js";
-import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
 import { privateFileStoreSync } from "../../infra/private-file-store.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { listAgentToolResultMiddlewares } from "../../plugins/agent-tool-result-middleware.js";
@@ -578,8 +578,8 @@ export function buildNativeHookRelayCommand(params: {
   const timeoutMs = normalizePositiveInteger(params.timeoutMs, DEFAULT_RELAY_TIMEOUT_MS);
   const executable = params.executable ?? resolveOperatorCliExecutable();
   const argv =
-    executable === "operator"
-      ? ["operator"]
+    executable === "@gabrielvfonseca/operator"
+      ? ["@gabrielvfonseca/operator"]
       : [params.nodeExecutable ?? process.execPath, executable];
   const nicePrefix = resolveNativeHookRelayNicePrefix(params.nice);
   return shellQuoteArgs([

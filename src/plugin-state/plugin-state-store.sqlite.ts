@@ -1,6 +1,6 @@
 // Plugin state SQLite helpers persist plugin state in the Operator state database.
 import type { DatabaseSync } from "node:sqlite";
-import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { Insertable, Selectable } from "kysely";
 import {
   executeSqliteQuerySync,
@@ -9,15 +9,15 @@ import {
 } from "../infra/kysely-sync.js";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   closeOperatorStateDatabase,
   isOperatorStateDatabaseOpen,
   openOperatorStateDatabase,
   type OperatorStateDatabaseOptions,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+} from "../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import {
   PluginStateStoreError,
   type PluginStateEntry,

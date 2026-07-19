@@ -14,7 +14,7 @@ import {
   saveAuthProfileStore,
 } from "../../../agents/auth-profiles/store.js";
 import type { AuthProfileStore, OAuthCredential } from "../../../agents/auth-profiles/types.js";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { captureEnv } from "../../../test-utils/env.js";
 import {
   collectStaleOAuthProfileShadowWarnings,
@@ -61,7 +61,7 @@ describe("stale OAuth profile shadow doctor repair", () => {
 
   beforeEach(async () => {
     clearRuntimeAuthProfileStoreSnapshots();
-    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-stale-oauth-shadow-"));
+    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-stale-oauth-shadow-"));
     stateDir = path.join(tempRoot, "state");
     process.env.OPERATOR_STATE_DIR = stateDir;
     process.env.OPERATOR_HOME = stateDir;
@@ -232,7 +232,7 @@ describe("stale OAuth profile shadow doctor repair", () => {
           accountId: "acct-shared",
           expires: now - 60_000,
           oauthRef: {
-            source: "openclaw-credentials",
+            source: "operator-credentials",
             provider: "openai-codex",
             id: "0123456789abcdef0123456789abcdef",
           },

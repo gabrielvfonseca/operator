@@ -2,7 +2,7 @@ import {
   WORKBOARD_STATUSES,
   type WorkboardCard,
   type WorkboardStatus,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";
 // Workboard plugin module implements command behavior.
 import type { OperatorPluginApi } from "../api.js";
 import { resolveWorkboardCardByIdOrPrefix } from "./card-lookup.js";

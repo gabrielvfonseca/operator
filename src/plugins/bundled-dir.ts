@@ -3,9 +3,9 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { isPathInside } from "../infra/path-guards.js";
 import { resolveUserPath } from "../utils.js";
 
@@ -95,7 +95,7 @@ function trustedBundledPluginRootsForPackageRoot(packageRoot: string): string[] 
   return roots;
 }
 
-function resolveOperatorPackageRootsForBundledPlugins(): string[] {
+function resolvePackageRootsForBundledPlugins(): string[] {
   const argvRoot = resolveOperatorPackageRootSync({ argv1: process.argv[1] });
   const moduleRoot = resolveOperatorPackageRootSync({ moduleUrl: import.meta.url });
   return uniqueStrings([argvRoot, moduleRoot].filter((entry): entry is string => Boolean(entry)));
@@ -107,7 +107,7 @@ export function resolveSourceCheckoutDependencyDiagnostic(
   if (areBundledPluginsDisabled(env)) {
     return null;
   }
-  for (const packageRoot of resolveOperatorPackageRootsForBundledPlugins()) {
+  for (const packageRoot of resolvePackageRootsForBundledPlugins()) {
     if (!isSourceCheckoutRoot(packageRoot)) {
       continue;
     }

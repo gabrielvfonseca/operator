@@ -1,22 +1,22 @@
-import { jsonResult } from "openclaw/plugin-sdk/channel-actions";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 // Ollama node inference exposes local models to agents through paired node hosts.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   readFiniteNumberParam,
   readPositiveIntegerParam,
   readStringParam,
-} from "openclaw/plugin-sdk/param-readers";
+} from "@gabrielvfonseca/operator/plugin-sdk/param-readers";
 import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { Type } from "typebox";
 import { OLLAMA_DEFAULT_BASE_URL } from "./defaults.js";
 import {

@@ -1,5 +1,5 @@
 // Hook frontmatter tests cover hook metadata parsing from hook files.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   parseFrontmatter,
@@ -58,7 +58,7 @@ name: session-memory
 description: "Save session context"
 metadata:
   {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "emoji": "💾",
       "events": ["command:new"]
     }
@@ -74,8 +74,8 @@ metadata:
 
     // Verify the metadata is valid JSON
     const parsed = JSON.parse(metadata);
-    expect(parsed.openclaw.emoji).toBe("💾");
-    expect(parsed.openclaw.events).toEqual(["command:new"]);
+    expect(parsed.operator.emoji).toBe("💾");
+    expect(parsed.operator.events).toEqual(["command:new"]);
   });
 
   it("parses multi-line metadata with complex nested structure", () => {
@@ -84,7 +84,7 @@ name: command-logger
 description: "Log all command events"
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "📝",
         "events": ["command"],
@@ -98,21 +98,21 @@ metadata:
     expect(result.name).toBe("command-logger");
 
     const parsed = JSON.parse(requireString(result.metadata, "command-logger metadata"));
-    expect(parsed.openclaw.emoji).toBe("📝");
-    expect(parsed.openclaw.events).toEqual(["command"]);
-    expect(parsed.openclaw.requires.config).toEqual(["workspace.dir"]);
-    expect(parsed.openclaw.install[0].kind).toBe("bundled");
+    expect(parsed.operator.emoji).toBe("📝");
+    expect(parsed.operator.events).toEqual(["command"]);
+    expect(parsed.operator.requires.config).toEqual(["workspace.dir"]);
+    expect(parsed.operator.install[0].kind).toBe("bundled");
   });
 
   it("handles single-line metadata (inline JSON)", () => {
     const content = `---
 name: simple-hook
-metadata: {"openclaw": {"events": ["test"]}}
+metadata: {"@gabrielvfonseca/operator": {"events": ["test"]}}
 ---
 `;
     const result = parseFrontmatter(content);
     expect(result.name).toBe("simple-hook");
-    expect(result.metadata).toBe('{"openclaw": {"events": ["test"]}}');
+    expect(result.metadata).toBe('{"@gabrielvfonseca/operator": {"events": ["test"]}}');
   });
 
   it("handles mixed single-line and multi-line values", () => {
@@ -122,7 +122,7 @@ description: "A hook with mixed values"
 homepage: https://example.com
 metadata:
   {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "events": ["command:new"]
     }
   }
@@ -168,7 +168,7 @@ describe("resolveOperatorMetadata", () => {
     const frontmatter = {
       name: "test-hook",
       metadata: JSON.stringify({
-        openclaw: {
+        operator: {
           emoji: "🔥",
           events: ["command:new", "command:reset"],
           requires: {
@@ -181,10 +181,10 @@ describe("resolveOperatorMetadata", () => {
 
     const result = resolveOperatorMetadata(frontmatter);
     const openclaw = requireOperatorMetadata(result);
-    expect(openclaw.emoji).toBe("🔥");
-    expect(openclaw.events).toEqual(["command:new", "command:reset"]);
-    expect(openclaw.requires?.config).toEqual(["workspace.dir"]);
-    expect(openclaw.requires?.bins).toEqual(["git"]);
+    expect(operator.emoji).toBe("🔥");
+    expect(operator.events).toEqual(["command:new", "command:reset"]);
+    expect(operator.requires?.config).toEqual(["workspace.dir"]);
+    expect(operator.requires?.bins).toEqual(["git"]);
   });
 
   it("returns undefined when metadata is missing", () => {
@@ -212,11 +212,11 @@ describe("resolveOperatorMetadata", () => {
   it("handles install specs", () => {
     const frontmatter = {
       metadata: JSON.stringify({
-        openclaw: {
+        operator: {
           events: ["command"],
           install: [
             { id: "bundled", kind: "bundled", label: "Bundled with Operator" },
-            { id: "npm", kind: "npm", package: "@operator/hook" },
+            { id: "npm", kind: "npm", package: "@gabrielvfonseca/hook" },
           ],
         },
       }),
@@ -231,14 +231,14 @@ describe("resolveOperatorMetadata", () => {
       "npm",
     );
     expect(expectDefined(result?.install?.[1], "result?.install?.[1] test invariant").package).toBe(
-      "@operator/hook",
+      "@gabrielvfonseca/hook",
     );
   });
 
   it("handles os restrictions", () => {
     const frontmatter = {
       metadata: JSON.stringify({
-        openclaw: {
+        operator: {
           events: ["command"],
           os: ["darwin", "linux"],
         },
@@ -254,10 +254,10 @@ describe("resolveOperatorMetadata", () => {
     const content = `---
 name: session-memory
 description: "Save session context to memory when /new or /reset command is issued"
-homepage: https://docs.openclaw.ai/automation/hooks#session-memory
+homepage: https://docs.operator.ai/automation/hooks#session-memory
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "💾",
         "events": ["command:new", "command:reset"],
@@ -277,10 +277,10 @@ metadata:
     );
 
     const openclaw = requireOperatorMetadata(resolveOperatorMetadata(frontmatter));
-    expect(openclaw.emoji).toBe("💾");
-    expect(openclaw.events).toEqual(["command:new", "command:reset"]);
-    expect(openclaw.requires?.config).toEqual(["workspace.dir"]);
-    expect(expectDefined(openclaw.install?.[0], "openclaw.install?.[0] test invariant").kind).toBe(
+    expect(operator.emoji).toBe("💾");
+    expect(operator.events).toEqual(["command:new", "command:reset"]);
+    expect(operator.requires?.config).toEqual(["workspace.dir"]);
+    expect(expectDefined(operator.install?.[0], "operator.install?.[0] test invariant").kind).toBe(
       "bundled",
     );
   });
@@ -289,7 +289,7 @@ metadata:
     const content = `---
 name: yaml-metadata
 metadata:
-  openclaw:
+  operator:
     emoji: disk
     events:
       - command:new

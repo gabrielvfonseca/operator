@@ -536,7 +536,7 @@ describe("exec approvals CLI", () => {
   });
 
   it("writes host-native node approvals with the current hash", async () => {
-    const dir = tempDirs.make("openclaw-native-approvals-");
+    const dir = tempDirs.make("operator-native-approvals-");
     const policyPath = path.join(dir, "policy.json");
     fs.writeFileSync(
       policyPath,
@@ -583,7 +583,7 @@ describe("exec approvals CLI", () => {
   });
 
   it("rejects unknown host-native policy fields instead of dropping them", async () => {
-    const dir = tempDirs.make("openclaw-native-approvals-");
+    const dir = tempDirs.make("operator-native-approvals-");
     const policyPath = path.join(dir, "policy.json");
     fs.writeFileSync(
       policyPath,

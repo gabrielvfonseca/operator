@@ -1,5 +1,5 @@
 // Xai tests cover realtime voice provider plugin behavior.
-import { REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ } from "openclaw/plugin-sdk/realtime-voice";
+import { REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildXaiRealtimeVoiceProvider } from "./realtime-voice-provider.js";
 
@@ -891,7 +891,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         JSON.stringify({
           type: "response.function_call_arguments.delta",
           item_id: "item_tool_1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           call_id: "call_1",
           delta: JSON.stringify({ question: "delegate this" }),
         }),
@@ -903,7 +903,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         JSON.stringify({
           type: "response.function_call_arguments.done",
           item_id: "item_tool_1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           call_id: "call_1",
         }),
       ),
@@ -914,7 +914,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         JSON.stringify({
           type: "response.function_call_arguments.done",
           item_id: "item_tool_1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           call_id: "call_1",
           arguments: JSON.stringify({ question: "delegate this" }),
         }),
@@ -925,7 +925,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
     expect(onToolCall).toHaveBeenCalledWith({
       itemId: "item_tool_1",
       callId: "call_1",
-      name: "openclaw_agent_consult",
+      name: "operator_agent_consult",
       args: { question: "delegate this" },
     });
   });
@@ -955,7 +955,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
           JSON.stringify({
             type: "response.function_call_arguments.done",
             item_id: `item_${callId}`,
-            name: "openclaw_agent_consult",
+            name: "operator_agent_consult",
             call_id: callId,
             arguments: JSON.stringify({ question: callId }),
           }),
@@ -1004,7 +1004,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         JSON.stringify({
           type: "response.function_call_arguments.done",
           item_id: "item_call_1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           call_id: "call_1",
           arguments: JSON.stringify({ question: "call_1" }),
         }),
@@ -1068,7 +1068,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         JSON.stringify({
           type: "response.function_call_arguments.done",
           item_id: "item_call_1",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           call_id: "call_1",
           arguments: JSON.stringify({ question: "call_1" }),
         }),
@@ -1119,7 +1119,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
           JSON.stringify({
             type: "response.function_call_arguments.done",
             item_id: `item_${callId}`,
-            name: "openclaw_agent_consult",
+            name: "operator_agent_consult",
             call_id: callId,
             arguments: JSON.stringify({ question: callId }),
           }),
@@ -1195,7 +1195,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
             id: "item_replayed_call",
             type: "function_call",
             call_id: "call_replayed",
-            name: "openclaw_agent_consult",
+            name: "operator_agent_consult",
             arguments: JSON.stringify({ question: "recover me" }),
           },
         }),
@@ -1205,7 +1205,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
     expect(onToolCall).toHaveBeenCalledWith({
       itemId: "item_replayed_call",
       callId: "call_replayed",
-      name: "openclaw_agent_consult",
+      name: "operator_agent_consult",
       args: { question: "recover me" },
     });
     bridge.close();
@@ -1247,7 +1247,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
           type: "response.function_call_arguments.done",
           item_id: "item_lost_output",
           call_id: "call_lost_output",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           arguments: JSON.stringify({ question: "recover output" }),
         }),
       ),
@@ -1300,7 +1300,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
           type: "response.function_call_arguments.done",
           item_id: "item_saved_output",
           call_id: "call_saved_output",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           arguments: JSON.stringify({ question: "saved output" }),
         }),
       ),
@@ -1333,7 +1333,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
         id: "item_saved_output",
         type: "function_call",
         call_id: "call_saved_output",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         arguments: JSON.stringify({ question: "saved output" }),
       },
       {
@@ -1389,7 +1389,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
           JSON.stringify({
             type: "response.function_call_arguments.done",
             item_id: `item_${callId}`,
-            name: "openclaw_agent_consult",
+            name: "operator_agent_consult",
             call_id: callId,
             arguments: JSON.stringify({ question: callId }),
           }),
@@ -1726,7 +1726,7 @@ describe("buildXaiRealtimeVoiceProvider", () => {
       tools: [
         {
           type: "function",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           description: "Consult Operator",
           parameters: { type: "object", properties: {} },
         },

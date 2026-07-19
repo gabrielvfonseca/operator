@@ -18,14 +18,14 @@ describe("loadExtensions", () => {
   beforeAll(async () => {
     // Extensions import both public SDK helpers and runtime helper subpaths; the
     // loader must route those aliases without package-manager involvement.
-    const dir = await mkdtemp(join(tmpdir(), "openclaw-extension-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "operator-extension-sdk-"));
     tempDirs.push(dir);
     const extensionPath = join(dir, "extension.ts");
     await writeFile(
       extensionPath,
       `
-import { createAssistantMessageEventStream } from "openclaw/plugin-sdk/llm";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { createAssistantMessageEventStream } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 export default async function(api) {
   const stream = createAssistantMessageEventStream();

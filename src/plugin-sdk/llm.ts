@@ -1,7 +1,7 @@
 /**
  * Public SDK subpath for LLM provider registration, streaming, model utils, and validation.
  */
-export type { ApiProvider } from "@operator/ai";
+export type { ApiProvider } from "@gabrielvfonseca/ai";
 export {
   calculateCost,
   clampThinkingLevel,
@@ -12,13 +12,13 @@ export {
   registerApiProvider,
   sanitizeSurrogates,
   unregisterApiProviders,
-} from "@operator/ai/internal/runtime";
+} from "@gabrielvfonseca/ai/internal/runtime";
 export {
   adjustMaxTokensForThinking,
   buildBaseOptions,
   clampReasoning,
-} from "@operator/ai/internal/shared";
-export { transformMessages } from "@operator/ai/internal/shared";
+} from "@gabrielvfonseca/ai/internal/shared";
+export { transformMessages } from "@gabrielvfonseca/ai/internal/shared";
 export { complete, completeSimple, stream, streamSimple } from "../llm/stream.js";
 export type {
   Api,

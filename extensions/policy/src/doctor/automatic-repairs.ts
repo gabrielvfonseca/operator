@@ -4,7 +4,7 @@ import type {
   HealthRepairContext,
   HealthRepairResult,
   OperatorConfig,
-} from "openclaw/plugin-sdk/health";
+} from "@gabrielvfonseca/operator/plugin-sdk/health";
 import { CHECK_IDS, type POLICY_CHECK_IDS } from "./check-ids.js";
 import { POLICY_FIX_METADATA_BY_CHECK_ID } from "./fix-metadata.js";
 
@@ -139,7 +139,7 @@ function mergeRequiredDenyTools(
     }
     if (
       hasScopedPolicyRequirement([finding]) &&
-      finding.ocPath === "oc://openclaw.config/tools/deny"
+      finding.ocPath === "oc://operator.config/tools/deny"
     ) {
       warnings.push(
         `Skipped scoped deny repair for ${tool}. The finding reports inherited root tools.deny, so changing it would affect more than the scoped policy target.`,
@@ -160,7 +160,7 @@ function disableElevatedTools(
   findings: readonly HealthFinding[],
 ): RepairPatch {
   if (
-    !findings.some((finding) => finding.ocPath === "oc://openclaw.config/tools/elevated/enabled")
+    !findings.some((finding) => finding.ocPath === "oc://operator.config/tools/elevated/enabled")
   ) {
     return { config: cfg, changes: [] };
   }
@@ -186,14 +186,14 @@ function disableInsecureControlUi(
   const controlUi = ensureRecord(gateway, "controlUi");
   const changes: string[] = [];
   const fields = [
-    ["allowInsecureAuth", "oc://openclaw.config/gateway/controlUi/allowInsecureAuth"],
+    ["allowInsecureAuth", "oc://operator.config/gateway/controlUi/allowInsecureAuth"],
     [
       "dangerouslyDisableDeviceAuth",
-      "oc://openclaw.config/gateway/controlUi/dangerouslyDisableDeviceAuth",
+      "oc://operator.config/gateway/controlUi/dangerouslyDisableDeviceAuth",
     ],
     [
       "dangerouslyAllowHostHeaderOriginFallback",
-      "oc://openclaw.config/gateway/controlUi/dangerouslyAllowHostHeaderOriginFallback",
+      "oc://operator.config/gateway/controlUi/dangerouslyAllowHostHeaderOriginFallback",
     ],
   ] as const;
   const findingPaths = new Set(findings.map((finding) => finding.ocPath));
@@ -212,7 +212,7 @@ function disableRemoteGatewayMode(
   cfg: OperatorConfig,
   findings: readonly HealthFinding[],
 ): RepairPatch {
-  if (!findings.some((finding) => finding.ocPath === "oc://openclaw.config/gateway/mode")) {
+  if (!findings.some((finding) => finding.ocPath === "oc://operator.config/gateway/mode")) {
     return { config: cfg, changes: [] };
   }
   const next = cloneConfig(cfg);
@@ -333,7 +333,7 @@ function mergeStringArrayAtOcPath(cfg: ConfigRecord, ocPath: string, entry: stri
 }
 
 function configPathSegments(ocPath: string): readonly string[] {
-  const prefix = "oc://openclaw.config/";
+  const prefix = "oc://operator.config/";
   if (!ocPath.startsWith(prefix)) {
     return [];
   }
@@ -454,7 +454,7 @@ function skippedUnsafeScopedRepair(cfg: OperatorConfig, warning: string): Repair
 function isScopedInheritedChannelDefaultFinding(finding: HealthFinding): boolean {
   return (
     hasScopedPolicyRequirement([finding]) &&
-    finding.ocPath?.startsWith("oc://openclaw.config/channels/defaults/") === true
+    finding.ocPath?.startsWith("oc://operator.config/channels/defaults/") === true
   );
 }
 

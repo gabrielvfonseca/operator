@@ -1,9 +1,9 @@
 // Voice Call plugin module implements realtime agent context behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { buildRealtimeVoiceAgentConsultPolicyInstructions } from "openclaw/plugin-sdk/realtime-voice";
-import { root } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeOptionalString as normalizeString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { buildRealtimeVoiceAgentConsultPolicyInstructions } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { root } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeOptionalString as normalizeString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { VoiceCallConfig } from "./config.js";
 import type { CoreAgentDeps } from "./core-bridge.js";
 
@@ -79,7 +79,7 @@ export async function buildRealtimeVoiceInstructions(params: {
     "Operator agent voice context:",
     `- Agent id: ${agentId}`,
     "- Use this context to match the Operator agent's personality and standing preferences on fast voice turns.",
-    "- Treat this as compact context only; call openclaw_agent_consult when the caller needs the full agent brain, tools, memory, or workspace state.",
+    "- Treat this as compact context only; call operator_agent_consult when the caller needs the full agent brain, tools, memory, or workspace state.",
   ];
 
   if (contextConfig.includeIdentity) {

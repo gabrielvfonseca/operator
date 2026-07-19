@@ -1,5 +1,5 @@
 // Memory Host SDK module implements embeddings remote client behavior.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { EmbeddingProviderOptions } from "./embeddings.types.js";
 import { requireApiKey, resolveApiKeyForProvider } from "./openclaw-runtime-auth.js";
 import { buildRemoteBaseUrlPolicy } from "./remote-http.js";
@@ -12,8 +12,8 @@ import type { SsrFPolicy } from "./ssrf-policy.js";
 export type RemoteEmbeddingProviderId = string;
 
 /** Attribution headers for native OpenAI embedding calls. */
-function resolveOperatorAttributionHeaders(): Record<string, string> {
-  const version = typeof process !== "undefined" ? process.env.OPERATOR_VERSION?.trim() : undefined;
+function resolveOpenClawAttributionHeaders(): Record<string, string> {
+  const version = typeof process !== "undefined" ? process.env.OPENCLAW_VERSION?.trim() : undefined;
   return {
     originator: "openclaw",
     ...(version ? { version } : {}),
@@ -65,7 +65,7 @@ export async function resolveRemoteEmbeddingBearerClient(params: {
     ...headerOverrides,
   };
   if (isNativeOpenAIEmbeddingRoute(params.provider, baseUrl)) {
-    Object.assign(headers, resolveOperatorAttributionHeaders());
+    Object.assign(headers, resolveOpenClawAttributionHeaders());
   }
   return { baseUrl, headers, ssrfPolicy: buildRemoteBaseUrlPolicy(baseUrl) };
 }

@@ -1,11 +1,14 @@
 // Mattermost plugin module implements monitor websocket behavior.
 import { randomUUID } from "node:crypto";
-import { safeParseJsonWithSchema, safeParseWithSchema } from "openclaw/plugin-sdk/extension-shared";
+import {
+  safeParseJsonWithSchema,
+  safeParseWithSchema,
+} from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import {
   captureWsEvent,
   createDebugProxyWebSocketAgent,
   resolveDebugProxySettings,
-} from "openclaw/plugin-sdk/proxy-capture";
+} from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
 import WebSocket, { type ClientOptions } from "ws";
 import { z } from "zod";
 import { MattermostPostSchema, type MattermostPost } from "./client.js";

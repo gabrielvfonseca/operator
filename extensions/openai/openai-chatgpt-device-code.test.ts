@@ -110,7 +110,7 @@ describe("loginOpenAICodexDeviceCode", () => {
       expect(userCodeRequest[1]?.method).toBe("POST");
       expect(userCodeRequest[1]?.headers).toEqual({
         "Content-Type": "application/json",
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       });
@@ -120,7 +120,7 @@ describe("loginOpenAICodexDeviceCode", () => {
       expect(deviceTokenRequest[1]?.method).toBe("POST");
       expect(deviceTokenRequest[1]?.headers).toEqual({
         "Content-Type": "application/json",
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       });
@@ -130,7 +130,7 @@ describe("loginOpenAICodexDeviceCode", () => {
       expect(oauthTokenRequest[1]?.method).toBe("POST");
       expect(oauthTokenRequest[1]?.headers).toEqual({
         "Content-Type": "application/x-www-form-urlencoded",
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       });

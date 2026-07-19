@@ -7,7 +7,7 @@ struct TalkRuntimeIssueBanner: View {
     var onShowDetails: (() -> Void)?
 
     var body: some View {
-        OpenClawNoticeBanner(
+        OperatorNoticeBanner(
             icon: self.iconName,
             title: .verbatim(self.issue.fallbackBannerTitle),
             message: .verbatim(self.issue.fallbackBannerMessage),
@@ -25,7 +25,7 @@ struct TalkRuntimeIssueBanner: View {
     }
 
     private var tint: Color {
-        OpenClawBrand.warn
+        OperatorBrand.warn
     }
 }
 
@@ -43,12 +43,12 @@ struct TalkRuntimeIssueDetailsSheet: View {
                 Section {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(self.issue.fallbackBannerTitle)
-                            .font(OpenClawType.title3SemiBold)
+                            .font(OperatorType.title3SemiBold)
                         Text(self.issue.fallbackBannerMessage)
-                            .font(OpenClawType.body)
+                            .font(OperatorType.body)
                             .foregroundStyle(.secondary)
                         Text(self.issue.displayMessage)
-                            .font(OpenClawType.footnoteSemiBold)
+                            .font(OperatorType.footnoteSemiBold)
                             .foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +57,7 @@ struct TalkRuntimeIssueDetailsSheet: View {
 
                 Section {
                     Text(verbatim: self.issue.technicalDetails)
-                        .font(OpenClawType.monoFootnote)
+                        .font(OperatorType.monoFootnote)
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                     Button {
@@ -65,17 +65,17 @@ struct TalkRuntimeIssueDetailsSheet: View {
                         self.copyFeedback = "Copied diagnostics"
                     } label: {
                         Text("Copy diagnostics")
-                            .font(OpenClawType.subheadSemiBold)
+                            .font(OperatorType.subheadSemiBold)
                     }
                 } header: {
                     Text("Technical details")
-                        .font(OpenClawType.captionSemiBold)
+                        .font(OperatorType.captionSemiBold)
                 }
 
                 if let copyFeedback {
                     Section {
                         Text(copyFeedback)
-                            .font(OpenClawType.footnote)
+                            .font(OperatorType.footnote)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -90,7 +90,7 @@ struct TalkRuntimeIssueDetailsSheet: View {
                             onOpenSettings()
                         } label: {
                             Text("Open Settings")
-                                .font(OpenClawType.subheadSemiBold)
+                                .font(OperatorType.subheadSemiBold)
                         }
                     }
                 }
@@ -99,7 +99,7 @@ struct TalkRuntimeIssueDetailsSheet: View {
                         self.dismiss()
                     } label: {
                         Text("Done")
-                            .font(OpenClawType.subheadSemiBold)
+                            .font(OperatorType.subheadSemiBold)
                     }
                 }
             }

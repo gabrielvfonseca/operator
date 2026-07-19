@@ -1,5 +1,5 @@
 import AppKit
-import OpenClawChatUI
+import OperatorChatUI
 import SwiftUI
 
 struct TalkOverlayView: View {

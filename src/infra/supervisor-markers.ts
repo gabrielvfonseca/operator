@@ -35,7 +35,7 @@ function hasAnyHint(env: NodeJS.ProcessEnv, keys: readonly string[]): boolean {
 
 function hasOperatorGatewayServiceMarker(env: NodeJS.ProcessEnv): boolean {
   return (
-    env.OPERATOR_SERVICE_MARKER?.trim() === "operator" &&
+    env.OPERATOR_SERVICE_MARKER?.trim() === "@gabrielvfonseca/operator" &&
     env.OPERATOR_SERVICE_KIND?.trim() === "gateway"
   );
 }

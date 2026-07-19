@@ -1,4 +1,7 @@
-import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import {
+  definePluginEntry,
+  type OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 export default definePluginEntry({
   id: "vault",

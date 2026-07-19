@@ -12,7 +12,7 @@ import { JsonlAuditStore, FileReplayStore } from "../protocol/node.js";
 import type { ReefKeys } from "./types.js";
 
 export function resolveStateDir(configured?: string): string {
-  return configured ?? join(homedir(), ".openclaw", "data", "reef");
+  return configured ?? join(homedir(), ".operator", "data", "reef");
 }
 
 export async function generateAndStoreKeys(stateDir: string): Promise<ReefKeys> {

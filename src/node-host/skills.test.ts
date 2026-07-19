@@ -7,7 +7,7 @@ import { resolveNodeHostedSkillDirectory, scanNodeHostedSkills } from "./skills.
 const roots: string[] = [];
 
 function createRoot(): string {
-  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-skills-")));
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-node-skills-")));
   roots.push(root);
   return root;
 }

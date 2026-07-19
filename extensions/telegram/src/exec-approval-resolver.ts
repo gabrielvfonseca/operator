@@ -2,9 +2,9 @@
 import {
   resolveApprovalOverGateway,
   type ApprovalResolveResult,
-} from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 type ResolveTelegramApprovalParams = {
   cfg: OperatorConfig;

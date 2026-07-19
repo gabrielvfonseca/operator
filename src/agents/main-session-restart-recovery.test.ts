@@ -111,7 +111,7 @@ beforeEach(async () => {
   runtimePluginMocks.findRestartRecoveryUnsafeReplyHook.mockReturnValue(undefined);
   resetAgentEventsForTest();
   resetGatewayWorkAdmission();
-  tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-main-restart-recovery-"));
+  tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-main-restart-recovery-"));
 });
 
 afterEach(async () => {

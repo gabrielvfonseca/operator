@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import {
@@ -113,7 +113,7 @@ describe("runDoctorSessionSqlite", () => {
   });
 
   it("inspects SQLite-only all-agent targets without requiring a legacy store", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-session-sqlite-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-session-sqlite-"));
     try {
       const stateDir = path.join(tempDir, "state");
       const storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
@@ -143,7 +143,7 @@ describe("runDoctorSessionSqlite", () => {
   });
 
   it("migrates a dormant historical agent database before all-agent import compaction", async () => {
-    const tempDir = autoCleanupTempDirs.make("openclaw-doctor-session-sqlite-");
+    const tempDir = autoCleanupTempDirs.make("operator-doctor-session-sqlite-");
     const stateDir = path.join(tempDir, "state");
     const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
     const agentIds = ["dormant", "current"] as const;
@@ -223,7 +223,7 @@ describe("runDoctorSessionSqlite", () => {
   });
 
   it("keeps mismatched older agent schema versions blocking during all-agent import", async () => {
-    const tempDir = autoCleanupTempDirs.make("openclaw-doctor-session-sqlite-");
+    const tempDir = autoCleanupTempDirs.make("operator-doctor-session-sqlite-");
     const stateDir = path.join(tempDir, "state");
     const sessionsDir = path.join(stateDir, "agents", "drifted", "sessions");
     const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
@@ -655,7 +655,7 @@ describe("runDoctorSessionSqlite", () => {
     });
     expect(recovery.totals.issues).toBe(0);
     expect(recovery.targets[0]?.corruptRecovery?.movedFiles).toEqual(
-      expect.arrayContaining([expect.stringMatching(/openclaw-agent\.sqlite\.corrupt-/u)]),
+      expect.arrayContaining([expect.stringMatching(/operator-agent\.sqlite\.corrupt-/u)]),
     );
     expect(fs.existsSync(sqlitePath)).toBe(false);
   });
@@ -818,7 +818,7 @@ describe("runDoctorSessionSqlite", () => {
     fs.writeFileSync(
       pointerPath,
       `${JSON.stringify({
-        traceSchema: "openclaw-trajectory-pointer",
+        traceSchema: "operator-trajectory-pointer",
         schemaVersion: 1,
         sessionId: "session-1",
         runtimeFile: store.trajectoryPath,
@@ -1530,7 +1530,7 @@ describe("runDoctorSessionSqlite", () => {
     expectDefined(manifest.targets[0], "manifest.targets[0] test invariant").issues = [
       {
         code: "startup_failure",
-        message: `token=supersecret startup migration failed for agent:main:main at ${store.storePath} and ${process.env.HOME ?? "/Users/example"}/private/openclaw.json`,
+        message: `token=supersecret startup migration failed for agent:main:main at ${store.storePath} and ${process.env.HOME ?? "/Users/example"}/private/operator.json`,
         sessionKey: "agent:main:main",
       },
     ];
@@ -1775,7 +1775,7 @@ describe("runDoctorSessionSqlite", () => {
   });
 
   it("keeps a shared legacy store intact when importing only one agent", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-session-sqlite-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-session-sqlite-"));
     try {
       const stateDir = path.join(tempDir, "state");
       const sessionDir = path.join(tempDir, "shared-session-store");
@@ -1842,7 +1842,7 @@ describe("runDoctorSessionSqlite", () => {
   });
 
   it("imports shared custom stores into per-agent SQLite targets", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-session-sqlite-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-session-sqlite-"));
     try {
       const stateDir = path.join(tempDir, "state");
       const sessionDir = path.join(tempDir, "shared-session-store");
@@ -1972,7 +1972,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
     fs.writeFileSync(sqlitePath, "not a sqlite database\n", { mode: 0o600 });
@@ -1997,7 +1997,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
     fs.writeFileSync(sqlitePath, "not a sqlite database\n", { mode: 0o600 });
@@ -2033,7 +2033,7 @@ describe("runDoctorSessionSqlite", () => {
         "agents",
         "main",
         "agent",
-        "openclaw-agent.sqlite",
+        "operator-agent.sqlite",
       );
       fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
       fs.writeFileSync(sqlitePath, "not a sqlite database\n", { mode: 0o400 });
@@ -2046,7 +2046,7 @@ describe("runDoctorSessionSqlite", () => {
 
       expect(report.totals.issues).toBe(0);
       expect(report.targets[0]?.corruptRecovery?.movedFiles).toEqual([
-        expect.stringMatching(/openclaw-agent\.sqlite\.corrupt-/u),
+        expect.stringMatching(/operator-agent\.sqlite\.corrupt-/u),
       ]);
       expect(fs.existsSync(sqlitePath)).toBe(false);
     },
@@ -2059,7 +2059,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
     fs.writeFileSync(`${sqlitePath}-wal`, "wal", { mode: 0o600 });
@@ -2088,7 +2088,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
     const expectedContents = new Map<string, string>();
@@ -2143,7 +2143,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(sqlitePath, { recursive: true });
 
@@ -2166,7 +2166,7 @@ describe("runDoctorSessionSqlite", () => {
       "agents",
       "main",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
     fs.writeFileSync(sqlitePath, "not a sqlite database\n", { mode: 0o600 });
@@ -2249,7 +2249,7 @@ describe("runDoctorSessionSqlite", () => {
     });
 
     expect(report.targets[0]?.sqlitePath).toBe(
-      path.join(store.sessionDir, "openclaw-agent.sqlite"),
+      path.join(store.sessionDir, "operator-agent.sqlite"),
     );
     expect(
       fs.existsSync(
@@ -2535,9 +2535,9 @@ function createLegacyStore(
     transcriptLines?: string[];
   } = {},
 ): TestStore {
-  const tempDir = autoCleanupTempDirs.make("openclaw-doctor-session-sqlite-", params.tempRoot);
+  const tempDir = autoCleanupTempDirs.make("operator-doctor-session-sqlite-", params.tempRoot);
   const stateDir = path.join(tempDir, "state");
-  const configPath = path.join(tempDir, "openclaw.json");
+  const configPath = path.join(tempDir, "operator.json");
   const sessionDir = params.customStore
     ? path.join(tempDir, "legacy-session-store")
     : path.join(stateDir, "agents", params.agentDirName ?? "main", "sessions");

@@ -58,8 +58,8 @@ function buildVitestCapabilityShimAliasMap(): Record<string, string> {
     CAPABILITY_VITEST_SHIM_ALIASES.flatMap(({ subpath, target }) => {
       const targetPath = fileURLToPath(target);
       return [
-        [`operator/plugin-sdk/${subpath}`, targetPath],
-        [`@operator/plugin-sdk/${subpath}`, targetPath],
+        [`openclaw/plugin-sdk/${subpath}`, targetPath],
+        [`@gabrielvfonseca/plugin-sdk/${subpath}`, targetPath],
       ];
     }),
   );
@@ -75,8 +75,8 @@ function applyVitestCapabilityAliasOverrides(params: {
   }
 
   const {
-    "operator/plugin-sdk": _ignoredLegacyRootAlias,
-    "@operator/plugin-sdk": _ignoredScopedRootAlias,
+    "openclaw/plugin-sdk": _ignoredLegacyRootAlias,
+    "@gabrielvfonseca/plugin-sdk": _ignoredScopedRootAlias,
     ...scopedAliasMap
   } = params.aliasMap;
   return {

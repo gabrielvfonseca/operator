@@ -1,15 +1,18 @@
-// Telegram plugin module implements polling session behavior.
-import { type RunOptions, run } from "@grammyjs/runner";
-import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/channel-contract";
-import type { TelegramNetworkConfig } from "openclaw/plugin-sdk/config-contracts";
-import { drainPendingDeliveries } from "openclaw/plugin-sdk/delivery-queue-runtime";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import type { ChannelAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { TelegramNetworkConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { drainPendingDeliveries } from "@gabrielvfonseca/operator/plugin-sdk/delivery-queue-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   clampPositiveTimerTimeoutMs,
   resolvePositiveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { formatDurationPrecise, sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  formatDurationPrecise,
+  sleepWithAbort,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Telegram plugin module implements polling session behavior.
+import { type RunOptions, run } from "@grammyjs/runner";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import {
   runWithTelegramSpooledReplayUpdate,
@@ -224,7 +227,7 @@ type SpooledUpdateDrainResult = {
 
 // Account health restarts create a new session in the same process while an old
 // spooled handler may still be running after shutdown grace.
-const TELEGRAM_POLLING_SESSION_STATE_KEY = Symbol.for("openclaw.telegram.pollingSessionState");
+const TELEGRAM_POLLING_SESSION_STATE_KEY = Symbol.for("operator.telegram.pollingSessionState");
 type SpooledUpdateDrainHealth = {
   lastCompletedAt: number;
 };

@@ -1,4 +1,4 @@
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { mergeDmAllowFromSources, resolveGroupAllowFromSources } from "../allow-from.js";
 
 /**

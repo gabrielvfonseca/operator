@@ -1,14 +1,13 @@
 import type { CliDeps } from "../../cli/deps.types.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
-import type { getRemoteSkillEligibility } from "../../skills/runtime/remote.js";
-import type { resolveReusableWorkspaceSkillSnapshot } from "../../skills/runtime/session-snapshot.js";
 
 type AttemptExecutionRuntime = typeof import("./attempt-execution.runtime.js");
 export type AgentAttemptResult = Awaited<ReturnType<AttemptExecutionRuntime["runAgentAttempt"]>>;
 type AcpManagerRuntime = typeof import("../../acp/control-plane/manager.js");
 type AcpPolicyRuntime = typeof import("../../acp/policy.js");
 type AcpRuntimeErrorsRuntime = typeof import("../../acp/runtime/errors.js");
-type AcpSessionIdentifiersRuntime = typeof import("@operator/acp-core/runtime/session-identifiers");
+type AcpSessionIdentifiersRuntime =
+  typeof import("@gabrielvfonseca/acp-core/runtime/session-identifiers");
 type DeliveryRuntime = typeof import("./delivery.runtime.js");
 type SessionStoreRuntime = typeof import("./session-store.runtime.js");
 type CliCompactionRuntime = typeof import("./cli-compaction.js");
@@ -16,11 +15,6 @@ type TranscriptResolveRuntime =
   typeof import("../../config/sessions/transcript-resolve.runtime.js");
 type CliDepsRuntime = typeof import("../../cli/deps.js");
 type ExecDefaultsRuntime = typeof import("../exec-defaults.js");
-type SkillsRuntime = {
-  getRemoteSkillEligibility: typeof getRemoteSkillEligibility;
-  resolveReusableWorkspaceSkillSnapshot: typeof resolveReusableWorkspaceSkillSnapshot;
-};
-
 const attemptExecutionRuntimeLoader = createLazyImportLoader<AttemptExecutionRuntime>(
   () => import("./attempt-execution.runtime.js"),
 );
@@ -34,7 +28,7 @@ const acpRuntimeErrorsRuntimeLoader = createLazyImportLoader<AcpRuntimeErrorsRun
   () => import("../../acp/runtime/errors.js"),
 );
 const acpSessionIdentifiersRuntimeLoader = createLazyImportLoader<AcpSessionIdentifiersRuntime>(
-  () => import("@operator/acp-core/runtime/session-identifiers"),
+  () => import("@gabrielvfonseca/acp-core/runtime/session-identifiers"),
 );
 const deliveryRuntimeLoader = createLazyImportLoader<DeliveryRuntime>(
   () => import("./delivery.runtime.js"),
@@ -54,17 +48,6 @@ const cliDepsRuntimeLoader = createLazyImportLoader<CliDepsRuntime>(
 const execDefaultsRuntimeLoader = createLazyImportLoader<ExecDefaultsRuntime>(
   () => import("../exec-defaults.js"),
 );
-const skillsRuntimeLoader = createLazyImportLoader<SkillsRuntime>(async () => {
-  const [remote, sessionSnapshot] = await Promise.all([
-    import("../../skills/runtime/remote.js"),
-    import("../../skills/runtime/session-snapshot.js"),
-  ]);
-  return {
-    getRemoteSkillEligibility: remote.getRemoteSkillEligibility,
-    resolveReusableWorkspaceSkillSnapshot: sessionSnapshot.resolveReusableWorkspaceSkillSnapshot,
-  };
-});
-
 export function loadAttemptExecutionRuntime(): Promise<AttemptExecutionRuntime> {
   return attemptExecutionRuntimeLoader.load();
 }
@@ -103,10 +86,6 @@ export function loadTranscriptResolveRuntime(): Promise<TranscriptResolveRuntime
 
 export function loadExecDefaultsRuntime(): Promise<ExecDefaultsRuntime> {
   return execDefaultsRuntimeLoader.load();
-}
-
-export function loadSkillsRuntime(): Promise<SkillsRuntime> {
-  return skillsRuntimeLoader.load();
 }
 
 export async function resolveAgentCommandDeps(deps: CliDeps | undefined): Promise<CliDeps> {

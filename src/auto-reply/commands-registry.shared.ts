@@ -317,9 +317,9 @@ export function buildBuiltinChatCommands(
       ],
     }),
     defineChatCommand({
-      key: "operator",
+      key: "@gabrielvfonseca/operator",
       description: "Run the Operator setup and repair helper.",
-      textAlias: "/operator",
+      textAlias: "/openclaw",
       acceptsArgs: true,
       scope: "text",
       category: "management",

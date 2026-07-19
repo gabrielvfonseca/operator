@@ -3,14 +3,17 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/account-id";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 import {
   listCombinedAccountIds,
   resolveListedDefaultAccountId,
-} from "openclaw/plugin-sdk/account-resolution";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeSecretInputString, type SecretInput } from "openclaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  normalizeSecretInputString,
+  type SecretInput,
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { NostrProfile } from "./config-schema.js";
 import { DEFAULT_RELAYS } from "./default-relays.js";
 import { getPublicKeyFromPrivate } from "./nostr-key-utils.js";

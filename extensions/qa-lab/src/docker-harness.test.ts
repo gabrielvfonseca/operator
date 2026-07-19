@@ -50,7 +50,7 @@ describe("qa docker harness", () => {
       path.join(outputDir, ".env.example"),
       path.join(outputDir, "README.md"),
       path.join(outputDir, "docker-compose.qa.yml"),
-      path.join(outputDir, "state", "openclaw.json"),
+      path.join(outputDir, "state", "operator.json"),
       path.join(outputDir, "state", "seed-workspace", "QA_KICKOFF_TASK.md"),
       path.join(outputDir, "state", "seed-workspace", "QA_SCENARIO_PLAN.md"),
       path.join(outputDir, "state", "seed-workspace", "QA_SCENARIOS.yaml"),
@@ -61,7 +61,7 @@ describe("qa docker harness", () => {
 
     const compose = await readFile(path.join(outputDir, "docker-compose.qa.yml"), "utf8");
     const services = parseComposeServices(compose);
-    expect(compose).toContain("image: openclaw:qa-local-prebaked");
+    expect(compose).toContain("image: operator:qa-local-prebaked");
     expect(compose).toContain("qa-mock-openai:");
     expect(services["qa-mock-openai"]?.environment).toMatchObject({
       OPERATOR_ENABLE_PRIVATE_QA_CLI: "1",
@@ -71,29 +71,29 @@ describe("qa docker harness", () => {
     expect(services["qa-mock-openai"]?.volumes).toBeUndefined();
     expect(services["qa-lab"]?.environment).toMatchObject({
       OPERATOR_ENABLE_PRIVATE_QA_CLI: "1",
-      OPERATOR_CONFIG_PATH: "/opt/openclaw-scaffold/openclaw.json",
+      OPERATOR_CONFIG_PATH: "/opt/operator-scaffold/operator.json",
       OPERATOR_STATE_DIR: "/tmp/openclaw/state",
     });
-    expect(services["qa-lab"]?.volumes).toContain("./state:/opt/openclaw-scaffold:ro");
+    expect(services["qa-lab"]?.volumes).toContain("./state:/opt/operator-scaffold:ro");
     expect(compose).toContain('      - "127.0.0.1:18889:18789"');
     expect(compose).toContain('      - "127.0.0.1:43124:43123"');
-    expect(compose).toContain(":/opt/openclaw-qa-lab-ui:ro");
+    expect(compose).toContain(":/opt/operator-qa-lab-ui:ro");
     expect(compose).toContain("      - sh");
     expect(compose).toContain("      - -lc");
     expect(compose).toContain(
       '        - fetch("http://127.0.0.1:18789/healthz").then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))',
     );
-    expect(compose).toContain("--control-ui-proxy-target http://openclaw-qa-gateway:18789/");
+    expect(compose).toContain("--control-ui-proxy-target http://operator-qa-gateway:18789/");
     expect(compose).not.toContain("--control-ui-token");
     expect(compose).not.toContain("qa-token");
     expect(compose).toContain("--send-kickoff-on-start");
-    expect(compose).toContain("--ui-dist-dir /opt/openclaw-qa-lab-ui");
-    expect(compose).toContain(":/opt/openclaw-repo:ro");
-    expect(compose).toContain("./state:/opt/openclaw-scaffold:ro");
+    expect(compose).toContain("--ui-dist-dir /opt/operator-qa-lab-ui");
+    expect(compose).toContain(":/opt/operator-repo:ro");
+    expect(compose).toContain("./state:/opt/operator-scaffold:ro");
     expect(compose).toContain(
-      "cp -R /opt/openclaw-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/openclaw-repo /tmp/openclaw/workspace/repo",
+      "cp -R /opt/operator-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/operator-repo /tmp/openclaw/workspace/repo",
     );
-    expect(compose).toContain("OPERATOR_CONFIG_PATH: /tmp/openclaw/openclaw.json");
+    expect(compose).toContain("OPERATOR_CONFIG_PATH: /tmp/openclaw/operator.json");
     expect(compose).toContain("OPERATOR_STATE_DIR: /tmp/openclaw/state");
     expect(compose).toContain('OPERATOR_NO_RESPAWN: "1"');
 
@@ -103,7 +103,7 @@ describe("qa docker harness", () => {
     expect(envExample).toContain("QA_PROVIDER_BASE_URL=http://host.docker.internal:45123/v1");
     expect(envExample).toContain("QA_LAB_URL=http://127.0.0.1:43124");
 
-    const configText = await readFile(path.join(outputDir, "state", "openclaw.json"), "utf8");
+    const configText = await readFile(path.join(outputDir, "state", "operator.json"), "utf8");
     const config = JSON.parse(configText) as {
       plugins?: {
         allow?: string[];
@@ -142,7 +142,7 @@ describe("qa docker harness", () => {
     const result = await buildQaDockerHarnessImage(
       {
         repoRoot: "/repo/openclaw",
-        imageName: "openclaw:qa-local-prebaked",
+        imageName: "operator:qa-local-prebaked",
       },
       {
         async runCommand(command, args, cwd) {
@@ -152,9 +152,9 @@ describe("qa docker harness", () => {
       },
     );
 
-    expect(result.imageName).toBe("openclaw:qa-local-prebaked");
+    expect(result.imageName).toBe("operator:qa-local-prebaked");
     expect(calls).toEqual([
-      "docker build -t openclaw:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/openclaw",
+      "docker build -t operator:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/openclaw",
     ]);
   });
 
@@ -179,10 +179,10 @@ describe("qa docker harness", () => {
     const services = parseComposeServices(compose);
     expect(services["qa-mock-openai"]?.build?.context).toBe("../repo #hash");
     expect(services["qa-lab"]?.volumes).toContain(
-      "../repo #hash/extensions/qa-lab/web/dist:/opt/openclaw-qa-lab-ui:ro",
+      "../repo #hash/extensions/qa-lab/web/dist:/opt/operator-qa-lab-ui:ro",
     );
-    expect(services["openclaw-qa-gateway"]?.volumes).toContain(
-      "../repo #hash:/opt/openclaw-repo:ro",
+    expect(services["operator-qa-gateway"]?.volumes).toContain(
+      "../repo #hash:/opt/operator-repo:ro",
     );
   });
 });

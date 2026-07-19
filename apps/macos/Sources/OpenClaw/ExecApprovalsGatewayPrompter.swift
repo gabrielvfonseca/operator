@@ -1,14 +1,14 @@
 import CoreGraphics
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import OSLog
 
 @MainActor
 final class ExecApprovalsGatewayPrompter {
     static let shared = ExecApprovalsGatewayPrompter()
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals.gateway")
+    private let logger = Logger(subsystem: "ai.operator", category: "exec-approvals.gateway")
     private var task: Task<Void, Never>?
 
     struct GatewayApprovalRequest: Codable {
@@ -40,7 +40,7 @@ final class ExecApprovalsGatewayPrompter {
 
     private func handle(push: GatewayPush) async {
         guard case let .event(evt) = push else { return }
-        guard evt.event == "exec.approval.requested" || evt.event == "openclaw.approval.requested" else { return }
+        guard evt.event == "exec.approval.requested" || evt.event == "operator.approval.requested" else { return }
         guard let payload = evt.payload else { return }
         do {
             let data = try JSONEncoder().encode(payload)
@@ -58,7 +58,7 @@ final class ExecApprovalsGatewayPrompter {
             else {
                 return
             }
-            if evt.event == "openclaw.approval.requested" {
+            if evt.event == "operator.approval.requested" {
                 try await GatewayConnection.shared.requestVoid(
                     method: .approvalResolve,
                     params: [

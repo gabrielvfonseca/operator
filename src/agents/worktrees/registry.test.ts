@@ -20,7 +20,7 @@ describe("managed worktree registry", () => {
 
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    root = await fs.mkdtemp(path.join(tempRoot, "openclaw-worktree-registry-"));
+    root = await fs.mkdtemp(path.join(tempRoot, "operator-worktree-registry-"));
     env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "state") };
   });
 

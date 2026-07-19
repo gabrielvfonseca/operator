@@ -3,8 +3,8 @@ import type {
   SessionCatalogSession,
   SessionCatalogTranscriptItem,
   SessionsCatalogReadResult,
-} from "openclaw/plugin-sdk/session-catalog";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { listPiSummaryPage, readPiSessionById } from "./pi-session-store.js";
 
 const LOCAL_HOST_ID = "gateway";

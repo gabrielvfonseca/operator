@@ -14,7 +14,7 @@ const TYPE_INPUT_EXTENSIONS = new Set([".ts", ".tsx", ".d.ts", ".js", ".mjs", ".
 const VALID_MODES = new Set(["all", "package-boundary"]);
 const ROOT_SHIMS_TIMEOUT_MS = resolveBoundaryRootShimsTimeoutMs(process.env);
 const ROOT_SHIMS_MAX_OLD_SPACE_SIZE =
-  process.env.OPENCLAW_ROOT_SHIMS_MAX_OLD_SPACE_SIZE?.trim() || "8192";
+  process.env.OPERATOR_ROOT_SHIMS_MAX_OLD_SPACE_SIZE?.trim() || "8192";
 const ROOT_SHIMS_NODE_OPTIONS =
   `${process.env.NODE_OPTIONS ?? ""} --max-old-space-size=${ROOT_SHIMS_MAX_OLD_SPACE_SIZE}`.trim();
 const DEFAULT_NODE_STEP_ABORT_KILL_GRACE_MS = 1_000;
@@ -174,78 +174,78 @@ const ROOT_DTS_REQUIRED_OUTPUTS = [
   "dist/plugin-sdk/provider-auth.d.ts",
   "dist/plugin-sdk/video-generation.d.ts",
 ];
-const PACKAGE_DTS_INPUTS = ["sdks/plugin-sdk/tsconfig.json", ...PLUGIN_SDK_TYPE_INPUTS];
-const PACKAGE_DTS_STAMP = "sdks/plugin-sdk/dist/.boundary-dts.stamp";
+const PACKAGE_DTS_INPUTS = ["packages/plugin-sdk/tsconfig.json", ...PLUGIN_SDK_TYPE_INPUTS];
+const PACKAGE_DTS_STAMP = "packages/plugin-sdk/dist/.boundary-dts.stamp";
 const ACP_CORE_REQUIRED_PACKAGE_DTS_OUTPUTS = listPackageDtsOutputsFromExports({
   packageDir: "acp-core",
-  outputPrefix: "sdks/plugin-sdk/dist/packages/acp-core/src",
+  outputPrefix: "packages/plugin-sdk/dist/packages/acp-core/src",
 });
 const AI_REQUIRED_PACKAGE_DTS_OUTPUTS = listSourceDtsOutputs({
   sourceDir: "packages/ai/src",
-  outputPrefix: "sdks/plugin-sdk/dist/packages/ai/src",
+  outputPrefix: "packages/plugin-sdk/dist/packages/ai/src",
 });
 const PACKAGE_DTS_REQUIRED_OUTPUTS = [
   ...AI_REQUIRED_PACKAGE_DTS_OUTPUTS,
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/code-spans.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/fences.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/frontmatter.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/index.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/ir.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/render-aware-chunking.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/render.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/tables.d.ts",
-  "sdks/plugin-sdk/dist/packages/markdown-core/src/types.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-generation-core/src/capability-model-ref.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-generation-core/src/catalog.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-generation-core/src/index.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-generation-core/src/model-ref.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-generation-core/src/normalization.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/base64.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/constants.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/content-length.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/file-name.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/inbound-path-policy.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/inline-image-data-url.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/media-source-url.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/mime.d.ts",
-  "sdks/plugin-sdk/dist/packages/media-core/src/read-byte-stream-with-limit.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/code-spans.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/fences.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/frontmatter.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/index.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/ir.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/render-aware-chunking.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/render.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/tables.d.ts",
+  "packages/plugin-sdk/dist/packages/markdown-core/src/types.d.ts",
+  "packages/plugin-sdk/dist/packages/media-generation-core/src/capability-model-ref.d.ts",
+  "packages/plugin-sdk/dist/packages/media-generation-core/src/catalog.d.ts",
+  "packages/plugin-sdk/dist/packages/media-generation-core/src/index.d.ts",
+  "packages/plugin-sdk/dist/packages/media-generation-core/src/model-ref.d.ts",
+  "packages/plugin-sdk/dist/packages/media-generation-core/src/normalization.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/base64.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/constants.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/content-length.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/file-name.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/inbound-path-policy.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/inline-image-data-url.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/media-source-url.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/mime.d.ts",
+  "packages/plugin-sdk/dist/packages/media-core/src/read-byte-stream-with-limit.d.ts",
   ...ACP_CORE_REQUIRED_PACKAGE_DTS_OUTPUTS,
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/configured-model-refs.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-normalize.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-refs.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-types.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/provider-id.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/provider-model-id-normalization.d.ts",
-  "sdks/plugin-sdk/dist/packages/model-catalog-core/src/provider-model-id-normalize.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/index.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/boolean-coercion.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/number-coercion.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/record-coerce.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/string-coerce.d.ts",
-  "sdks/plugin-sdk/dist/packages/normalization-core/src/string-normalization.d.ts",
-  "sdks/plugin-sdk/dist/packages/retry/src/index.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/ansi.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/decorative-emoji.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/health-style.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/index.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/links.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/note.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/osc-progress.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/palette.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/progress-line.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/prompt-select-styled-params.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/prompt-select-styled.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/prompt-style.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/restore.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/safe-text.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/stream-writer.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/table.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/terminal-link.d.ts",
-  "sdks/plugin-sdk/dist/packages/terminal-core/src/theme.d.ts",
-  "sdks/plugin-sdk/dist/src/plugin-sdk/error-runtime.d.ts",
-  "sdks/plugin-sdk/dist/src/plugin-sdk/plugin-entry.d.ts",
-  "sdks/plugin-sdk/dist/src/plugin-sdk/provider-auth.d.ts",
-  "sdks/plugin-sdk/dist/src/plugin-sdk/video-generation.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/configured-model-refs.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-normalize.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-refs.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/model-catalog-types.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/provider-id.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/provider-model-id-normalization.d.ts",
+  "packages/plugin-sdk/dist/packages/model-catalog-core/src/provider-model-id-normalize.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/index.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/boolean-coercion.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/number-coercion.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/record-coerce.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/string-coerce.d.ts",
+  "packages/plugin-sdk/dist/packages/normalization-core/src/string-normalization.d.ts",
+  "packages/plugin-sdk/dist/packages/retry/src/index.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/ansi.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/decorative-emoji.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/health-style.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/index.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/links.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/note.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/osc-progress.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/palette.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/progress-line.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/prompt-select-styled-params.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/prompt-select-styled.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/prompt-style.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/restore.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/safe-text.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/stream-writer.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/table.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/terminal-link.d.ts",
+  "packages/plugin-sdk/dist/packages/terminal-core/src/theme.d.ts",
+  "packages/plugin-sdk/dist/src/plugin-sdk/error-runtime.d.ts",
+  "packages/plugin-sdk/dist/src/plugin-sdk/plugin-entry.d.ts",
+  "packages/plugin-sdk/dist/src/plugin-sdk/provider-auth.d.ts",
+  "packages/plugin-sdk/dist/src/plugin-sdk/video-generation.d.ts",
 ];
 const QA_CHANNEL_DTS_INPUTS = [
   "extensions/qa-channel/api.ts",
@@ -300,11 +300,11 @@ const ENTRY_SHIM_RUNTIME_OUTPUTS = ["dist/plugin-sdk/webhook-path.js"];
  */
 export function resolveBoundaryEntryShimRequiredOutputs(env = process.env) {
   const entries =
-    env.OPENCLAW_BUILD_PRIVATE_QA === "1" ? pluginSdkEntrypoints : publicPluginSdkEntrypoints;
+    env.OPERATOR_BUILD_PRIVATE_QA === "1" ? pluginSdkEntrypoints : publicPluginSdkEntrypoints;
   return [
     ...entries.flatMap((entry) => [
       `dist/plugin-sdk/${entry}.d.ts`,
-      `sdks/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
+      `packages/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
     ]),
     ...ENTRY_SHIM_RUNTIME_OUTPUTS,
   ].toSorted((a, b) => a.localeCompare(b));
@@ -334,11 +334,11 @@ export function parseMode(argv = process.argv.slice(2)) {
  * Reads the root shim timeout override for long package-boundary builds.
  */
 export function resolveBoundaryRootShimsTimeoutMs(env = process.env) {
-  const raw = env.OPENCLAW_PLUGIN_SDK_BOUNDARY_ROOT_SHIMS_TIMEOUT_MS?.trim();
+  const raw = env.OPERATOR_PLUGIN_SDK_BOUNDARY_ROOT_SHIMS_TIMEOUT_MS?.trim();
   if (!raw) {
     return 300_000;
   }
-  return parsePositiveInt(raw, "OPENCLAW_PLUGIN_SDK_BOUNDARY_ROOT_SHIMS_TIMEOUT_MS");
+  return parsePositiveInt(raw, "OPERATOR_PLUGIN_SDK_BOUNDARY_ROOT_SHIMS_TIMEOUT_MS");
 }
 
 function collectNewestMtime(paths, params = {}) {
@@ -736,7 +736,7 @@ async function main(argv = process.argv.slice(2)) {
       inputPaths: [
         ...ENTRY_SHIMS_INPUTS,
         "dist/plugin-sdk/.tsbuildinfo",
-        "sdks/plugin-sdk/dist/.tsbuildinfo",
+        "packages/plugin-sdk/dist/.tsbuildinfo",
       ],
       outputPaths: [
         "dist/plugin-sdk/.boundary-entry-shims.stamp",
@@ -791,7 +791,7 @@ async function main(argv = process.argv.slice(2)) {
         prerequisiteSteps.push({
           label: "plugin-sdk boundary dts",
           args: [runTsgoScript, "-p", "tsconfig.plugin-sdk.dts.json", "--declaration", "true"],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: ROOT_DTS_STAMP,
         });
@@ -802,12 +802,12 @@ async function main(argv = process.argv.slice(2)) {
     if (!packageDtsFresh) {
       removeIncrementalStateForMissingOutput({
         outputPaths: PACKAGE_DTS_REQUIRED_OUTPUTS,
-        tsBuildInfoPath: "sdks/plugin-sdk/dist/.tsbuildinfo",
+        tsBuildInfoPath: "packages/plugin-sdk/dist/.tsbuildinfo",
       });
       prerequisiteSteps.push({
         label: "plugin-sdk package boundary dts",
-        args: [runTsgoScript, "-p", "sdks/plugin-sdk/tsconfig.json", "--declaration", "true"],
-        env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+        args: [runTsgoScript, "-p", "packages/plugin-sdk/tsconfig.json", "--declaration", "true"],
+        env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
         timeoutMs: 300_000,
         stampPath: PACKAGE_DTS_STAMP,
       });
@@ -839,7 +839,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/qa-channel/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: QA_CHANNEL_DTS_STAMP,
         });
@@ -870,7 +870,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/matrix/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: MATRIX_DTS_STAMP,
         });
@@ -901,7 +901,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/discord/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: DISCORD_DTS_STAMP,
         });
@@ -932,7 +932,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/slack/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: SLACK_DTS_STAMP,
         });
@@ -963,7 +963,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/whatsapp/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: WHATSAPP_DTS_STAMP,
         });
@@ -994,7 +994,7 @@ async function main(argv = process.argv.slice(2)) {
             "--tsBuildInfoFile",
             "dist/plugin-sdk/extensions/telegram/.tsbuildinfo",
           ],
-          env: { OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
+          env: { OPERATOR_TSGO_HEAVY_CHECK_LOCK_HELD: "1" },
           timeoutMs: 300_000,
           stampPath: TELEGRAM_DTS_STAMP,
         });

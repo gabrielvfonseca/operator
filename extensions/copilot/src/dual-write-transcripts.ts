@@ -32,13 +32,13 @@ import { createHash } from "node:crypto";
 import {
   runAgentHarnessBeforeMessageWriteHook,
   type AgentMessage,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   withSessionTranscriptWriteLock,
   type SessionTranscriptTargetParams,
   type SessionTranscriptWriteLockContext,
   type SessionTranscriptWriteLockParams,
-} from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 
 type MirroredAgentMessage = Extract<AgentMessage, { role: "user" | "assistant" | "toolResult" }>;
 
@@ -66,7 +66,7 @@ export function attachCopilotMirrorIdentity<T extends AgentMessage>(
       : {};
   return {
     ...record,
-    __openclaw: { ...baseMeta, [MIRROR_IDENTITY_META_KEY]: identity },
+    __operator: { ...baseMeta, [MIRROR_IDENTITY_META_KEY]: identity },
   } as unknown as T;
 }
 

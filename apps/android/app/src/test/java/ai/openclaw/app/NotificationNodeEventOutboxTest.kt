@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.NodeEventSendOutcome
+import ai.operator.app.gateway.NodeEventSendOutcome
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.Channel

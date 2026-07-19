@@ -4,10 +4,10 @@ import {
   type ProviderAuthMethod,
   type ProviderResolveDynamicModelContext,
   type ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-import { buildProviderToolCompatFamilyHooks } from "openclaw/plugin-sdk/provider-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { buildProviderToolCompatFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-tools";
 import {
   buildClawRouterProviderConfig,
   normalizeClawRouterApiBaseUrl,

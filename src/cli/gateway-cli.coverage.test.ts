@@ -2,12 +2,12 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { Command } from "commander";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { withEnvOverride } from "../config/test-helpers.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { testApi as usageTestApi, usageHandlers } from "../gateway/server-methods/usage.js";
 import { GatewayLockError } from "../infra/gateway-lock.js";
 import { registerGatewayCli } from "./gateway-cli.js";
@@ -299,7 +299,7 @@ describe("gateway-cli coverage", () => {
   });
 
   it("waits for real all-agent usage caches before printing totals", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-usage-cost-cli-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-usage-cost-cli-"));
     const config = {
       agents: {
         list: [{ id: "main", default: true }, { id: "dev" }],
@@ -492,12 +492,12 @@ describe("gateway-cli coverage", () => {
 
   it("prints the latest stability bundle without calling Gateway", async () => {
     callGateway.mockClear();
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-gateway-cli-bundle-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-gateway-cli-bundle-"));
     try {
       const bundleDir = path.join(tempDir, "logs", "stability");
       const bundlePath = path.join(
         bundleDir,
-        "openclaw-stability-2026-04-22T12-00-00-000Z-123-test.json",
+        "operator-stability-2026-04-22T12-00-00-000Z-123-test.json",
       );
       const bundle = {
         version: 1,
@@ -600,7 +600,7 @@ describe("gateway-cli coverage", () => {
 
   it("writes gateway diagnostics export with a best-effort health snapshot", async () => {
     callGateway.mockClear();
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-gateway-cli-support-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-gateway-cli-support-"));
     try {
       const outputPath = path.join(tempDir, "diagnostics.zip");
       await withEnvOverride(
@@ -649,8 +649,8 @@ describe("gateway-cli coverage", () => {
       {
         instanceName: "Studio (Operator)",
         displayName: "Studio",
-        domain: "openclaw.internal.",
-        host: "studio.openclaw.internal",
+        domain: "operator.internal.",
+        host: "studio.operator.internal",
         port: 18789,
         lanHost: "studio.local",
         tailnetDns: "studio.tailnet.ts.net",

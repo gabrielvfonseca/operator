@@ -3,7 +3,7 @@
  *
  * Builds redacted labels and compact details from tool metadata without affecting execution semantics.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { redactToolDetail } from "../logging/redact.js";
 import { shortenHomeInString } from "../utils.js";
 import {

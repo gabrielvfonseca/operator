@@ -1,9 +1,9 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct ChatTranscriptCacheIdentityTests {
-    private static let defaultStateDir = URL(fileURLWithPath: "/Users/tester/.openclaw", isDirectory: true)
+    private static let defaultStateDir = URL(fileURLWithPath: "/Users/tester/.operator", isDirectory: true)
 
     @Test func `unconfigured mode has no cache identity`() {
         let id = MacChatTranscriptCache.gatewayID(
@@ -18,7 +18,7 @@ struct ChatTranscriptCacheIdentityTests {
 
     @Test @MainActor func `windows share one outbox owner per gateway`() {
         let databaseURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-cache-owner-\(UUID().uuidString).sqlite")
+            .appendingPathComponent("operator-cache-owner-\(UUID().uuidString).sqlite")
         let gatewayID = "gw-shared-\(UUID().uuidString)"
         let first = MacChatTranscriptCache.store(databaseURL: databaseURL, gatewayID: gatewayID)
         let second = MacChatTranscriptCache.store(databaseURL: databaseURL, gatewayID: gatewayID)
@@ -36,13 +36,13 @@ struct ChatTranscriptCacheIdentityTests {
             sshRemotePort: 18789)
         let devProfile = MacChatTranscriptCache.gatewayID(
             mode: .local,
-            localStateDir: URL(fileURLWithPath: "/Users/tester/.openclaw-dev", isDirectory: true),
+            localStateDir: URL(fileURLWithPath: "/Users/tester/.operator-dev", isDirectory: true),
             remoteTransport: .ssh,
             directURL: nil,
             sshTarget: "",
             sshRemotePort: 18789)
-        #expect(defaultProfile == "local:/Users/tester/.openclaw")
-        #expect(devProfile == "local:/Users/tester/.openclaw-dev")
+        #expect(defaultProfile == "local:/Users/tester/.operator")
+        #expect(devProfile == "local:/Users/tester/.operator-dev")
         #expect(defaultProfile != devProfile)
     }
 
@@ -50,7 +50,7 @@ struct ChatTranscriptCacheIdentityTests {
         // macOS tmp lives behind a /var -> /private/var symlink; both spellings
         // of the same state dir must map to a single cache scope.
         let canonical = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-cache-identity-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-cache-identity-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: canonical, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: canonical) }
         let resolved = canonical.resolvingSymlinksInPath()

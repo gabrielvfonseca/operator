@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  namespace = "ai.openclaw.app.benchmark"
+  namespace = "com.gabrielvfonseca.operator.app.benchmark"
   // Match the target app while targetSdk remains an independent behavior opt-in.
   compileSdk = 37
 

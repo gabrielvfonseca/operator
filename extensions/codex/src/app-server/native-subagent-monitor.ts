@@ -2,7 +2,10 @@
  * Mirrors Codex native subagent lifecycle and completion into Operator task
  * runtime records, with app-server history as the recovery source.
  */
-import { embeddedAgentLog, formatErrorMessage } from "openclaw/plugin-sdk/agent-harness-runtime";
+import {
+  embeddedAgentLog,
+  formatErrorMessage,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   createAgentHarnessTaskRuntime,
   deliverAgentHarnessTaskCompletion,
@@ -10,8 +13,11 @@ import {
   type AgentHarnessTaskRecord,
   type AgentHarnessTaskRuntime,
   type AgentHarnessTaskRuntimeScope,
-} from "openclaw/plugin-sdk/agent-harness-task-runtime";
-import { asFiniteNumber, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-task-runtime";
+import {
+  asFiniteNumber,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { CodexAppServerClient } from "./client.js";
 import {
   codexNativeSubagentNotifications as nativeSubagentNotifications,

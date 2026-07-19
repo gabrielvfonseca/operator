@@ -1,4 +1,4 @@
-// Bench Gateway Restart script supports OpenClaw repository automation.
+// Bench Gateway Restart script supports Operator repository automation.
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from "node:child_process";
 import fs from "node:fs";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -215,19 +215,19 @@ const GATEWAY_CASES: readonly GatewayBenchCase[] = [
   {
     id: "skipChannels",
     name: "gateway restart, skip channels",
-    env: { OPENCLAW_SKIP_CHANNELS: "1" },
+    env: { OPERATOR_SKIP_CHANNELS: "1" },
     config: BASE_CONFIG,
   },
   {
     id: "skipChannelsAcpxProbe",
     name: "gateway restart, skip channels, ACPX startup probe on",
-    env: { OPENCLAW_ACPX_RUNTIME_STARTUP_PROBE: "1", OPENCLAW_SKIP_CHANNELS: "1" },
+    env: { OPERATOR_ACPX_RUNTIME_STARTUP_PROBE: "1", OPERATOR_SKIP_CHANNELS: "1" },
     config: BASE_CONFIG,
   },
   {
     id: "skipChannelsNoAcpxProbe",
     name: "gateway restart, skip channels, ACPX startup probe off",
-    env: { OPENCLAW_ACPX_RUNTIME_STARTUP_PROBE: "0", OPENCLAW_SKIP_CHANNELS: "1" },
+    env: { OPERATOR_ACPX_RUNTIME_STARTUP_PROBE: "0", OPERATOR_SKIP_CHANNELS: "1" },
     config: BASE_CONFIG,
   },
   {
@@ -238,7 +238,7 @@ const GATEWAY_CASES: readonly GatewayBenchCase[] = [
   {
     id: "fiftyPlugins",
     name: "gateway restart, 50 manifest plugins",
-    env: { OPENCLAW_SKIP_CHANNELS: "1" },
+    env: { OPERATOR_SKIP_CHANNELS: "1" },
     pluginActivationOnStartup: true,
     pluginCount: 50,
     config: BASE_CONFIG,
@@ -385,7 +385,7 @@ function parseOptions(argv: string[] = process.argv.slice(2)): CliOptions {
 }
 
 function printUsage(): void {
-  console.log(`OpenClaw Gateway restart benchmark
+  console.log(`Operator Gateway restart benchmark
 
 Usage:
   pnpm test:restart:gateway -- [options]
@@ -815,7 +815,7 @@ function writeConfig(root: string, benchCase: GatewayBenchCase): string {
         : {}),
     },
   };
-  const configPath = path.join(root, "openclaw.json");
+  const configPath = path.join(root, "operator.json");
   writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
   return configPath;
 }
@@ -829,21 +829,21 @@ function sanitizedEnv(
     CI: process.env.CI ?? "1",
     HOME: root,
     LANG: process.env.LANG ?? "en_US.UTF-8",
-    LOGNAME: process.env.LOGNAME ?? "openclaw-bench",
+    LOGNAME: process.env.LOGNAME ?? "operator-bench",
     NO_COLOR: "1",
     PATH: process.env.PATH,
     SHELL: process.env.SHELL,
     TMPDIR: process.env.TMPDIR,
-    USER: process.env.USER ?? "openclaw-bench",
+    USER: process.env.USER ?? "operator-bench",
     npm_config_update_notifier: "false",
-    OPENCLAW_CONFIG: configPath,
-    OPENCLAW_CONFIG_PATH: configPath,
-    OPENCLAW_GATEWAY_RESTART_TRACE: "1",
-    OPENCLAW_GATEWAY_STARTUP_TRACE: "1",
-    OPENCLAW_HOME: root,
-    OPENCLAW_NO_RESPAWN: "1",
-    OPENCLAW_STATE_DIR: path.join(root, "state"),
-    OPENCLAW_TEST_DISABLE_UPDATE_CHECK: "1",
+    OPERATOR_CONFIG: configPath,
+    OPERATOR_CONFIG_PATH: configPath,
+    OPERATOR_GATEWAY_RESTART_TRACE: "1",
+    OPERATOR_GATEWAY_STARTUP_TRACE: "1",
+    OPERATOR_HOME: root,
+    OPERATOR_NO_RESPAWN: "1",
+    OPERATOR_STATE_DIR: path.join(root, "state"),
+    OPERATOR_TEST_DISABLE_UPDATE_CHECK: "1",
     ...benchCase.env,
   };
 }
@@ -1152,7 +1152,7 @@ async function runGatewaySample(options: {
   timeoutMs: number;
 }): Promise<GatewayRestartSample> {
   ensureSupportedRestartPlatform();
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-gateway-restart-bench-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-gateway-restart-bench-"));
   const port = await getFreePort();
   const configPath = writeConfig(root, options.benchCase);
   const env = sanitizedEnv(root, configPath, options.benchCase);

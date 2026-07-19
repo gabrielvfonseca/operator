@@ -103,7 +103,7 @@ describeTelegramDispatch("dispatchTelegramMessage context-recovery", () => {
     expect(draftStream.update).toHaveBeenCalledWith("Hello");
     const delivery = expectDeliverRepliesParams({ thread: { id: 777, scope: "dm" } });
     const mediaLocalRoots = delivery.mediaLocalRoots as string[] | undefined;
-    expect(mediaLocalRoots?.some((root) => /[\\/]\.openclaw[\\/]workspace-work$/u.test(root))).toBe(
+    expect(mediaLocalRoots?.some((root) => /[\\/]\.operator[\\/]workspace-work$/u.test(root))).toBe(
       true,
     );
     const dispatchParams = expectDispatchParams({});

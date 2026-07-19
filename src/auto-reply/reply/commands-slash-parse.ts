@@ -1,5 +1,5 @@
 /** Shared parser for slash commands with action and argument tails. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Internal parse state for slash command action extraction. */
 type SlashCommandParseResult =

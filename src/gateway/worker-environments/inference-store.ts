@@ -12,12 +12,12 @@ import {
 import type {
   DB as StateDatabase,
   WorkerInferenceTurns,
-} from "../../state/operator-state-db.generated.js";
+} from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 
 type InferenceDb = Pick<StateDatabase, "worker_inference_turns">;
 type TurnRow = Selectable<WorkerInferenceTurns>;

@@ -1,4 +1,4 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Signal tests cover alias target resolution behavior.
 import { describe, expect, it } from "vitest";
 import { listSignalAliasDirectoryEntries, resolveSignalTarget } from "./aliases.js";

@@ -1,6 +1,6 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Provider flow runtime helpers load provider setup behavior behind runtime imports.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import * as providerWizard from "../plugins/provider-wizard.js";
 import type { ProviderModelPickerEntry } from "../plugins/provider-wizard.js";

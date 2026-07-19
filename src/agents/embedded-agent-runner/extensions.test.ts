@@ -1,6 +1,6 @@
 // Coverage for embedded extension factory selection and runtime wiring.
-import type { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
-import type { Model } from "openclaw/plugin-sdk/llm";
+import type { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 import { getCompactionSafeguardRuntime } from "../agent-hooks/compaction-safeguard-runtime.js";
@@ -118,11 +118,11 @@ describe("buildEmbeddedExtensionFactories", () => {
           },
         },
       } as OperatorConfig,
-      "/tmp/openclaw-workspace",
+      "/tmp/operator-workspace",
     );
 
     expect(getCompactionSafeguardRuntime(sessionManager)?.workspaceDir).toBe(
-      "/tmp/openclaw-workspace",
+      "/tmp/operator-workspace",
     );
   });
 

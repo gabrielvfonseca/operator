@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.i18n.resolveNativeText
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

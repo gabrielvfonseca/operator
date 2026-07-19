@@ -146,11 +146,11 @@ describe("resolvePostUpdateServiceStateReadEnv", () => {
   it("keeps package restart preparation anchored to the pre-update service env", () => {
     const processEnv = {
       OPERATOR_STATE_DIR: "/source/state",
-      OPERATOR_CONFIG_PATH: "/source/openclaw.json",
+      OPERATOR_CONFIG_PATH: "/source/operator.json",
     } as NodeJS.ProcessEnv;
     const prePackageServiceEnv = {
       OPERATOR_STATE_DIR: "/managed/state",
-      OPERATOR_CONFIG_PATH: "/managed/openclaw.json",
+      OPERATOR_CONFIG_PATH: "/managed/operator.json",
     } as NodeJS.ProcessEnv;
 
     expect(
@@ -196,12 +196,12 @@ describe("resolvePostInstallDoctorEnv", () => {
       baseEnv: {
         PATH: "/bin",
         OPERATOR_STATE_DIR: "/wrong/state",
-        OPERATOR_CONFIG_PATH: "/wrong/openclaw.json",
+        OPERATOR_CONFIG_PATH: "/wrong/operator.json",
         OPERATOR_PROFILE: "wrong",
       },
       serviceEnv: {
         OPERATOR_STATE_DIR: "daemon-state",
-        OPERATOR_CONFIG_PATH: "daemon-state/openclaw.json",
+        OPERATOR_CONFIG_PATH: "daemon-state/operator.json",
         OPERATOR_PROFILE: "work",
       },
     });
@@ -211,7 +211,7 @@ describe("resolvePostInstallDoctorEnv", () => {
     expect(env[DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]).toBe("1");
     expect(env.OPERATOR_STATE_DIR).toBe(path.join("/srv/openclaw", "daemon-state"));
     expect(env.OPERATOR_CONFIG_PATH).toBe(
-      path.join("/srv/openclaw", "daemon-state", "openclaw.json"),
+      path.join("/srv/openclaw", "daemon-state", "operator.json"),
     );
     expect(env.OPERATOR_PROFILE).toBe("work");
   });
@@ -235,7 +235,7 @@ describe("resolvePostInstallDoctorEnv", () => {
 
 describe("collectMissingPluginInstallPayloads", () => {
   it("reports tracked npm install records whose package payload is absent", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const presentDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "present");
     const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "missing");
     const noPackageJsonDir = path.join(
@@ -248,7 +248,10 @@ describe("collectMissingPluginInstallPayloads", () => {
     );
     try {
       await fs.mkdir(presentDir, { recursive: true });
-      await fs.writeFile(path.join(presentDir, "package.json"), '{"name":"@operator/present"}\n');
+      await fs.writeFile(
+        path.join(presentDir, "package.json"),
+        '{"name":"@gabrielvfonseca/present"}\n',
+      );
       await fs.mkdir(noPackageJsonDir, { recursive: true });
 
       await expect(
@@ -257,22 +260,22 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             present: {
               source: "npm",
-              spec: "@operator/present@beta",
+              spec: "@gabrielvfonseca/present@beta",
               installPath: presentDir,
             },
             missing: {
               source: "npm",
-              spec: "@operator/missing@beta",
+              spec: "@gabrielvfonseca/missing@beta",
               installPath: missingDir,
             },
             "no-package-json": {
               source: "npm",
-              spec: "@operator/no-package-json@beta",
+              spec: "@gabrielvfonseca/no-package-json@beta",
               installPath: noPackageJsonDir,
             },
             "missing-install-path": {
               source: "npm",
-              spec: "@operator/missing-install-path@beta",
+              spec: "@gabrielvfonseca/missing-install-path@beta",
             },
             local: {
               source: "path",
@@ -303,7 +306,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("accepts tracked bundle records validated by the shared bundle loader", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const bundleDir = path.join(tmpDir, "state", "clawhub", "cursor-bundle");
     try {
       await fs.mkdir(path.join(bundleDir, ".cursor-plugin"), { recursive: true });
@@ -330,7 +333,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("accepts persisted marketplace bundle records without transient format metadata", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const bundleDir = path.join(tmpDir, "state", "marketplace", "cursor-bundle");
     try {
       await fs.mkdir(path.join(bundleDir, ".cursor-plugin"), { recursive: true });
@@ -359,7 +362,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps dual-format bundle records on the native package payload path", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const bundleDir = path.join(tmpDir, "state", "clawhub", "dual-format-bundle");
     try {
       await fs.mkdir(path.join(bundleDir, ".codex-plugin"), { recursive: true });
@@ -372,7 +375,7 @@ describe("collectMissingPluginInstallPayloads", () => {
         path.join(bundleDir, "package.json"),
         JSON.stringify({
           name: "dual-format-bundle",
-          openclaw: { extensions: ["./missing-extension.js"] },
+          operator: { extensions: ["./missing-extension.js"] },
         }),
         "utf8",
       );
@@ -394,7 +397,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps corrupt tracked bundle records eligible for payload repair", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const bundleDir = path.join(tmpDir, "state", "clawhub", "bad-bundle");
     try {
       await fs.mkdir(path.join(bundleDir, ".codex-plugin"), { recursive: true });
@@ -423,7 +426,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("skips disabled tracked records when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "missing");
     try {
       await expect(
@@ -442,7 +445,7 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             missing: {
               source: "npm",
-              spec: "@operator/missing@beta",
+              spec: "@gabrielvfonseca/missing@beta",
               installPath: missingDir,
             },
           },
@@ -454,7 +457,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps disabled trusted official npm records eligible for payload repair when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@openclaw", "codex");
     try {
       await expect(
@@ -474,9 +477,9 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             codex: {
               source: "npm",
-              spec: "@operator/codex@2026.5.3",
-              resolvedName: "@operator/codex",
-              resolvedSpec: "@operator/codex@2026.5.3",
+              spec: "@gabrielvfonseca/codex@2026.5.3",
+              resolvedName: "@gabrielvfonseca/codex",
+              resolvedSpec: "@gabrielvfonseca/codex@2026.5.3",
               installPath: missingDir,
             },
           },
@@ -494,7 +497,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps disabled trusted official ClawHub records eligible for payload repair when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-update-plugin-payload-"));
     const missingDir = path.join(tmpDir, "state", "clawhub", "diagnostics-otel");
     try {
       await expect(
@@ -514,7 +517,7 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             "diagnostics-otel": {
               source: "clawhub",
-              spec: "clawhub:@operator/diagnostics-otel@2026.5.3",
+              spec: "clawhub:@gabrielvfonseca/diagnostics-otel@2026.5.3",
               installPath: missingDir,
             },
           },
@@ -823,7 +826,7 @@ describe("updatePluginsAfterCoreUpdate (invalid config end-to-end)", () => {
     // config is sufficient to prove the gate fires end-to-end. We pass
     // `json: true` to suppress logging side-effects without mocking.
     const result = await updatePluginsAfterCoreUpdate({
-      root: "/tmp/openclaw-test",
+      root: "/tmp/operator-test",
       channel: "stable",
       configSnapshot: {
         valid: false,

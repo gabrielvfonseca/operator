@@ -1,7 +1,7 @@
 // Model picker provider catalog tests cover catalog-driven provider options.
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ModelDefinitionConfig } from "../config/types.models.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderPlugin } from "../plugins/types.js";
 
 function textModel(id: string, name: string): ModelDefinitionConfig {

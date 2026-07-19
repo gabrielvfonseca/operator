@@ -3,14 +3,14 @@ summary: "Migrate from the legacy backwards-compatibility layer to the modern pl
 title: "Plugin SDK migration"
 sidebarTitle: "Migrate to SDK"
 read_when:
-  - You see the OPENCLAW_PLUGIN_SDK_COMPAT_DEPRECATED warning
-  - You see the OPENCLAW_EXTENSION_API_DEPRECATED warning
-  - You used api.registerEmbeddedExtensionFactory before OpenClaw 2026.4.25
+  - You see the OPERATOR_PLUGIN_SDK_COMPAT_DEPRECATED warning
+  - You see the OPERATOR_EXTENSION_API_DEPRECATED warning
+  - You used api.registerEmbeddedExtensionFactory before Operator 2026.4.25
   - You are updating a plugin to the modern plugin architecture
-  - You maintain an external OpenClaw plugin
+  - You maintain an external Operator plugin
 ---
 
-OpenClaw replaced a broad backwards-compatibility layer with a modern plugin
+Operator replaced a broad backwards-compatibility layer with a modern plugin
 architecture built from small, focused imports. If your plugin predates that
 change, this guide gets it onto the current contracts.
 
@@ -43,7 +43,7 @@ legacy registrations no longer load.
   Plugins still importing from these surfaces will break when that happens.
 </Warning>
 
-OpenClaw does not remove or reinterpret documented plugin behavior in the same
+Operator does not remove or reinterpret documented plugin behavior in the same
 change that introduces a replacement. Breaking contract changes go through a
 compatibility adapter, diagnostics, docs, and a deprecation window first. That
 applies to SDK imports, manifest fields, setup APIs, hooks, and runtime
@@ -152,7 +152,7 @@ SDK.
 
     | Need | Import |
     | --- | --- |
-    | Config types such as `OpenClawConfig` | `openclaw/plugin-sdk/config-contracts` |
+    | Config types such as `OperatorConfig` | `openclaw/plugin-sdk/config-contracts` |
     | Already-loaded config assertions, plugin-entry config lookup, and config merging | `openclaw/plugin-sdk/plugin-config-runtime` |
     | Current runtime snapshot reads | `openclaw/plugin-sdk/runtime-config-snapshot` |
     | Config writes | `openclaw/plugin-sdk/config-mutation` |
@@ -175,14 +175,14 @@ SDK.
     runtime-neutral middleware:
 
     ```typescript
-    // OpenClaw runtime tools and Codex runtime dynamic tools (result may be
+    // Operator runtime tools and Codex runtime dynamic tools (result may be
     // transformed). Codex-native tool results are also relayed for observation,
     // but their transformed output never reaches the model: the Codex
     // PostToolUse hook contract cannot replace a native tool response.
     api.registerAgentToolResultMiddleware(async (event) => {
       return compactToolResult(event);
     }, {
-      runtimes: ["openclaw", "codex"],
+      runtimes: ["@gabrielvfonseca/operator", "codex"],
     });
     ```
 
@@ -191,7 +191,7 @@ SDK.
     ```json
     {
       "contracts": {
-        "agentToolResultMiddleware": ["openclaw", "codex"]
+        "agentToolResultMiddleware": ["@gabrielvfonseca/operator", "codex"]
       }
     }
     ```
@@ -381,7 +381,7 @@ SDK.
   | --- | --- | --- |
   | `plugin-sdk/plugin-entry` | Canonical plugin entry helper | `definePluginEntry` |
   | `plugin-sdk/core` | Legacy umbrella re-export for channel entry definitions/builders | `defineChannelPluginEntry`, `createChatChannelPlugin` |
-  | `plugin-sdk/config-schema` | Root config schema export | `OpenClawSchema` |
+  | `plugin-sdk/config-schema` | Root config schema export | `OperatorSchema` |
   | `plugin-sdk/provider-entry` | Single-provider entry helper | `defineSingleProviderPluginEntry` |
   | `plugin-sdk/channel-core` | Focused channel entry definitions and builders | `defineChannelPluginEntry`, `defineSetupPluginEntry`, `createChatChannelPlugin`, `createChannelPluginBase`, `createChannelConfigUiHints` |
   | `plugin-sdk/setup` | Shared setup wizard helpers | Setup translator, allowlist prompts, setup status builders |
@@ -397,7 +397,7 @@ SDK.
   | `plugin-sdk/channel-reply-pipeline` | Reply prefix, typing, and source-delivery wiring | `createChannelReplyPipeline`, `resolveChannelSourceReplyDeliveryMode` |
   | `plugin-sdk/channel-config-helpers` | Config adapter factories and DM access helpers | `createHybridChannelConfigAdapter`, `resolveChannelDmAccess`, `resolveChannelDmAllowFrom`, `resolveChannelDmPolicy`, `normalizeChannelDmPolicy`, `normalizeLegacyDmAliases` |
   | `plugin-sdk/channel-config-schema` | Config schema builders | Shared channel config schema primitives and the generic builder only |
-  | `plugin-sdk/bundled-channel-config-schema` | Bundled config schemas | OpenClaw-maintained bundled plugins only; new plugins must define plugin-local schemas |
+  | `plugin-sdk/bundled-channel-config-schema` | Bundled config schemas | Operator-maintained bundled plugins only; new plugins must define plugin-local schemas |
   | `plugin-sdk/channel-config-schema-legacy` | Deprecated bundled config schemas | Compatibility alias only; use `plugin-sdk/bundled-channel-config-schema` for maintained bundled plugins |
   | `plugin-sdk/telegram-command-config` | Telegram command config helpers | Command-name normalization, description trimming, duplicate/conflict validation |
   | `plugin-sdk/channel-policy` | Group/DM policy resolution | `resolveChannelGroupRequireMention` |
@@ -558,7 +558,7 @@ package exports are generated from the public subset.
 Reserved bundled-plugin helper seams have been retired from the public SDK
 export map except for explicitly documented compatibility facades such as the
 deprecated `plugin-sdk/discord` shim retained for external plugins that still
-import the published `@operator/discord` package directly. Owner-specific
+import the published `@gabrielvfonseca/discord` package directly. Owner-specific
 helpers live inside the owning plugin package; shared host behavior moves
 through generic SDK contracts such as `plugin-sdk/gateway-runtime`,
 `plugin-sdk/security-runtime`, and `plugin-sdk/plugin-config-runtime`.
@@ -635,7 +635,7 @@ major release. Every entry maps the old API to its canonical replacement.
     **Old**: `tool()` factory from `openclaw/plugin-sdk/provider-web-search`.
 
     **New**: implement `createTool(...)` directly on the provider plugin.
-    OpenClaw no longer needs the SDK helper to register the tool wrapper.
+    Operator no longer needs the SDK helper to register the tool wrapper.
 
   </Accordion>
 
@@ -733,7 +733,7 @@ major release. Every entry maps the old API to its canonical replacement.
 
     **New**: a single `resolveThinkingProfile(ctx)` that returns a
     `ProviderThinkingProfile` with the canonical `id`, optional `label`, and a
-    ranked level list. OpenClaw downgrades stale stored values by profile rank
+    ranked level list. Operator downgrades stale stored values by profile rank
     automatically.
 
     The context includes `provider`, `modelId`, optional merged `reasoning`,
@@ -856,9 +856,9 @@ major release. Every entry maps the old API to its canonical replacement.
     `resolveStorePath(...)` remains a supported SDK helper and is not part of
     this deprecation.
 
-    `openclaw plugins inspect --all --runtime` reports non-bundled plugins whose
+    `operator plugins inspect --all --runtime` reports non-bundled plugins whose
     load errors or diagnostics still reference these removed file APIs. The
-    `@operator/plugin-inspector` advisory sweep must use version `0.3.17` or
+    `@gabrielvfonseca/plugin-inspector` advisory sweep must use version `0.3.17` or
     newer so external package scans also flag whole-store session helpers,
     session file-path helpers, legacy transcript file targets, and low-level
     transcript helpers before release.
@@ -893,15 +893,15 @@ major release. Every entry maps the old API to its canonical replacement.
     in `contracts.agentToolResultMiddleware`.
   </Accordion>
 
-  <Accordion title="OpenClawSchemaType alias -> OpenClawConfig">
-    `OpenClawSchemaType` re-exported from `openclaw/plugin-sdk` is now a
-    one-line alias for `OpenClawConfig`. Prefer the canonical name.
+  <Accordion title="OperatorSchemaType alias -> OperatorConfig">
+    `OperatorSchemaType` re-exported from `openclaw/plugin-sdk` is now a
+    one-line alias for `OperatorConfig`. Prefer the canonical name.
 
     ```typescript
     // Before
-    import type { OpenClawSchemaType } from "openclaw/plugin-sdk";
+    import type { OperatorSchemaType } from "openclaw/plugin-sdk";
     // After
-    import type { OpenClawConfig } from "openclaw/plugin-sdk/config-schema";
+    import type { OperatorConfig } from "openclaw/plugin-sdk/config-schema";
     ```
 
   </Accordion>
@@ -981,7 +981,7 @@ the common Gateway-managed surface for gateway-relay realtime, gateway-relay
 transcription, and managed-room native STT/TTS sessions.
 
 Legacy configs that place realtime selectors beside `talk.provider` /
-`talk.providers` should be repaired with `openclaw doctor --fix`; runtime Talk
+`talk.providers` should be repaired with `operator doctor --fix`; runtime Talk
 does not reinterpret speech/TTS provider config as realtime provider config.
 
 The supported `talk.session.create` combinations are intentionally small:
@@ -1065,8 +1065,8 @@ compat records are due soonest for the surfaces your plugin uses.
 ## Suppressing the warnings temporarily
 
 ```bash
-OPENCLAW_SUPPRESS_PLUGIN_SDK_COMPAT_WARNING=1 openclaw gateway run
-OPENCLAW_SUPPRESS_EXTENSION_API_WARNING=1 openclaw gateway run
+OPERATOR_SUPPRESS_PLUGIN_SDK_COMPAT_WARNING=1 operator gateway run
+OPERATOR_SUPPRESS_EXTENSION_API_WARNING=1 operator gateway run
 ```
 
 This is a temporary escape hatch, not a permanent solution.

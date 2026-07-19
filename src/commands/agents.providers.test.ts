@@ -1,6 +1,6 @@
 // Agents provider tests cover provider status index construction for configured agents.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { OfficialExternalPluginRepairHint } from "../plugins/official-external-plugin-repair-hints.js";
 import {
   buildProviderStatusIndex,
@@ -158,11 +158,11 @@ describe("buildProviderStatusIndex", () => {
       channelId: "feishu",
       pluginId: "feishu",
       label: "Feishu",
-      installSpec: "@operator/feishu",
-      installCommand: "openclaw plugins install @operator/feishu",
+      installSpec: "@gabrielvfonseca/feishu",
+      installCommand: "openclaw plugins install @gabrielvfonseca/feishu",
       doctorFixCommand: "openclaw doctor --fix",
       repairHint:
-        "Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+        "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
     });
 
     expect(
@@ -176,7 +176,7 @@ describe("buildProviderStatusIndex", () => {
             defaultAccountId: "default",
             visibleInConfiguredLists: true,
             repairHint:
-              "Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+              "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
           },
         ],
       ]),
@@ -197,14 +197,14 @@ describe("buildProviderStatusIndex", () => {
             defaultAccountId: "default",
             visibleInConfiguredLists: true,
             repairHint:
-              "Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+              "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
           },
         ],
       ]),
     });
 
     expect(lines).toEqual([
-      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
     ]);
   });
 
@@ -224,14 +224,14 @@ describe("buildProviderStatusIndex", () => {
             defaultAccountId: "default",
             visibleInConfiguredLists: true,
             repairHint:
-              "Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+              "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
           },
         ],
       ]),
     });
 
     expect(lines).toEqual([
-      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
     ]);
   });
 
@@ -249,14 +249,14 @@ describe("buildProviderStatusIndex", () => {
             defaultAccountId: "default",
             visibleInConfiguredLists: true,
             repairHint:
-              "Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+              "Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
           },
         ],
       ]),
     });
 
     expect(lines).toEqual([
-      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @operator/feishu, or run: openclaw doctor --fix.",
+      "Feishu default: missing plugin - Install the official external plugin with: openclaw plugins install @gabrielvfonseca/feishu, or run: openclaw doctor --fix.",
     ]);
   });
 

@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { isTruthyEnvValue } from "./env.js";
 import { formatErrorMessage } from "./errors.js";
 import { resolveExecutableFromPathEnv } from "./executable-path.js";
@@ -249,7 +249,7 @@ export function loadShellEnvFallback(opts: ShellEnvFallbackOptions): ShellEnvFal
     platform: opts.platform,
   });
   if (!probe.ok) {
-    logger.warn(`[operator] shell env fallback failed: ${probe.error}`);
+    logger.warn(`[openclaw] shell env fallback failed: ${probe.error}`);
     lastAppliedKeys = [];
     return { ok: false, error: probe.error, applied: [] };
   }

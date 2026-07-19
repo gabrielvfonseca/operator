@@ -1,4 +1,4 @@
-# @operator/tokenjuice
+# @gabrielvfonseca/tokenjuice
 
 Official Tokenjuice output compaction plugin for Operator.
 
@@ -7,7 +7,7 @@ Tokenjuice compacts noisy `exec` and `bash` tool results after commands run, bef
 ## Install
 
 ```bash
-openclaw plugins install @operator/tokenjuice
+operator plugins install @gabrielvfonseca/tokenjuice
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -15,21 +15,21 @@ Restart the Gateway after installing or updating the plugin.
 ## Enable
 
 ```bash
-openclaw config set plugins.entries.tokenjuice.enabled true
+operator config set plugins.entries.tokenjuice.enabled true
 ```
 
 Equivalent:
 
 ```bash
-openclaw plugins enable tokenjuice
+operator plugins enable tokenjuice
 ```
 
 ## Docs
 
-- https://docs.openclaw.ai/tools/tokenjuice
+- https://docs.operator.ai/tools/tokenjuice
 
 ## Package
 
 - Plugin id: `tokenjuice`
-- Package: `@operator/tokenjuice`
+- Package: `@gabrielvfonseca/tokenjuice`
 - Minimum Operator host: `2026.5.28`

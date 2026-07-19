@@ -2,7 +2,7 @@ import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginToolContext,
-} from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
 // Qqbot tests cover remind plugin behavior.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

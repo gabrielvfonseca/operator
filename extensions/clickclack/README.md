@@ -5,20 +5,20 @@ Official Operator channel plugin for ClickClack.
 ## Install
 
 ```sh
-openclaw plugins install @operator/clickclack
+operator plugins install @gabrielvfonseca/clickclack
 ```
 
 ## Setup
 
 ```sh
-openclaw channels add clickclack \
+operator channels add clickclack \
   --base-url https://clickclack.example.com \
   --token ccb_... \
   --workspace default
-openclaw gateway
+operator gateway
 ```
 
-Run `openclaw onboard` for guided setup. The workspace value can be a
+Run `operator onboard` for guided setup. The workspace value can be a
 `wsp_...` id, slug, or display name.
 
 For the default account only, `--use-env` reads `CLICKCLACK_BOT_TOKEN`; config
@@ -37,4 +37,4 @@ continue to work without a menu.
 
 ## Docs
 
-See `docs/channels/clickclack.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/channels/clickclack`.
+See `docs/channels/clickclack.md` in the Operator repository, or the published docs at `https://docs.operator.ai/channels/clickclack`.

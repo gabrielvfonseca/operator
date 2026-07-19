@@ -1,4 +1,4 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type OpenAI from "openai";
 import type { ResponseCreateParamsStreaming } from "openai/resources/responses/responses.js";
 import { projectRuntimeToolInputSchema } from "./tool-schema-json-projection.js";

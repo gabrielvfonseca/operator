@@ -11,7 +11,7 @@ import { t } from "../../../i18n/index.ts";
 import { currentConfigObject } from "../../../lib/config/index.ts";
 import { formatTimeMs } from "../../../lib/format.ts";
 import { isPluginEnabledInConfigSnapshot } from "../../../lib/plugin-activation.ts";
-import { OpenClawLightDomElement } from "../../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../../lit/subscriptions-controller.ts";
 
 type WikiPagePreview = {
@@ -79,7 +79,7 @@ function readWikiPagePreview(value: unknown, lookup: string): WikiPagePreview {
   };
 }
 
-class AgentMemoryPanel extends OpenClawLightDomElement {
+class AgentMemoryPanel extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -480,6 +480,6 @@ class AgentMemoryPanel extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-agent-memory-panel")) {
-  customElements.define("openclaw-agent-memory-panel", AgentMemoryPanel);
+if (!customElements.get("operator-agent-memory-panel")) {
+  customElements.define("operator-agent-memory-panel", AgentMemoryPanel);
 }

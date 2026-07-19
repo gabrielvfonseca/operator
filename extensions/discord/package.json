@@ -1,10 +1,10 @@
 {
-  "name": "@operator/discord",
+  "name": "@gabrielvfonseca/discord",
   "version": "2026.7.2",
   "description": "Operator Discord channel plugin for channels, DMs, commands, and app events.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -18,18 +18,18 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -63,7 +63,7 @@
       }
     },
     "install": {
-      "npmSpec": "@operator/discord",
+      "npmSpec": "@gabrielvfonseca/discord",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.26",
       "allowInvalidConfigRecovery": true

@@ -1,16 +1,16 @@
 // Phone Control plugin entrypoint registers its Operator integration.
 import { randomUUID } from "node:crypto";
-import milliseconds from "ms";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeStringEntries,
   sortUniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import milliseconds from "ms";
 import prettyMilliseconds from "pretty-ms";
 import {
   definePluginEntry,

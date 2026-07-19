@@ -1,12 +1,12 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   ProviderCatalogContext,
   ProviderCatalogResult,
   ProviderPrepareDynamicModelContext,
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { getCachedLiveCatalogValue } from "openclaw/plugin-sdk/provider-catalog-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { getCachedLiveCatalogValue } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import { resolveFirstGithubToken } from "./auth.js";
 import { resolveGithubCopilotDomain } from "./domain.js";
 import {

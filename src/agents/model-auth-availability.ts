@@ -2,7 +2,7 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderIdForAuth,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import { resolveMergedModelProviderConfig } from "../config/model-provider-config.js";
 import type { OperatorConfig } from "../config/types.operator.js";

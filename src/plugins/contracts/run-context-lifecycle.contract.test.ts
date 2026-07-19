@@ -4,12 +4,12 @@ import path from "node:path";
 import {
   createPluginRegistryFixture,
   registerTestPlugin,
-} from "openclaw/plugin-sdk/plugin-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadSessionStore, updateSessionStore } from "../../config/sessions.js";
 import { withTempConfig } from "../../gateway/test-temp-config.js";
 import { emitAgentEvent, resetAgentEventsForTest } from "../../infra/agent-events.js";
-import { resolvePreferredOperatorTmpDir } from "../../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../../infra/tmp-operator-dir.js";
 import { runPluginHostCleanup } from "../host-hook-cleanup.js";
 import {
   clearPluginHostRuntimeState,
@@ -687,7 +687,7 @@ describe("plugin run context lifecycle", () => {
     });
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-run-context-restart-state-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-run-context-restart-state-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {

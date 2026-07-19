@@ -1,10 +1,10 @@
 {
-  "name": "@operator/line",
+  "name": "@gabrielvfonseca/line",
   "version": "2026.7.2",
   "description": "Operator LINE channel plugin for LINE Bot API chats.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -12,18 +12,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -41,7 +41,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@operator/line",
+      "npmSpec": "@gabrielvfonseca/line",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },

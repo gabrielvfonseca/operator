@@ -1,5 +1,5 @@
 // Resolves persisted session model metadata without loading Gateway projections.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionEntry } from "../config/sessions/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "./defaults.js";

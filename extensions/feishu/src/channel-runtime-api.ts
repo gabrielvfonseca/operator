@@ -6,10 +6,10 @@ export type {
   ClawdbotConfig,
 } from "../runtime-api.js";
 
-export { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-resolution";
-export { createActionGate } from "openclaw/plugin-sdk/channel-actions";
+export { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+export { createActionGate } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 export {
   buildProbeChannelStatusSummary,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
-export { PAIRING_APPROVED_MESSAGE } from "openclaw/plugin-sdk/channel-status";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+export { PAIRING_APPROVED_MESSAGE } from "@gabrielvfonseca/operator/plugin-sdk/channel-status";

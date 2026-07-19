@@ -1,6 +1,6 @@
 import Foundation
 
-public struct OpenClawCanvasNavigateParams: Codable, Sendable, Equatable {
+public struct OperatorCanvasNavigateParams: Codable, Sendable, Equatable {
     public var url: String
 
     public init(url: String) {
@@ -8,24 +8,24 @@ public struct OpenClawCanvasNavigateParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawCanvasPlacement: Codable, Sendable, Equatable {
+public struct OperatorCanvasPlacement: Codable, Sendable, Equatable {
     public var x: Double?
     public var y: Double?
     public var width: Double?
     public var height: Double?
 }
 
-public struct OpenClawCanvasPresentParams: Codable, Sendable, Equatable {
+public struct OperatorCanvasPresentParams: Codable, Sendable, Equatable {
     public var url: String?
-    public var placement: OpenClawCanvasPlacement?
+    public var placement: OperatorCanvasPlacement?
 
-    public init(url: String? = nil, placement: OpenClawCanvasPlacement? = nil) {
+    public init(url: String? = nil, placement: OperatorCanvasPlacement? = nil) {
         self.url = url
         self.placement = placement
     }
 }
 
-public struct OpenClawCanvasEvalParams: Codable, Sendable, Equatable {
+public struct OperatorCanvasEvalParams: Codable, Sendable, Equatable {
     public var javaScript: String
 
     public init(javaScript: String) {
@@ -33,7 +33,7 @@ public struct OpenClawCanvasEvalParams: Codable, Sendable, Equatable {
     }
 }
 
-public enum OpenClawCanvasSnapshotFormat: String, Codable, Sendable {
+public enum OperatorCanvasSnapshotFormat: String, Codable, Sendable {
     case png
     case jpeg
 
@@ -56,8 +56,8 @@ public enum OpenClawCanvasSnapshotFormat: String, Codable, Sendable {
     }
 }
 
-public struct OpenClawCanvasSnapshotParams: Codable, Sendable, Equatable {
+public struct OperatorCanvasSnapshotParams: Codable, Sendable, Equatable {
     public var maxWidth: Int?
     public var quality: Double?
-    public var format: OpenClawCanvasSnapshotFormat?
+    public var format: OperatorCanvasSnapshotFormat?
 }

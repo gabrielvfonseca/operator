@@ -1,18 +1,18 @@
 // Qqbot plugin module implements channel behavior.
-import { getExecApprovalReplyMetadata } from "openclaw/plugin-sdk/approval-runtime";
-import { buildChannelOutboundSessionRoute } from "openclaw/plugin-sdk/channel-core";
+import { getExecApprovalReplyMetadata } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import { buildChannelOutboundSessionRoute } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelPlugin } from "openclaw/plugin-sdk/core";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Register the PlatformAdapter before any core/ module is used.
 import "./bridge/bootstrap.js";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { getQQBotApprovalCapability } from "./bridge/approval/capability.js";
 import { qqbotConfigAdapter, qqbotMeta, qqbotSetupAdapterShared } from "./bridge/config-shared.js";
 import {
@@ -268,7 +268,7 @@ export const qqbotPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
      * Treat an account as configured when either the live config has
      * credentials OR a recoverable credential backup exists. This mirrors
      * the standalone plugin and lets the gateway survive a hot upgrade
-     * that wiped openclaw.json mid-flight.
+     * that wiped operator.json mid-flight.
      */
     isConfigured: (account: ResolvedQQBotAccount | undefined) => {
       if (qqbotConfigAdapter.isConfigured(account)) {
@@ -341,7 +341,7 @@ export const qqbotPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
 
       // Recover credentials from the per-account backup if the live
       // config is missing appId/secret (e.g. a hot-upgrade wiped
-      // openclaw.json). We only restore when both fields are empty so a
+      // operator.json). We only restore when both fields are empty so a
       // user's intentional clear isn't silently undone.
       if (!account.appId || !account.clientSecret) {
         const backup = loadCredentialBackup(account.accountId);
@@ -390,7 +390,7 @@ export const qqbotPlugin: ChannelPlugin<ResolvedQQBotAccount> = {
             lastError: null,
           });
           // Snapshot credentials so we can recover from the next hot
-          // upgrade that might wipe openclaw.json mid-flight.
+          // upgrade that might wipe operator.json mid-flight.
           persistAccountCredentialSnapshot(account);
         },
         onResumed: () => {

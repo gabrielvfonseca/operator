@@ -1,4 +1,4 @@
-import type { FastMode } from "@operator/normalization-core/string-coerce";
+import type { FastMode } from "@gabrielvfonseca/normalization-core/string-coerce";
 // Status text types describe runtime status records used by status rendering.
 import type {
   ElevatedLevel,

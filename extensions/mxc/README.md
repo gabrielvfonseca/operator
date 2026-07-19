@@ -1,4 +1,4 @@
-# @operator/mxc-sandbox
+# @gabrielvfonseca/mxc-sandbox
 
 Official MXC sandbox execution plugin for Operator.
 
@@ -8,7 +8,7 @@ ProcessContainer support.
 ## Install
 
 ```bash
-openclaw plugins install @operator/mxc-sandbox
+operator plugins install @gabrielvfonseca/mxc-sandbox
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -37,7 +37,7 @@ readiness behavior to change as MXC host support matures.
 ## Package
 
 - Plugin id: `mxc`
-- Package: `@operator/mxc-sandbox`
+- Package: `@gabrielvfonseca/mxc-sandbox`
 - Minimum Operator host: `2026.6.11`
 
 ## Plugin config
@@ -55,8 +55,8 @@ and out-of-range values fail plugin activation with an actionable error
 | `debug`          | `boolean`                         | `false`                                | Forwards debug output from the MXC SDK launcher.                                                                                                              |
 | `mxcPolicyPaths` | `string[]`                        | unset (built-in baseline only)         | Every entry must be a non-empty absolute path. See [Sandbox policy files](#sandbox-policy-files).                                                             |
 
-Any other key is rejected. `openclaw.plugin.json` publishes the same schema
-(enums, `minimum`/`maximum` bounds) so `openclaw config` validation and CLI
+Any other key is rejected. `operator.plugin.json` publishes the same schema
+(enums, `minimum`/`maximum` bounds) so `operator config` validation and CLI
 help stay in sync with plugin runtime validation.
 
 ## Supported
@@ -101,11 +101,11 @@ help stay in sync with plugin runtime validation.
 - Windows filesystem-deny and host-list network policy knobs are not exposed by
   this plugin until MXC can enforce them on ProcessContainer.
 
-## Test setup with `openclaw config`
+## Test setup with `operator config`
 
 This patch creates a default `main` agent, then adds a dedicated `mxc-test`
 agent so MXC testing does not change the default agent. It uses
-[`openclaw config patch --stdin`](https://docs.openclaw.ai/cli/config#config-patch)
+[`operator config patch --stdin`](https://docs.operator.ai/cli/config#config-patch)
 so setup is one validated config write instead of several path-based
 `config set` commands.
 
@@ -113,7 +113,7 @@ If you already have `agents.list` entries, copy them into the patch before
 `mxc-test` instead of replacing the list.
 
 ```powershell
-$mxcPolicyPath = Join-Path $env:TEMP "openclaw-mxc-policy.json"
+$mxcPolicyPath = Join-Path $env:TEMP "operator-mxc-policy.json"
 @'
 {
   "filesystem": {
@@ -134,11 +134,11 @@ $mxcConfigPatch = @"
     list: [
       {
         id: "main",
-        workspace: "~/.openclaw/workspace",
+        workspace: "~/.operator/workspace",
       },
       {
         id: "mxc-test",
-        workspace: "~/.openclaw/workspace-mxc-test",
+        workspace: "~/.operator/workspace-mxc-test",
         sandbox: {
           mode: "all",
           backend: "mxc",
@@ -163,8 +163,8 @@ $mxcConfigPatch = @"
 }
 "@
 
-$mxcConfigPatch | openclaw config patch --stdin --dry-run
-$mxcConfigPatch | openclaw config patch --stdin
+$mxcConfigPatch | operator config patch --stdin --dry-run
+$mxcConfigPatch | operator config patch --stdin
 ```
 
 Resulting config shape:
@@ -175,11 +175,11 @@ Resulting config shape:
     "list": [
       {
         "id": "main",
-        "workspace": "~/.openclaw/workspace",
+        "workspace": "~/.operator/workspace",
       },
       {
         "id": "mxc-test",
-        "workspace": "~/.openclaw/workspace-mxc-test",
+        "workspace": "~/.operator/workspace-mxc-test",
         "sandbox": {
           "mode": "all",
           "backend": "mxc",
@@ -196,7 +196,7 @@ Resulting config shape:
         "config": {
           "containment": "process",
           "network": "none",
-          "mxcPolicyPaths": ["C:\\Users\\you\\AppData\\Local\\Temp\\openclaw-mxc-policy.json"],
+          "mxcPolicyPaths": ["C:\\Users\\you\\AppData\\Local\\Temp\\operator-mxc-policy.json"],
         },
       },
     },
@@ -283,13 +283,13 @@ ProcessContainer cannot safely enforce the nested read-only grant.
 Run the TUI as that agent:
 
 ```powershell
-openclaw tui --session agent:mxc-test:main
+operator tui --session agent:mxc-test:main
 ```
 
 For local embedded testing without a Gateway:
 
 ```powershell
-openclaw tui --local --session agent:mxc-test:main
+operator tui --local --session agent:mxc-test:main
 ```
 
 ## Cleanup
@@ -304,7 +304,7 @@ $mxcCleanupPatch = @'
     list: [
       {
         id: "main",
-        workspace: "~/.openclaw/workspace",
+        workspace: "~/.operator/workspace",
       },
     ],
   },
@@ -316,8 +316,8 @@ $mxcCleanupPatch = @'
 }
 '@
 
-$mxcCleanupPatch | openclaw config patch --stdin --dry-run
-$mxcCleanupPatch | openclaw config patch --stdin
+$mxcCleanupPatch | operator config patch --stdin --dry-run
+$mxcCleanupPatch | operator config patch --stdin
 Remove-Item -Path $mxcPolicyPath -ErrorAction SilentlyContinue
 ```
 

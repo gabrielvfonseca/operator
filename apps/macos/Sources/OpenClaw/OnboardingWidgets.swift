@@ -1,26 +1,26 @@
-import OpenClawChatUI
-import OpenClawIPC
+import OperatorChatUI
+import OperatorIPC
 import SwiftUI
 
-/// Onboarding hero mascot with the openclaw.ai hero treatment: the animated
+/// Onboarding hero mascot with the operator.ai hero treatment: the animated
 /// mascot plus its coral silhouette glow (drop-shadow at ~10% of size).
 /// Interactive: it reacts to clicks and its eyes follow the pointer.
-struct GlowingOpenClawIcon: View {
+struct GlowingOperatorIcon: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let size: CGFloat
-    let mood: OpenClawMascotMood
+    let mood: OperatorMascotMood
 
-    init(size: CGFloat = 148, mood: OpenClawMascotMood = .idle) {
+    init(size: CGFloat = 148, mood: OperatorMascotMood = .idle) {
         self.size = size
         self.mood = mood
     }
 
     var body: some View {
-        OpenClawMascotView(mood: self.mood, interactive: true)
+        OperatorMascotView(mood: self.mood, interactive: true)
             .frame(width: self.size, height: self.size)
             .shadow(
-                color: OpenClawMascotView.heroGlowColor(for: self.colorScheme),
+                color: OperatorMascotView.heroGlowColor(for: self.colorScheme),
                 radius: self.size * 0.1)
     }
 }
@@ -53,7 +53,7 @@ extension OnboardingView {
     /// The hero mascot mirrors what setup is doing: curious while choosing,
     /// hard-hat working while setup is in flight, sad on failures,
     /// celebrating once the AI answers and on the final page.
-    var mascotMood: OpenClawMascotMood {
+    var mascotMood: OperatorMascotMood {
         Self.mascotMood(for: MascotMoodSnapshot(
             page: self.mascotPage,
             installingCLI: self.installingCLI,
@@ -91,7 +91,7 @@ extension OnboardingView {
             candidateFailed
     }
 
-    static func mascotMood(for snapshot: MascotMoodSnapshot) -> OpenClawMascotMood {
+    static func mascotMood(for snapshot: MascotMoodSnapshot) -> OperatorMascotMood {
         switch snapshot.page {
         case .welcome:
             .idle

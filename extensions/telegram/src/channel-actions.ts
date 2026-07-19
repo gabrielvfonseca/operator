@@ -4,17 +4,17 @@ import {
   listTokenSourcedAccounts,
   readStringParam,
   resolveReactionMessageId,
-} from "openclaw/plugin-sdk/channel-actions";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
   ChannelMessageToolDiscovery,
   ChannelMessageToolSchemaContribution,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { TelegramActionConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { readStringValue } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { extractToolSend } from "openclaw/plugin-sdk/tool-send";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { TelegramActionConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { readStringValue } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { extractToolSend } from "@gabrielvfonseca/operator/plugin-sdk/tool-send";
 import { inspectTelegramAccount } from "./account-inspect.js";
 import {
   createTelegramActionGate,

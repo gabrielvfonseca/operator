@@ -1,12 +1,15 @@
-// Discord plugin module implements audit core behavior.
-import { ChannelType } from "discord-api-types/v10";
 import type {
   DiscordGuildChannelConfig,
   DiscordGuildEntry,
   OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { isRecord, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import {
+  isRecord,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Discord plugin module implements audit core behavior.
+import { ChannelType } from "discord-api-types/v10";
 
 type DiscordChannelPermissionsAuditEntry = {
   channelId: string;

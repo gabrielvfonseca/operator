@@ -1,5 +1,5 @@
 // Discord tests cover send.webhook.proxy plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DiscordError, RateLimitError } from "./internal/rest-errors.js";
 import { sendWebhookMessageDiscord } from "./send.webhook.js";

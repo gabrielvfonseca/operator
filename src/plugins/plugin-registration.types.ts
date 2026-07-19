@@ -66,7 +66,7 @@ export type OperatorPluginCliContext = {
   /**
    * Command object where this plugin should register its commands.
    *
-   * For root CLI registrations this is the root `operator` program. For nested
+   * For root CLI registrations this is the root `openclaw` program. For nested
    * registrations it is the resolved parent command from `parentPath`.
    */
   program: Command;
@@ -93,13 +93,13 @@ export type OperatorPluginCliCommandDescriptor = {
 };
 
 export type OperatorPluginNodeCliFeatureOptions = {
-  /** Explicit node feature command names owned under `operator nodes`. */
+  /** Explicit node feature command names owned under `openclaw nodes`. */
   commands?: string[];
   /**
    * Parse-time command descriptors for lazy node feature CLI registration.
    *
-   * Descriptors are registered under `operator nodes`, so a descriptor named
-   * `"camera"` exposes `operator nodes camera`.
+   * Descriptors are registered under `openclaw nodes`, so a descriptor named
+   * `"camera"` exposes `openclaw nodes camera`.
    */
   descriptors?: OperatorPluginCliCommandDescriptor[];
 };

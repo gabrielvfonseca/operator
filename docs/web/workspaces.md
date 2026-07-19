@@ -10,7 +10,7 @@ title: "Workspaces"
 The **Workspaces** tab in the [Control UI](/web/control-ui) is a surface you and your
 agents arrange together. Tabs, widgets, their positions on a 12-column grid, and their
 data bindings all live in one document. Anything that can edit that document can compose
-the workspace: you, the `openclaw workspaces` CLI, or an agent calling `workspace_*` tools.
+the workspace: you, the `operator workspaces` CLI, or an agent calling `workspace_*` tools.
 
 Every write goes through the same validated path, so a human's layout and an agent's
 layout cannot diverge. Each accepted write bumps a version and broadcasts
@@ -23,10 +23,10 @@ The bundled Workspaces plugin is disabled by default. In the Control UI, open **
 find **Workspaces**, and select **Enable**. You can also enable it from the CLI:
 
 ```sh
-openclaw plugins enable workspaces
+operator plugins enable workspaces
 ```
 
-Enabling the plugin adds the **Workspaces** tab and makes the `openclaw workspaces` CLI
+Enabling the plugin adds the **Workspaces** tab and makes the `operator workspaces` CLI
 and `workspace_*` agent tools available. Disabling it removes those surfaces without
 deleting the workspace database or widget assets.
 
@@ -63,7 +63,7 @@ work as yours, and the "AI" chip on an agent-authored widget always means what i
 ## Custom widgets
 
 An agent can author a real HTML widget with `workspace_widget_scaffold` (or you can, with
-`openclaw workspaces widget-scaffold <name>`). Agent-authored code is treated as hostile:
+`operator workspaces widget-scaffold <name>`). Agent-authored code is treated as hostile:
 
 - A scaffolded widget enters the registry as **pending**. No iframe is created, and the
   asset route returns 404 for its files, until an operator approves it.
@@ -86,10 +86,10 @@ per-invocation confirmation quoting the exact text, and passes a rate limit.
 ## CLI
 
 ```sh
-openclaw workspaces tabs list
-openclaw workspaces tabs create --title Financials
-openclaw workspaces widget-scaffold revenue-chart --title "Revenue Chart"
-openclaw workspaces widget-approve revenue-chart
+operator workspaces tabs list
+operator workspaces tabs create --title Financials
+operator workspaces widget-scaffold revenue-chart --title "Revenue Chart"
+operator workspaces widget-approve revenue-chart
 ```
 
 `widget-approve` needs a device paired with the `operator.approvals` scope; approving from

@@ -4,7 +4,7 @@
  * Configured model values can cap provider metadata, and local endpoints get
  * more actionable remediation text.
  */
-import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
+import { findNormalizedProviderValue } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveProviderEndpoint } from "./provider-attribution.js";
 

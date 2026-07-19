@@ -13,7 +13,7 @@ import { resolveSessionRuntimeOverrideForProvider } from "./session-runtime-comp
 
 /** Convert residual auto policy into the built-in fallback when no registry selection is needed. */
 export function concretizeAgentRuntime(runtime: string): string {
-  return runtime === "auto" ? "operator" : runtime;
+  return runtime === "auto" ? "@gabrielvfonseca/operator" : runtime;
 }
 
 /** Resolves an explicit session override before configured model/provider policy. */
@@ -47,7 +47,7 @@ export function resolveEffectiveAgentRuntime(params: {
         provider: params.provider,
         modelId: params.modelId,
         config: params.cfg,
-      }) ?? "operator"
+      }) ?? "@gabrielvfonseca/operator"
     );
   }
   return concretizeAgentRuntime(runtime);

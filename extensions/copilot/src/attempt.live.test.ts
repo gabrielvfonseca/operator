@@ -2,9 +2,9 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { AgentHarnessAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { isLiveTestEnabled } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { CopilotClient, approveAll } from "@github/copilot-sdk";
-import type { AgentHarnessAttemptParams } from "openclaw/plugin-sdk/agent-harness-runtime";
-import { isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
 import { createCopilotAgentHarness } from "../harness.js";
 import type { CopilotClientPool } from "./runtime.js";
@@ -149,7 +149,7 @@ describeLive("copilot agent runtime live smoke", () => {
     liveToolState.calls.length = 0;
     const streamedTexts: string[] = [];
     const prompt = `Use the ${liveToolState.toolName} tool exactly once with text '${liveToolState.expectedText}', then reply with exactly two short sentences totaling at least twelve words.`;
-    const copilotHome = await mkdtemp(join(tmpdir(), "openclaw-copilot-live-"));
+    const copilotHome = await mkdtemp(join(tmpdir(), "operator-copilot-live-"));
     const harness = createCopilotAgentHarness({ pool: createApproveAllPool() });
 
     expect(

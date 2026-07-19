@@ -1,5 +1,5 @@
 // Browser tests cover profiles plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { resolveBrowserConfig } from "./config.js";
 import {
@@ -26,12 +26,17 @@ const PROFILE_COLORS = [
 ];
 
 describe("profile name validation", () => {
-  it.each(["openclaw", "work", "my-profile", "test123", "a", "a-b-c-1-2-3", "1test"])(
-    "accepts valid lowercase name: %s",
-    (name) => {
-      expect(isValidProfileName(name)).toBe(true);
-    },
-  );
+  it.each([
+    "@gabrielvfonseca/operator",
+    "work",
+    "my-profile",
+    "test123",
+    "a",
+    "a-b-c-1-2-3",
+    "1test",
+  ])("accepts valid lowercase name: %s", (name) => {
+    expect(isValidProfileName(name)).toBe(true);
+  });
 
   it("rejects empty or missing names", () => {
     expect(isValidProfileName("")).toBe(false);
@@ -117,7 +122,7 @@ describe("getUsedPorts", () => {
 
   it("extracts ports from profile configs", () => {
     const profiles = {
-      openclaw: { cdpPort: 18792 },
+      operator: { cdpPort: 18792 },
       work: { cdpPort: 18793 },
       personal: { cdpPort: 18795 },
     };
@@ -256,7 +261,7 @@ describe("getUsedColors", () => {
 
   it("extracts and uppercases colors from profile configs", () => {
     const profiles = {
-      openclaw: { color: "#ff4500" },
+      operator: { color: "#ff4500" },
       work: { color: "#0066CC" },
     };
     const used = getUsedColors(profiles);

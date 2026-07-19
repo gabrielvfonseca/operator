@@ -1,7 +1,10 @@
-import { jsonResult, readStringParam } from "openclaw/plugin-sdk/channel-actions";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { AnyAgentTool, OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
-import { escapeHtml } from "openclaw/plugin-sdk/text-utility-runtime";
+import { jsonResult, readStringParam } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type {
+  AnyAgentTool,
+  OperatorPluginToolContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { escapeHtml } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { Type } from "typebox";
 import { resolveDiscordAccount } from "../accounts.js";
 import { buildDiscordActivityCustomId } from "../component-custom-id.js";

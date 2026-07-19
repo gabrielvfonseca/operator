@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import { pathExists } from "../utils.js";
 
@@ -51,7 +51,7 @@ export function resolveShellFromEnv(env: NodeJS.ProcessEnv = process.env): Compl
 function sanitizeCompletionBasename(value: string): string {
   const trimmed = value.trim();
   if (!trimmed) {
-    return "operator";
+    return "@gabrielvfonseca/operator";
   }
   return trimmed.replace(/[^a-zA-Z0-9._-]/g, "-");
 }
@@ -72,7 +72,7 @@ export function resolveCompletionCachePath(shell: CompletionShell, binName: stri
 /** Check if the completion cache file exists for the given shell. */
 export async function completionCacheExists(
   shell: CompletionShell,
-  binName = "operator",
+  binName = "@gabrielvfonseca/operator",
 ): Promise<boolean> {
   const cachePath = resolveCompletionCachePath(shell, binName);
   return pathExists(cachePath);
@@ -192,7 +192,7 @@ export function resolveCompletionProfilePath(
 /** Returns whether a shell profile already contains an Operator completion block or source line. */
 export async function isCompletionInstalled(
   shell: CompletionShell,
-  binName = "operator",
+  binName = "@gabrielvfonseca/operator",
 ): Promise<boolean> {
   const profilePath = resolveCompletionProfilePath(shell);
 
@@ -210,11 +210,11 @@ export async function isCompletionInstalled(
 
 /**
  * Check if the profile uses the slow dynamic completion pattern.
- * Returns true if profile has `source <(operator completion ...)` instead of cached file.
+ * Returns true if profile has `source <(openclaw completion ...)` instead of cached file.
  */
 export async function usesSlowDynamicCompletion(
   shell: CompletionShell,
-  binName = "operator",
+  binName = "@gabrielvfonseca/operator",
 ): Promise<boolean> {
   const profilePath = resolveCompletionProfilePath(shell);
 
@@ -234,7 +234,11 @@ export async function usesSlowDynamicCompletion(
   return false;
 }
 
-export async function installCompletion(shell: string, yes: boolean, binName = "operator") {
+export async function installCompletion(
+  shell: string,
+  yes: boolean,
+  binName = "@gabrielvfonseca/operator",
+) {
   const isShellSupported = isCompletionShell(shell);
   if (!isShellSupported) {
     throw new Error(`Automated installation not supported for ${shell} yet.`);

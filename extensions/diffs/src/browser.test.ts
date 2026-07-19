@@ -2,9 +2,9 @@
 import fs from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import { createMockServerResponse } from "openclaw/plugin-sdk/test-env";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
+import { createMockServerResponse } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../api.js";
 import type { OperatorPluginApi, OperatorPluginToolContext } from "../api.js";
@@ -48,7 +48,7 @@ describe("PlaywrightDiffScreenshotter", () => {
     vi.useFakeTimers();
     vi.resetModules();
     ({ PlaywrightDiffScreenshotter } = await import("./browser.js"));
-    ({ rootDir, cleanup: cleanupRootDir } = await createTempDiffRoot("openclaw-diffs-browser-"));
+    ({ rootDir, cleanup: cleanupRootDir } = await createTempDiffRoot("operator-diffs-browser-"));
     outputPath = path.join(rootDir, "preview.png");
     launchMock.mockReset();
   });

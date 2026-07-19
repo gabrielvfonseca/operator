@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Agent runtime label helpers format provider, model, and runtime labels.
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeTerminalText } from "../../packages/terminal-core/src/safe-text.js";
 import { isCliProvider } from "../agents/model-selection.js";
 import type { SessionEntry } from "../config/sessions/types.js";

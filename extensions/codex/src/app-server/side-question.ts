@@ -16,8 +16,8 @@ import {
   type EmbeddedRunAttemptParams,
   type NativeHookRelayEvent,
   type NativeHookRelayRegistrationHandle,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { loadExecApprovals } from "openclaw/plugin-sdk/exec-approvals-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { loadExecApprovals } from "@gabrielvfonseca/operator/plugin-sdk/exec-approvals-runtime";
 import { resolveCodexAppServerForModelProvider } from "./app-server-policy.js";
 import { handleCodexAppServerApprovalRequest } from "./approval-bridge.js";
 import { resolveCodexAppServerPreparedAuthHandoff } from "./auth-bridge.js";

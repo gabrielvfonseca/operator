@@ -1,6 +1,6 @@
 // Normalizes preserved environment-variable config for subprocess launches.
 import { isDeepStrictEqual } from "node:util";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isPlainObject } from "../infra/plain-object.js";
 
 /**

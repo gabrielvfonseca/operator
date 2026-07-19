@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.image
+package ai.operator.app.ui.image
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

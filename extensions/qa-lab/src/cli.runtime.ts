@@ -1,13 +1,13 @@
 // Qa Lab plugin module implements cli behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   OPERATOR_CRABLINE_DEFAULT_CHANNEL,
   resolveOperatorCrablineChannelDriverSelection,
-} from "@operator/crabline";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@openclaw/crabline";
 import {
   buildQaAgenticParityComparison,
   buildQaRuntimeParityReport,
@@ -260,8 +260,8 @@ function normalizeQaOptionalModelRef(input: string | undefined) {
 }
 
 function normalizeQaRuntimeId(value: string): RuntimeId | undefined {
-  if (value === "openclaw" || value === "pi") {
-    return "openclaw";
+  if (value === "@gabrielvfonseca/operator" || value === "pi") {
+    return "@gabrielvfonseca/operator";
   }
   if (value === "codex") {
     return "codex";
@@ -283,12 +283,12 @@ function parseQaRuntimePair(value: string | undefined): [RuntimeId, RuntimeId] |
   }
   const [left, right] = runtimes;
   if (!left || !right) {
-    throw new Error('--runtime-pair only supports "openclaw" and "codex".');
+    throw new Error('--runtime-pair only supports "@gabrielvfonseca/operator" and "codex".');
   }
   if (left === right) {
     throw new Error("--runtime-pair must compare two different runtimes.");
   }
-  return ["openclaw", "codex"];
+  return ["@gabrielvfonseca/operator", "codex"];
 }
 
 function parseQaRuntimeParityTierFilters(input: string[] | undefined): QaRuntimeParityTier[] {
@@ -1404,8 +1404,11 @@ export async function runQaJsonlReplayCommand(opts: {
   providerMode?: QaProviderModeInput;
 }) {
   const repoRoot = path.resolve(opts.repoRoot ?? process.cwd());
-  const runtimePair = parseQaRuntimePair(opts.runtimePair) ?? ["openclaw", "codex"];
-  if (runtimePair[0] !== "openclaw" || runtimePair[1] !== "codex") {
+  const runtimePair = parseQaRuntimePair(opts.runtimePair) ?? [
+    "@gabrielvfonseca/operator",
+    "codex",
+  ];
+  if (runtimePair[0] !== "@gabrielvfonseca/operator" || runtimePair[1] !== "codex") {
     throw new Error('--runtime-pair for jsonl-replay must be "openclaw,codex".');
   }
   const providerMode = normalizeQaProviderMode(opts.providerMode ?? "mock-openai");

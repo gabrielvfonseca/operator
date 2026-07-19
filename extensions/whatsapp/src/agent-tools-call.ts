@@ -1,19 +1,19 @@
 // WhatsApp plugin tool places requester-bound calls through the MeowCaller companion CLI.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import { normalizeE164 } from "openclaw/plugin-sdk/account-resolution";
-import { createActionGate, stringEnum } from "openclaw/plugin-sdk/channel-actions";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { normalizeE164 } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { createActionGate, stringEnum } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginToolContext,
-} from "openclaw/plugin-sdk/core";
-import { mulawToPcm } from "openclaw/plugin-sdk/realtime-voice";
-import { detectBinary } from "openclaw/plugin-sdk/setup-tools";
-import { resolveOAuthDir } from "openclaw/plugin-sdk/state-paths";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { jsonResult } from "openclaw/plugin-sdk/tool-results";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { mulawToPcm } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { detectBinary } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
+import { resolveOAuthDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import { Type } from "typebox";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import { getWhatsAppConnectionController } from "./connection-controller-runtime-context.js";
@@ -275,7 +275,7 @@ function createWhatsAppCallToolWithDependencies(
         const pcm = normalizeTelephonyPcm(speech.audioBuffer, speech.outputFormat);
         const callWindowMs = resolveCallWindowMs(pcm.length, speech.sampleRate);
         const tempDir = await fs.mkdtemp(
-          path.join(resolvePreferredOperatorTmpDir(), "openclaw-whatsapp-call-"),
+          path.join(resolvePreferredOperatorTmpDir(), "operator-whatsapp-call-"),
         );
         const audioPath = path.join(tempDir, "message.wav");
         try {

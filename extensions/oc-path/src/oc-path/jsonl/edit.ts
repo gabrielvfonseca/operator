@@ -2,7 +2,7 @@
  * Mutate a `JsonlAst` at an OcPath. Append uses `appendJsonlOcPath`;
  * `setJsonlOcPath` only edits existing addresses.
  *
- * @module @operator/oc-path/jsonl/edit
+ * @module @gabrielvfonseca/oc-path/jsonl/edit
  */
 
 import type { JsoncEntry, JsoncValue } from "../jsonc/ast.js";

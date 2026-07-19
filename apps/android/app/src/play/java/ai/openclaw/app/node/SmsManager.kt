@@ -1,6 +1,6 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.PermissionRequester
+import ai.operator.app.PermissionRequester
 import android.content.Context
 
 class SmsManager(

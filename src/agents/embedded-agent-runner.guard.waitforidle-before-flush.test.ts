@@ -1,8 +1,8 @@
 // Covers delayed flushing of pending tool results after agent idle.
 
-import { expectDefined } from "@operator/normalization-core";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { MAX_TIMER_TIMEOUT_MS } from "../shared/number-coercion.js";
 import { flushPendingToolResultsAfterIdle } from "./embedded-agent-runner/wait-for-idle-before-flush.js";

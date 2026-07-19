@@ -1,4 +1,4 @@
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { ProviderRouteOverridePresence } from "../plugin-sdk/provider-model-types.js";
 import type { ModelDefinitionConfig, ModelProviderConfig } from "./types.models.js";
 import type { OperatorConfig } from "./types.operator.js";

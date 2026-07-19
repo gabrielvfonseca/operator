@@ -1,16 +1,22 @@
 // Whatsapp plugin module implements send behavior.
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { generateSecureUuid } from "openclaw/plugin-sdk/core";
-import { PlatformMessageNotDispatchedError } from "openclaw/plugin-sdk/error-runtime";
-import { redactIdentifier } from "openclaw/plugin-sdk/logging-core";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { generateSecureUuid } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { PlatformMessageNotDispatchedError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { redactIdentifier } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
 import {
   convertMarkdownTables,
   resolveMarkdownTableMode,
-} from "openclaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { normalizePollInput, type PollInput } from "openclaw/plugin-sdk/poll-runtime";
-import { createSubsystemLogger, getChildLogger } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import {
+  normalizePollInput,
+  type PollInput,
+} from "@gabrielvfonseca/operator/plugin-sdk/poll-runtime";
+import {
+  createSubsystemLogger,
+  getChildLogger,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   resolveDefaultWhatsAppAccountId,
   resolveWhatsAppAccount,

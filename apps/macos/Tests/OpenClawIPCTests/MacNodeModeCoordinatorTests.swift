@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private actor CoordinatorInvokeLifecycleProbe {
     private var invokeStarted = false
@@ -22,7 +22,7 @@ private actor CoordinatorInvokeLifecycleProbe {
             return BridgeInvokeResponse(
                 id: request.id,
                 ok: false,
-                error: OpenClawNodeError(
+                error: OperatorNodeError(
                     code: .unavailable,
                     message: "UNAVAILABLE: canceled by route invalidation"))
         }
@@ -162,13 +162,13 @@ struct MacNodeModeCoordinatorTests {
         let restartTimeout: Duration = .seconds(15)
         defer { withExtendedLifetime(coordinator) {} }
 
-        notificationCenter.post(name: .openclawConfigDidChange, object: nil)
+        notificationCenter.post(name: .operatorConfigDidChange, object: nil)
 
         try await self.waitUntil("node-host worker restart", timeout: restartTimeout) {
             await worker.stops() == 1
         }
 
-        notificationCenter.post(name: .openclawCLIInstalled, object: nil)
+        notificationCenter.post(name: .operatorCLIInstalled, object: nil)
 
         try await self.waitUntil("node-host worker restart", timeout: restartTimeout) {
             await worker.stops() == 2
@@ -298,7 +298,7 @@ struct MacNodeModeCoordinatorTests {
             caps: ["computer"],
             commands: ["computer.act"],
             permissions: [:],
-            clientId: "openclaw-macos",
+            clientId: "operator-macos",
             clientMode: "node",
             clientDisplayName: "macOS Test",
             includeDeviceIdentity: false)
@@ -479,12 +479,12 @@ struct MacNodeModeCoordinatorTests {
             connectionMode: .remote)
         let commands = MacNodeModeCoordinator.resolvedCommands(caps: caps)
 
-        #expect(!caps.contains(OpenClawCapability.browser.rawValue))
-        #expect(!commands.contains(OpenClawBrowserCommand.proxy.rawValue))
-        #expect(commands.contains(OpenClawCanvasCommand.present.rawValue))
-        #expect(commands.contains(OpenClawSystemCommand.notify.rawValue))
-        #expect(!commands.contains(OpenClawFileSystemCommand.listDir.rawValue))
-        #expect(!commands.contains(OpenClawSystemCommand.run.rawValue))
+        #expect(!caps.contains(OperatorCapability.browser.rawValue))
+        #expect(!commands.contains(OperatorBrowserCommand.proxy.rawValue))
+        #expect(commands.contains(OperatorCanvasCommand.present.rawValue))
+        #expect(commands.contains(OperatorSystemCommand.notify.rawValue))
+        #expect(!commands.contains(OperatorFileSystemCommand.listDir.rawValue))
+        #expect(!commands.contains(OperatorSystemCommand.run.rawValue))
     }
 
     @Test func `local native manifest leaves browser proxy to the CLI worker`() {
@@ -496,8 +496,8 @@ struct MacNodeModeCoordinatorTests {
             connectionMode: .local)
         let commands = MacNodeModeCoordinator.resolvedCommands(caps: caps)
 
-        #expect(!caps.contains(OpenClawCapability.browser.rawValue))
-        #expect(!commands.contains(OpenClawBrowserCommand.proxy.rawValue))
+        #expect(!caps.contains(OperatorCapability.browser.rawValue))
+        #expect(!commands.contains(OperatorBrowserCommand.proxy.rawValue))
     }
 
     @Test func `local mode omits native session catalogs`() {
@@ -543,7 +543,7 @@ struct MacNodeModeCoordinatorTests {
             command: MacNodeCodexThreadCatalogContract.turnsCommand,
             catalogAdvertised: false))
         #expect(MacNodeModeCoordinator.routeSnapshotAllowsCodexCatalogInvoke(
-            command: OpenClawSystemCommand.notify.rawValue,
+            command: OperatorSystemCommand.notify.rawValue,
             catalogAdvertised: false))
         #expect(caps.contains(MacNodeClaudeSessionCatalogContract.capability))
         #expect(commands.contains(MacNodeClaudeSessionCatalogContract.listCommand))
@@ -555,7 +555,7 @@ struct MacNodeModeCoordinatorTests {
             command: MacNodeClaudeSessionCatalogContract.readCommand,
             catalogAdvertised: false))
         #expect(MacNodeModeCoordinator.routeSnapshotAllowsClaudeCatalogInvoke(
-            command: OpenClawSystemCommand.notify.rawValue,
+            command: OperatorSystemCommand.notify.rawValue,
             catalogAdvertised: false))
     }
 
@@ -570,7 +570,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: enabled))
@@ -585,7 +585,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(OpenClawConfigFile.configuredBundledPluginAllowed(
+        #expect(OperatorConfigFile.configuredBundledPluginAllowed(
             "codex",
             root: enabledByConfigPath))
         #expect(MacNodeCodexThreadCatalog.shouldAdvertise(root: enabledByConfigPath))
@@ -600,7 +600,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: numericPluginEnable))
@@ -615,7 +615,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: numericNestedEnable))
@@ -631,7 +631,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: numericGlobalEnable))
@@ -678,7 +678,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: supervisionDisabled))
@@ -693,7 +693,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.configuredBundledPluginAllowed(
+        #expect(!OperatorConfigFile.configuredBundledPluginAllowed(
             "codex",
             root: pluginDisabled))
         #expect(!MacNodeCodexThreadCatalog.shouldAdvertise(root: pluginDisabled))
@@ -709,7 +709,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: denied))
@@ -725,7 +725,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.configuredBundledPluginAllowed(
+        #expect(!OperatorConfigFile.configuredBundledPluginAllowed(
             "codex",
             root: omittedByAllowlist))
         #expect(!MacNodeCodexThreadCatalog.shouldAdvertise(root: omittedByAllowlist))
@@ -741,7 +741,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: paddedIds))
@@ -757,7 +757,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: paddedDeny))
@@ -773,7 +773,7 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: mixedCaseDeny))
@@ -793,8 +793,8 @@ struct MacNodeModeCoordinatorTests {
                 ],
             ],
         ]
-        #expect(OpenClawConfigFile.pluginEntry("codex", root: ambiguousEntryAliases) == nil)
-        #expect(!OpenClawConfigFile.explicitlyEnabledPluginConfigFlag(
+        #expect(OperatorConfigFile.pluginEntry("codex", root: ambiguousEntryAliases) == nil)
+        #expect(!OperatorConfigFile.explicitlyEnabledPluginConfigFlag(
             "codex",
             path: ["supervision", "enabled"],
             root: ambiguousEntryAliases))
@@ -809,8 +809,8 @@ struct MacNodeModeCoordinatorTests {
             locationMode: .off,
             connectionMode: .local)
         let enabledCommands = MacNodeModeCoordinator.resolvedCommands(caps: enabledCaps)
-        #expect(enabledCaps.contains(OpenClawCapability.computer.rawValue))
-        #expect(enabledCommands.contains(OpenClawComputerCommand.act.rawValue))
+        #expect(enabledCaps.contains(OperatorCapability.computer.rawValue))
+        #expect(enabledCommands.contains(OperatorComputerCommand.act.rawValue))
 
         let disabledCaps = MacNodeModeCoordinator.resolvedCaps(
             browserControlEnabled: false,
@@ -819,8 +819,8 @@ struct MacNodeModeCoordinatorTests {
             locationMode: .off,
             connectionMode: .local)
         let disabledCommands = MacNodeModeCoordinator.resolvedCommands(caps: disabledCaps)
-        #expect(!disabledCaps.contains(OpenClawCapability.computer.rawValue))
-        #expect(!disabledCommands.contains(OpenClawComputerCommand.act.rawValue))
+        #expect(!disabledCaps.contains(OperatorCapability.computer.rawValue))
+        #expect(!disabledCommands.contains(OperatorComputerCommand.act.rawValue))
     }
 
     @Test func `tls pin store key uses default wss port`() throws {

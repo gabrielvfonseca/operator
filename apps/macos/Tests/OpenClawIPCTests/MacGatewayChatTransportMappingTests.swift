@@ -1,7 +1,7 @@
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct MacGatewayChatTransportMappingTests {
     @Test func `bare global session target carries normalized selected agent`() {
@@ -35,7 +35,7 @@ struct MacGatewayChatTransportMappingTests {
     @Test func `snapshot maps to health`() {
         let snapshot = Snapshot(
             presence: [],
-            health: OpenClawProtocol.AnyCodable(["ok": OpenClawProtocol.AnyCodable(false)]),
+            health: OperatorProtocol.AnyCodable(["ok": OperatorProtocol.AnyCodable(false)]),
             stateversion: StateVersion(presence: 1, health: 1),
             uptimems: 123,
             configpath: nil,
@@ -68,7 +68,7 @@ struct MacGatewayChatTransportMappingTests {
         let frame = EventFrame(
             type: "event",
             event: "health",
-            payload: OpenClawProtocol.AnyCodable(["ok": OpenClawProtocol.AnyCodable(true)]),
+            payload: OperatorProtocol.AnyCodable(["ok": OperatorProtocol.AnyCodable(true)]),
             seq: 1,
             stateversion: nil)
 
@@ -93,10 +93,10 @@ struct MacGatewayChatTransportMappingTests {
     }
 
     @Test func `sessions changed event maps to authoritative refresh signal`() {
-        let payload = OpenClawProtocol.AnyCodable([
-            "sessionKey": OpenClawProtocol.AnyCodable("agent:main:main"),
-            "agentId": OpenClawProtocol.AnyCodable("main"),
-            "reason": OpenClawProtocol.AnyCodable("command-metadata"),
+        let payload = OperatorProtocol.AnyCodable([
+            "sessionKey": OperatorProtocol.AnyCodable("agent:main:main"),
+            "agentId": OperatorProtocol.AnyCodable("main"),
+            "reason": OperatorProtocol.AnyCodable("command-metadata"),
         ])
         let frame = EventFrame(
             type: "event",
@@ -117,10 +117,10 @@ struct MacGatewayChatTransportMappingTests {
     }
 
     @Test func `chat event maps to chat`() {
-        let payload = OpenClawProtocol.AnyCodable([
-            "runId": OpenClawProtocol.AnyCodable("run-1"),
-            "sessionKey": OpenClawProtocol.AnyCodable("main"),
-            "state": OpenClawProtocol.AnyCodable("final"),
+        let payload = OperatorProtocol.AnyCodable([
+            "runId": OperatorProtocol.AnyCodable("run-1"),
+            "sessionKey": OperatorProtocol.AnyCodable("main"),
+            "state": OperatorProtocol.AnyCodable("final"),
         ])
         let frame = EventFrame(type: "event", event: "chat", payload: payload, seq: 1, stateversion: nil)
         let mapped = MacGatewayChatTransport.mapPushToTransportEvent(.event(frame))
@@ -136,19 +136,19 @@ struct MacGatewayChatTransportMappingTests {
     }
 
     @Test func `session message event maps to session message`() {
-        let payload = OpenClawProtocol.AnyCodable([
-            "sessionKey": OpenClawProtocol.AnyCodable("agent:main:main"),
-            "messageId": OpenClawProtocol.AnyCodable("msg-1"),
-            "messageSeq": OpenClawProtocol.AnyCodable(7),
-            "message": OpenClawProtocol.AnyCodable([
-                "role": OpenClawProtocol.AnyCodable("user"),
-                "content": OpenClawProtocol.AnyCodable([
-                    OpenClawProtocol.AnyCodable([
-                        "type": OpenClawProtocol.AnyCodable("text"),
-                        "text": OpenClawProtocol.AnyCodable("spoken transcript"),
+        let payload = OperatorProtocol.AnyCodable([
+            "sessionKey": OperatorProtocol.AnyCodable("agent:main:main"),
+            "messageId": OperatorProtocol.AnyCodable("msg-1"),
+            "messageSeq": OperatorProtocol.AnyCodable(7),
+            "message": OperatorProtocol.AnyCodable([
+                "role": OperatorProtocol.AnyCodable("user"),
+                "content": OperatorProtocol.AnyCodable([
+                    OperatorProtocol.AnyCodable([
+                        "type": OperatorProtocol.AnyCodable("text"),
+                        "text": OperatorProtocol.AnyCodable("spoken transcript"),
                     ]),
                 ]),
-                "timestamp": OpenClawProtocol.AnyCodable(1234.5),
+                "timestamp": OperatorProtocol.AnyCodable(1234.5),
             ]),
         ])
         let frame = EventFrame(type: "event", event: "session.message", payload: payload, seq: 1, stateversion: nil)
@@ -170,7 +170,7 @@ struct MacGatewayChatTransportMappingTests {
         let frame = EventFrame(
             type: "event",
             event: "unknown",
-            payload: OpenClawProtocol.AnyCodable(["a": OpenClawProtocol.AnyCodable(1)]),
+            payload: OperatorProtocol.AnyCodable(["a": OperatorProtocol.AnyCodable(1)]),
             seq: 1,
             stateversion: nil)
         let mapped = MacGatewayChatTransport.mapPushToTransportEvent(.event(frame))

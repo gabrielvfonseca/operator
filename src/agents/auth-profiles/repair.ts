@@ -6,7 +6,7 @@
 import {
   findNormalizedProviderKey,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { AuthProfileConfig } from "../../config/types.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveAuthProfileMetadata } from "./identity.js";

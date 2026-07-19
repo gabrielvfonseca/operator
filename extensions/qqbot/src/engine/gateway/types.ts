@@ -1,5 +1,5 @@
 // Qqbot type declarations define plugin contracts.
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type { EngineLogger } from "../types.js";
 export type { EngineLogger };
 

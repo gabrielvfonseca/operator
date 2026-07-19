@@ -4,7 +4,7 @@ import path from "node:path";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { resolveBundledPluginInstallCommandHint } from "../../../plugins/bundled-sources.js";
 
@@ -19,14 +19,14 @@ export function resolveAcpInstallCommandHint(cfg: OperatorConfig): string {
   if (backendId === "acpx") {
     const workspaceLocalPath = path.join(workspaceDir, "extensions", "acpx");
     if (existsSync(workspaceLocalPath)) {
-      return `operator plugins install ${workspaceLocalPath}`;
+      return `openclaw plugins install ${workspaceLocalPath}`;
     }
     const bundledInstallHint = resolveBundledPluginInstallCommandHint({
       pluginId: backendId,
       workspaceDir,
     });
     if (bundledInstallHint) {
-      const localPath = bundledInstallHint.replace(/^operator plugins install /u, "");
+      const localPath = bundledInstallHint.replace(/^openclaw plugins install /u, "");
       const resolvedLocalPath = path.resolve(localPath);
       const relativeToWorkspace = path.relative(workspaceDir, resolvedLocalPath);
       // Only surface local path hints that belong to the current workspace.
@@ -37,7 +37,7 @@ export function resolveAcpInstallCommandHint(cfg: OperatorConfig): string {
         return bundledInstallHint;
       }
     }
-    return "operator plugins install acpx";
+    return "openclaw plugins install acpx";
   }
   return `Install and enable the plugin that provides ACP backend "${backendId}".`;
 }

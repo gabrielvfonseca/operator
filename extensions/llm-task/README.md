@@ -4,7 +4,7 @@ Adds an **optional** agent tool `llm-task` for running **JSON-only** LLM tasks
 (drafting, summarizing, classifying) with optional JSON Schema validation.
 
 Designed to be called from workflow engines (for example, Lobster via
-`openclaw.invoke --each`) without adding new Operator code per workflow.
+`operator.invoke --each`) without adding new Operator code per workflow.
 
 ## Enable
 
@@ -95,4 +95,4 @@ It is intended to ship as a **bundled** Operator extension (like `lobster`) and
 be enabled via `plugins.entries` + tool allowlists.
 
 It is **not** currently designed to be copied into
-`~/.openclaw/extensions` as a standalone plugin directory.
+`~/.operator/extensions` as a standalone plugin directory.

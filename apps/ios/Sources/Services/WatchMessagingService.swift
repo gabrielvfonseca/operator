@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 struct WatchMessagingStartupBuffer<Event> {
     private let maxCount: Int
@@ -40,7 +40,7 @@ enum WatchMessagingError: LocalizedError {
         case .notPaired:
             "WATCH_UNAVAILABLE: no paired Apple Watch"
         case .watchAppNotInstalled:
-            "WATCH_UNAVAILABLE: OpenClaw watch companion app is not installed"
+            "WATCH_UNAVAILABLE: Operator watch companion app is not installed"
         }
     }
 }
@@ -158,7 +158,7 @@ final class WatchMessagingService: @preconcurrency WatchMessagingServicing {
 
     func sendNotification(
         id: String,
-        params: OpenClawWatchNotifyParams,
+        params: OperatorWatchNotifyParams,
         gatewayStableID: String?) async throws -> WatchNotificationSendResult
     {
         let payload = WatchMessagingPayloadCodec.encodeNotificationPayload(
@@ -174,42 +174,42 @@ final class WatchMessagingService: @preconcurrency WatchMessagingServicing {
     }
 
     func sendExecApprovalPrompt(
-        _ message: OpenClawWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendPayload(
             WatchMessagingPayloadCodec.encodeExecApprovalPromptPayload(message))
     }
 
     func sendExecApprovalResolved(
-        _ message: OpenClawWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendPayload(
             WatchMessagingPayloadCodec.encodeExecApprovalResolvedPayload(message))
     }
 
     func sendExecApprovalExpired(
-        _ message: OpenClawWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendPayload(
             WatchMessagingPayloadCodec.encodeExecApprovalExpiredPayload(message))
     }
 
     func syncExecApprovalSnapshot(
-        _ message: OpenClawWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendSnapshotPayload(
             WatchMessagingPayloadCodec.encodeExecApprovalSnapshotPayload(message))
     }
 
     func syncAppSnapshot(
-        _ message: OpenClawWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendSnapshotPayload(
             WatchMessagingPayloadCodec.encodeAppSnapshotPayload(message))
     }
 
     func sendChatCompletion(
-        _ message: OpenClawWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
     {
         try await self.transport.sendPayload(
             WatchMessagingPayloadCodec.encodeChatCompletionPayload(message))

@@ -52,7 +52,7 @@ enum RuntimeResolutionError: Error {
 }
 
 enum RuntimeLocator {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "runtime")
+    private static let logger = Logger(subsystem: "ai.operator", category: "runtime")
     // Keep these floors aligned with package.json engines so the app never launches
     // the gateway on an unsupported odd release or an older even-major runtime.
     private static let minNode22 = RuntimeVersion(major: 22, minor: 22, patch: 3)
@@ -107,7 +107,7 @@ enum RuntimeLocator {
         switch error {
         case let .notFound(searchPaths):
             [
-                "openclaw needs Node \(self.supportedNodeRange) but found no runtime.",
+                "operator needs Node \(self.supportedNodeRange) but found no runtime.",
                 "PATH searched: \(searchPaths.joined(separator: ":"))",
                 "Install Node: https://nodejs.org/en/download",
             ].joined(separator: "\n")
@@ -115,7 +115,7 @@ enum RuntimeLocator {
             [
                 "Found \(kind.rawValue) \(found) at \(path) but need \(self.supportedNodeRange).",
                 "PATH searched: \(searchPaths.joined(separator: ":"))",
-                "Upgrade Node and rerun openclaw.",
+                "Upgrade Node and rerun operator.",
             ].joined(separator: "\n")
         case let .versionParse(kind, raw, path, searchPaths):
             [

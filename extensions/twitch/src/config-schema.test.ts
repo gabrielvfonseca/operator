@@ -1,6 +1,6 @@
 // Twitch tests cover config schema plugin behavior.
-import { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
-import { validateJsonSchemaValue } from "openclaw/plugin-sdk/json-schema-runtime";
+import { buildChannelConfigSchema } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";
+import { validateJsonSchemaValue } from "@gabrielvfonseca/operator/plugin-sdk/json-schema-runtime";
 import { describe, expect, it } from "vitest";
 import { TwitchConfigSchema } from "./config-schema.js";
 
@@ -22,10 +22,10 @@ describe("TwitchConfigSchema JSON schema", () => {
     expect(
       validateTwitchConfig({
         enabled: false,
-        username: "openclaw",
+        username: "@gabrielvfonseca/operator",
         accessToken: "oauth:test",
         clientId: "test-client-id",
-        channel: "openclaw-test",
+        channel: "operator-test",
       }),
     ).toBe(true);
   });
@@ -37,10 +37,10 @@ describe("TwitchConfigSchema JSON schema", () => {
         defaultAccount: "stream",
         accounts: {
           stream: {
-            username: "openclaw",
+            username: "@gabrielvfonseca/operator",
             accessToken: "oauth:test",
             clientId: "test-client-id",
-            channel: "openclaw-test",
+            channel: "operator-test",
           },
         },
       }),

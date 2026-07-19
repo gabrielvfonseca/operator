@@ -1,3 +1,6 @@
 // Discord plugin module implements agent componentseps behavior.
-export { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
-export { readSessionUpdatedAt, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+export { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
+export {
+  readSessionUpdatedAt,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";

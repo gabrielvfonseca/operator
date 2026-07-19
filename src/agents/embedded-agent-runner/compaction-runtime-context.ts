@@ -5,7 +5,6 @@ import type { SourceReplyDeliveryMode } from "../../auto-reply/get-reply-options
 import type { ReasoningLevel, ThinkLevel } from "../../auto-reply/thinking.js";
 import type { ChatType } from "../../channels/chat-type.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
-import type { SkillSnapshot } from "../../skills/types.js";
 import { isDefaultAgentRuntimeId, normalizeOptionalAgentRuntimeId } from "../agent-runtime-id.js";
 import {
   listActiveProcessSessionReferences,
@@ -41,7 +40,6 @@ type EmbeddedCompactionRuntimeContext = {
   cwd?: string;
   agentDir: string;
   config?: OperatorConfig;
-  skillsSnapshot?: SkillSnapshot;
   senderIsOwner?: boolean;
   senderId?: string;
   provider?: string;
@@ -97,9 +95,11 @@ export function resolveEmbeddedCompactionTarget(params: {
     // defaults choose new runs; they cannot move an existing transcript.
     const useNativeHarnessRuntime =
       selectedHarnessRuntime !== undefined &&
-      selectedHarnessRuntime !== "operator" &&
+      selectedHarnessRuntime !== "@gabrielvfonseca/operator" &&
       !isDefaultAgentRuntimeId(selectedHarnessRuntime);
-    const harnessRuntime = useNativeHarnessRuntime ? selectedHarnessRuntime : "operator";
+    const harnessRuntime = useNativeHarnessRuntime
+      ? selectedHarnessRuntime
+      : "@gabrielvfonseca/operator";
     const runtimeProvider = resolveSelectedOpenAIRuntimeProvider({
       provider: targetProvider,
       harnessRuntime: harnessRuntime ?? undefined,
@@ -282,7 +282,6 @@ export function buildEmbeddedCompactionRuntimeContext(params: {
   cwd?: string | null;
   agentDir: string;
   config?: OperatorConfig;
-  skillsSnapshot?: SkillSnapshot;
   senderIsOwner?: boolean;
   senderId?: string | null;
   provider?: string | null;
@@ -342,7 +341,6 @@ export function buildEmbeddedCompactionRuntimeContext(params: {
     cwd: params.cwd ?? undefined,
     agentDir: params.agentDir,
     config: params.config,
-    skillsSnapshot: params.skillsSnapshot,
     senderIsOwner: params.senderIsOwner,
     senderId: params.senderId ?? undefined,
     provider: resolved.provider,

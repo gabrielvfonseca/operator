@@ -1,5 +1,5 @@
 // Copilot tests cover SDK ask_user bridge behavior.
-import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness-runtime";
+import type { EmbeddedRunAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { createCopilotUserInputBridge } from "./user-input-bridge.js";
 

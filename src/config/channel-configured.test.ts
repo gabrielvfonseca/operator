@@ -24,7 +24,7 @@ describe("isChannelConfigured", () => {
     expect(
       isChannelConfigured({}, "irc", {
         IRC_HOST: "irc.example.com",
-        IRC_NICK: "openclaw",
+        IRC_NICK: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
@@ -50,12 +50,12 @@ describe("isChannelConfigured", () => {
       isChannelConfigured(
         {
           channels: {
-            "openclaw-weixin": {
+            "operator-weixin": {
               enabled: true,
             },
           },
         },
-        "openclaw-weixin",
+        "operator-weixin",
         {},
       ),
     ).toBe(true);
@@ -66,12 +66,12 @@ describe("isChannelConfigured", () => {
       isChannelConfigured(
         {
           channels: {
-            "openclaw-weixin": {
+            "operator-weixin": {
               enabled: false,
             },
           },
         },
-        "openclaw-weixin",
+        "operator-weixin",
         {},
       ),
     ).toBe(false);

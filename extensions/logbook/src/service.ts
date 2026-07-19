@@ -2,12 +2,12 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { canonicalizeBase64 } from "openclaw/plugin-sdk/media-runtime";
+import { canonicalizeBase64 } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import type {
   OperatorConfig,
   OperatorPluginApi,
   PluginLogger,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   CARD_LOOKBACK_MS,
   MAX_FRAMES_PER_CALL,

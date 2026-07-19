@@ -1,6 +1,6 @@
 /** Tests context-pruning decisions for assistant/tool content and thinking blocks. */
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
-import type { ExtensionContext } from "openclaw/plugin-sdk/agent-sessions";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { ExtensionContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { describe, expect, it } from "vitest";
 import { pruneContextMessages } from "./pruner.js";
 import { computeEffectiveSettings } from "./settings.js";

@@ -6,7 +6,7 @@ import path from "node:path";
 import { resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import { getLogger } from "../../logging/logger.js";
 import { normalizeAgentId, parseAgentSessionKey } from "../../routing/session-key.js";
-import { resolveOperatorAgentSqlitePath } from "../../state/operator-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../../state/openclaw-agent-db.js";
 import type { OperatorConfig } from "../types.operator.js";
 import {
   pruneUnreferencedSessionArtifacts,

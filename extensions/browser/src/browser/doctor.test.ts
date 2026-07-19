@@ -20,8 +20,8 @@ describe("buildBrowserDoctorReport", () => {
       uid: 1000,
       status: {
         enabled: true,
-        profile: "openclaw",
-        driver: "openclaw",
+        profile: "@gabrielvfonseca/operator",
+        driver: "@gabrielvfonseca/operator",
         transport: "cdp",
         running: false,
         cdpReady: false,
@@ -86,8 +86,8 @@ describe("buildBrowserDoctorReport", () => {
       uid: 0,
       status: {
         enabled: true,
-        profile: "openclaw",
-        driver: "openclaw",
+        profile: "@gabrielvfonseca/operator",
+        driver: "@gabrielvfonseca/operator",
         transport: "cdp",
         running: false,
         cdpReady: false,
@@ -128,8 +128,8 @@ describe("buildBrowserDoctorReport", () => {
       uid: 1000,
       status: {
         enabled: true,
-        profile: "openclaw",
-        driver: "openclaw",
+        profile: "@gabrielvfonseca/operator",
+        driver: "@gabrielvfonseca/operator",
         transport: "cdp",
         running: false,
         cdpReady: false,
@@ -160,8 +160,8 @@ describe("buildBrowserDoctorReport", () => {
     const report = buildBrowserDoctorReport({
       status: {
         enabled: true,
-        profile: "openclaw",
-        driver: "openclaw",
+        profile: "@gabrielvfonseca/operator",
+        driver: "@gabrielvfonseca/operator",
         transport: "cdp",
         running: true,
         cdpReady: true,
@@ -208,8 +208,8 @@ describe("buildBrowserDoctorReport", () => {
     const report = buildBrowserDoctorReport({
       status: {
         enabled: true,
-        profile: "openclaw",
-        driver: "openclaw",
+        profile: "@gabrielvfonseca/operator",
+        driver: "@gabrielvfonseca/operator",
         transport: "cdp",
         running: true,
         cdpReady: true,

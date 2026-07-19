@@ -18,8 +18,8 @@ import {
 import { getSafeSessionStorage } from "../../local-storage.ts";
 import { getChatAttachmentDataUrl } from "./attachment-payload-store.ts";
 
-const LEGACY_STORAGE_KEY_PREFIX = "openclaw.control.chatComposer.v1:";
-const STORAGE_KEY_PREFIX = "openclaw.control.chatComposer.v2:";
+const LEGACY_STORAGE_KEY_PREFIX = "operator.control.chatComposer.v1:";
+const STORAGE_KEY_PREFIX = "operator.control.chatComposer.v2:";
 const MAX_STORED_SESSIONS = 20;
 const MAX_STORED_QUEUE_ITEMS = 50;
 // Shipped v1 state could hold one full queue under each of 20 alias keys.

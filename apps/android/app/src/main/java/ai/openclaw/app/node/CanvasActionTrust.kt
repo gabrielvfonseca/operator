@@ -1,4 +1,4 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
 /**
  * Trust helper for WebView-originated canvas/A2UI actions.

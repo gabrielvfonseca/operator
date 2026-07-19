@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// Openclaw Npm Release Check script supports OpenClaw repository automation.
+// Openclaw Npm Release Check script supports Operator repository automation.
 
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -147,7 +147,7 @@ const PACKED_TEST_CARGO_DIRECTORY_SEGMENTS = new Set([
 const PACKED_TEST_CARGO_FILE_RE = /(?:^|\/)[^/]+\.(?:test|spec)\.(?:[cm]?[jt]sx?)$/u;
 const NPM_PACK_MAX_BUFFER_BYTES = 64 * 1024 * 1024;
 const DEFAULT_RELEASE_CHECK_COMMAND_TIMEOUT_MS = 10 * 60 * 1000;
-const skipPackValidationEnv = "OPENCLAW_NPM_RELEASE_SKIP_PACK_CHECK";
+const skipPackValidationEnv = "OPERATOR_NPM_RELEASE_SKIP_PACK_CHECK";
 
 type ReleaseCheckCommandInvocation = {
   command: string;
@@ -310,7 +310,7 @@ export function resolveNpmReleaseCheckCommandTimeoutMs(
   env: NodeJS.ProcessEnv = process.env,
 ): number {
   return positiveEnvInt(
-    "OPENCLAW_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS",
+    "OPERATOR_NPM_RELEASE_CHECK_COMMAND_TIMEOUT_MS",
     env,
     DEFAULT_RELEASE_CHECK_COMMAND_TIMEOUT_MS,
   );
@@ -354,8 +354,10 @@ export function collectReleasePackageMetadataErrors(pkg: PackageJson): string[] 
   );
   const errors: string[] = [];
 
-  if (pkg.name !== "openclaw") {
-    errors.push(`package.json name must be "openclaw"; found "${pkg.name ?? ""}".`);
+  if (pkg.name !== "@gabrielvfonseca/operator") {
+    errors.push(
+      `package.json name must be "@gabrielvfonseca/operator"; found "${pkg.name ?? ""}".`,
+    );
   }
   if (!pkg.description?.trim()) {
     errors.push("package.json description must be non-empty.");
@@ -370,9 +372,9 @@ export function collectReleasePackageMetadataErrors(pkg: PackageJson): string[] 
       }.`,
     );
   }
-  if (pkg.bin?.openclaw !== "openclaw.mjs") {
+  if (pkg.bin?.operator !== "operator.mjs") {
     errors.push(
-      `package.json bin.openclaw must be "openclaw.mjs"; found "${pkg.bin?.openclaw ?? ""}".`,
+      `package.json bin.operator must be "operator.mjs"; found "${pkg.bin?.operator ?? ""}".`,
     );
   }
   if (pkg.dependencies?.[OPTIONAL_LOCAL_EMBEDDING_RUNTIME_PACKAGE]) {
@@ -776,7 +778,7 @@ async function main(): Promise<number> {
 
   if (errors.length > 0) {
     for (const error of errors) {
-      console.error(`openclaw-npm-release-check: ${error}`);
+      console.error(`operator-npm-release-check: ${error}`);
     }
     return 1;
   }
@@ -784,7 +786,7 @@ async function main(): Promise<number> {
   const parsedVersion = parseReleaseVersion(pkg.version ?? "");
   const channel = parsedVersion?.channel ?? "unknown";
   console.log(
-    `openclaw-npm-release-check: validated ${channel} release ${pkg.version} (monthly patch version${skipPackValidation ? "; metadata-only" : ""}).`,
+    `operator-npm-release-check: validated ${channel} release ${pkg.version} (monthly patch version${skipPackValidation ? "; metadata-only" : ""}).`,
   );
   return 0;
 }

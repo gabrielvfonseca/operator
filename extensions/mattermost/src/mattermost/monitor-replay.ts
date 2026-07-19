@@ -1,6 +1,9 @@
 // Mattermost plugin module owns replay-guarded post processing.
-import { createClaimableDedupe, type ClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import {
+  createClaimableDedupe,
+  type ClaimableDedupe,
+} from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const RECENT_MATTERMOST_MESSAGE_TTL_MS = 5 * 60_000;
 const RECENT_MATTERMOST_MESSAGE_MAX = 2000;

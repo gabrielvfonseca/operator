@@ -4,7 +4,7 @@ import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   normalizeOptionalStringifiedId,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { getBootstrapChannelPlugin } from "../../channels/plugins/bootstrap-registry.js";
 import type {
   ChannelMessageActionName,

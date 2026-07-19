@@ -56,7 +56,7 @@ describe("resolveAgentConfig", () => {
             id: "main",
             name: "Main Agent",
             workspace: "~/openclaw",
-            agentDir: "~/.openclaw/agents/main",
+            agentDir: "~/.operator/agents/main",
             model: "anthropic/claude-sonnet-4-6",
             utilityModel: "openai/gpt-5.4-mini",
           },
@@ -67,7 +67,7 @@ describe("resolveAgentConfig", () => {
     expect(result).toEqual({
       name: "Main Agent",
       workspace: "~/openclaw",
-      agentDir: "~/.openclaw/agents/main",
+      agentDir: "~/.operator/agents/main",
       model: "anthropic/claude-sonnet-4-6",
       utilityModel: "openai/gpt-5.4-mini",
       identity: undefined,
@@ -1064,7 +1064,7 @@ describe("resolveAgentConfig", () => {
         list: [
           {
             id: "work",
-            workspace: "~/openclaw-work",
+            workspace: "~/operator-work",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -1092,7 +1092,7 @@ describe("resolveAgentConfig", () => {
         list: [
           {
             id: "restricted",
-            workspace: "~/openclaw-restricted",
+            workspace: "~/operator-restricted",
             tools: {
               allow: ["read"],
               deny: ["exec", "write", "edit"],
@@ -1122,7 +1122,7 @@ describe("resolveAgentConfig", () => {
         list: [
           {
             id: "family",
-            workspace: "~/openclaw-family",
+            workspace: "~/operator-family",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -1152,19 +1152,19 @@ describe("resolveAgentConfig", () => {
   });
 
   it("uses OPERATOR_HOME for default agent workspace", () => {
-    const home = path.join(path.sep, "srv", "openclaw-home");
+    const home = path.join(path.sep, "srv", "operator-home");
     withEnv({ OPERATOR_HOME: home }, () => {
       const workspace = resolveAgentWorkspaceDir({} as OperatorConfig, "main");
-      expect(workspace).toBe(path.join(path.resolve(home), ".openclaw", "workspace"));
+      expect(workspace).toBe(path.join(path.resolve(home), ".operator", "workspace"));
     });
   });
 
   it("uses OPERATOR_WORKSPACE_DIR for default agent workspace", () => {
-    const workspaceDir = path.join(path.sep, "srv", "openclaw-workspace");
+    const workspaceDir = path.join(path.sep, "srv", "operator-workspace");
     withEnv(
       {
         OPERATOR_WORKSPACE_DIR: workspaceDir,
-        OPERATOR_HOME: path.join(path.sep, "srv", "openclaw-home"),
+        OPERATOR_HOME: path.join(path.sep, "srv", "operator-home"),
       },
       () => {
         const workspace = resolveAgentWorkspaceDir({} as OperatorConfig, "main");
@@ -1174,10 +1174,10 @@ describe("resolveAgentConfig", () => {
   });
 
   it("uses OPERATOR_HOME for default agentDir", () => {
-    const home = path.join(path.sep, "srv", "openclaw-home");
+    const home = path.join(path.sep, "srv", "operator-home");
     withEnv({ OPERATOR_HOME: home, OPERATOR_STATE_DIR: "" }, () => {
       const agentDir = resolveAgentDir({} as OperatorConfig, "main");
-      expect(agentDir).toBe(path.join(path.resolve(home), ".openclaw", "agents", "main", "agent"));
+      expect(agentDir).toBe(path.join(path.resolve(home), ".operator", "agents", "main", "agent"));
     });
   });
 
@@ -1232,7 +1232,7 @@ describe("resolveAgentConfig", () => {
 
 describe("resolveAgentIdByWorkspacePath", () => {
   it("returns the most specific workspace match for a directory", () => {
-    const workspaceRoot = `/tmp/openclaw-agent-scope-${Date.now()}-root`;
+    const workspaceRoot = `/tmp/operator-agent-scope-${Date.now()}-root`;
     const opsWorkspace = `${workspaceRoot}/projects/ops`;
     const cfg: OperatorConfig = {
       agents: {
@@ -1247,7 +1247,7 @@ describe("resolveAgentIdByWorkspacePath", () => {
   });
 
   it("returns undefined when directory has no matching workspace", () => {
-    const workspaceRoot = `/tmp/openclaw-agent-scope-${Date.now()}-root`;
+    const workspaceRoot = `/tmp/operator-agent-scope-${Date.now()}-root`;
     const cfg: OperatorConfig = {
       agents: {
         list: [
@@ -1258,12 +1258,12 @@ describe("resolveAgentIdByWorkspacePath", () => {
     };
 
     expect(
-      resolveAgentIdByWorkspacePath(cfg, `/tmp/openclaw-agent-scope-${Date.now()}-unrelated`),
+      resolveAgentIdByWorkspacePath(cfg, `/tmp/operator-agent-scope-${Date.now()}-unrelated`),
     ).toBeUndefined();
   });
 
   it("matches workspace paths through symlink aliases", () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-agent-scope-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-agent-scope-"));
     const realWorkspaceRoot = path.join(tempRoot, "real-root");
     const realOpsWorkspace = path.join(realWorkspaceRoot, "projects", "ops");
     const aliasWorkspaceRoot = path.join(tempRoot, "alias-root");
@@ -1298,7 +1298,7 @@ describe("resolveAgentIdByWorkspacePath", () => {
 
 describe("resolveAgentIdsByWorkspacePath", () => {
   it("returns matching workspaces ordered by specificity", () => {
-    const workspaceRoot = `/tmp/openclaw-agent-scope-${Date.now()}-root`;
+    const workspaceRoot = `/tmp/operator-agent-scope-${Date.now()}-root`;
     const opsWorkspace = `${workspaceRoot}/projects/ops`;
     const opsDevWorkspace = `${opsWorkspace}/dev`;
     const cfg: OperatorConfig = {

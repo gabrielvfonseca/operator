@@ -4,8 +4,8 @@ import { once } from "node:events";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import type { RealtimeTranscriptionProviderPlugin } from "openclaw/plugin-sdk/realtime-transcription";
-import type { RealtimeVoiceProviderPlugin } from "openclaw/plugin-sdk/realtime-voice";
+import type { RealtimeTranscriptionProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/realtime-transcription";
+import type { RealtimeVoiceProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveGoogleMeetConfig } from "./config.js";
 import { formatGoogleMeetRealtimeVoiceModelLog, startCommandAgentAudioBridge } from "./realtime.js";
@@ -14,7 +14,7 @@ const tempDirs: string[] = [];
 const spawnedChildren: ChildProcess[] = [];
 
 function writeBridgeCommand(): string {
-  const dir = mkdtempSync(path.join(tmpdir(), "openclaw-google-meet-bridge-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "operator-google-meet-bridge-"));
   tempDirs.push(dir);
   const scriptPath = path.join(dir, "bridge-command.mjs");
   writeFileSync(

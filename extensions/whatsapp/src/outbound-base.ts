@@ -1,13 +1,13 @@
 // Whatsapp plugin module implements outbound base behavior.
-import { normalizeOptionalAccountId } from "openclaw/plugin-sdk/account-core";
-import { resolveOutboundSendDep } from "openclaw/plugin-sdk/channel-outbound";
+import { normalizeOptionalAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import { resolveOutboundSendDep } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   attachChannelToResult,
   createAttachedChannelResultAdapter,
   type ChannelOutboundAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { sendTextMediaPayload } from "openclaw/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { sendTextMediaPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { resolveDefaultWhatsAppAccountId } from "./account-ids.js";
 import {
   normalizeWhatsAppOutboundPayload,

@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.node.CanvasController
+import ai.operator.app.node.CanvasController
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Base64

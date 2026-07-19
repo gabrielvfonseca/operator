@@ -1,6 +1,6 @@
 // Doctor contribution for low disk space around the Operator state directory.
 import os from "node:os";
-import { expectDefined, formatByteSize } from "@operator/normalization-core";
+import { expectDefined, formatByteSize } from "@gabrielvfonseca/normalization-core";
 import { note } from "../../packages/terminal-core/src/note.js";
 import type { OperatorConfig } from "../config/config.js";
 import { resolveStateDir } from "../config/paths.js";

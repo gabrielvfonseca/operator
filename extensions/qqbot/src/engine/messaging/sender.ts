@@ -25,7 +25,7 @@
  */
 
 import os from "node:os";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { ApiClient } from "../api/api-client.js";
 import { ChunkedMediaApi as ChunkedMediaApiClass } from "../api/media-chunked.js";
 import { downloadDirectUploadUrl, MediaApi as MediaApiClass } from "../api/media.js";
@@ -77,8 +77,8 @@ export function initSender(options: { pluginVersion?: string; openclawVersion?: 
   if (options.pluginVersion) {
     pluginVersion = options.pluginVersion;
   }
-  if (options.openclawVersion) {
-    openclawVersion = options.openclawVersion;
+  if (options.operatorVersion) {
+    openclawVersion = options.operatorVersion;
   }
 }
 

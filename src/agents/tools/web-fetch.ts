@@ -3,13 +3,13 @@
  *
  * Fetches HTTP(S) content through SSRF guards, provider config, caching, and bounded extraction.
  */
-import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
+import { resolveIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { Type } from "typebox";
 import { resolveWebProviderConfig } from "../../../packages/web-content-core/src/provider-runtime-shared.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

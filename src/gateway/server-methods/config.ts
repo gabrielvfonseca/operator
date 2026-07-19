@@ -3,10 +3,10 @@ import { isDeepStrictEqual } from "node:util";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   ErrorCodes,
   errorShape,

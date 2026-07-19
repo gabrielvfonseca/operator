@@ -1,4 +1,4 @@
 // Telegram plugin module implements bot message context behavior.
-export { createStatusReactionController } from "openclaw/plugin-sdk/channel-feedback";
-export { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-export { ensureConfiguredBindingRouteReady } from "openclaw/plugin-sdk/conversation-runtime";
+export { createStatusReactionController } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+export { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
+export { ensureConfiguredBindingRouteReady } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";

@@ -1,6 +1,6 @@
 // Outbound identity helpers project configured agent identity/avatar metadata
 // into channel-safe send payload fields.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentAvatar } from "../../agents/identity-avatar.js";
 import { resolveAgentIdentity } from "../../agents/identity.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

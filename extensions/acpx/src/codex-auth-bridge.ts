@@ -7,7 +7,7 @@ import fs from "node:fs/promises";
 import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
-import { readJsonFileWithFallback } from "openclaw/plugin-sdk/json-store";
+import { readJsonFileWithFallback } from "@gabrielvfonseca/operator/plugin-sdk/json-store";
 import {
   extractTrustedCodexProjectPaths,
   renderIsolatedCodexConfig,
@@ -25,7 +25,7 @@ const CODEX_ACP_PACKAGE = "@zed-industries/codex-acp";
 const CODEX_ACP_BIN = "codex-acp";
 const CLAUDE_ACP_PACKAGE = "@agentclientprotocol/claude-agent-acp";
 const CLAUDE_ACP_BIN = "claude-agent-acp";
-const RUN_CONFIGURED_COMMAND_SENTINEL = "--openclaw-run-configured";
+const RUN_CONFIGURED_COMMAND_SENTINEL = "--operator-run-configured";
 const requireFromHere = createRequire(import.meta.url);
 
 type PackageManifest = {
@@ -42,7 +42,7 @@ function readSelfManifest(): PackageManifest {
 function readManifestDependencyVersion(packageName: string): string {
   const version = readSelfManifest().dependencies?.[packageName];
   if (typeof version !== "string" || version.trim() === "") {
-    throw new Error(`Missing ${packageName} dependency version in @operator/acpx manifest`);
+    throw new Error(`Missing ${packageName} dependency version in @gabrielvfonseca/acpx manifest`);
   }
   return version;
 }

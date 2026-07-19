@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
 
 const PRIVATE_QA_DIST_RELATIVE_PATH = path.join("dist", "plugin-sdk", "qa-lab.js");
 const SOURCE_CHECKOUT_MARKER_RELATIVE_PATHS = [".git", "pnpm-workspace.yaml"] as const;
@@ -17,15 +17,15 @@ function resolvePrivateQaSourceModuleSpecifier(params?: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
-  resolveOperatorPackageRootSync?: typeof resolveOperatorPackageRootSync;
+  resolvePackageRootSync?: typeof resolveOperatorPackageRootSync;
   existsSync?: typeof fs.existsSync;
 }): string | null {
   const env = params?.env ?? process.env;
   if (!isPrivateQaCliEnabled(env)) {
     return null;
   }
-  const resolveOperatorPackageRootSync = params?.resolveOperatorPackageRootSync ?? resolveOperatorPackageRootSync;
-  const packageRoot = resolveOperatorPackageRootSync({
+  const resolvePackageRootSync = params?.resolvePackageRootSync ?? resolveOperatorPackageRootSync;
+  const packageRoot = resolvePackageRootSync({
     argv1: params?.argv1 ?? process.argv[1],
     cwd: params?.cwd ?? process.cwd(),
     moduleUrl: params?.moduleUrl ?? import.meta.url,
@@ -60,7 +60,7 @@ export function loadPrivateQaCliModule(params?: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
-  resolveOperatorPackageRootSync?: typeof resolveOperatorPackageRootSync;
+  resolvePackageRootSync?: typeof resolveOperatorPackageRootSync;
   existsSync?: typeof fs.existsSync;
   importModule?: (specifier: string) => Promise<Record<string, unknown>>;
 }): Promise<Record<string, unknown>> {

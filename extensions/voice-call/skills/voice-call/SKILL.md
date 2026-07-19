@@ -3,7 +3,7 @@ name: voice-call
 description: "Start voice calls via the Operator voice-call plugin."
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "📞",
         "skillKey": "voice-call",
@@ -19,8 +19,8 @@ Use the voice-call plugin to start or inspect calls (Twilio, Telnyx, Plivo, or m
 ## CLI
 
 ```bash
-openclaw voicecall call --to "+15555550123" --message "Hello from Operator"
-openclaw voicecall status --call-id <id>
+operator voicecall call --to "+15555550123" --message "Hello from Operator"
+operator voicecall status --call-id <id>
 ```
 
 ## Tool

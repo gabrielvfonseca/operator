@@ -1,8 +1,8 @@
 // Doctor workspace status tests cover workspace inspection and status output.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import * as noteModule from "../../packages/terminal-core/src/note.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginVersionDriftReport } from "../plugins/plugin-version-drift.js";
 import {
   createPluginLoadResult,
@@ -357,8 +357,8 @@ describe("noteWorkspaceStatus", () => {
               installedVersion: "2026.6.9",
               gatewayVersion: "2026.6.10-beta.1",
               source: "npm",
-              packageName: "@operator/brave-plugin",
-              spec: "@operator/brave-plugin@2026.6.9",
+              packageName: "@gabrielvfonseca/brave-plugin",
+              spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
             },
           ],
         },
@@ -368,7 +368,9 @@ describe("noteWorkspaceStatus", () => {
       const driftCalls = noteSpy.mock.calls.filter(([, title]) => title === "Plugin version drift");
       expect(driftCalls).toHaveLength(1);
       const [body] = expectDefined(driftCalls[0], "(driftCalls)[0] test invariant");
-      expect(body).toContain("openclaw plugins update @operator/brave-plugin@2026.6.10-beta.1");
+      expect(body).toContain(
+        "openclaw plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1",
+      );
       expect(body).not.toContain("openclaw plugins update brave");
       expect(body).toContain("openclaw gateway restart");
     } finally {

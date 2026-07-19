@@ -59,7 +59,7 @@ export class WorktreeSnapshotError extends Error {
     this.snapshotError = snapshotError;
   }
 }
-const SNAPSHOT_REF_PREFIX = "refs/operator/snapshots";
+const SNAPSHOT_REF_PREFIX = "refs/openclaw/snapshots";
 const log = createSubsystemLogger("agents/worktrees");
 
 type ServiceOptions = {
@@ -340,9 +340,9 @@ async function snapshotWorktree(record: ManagedWorktreeRecord, reason: string): 
   const env: NodeJS.ProcessEnv = {
     GIT_INDEX_FILE: indexPath,
     GIT_AUTHOR_NAME: "Operator",
-    GIT_AUTHOR_EMAIL: "operator@localhost",
+    GIT_AUTHOR_EMAIL: "openclaw@localhost",
     GIT_COMMITTER_NAME: "Operator",
-    GIT_COMMITTER_EMAIL: "operator@localhost",
+    GIT_COMMITTER_EMAIL: "openclaw@localhost",
   };
   try {
     await requireGit(record.path, ["read-tree", "HEAD"], { env });
@@ -404,7 +404,7 @@ export class ManagedWorktreeService {
       }
       return await this.restore({ id: existing.id });
     }
-    const branch = `operator/${name}`;
+    const branch = `openclaw/${name}`;
     const branchExists = await runGit(repository.repoRoot, [
       "show-ref",
       "--quiet",

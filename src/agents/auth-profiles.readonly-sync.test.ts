@@ -63,7 +63,7 @@ describe("auth profiles read-only external auth overlay", () => {
   });
 
   it("overlays runtime-only external auth without writing auth-profiles.json in read-only mode", () => {
-    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-readonly-sync-"));
+    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-auth-readonly-sync-"));
     try {
       const baseline: AuthProfileStore = {
         version: AUTH_STORE_VERSION,
@@ -123,7 +123,7 @@ describe("auth profiles read-only external auth overlay", () => {
   });
 
   it("passes scoped external auth config to provider hooks", () => {
-    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-scoped-config-"));
+    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-auth-scoped-config-"));
     const profileId = "google-gemini-cli:user@example.test";
     const cfg = {
       auth: {

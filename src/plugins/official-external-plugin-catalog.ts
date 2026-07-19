@@ -1,7 +1,7 @@
 /** Reads official external plugin/channel/provider catalogs into manifest-like metadata. */
 import { createHash } from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
 import { normalizeClawHubSha256Integrity } from "../infra/clawhub.js";
 import { readResponseWithLimit } from "../infra/http-body.js";

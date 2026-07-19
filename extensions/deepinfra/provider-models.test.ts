@@ -1,4 +1,4 @@
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
 // Deepinfra tests cover provider models plugin behavior.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -136,12 +136,12 @@ describe("hasDeepInfraApiKey", () => {
   it("falls back to the auth-profile store when no env var is set", () => {
     isProviderApiKeyConfiguredMock.mockReturnValue(true);
 
-    expect(hasDeepInfraApiKey({ env: {}, agentDir: "/tmp/openclaw-agent" })).toBe(true);
+    expect(hasDeepInfraApiKey({ env: {}, agentDir: "/tmp/operator-agent" })).toBe(true);
 
     expect(isProviderApiKeyConfiguredMock).toHaveBeenCalledTimes(1);
     expect(isProviderApiKeyConfiguredMock).toHaveBeenCalledWith({
       provider: "deepinfra",
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
     });
   });
 
@@ -149,7 +149,7 @@ describe("hasDeepInfraApiKey", () => {
     expect(
       hasDeepInfraApiKey({
         env: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         config: {
           models: {
             providers: {
@@ -171,7 +171,7 @@ describe("hasDeepInfraApiKey", () => {
     expect(
       hasDeepInfraApiKey({
         env: { DEEPINFRA_API_KEY: "sk-x" },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       }),
     ).toBe(true);
 
@@ -181,11 +181,11 @@ describe("hasDeepInfraApiKey", () => {
   it("returns false when env is empty and the auth-profile store has no deepinfra profile", () => {
     isProviderApiKeyConfiguredMock.mockReturnValue(false);
 
-    expect(hasDeepInfraApiKey({ env: {}, agentDir: "/tmp/openclaw-agent" })).toBe(false);
+    expect(hasDeepInfraApiKey({ env: {}, agentDir: "/tmp/operator-agent" })).toBe(false);
 
     expect(isProviderApiKeyConfiguredMock).toHaveBeenCalledWith({
       provider: "deepinfra",
-      agentDir: "/tmp/openclaw-agent",
+      agentDir: "/tmp/operator-agent",
     });
   });
 });
@@ -204,7 +204,7 @@ describe("discoverDeepInfraModels (chat-only shim)", () => {
     expect(streamingUsageIncompatibleModelIds).toStrictEqual([]);
   });
 
-  it("fetches the openclaw-projection endpoint and parses chat-surface entries when an API key is configured", async () => {
+  it("fetches the operator-projection endpoint and parses chat-surface entries when an API key is configured", async () => {
     const mockFetch = vi.fn().mockResolvedValue(jsonResponse({ data: [makeAgentModelEntry()] }));
 
     await withFetchPathTest(mockFetch, { DEEPINFRA_API_KEY: "sk-test" }, async () => {

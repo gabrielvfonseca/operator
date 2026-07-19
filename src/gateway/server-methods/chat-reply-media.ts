@@ -1,6 +1,6 @@
 // Webchat reply media path normalizer for display-safe outbound payloads.
-import { isPassThroughRemoteMediaSource } from "@operator/media-core/media-source-url";
-import { isAudioFileName } from "@operator/media-core/mime";
+import { isPassThroughRemoteMediaSource } from "@gabrielvfonseca/media-core/media-source-url";
+import { isAudioFileName } from "@gabrielvfonseca/media-core/mime";
 import { resolveAgentWorkspaceDir } from "../../agents/agent-scope.js";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import { createReplyMediaPathNormalizer } from "../../auto-reply/reply/reply-media-paths.runtime.js";

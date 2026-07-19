@@ -2,11 +2,11 @@
 import {
   buildChannelOutboundSessionRoute,
   createChatChannelPlugin,
-} from "openclaw/plugin-sdk/channel-core";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
-import { createRestrictSendersChannelSecurity } from "openclaw/plugin-sdk/channel-policy";
-import { createEmptyChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createPairingPrefixStripper } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import { createRestrictSendersChannelSecurity } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
+import { createEmptyChannelDirectoryAdapter } from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import { resolveLineAccount } from "./accounts.js";
 import { lineBindingsAdapter } from "./bindings.js";
 import type { ChannelPlugin, ResolvedLineAccount } from "./channel-api.js";

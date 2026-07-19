@@ -1,9 +1,9 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
-import ai.openclaw.app.gateway.GatewayRequestNotEnqueued
-import ai.openclaw.app.gateway.GatewayRequestOutcomeUnknown
-import ai.openclaw.app.gateway.GatewayRequestRejected
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewayRequestNotEnqueued
+import ai.operator.app.gateway.GatewayRequestOutcomeUnknown
+import ai.operator.app.gateway.GatewayRequestRejected
+import ai.operator.app.gateway.GatewaySession
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope

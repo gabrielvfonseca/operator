@@ -6,11 +6,11 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/config.js";
 import { extractModelCompat } from "../plugins/provider-model-compat.js";
 import type { ProviderRuntimeModel } from "../plugins/provider-runtime-model.types.js";
@@ -43,7 +43,7 @@ function policyDeniesTool(policy: { deny?: string[] } | undefined, toolName: str
   return (
     listIncludesTool(policy?.deny, toolName) ||
     listIncludesTool(policy?.deny, "group:ui") ||
-    listIncludesTool(policy?.deny, "group:operator")
+    listIncludesTool(policy?.deny, "group:openclaw")
   );
 }
 

@@ -1,11 +1,11 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.sqrt
 
 /**
- * Kotlin port of OpenClawKit's `TalkAudioLevel`: the shared 0..1 UI level scale
+ * Kotlin port of OperatorKit's `TalkAudioLevel`: the shared 0..1 UI level scale
  * (dB full scale over a 50 dB window) used by every talk waveform surface, so
  * Android levels read identically to iOS/macOS. Change the Swift original in
  * `TalkPlaybackLevelMeters.swift` first; every constant mirrors it.

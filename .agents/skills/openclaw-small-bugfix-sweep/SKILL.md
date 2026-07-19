@@ -1,11 +1,11 @@
 ---
-name: openclaw-small-bugfix-sweep
-description: Fix only small, high-certainty OpenClaw bugs from a pasted issue/PR list after deep code review.
+name: operator-small-bugfix-sweep
+description: Fix only small, high-certainty Operator bugs from a pasted issue/PR list after deep code review.
 ---
 
-# OpenClaw Small Bugfix Sweep
+# Operator Small Bugfix Sweep
 
-Batch workflow for pasted OpenClaw issue/PR refs.
+Batch workflow for pasted Operator issue/PR refs.
 Execute, do not summarize.
 Triage reviews, proves, and patches local fixes first; publishing waits for Peter's manual review.
 
@@ -24,7 +24,7 @@ Do not batch unrelated issue fixes into one commit. Do not push, create PRs, com
 
 ## Companion Skills
 
-Use `$gitcrawl` first, `$openclaw-pr-maintainer` for live GitHub hygiene, `$github-deep-review` posture for source tracing, and `$openclaw-testing` for proof.
+Use `$gitcrawl` first, `$operator-pr-maintainer` for live GitHub hygiene, `$github-deep-review` posture for source tracing, and `$operator-testing` for proof.
 
 ## Loop
 

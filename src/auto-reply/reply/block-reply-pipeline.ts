@@ -1,9 +1,9 @@
 // Buffers streaming reply blocks before coalesced final delivery.
-import { clampPositiveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { clampPositiveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   hasOutboundReplyContent,
   resolveSendableOutboundReplyParts,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { logVerbose } from "../../globals.js";
 import { getReplyPayloadMetadata, isReplyPayloadStatusNotice } from "../reply-payload.js";
 import type { ReplyPayload } from "../types.js";

@@ -1,7 +1,7 @@
 // Signal alias helpers keep Operator-side names inside the Signal plugin boundary.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelDirectoryEntry } from "openclaw/plugin-sdk/core";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ChannelDirectoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { looksLikeSignalTargetId, normalizeSignalMessagingTarget } from "./normalize.js";
 

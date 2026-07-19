@@ -36,7 +36,7 @@ const runtimeMocks = vi.hoisted(() => ({
 const tmpDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-docker-mounts-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-docker-mounts-"));
   tmpDirs.push(dir);
   return dir;
 }
@@ -67,7 +67,7 @@ async function spawnDockerProcess(commandAndArgs: string[]) {
   } else if (
     args[0] === "inspect" &&
     args[1] === "-f" &&
-    args[2]?.includes('index .Config.Labels "openclaw.configHash"')
+    args[2]?.includes('index .Config.Labels "operator.configHash"')
   ) {
     stdout = `${spawnState.labelHash}\n`;
   } else if (
@@ -122,9 +122,9 @@ function createSandboxConfig(
     backend: "docker",
     scope: "shared",
     workspaceAccess,
-    workspaceRoot: "~/.openclaw/sandboxes",
+    workspaceRoot: "~/.operator/sandboxes",
     docker: {
-      image: "openclaw-sandbox:test",
+      image: "operator-sandbox:test",
       containerPrefix: "oc-test-",
       workdir: "/workspace",
       readOnlyRoot: true,
@@ -139,15 +139,15 @@ function createSandboxConfig(
     },
     ssh: {
       command: "ssh",
-      workspaceRoot: "/tmp/openclaw-sandboxes",
+      workspaceRoot: "/tmp/operator-sandboxes",
       strictHostKeyChecking: true,
       updateHostKeys: true,
     },
     browser: {
       enabled: false,
-      image: "openclaw-browser:test",
+      image: "operator-browser:test",
       containerPrefix: "oc-browser-",
-      network: "openclaw-sandbox-browser",
+      network: "operator-sandbox-browser",
       cdpPort: 9222,
       vncPort: 5900,
       noVncPort: 6080,
@@ -258,7 +258,7 @@ describe("ensureSandboxContainer config-hash recreation", () => {
     if (!createCall) {
       throw new Error("expected recreated docker create call");
     }
-    expect(createCall.args).toContain(`openclaw.configHash=${newHash}`);
+    expect(createCall.args).toContain(`operator.configHash=${newHash}`);
     const registryUpdate = registryMocks.updateRegistry.mock.calls.at(-1)?.[0];
     expect(registryUpdate?.containerName).toBe("oc-test-shared");
     expect(registryUpdate?.configHash).toBe(newHash);
@@ -300,9 +300,9 @@ describe("ensureSandboxContainer config-hash recreation", () => {
     expect(spawnState.calls.some((call) => call.args[0] === "rm")).toBe(true);
     expect(createCall.args.filter((arg) => arg === "--init")).toHaveLength(1);
     expect(createCall.args).toContain(
-      `openclaw.createArgsEpoch=${SANDBOX_DOCKER_CREATE_ARGS_EPOCH}`,
+      `operator.createArgsEpoch=${SANDBOX_DOCKER_CREATE_ARGS_EPOCH}`,
     );
-    expect(createCall.args).toContain(`openclaw.configHash=${newHash}`);
+    expect(createCall.args).toContain(`operator.configHash=${newHash}`);
   });
 
   it("keeps a hot pre-init container running and emits the recreate hint", async () => {
@@ -410,7 +410,7 @@ describe("ensureSandboxContainer config-hash recreation", () => {
     });
 
     const createCall = await ensureSandboxCreateCallForTest({ cfg, workspaceDir });
-    expect(createCall.args).toContain(`openclaw.configHash=${newHash}`);
+    expect(createCall.args).toContain(`operator.configHash=${newHash}`);
     expect(collectDockerFlagValues(createCall.args, "--env")).toEqual(
       expect.arrayContaining(["LANG=C.UTF-8", "GEMINI_API_KEY=dummy-gemini"]),
     );
@@ -447,7 +447,7 @@ describe("ensureSandboxContainer config-hash recreation", () => {
     });
 
     const createCall = await ensureSandboxCreateCallForTest({ cfg, workspaceDir });
-    expect(createCall.args).toContain(`openclaw.configHash=${expectedHash}`);
+    expect(createCall.args).toContain(`operator.configHash=${expectedHash}`);
 
     const bindArgs = collectDockerFlagValues(createCall.args, "-v");
     const workspaceMountIdx = bindArgs.indexOf(`${workspaceDir}:/workspace:z`);
@@ -522,7 +522,7 @@ describe("ensureSandboxContainer config-hash recreation", () => {
 
     const createCall = await ensureSandboxCreateCallForTest({ cfg, workspaceDir });
     expect(createCall.args).toContain(
-      `openclaw.mountFormatVersion=${SANDBOX_MOUNT_FORMAT_VERSION}`,
+      `operator.mountFormatVersion=${SANDBOX_MOUNT_FORMAT_VERSION}`,
     );
   });
 });

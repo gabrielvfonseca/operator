@@ -1,5 +1,5 @@
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { SessionUpstreamProbe } from "openclaw/plugin-sdk/session-catalog";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { SessionUpstreamProbe } from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
 import { describe, expect, it, vi } from "vitest";
 import { CodexAppServerRpcError } from "./app-server/client.js";
 import type { CodexTurn } from "./app-server/protocol.js";

@@ -1,5 +1,5 @@
 import Observation
-import OpenClawChatUI
+import OperatorChatUI
 import SwiftUI
 
 enum AppAppearancePreference: String, CaseIterable, Identifiable {
@@ -11,7 +11,7 @@ enum AppAppearancePreference: String, CaseIterable, Identifiable {
 
     static var launchArgumentPreference: AppAppearancePreference? {
         let arguments = ProcessInfo.processInfo.arguments
-        guard let flagIndex = arguments.firstIndex(of: "--openclaw-appearance") else {
+        guard let flagIndex = arguments.firstIndex(of: "--operator-appearance") else {
             return nil
         }
         let valueIndex = arguments.index(after: flagIndex)
@@ -73,7 +73,7 @@ final class AppAppearanceModel {
     }
 }
 
-enum OpenClawBrand {
+enum OperatorBrand {
     // Accent fills stay dark enough for white content; foreground accents adapt
     // separately so small labels retain 4.5:1 contrast on dark surfaces and tinted pills.
     static let uiAccent = adaptiveUIColor(light: (183, 56, 51), dark: (198, 62, 56))
@@ -208,16 +208,16 @@ enum OpenClawBrand {
     }
 }
 
-struct OpenClawActivationGlyph: View {
+struct OperatorActivationGlyph: View {
     let size: CGFloat
     /// Opt-in tap Easter eggs; leave off when the glyph sits inside a control.
     var interactive = false
 
     var body: some View {
-        OpenClawMascotView(floats: false, interactive: self.interactive)
+        OperatorMascotView(floats: false, interactive: self.interactive)
             .frame(width: self.size, height: self.size)
             .shadow(
-                color: OpenClawBrand.activationGlow.opacity(0.18),
+                color: OperatorBrand.activationGlow.opacity(0.18),
                 radius: self.size * 0.12,
                 x: 0,
                 y: self.size * 0.05)
@@ -228,19 +228,19 @@ struct OpenClawActivationGlyph: View {
 extension View {
     func openClawSheetChrome() -> some View {
         self
-            .tint(OpenClawBrand.accent)
+            .tint(OperatorBrand.accent)
             .background {
-                OpenClawBrand.sheetBackground
+                OperatorBrand.sheetBackground
                     .ignoresSafeArea()
             }
     }
 
     func openClawCraftSurface(cornerRadius: CGFloat = 24, shadow: Bool = true) -> some View {
-        self.modifier(OpenClawCraftSurfaceModifier(cornerRadius: cornerRadius, shadow: shadow))
+        self.modifier(OperatorCraftSurfaceModifier(cornerRadius: cornerRadius, shadow: shadow))
     }
 }
 
-private struct OpenClawCraftSurfaceModifier: ViewModifier {
+private struct OperatorCraftSurfaceModifier: ViewModifier {
     let cornerRadius: CGFloat
     let shadow: Bool
 
@@ -248,7 +248,7 @@ private struct OpenClawCraftSurfaceModifier: ViewModifier {
         content
             .background {
                 RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-                    .fill(OpenClawBrand.activationSurface)
+                    .fill(OperatorBrand.activationSurface)
                     .shadow(
                         color: self.shadow ? Color.black.opacity(0.07) : .clear,
                         radius: 16,
@@ -262,12 +262,12 @@ private struct OpenClawCraftSurfaceModifier: ViewModifier {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-                    .stroke(OpenClawBrand.activationHairline, lineWidth: 0.5)
+                    .stroke(OperatorBrand.activationHairline, lineWidth: 0.5)
             }
     }
 }
 
-struct OpenClawPrimaryActionButtonStyle: ButtonStyle {
+struct OperatorPrimaryActionButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     var height: CGFloat = 54
 
@@ -277,21 +277,21 @@ struct OpenClawPrimaryActionButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(OpenClawType.subheadSemiBold)
-            .foregroundStyle(self.isEnabled ? OpenClawBrand.activationPrimaryActionText : Color.secondary)
-            .tint(self.isEnabled ? OpenClawBrand.activationPrimaryActionText : Color.secondary)
+            .font(OperatorType.subheadSemiBold)
+            .foregroundStyle(self.isEnabled ? OperatorBrand.activationPrimaryActionText : Color.secondary)
+            .tint(self.isEnabled ? OperatorBrand.activationPrimaryActionText : Color.secondary)
             .frame(maxWidth: .infinity)
             .frame(height: self.height)
             .background {
                 RoundedRectangle(cornerRadius: self.resolvedCornerRadius, style: .continuous)
-                    .fill(self.isEnabled ? Self.primaryFill : OpenClawBrand.activationDisabledGradient)
+                    .fill(self.isEnabled ? Self.primaryFill : OperatorBrand.activationDisabledGradient)
                     .shadow(
-                        color: self.isEnabled ? OpenClawBrand.activationPrimaryAction.opacity(0.08) : .clear,
+                        color: self.isEnabled ? OperatorBrand.activationPrimaryAction.opacity(0.08) : .clear,
                         radius: 1,
                         x: 0,
                         y: 1)
                     .shadow(
-                        color: self.isEnabled ? OpenClawBrand.activationPrimaryAction.opacity(0.08) : .clear,
+                        color: self.isEnabled ? OperatorBrand.activationPrimaryAction.opacity(0.08) : .clear,
                         radius: 2,
                         x: 0,
                         y: 2)
@@ -326,8 +326,8 @@ struct OpenClawPrimaryActionButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: self.resolvedCornerRadius, style: .continuous)
                     .stroke(
                         self.isEnabled
-                            ? OpenClawBrand.activationPrimaryAction.opacity(0.72)
-                            : OpenClawBrand.activationNeutralStroke,
+                            ? OperatorBrand.activationPrimaryAction.opacity(0.72)
+                            : OperatorBrand.activationNeutralStroke,
                         lineWidth: 0.75)
             }
             .scaleEffect(configuration.isPressed && self.isEnabled ? 0.98 : 1)
@@ -345,7 +345,7 @@ struct OpenClawPrimaryActionButtonStyle: ButtonStyle {
     }
 }
 
-struct OpenClawSecondaryActionButtonStyle: ButtonStyle {
+struct OperatorSecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     var height: CGFloat = 50
     var shadowOpacity: Double = 0.035
@@ -356,8 +356,8 @@ struct OpenClawSecondaryActionButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(OpenClawType.subheadSemiBold)
-            .foregroundStyle(self.isEnabled ? OpenClawBrand.activationPrimaryAction : .secondary)
+            .font(OperatorType.subheadSemiBold)
+            .foregroundStyle(self.isEnabled ? OperatorBrand.activationPrimaryAction : .secondary)
             .frame(maxWidth: .infinity)
             .frame(height: self.height)
             .background {
@@ -389,7 +389,7 @@ struct OpenClawSecondaryActionButtonStyle: ButtonStyle {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: self.resolvedCornerRadius, style: .continuous)
-                    .stroke(OpenClawBrand.activationHairline, lineWidth: 0.75)
+                    .stroke(OperatorBrand.activationHairline, lineWidth: 0.75)
             }
             .scaleEffect(configuration.isPressed && self.isEnabled ? 0.98 : 1)
             .animation(.smooth(duration: 0.14), value: configuration.isPressed)
@@ -398,25 +398,25 @@ struct OpenClawSecondaryActionButtonStyle: ButtonStyle {
     private static var secondaryFill: LinearGradient {
         LinearGradient(
             colors: [
-                OpenClawBrand.activationSecondaryActionTop,
-                OpenClawBrand.activationSecondaryActionBottom,
+                OperatorBrand.activationSecondaryActionTop,
+                OperatorBrand.activationSecondaryActionBottom,
             ],
             startPoint: .top,
             endPoint: .bottom)
     }
 }
 
-struct OpenClawCloseButtonStyle: ButtonStyle {
+struct OperatorCloseButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     var minWidth: CGFloat = 36
     var height: CGFloat = 36
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(OpenClawType.subheadSemiBold)
+            .font(OperatorType.subheadSemiBold)
             .foregroundStyle(
                 self.isEnabled
-                    ? OpenClawBrand.activationPrimaryAction
+                    ? OperatorBrand.activationPrimaryAction
                     : Color.secondary)
             .fixedSize(horizontal: true, vertical: false)
             .frame(minWidth: self.minWidth)
@@ -424,7 +424,7 @@ struct OpenClawCloseButtonStyle: ButtonStyle {
             .padding(.horizontal, 7)
             .background {
                 Capsule(style: .continuous)
-                    .fill(OpenClawBrand.activationNeutralGradient)
+                    .fill(OperatorBrand.activationNeutralGradient)
                     .shadow(
                         color: self.isEnabled ? Color.black.opacity(0.045) : .clear,
                         radius: 1,
@@ -443,7 +443,7 @@ struct OpenClawCloseButtonStyle: ButtonStyle {
             }
             .overlay {
                 Capsule(style: .continuous)
-                    .stroke(OpenClawBrand.activationNeutralStroke, lineWidth: 0.6)
+                    .stroke(OperatorBrand.activationNeutralStroke, lineWidth: 0.6)
             }
             .contentShape(Capsule(style: .continuous))
             .opacity(configuration.isPressed && self.isEnabled ? 0.66 : 1)

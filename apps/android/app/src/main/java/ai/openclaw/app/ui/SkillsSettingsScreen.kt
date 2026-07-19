@@ -1,27 +1,27 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.CLAWHUB_SKILL_GATEWAY_UNAVAILABLE
-import ai.openclaw.app.GatewayClawHubInstallReview
-import ai.openclaw.app.GatewayClawHubSkillSearchState
-import ai.openclaw.app.GatewayClawHubSkillSummary
-import ai.openclaw.app.GatewaySkillSummary
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.isClawHubSkillInstalled
-import ai.openclaw.app.isClawHubSkillOperationActive
-import ai.openclaw.app.ui.design.ClawDetailRow
-import ai.openclaw.app.ui.design.ClawIconButton
-import ai.openclaw.app.ui.design.ClawListPanel
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawPill
-import ai.openclaw.app.ui.design.ClawPrimaryButton
-import ai.openclaw.app.ui.design.ClawSecondaryButton
-import ai.openclaw.app.ui.design.ClawSegmentedControl
-import ai.openclaw.app.ui.design.ClawStatus
-import ai.openclaw.app.ui.design.ClawStatusPill
-import ai.openclaw.app.ui.design.ClawTextBadge
-import ai.openclaw.app.ui.design.ClawTextField
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.CLAWHUB_SKILL_GATEWAY_UNAVAILABLE
+import ai.operator.app.GatewayClawHubInstallReview
+import ai.operator.app.GatewayClawHubSkillSearchState
+import ai.operator.app.GatewayClawHubSkillSummary
+import ai.operator.app.GatewaySkillSummary
+import ai.operator.app.MainViewModel
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.isClawHubSkillInstalled
+import ai.operator.app.isClawHubSkillOperationActive
+import ai.operator.app.ui.design.ClawDetailRow
+import ai.operator.app.ui.design.ClawIconButton
+import ai.operator.app.ui.design.ClawListPanel
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawPill
+import ai.operator.app.ui.design.ClawPrimaryButton
+import ai.operator.app.ui.design.ClawSecondaryButton
+import ai.operator.app.ui.design.ClawSegmentedControl
+import ai.operator.app.ui.design.ClawStatus
+import ai.operator.app.ui.design.ClawStatusPill
+import ai.operator.app.ui.design.ClawTextBadge
+import ai.operator.app.ui.design.ClawTextField
+import ai.operator.app.ui.design.ClawTheme
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -876,10 +876,10 @@ internal fun skillMissingConfigurationText(count: Int): String =
 
 private fun skillSourceLabel(skill: GatewaySkillSummary): String =
   when (skill.source) {
-    "openclaw-bundled" -> if (skill.bundled) nativeString("Built-in") else nativeString("Bundled")
-    "openclaw-managed" -> nativeString("Installed")
-    "openclaw-workspace" -> nativeString("Workspace")
-    "openclaw-extra" -> nativeString("Extra")
+    "operator-bundled" -> if (skill.bundled) nativeString("Built-in") else nativeString("Bundled")
+    "operator-managed" -> nativeString("Installed")
+    "operator-workspace" -> nativeString("Workspace")
+    "operator-extra" -> nativeString("Extra")
     else -> nativeString("Skill")
   }
 

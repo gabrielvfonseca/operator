@@ -1,4 +1,4 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Signal tests cover retry behavior for reply session initialization conflicts.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SignalEventHandlerDeps } from "./event-handler.types.js";

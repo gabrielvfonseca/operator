@@ -1,11 +1,11 @@
 // Tlon plugin module implements channel behavior.
 import crypto from "node:crypto";
-import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/channel-contract";
-import type { ChannelOutboundAdapter } from "openclaw/plugin-sdk/channel-send-result";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelPlugin } from "openclaw/plugin-sdk/core";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { readResponseTextLimited } from "openclaw/plugin-sdk/provider-http";
+import type { ChannelAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { ChannelOutboundAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { readResponseTextLimited } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import { monitorTlonProvider } from "./monitor/index.js";
 import { tlonSetupWizard } from "./setup-surface.js";
 import {

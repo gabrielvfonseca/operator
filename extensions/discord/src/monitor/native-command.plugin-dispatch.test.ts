@@ -1,24 +1,24 @@
-// Discord tests cover native command.plugin dispatch plugin behavior.
-import { ChannelType } from "discord-api-types/v10";
-import type { NativeCommandSpec } from "openclaw/plugin-sdk/command-auth-native";
-import { resolveDirectStatusReplyForSession } from "openclaw/plugin-sdk/command-status-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { NativeCommandSpec } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import { resolveDirectStatusReplyForSession } from "@gabrielvfonseca/operator/plugin-sdk/command-status-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   clearPluginCommands,
   executePluginCommand,
   matchPluginCommand,
   registerPluginCommand,
-} from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import {
   createTestRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { dispatchReplyWithDispatcher } from "openclaw/plugin-sdk/reply-dispatch-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { dispatchReplyWithDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/reply-dispatch-runtime";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { getSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+// Discord tests cover native command.plugin dispatch plugin behavior.
+import { ChannelType } from "discord-api-types/v10";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineThrowingDiscordChannelGetter } from "../test-support/partial-channel.js";
 import { resolveDiscordNativeInteractionRouteState } from "./native-command-route.js";
@@ -563,7 +563,7 @@ describe("Discord native plugin command dispatch", () => {
   it("passes the configured binding agent to plugin-owned Discord command sessions", async () => {
     const cfg = createConfig();
     const interaction = createInteraction();
-    const pluginSessionKey = "plugin-binding:openclaw-codex-app-server:dm";
+    const pluginSessionKey = "plugin-binding:operator-codex-app-server:dm";
     nativeCommandRuntime.resolveDiscordNativeInteractionRouteState = async () => ({
       ...createConfiguredRouteState({
         sessionKey: pluginSessionKey,

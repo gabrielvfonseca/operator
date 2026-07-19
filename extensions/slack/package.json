@@ -1,10 +1,10 @@
 {
-  "name": "@operator/slack",
+  "name": "@gabrielvfonseca/slack",
   "version": "2026.7.2",
   "description": "Operator Slack channel plugin for channels, DMs, commands, and app events.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -17,18 +17,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -60,7 +60,7 @@
       }
     },
     "install": {
-      "npmSpec": "@operator/slack",
+      "npmSpec": "@gabrielvfonseca/slack",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.28",
       "allowInvalidConfigRecovery": true

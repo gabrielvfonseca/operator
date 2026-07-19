@@ -13,7 +13,7 @@ import { loadSettings } from "../../app/settings.ts";
 import { renderSettingsWorkspace } from "../../components/settings-workspace.ts";
 import { resolveSessionKey } from "../../lib/sessions/index.ts";
 import { uiSessionEventMatches } from "../../lib/sessions/session-key.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import {
   parseToolActivityEvent,
@@ -25,7 +25,7 @@ import { renderActivity } from "./view.ts";
 
 let activityClearBoundary: EventLogEntry | undefined;
 
-class ActivityPage extends OpenClawLightDomElement {
+class ActivityPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -247,4 +247,4 @@ class ActivityPage extends OpenClawLightDomElement {
   }
 }
 
-customElements.define("openclaw-activity-page", ActivityPage);
+customElements.define("operator-activity-page", ActivityPage);

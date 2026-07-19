@@ -1,9 +1,9 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { CliBackendPreparedExecution } from "openclaw/plugin-sdk/cli-backend";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import type { CliBackendPreparedExecution } from "@gabrielvfonseca/operator/plugin-sdk/cli-backend";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   GOOGLE_GEMINI_CLI_PROVIDER_ID,
   resolveGeminiCliProfileHome as resolveGeminiCliProfileHomePath,
@@ -279,7 +279,7 @@ async function prepareGeminiCliProfileHome(
   const settings = buildGeminiCliAuthSettings(selectedType);
   const systemSettings = await buildGeminiCliSystemSettings(ctx, selectedType);
   const systemSettingsDir = await fs.mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-gemini-cli-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-gemini-cli-"),
   );
   await fs.chmod(systemSettingsDir, 0o700);
   const systemSettingsPath = path.join(systemSettingsDir, "settings.json");

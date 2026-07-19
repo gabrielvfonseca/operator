@@ -44,8 +44,8 @@ describe.skipIf(process.platform === "win32")("shell snapshot subprocesses", () 
       return child;
     });
 
-    const home = tempDirs.make("openclaw-snapshot-spawn-home-");
-    const stateDir = tempDirs.make("openclaw-snapshot-spawn-state-");
+    const home = tempDirs.make("operator-snapshot-spawn-home-");
+    const stateDir = tempDirs.make("operator-snapshot-spawn-state-");
     setTestEnvValue("HOME", home);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
 

@@ -3,7 +3,7 @@
  * Kept for OpenAI/Codex provider-owned compatibility while prompt behavior
  * moves toward provider plugin ownership.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderSystemPromptContribution } from "./system-prompt-contribution.js";
 

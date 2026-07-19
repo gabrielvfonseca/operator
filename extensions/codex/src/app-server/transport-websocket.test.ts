@@ -76,7 +76,7 @@ describe("Codex app-server websocket transport", () => {
   });
 
   it("can speak JSON-RPC over the canonical unix control socket", async () => {
-    const tempDir = await mkdtemp(path.join(os.tmpdir(), "openclaw-codex-unix-"));
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "operator-codex-unix-"));
     tempDirs.push(tempDir);
     const socketPath = path.join(tempDir, "app-server.sock");
     const httpServer = http.createServer();

@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { monitorEventLoopDelay, performance } from "node:perf_hooks";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getActiveBackgroundExecSessionCount } from "../agents/bash-process-registry.js";
 import {
   getActiveEmbeddedRunCount,
@@ -472,12 +472,12 @@ function formatRuntimeGatewayAuthTokenWarning(): string {
   const base =
     "Gateway auth token was missing. Generated a runtime token for this startup without changing config; restart will generate a different token.";
   if (!isNixMode) {
-    return `${base} Persist one with \`operator config set gateway.auth.mode token\` and \`operator config set gateway.auth.token <token>\`.`;
+    return `${base} Persist one with \`openclaw config set gateway.auth.mode token\` and \`openclaw config set gateway.auth.token <token>\`.`;
   }
   return [
     base,
     "In Nix mode, set gateway.auth.token in your Nix-managed Operator config and rebuild.",
-    "For the first-party Nix flow, see https://github.com/operator/nix-operator#quick-start and https://docs.operator.ai/install/nix.",
+    "For the first-party Nix flow, see https://github.com/openclaw/nix-openclaw#quick-start and https://docs.operator.ai/install/nix.",
   ].join(" ");
 }
 

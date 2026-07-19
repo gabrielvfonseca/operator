@@ -2,12 +2,12 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { verifyChannelMessageAdapterCapabilityProofs } from "openclaw/plugin-sdk/channel-outbound";
+import { verifyChannelMessageAdapterCapabilityProofs } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   adaptMessagePresentationForChannel,
   renderMessagePresentationFallbackText,
   type MessagePresentation,
-} from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClawdbotConfig } from "../runtime-api.js";
 
@@ -342,7 +342,7 @@ describe("feishuOutbound.sendText local-image auto-convert", () => {
   });
 
   async function createTmpImage(ext = ".png"): Promise<{ dir: string; file: string }> {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-feishu-outbound-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-feishu-outbound-"));
     const file = path.join(dir, `sample${ext}`);
     await fs.writeFile(file, "image-data");
     return { dir, file };
@@ -510,7 +510,7 @@ describe("feishuOutbound.sendPayload native cards", () => {
   });
 
   async function createTmpImage(ext = ".png"): Promise<{ dir: string; file: string }> {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-feishu-payload-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-feishu-payload-"));
     const file = path.join(dir, `sample${ext}`);
     await fs.writeFile(file, "image-data");
     return { dir, file };

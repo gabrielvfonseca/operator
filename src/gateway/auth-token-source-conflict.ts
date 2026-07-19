@@ -1,6 +1,6 @@
 // Gateway auth-token source conflict detector.
 // Warns when local env auth can diverge from managed gateway config auth.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeSecretInputString, resolveSecretInputRef } from "../config/types.secrets.js";
 

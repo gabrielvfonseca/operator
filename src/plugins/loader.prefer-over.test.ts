@@ -10,7 +10,7 @@ import { resetPluginRuntimeStateForTest } from "./runtime.js";
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-prefer-over-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-prefer-over-"));
   if (process.platform !== "win32") {
     fs.chmodSync(dir, 0o755);
   }
@@ -31,7 +31,7 @@ function writeChannelToolPlugin(params: {
     fs.chmodSync(pluginDir, 0o755);
   }
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -107,7 +107,7 @@ describe("plugin loader preferOver activation", () => {
     const externalRoot = makeTempDir();
     const externalPluginDir = writeChannelToolPlugin({
       rootDir: externalRoot,
-      id: "openclaw-qqbot",
+      id: "operator-qqbot",
       channelId: "qqbot",
       preferOver: ["qqbot"],
     });
@@ -129,13 +129,13 @@ describe("plugin loader preferOver activation", () => {
       env,
     });
 
-    expect(autoEnabled.config.plugins?.entries?.["openclaw-qqbot"]?.enabled).toBe(true);
+    expect(autoEnabled.config.plugins?.entries?.["operator-qqbot"]?.enabled).toBe(true);
     expect(autoEnabled.config.plugins?.entries?.qqbot?.enabled).toBe(false);
-    expect(registry.plugins.find((plugin) => plugin.id === "openclaw-qqbot")?.status).toBe(
+    expect(registry.plugins.find((plugin) => plugin.id === "operator-qqbot")?.status).toBe(
       "loaded",
     );
     expect(registry.plugins.find((plugin) => plugin.id === "qqbot")?.status).toBe("disabled");
-    expect(registry.tools.map((tool) => tool.pluginId)).toEqual(["openclaw-qqbot"]);
+    expect(registry.tools.map((tool) => tool.pluginId)).toEqual(["operator-qqbot"]);
     expect(registry.diagnostics.map((diag) => diag.message).join("\n")).not.toContain(
       "plugin tool name conflict",
     );
@@ -152,7 +152,7 @@ describe("plugin loader preferOver activation", () => {
     const externalRoot = makeTempDir();
     const externalPluginDir = writeChannelToolPlugin({
       rootDir: externalRoot,
-      id: "openclaw-qqbot",
+      id: "operator-qqbot",
       channelId: "qqbot",
     });
     const env = {
@@ -168,7 +168,7 @@ describe("plugin loader preferOver activation", () => {
           load: { paths: [externalPluginDir] },
           entries: {
             qqbot: { enabled: true },
-            "openclaw-qqbot": { enabled: true },
+            "operator-qqbot": { enabled: true },
           },
         },
       },

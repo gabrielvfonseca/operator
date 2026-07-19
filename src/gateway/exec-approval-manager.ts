@@ -1,9 +1,9 @@
 // Gateway exec approval manager.
 // Tracks pending operator decisions and short-lived resolved approval records.
 import { randomUUID } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
-import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { buildApprovalPresentation } from "../infra/approval-presentation.js";
 import { buildApprovalResolutionRef } from "../infra/approval-resolution-ref.js";
 import type {
@@ -11,7 +11,7 @@ import type {
   ExecApprovalRequestPayload as InfraExecApprovalRequestPayload,
 } from "../infra/exec-approvals.js";
 import { resolveTimerTimeoutMs } from "../shared/number-coercion.js";
-import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
+import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
 import {
   consumeOperatorApprovalAllowOnce,
   forceDenyOperatorApproval,

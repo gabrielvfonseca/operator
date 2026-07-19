@@ -1,5 +1,5 @@
 // Setup plugin config helpers build plugin config from onboarding answers.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import type { PluginConfigUiHint } from "../plugins/types.js";
@@ -197,7 +197,7 @@ async function promptPluginFields(params: {
     const helpSuffix = hint.help ? ` — ${hint.help}` : "";
 
     // Skip sensitive fields — WizardPrompter has no masked input;
-    // direct users to operator config set or the Web UI instead.
+    // direct users to openclaw config set or the Web UI instead.
     if (hint.sensitive) {
       await prompter.note(
         t("wizard.plugins.sensitiveField", {

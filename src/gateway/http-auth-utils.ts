@@ -4,7 +4,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { getRuntimeConfig } from "../config/io.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { AuthRateLimiter } from "./auth-rate-limit.js";

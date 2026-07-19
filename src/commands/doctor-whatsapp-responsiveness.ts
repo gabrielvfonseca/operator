@@ -36,7 +36,7 @@ function isLocalTuiCommand(command: string): boolean {
   if (executable === "operator-tui") {
     return true;
   }
-  return executable === "operator" && LOCAL_TUI_SUBCOMMANDS.has(argv[1] ?? "");
+  return executable === "@gabrielvfonseca/operator" && LOCAL_TUI_SUBCOMMANDS.has(argv[1] ?? "");
 }
 
 function parsePsPidLine(line: string): LocalTuiProcess | null {
@@ -127,7 +127,7 @@ export function collectWhatsappResponsivenessHealthFindings(params: {
       target: pids,
       requirement: "local-tui-event-loop-pressure",
       fixHint: `Close local TUI sessions (${pids}), or run ${formatCliCommand(
-        "operator doctor --fix",
+        "openclaw doctor --fix",
       )}.`,
     },
   ];
@@ -232,7 +232,7 @@ export async function noteWhatsappResponsivenessHealth(params: {
       }
     } else {
       warnings.push(
-        `Fix: close those TUI sessions, or run ${formatCliCommand("operator doctor --fix")}.`,
+        `Fix: close those TUI sessions, or run ${formatCliCommand("openclaw doctor --fix")}.`,
       );
     }
   }

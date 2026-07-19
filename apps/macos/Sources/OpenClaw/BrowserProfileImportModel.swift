@@ -1,6 +1,6 @@
 import Foundation
 import Observation
-import OpenClawKit
+import OperatorKit
 
 struct BrowserSystemProfile: Codable, Equatable {
     let browser: String

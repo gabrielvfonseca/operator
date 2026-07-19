@@ -44,7 +44,7 @@ To force local GGUF embeddings, install the official llama.cpp provider
 plugin, then point `local.modelPath` at a GGUF file:
 
 ```bash
-openclaw plugins install @operator/llama-cpp-provider
+operator plugins install @gabrielvfonseca/llama-cpp-provider
 ```
 
 ```json5
@@ -65,36 +65,36 @@ openclaw plugins install @operator/llama-cpp-provider
 
 ## Supported embedding providers
 
-| Provider          | ID                  | Notes                               |
-| ----------------- | ------------------- | ----------------------------------- |
-| Bedrock           | `bedrock`           | Uses the AWS credential chain       |
-| DeepInfra         | `deepinfra`         | Default: `BAAI/bge-m3`              |
-| Gemini            | `gemini`            | Supports multimodal (image + audio) |
-| GitHub Copilot    | `github-copilot`    | Uses your Copilot subscription      |
-| LM Studio         | `lmstudio`          | Local/self-hosted                   |
-| Local             | `local`             | `@operator/llama-cpp-provider`      |
-| Mistral           | `mistral`           |                                     |
-| Ollama            | `ollama`            | Local/self-hosted                   |
-| OpenAI            | `openai`            | Default: `text-embedding-3-small`   |
-| OpenAI-compatible | `openai-compatible` | Generic `/v1/embeddings` endpoint   |
-| Voyage            | `voyage`            |                                     |
+| Provider          | ID                  | Notes                                 |
+| ----------------- | ------------------- | ------------------------------------- |
+| Bedrock           | `bedrock`           | Uses the AWS credential chain         |
+| DeepInfra         | `deepinfra`         | Default: `BAAI/bge-m3`                |
+| Gemini            | `gemini`            | Supports multimodal (image + audio)   |
+| GitHub Copilot    | `github-copilot`    | Uses your Copilot subscription        |
+| LM Studio         | `lmstudio`          | Local/self-hosted                     |
+| Local             | `local`             | `@gabrielvfonseca/llama-cpp-provider` |
+| Mistral           | `mistral`           |                                       |
+| Ollama            | `ollama`            | Local/self-hosted                     |
+| OpenAI            | `openai`            | Default: `text-embedding-3-small`     |
+| OpenAI-compatible | `openai-compatible` | Generic `/v1/embeddings` endpoint     |
+| Voyage            | `voyage`            |                                       |
 
 Set `memorySearch.provider` to switch away from OpenAI.
 
 ## How indexing works
 
-OpenClaw indexes `MEMORY.md` and `memory/*.md` into chunks (400 tokens with
+Operator indexes `MEMORY.md` and `memory/*.md` into chunks (400 tokens with
 80-token overlap by default) and stores them in a per-agent SQLite database.
 
 - **Index location:** the owning agent database at
-  `~/.openclaw/agents/<agentId>/agent/openclaw-agent.sqlite`
+  `~/.operator/agents/<agentId>/agent/operator-agent.sqlite`
 - **Storage maintenance:** SQLite WAL sidecars are bounded with periodic and
   shutdown checkpoints.
 - **File watching:** changes to memory files trigger a debounced reindex
   (1.5s default).
 - **Auto-reindex:** the index rebuilds automatically when the embedding
   provider, model, chunking config, configured sources, or scope change.
-- **Reindex on demand:** `openclaw memory index --force`
+- **Reindex on demand:** `operator memory index --force`
 
 <Info>
 You can also index Markdown files outside the workspace with
@@ -119,24 +119,24 @@ with automatic user modeling.
 
 ## Troubleshooting
 
-**Memory search disabled?** Check `openclaw memory status`. If no provider is
+**Memory search disabled?** Check `operator memory status`. If no provider is
 detected, set one explicitly or add an API key.
 
 **Local provider not detected?** Confirm the local path exists and run:
 
 ```bash
-openclaw memory status --deep --agent main
-openclaw memory index --force --agent main
+operator memory status --deep --agent main
+operator memory index --force --agent main
 ```
 
 Both standalone CLI commands and the Gateway use the same `local` provider id.
 Set `memorySearch.provider: "local"` when you want local embeddings.
 
-**Stale results?** Run `openclaw memory index --force` to rebuild. The watcher
+**Stale results?** Run `operator memory index --force` to rebuild. The watcher
 may miss changes in rare edge cases.
 
-**sqlite-vec not loading?** OpenClaw falls back to in-process cosine
-similarity automatically. `openclaw memory status --deep` reports the local
+**sqlite-vec not loading?** Operator falls back to in-process cosine
+similarity automatically. `operator memory status --deep` reports the local
 vector store separately from the embedding provider, so `Vector store:
 unavailable` points at sqlite-vec loading while `Embeddings: unavailable`
 points at provider/auth or model readiness. Check logs for the specific load

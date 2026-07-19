@@ -1,5 +1,5 @@
 // Talk session controller coordinates voice session state and output activity.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   createTalkEventSequencer,
   type TalkBrain,

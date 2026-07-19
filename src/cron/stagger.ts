@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Resolves deterministic cron stagger windows for recurring schedules. */
 import { parseStrictNonNegativeInteger } from "../infra/parse-finite-number.js";
 import type { CronSchedule } from "./types.js";

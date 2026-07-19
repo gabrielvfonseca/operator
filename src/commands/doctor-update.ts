@@ -1,7 +1,7 @@
 /** Optional pre-doctor update prompt for source checkouts and package installs. */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { createUpdateProgress } from "../cli/update-cli/progress.js";
@@ -208,7 +208,7 @@ export async function maybeOfferUpdateBeforeDoctor(params: {
     note(
       [
         "This install is not a git checkout.",
-        `Run \`${formatCliCommand("operator update")}\` to update via your package manager (npm/pnpm), then rerun doctor.`,
+        `Run \`${formatCliCommand("openclaw update")}\` to update via your package manager (npm/pnpm), then rerun doctor.`,
       ].join("\n"),
       "Update",
     );

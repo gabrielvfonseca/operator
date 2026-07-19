@@ -8,7 +8,7 @@ PRs, issues, ClawSweeper reports, and advisories as supporting context.
 ## Boundaries
 
 - Read `docs/reference/RELEASING.md`,
-  `scripts/openclaw-npm-extended-stable-release.mjs`, and the relevant release
+  `scripts/operator-npm-extended-stable-release.mjs`, and the relevant release
   workflows from a pinned current `origin/main` before resolving the line.
 - Target npm `extended-stable` and the canonical
   `extended-stable/YYYY.M.33` branch. The user-facing `extended-stable` update
@@ -29,10 +29,10 @@ PRs, issues, ClawSweeper reports, and advisories as supporting context.
   require new config, migrations, APIs, protocols, dependencies, runtime
   requirements, or operator action.
 - Read `SECURITY.md` and use `$security-triage` for security candidates. Route
-  unpublished advisory work through `$openclaw-ghsa-maintainer`; never expose
+  unpublished advisory work through `$operator-ghsa-maintainer`; never expose
   private details before the security owner authorizes disclosure.
-- Use `$openclaw-testing` for proof selection, `$autoreview` before handoff,
-  and `$openclaw-pr-maintainer` for GitHub operations.
+- Use `$operator-testing` for proof selection, `$autoreview` before handoff,
+  and `$operator-pr-maintainer` for GitHub operations.
 
 ## Resolve the Active Line
 
@@ -69,7 +69,7 @@ Use an isolated npm config for unauthenticated registry reads:
 ```bash
 npm_userconfig=$(mktemp)
 trap 'rm -f "$npm_userconfig"' EXIT
-dist_tags=$(npm view openclaw dist-tags --json --userconfig "$npm_userconfig")
+dist_tags=$(npm view operator dist-tags --json --userconfig "$npm_userconfig")
 published_version=$(printf '%s' "$dist_tags" | jq -r '."extended-stable" // empty')
 if [[ -n "$published_version" ]]; then
   npm view "openclaw@${published_version}" version \
@@ -159,7 +159,7 @@ exclude a commit because its title lacks `fix:` or it has no PR.
 ## Reconcile Private Security Work
 
 Before calling the release set complete, use `$security-triage` and
-`$openclaw-ghsa-maintainer` to:
+`$operator-ghsa-maintainer` to:
 
 1. enumerate authorized open/draft advisories and private-fork fix state;
 2. determine privately whether each item affects a published npm package in the

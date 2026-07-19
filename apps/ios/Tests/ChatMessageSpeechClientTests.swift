@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite("Chat message speech client")
 struct ChatMessageSpeechClientTests {
@@ -32,7 +32,7 @@ struct ChatMessageSpeechClientTests {
         #expect(requestedMethod == "tts.speak")
         #expect(requestedParams?.text == "Read this")
         #expect(requestedTimeout == 60)
-        #expect(clip == OpenClawChatSpeechClip(
+        #expect(clip == OperatorChatSpeechClip(
             data: expectedAudio,
             outputFormat: "mp3",
             mimeType: "audio/mpeg",

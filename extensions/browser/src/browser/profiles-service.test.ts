@@ -1,7 +1,7 @@
 // Browser tests cover profiles service plugin behavior.
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test-support.js";
 import { getRuntimeConfig } from "../config/config.js";
@@ -39,17 +39,17 @@ const configMocks = vi.hoisted(() => ({
       const draft = structuredClone(currentConfig);
       const result = await params.mutate(draft, {
         snapshot: {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           runtimeConfig: currentConfig,
           sourceConfig: currentConfig,
         },
       });
       await configMocks.writeConfigFile(draft);
       return {
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: "test-hash",
         persistedHash: "test-hash",
-        snapshot: { path: "/tmp/openclaw.json" },
+        snapshot: { path: "/tmp/operator.json" },
         nextConfig: draft,
         result,
         attempts: 1,
@@ -94,7 +94,7 @@ vi.mock("./pw-ai-module.js", () => ({
 }));
 
 vi.mock("./chrome.js", () => ({
-  resolveOperatorUserDataDir: vi.fn(() => "/tmp/openclaw-test/openclaw/user-data"),
+  resolveOperatorUserDataDir: vi.fn(() => "/tmp/operator-test/openclaw/user-data"),
   stopOperatorChrome: lifecycleMocks.stopOperatorChrome,
 }));
 
@@ -162,7 +162,7 @@ describe("BrowserProfilesService", () => {
     lifecycleMocks.stopOperatorChrome.mockReset().mockResolvedValue(undefined);
     vi.mocked(resolveOperatorUserDataDir)
       .mockReset()
-      .mockReturnValue("/tmp/openclaw-test/openclaw/user-data");
+      .mockReturnValue("/tmp/operator-test/openclaw/user-data");
     vi.mocked(movePathToTrash)
       .mockReset()
       .mockImplementation(async (targetPath) => targetPath);
@@ -202,7 +202,7 @@ describe("BrowserProfilesService", () => {
       const createdProfile = expectDefined(createdProfiles[profileName], "created browser profile");
       vi.mocked(getRuntimeConfig).mockReturnValue({
         browser: {
-          defaultProfile: "openclaw",
+          defaultProfile: "@gabrielvfonseca/operator",
           profiles: { [profileName]: createdProfile },
         },
       });
@@ -486,7 +486,7 @@ describe("BrowserProfilesService", () => {
     const { ctx, state } = createCtx(resolved);
     vi.mocked(getRuntimeConfig).mockReturnValue({ browser: { profiles: {} } });
 
-    const tempDir = tempDirs.make("openclaw-profile-");
+    const tempDir = tempDirs.make("operator-profile-");
     const userDataDir = path.join(tempDir, "BraveSoftware", "Brave-Browser");
     fs.mkdirSync(userDataDir, { recursive: true });
 
@@ -511,7 +511,7 @@ describe("BrowserProfilesService", () => {
     const { ctx } = createCtx(resolved);
     vi.mocked(getRuntimeConfig).mockReturnValue({ browser: { profiles: {} } });
 
-    const tempDir = tempDirs.make("openclaw-profile-");
+    const tempDir = tempDirs.make("operator-profile-");
     const userDataDir = path.join(tempDir, "BraveSoftware", "Brave-Browser");
     fs.mkdirSync(userDataDir, { recursive: true });
 
@@ -535,9 +535,9 @@ describe("BrowserProfilesService", () => {
 
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           remote: { cdpUrl: "http://10.0.0.42:9222", color: "#0066CC" },
         },
       },
@@ -562,9 +562,9 @@ describe("BrowserProfilesService", () => {
     vi.mocked(getRuntimeConfig)
       .mockReturnValueOnce({
         browser: {
-          defaultProfile: "openclaw",
+          defaultProfile: "@gabrielvfonseca/operator",
           profiles: {
-            openclaw: { cdpPort: 18800, color: "#FF4500" },
+            operator: { cdpPort: 18800, color: "#FF4500" },
             work: { cdpUrl: "http://10.0.0.42:9222", color: "#0066CC" },
           },
         },
@@ -573,7 +573,7 @@ describe("BrowserProfilesService", () => {
         browser: {
           defaultProfile: "work",
           profiles: {
-            openclaw: { cdpPort: 18800, color: "#FF4500" },
+            operator: { cdpPort: 18800, color: "#FF4500" },
             work: { cdpUrl: "http://10.0.0.42:9222", color: "#0066CC" },
           },
         },
@@ -601,15 +601,15 @@ describe("BrowserProfilesService", () => {
 
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: { cdpPort: 18801, color: "#0066CC" },
         },
       },
     });
 
-    const tempDir = tempDirs.make("openclaw-profile-");
+    const tempDir = tempDirs.make("operator-profile-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(path.dirname(userDataDir), { recursive: true });
     vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
@@ -628,14 +628,14 @@ describe("BrowserProfilesService", () => {
     const { ctx, state } = createCtx(resolved);
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: { cdpPort: 18801, color: "#0066CC" },
         },
       },
     });
-    const tempDir = tempDirs.make("openclaw-trash-failure-");
+    const tempDir = tempDirs.make("operator-trash-failure-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(path.dirname(userDataDir), { recursive: true });
     vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
@@ -657,7 +657,7 @@ describe("BrowserProfilesService", () => {
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: { cdpPort: 18801, color: "#0066CC" },
         },
       },
@@ -667,7 +667,7 @@ describe("BrowserProfilesService", () => {
       throw new Error("Expected work profile");
     }
     const runtime = getOrCreateProfileRuntime(state, profile);
-    const tempDir = tempDirs.make("openclaw-delete-race-");
+    const tempDir = tempDirs.make("operator-delete-race-");
     const userDataDir = path.join(tempDir, "work", "user-data");
     fs.mkdirSync(userDataDir, { recursive: true });
     vi.mocked(resolveOperatorUserDataDir).mockReturnValue(userDataDir);
@@ -723,7 +723,7 @@ describe("BrowserProfilesService", () => {
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: { cdpPort: 18801, color: "#0066CC" },
         },
       },
@@ -769,9 +769,9 @@ describe("BrowserProfilesService", () => {
 
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           "chrome-live": {
             cdpPort: 18801,
             color: "#0066CC",
@@ -802,13 +802,13 @@ describe("BrowserProfilesService", () => {
     const { ctx } = createCtx(resolved);
     vi.mocked(getRuntimeConfig).mockReturnValue({
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: {
             cdpPort: 18801,
             color: "#0066CC",
-            driver: "openclaw",
+            driver: "@gabrielvfonseca/operator",
             attachOnly: true,
           },
         },
@@ -826,9 +826,9 @@ describe("BrowserProfilesService", () => {
     const originalProfile = { cdpPort: 18801, color: "#0066CC" };
     let currentConfig: OperatorConfig = {
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: originalProfile,
         },
       },
@@ -863,9 +863,9 @@ describe("BrowserProfilesService", () => {
     );
     currentConfig = {
       browser: {
-        defaultProfile: "openclaw",
+        defaultProfile: "@gabrielvfonseca/operator",
         profiles: {
-          openclaw: { cdpPort: 18800, color: "#FF4500" },
+          operator: { cdpPort: 18800, color: "#FF4500" },
           work: { cdpPort: 18802, color: "#00AA00" },
         },
       },

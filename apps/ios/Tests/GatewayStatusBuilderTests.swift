@@ -1,6 +1,6 @@
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct GatewayStatusBuilderTests {
     @Test func `paused problem keeps error status`() {

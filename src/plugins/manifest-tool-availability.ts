@@ -1,6 +1,6 @@
 // Normalizes tool availability metadata from plugin manifests.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { coerceSecretRef, type SecretRef } from "../config/types.secrets.js";
 import { resolveDefaultSecretProviderAlias } from "../secrets/ref-contract.js";

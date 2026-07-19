@@ -387,7 +387,7 @@ describe("openclaw agent database", () => {
         agentId: "Worker-1",
         env: { OPERATOR_STATE_DIR: stateDir },
       }),
-    ).toBe(path.join(stateDir, "agents", "worker-1", "agent", "openclaw-agent.sqlite"));
+    ).toBe(path.join(stateDir, "agents", "worker-1", "agent", "operator-agent.sqlite"));
   });
 
   it("keeps test default state under a worker-sharded temp directory", () => {
@@ -402,12 +402,12 @@ describe("openclaw agent database", () => {
     ).toBe(
       path.join(
         os.tmpdir(),
-        "operator-test-state",
+        "openclaw-test-state",
         `${process.pid}-7`,
         "agents",
         "main",
         "agent",
-        "openclaw-agent.sqlite",
+        "operator-agent.sqlite",
       ),
     );
   });
@@ -415,7 +415,7 @@ describe("openclaw agent database", () => {
   it("lists a missing registry without creating the shared state database", () => {
     const stateDir = createTempStateDir();
     const env = { OPERATOR_STATE_DIR: stateDir };
-    const stateDatabasePath = path.join(stateDir, "state", "openclaw.sqlite");
+    const stateDatabasePath = path.join(stateDir, "state", "operator.sqlite");
 
     expect(listOperatorRegisteredAgentDatabases({ env })).toEqual([]);
     expect(fs.existsSync(stateDatabasePath)).toBe(false);
@@ -476,7 +476,7 @@ describe("openclaw agent database", () => {
     ).toThrow();
     expect(database.agentId).toBe("worker-1");
     expect(database.path).toBe(
-      path.join(stateDir, "agents", "worker-1", "agent", "openclaw-agent.sqlite"),
+      path.join(stateDir, "agents", "worker-1", "agent", "operator-agent.sqlite"),
     );
 
     const registered = listOperatorRegisteredAgentDatabases({
@@ -601,7 +601,7 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     seedVersion1MemoryAgentDatabase(databasePath);
 
@@ -665,13 +665,13 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     seedVersion1MemoryAgentDatabase(databasePath, { malformedPathFts: true });
 
     expect(() => openOperatorAgentDatabase({ agentId: "worker-1", env })).toThrow();
 
-    const stateDatabasePath = path.join(stateDir, "state", "openclaw.sqlite");
+    const stateDatabasePath = path.join(stateDir, "state", "operator.sqlite");
     expect(fs.existsSync(stateDatabasePath)).toBe(false);
     const { DatabaseSync } = requireNodeSqlite();
     const db = new DatabaseSync(databasePath);
@@ -787,7 +787,7 @@ describe("openclaw agent database", () => {
   it("rejects the legacy agent registry primary key with a doctor repair hint", () => {
     const stateDir = createTempStateDir();
     const env = { OPERATOR_STATE_DIR: stateDir };
-    const stateDatabasePath = path.join(stateDir, "state", "openclaw.sqlite");
+    const stateDatabasePath = path.join(stateDir, "state", "operator.sqlite");
     fs.mkdirSync(path.dirname(stateDatabasePath), { recursive: true });
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(stateDatabasePath);
@@ -807,7 +807,7 @@ describe("openclaw agent database", () => {
         size_bytes
       ) VALUES (
         'worker-1',
-        '/legacy/worker-1/openclaw-agent.sqlite',
+        '/legacy/worker-1/operator-agent.sqlite',
         1,
         10,
         20
@@ -1090,7 +1090,7 @@ describe("openclaw agent database", () => {
       } finally {
         db.close();
       }
-      expect(fs.existsSync(path.join(stateDir, "state", "openclaw.sqlite"))).toBe(false);
+      expect(fs.existsSync(path.join(stateDir, "state", "operator.sqlite"))).toBe(false);
       expect(
         listOperatorRegisteredAgentDatabases({ env: { OPERATOR_STATE_DIR: stateDir } }),
       ).toEqual([]);
@@ -1110,7 +1110,7 @@ describe("openclaw agent database", () => {
   it("rejects explicit paths that point at the global state database", () => {
     const stateDir = createTempStateDir();
     const env = { OPERATOR_STATE_DIR: stateDir };
-    const databasePath = path.join(stateDir, "state", "openclaw.sqlite");
+    const databasePath = path.join(stateDir, "state", "operator.sqlite");
     const stateDatabase = openOperatorStateDatabase({
       env,
       path: databasePath,
@@ -1362,7 +1362,7 @@ describe("openclaw agent database", () => {
       expect(
         after
           .prepare(
-            "SELECT name FROM sqlite_schema WHERE type = 'index' AND name LIKE 'openclaw_probe_%'",
+            "SELECT name FROM sqlite_schema WHERE type = 'index' AND name LIKE 'operator_probe_%'",
           )
           .all(),
       ).toEqual([]);
@@ -1398,7 +1398,7 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const currentSchema = fs.readFileSync(
@@ -1505,7 +1505,7 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const currentSchema = fs.readFileSync(
@@ -1582,7 +1582,7 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const { DatabaseSync } = requireNodeSqlite();
@@ -1887,7 +1887,7 @@ describe("openclaw agent database", () => {
       "agents",
       "worker-1",
       "agent",
-      "openclaw-agent.sqlite",
+      "operator-agent.sqlite",
     );
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const { DatabaseSync } = requireNodeSqlite();

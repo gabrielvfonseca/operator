@@ -1,6 +1,6 @@
 // Exec approval gateway methods create, list, inspect, and resolve command
 // approval requests, including iOS push delivery and requester visibility.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { GATEWAY_CLIENT_IDS } from "../../../packages/gateway-protocol/src/client-info.js";
 import {
   ErrorCodes,

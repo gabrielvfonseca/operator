@@ -3,7 +3,7 @@
  *
  * Merges allowlists, applies mutable identifier policy, and redacts access-graph facts.
  */
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type {
   ChannelIngressPolicyInput,
   ChannelIngressState,

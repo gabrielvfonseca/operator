@@ -4,11 +4,11 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type {
   WhatsAppQaDriverObservedMessage,
   WhatsAppQaDriverSession,
-} from "@operator/whatsapp/api.js";
+} from "@gabrielvfonseca/whatsapp/api.js";
 import { describe, expect, it, vi } from "vitest";
 import { fingerprintQaCredentialId } from "../../qa-credentials-fingerprint.runtime.js";
 import { resolveWhatsAppQaScenarioIds } from "./scenario-selection.js";
@@ -104,7 +104,7 @@ type WhatsAppQaConfigParams = Parameters<typeof testing.buildWhatsAppQaConfig>[1
 function createWhatsAppScenarioContext(
   overrides: Partial<WhatsAppScenarioContext> = {},
 ): WhatsAppScenarioContext {
-  const workspaceDir = overrides.gatewayWorkspaceDir ?? "/tmp/openclaw-whatsapp-qa";
+  const workspaceDir = overrides.gatewayWorkspaceDir ?? "/tmp/operator-whatsapp-qa";
   return {
     driver: createWhatsAppQaDriverMock(),
     driverPhoneE164: "+15550000001",
@@ -137,7 +137,7 @@ function buildWhatsAppQaConfigFixture(
 ) {
   return testing.buildWhatsAppQaConfig(base, {
     allowFrom: ["+15550000001"],
-    authDir: "/tmp/openclaw-whatsapp-qa-auth",
+    authDir: "/tmp/operator-whatsapp-qa-auth",
     dmPolicy: "allowlist",
     sutAccountId: "sut",
     ...options,
@@ -231,7 +231,7 @@ describe("WhatsApp QA live runtime", () => {
   });
 
   it("unpacks auth archives into a caller-provided temp directory", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-wa-qa-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-wa-qa-test-"));
     try {
       const archiveBase64 = await createTgz({
         root: tempRoot,
@@ -255,7 +255,7 @@ describe("WhatsApp QA live runtime", () => {
   });
 
   it("can remove copied Signal sessions while preserving other auth archive state", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-wa-qa-test-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-wa-qa-test-"));
     try {
       const archiveBase64 = await createTgz({
         root: tempRoot,
@@ -361,7 +361,7 @@ describe("WhatsApp QA live runtime", () => {
     });
     const context = createWhatsAppScenarioContext({
       driver,
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       recordObservedMessage: (message: unknown) => {
         recordedMessages.push(message);
       },
@@ -593,10 +593,10 @@ describe("WhatsApp QA live runtime", () => {
           return {};
         },
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+        workspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       },
       gatewayTarget: groupJid,
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       scenarioId: "whatsapp-group-outbound-media",
       scenarioTitle: mediaScenario.title,
       target: groupJid,
@@ -685,9 +685,9 @@ describe("WhatsApp QA live runtime", () => {
           return {};
         },
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+        workspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       },
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       scenarioId: scenario.id,
       scenarioTitle: scenario.title,
       sent: { messageId: "driver-message-1" },
@@ -729,7 +729,7 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa",
+        workspaceDir: "/tmp/operator-whatsapp-qa",
       },
       scenarioId: "whatsapp-reply-to-mode-batched",
       scenarioTitle: scenario.title,
@@ -785,7 +785,7 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa",
+        workspaceDir: "/tmp/operator-whatsapp-qa",
       },
       recordObservedMessage: (message) => {
         observed.push(message);
@@ -834,7 +834,7 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa",
+        workspaceDir: "/tmp/operator-whatsapp-qa",
       },
       recordObservedMessage: (message) => {
         recorded.push(message);
@@ -892,7 +892,7 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa",
+        workspaceDir: "/tmp/operator-whatsapp-qa",
       },
       recordObservedMessage: (message) => {
         recorded.push(message);
@@ -1170,7 +1170,7 @@ describe("WhatsApp QA live runtime", () => {
     const context = createWhatsAppScenarioContext({
       driver,
       gatewayTarget: groupJid,
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-workspace",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-workspace",
       scenarioId: scenario.id,
       scenarioTitle: scenario.title,
       sent: { messageId: "activation-command-message" },
@@ -1267,7 +1267,7 @@ describe("WhatsApp QA live runtime", () => {
         createWhatsAppScenarioContext({
           driver,
           gatewayTarget: groupJid,
-          gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-workspace",
+          gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-workspace",
           scenarioId: scenario.id,
           scenarioTitle: scenario.title,
           sent: { messageId: "activation-command-message" },
@@ -1359,7 +1359,7 @@ describe("WhatsApp QA live runtime", () => {
       createWhatsAppScenarioContext({
         driver,
         gatewayTarget: groupJid,
-        gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-workspace",
+        gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-workspace",
         scenarioId: scenario.id,
         scenarioTitle: scenario.title,
         sent: { messageId: "driver-seed-message" },
@@ -1530,9 +1530,9 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+        workspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       },
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       recordObservedMessage: (message: unknown) => {
         recorded.push(message);
       },
@@ -1571,10 +1571,10 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+        workspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       },
       gatewayTarget: "120363000000000000@g.us",
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       recordObservedMessage: (message: unknown) => {
         recorded.push(message);
       },
@@ -1668,9 +1668,9 @@ describe("WhatsApp QA live runtime", () => {
       gateway: {
         call: async () => ({}),
         restart: async () => {},
-        workspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+        workspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       },
-      gatewayWorkspaceDir: "/tmp/openclaw-whatsapp-qa-gateway",
+      gatewayWorkspaceDir: "/tmp/operator-whatsapp-qa-gateway",
       requestStartedAt: new Date("2026-06-05T01:00:00.000Z"),
       scenarioId: "whatsapp-reply-delivery-shape",
       scenarioTitle: "WhatsApp gateway send chunks long replies",

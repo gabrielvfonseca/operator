@@ -1,7 +1,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { assertAgentRunLifecycleGenerationCurrent } from "../../infra/agent-events.js";

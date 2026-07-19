@@ -5,8 +5,8 @@
   "entries": [
     {
       "id": "native.android.85cc8de945e3929c",
-      "source": "OpenClaw translations · $languageTag",
-      "translated": "Bản dịch OpenClaw · $languageTag"
+      "source": "Operator translations · $languageTag",
+      "translated": "Bản dịch Operator · $languageTag"
     },
     {
       "id": "native.android.914725056e04bd7a",
@@ -360,13 +360,13 @@
     },
     {
       "id": "native.android.25ce6f89dd2fda90",
-      "source": "OpenClaw Node · Talk",
-      "translated": "OpenClaw Node · Trò chuyện"
+      "source": "Operator Node · Talk",
+      "translated": "Operator Node · Trò chuyện"
     },
     {
       "id": "native.android.b48f7aeb7a884942",
-      "source": "OpenClaw Node · Connected",
-      "translated": "OpenClaw Node · Đã kết nối"
+      "source": "Operator Node · Connected",
+      "translated": "Operator Node · Đã kết nối"
     },
     {
       "id": "native.android.b781a577d8da896d",
@@ -375,8 +375,8 @@
     },
     {
       "id": "native.android.97365bea9725ae80",
-      "source": "OpenClaw Node",
-      "translated": "Nút OpenClaw"
+      "source": "Operator Node",
+      "translated": "Nút Operator"
     },
     {
       "id": "native.android.3e0889d921c92cab",
@@ -395,8 +395,8 @@
     },
     {
       "id": "native.android.f4886ad80e8149cf",
-      "source": "OpenClaw node connection status",
-      "translated": "Trạng thái kết nối của OpenClaw node"
+      "source": "Operator node connection status",
+      "translated": "Trạng thái kết nối của Operator node"
     },
     {
       "id": "native.android.20fb810920ccb98c",
@@ -905,8 +905,8 @@
     },
     {
       "id": "native.android.3b076d12026fd953",
-      "source": "OpenClaw is syncing back up",
-      "translated": "OpenClaw đang đồng bộ hóa lại"
+      "source": "Operator is syncing back up",
+      "translated": "Operator đang đồng bộ hóa lại"
     },
     {
       "id": "native.android.8dd8abf489f1fe50",
@@ -925,8 +925,8 @@
     },
     {
       "id": "native.android.8e22550e0205b237",
-      "source": "Welcome to OpenClaw",
-      "translated": "Chào mừng bạn đến với OpenClaw"
+      "source": "Welcome to Operator",
+      "translated": "Chào mừng bạn đến với Operator"
     },
     {
       "id": "native.android.fee881b8134958ab",
@@ -1005,8 +1005,8 @@
     },
     {
       "id": "native.android.237761be968be3f4",
-      "source": "OpenClaw needs ${labels.joinToString(\", \")} permissions to continue.",
-      "translated": "OpenClaw cần quyền ${labels.joinToString(\", \")} để tiếp tục."
+      "source": "Operator needs ${labels.joinToString(\", \")} permissions to continue.",
+      "translated": "Operator cần quyền ${labels.joinToString(\", \")} để tiếp tục."
     },
     {
       "id": "native.android.f9b9d558dc078d96",
@@ -1175,18 +1175,18 @@
     },
     {
       "id": "native.android.c9b3801fdf5499a9",
-      "source": "OpenClaw Passive",
-      "translated": "OpenClaw Thụ động"
+      "source": "Operator Passive",
+      "translated": "Operator Thụ động"
     },
     {
       "id": "native.android.e2a79a2c3ddba922",
-      "source": "OpenClaw Time Sensitive",
-      "translated": "OpenClaw Nhạy cảm về thời gian"
+      "source": "Operator Time Sensitive",
+      "translated": "Operator Nhạy cảm về thời gian"
     },
     {
       "id": "native.android.a79d6ccab877c9ca",
-      "source": "OpenClaw Active",
-      "translated": "OpenClaw Hoạt động"
+      "source": "Operator Active",
+      "translated": "Operator Hoạt động"
     },
     {
       "id": "native.android.356609f717b92350",
@@ -1405,8 +1405,8 @@
     },
     {
       "id": "native.android.5ce94621017855b6",
-      "source": "Talk or dictate with OpenClaw",
-      "translated": "Trò chuyện hoặc đọc chính tả với OpenClaw"
+      "source": "Talk or dictate with Operator",
+      "translated": "Trò chuyện hoặc đọc chính tả với Operator"
     },
     {
       "id": "native.android.5876e15e5e92fd45",
@@ -1450,8 +1450,8 @@
     },
     {
       "id": "native.android.9f877120690b0c59",
-      "source": "Search OpenClaw",
-      "translated": "Tìm kiếm OpenClaw"
+      "source": "Search Operator",
+      "translated": "Tìm kiếm Operator"
     },
     {
       "id": "native.android.c142846e7b88306c",
@@ -1490,8 +1490,8 @@
     },
     {
       "id": "native.android.8f8384286317f5c9",
-      "source": "OpenClaw session",
-      "translated": "Phiên OpenClaw"
+      "source": "Operator session",
+      "translated": "Phiên Operator"
     },
     {
       "id": "native.android.15799e57704b20c6",
@@ -2565,18 +2565,18 @@
     },
     {
       "id": "native.android.1556c7b90c4a24ff",
-      "source": "Enter the setup code from openclaw qr.",
-      "translated": "Nhập mã thiết lập từ openclaw qr."
+      "source": "Enter the setup code from operator qr.",
+      "translated": "Nhập mã thiết lập từ operator qr."
     },
     {
       "id": "native.android.c6d2aa9f033cecc8",
-      "source": "Setup code was not accepted. Generate a fresh code with openclaw qr.",
-      "translated": "Mã thiết lập không được chấp nhận. Hãy tạo mã mới bằng openclaw qr."
+      "source": "Setup code was not accepted. Generate a fresh code with operator qr.",
+      "translated": "Mã thiết lập không được chấp nhận. Hãy tạo mã mới bằng operator qr."
     },
     {
       "id": "native.android.3c50060d3efc154d",
-      "source": "That QR code is not an OpenClaw setup QR. Generate a fresh code with openclaw qr, then try again.",
-      "translated": "Mã QR đó không phải là mã QR thiết lập OpenClaw. Hãy tạo mã mới bằng openclaw qr rồi thử lại."
+      "source": "That QR code is not an Operator setup QR. Generate a fresh code with operator qr, then try again.",
+      "translated": "Mã QR đó không phải là mã QR thiết lập Operator. Hãy tạo mã mới bằng operator qr rồi thử lại."
     },
     {
       "id": "native.android.f8cd1cbe29c4c582",
@@ -2585,13 +2585,13 @@
     },
     {
       "id": "native.android.63ed21b4888ba5d3",
-      "source": "Could not read that image. Choose a clear screenshot or image of the QR from openclaw qr.",
-      "translated": "Không thể đọc hình ảnh đó. Hãy chọn ảnh chụp màn hình rõ nét hoặc hình ảnh mã QR từ openclaw qr."
+      "source": "Could not read that image. Choose a clear screenshot or image of the QR from operator qr.",
+      "translated": "Không thể đọc hình ảnh đó. Hãy chọn ảnh chụp màn hình rõ nét hoặc hình ảnh mã QR từ operator qr."
     },
     {
       "id": "native.android.61beaad5c5279eb9",
-      "source": "No setup QR code was found in that image. Choose the QR generated by openclaw qr, or enter the setup code manually.",
-      "translated": "Không tìm thấy mã QR thiết lập trong hình ảnh đó. Hãy chọn mã QR do openclaw qr tạo hoặc nhập mã thiết lập theo cách thủ công."
+      "source": "No setup QR code was found in that image. Choose the QR generated by operator qr, or enter the setup code manually.",
+      "translated": "Không tìm thấy mã QR thiết lập trong hình ảnh đó. Hãy chọn mã QR do operator qr tạo hoặc nhập mã thiết lập theo cách thủ công."
     },
     {
       "id": "native.android.4c4912a456b4213a",
@@ -2615,18 +2615,18 @@
     },
     {
       "id": "native.android.64c8db13ef91513c",
-      "source": "Welcome to OpenClaw",
-      "translated": "Chào mừng đến với OpenClaw"
+      "source": "Welcome to Operator",
+      "translated": "Chào mừng đến với Operator"
     },
     {
       "id": "native.android.c38e106cc8f1e9ff",
-      "source": "Turn this device into a secure OpenClaw node for chat, voice, camera, and device tools.",
-      "translated": "Biến thiết bị này thành một nút OpenClaw an toàn cho trò chuyện, thoại, camera và công cụ thiết bị."
+      "source": "Turn this device into a secure Operator node for chat, voice, camera, and device tools.",
+      "translated": "Biến thiết bị này thành một nút Operator an toàn cho trò chuyện, thoại, camera và công cụ thiết bị."
     },
     {
       "id": "native.android.f941909a3fa51055",
-      "source": "OpenClaw logo",
-      "translated": "Logo OpenClaw"
+      "source": "Operator logo",
+      "translated": "Logo Operator"
     },
     {
       "id": "native.android.cc878f72a6b70b23",
@@ -2640,8 +2640,8 @@
     },
     {
       "id": "native.android.3bfe29d4d13d3c3e",
-      "source": "Use OpenClaw from your phone",
-      "translated": "Sử dụng OpenClaw từ điện thoại của bạn"
+      "source": "Use Operator from your phone",
+      "translated": "Sử dụng Operator từ điện thoại của bạn"
     },
     {
       "id": "native.android.c0b539eeb4612f5d",
@@ -2650,8 +2650,8 @@
     },
     {
       "id": "native.android.5aed4b5c8d6b246d",
-      "source": "The connected OpenClaw agent can use device capabilities you enable. Continue only if you trust the Gateway and agent you connect to.",
-      "translated": "Tác nhân OpenClaw đã kết nối có thể sử dụng các khả năng của thiết bị mà bạn bật. Chỉ tiếp tục nếu bạn tin cậy Gateway và tác nhân mà bạn kết nối."
+      "source": "The connected Operator agent can use device capabilities you enable. Continue only if you trust the Gateway and agent you connect to.",
+      "translated": "Tác nhân Operator đã kết nối có thể sử dụng các khả năng của thiết bị mà bạn bật. Chỉ tiếp tục nếu bạn tin cậy Gateway và tác nhân mà bạn kết nối."
     },
     {
       "id": "native.android.63c31ee564d63347",
@@ -2660,8 +2660,8 @@
     },
     {
       "id": "native.android.f50a9c1ee6d47055",
-      "source": "Scan a QR code or use the setup code from your OpenClaw Gateway.",
-      "translated": "Quét mã QR hoặc dùng mã thiết lập từ OpenClaw Gateway của bạn."
+      "source": "Scan a QR code or use the setup code from your Operator Gateway.",
+      "translated": "Quét mã QR hoặc dùng mã thiết lập từ Operator Gateway của bạn."
     },
     {
       "id": "native.android.58d80589d9d4b7ff",
@@ -2690,8 +2690,8 @@
     },
     {
       "id": "native.android.c8a43dbba02941f0",
-      "source": "Have a terminal open on the device running OpenClaw.",
-      "translated": "Mở sẵn một terminal trên thiết bị đang chạy OpenClaw."
+      "source": "Have a terminal open on the device running Operator.",
+      "translated": "Mở sẵn một terminal trên thiết bị đang chạy Operator."
     },
     {
       "id": "native.android.71ce00f359981a0b",
@@ -2725,8 +2725,8 @@
     },
     {
       "id": "native.android.d4b295b5146af4b8",
-      "source": "openclaw gateway",
-      "translated": "openclaw gateway"
+      "source": "operator gateway",
+      "translated": "operator gateway"
     },
     {
       "id": "native.android.250b7dda7cff6b5d",
@@ -2740,8 +2740,8 @@
     },
     {
       "id": "native.android.db24e4be7a1b5547",
-      "source": "openclaw qr",
-      "translated": "openclaw qr"
+      "source": "operator qr",
+      "translated": "operator qr"
     },
     {
       "id": "native.android.96d40475de2885d6",
@@ -2765,8 +2765,8 @@
     },
     {
       "id": "native.android.05987e822ac102ec",
-      "source": "Open the camera and frame the code from openclaw qr.",
-      "translated": "Mở camera và đưa mã từ openclaw qr vào khung."
+      "source": "Open the camera and frame the code from operator qr.",
+      "translated": "Mở camera và đưa mã từ operator qr vào khung."
     },
     {
       "id": "native.android.90fa932d2e0adbd9",
@@ -2935,8 +2935,8 @@
     },
     {
       "id": "native.android.f43cb6ed03dc6766",
-      "source": "Gateway pairing is complete. Approve this phone as a node so OpenClaw can use the device capabilities you enable.",
-      "translated": "Ghép nối Gateway đã hoàn tất. Phê duyệt điện thoại này làm một nút để OpenClaw có thể sử dụng các khả năng thiết bị mà bạn bật."
+      "source": "Gateway pairing is complete. Approve this phone as a node so Operator can use the device capabilities you enable.",
+      "translated": "Ghép nối Gateway đã hoàn tất. Phê duyệt điện thoại này làm một nút để Operator có thể sử dụng các khả năng thiết bị mà bạn bật."
     },
     {
       "id": "native.android.8e49feba12c350ac",
@@ -2980,8 +2980,8 @@
     },
     {
       "id": "native.android.d4c3bcf880727fb3",
-      "source": "Only enable access you are comfortable letting OpenClaw use while this phone is connected. You can change these later in Android Settings.",
-      "translated": "Chỉ bật quyền truy cập mà bạn thấy thoải mái khi cho phép OpenClaw sử dụng trong khi điện thoại này được kết nối. Bạn có thể thay đổi các quyền này sau trong Cài đặt Android."
+      "source": "Only enable access you are comfortable letting Operator use while this phone is connected. You can change these later in Android Settings.",
+      "translated": "Chỉ bật quyền truy cập mà bạn thấy thoải mái khi cho phép Operator sử dụng trong khi điện thoại này được kết nối. Bạn có thể thay đổi các quyền này sau trong Cài đặt Android."
     },
     {
       "id": "native.android.44549cfd7e6a1ab8",
@@ -3025,8 +3025,8 @@
     },
     {
       "id": "native.android.176b4f5d1c9f8ce2",
-      "source": "Approval is in progress.\nOpenClaw will reconnect automatically.",
-      "translated": "Đang tiến hành phê duyệt.\nOpenClaw sẽ tự động kết nối lại."
+      "source": "Approval is in progress.\nOperator will reconnect automatically.",
+      "translated": "Đang tiến hành phê duyệt.\nOperator sẽ tự động kết nối lại."
     },
     {
       "id": "native.android.466e3fb210732587",
@@ -3035,8 +3035,8 @@
     },
     {
       "id": "native.android.7b95b9e103bbbb92",
-      "source": "OpenClaw is checking gateway and node access.",
-      "translated": "OpenClaw đang kiểm tra quyền truy cập Gateway và nút."
+      "source": "Operator is checking gateway and node access.",
+      "translated": "Operator đang kiểm tra quyền truy cập Gateway và nút."
     },
     {
       "id": "native.android.a75fc5ca269cbb15",
@@ -3130,8 +3130,8 @@
     },
     {
       "id": "native.android.1c93d0cbb8e05a7a",
-      "source": "Gateway approval is pending. Run openclaw devices list on the gateway host, approve this phone, then retry.",
-      "translated": "Đang chờ phê duyệt Gateway. Chạy openclaw devices list trên máy chủ Gateway, phê duyệt điện thoại này rồi thử lại."
+      "source": "Gateway approval is pending. Run operator devices list on the gateway host, approve this phone, then retry.",
+      "translated": "Đang chờ phê duyệt Gateway. Chạy operator devices list trên máy chủ Gateway, phê duyệt điện thoại này rồi thử lại."
     },
     {
       "id": "native.android.d0c1dcc8236a1ab9",
@@ -3145,8 +3145,8 @@
     },
     {
       "id": "native.android.bdd063b9f766050b",
-      "source": "Gateway approval is in progress. OpenClaw will retry automatically.",
-      "translated": "Quá trình phê duyệt Gateway đang diễn ra. OpenClaw sẽ tự động thử lại."
+      "source": "Gateway approval is in progress. Operator will retry automatically.",
+      "translated": "Quá trình phê duyệt Gateway đang diễn ra. Operator sẽ tự động thử lại."
     },
     {
       "id": "native.android.45cfb86623fa2251",
@@ -3200,18 +3200,18 @@
     },
     {
       "id": "native.android.c94c164d474cb0db",
-      "source": "This app is older than the Gateway. Update OpenClaw on this device, then retry.",
-      "translated": "Ứng dụng này cũ hơn Gateway. Hãy cập nhật OpenClaw trên thiết bị này rồi thử lại."
+      "source": "This app is older than the Gateway. Update Operator on this device, then retry.",
+      "translated": "Ứng dụng này cũ hơn Gateway. Hãy cập nhật Operator trên thiết bị này rồi thử lại."
     },
     {
       "id": "native.android.48ba24436b643607",
-      "source": "The Gateway is older than this app. Update OpenClaw on the Gateway host, then retry.",
-      "translated": "Gateway cũ hơn ứng dụng này. Hãy cập nhật OpenClaw trên máy chủ Gateway rồi thử lại."
+      "source": "The Gateway is older than this app. Update Operator on the Gateway host, then retry.",
+      "translated": "Gateway cũ hơn ứng dụng này. Hãy cập nhật Operator trên máy chủ Gateway rồi thử lại."
     },
     {
       "id": "native.android.1473077d05ac1739",
-      "source": "The app and Gateway use incompatible protocol versions. Update OpenClaw on both, then retry.",
-      "translated": "Ứng dụng và Gateway sử dụng các phiên bản giao thức không tương thích. Hãy cập nhật OpenClaw trên cả hai rồi thử lại."
+      "source": "The app and Gateway use incompatible protocol versions. Update Operator on both, then retry.",
+      "translated": "Ứng dụng và Gateway sử dụng các phiên bản giao thức không tương thích. Hãy cập nhật Operator trên cả hai rồi thử lại."
     },
     {
       "id": "native.android.6379bfb6b09ef8cd",
@@ -3220,23 +3220,23 @@
     },
     {
       "id": "native.android.ee7dad03cd78babe",
-      "source": "openclaw devices approve $requestId",
-      "translated": "openclaw devices approve $requestId"
+      "source": "operator devices approve $requestId",
+      "translated": "operator devices approve $requestId"
     },
     {
       "id": "native.android.3792801e2951bb11",
-      "source": "openclaw devices list",
-      "translated": "openclaw devices list"
+      "source": "operator devices list",
+      "translated": "operator devices list"
     },
     {
       "id": "native.android.8fe20d8f8090064d",
-      "source": "openclaw nodes approve $requestId",
-      "translated": "openclaw nodes approve $requestId"
+      "source": "operator nodes approve $requestId",
+      "translated": "operator nodes approve $requestId"
     },
     {
       "id": "native.android.2961a521c1b6837f",
-      "source": "openclaw nodes approve REQUEST_ID",
-      "translated": "openclaw nodes approve REQUEST_ID"
+      "source": "operator nodes approve REQUEST_ID",
+      "translated": "operator nodes approve REQUEST_ID"
     },
     {
       "id": "native.android.a7933196a18ec924",
@@ -3340,8 +3340,8 @@
     },
     {
       "id": "native.android.d096df67bff5e611",
-      "source": "Show OpenClaw alerts",
-      "translated": "Hiển thị cảnh báo của OpenClaw"
+      "source": "Show Operator alerts",
+      "translated": "Hiển thị cảnh báo của Operator"
     },
     {
       "id": "native.android.93cbec65dbc5de69",
@@ -3630,8 +3630,8 @@
     },
     {
       "id": "native.android.8f0482425838ae64",
-      "source": "OpenClaw session",
-      "translated": "Phiên OpenClaw"
+      "source": "Operator session",
+      "translated": "Phiên Operator"
     },
     {
       "id": "native.android.786774c8a76e50d7",
@@ -3695,8 +3695,8 @@
     },
     {
       "id": "native.android.b5e4ae7f8c9eca2d",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.f46b06f8550516e4",
@@ -3885,8 +3885,8 @@
     },
     {
       "id": "native.android.5e3e4cd42004cb28",
-      "source": "Scheduled OpenClaw work from your gateway.",
-      "translated": "Công việc OpenClaw đã lên lịch từ gateway của bạn."
+      "source": "Scheduled Operator work from your gateway.",
+      "translated": "Công việc Operator đã lên lịch từ gateway của bạn."
     },
     {
       "id": "native.android.31a5440e22667f02",
@@ -4045,8 +4045,8 @@
     },
     {
       "id": "native.android.fea93eda5bf97d9e",
-      "source": "How this phone appears to OpenClaw.",
-      "translated": "Cách điện thoại này hiển thị với OpenClaw."
+      "source": "How this phone appears to Operator.",
+      "translated": "Cách điện thoại này hiển thị với Operator."
     },
     {
       "id": "native.android.695229fd01afbc2d",
@@ -4085,8 +4085,8 @@
     },
     {
       "id": "native.android.6e58157abced395f",
-      "source": "Runs on-device while OpenClaw is visible.",
-      "translated": "Chạy trên thiết bị khi OpenClaw đang hiển thị."
+      "source": "Runs on-device while Operator is visible.",
+      "translated": "Chạy trên thiết bị khi Operator đang hiển thị."
     },
     {
       "id": "native.android.6464166ab71fde3f",
@@ -4160,8 +4160,8 @@
     },
     {
       "id": "native.android.5ff888931aae2738",
-      "source": "Check that OpenClaw can speak clearly on this phone.",
-      "translated": "Kiểm tra để đảm bảo OpenClaw có thể nói rõ trên điện thoại này."
+      "source": "Check that Operator can speak clearly on this phone.",
+      "translated": "Kiểm tra để đảm bảo Operator có thể nói rõ trên điện thoại này."
     },
     {
       "id": "native.android.f82d5d81f5dc9b43",
@@ -4210,8 +4210,8 @@
     },
     {
       "id": "native.android.9feed8722db5d2cc",
-      "source": "Choose what reaches OpenClaw.",
-      "translated": "Chọn nội dung được gửi đến OpenClaw."
+      "source": "Choose what reaches Operator.",
+      "translated": "Chọn nội dung được gửi đến Operator."
     },
     {
       "id": "native.android.d32071018de11907",
@@ -4230,8 +4230,8 @@
     },
     {
       "id": "native.android.5a077bf9cf4f47c8",
-      "source": "OpenClaw can receive selected alerts.",
-      "translated": "OpenClaw có thể nhận các cảnh báo đã chọn."
+      "source": "Operator can receive selected alerts.",
+      "translated": "Operator có thể nhận các cảnh báo đã chọn."
     },
     {
       "id": "native.android.a04ee29c0a3b68f5",
@@ -4390,8 +4390,8 @@
     },
     {
       "id": "native.android.bdafaceb7af93f5a",
-      "source": "OpenClaw can list launcher-visible apps.",
-      "translated": "OpenClaw có thể liệt kê các ứng dụng hiển thị trong launcher."
+      "source": "Operator can list launcher-visible apps.",
+      "translated": "Operator có thể liệt kê các ứng dụng hiển thị trong launcher."
     },
     {
       "id": "native.android.be89d5601904322a",
@@ -4420,8 +4420,8 @@
     },
     {
       "id": "native.android.58549715b04997cc",
-      "source": "Always allows requested location checks while OpenClaw is in the background; Android shows this in the persistent node notification.",
-      "translated": "Luôn cho phép kiểm tra vị trí được yêu cầu khi OpenClaw đang chạy trong nền; Android hiển thị điều này trong thông báo nút cố định."
+      "source": "Always allows requested location checks while Operator is in the background; Android shows this in the persistent node notification.",
+      "translated": "Luôn cho phép kiểm tra vị trí được yêu cầu khi Operator đang chạy trong nền; Android hiển thị điều này trong thông báo nút cố định."
     },
     {
       "id": "native.android.d5a8d7f97a7971b1",
@@ -4430,8 +4430,8 @@
     },
     {
       "id": "native.android.031d3ed6fb8a6559",
-      "source": "OpenClaw only checks location when your paired Gateway requests it. On the next Android screen, choose $backgroundPermissionLabel to allow checks while the app is in the background.",
-      "translated": "OpenClaw chỉ kiểm tra vị trí khi Gateway đã ghép nối yêu cầu. Trên màn hình Android tiếp theo, hãy chọn $backgroundPermissionLabel để cho phép kiểm tra khi ứng dụng chạy trong nền."
+      "source": "Operator only checks location when your paired Gateway requests it. On the next Android screen, choose $backgroundPermissionLabel to allow checks while the app is in the background.",
+      "translated": "Operator chỉ kiểm tra vị trí khi Gateway đã ghép nối yêu cầu. Trên màn hình Android tiếp theo, hãy chọn $backgroundPermissionLabel để cho phép kiểm tra khi ứng dụng chạy trong nền."
     },
     {
       "id": "native.android.c48805f3de1d72ca",
@@ -4445,13 +4445,13 @@
     },
     {
       "id": "native.android.c3a001bb0191892d",
-      "source": "OpenClaw collects and sends the names, package IDs, and status of apps visible on this phone when your paired OpenClaw Gateway asks for them. This lets your assistant answer questions and take actions using installed apps.",
-      "translated": "OpenClaw thu thập và gửi tên, ID gói và trạng thái của các ứng dụng hiển thị trên điện thoại này khi Gateway OpenClaw đã ghép nối của bạn yêu cầu. Điều này cho phép trợ lý của bạn trả lời câu hỏi và thực hiện hành động bằng các ứng dụng đã cài đặt."
+      "source": "Operator collects and sends the names, package IDs, and status of apps visible on this phone when your paired Operator Gateway asks for them. This lets your assistant answer questions and take actions using installed apps.",
+      "translated": "Operator thu thập và gửi tên, ID gói và trạng thái của các ứng dụng hiển thị trên điện thoại này khi Gateway Operator đã ghép nối của bạn yêu cầu. Điều này cho phép trợ lý của bạn trả lời câu hỏi và thực hiện hành động bằng các ứng dụng đã cài đặt."
     },
     {
       "id": "native.android.b05f8909de072d71",
-      "source": "Your phone sends this information to your Gateway, not to a server run by OpenClaw. Your Gateway may include it in requests to the AI provider you chose.",
-      "translated": "Điện thoại của bạn gửi thông tin này đến Gateway của bạn, không phải đến máy chủ do OpenClaw vận hành. Gateway của bạn có thể đưa nó vào các yêu cầu gửi đến nhà cung cấp AI bạn đã chọn."
+      "source": "Your phone sends this information to your Gateway, not to a server run by Operator. Your Gateway may include it in requests to the AI provider you chose.",
+      "translated": "Điện thoại của bạn gửi thông tin này đến Gateway của bạn, không phải đến máy chủ do Operator vận hành. Gateway của bạn có thể đưa nó vào các yêu cầu gửi đến nhà cung cấp AI bạn đã chọn."
     },
     {
       "id": "native.android.95a3cc1b163c1edf",
@@ -4495,8 +4495,8 @@
     },
     {
       "id": "native.android.9d658ff26e59274b",
-      "source": "Connection between this phone and OpenClaw.",
-      "translated": "Kết nối giữa điện thoại này và OpenClaw."
+      "source": "Connection between this phone and Operator.",
+      "translated": "Kết nối giữa điện thoại này và Operator."
     },
     {
       "id": "native.android.718cb50d1bff3e32",
@@ -4605,8 +4605,8 @@
     },
     {
       "id": "native.android.de12fd162a566974",
-      "source": "Android can scan or paste an existing setup code, but this gateway does not expose setup-code generation to the app yet. Generate the QR/code on the gateway host with openclaw qr, then scan it here or paste the setup code below.",
-      "translated": "Android có thể quét hoặc dán mã thiết lập hiện có, nhưng gateway này chưa cung cấp tính năng tạo mã thiết lập cho ứng dụng. Tạo QR/mã trên máy chủ gateway bằng openclaw qr, sau đó quét tại đây hoặc dán mã thiết lập bên dưới."
+      "source": "Android can scan or paste an existing setup code, but this gateway does not expose setup-code generation to the app yet. Generate the QR/code on the gateway host with operator qr, then scan it here or paste the setup code below.",
+      "translated": "Android có thể quét hoặc dán mã thiết lập hiện có, nhưng gateway này chưa cung cấp tính năng tạo mã thiết lập cho ứng dụng. Tạo QR/mã trên máy chủ gateway bằng operator qr, sau đó quét tại đây hoặc dán mã thiết lập bên dưới."
     },
     {
       "id": "native.android.ac1032dabe06ab02",
@@ -4705,8 +4705,8 @@
     },
     {
       "id": "native.android.f6ab96d066bd583c",
-      "source": "Use a secure wss:// or Tailscale Serve Gateway, generate a full-access setup code in the Control UI or with openclaw qr, then scan or paste it below and reconnect to enable settings and upgrades.",
-      "translated": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, tạo mã thiết lập quyền truy cập đầy đủ trong Control UI hoặc bằng openclaw qr, sau đó quét hoặc dán mã bên dưới và kết nối lại để bật cài đặt và nâng cấp."
+      "source": "Use a secure wss:// or Tailscale Serve Gateway, generate a full-access setup code in the Control UI or with operator qr, then scan or paste it below and reconnect to enable settings and upgrades.",
+      "translated": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, tạo mã thiết lập quyền truy cập đầy đủ trong Control UI hoặc bằng operator qr, sau đó quét hoặc dán mã bên dưới và kết nối lại để bật cài đặt và nâng cấp."
     },
     {
       "id": "native.android.5311e446ce2bf857",
@@ -4815,8 +4815,8 @@
     },
     {
       "id": "native.android.c2d37ac2ad4c9e3c",
-      "source": "OpenClaw for Android.",
-      "translated": "OpenClaw cho Android."
+      "source": "Operator for Android.",
+      "translated": "Operator cho Android."
     },
     {
       "id": "native.android.38889ec3f682dcf8",
@@ -4860,18 +4860,18 @@
     },
     {
       "id": "native.android.aac3310699b496c8",
-      "source": "© 2026 OpenClaw Foundation — MIT License.",
-      "translated": "© 2026 OpenClaw Foundation — Giấy phép MIT."
+      "source": "© 2026 Operator Foundation — MIT License.",
+      "translated": "© 2026 Operator Foundation — Giấy phép MIT."
     },
     {
       "id": "native.android.a157bbb606e9b398",
-      "source": "OpenClaw logo",
-      "translated": "Logo OpenClaw"
+      "source": "Operator logo",
+      "translated": "Logo Operator"
     },
     {
       "id": "native.android.7b78b4869baf2160",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.ad4c14835d1b71ca",
@@ -4885,8 +4885,8 @@
     },
     {
       "id": "native.android.996367534eb94cc2",
-      "source": "OpenClaw appreciates its partners in the open-source community.",
-      "translated": "OpenClaw trân trọng các đối tác của mình trong cộng đồng mã nguồn mở."
+      "source": "Operator appreciates its partners in the open-source community.",
+      "translated": "Operator trân trọng các đối tác của mình trong cộng đồng mã nguồn mở."
     },
     {
       "id": "native.android.24da1d2eb750ba07",
@@ -4935,8 +4935,8 @@
     },
     {
       "id": "native.android.5a540761383fa474",
-      "source": "OpenClaw turns this phone into a clean mobile command surface for sessions, voice, providers, and Gateway.",
-      "translated": "OpenClaw biến điện thoại này thành một giao diện lệnh di động gọn gàng cho các phiên, giọng nói, nhà cung cấp và Gateway."
+      "source": "Operator turns this phone into a clean mobile command surface for sessions, voice, providers, and Gateway.",
+      "translated": "Operator biến điện thoại này thành một giao diện lệnh di động gọn gàng cho các phiên, giọng nói, nhà cung cấp và Gateway."
     },
     {
       "id": "native.android.3a3bea53e6a6ada7",
@@ -5380,8 +5380,8 @@
     },
     {
       "id": "native.android.2e33a4fd5f60b550",
-      "source": "Start a chat and your active OpenClaw conversations will appear here.",
-      "translated": "Bắt đầu một cuộc trò chuyện và các cuộc trò chuyện OpenClaw đang hoạt động của bạn sẽ xuất hiện tại đây."
+      "source": "Start a chat and your active Operator conversations will appear here.",
+      "translated": "Bắt đầu một cuộc trò chuyện và các cuộc trò chuyện Operator đang hoạt động của bạn sẽ xuất hiện tại đây."
     },
     {
       "id": "native.android.85726cfd4207d48a",
@@ -5590,8 +5590,8 @@
     },
     {
       "id": "native.android.4f369a09c8731092",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.b5ee8fce135f41e6",
@@ -5810,8 +5810,8 @@
     },
     {
       "id": "native.android.ca1451df912ed5cf",
-      "source": "OpenClaw ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-      "translated": "OpenClaw ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+      "source": "Operator ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+      "translated": "Operator ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
     },
     {
       "id": "native.android.b7d8c506999a68f7",
@@ -6000,8 +6000,8 @@
     },
     {
       "id": "native.android.e197964b10ba02ce",
-      "source": "OpenClaw mobile",
-      "translated": "OpenClaw dành cho thiết bị di động"
+      "source": "Operator mobile",
+      "translated": "Operator dành cho thiết bị di động"
     },
     {
       "id": "native.android.45005deba537cc59",
@@ -6685,8 +6685,8 @@
     },
     {
       "id": "native.android.9d977253fdcda216",
-      "source": "OpenClaw speaking",
-      "translated": "OpenClaw đang nói"
+      "source": "Operator speaking",
+      "translated": "Operator đang nói"
     },
     {
       "id": "native.android.1babfd757bbcfeb4",
@@ -6755,8 +6755,8 @@
     },
     {
       "id": "native.android.2e2b5efe4ca2380a",
-      "source": "OpenClaw is replying",
-      "translated": "OpenClaw đang trả lời"
+      "source": "Operator is replying",
+      "translated": "Operator đang trả lời"
     },
     {
       "id": "native.android.64731fc46a862f86",
@@ -6855,8 +6855,8 @@
     },
     {
       "id": "native.android.253debc9d0714dda",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.24057bba4bbfa27a",
@@ -6875,8 +6875,8 @@
     },
     {
       "id": "native.android.5b8bd9f2b69b91ea",
-      "source": "OpenClaw is preparing a response.",
-      "translated": "OpenClaw đang chuẩn bị phản hồi."
+      "source": "Operator is preparing a response.",
+      "translated": "Operator đang chuẩn bị phản hồi."
     },
     {
       "id": "native.android.420cccbd48298a8d",
@@ -6890,8 +6890,8 @@
     },
     {
       "id": "native.android.285eeed928be0fc1",
-      "source": "OpenClaw only listens when you start Talk or Dictation.",
-      "translated": "OpenClaw chỉ nghe khi bạn bắt đầu Trò chuyện hoặc Đọc chính tả."
+      "source": "Operator only listens when you start Talk or Dictation.",
+      "translated": "Operator chỉ nghe khi bạn bắt đầu Trò chuyện hoặc Đọc chính tả."
     },
     {
       "id": "native.android.b10a51fe9d4b8d2d",
@@ -6900,8 +6900,8 @@
     },
     {
       "id": "native.android.c8bff891c9a442d9",
-      "source": "OpenClaw is speaking",
-      "translated": "OpenClaw đang nói"
+      "source": "Operator is speaking",
+      "translated": "Operator đang nói"
     },
     {
       "id": "native.android.248e1292eff12b84",
@@ -7215,8 +7215,8 @@
     },
     {
       "id": "native.android.dfbd755eb43b4d26",
-      "source": "OpenClaw · Live",
-      "translated": "OpenClaw · Trực tiếp"
+      "source": "Operator · Live",
+      "translated": "Operator · Trực tiếp"
     },
     {
       "id": "native.android.b3ff30d4e0b3ce58",
@@ -7230,8 +7230,8 @@
     },
     {
       "id": "native.android.82e9fe45e93909b6",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.02b4598277aca860",
@@ -7360,8 +7360,8 @@
     },
     {
       "id": "native.android.06d515351bb79576",
-      "source": "Catch me up on my recent OpenClaw sessions and suggest next steps.",
-      "translated": "Cập nhật cho tôi về các phiên OpenClaw gần đây và đề xuất những bước tiếp theo."
+      "source": "Catch me up on my recent Operator sessions and suggest next steps.",
+      "translated": "Cập nhật cho tôi về các phiên Operator gần đây và đề xuất những bước tiếp theo."
     },
     {
       "id": "native.android.79f64f0b5ecaa07c",
@@ -7385,8 +7385,8 @@
     },
     {
       "id": "native.android.1656b8b922a5e3f2",
-      "source": "Ask OpenClaw to use Android capabilities.",
-      "translated": "Yêu cầu OpenClaw sử dụng các tính năng của Android."
+      "source": "Ask Operator to use Android capabilities.",
+      "translated": "Yêu cầu Operator sử dụng các tính năng của Android."
     },
     {
       "id": "native.android.04c826e3507eb47e",
@@ -7395,8 +7395,8 @@
     },
     {
       "id": "native.android.67075c8d2ccc0bb5",
-      "source": "OpenClaw · Live",
-      "translated": "OpenClaw · Trực tiếp"
+      "source": "Operator · Live",
+      "translated": "Operator · Trực tiếp"
     },
     {
       "id": "native.android.869f1130ca16bab5",
@@ -7410,8 +7410,8 @@
     },
     {
       "id": "native.android.25d8575c0063aee5",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.e695e7b72d13e9e5",
@@ -7435,8 +7435,8 @@
     },
     {
       "id": "native.android.d851a32f367f8b31",
-      "source": "OpenClaw is working",
-      "translated": "OpenClaw đang hoạt động"
+      "source": "Operator is working",
+      "translated": "Operator đang hoạt động"
     },
     {
       "id": "native.android.0fd6b75cadc0ce75",
@@ -7450,8 +7450,8 @@
     },
     {
       "id": "native.android.98a0d4d5bba788c4",
-      "source": "OpenClaw is preparing a response.",
-      "translated": "OpenClaw đang chuẩn bị phản hồi."
+      "source": "Operator is preparing a response.",
+      "translated": "Operator đang chuẩn bị phản hồi."
     },
     {
       "id": "native.android.f3806d79e43f568f",
@@ -7510,8 +7510,8 @@
     },
     {
       "id": "native.android.f1d69eb66c5dfa39",
-      "source": "Message OpenClaw",
-      "translated": "Nhắn tin cho OpenClaw"
+      "source": "Message Operator",
+      "translated": "Nhắn tin cho Operator"
     },
     {
       "id": "native.android.97602a28629a331f",
@@ -7665,8 +7665,8 @@
     },
     {
       "id": "native.android.79d7a1026ef43e80",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.android.e8318a46a213cb91",
@@ -7700,13 +7700,13 @@
     },
     {
       "id": "native.android.794873efdfcdff4f",
-      "source": "OpenClaw gateway",
-      "translated": "Gateway OpenClaw"
+      "source": "Operator gateway",
+      "translated": "Gateway Operator"
     },
     {
       "id": "native.android.2d3b6dd9a8f186fe",
-      "source": "Ask OpenClaw anything",
-      "translated": "Hỏi OpenClaw bất cứ điều gì"
+      "source": "Ask Operator anything",
+      "translated": "Hỏi Operator bất cứ điều gì"
     },
     {
       "id": "native.android.608ccdaeababf056",
@@ -7740,8 +7740,8 @@
     },
     {
       "id": "native.android.3457b4ee28d964ee",
-      "source": "OpenClaw will surface approvals, failed jobs, and channel issues here.",
-      "translated": "OpenClaw sẽ hiển thị các phê duyệt, tác vụ thất bại và sự cố kênh tại đây."
+      "source": "Operator will surface approvals, failed jobs, and channel issues here.",
+      "translated": "Operator sẽ hiển thị các phê duyệt, tác vụ thất bại và sự cố kênh tại đây."
     },
     {
       "id": "native.android.7a6a37643fcfb2d9",
@@ -8025,23 +8025,23 @@
     },
     {
       "id": "native.android.f392ee2d50d6b7ce",
-      "source": "ask OpenClaw $prompt",
-      "translated": "hỏi OpenClaw $prompt"
+      "source": "ask Operator $prompt",
+      "translated": "hỏi Operator $prompt"
     },
     {
       "id": "native.android.ea9d1a78cfa13033",
-      "source": "tell OpenClaw to $prompt",
-      "translated": "yêu cầu OpenClaw $prompt"
+      "source": "tell Operator to $prompt",
+      "translated": "yêu cầu Operator $prompt"
     },
     {
       "id": "native.android.7f96ac9b9e10abd0",
-      "source": "open OpenClaw and ask $prompt",
-      "translated": "mở OpenClaw và hỏi $prompt"
+      "source": "open Operator and ask $prompt",
+      "translated": "mở Operator và hỏi $prompt"
     },
     {
       "id": "native.android.a3c395b04ae7a621",
-      "source": "OpenClaw Node",
-      "translated": "Nút OpenClaw"
+      "source": "Operator Node",
+      "translated": "Nút Operator"
     },
     {
       "id": "native.android.cd32b06480d9bb69",
@@ -8125,13 +8125,13 @@
     },
     {
       "id": "native.android.e3661fcea979a74c",
-      "source": "OpenClaw Git commit",
-      "translated": "Git commit của OpenClaw"
+      "source": "Operator Git commit",
+      "translated": "Git commit của Operator"
     },
     {
       "id": "native.android.a610564c863cdef7",
-      "source": "OpenClaw build timestamp",
-      "translated": "Dấu thời gian bản dựng OpenClaw"
+      "source": "Operator build timestamp",
+      "translated": "Dấu thời gian bản dựng Operator"
     },
     {
       "id": "native.android.9b9a42b4f56bea2a",
@@ -8145,13 +8145,13 @@
     },
     {
       "id": "native.apple.8f741d09cc1d5495",
-      "source": "OpenClaw Activity",
-      "translated": "Hoạt động OpenClaw"
+      "source": "Operator Activity",
+      "translated": "Hoạt động Operator"
     },
     {
       "id": "native.apple.86d546e1f1247028",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.417ac9273b5f63ca",
@@ -8185,8 +8185,8 @@
     },
     {
       "id": "native.apple.9168fcd110c3019a",
-      "source": "OpenClaw Share",
-      "translated": "OpenClaw Share"
+      "source": "Operator Share",
+      "translated": "Operator Share"
     },
     {
       "id": "native.apple.382fd936eaf238f7",
@@ -10190,8 +10190,8 @@
     },
     {
       "id": "native.apple.3548c8d1ab43e85e",
-      "source": "OpenClaw could not prepare the Markdown file.",
-      "translated": "OpenClaw không thể chuẩn bị tệp Markdown."
+      "source": "Operator could not prepare the Markdown file.",
+      "translated": "Operator không thể chuẩn bị tệp Markdown."
     },
     {
       "id": "native.apple.202b97e93b938049",
@@ -10255,13 +10255,13 @@
     },
     {
       "id": "native.apple.14492e334b87e4f2",
-      "source": "Check OpenClaw status",
-      "translated": "Kiểm tra trạng thái OpenClaw"
+      "source": "Check Operator status",
+      "translated": "Kiểm tra trạng thái Operator"
     },
     {
       "id": "native.apple.bbf7bd23da1e7865",
-      "source": "Summarize the current OpenClaw status and tell me what needs attention.",
-      "translated": "Tóm tắt trạng thái OpenClaw hiện tại và cho tôi biết những gì cần chú ý."
+      "source": "Summarize the current Operator status and tell me what needs attention.",
+      "translated": "Tóm tắt trạng thái Operator hiện tại và cho tôi biết những gì cần chú ý."
     },
     {
       "id": "native.apple.ea8cbb1b4230c652",
@@ -11325,8 +11325,8 @@
     },
     {
       "id": "native.apple.56935c5384889b8e",
-      "source": "Browse the current OpenClaw reference.",
-      "translated": "Duyệt tài liệu tham khảo OpenClaw hiện tại."
+      "source": "Browse the current Operator reference.",
+      "translated": "Duyệt tài liệu tham khảo Operator hiện tại."
     },
     {
       "id": "native.apple.2ee2f8c71fa2d2cc",
@@ -11355,8 +11355,8 @@
     },
     {
       "id": "native.apple.cf9bb65f8e405cc8",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.20d011936ab5cd30",
@@ -11740,8 +11740,8 @@
     },
     {
       "id": "native.apple.756ff21ca904b2d8",
-      "source": "Choose when OpenClaw may share this iPhone's location with gateway tools.",
-      "translated": "Chọn khi nào OpenClaw có thể chia sẻ vị trí của iPhone này với các công cụ gateway."
+      "source": "Choose when Operator may share this iPhone's location with gateway tools.",
+      "translated": "Chọn khi nào Operator có thể chia sẻ vị trí của iPhone này với các công cụ gateway."
     },
     {
       "id": "native.apple.9515109ce97ec94e",
@@ -11770,8 +11770,8 @@
     },
     {
       "id": "native.apple.9bb1dae351d0e3a4",
-      "source": "Enable OpenClaw Hosted Push Relay?",
-      "translated": "Bật OpenClaw Hosted Push Relay?"
+      "source": "Enable Operator Hosted Push Relay?",
+      "translated": "Bật Operator Hosted Push Relay?"
     },
     {
       "id": "native.apple.f8c042a923222472",
@@ -12005,13 +12005,13 @@
     },
     {
       "id": "native.apple.3503aca018f04865",
-      "source": "Setup sent. Open OpenClaw on the watch to connect.",
-      "translated": "Đã gửi thiết lập. Mở OpenClaw trên đồng hồ để kết nối."
+      "source": "Setup sent. Open Operator on the watch to connect.",
+      "translated": "Đã gửi thiết lập. Mở Operator trên đồng hồ để kết nối."
     },
     {
       "id": "native.apple.a9a778465dfe1198",
-      "source": "Setup queued for the watch. Open OpenClaw before the code expires.",
-      "translated": "Đã xếp hàng thiết lập cho đồng hồ. Mở OpenClaw trước khi mã hết hạn."
+      "source": "Setup queued for the watch. Open Operator before the code expires.",
+      "translated": "Đã xếp hàng thiết lập cho đồng hồ. Mở Operator trước khi mã hết hạn."
     },
     {
       "id": "native.apple.ba8d38a642bee7f3",
@@ -12020,8 +12020,8 @@
     },
     {
       "id": "native.apple.07668650c75a20f1",
-      "source": "Pairing required. Run /pair approve in your OpenClaw chat, then connect again.",
-      "translated": "Cần ghép nối. Chạy /pair approve trong cuộc trò chuyện OpenClaw của bạn, sau đó kết nối lại."
+      "source": "Pairing required. Run /pair approve in your Operator chat, then connect again.",
+      "translated": "Cần ghép nối. Chạy /pair approve trong cuộc trò chuyện Operator của bạn, sau đó kết nối lại."
     },
     {
       "id": "native.apple.101b491eed1648ce",
@@ -12100,8 +12100,8 @@
     },
     {
       "id": "native.apple.3d805ac21285b092",
-      "source": "Foreground approvals still appear while OpenClaw is connected.",
-      "translated": "Các yêu cầu phê duyệt khi ở tiền cảnh vẫn xuất hiện trong lúc OpenClaw được kết nối."
+      "source": "Foreground approvals still appear while Operator is connected.",
+      "translated": "Các yêu cầu phê duyệt khi ở tiền cảnh vẫn xuất hiện trong lúc Operator được kết nối."
     },
     {
       "id": "native.apple.0b7a54926d06b7d8",
@@ -12240,18 +12240,18 @@
     },
     {
       "id": "native.apple.817057c658a751c7",
-      "source": "This build uses OpenClaw's hosted push relay at %@ for notification delivery data.",
-      "translated": "Bản dựng này sử dụng dịch vụ chuyển tiếp thông báo đẩy do OpenClaw lưu trữ tại %@ để truyền dữ liệu gửi thông báo."
+      "source": "This build uses Operator's hosted push relay at %@ for notification delivery data.",
+      "translated": "Bản dựng này sử dụng dịch vụ chuyển tiếp thông báo đẩy do Operator lưu trữ tại %@ để truyền dữ liệu gửi thông báo."
     },
     {
       "id": "native.apple.d70d23305da2016a",
-      "source": "This build is not configured to use OpenClaw's hosted push relay.",
-      "translated": "Bản dựng này chưa được cấu hình để sử dụng dịch vụ chuyển tiếp thông báo đẩy do OpenClaw lưu trữ."
+      "source": "This build is not configured to use Operator's hosted push relay.",
+      "translated": "Bản dựng này chưa được cấu hình để sử dụng dịch vụ chuyển tiếp thông báo đẩy do Operator lưu trữ."
     },
     {
       "id": "native.apple.6c81c3d48548ca05",
-      "source": "Enabling this sends delivery data through OpenClaw's hosted push relay.",
-      "translated": "Việc bật tùy chọn này sẽ gửi dữ liệu gửi thông báo qua dịch vụ chuyển tiếp thông báo đẩy do OpenClaw lưu trữ."
+      "source": "Enabling this sends delivery data through Operator's hosted push relay.",
+      "translated": "Việc bật tùy chọn này sẽ gửi dữ liệu gửi thông báo qua dịch vụ chuyển tiếp thông báo đẩy do Operator lưu trữ."
     },
     {
       "id": "native.apple.80fade864c8ad242",
@@ -12360,8 +12360,8 @@
     },
     {
       "id": "native.apple.7793f5de6975faef",
-      "source": "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or openclaw qr and reconnect to enable settings and upgrades.",
-      "translated": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, sau đó quét mã thiết lập quyền truy cập đầy đủ từ Control UI hoặc openclaw qr và kết nối lại để bật cài đặt và nâng cấp."
+      "source": "Use a secure wss:// or Tailscale Serve Gateway, then scan a full-access setup code from the Control UI or operator qr and reconnect to enable settings and upgrades.",
+      "translated": "Sử dụng Gateway wss:// bảo mật hoặc Tailscale Serve, sau đó quét mã thiết lập quyền truy cập đầy đủ từ Control UI hoặc operator qr và kết nối lại để bật cài đặt và nâng cấp."
     },
     {
       "id": "native.apple.666cea428e126188",
@@ -12425,8 +12425,8 @@
     },
     {
       "id": "native.apple.1bd0f0b41f4d4750",
-      "source": "Install the OpenClaw watch app before enabling direct mode.",
-      "translated": "Cài đặt ứng dụng OpenClaw cho đồng hồ trước khi bật chế độ trực tiếp."
+      "source": "Install the Operator watch app before enabling direct mode.",
+      "translated": "Cài đặt ứng dụng Operator cho đồng hồ trước khi bật chế độ trực tiếp."
     },
     {
       "id": "native.apple.3710cda9cb13870f",
@@ -12465,8 +12465,8 @@
     },
     {
       "id": "native.apple.2e042499c42824f5",
-      "source": "Enable Notifications to receive approval alerts while OpenClaw is not open.",
-      "translated": "Bật Thông báo để nhận cảnh báo phê duyệt khi OpenClaw không mở."
+      "source": "Enable Notifications to receive approval alerts while Operator is not open.",
+      "translated": "Bật Thông báo để nhận cảnh báo phê duyệt khi Operator không mở."
     },
     {
       "id": "native.apple.fc1f2fdbe437cb9d",
@@ -12575,8 +12575,8 @@
     },
     {
       "id": "native.apple.d1ee91d07764faf0",
-      "source": "Turns OpenClaw notification delivery on or off",
-      "translated": "Bật hoặc tắt gửi thông báo OpenClaw"
+      "source": "Turns Operator notification delivery on or off",
+      "translated": "Bật hoặc tắt gửi thông báo Operator"
     },
     {
       "id": "native.apple.31f9c5fa6c3ca5dd",
@@ -12595,13 +12595,13 @@
     },
     {
       "id": "native.apple.a82dc4a746268028",
-      "source": "OpenClaw appreciates its partners in the open-source community.",
-      "translated": "OpenClaw trân trọng các đối tác của mình trong cộng đồng mã nguồn mở."
+      "source": "Operator appreciates its partners in the open-source community.",
+      "translated": "Operator trân trọng các đối tác của mình trong cộng đồng mã nguồn mở."
     },
     {
       "id": "native.apple.fc49f9b63e160581",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.eaa4fe72f3730f3f",
@@ -12635,8 +12635,8 @@
     },
     {
       "id": "native.apple.b962116ff5bf1905",
-      "source": "© 2026 OpenClaw Foundation — MIT License.",
-      "translated": "© 2026 OpenClaw Foundation — Giấy phép MIT."
+      "source": "© 2026 Operator Foundation — MIT License.",
+      "translated": "© 2026 Operator Foundation — Giấy phép MIT."
     },
     {
       "id": "native.apple.106434d1305d153b",
@@ -13010,13 +13010,13 @@
     },
     {
       "id": "native.apple.675219772ee5adf0",
-      "source": "OpenClaw can show approval prompts and event alerts when the app is not active.",
-      "translated": "OpenClaw có thể hiển thị lời nhắc phê duyệt và cảnh báo sự kiện khi ứng dụng không hoạt động."
+      "source": "Operator can show approval prompts and event alerts when the app is not active.",
+      "translated": "Operator có thể hiển thị lời nhắc phê duyệt và cảnh báo sự kiện khi ứng dụng không hoạt động."
     },
     {
       "id": "native.apple.44133229b2b05062",
-      "source": "OpenClaw notifications are off.",
-      "translated": "Thông báo OpenClaw đang tắt."
+      "source": "Operator notifications are off.",
+      "translated": "Thông báo Operator đang tắt."
     },
     {
       "id": "native.apple.9794732a37cb580f",
@@ -13035,8 +13035,8 @@
     },
     {
       "id": "native.apple.bfe6a918d23fa20e",
-      "source": "OpenClaw cannot determine the current notification permission state.",
-      "translated": "OpenClaw không thể xác định trạng thái quyền thông báo hiện tại."
+      "source": "Operator cannot determine the current notification permission state.",
+      "translated": "Operator không thể xác định trạng thái quyền thông báo hiện tại."
     },
     {
       "id": "native.apple.fc7d007916016c0d",
@@ -13050,8 +13050,8 @@
     },
     {
       "id": "native.apple.737eb52b08f2640c",
-      "source": "Connected to openclaw-gateway.tailnet.ts.net.",
-      "translated": "Đã kết nối với openclaw-gateway.tailnet.ts.net."
+      "source": "Connected to operator-gateway.tailnet.ts.net.",
+      "translated": "Đã kết nối với operator-gateway.tailnet.ts.net."
     },
     {
       "id": "native.apple.b59e37e73db49f94",
@@ -13660,8 +13660,8 @@
     },
     {
       "id": "native.apple.c218ef5194d0ee56",
-      "source": "Run OpenClaw agent?",
-      "translated": "Chạy tác nhân OpenClaw?"
+      "source": "Run Operator agent?",
+      "translated": "Chạy tác nhân Operator?"
     },
     {
       "id": "native.apple.5d2fb30a9c85ad10",
@@ -13995,8 +13995,8 @@
     },
     {
       "id": "native.apple.c18f5bd36f119282",
-      "source": "Run openclaw gateway --port 18789.",
-      "translated": "Chạy openclaw gateway --port 18789."
+      "source": "Run operator gateway --port 18789.",
+      "translated": "Chạy operator gateway --port 18789."
     },
     {
       "id": "native.apple.a4eb9a9b02915961",
@@ -14040,8 +14040,8 @@
     },
     {
       "id": "native.apple.8f6f60c9a5196918",
-      "source": "Exec approvals can only be reviewed while OpenClaw is open and connected.\n\nEnable Notifications to receive approval notifications while OpenClaw is not open.",
-      "translated": "Chỉ có thể xem xét phê duyệt thực thi khi OpenClaw đang mở và đã kết nối.\n\nBật Thông báo để nhận thông báo phê duyệt khi OpenClaw không mở."
+      "source": "Exec approvals can only be reviewed while Operator is open and connected.\n\nEnable Notifications to receive approval notifications while Operator is not open.",
+      "translated": "Chỉ có thể xem xét phê duyệt thực thi khi Operator đang mở và đã kết nối.\n\nBật Thông báo để nhận thông báo phê duyệt khi Operator không mở."
     },
     {
       "id": "native.apple.a2378696390cca1e",
@@ -14060,73 +14060,73 @@
     },
     {
       "id": "native.apple.cf820096080f7031",
-      "source": "OpenClaw uses your calendars to show events and scheduling context when you enable calendar access.",
-      "translated": "OpenClaw sử dụng lịch của bạn để hiển thị sự kiện và ngữ cảnh lên lịch khi bạn bật quyền truy cập lịch."
+      "source": "Operator uses your calendars to show events and scheduling context when you enable calendar access.",
+      "translated": "Operator sử dụng lịch của bạn để hiển thị sự kiện và ngữ cảnh lên lịch khi bạn bật quyền truy cập lịch."
     },
     {
       "id": "native.apple.fe85b609e9a9a144",
-      "source": "OpenClaw uses your calendars to add events when you enable calendar access.",
-      "translated": "OpenClaw sử dụng lịch của bạn để thêm sự kiện khi bạn bật quyền truy cập lịch."
+      "source": "Operator uses your calendars to add events when you enable calendar access.",
+      "translated": "Operator sử dụng lịch của bạn để thêm sự kiện khi bạn bật quyền truy cập lịch."
     },
     {
       "id": "native.apple.ff5729a17d66ad91",
-      "source": "OpenClaw uses the camera when you scan a Gateway setup QR code or ask your paired Gateway or assistant to capture a photo or short video from this iPhone, for example to connect to your Gateway or show your assistant a document, device screen, or workspace.",
-      "translated": "OpenClaw sử dụng camera khi bạn quét mã QR thiết lập Gateway hoặc yêu cầu Gateway đã ghép đôi hay trợ lý của bạn chụp ảnh hoặc quay video ngắn từ iPhone này, ví dụ như để kết nối với Gateway của bạn hoặc hiển thị cho trợ lý một tài liệu, màn hình thiết bị hoặc không gian làm việc."
+      "source": "Operator uses the camera when you scan a Gateway setup QR code or ask your paired Gateway or assistant to capture a photo or short video from this iPhone, for example to connect to your Gateway or show your assistant a document, device screen, or workspace.",
+      "translated": "Operator sử dụng camera khi bạn quét mã QR thiết lập Gateway hoặc yêu cầu Gateway đã ghép đôi hay trợ lý của bạn chụp ảnh hoặc quay video ngắn từ iPhone này, ví dụ như để kết nối với Gateway của bạn hoặc hiển thị cho trợ lý một tài liệu, màn hình thiết bị hoặc không gian làm việc."
     },
     {
       "id": "native.apple.2f21aa6f5cd72915",
-      "source": "OpenClaw uses your contacts so you can search and reference people while using the assistant.",
-      "translated": "OpenClaw sử dụng danh bạ của bạn để bạn có thể tìm kiếm và tham chiếu mọi người khi sử dụng trợ lý."
+      "source": "Operator uses your contacts so you can search and reference people while using the assistant.",
+      "translated": "Operator sử dụng danh bạ của bạn để bạn có thể tìm kiếm và tham chiếu mọi người khi sử dụng trợ lý."
     },
     {
       "id": "native.apple.9d550c77a37bb165",
-      "source": "OpenClaw discovers and connects to your OpenClaw gateway on the local network.",
-      "translated": "OpenClaw phát hiện và kết nối với OpenClaw gateway của bạn trên mạng cục bộ."
+      "source": "Operator discovers and connects to your Operator gateway on the local network.",
+      "translated": "Operator phát hiện và kết nối với Operator gateway của bạn trên mạng cục bộ."
     },
     {
       "id": "native.apple.d822c41a0b7e9739",
-      "source": "OpenClaw can share your location in the background when you enable Always.",
-      "translated": "OpenClaw có thể chia sẻ vị trí của bạn trong nền khi bạn bật Luôn luôn."
+      "source": "Operator can share your location in the background when you enable Always.",
+      "translated": "Operator có thể chia sẻ vị trí của bạn trong nền khi bạn bật Luôn luôn."
     },
     {
       "id": "native.apple.441062ce99375692",
-      "source": "OpenClaw uses your location when you allow location sharing.",
-      "translated": "OpenClaw sử dụng vị trí của bạn khi bạn cho phép chia sẻ vị trí."
+      "source": "Operator uses your location when you allow location sharing.",
+      "translated": "Operator sử dụng vị trí của bạn khi bạn cho phép chia sẻ vị trí."
     },
     {
       "id": "native.apple.7c2cbe7077e4eff1",
-      "source": "OpenClaw uses the microphone for realtime chat, voice wake, push-to-talk, and voice notes.",
-      "translated": "OpenClaw sử dụng micrô cho trò chuyện thời gian thực, đánh thức bằng giọng nói, nhấn để nói và ghi chú thoại."
+      "source": "Operator uses the microphone for realtime chat, voice wake, push-to-talk, and voice notes.",
+      "translated": "Operator sử dụng micrô cho trò chuyện thời gian thực, đánh thức bằng giọng nói, nhấn để nói và ghi chú thoại."
     },
     {
       "id": "native.apple.85345f18204d67ec",
-      "source": "OpenClaw may use motion data to support device-aware interactions and automations.",
-      "translated": "OpenClaw có thể sử dụng dữ liệu chuyển động để hỗ trợ các tương tác và tự động hóa nhận biết thiết bị."
+      "source": "Operator may use motion data to support device-aware interactions and automations.",
+      "translated": "Operator có thể sử dụng dữ liệu chuyển động để hỗ trợ các tương tác và tự động hóa nhận biết thiết bị."
     },
     {
       "id": "native.apple.c86f7ba5b3762eb7",
-      "source": "After you enable Health Summaries, OpenClaw reads steps, sleep, resting heart rate, and workouts to share requested aggregates with your configured AI provider.",
-      "translated": "Sau khi bạn bật Tóm tắt sức khỏe, OpenClaw sẽ đọc số bước chân, giấc ngủ, nhịp tim lúc nghỉ và bài tập để chia sẻ dữ liệu tổng hợp được yêu cầu với nhà cung cấp AI mà bạn đã cấu hình."
+      "source": "After you enable Health Summaries, Operator reads steps, sleep, resting heart rate, and workouts to share requested aggregates with your configured AI provider.",
+      "translated": "Sau khi bạn bật Tóm tắt sức khỏe, Operator sẽ đọc số bước chân, giấc ngủ, nhịp tim lúc nghỉ và bài tập để chia sẻ dữ liệu tổng hợp được yêu cầu với nhà cung cấp AI mà bạn đã cấu hình."
     },
     {
       "id": "native.apple.89de9bad79f17038",
-      "source": "OpenClaw does not write or change Health data. Health Summaries read steps, sleep, resting heart rate, and workouts to share requested aggregates with your configured AI provider.",
-      "translated": "OpenClaw không ghi hoặc thay đổi dữ liệu Sức khỏe. Tóm tắt Sức khỏe đọc số bước, giấc ngủ, nhịp tim khi nghỉ và các bài tập để chia sẻ các số liệu tổng hợp được yêu cầu với nhà cung cấp AI mà bạn đã cấu hình."
+      "source": "Operator does not write or change Health data. Health Summaries read steps, sleep, resting heart rate, and workouts to share requested aggregates with your configured AI provider.",
+      "translated": "Operator không ghi hoặc thay đổi dữ liệu Sức khỏe. Tóm tắt Sức khỏe đọc số bước, giấc ngủ, nhịp tim khi nghỉ và các bài tập để chia sẻ các số liệu tổng hợp được yêu cầu với nhà cung cấp AI mà bạn đã cấu hình."
     },
     {
       "id": "native.apple.40ed4259ec869f1b",
-      "source": "OpenClaw lets your assistant read photos you allow and lets you choose photos to share.",
-      "translated": "OpenClaw cho phép trợ lý của bạn đọc những ảnh bạn cho phép và cho phép bạn chọn ảnh để chia sẻ."
+      "source": "Operator lets your assistant read photos you allow and lets you choose photos to share.",
+      "translated": "Operator cho phép trợ lý của bạn đọc những ảnh bạn cho phép và cho phép bạn chọn ảnh để chia sẻ."
     },
     {
       "id": "native.apple.81b673f0c6fc4371",
-      "source": "OpenClaw uses your reminders to list, add, and complete tasks when you enable reminders access.",
-      "translated": "OpenClaw sử dụng lời nhắc của bạn để liệt kê, thêm và hoàn tất tác vụ khi bạn bật quyền truy cập lời nhắc."
+      "source": "Operator uses your reminders to list, add, and complete tasks when you enable reminders access.",
+      "translated": "Operator sử dụng lời nhắc của bạn để liệt kê, thêm và hoàn tất tác vụ khi bạn bật quyền truy cập lời nhắc."
     },
     {
       "id": "native.apple.2275552c26460945",
-      "source": "OpenClaw uses on-device speech recognition for talk mode and voice wake.",
-      "translated": "OpenClaw sử dụng nhận dạng giọng nói trên thiết bị cho chế độ trò chuyện và đánh thức bằng giọng nói."
+      "source": "Operator uses on-device speech recognition for talk mode and voice wake.",
+      "translated": "Operator sử dụng nhận dạng giọng nói trên thiết bị cho chế độ trò chuyện và đánh thức bằng giọng nói."
     },
     {
       "id": "native.apple.46111fe0569488ab",
@@ -14165,18 +14165,18 @@
     },
     {
       "id": "native.apple.2dc593065171c201",
-      "source": "Location sharing is disabled in OpenClaw. Location Services are off in iOS Settings.",
-      "translated": "Chia sẻ vị trí đã bị tắt trong OpenClaw. Dịch vụ định vị đang tắt trong Cài đặt iOS."
+      "source": "Location sharing is disabled in Operator. Location Services are off in iOS Settings.",
+      "translated": "Chia sẻ vị trí đã bị tắt trong Operator. Dịch vụ định vị đang tắt trong Cài đặt iOS."
     },
     {
       "id": "native.apple.1dc990a9cc0500c5",
-      "source": "Location sharing is disabled in OpenClaw. iOS currently allows Always.",
-      "translated": "Chia sẻ vị trí đã bị tắt trong OpenClaw. iOS hiện cho phép Luôn luôn."
+      "source": "Location sharing is disabled in Operator. iOS currently allows Always.",
+      "translated": "Chia sẻ vị trí đã bị tắt trong Operator. iOS hiện cho phép Luôn luôn."
     },
     {
       "id": "native.apple.9a4e858d2b218d41",
-      "source": "Location sharing is disabled in OpenClaw. iOS currently allows While Using.",
-      "translated": "Chia sẻ vị trí đã bị tắt trong OpenClaw. iOS hiện cho phép Khi sử dụng."
+      "source": "Location sharing is disabled in Operator. iOS currently allows While Using.",
+      "translated": "Chia sẻ vị trí đã bị tắt trong Operator. iOS hiện cho phép Khi sử dụng."
     },
     {
       "id": "native.apple.ab481eb11214797f",
@@ -14250,8 +14250,8 @@
     },
     {
       "id": "native.apple.633f011b81108a8c",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
-      "translated": "OpenClaw không thể xác định quyền vị trí iOS hiện tại."
+      "source": "Operator cannot determine the current iOS location permission.",
+      "translated": "Operator không thể xác định quyền vị trí iOS hiện tại."
     },
     {
       "id": "native.apple.e5673992d3aeac64",
@@ -14280,8 +14280,8 @@
     },
     {
       "id": "native.apple.f6b19113d5d8e7db",
-      "source": "OpenClaw cannot determine the current iOS location permission.",
-      "translated": "OpenClaw không thể xác định quyền vị trí iOS hiện tại."
+      "source": "Operator cannot determine the current iOS location permission.",
+      "translated": "Operator không thể xác định quyền vị trí iOS hiện tại."
     },
     {
       "id": "native.apple.2892e5b02c6789f0",
@@ -14555,8 +14555,8 @@
     },
     {
       "id": "native.apple.d4d9568dca8ceaa9",
-      "source": "The connected OpenClaw agent can use device capabilities you enable.",
-      "translated": "Tác nhân OpenClaw được kết nối có thể sử dụng các khả năng của thiết bị mà bạn bật."
+      "source": "The connected Operator agent can use device capabilities you enable.",
+      "translated": "Tác nhân Operator được kết nối có thể sử dụng các khả năng của thiết bị mà bạn bật."
     },
     {
       "id": "native.apple.fdd93eb6b6eef525",
@@ -14580,8 +14580,8 @@
     },
     {
       "id": "native.apple.e8b4dc00cd23ae73",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.9b414850baa618da",
@@ -14755,8 +14755,8 @@
     },
     {
       "id": "native.apple.559dccb9f9dfbbad",
-      "source": "OpenClaw is checking gateway and node access.",
-      "translated": "OpenClaw đang kiểm tra quyền truy cập Gateway và nút."
+      "source": "Operator is checking gateway and node access.",
+      "translated": "Operator đang kiểm tra quyền truy cập Gateway và nút."
     },
     {
       "id": "native.apple.4404f435fb496b62",
@@ -14775,13 +14775,13 @@
     },
     {
       "id": "native.apple.da636328de464a40",
-      "source": "Request ID: check `openclaw devices list`.",
-      "translated": "ID yêu cầu: kiểm tra `openclaw devices list`."
+      "source": "Request ID: check `operator devices list`.",
+      "translated": "ID yêu cầu: kiểm tra `operator devices list`."
     },
     {
       "id": "native.apple.d5a5f13a1dd28c9d",
-      "source": "Approve this device on the gateway.\n1) `%1$@`\n2) `/pair approve` in your OpenClaw chat\n%2$@\nOpenClaw will also retry automatically when you return to this app.",
-      "translated": "Phê duyệt thiết bị này trên Gateway.\n1) `%1$@`\n2) `/pair approve` trong cuộc trò chuyện OpenClaw của bạn\n%2$@\nOpenClaw cũng sẽ tự động thử lại khi bạn quay lại ứng dụng này."
+      "source": "Approve this device on the gateway.\n1) `%1$@`\n2) `/pair approve` in your Operator chat\n%2$@\nOperator will also retry automatically when you return to this app.",
+      "translated": "Phê duyệt thiết bị này trên Gateway.\n1) `%1$@`\n2) `/pair approve` trong cuộc trò chuyện Operator của bạn\n%2$@\nOperator cũng sẽ tự động thử lại khi bạn quay lại ứng dụng này."
     },
     {
       "id": "native.apple.af3890b1e07c3084",
@@ -14865,8 +14865,8 @@
     },
     {
       "id": "native.apple.5b46de1ccb06852b",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.0e07e7044608f954",
@@ -14990,13 +14990,13 @@
     },
     {
       "id": "native.apple.c23d35de8d70863f",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.9e781c0183b79a76",
-      "source": "OpenClaw %@",
-      "translated": "OpenClaw %@"
+      "source": "Operator %@",
+      "translated": "Operator %@"
     },
     {
       "id": "native.apple.f4eea6473f43388d",
@@ -15085,8 +15085,8 @@
     },
     {
       "id": "native.apple.a55a43940452b04b",
-      "source": "OpenClaw iOS",
-      "translated": "OpenClaw iOS"
+      "source": "Operator iOS",
+      "translated": "Operator iOS"
     },
     {
       "id": "native.apple.35b6f99d627028f6",
@@ -15340,8 +15340,8 @@
     },
     {
       "id": "native.apple.4ebb39f445d7dbff",
-      "source": "OpenClaw reacts when any trigger appears in a transcription. Keep them short to avoid false positives.",
-      "translated": "OpenClaw phản hồi khi bất kỳ cụm kích hoạt nào xuất hiện trong bản chép lời. Hãy giữ chúng ngắn gọn để tránh nhận nhầm."
+      "source": "Operator reacts when any trigger appears in a transcription. Keep them short to avoid false positives.",
+      "translated": "Operator phản hồi khi bất kỳ cụm kích hoạt nào xuất hiện trong bản chép lời. Hãy giữ chúng ngắn gọn để tránh nhận nhầm."
     },
     {
       "id": "native.apple.994760420a194561",
@@ -15615,18 +15615,18 @@
     },
     {
       "id": "native.apple.5b40cb9cf4ee4d4f",
-      "source": "Asking OpenClaw",
-      "translated": "Đang hỏi OpenClaw"
+      "source": "Asking Operator",
+      "translated": "Đang hỏi Operator"
     },
     {
       "id": "native.apple.34531893ae6091b1",
-      "source": "Still asking OpenClaw",
-      "translated": "Vẫn đang hỏi OpenClaw"
+      "source": "Still asking Operator",
+      "translated": "Vẫn đang hỏi Operator"
     },
     {
       "id": "native.apple.027ab0bbb4553124",
-      "source": "Updating OpenClaw",
-      "translated": "Đang cập nhật OpenClaw"
+      "source": "Updating Operator",
+      "translated": "Đang cập nhật Operator"
     },
     {
       "id": "native.apple.471dc394d6b9e443",
@@ -15680,8 +15680,8 @@
     },
     {
       "id": "native.apple.deb282fd61fd2de3",
-      "source": "OpenClaw unavailable",
-      "translated": "OpenClaw không khả dụng"
+      "source": "Operator unavailable",
+      "translated": "Operator không khả dụng"
     },
     {
       "id": "native.apple.f703391677039fa3",
@@ -15800,13 +15800,13 @@
     },
     {
       "id": "native.apple.1065cfe92d7c1eb6",
-      "source": "Asking OpenClaw",
-      "translated": "Đang hỏi OpenClaw"
+      "source": "Asking Operator",
+      "translated": "Đang hỏi Operator"
     },
     {
       "id": "native.apple.d2db26b3bb266491",
-      "source": "Updating OpenClaw",
-      "translated": "Đang cập nhật OpenClaw"
+      "source": "Updating Operator",
+      "translated": "Đang cập nhật Operator"
     },
     {
       "id": "native.apple.8a944b06087fe8ef",
@@ -15885,8 +15885,8 @@
     },
     {
       "id": "native.apple.12a4a51d251f65c0",
-      "source": "OpenClaw connects this Apple Watch directly to your Gateway on trusted local networks.",
-      "translated": "OpenClaw kết nối Apple Watch này trực tiếp với Gateway của bạn trên các mạng cục bộ đáng tin cậy."
+      "source": "Operator connects this Apple Watch directly to your Gateway on trusted local networks.",
+      "translated": "Operator kết nối Apple Watch này trực tiếp với Gateway của bạn trên các mạng cục bộ đáng tin cậy."
     },
     {
       "id": "native.apple.130180e0065c80fc",
@@ -15935,8 +15935,8 @@
     },
     {
       "id": "native.apple.32473b10033ac0f4",
-      "source": "Reconnects when OpenClaw is active",
-      "translated": "Kết nối lại khi OpenClaw đang hoạt động"
+      "source": "Reconnects when Operator is active",
+      "translated": "Kết nối lại khi Operator đang hoạt động"
     },
     {
       "id": "native.apple.760267006777c454",
@@ -16225,8 +16225,8 @@
     },
     {
       "id": "native.apple.ca02fd2965efe74e",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.1ba2f03dc98103c0",
@@ -16375,8 +16375,8 @@
     },
     {
       "id": "native.apple.c7d87356e6cdb374",
-      "source": "Uses Wi-Fi or cellular while OpenClaw is active",
-      "translated": "Sử dụng Wi-Fi hoặc di động khi OpenClaw đang hoạt động"
+      "source": "Uses Wi-Fi or cellular while Operator is active",
+      "translated": "Sử dụng Wi-Fi hoặc di động khi Operator đang hoạt động"
     },
     {
       "id": "native.apple.08583448d9b2455e",
@@ -16565,8 +16565,8 @@
     },
     {
       "id": "native.apple.3fdc651e507de84b",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.c1de056da9ee1b27",
@@ -16605,8 +16605,8 @@
     },
     {
       "id": "native.apple.b816e4b9e492ae6c",
-      "source": "Message OpenClaw",
-      "translated": "Nhắn tin cho OpenClaw"
+      "source": "Message Operator",
+      "translated": "Nhắn tin cho Operator"
     },
     {
       "id": "native.apple.502a884cec1f0d5d",
@@ -16730,8 +16730,8 @@
     },
     {
       "id": "native.apple.5ac0c79487a492b4",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.95b5730738a28d71",
@@ -16775,8 +16775,8 @@
     },
     {
       "id": "native.apple.4ec07761308f7f50",
-      "source": "© 2026 OpenClaw Foundation — MIT License.",
-      "translated": "© 2026 OpenClaw Foundation — Giấy phép MIT."
+      "source": "© 2026 Operator Foundation — MIT License.",
+      "translated": "© 2026 Operator Foundation — Giấy phép MIT."
     },
     {
       "id": "native.apple.37661ff1af405580",
@@ -16845,28 +16845,28 @@
     },
     {
       "id": "native.apple.edfef1f4b5cb081f",
-      "source": "OpenClaw couldn’t be installed in Applications. Move it there manually, then open that copy.",
-      "translated": "Không thể cài đặt OpenClaw trong Applications. Hãy chuyển nó vào đó thủ công, sau đó mở bản sao đó."
+      "source": "Operator couldn’t be installed in Applications. Move it there manually, then open that copy.",
+      "translated": "Không thể cài đặt Operator trong Applications. Hãy chuyển nó vào đó thủ công, sau đó mở bản sao đó."
     },
     {
       "id": "native.apple.7f86f5acf3d32ec2",
-      "source": "Replace the older OpenClaw in Applications?",
-      "translated": "Thay thế OpenClaw cũ hơn trong Applications?"
+      "source": "Replace the older Operator in Applications?",
+      "translated": "Thay thế Operator cũ hơn trong Applications?"
     },
     {
       "id": "native.apple.088b39cc34b44e54",
-      "source": "Install OpenClaw in Applications?",
-      "translated": "Cài đặt OpenClaw trong Applications?"
+      "source": "Install Operator in Applications?",
+      "translated": "Cài đặt Operator trong Applications?"
     },
     {
       "id": "native.apple.c8898d685457401f",
-      "source": "This copy is newer than the installed app. OpenClaw will replace it and reopen from Applications.",
-      "translated": "Bản sao này mới hơn ứng dụng đã cài. OpenClaw sẽ thay thế nó và mở lại từ Applications."
+      "source": "This copy is newer than the installed app. Operator will replace it and reopen from Applications.",
+      "translated": "Bản sao này mới hơn ứng dụng đã cài. Operator sẽ thay thế nó và mở lại từ Applications."
     },
     {
       "id": "native.apple.a77a46d0ca32551f",
-      "source": "OpenClaw will copy itself to Applications and reopen there so updates and launch at login stay reliable.",
-      "translated": "OpenClaw sẽ tự sao chép vào Applications và mở lại ở đó để việc cập nhật và khởi chạy khi đăng nhập luôn ổn định."
+      "source": "Operator will copy itself to Applications and reopen there so updates and launch at login stay reliable.",
+      "translated": "Operator sẽ tự sao chép vào Applications và mở lại ở đó để việc cập nhật và khởi chạy khi đăng nhập luôn ổn định."
     },
     {
       "id": "native.apple.22ebb7b228c8275a",
@@ -16880,8 +16880,8 @@
     },
     {
       "id": "native.apple.9ac444c15bd52f0e",
-      "source": "OpenClaw is installed in Applications, but couldn’t reopen automatically. Open it there manually.",
-      "translated": "OpenClaw đã được cài đặt trong Applications, nhưng không thể mở lại tự động. Hãy mở nó ở đó thủ công."
+      "source": "Operator is installed in Applications, but couldn’t reopen automatically. Open it there manually.",
+      "translated": "Operator đã được cài đặt trong Applications, nhưng không thể mở lại tự động. Hãy mở nó ở đó thủ công."
     },
     {
       "id": "native.apple.d1faee12838b677f",
@@ -17000,18 +17000,18 @@
     },
     {
       "id": "native.apple.cfc2509b8bbcf1d7",
-      "source": "OpenClaw Gateway \\(version) is ready.",
-      "translated": "OpenClaw Gateway \\(version) đã sẵn sàng."
+      "source": "Operator Gateway \\(version) is ready.",
+      "translated": "Operator Gateway \\(version) đã sẵn sàng."
     },
     {
       "id": "native.apple.9b767e46895714f9",
-      "source": "OpenClaw Gateway is not installed yet.",
-      "translated": "OpenClaw Gateway chưa được cài đặt."
+      "source": "Operator Gateway is not installed yet.",
+      "translated": "Operator Gateway chưa được cài đặt."
     },
     {
       "id": "native.apple.b4dc58a1b294e140",
-      "source": "The OpenClaw Gateway could not be verified. Setup will repair it.",
-      "translated": "Không thể xác minh OpenClaw Gateway. Quá trình thiết lập sẽ sửa lỗi này."
+      "source": "The Operator Gateway could not be verified. Setup will repair it.",
+      "translated": "Không thể xác minh Operator Gateway. Quá trình thiết lập sẽ sửa lỗi này."
     },
     {
       "id": "native.apple.4088056ae7b0f3b4",
@@ -17020,13 +17020,13 @@
     },
     {
       "id": "native.apple.86e7c86924ad0c70",
-      "source": "Repairing the OpenClaw Gateway update…",
-      "translated": "Đang sửa chữa bản cập nhật OpenClaw Gateway…"
+      "source": "Repairing the Operator Gateway update…",
+      "translated": "Đang sửa chữa bản cập nhật Operator Gateway…"
     },
     {
       "id": "native.apple.b59713e1e3e7ee65",
-      "source": "Updating the OpenClaw Gateway to \\(targetVersion)…",
-      "translated": "Đang cập nhật OpenClaw Gateway lên \\(targetVersion)…"
+      "source": "Updating the Operator Gateway to \\(targetVersion)…",
+      "translated": "Đang cập nhật Operator Gateway lên \\(targetVersion)…"
     },
     {
       "id": "native.apple.7772913c171b78ac",
@@ -17045,8 +17045,8 @@
     },
     {
       "id": "native.apple.66f44c526206f5de",
-      "source": "OpenClaw Gateway \\(installedVersion) is installed.",
-      "translated": "OpenClaw Gateway \\(installedVersion) đã được cài đặt."
+      "source": "Operator Gateway \\(installedVersion) is installed.",
+      "translated": "Operator Gateway \\(installedVersion) đã được cài đặt."
     },
     {
       "id": "native.apple.6f14c557e2573526",
@@ -17130,8 +17130,8 @@
     },
     {
       "id": "native.apple.81435e60c0b78093",
-      "source": "OpenClaw could not load editable settings for this channel.",
-      "translated": "OpenClaw không thể tải cài đặt có thể chỉnh sửa cho kênh này."
+      "source": "Operator could not load editable settings for this channel.",
+      "translated": "Operator không thể tải cài đặt có thể chỉnh sửa cho kênh này."
     },
     {
       "id": "native.apple.f74dfc887ee4f936",
@@ -17200,8 +17200,8 @@
     },
     {
       "id": "native.apple.60f2b09010a7809b",
-      "source": "Config invalid; fix it in ~/.openclaw/openclaw.json.",
-      "translated": "Config invalid; fix it in ~/.openclaw/openclaw.json."
+      "source": "Config invalid; fix it in ~/.operator/operator.json.",
+      "translated": "Config invalid; fix it in ~/.operator/operator.json."
     },
     {
       "id": "native.apple.313dabb10c37e00c",
@@ -17355,8 +17355,8 @@
     },
     {
       "id": "native.apple.8103e662c0e40760",
-      "source": "Edit ~/.openclaw/openclaw.json using the schema-driven form.",
-      "translated": "Chỉnh sửa ~/.openclaw/openclaw.json bằng biểu mẫu dựa trên schema."
+      "source": "Edit ~/.operator/operator.json using the schema-driven form.",
+      "translated": "Chỉnh sửa ~/.operator/operator.json bằng biểu mẫu dựa trên schema."
     },
     {
       "id": "native.apple.a3465ec90e435ea9",
@@ -17605,8 +17605,8 @@
     },
     {
       "id": "native.apple.df6243155293f80b",
-      "source": "What should OpenClaw do?",
-      "translated": "OpenClaw nên làm gì?"
+      "source": "What should Operator do?",
+      "translated": "Operator nên làm gì?"
     },
     {
       "id": "native.apple.81b5ba441a230f07",
@@ -17950,8 +17950,8 @@
     },
     {
       "id": "native.apple.d8b3e55c41a77627",
-      "source": "When enabled, OpenClaw won't install or manage \\(gatewayLaunchdLabel). It will only attach to an existing Gateway.",
-      "translated": "Khi bật, OpenClaw sẽ không cài đặt hoặc quản lý \\(gatewayLaunchdLabel). Ứng dụng sẽ chỉ đính kèm vào Gateway hiện có."
+      "source": "When enabled, Operator won't install or manage \\(gatewayLaunchdLabel). It will only attach to an existing Gateway.",
+      "translated": "Khi bật, Operator sẽ không cài đặt hoặc quản lý \\(gatewayLaunchdLabel). Ứng dụng sẽ chỉ đính kèm vào Gateway hiện có."
     },
     {
       "id": "native.apple.15e528c55a96394f",
@@ -18035,8 +18035,8 @@
     },
     {
       "id": "native.apple.f8e4e2b25dbdbd44",
-      "source": "Deep links (openclaw://…) are always enabled; the key controls unattended runs.",
-      "translated": "Deep links (openclaw://…) luôn được bật; khóa kiểm soát các lần chạy không cần giám sát."
+      "source": "Deep links (operator://…) are always enabled; the key controls unattended runs.",
+      "translated": "Deep links (operator://…) luôn được bật; khóa kiểm soát các lần chạy không cần giám sát."
     },
     {
       "id": "native.apple.aeba5ae43a292c55",
@@ -18085,8 +18085,8 @@
     },
     {
       "id": "native.apple.5437c7d545b749ca",
-      "source": "Writes a rotating, local-only log under ~/Library/Logs/OpenClaw/. Enable only while actively debugging.",
-      "translated": "Writes a rotating, local-only log under ~/Library/Logs/OpenClaw/. Enable only while actively debugging."
+      "source": "Writes a rotating, local-only log under ~/Library/Logs/Operator/. Enable only while actively debugging.",
+      "translated": "Writes a rotating, local-only log under ~/Library/Logs/Operator/. Enable only while actively debugging."
     },
     {
       "id": "native.apple.5b35a89bea603457",
@@ -18135,12 +18135,12 @@
     },
     {
       "id": "native.apple.5e9e8bf8e35c48ef",
-      "source": "OpenClaw project root",
-      "translated": "Thư mục gốc dự án OpenClaw"
+      "source": "Operator project root",
+      "translated": "Thư mục gốc dự án Operator"
     },
     {
       "id": "native.apple.8b01a6daf7a7b94e",
-      "source": "Path to openclaw repo",
+      "source": "Path to operator repo",
       "translated": "Đường dẫn đến repo openclaw"
     },
     {
@@ -18170,8 +18170,8 @@
     },
     {
       "id": "native.apple.a8154f17cda71415",
-      "source": "Used by the CLI session loader; stored in ~/.openclaw/openclaw.json.",
-      "translated": "Được dùng bởi trình tải phiên CLI; được lưu trong ~/.openclaw/openclaw.json."
+      "source": "Used by the CLI session loader; stored in ~/.operator/operator.json.",
+      "translated": "Được dùng bởi trình tải phiên CLI; được lưu trong ~/.operator/operator.json."
     },
     {
       "id": "native.apple.3e472353e27107af",
@@ -18200,13 +18200,13 @@
     },
     {
       "id": "native.apple.3307505d507faf31",
-      "source": "Note: macOS may require restarting OpenClaw after enabling Accessibility or Screen Recording.",
-      "translated": "Lưu ý: macOS có thể yêu cầu khởi động lại OpenClaw sau khi bật Trợ năng hoặc Ghi màn hình."
+      "source": "Note: macOS may require restarting Operator after enabling Accessibility or Screen Recording.",
+      "translated": "Lưu ý: macOS có thể yêu cầu khởi động lại Operator sau khi bật Trợ năng hoặc Ghi màn hình."
     },
     {
       "id": "native.apple.e52d463773aef1e1",
-      "source": "Restart OpenClaw",
-      "translated": "Khởi động lại OpenClaw"
+      "source": "Restart Operator",
+      "translated": "Khởi động lại Operator"
     },
     {
       "id": "native.apple.e299e77f3ad75a75",
@@ -18325,13 +18325,13 @@
     },
     {
       "id": "native.apple.a8af393b84d63ab8",
-      "source": "OpenClaw is paused",
-      "translated": "OpenClaw đang tạm dừng"
+      "source": "Operator is paused",
+      "translated": "Operator đang tạm dừng"
     },
     {
       "id": "native.apple.7ba1542539c0d40b",
-      "source": "Unpause OpenClaw to run agent actions.",
-      "translated": "Bỏ tạm dừng OpenClaw để chạy các hành động của agent."
+      "source": "Unpause Operator to run agent actions.",
+      "translated": "Bỏ tạm dừng Operator để chạy các hành động của agent."
     },
     {
       "id": "native.apple.7c1e1dbfde976ab9",
@@ -18355,8 +18355,8 @@
     },
     {
       "id": "native.apple.50f1211af2a1945e",
-      "source": "Run OpenClaw agent?",
-      "translated": "Chạy agent OpenClaw?"
+      "source": "Run Operator agent?",
+      "translated": "Chạy agent Operator?"
     },
     {
       "id": "native.apple.4f3841d5de0135c4",
@@ -18440,8 +18440,8 @@
     },
     {
       "id": "native.apple.66ad783199ef9729",
-      "source": "Discover OpenClaw gateways on your LAN",
-      "translated": "Khám phá các gateway OpenClaw trên mạng LAN của bạn"
+      "source": "Discover Operator gateways on your LAN",
+      "translated": "Khám phá các gateway Operator trên mạng LAN của bạn"
     },
     {
       "id": "native.apple.110f6e64e25dcd2e",
@@ -18485,8 +18485,8 @@
     },
     {
       "id": "native.apple.1c4fca89983d7487",
-      "source": "Everyday OpenClaw app behavior.",
-      "translated": "Hành vi hằng ngày của ứng dụng OpenClaw."
+      "source": "Everyday Operator app behavior.",
+      "translated": "Hành vi hằng ngày của ứng dụng Operator."
     },
     {
       "id": "native.apple.7d03158a40ddb60a",
@@ -18500,13 +18500,13 @@
     },
     {
       "id": "native.apple.405e74c96498b7c0",
-      "source": "Automatically start OpenClaw after you sign in.",
-      "translated": "Tự động khởi động OpenClaw sau khi bạn đăng nhập."
+      "source": "Automatically start Operator after you sign in.",
+      "translated": "Tự động khởi động Operator sau khi bạn đăng nhập."
     },
     {
       "id": "native.apple.8b74758a60f78642",
-      "source": "Move OpenClaw to Applications before enabling launch at login.",
-      "translated": "Di chuyển OpenClaw vào Applications trước khi bật khởi động khi đăng nhập."
+      "source": "Move Operator to Applications before enabling launch at login.",
+      "translated": "Di chuyển Operator vào Applications trước khi bật khởi động khi đăng nhập."
     },
     {
       "id": "native.apple.927819c087ca3520",
@@ -18515,8 +18515,8 @@
     },
     {
       "id": "native.apple.e7a0819bd2f4e1dc",
-      "source": "Keep OpenClaw visible in the Dock. When off, windows still show the Dock icon while open.",
-      "translated": "Giữ OpenClaw hiển thị trong Dock. Khi tắt, các cửa sổ vẫn hiển thị biểu tượng Dock khi đang mở."
+      "source": "Keep Operator visible in the Dock. When off, windows still show the Dock icon while open.",
+      "translated": "Giữ Operator hiển thị trong Dock. Khi tắt, các cửa sổ vẫn hiển thị biểu tượng Dock khi đang mở."
     },
     {
       "id": "native.apple.af23f7b5fb03a877",
@@ -18625,13 +18625,13 @@
     },
     {
       "id": "native.apple.64e197a4a8b384ef",
-      "source": "OpenClaw paused",
-      "translated": "OpenClaw đã tạm dừng"
+      "source": "Operator paused",
+      "translated": "Operator đã tạm dừng"
     },
     {
       "id": "native.apple.7fe6df69d8050832",
-      "source": "OpenClaw active",
-      "translated": "OpenClaw đang hoạt động"
+      "source": "Operator active",
+      "translated": "Operator đang hoạt động"
     },
     {
       "id": "native.apple.2f4258fa73e04344",
@@ -18685,8 +18685,8 @@
     },
     {
       "id": "native.apple.8021dcd7963a4cc2",
-      "source": "OpenClaw starts and monitors the Gateway on this Mac.",
-      "translated": "OpenClaw khởi động và giám sát Gateway trên máy Mac này."
+      "source": "Operator starts and monitors the Gateway on this Mac.",
+      "translated": "Operator khởi động và giám sát Gateway trên máy Mac này."
     },
     {
       "id": "native.apple.fe2a790f28ffd1ae",
@@ -18700,8 +18700,8 @@
     },
     {
       "id": "native.apple.d261da13966fa812",
-      "source": "OpenClaw runs",
-      "translated": "OpenClaw chạy"
+      "source": "Operator runs",
+      "translated": "Operator chạy"
     },
     {
       "id": "native.apple.397850fa5e803f53",
@@ -18810,8 +18810,8 @@
     },
     {
       "id": "native.apple.09f99e863e081f9f",
-      "source": "/Applications/OpenClaw.app/.../openclaw",
-      "translated": "/Applications/OpenClaw.app/.../openclaw"
+      "source": "/Applications/Operator.app/.../openclaw",
+      "translated": "/Applications/Operator.app/.../openclaw"
     },
     {
       "id": "native.apple.f588f7dad51aae2e",
@@ -18885,8 +18885,8 @@
     },
     {
       "id": "native.apple.24aa092829f9a3b1",
-      "source": "The current gateway.remote.token value is not plain text. OpenClaw for macOS cannot use it directly; enter a plaintext token here to replace it.",
-      "translated": "Giá trị gateway.remote.token hiện tại không phải là văn bản thuần. OpenClaw cho macOS không thể sử dụng trực tiếp; hãy nhập token dạng văn bản thuần tại đây để thay thế."
+      "source": "The current gateway.remote.token value is not plain text. Operator for macOS cannot use it directly; enter a plaintext token here to replace it.",
+      "translated": "Giá trị gateway.remote.token hiện tại không phải là văn bản thuần. Operator cho macOS không thể sử dụng trực tiếp; hãy nhập token dạng văn bản thuần tại đây để thay thế."
     },
     {
       "id": "native.apple.d0b21bc12ab63cad",
@@ -19025,8 +19025,8 @@
     },
     {
       "id": "native.apple.876c066efa88aee3",
-      "source": "Latest presence beacons from OpenClaw nodes. Updated periodically.",
-      "translated": "Các tín hiệu hiện diện mới nhất từ các nút OpenClaw. Được cập nhật định kỳ."
+      "source": "Latest presence beacons from Operator nodes. Updated periodically.",
+      "translated": "Các tín hiệu hiện diện mới nhất từ các nút Operator. Được cập nhật định kỳ."
     },
     {
       "id": "native.apple.8a6bcd51fd9f1f62",
@@ -19130,13 +19130,13 @@
     },
     {
       "id": "native.apple.13a7356f48278757",
-      "source": "OpenClaw - Voice Wake live meter active",
-      "translated": "OpenClaw - đồng hồ đo trực tiếp Đánh thức bằng giọng nói đang hoạt động"
+      "source": "Operator - Voice Wake live meter active",
+      "translated": "Operator - đồng hồ đo trực tiếp Đánh thức bằng giọng nói đang hoạt động"
     },
     {
       "id": "native.apple.fae2cf18519da0d5",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.ef59188264be95d4",
@@ -19240,8 +19240,8 @@
     },
     {
       "id": "native.apple.fbab65790d6eca89",
-      "source": "About OpenClaw",
-      "translated": "Giới thiệu về OpenClaw"
+      "source": "About Operator",
+      "translated": "Giới thiệu về Operator"
     },
     {
       "id": "native.apple.14c8f4b1a57569f3",
@@ -19255,18 +19255,18 @@
     },
     {
       "id": "native.apple.5021ed413c045620",
-      "source": "OpenClaw Not Configured",
-      "translated": "OpenClaw chưa được cấu hình"
+      "source": "Operator Not Configured",
+      "translated": "Operator chưa được cấu hình"
     },
     {
       "id": "native.apple.4d10ab5feb4add3f",
-      "source": "Remote OpenClaw Active",
-      "translated": "OpenClaw từ xa đang hoạt động"
+      "source": "Remote Operator Active",
+      "translated": "Operator từ xa đang hoạt động"
     },
     {
       "id": "native.apple.b49dea5c1fdb3dd3",
-      "source": "OpenClaw Active",
-      "translated": "OpenClaw đang hoạt động"
+      "source": "Operator Active",
+      "translated": "Operator đang hoạt động"
     },
     {
       "id": "native.apple.1df24a30d7963640",
@@ -19545,8 +19545,8 @@
     },
     {
       "id": "native.apple.e3e27d22fd2312a2",
-      "source": "OpenClaw will check again before changing any inference settings.",
-      "translated": "OpenClaw sẽ kiểm tra lại trước khi thay đổi bất kỳ cài đặt suy luận nào."
+      "source": "Operator will check again before changing any inference settings.",
+      "translated": "Operator sẽ kiểm tra lại trước khi thay đổi bất kỳ cài đặt suy luận nào."
     },
     {
       "id": "native.apple.a0a8f45082d0ba99",
@@ -19585,8 +19585,8 @@
     },
     {
       "id": "native.apple.a0431b20c0650139",
-      "source": "Need help? Chat with OpenClaw",
-      "translated": "Cần trợ giúp? Trò chuyện với OpenClaw"
+      "source": "Need help? Chat with Operator",
+      "translated": "Cần trợ giúp? Trò chuyện với Operator"
     },
     {
       "id": "native.apple.6526ced182e1fe50",
@@ -19645,8 +19645,8 @@
     },
     {
       "id": "native.apple.4a1e5a5600b907f4",
-      "source": "Use an existing subscription or provider account. OpenClaw opens the provider’s own sign-in flow, then verifies it with a real reply.",
-      "translated": "Dùng gói đăng ký hoặc tài khoản nhà cung cấp hiện có. OpenClaw mở luồng đăng nhập riêng của nhà cung cấp, rồi xác minh bằng một phản hồi thực."
+      "source": "Use an existing subscription or provider account. Operator opens the provider’s own sign-in flow, then verifies it with a real reply.",
+      "translated": "Dùng gói đăng ký hoặc tài khoản nhà cung cấp hiện có. Operator mở luồng đăng nhập riêng của nhà cung cấp, rồi xác minh bằng một phản hồi thực."
     },
     {
       "id": "native.apple.14b23c357d7a9eff",
@@ -19765,8 +19765,8 @@
     },
     {
       "id": "native.apple.e874bd0fad63f012",
-      "source": "OpenClaw — setup helper",
-      "translated": "OpenClaw — trợ lý thiết lập"
+      "source": "Operator — setup helper",
+      "translated": "Operator — trợ lý thiết lập"
     },
     {
       "id": "native.apple.bea852c8622c8214",
@@ -19800,18 +19800,18 @@
     },
     {
       "id": "native.apple.b92f94ddc6bbc8e5",
-      "source": "OpenClaw was interrupted. Restart to try again.",
-      "translated": "OpenClaw đã bị gián đoạn. Hãy khởi động lại để thử lần nữa."
+      "source": "Operator was interrupted. Restart to try again.",
+      "translated": "Operator đã bị gián đoạn. Hãy khởi động lại để thử lần nữa."
     },
     {
       "id": "native.apple.829845818e97978a",
-      "source": "The Gateway connection changed. Restart OpenClaw to reconnect.",
-      "translated": "Kết nối Gateway đã thay đổi. Hãy khởi động lại OpenClaw để kết nối lại."
+      "source": "The Gateway connection changed. Restart Operator to reconnect.",
+      "translated": "Kết nối Gateway đã thay đổi. Hãy khởi động lại Operator để kết nối lại."
     },
     {
       "id": "native.apple.012861f82eff0ca9",
-      "source": "OpenClaw is working…",
-      "translated": "OpenClaw đang hoạt động…"
+      "source": "Operator is working…",
+      "translated": "Operator đang hoạt động…"
     },
     {
       "id": "native.apple.2f7ad21b747fbc15",
@@ -19825,8 +19825,8 @@
     },
     {
       "id": "native.apple.35a542956f4f5497",
-      "source": "Reply to OpenClaw… (yes sets everything up)",
-      "translated": "Trả lời OpenClaw… (chọn có để thiết lập mọi thứ)"
+      "source": "Reply to Operator… (yes sets everything up)",
+      "translated": "Trả lời Operator… (chọn có để thiết lập mọi thứ)"
     },
     {
       "id": "native.apple.78d1ad73762a7ce8",
@@ -19840,8 +19840,8 @@
     },
     {
       "id": "native.apple.ea8beaeecef15e54",
-      "source": "Welcome to OpenClaw",
-      "translated": "Chào mừng đến với OpenClaw"
+      "source": "Welcome to Operator",
+      "translated": "Chào mừng đến với Operator"
     },
     {
       "id": "native.apple.0629bbbd6db95199",
@@ -19885,8 +19885,8 @@
     },
     {
       "id": "native.apple.fb64a5b187cfdc15",
-      "source": "OpenClaw can take actions using the permissions and services you enable. Review prompts and only connect tools you trust.",
-      "translated": "OpenClaw có thể thực hiện hành động bằng các quyền và dịch vụ bạn bật. Hãy xem lại lời nhắc và chỉ kết nối các công cụ bạn tin tưởng."
+      "source": "Operator can take actions using the permissions and services you enable. Review prompts and only connect tools you trust.",
+      "translated": "Operator có thể thực hiện hành động bằng các quyền và dịch vụ bạn bật. Hãy xem lại lời nhắc và chỉ kết nối các công cụ bạn tin tưởng."
     },
     {
       "id": "native.apple.a5d02aaf6208e924",
@@ -19895,8 +19895,8 @@
     },
     {
       "id": "native.apple.e6acb60b10ef1206",
-      "source": "Most people pick this Mac — OpenClaw installs everything and keeps it running in the background. You can change this anytime in Settings.",
-      "translated": "Hầu hết mọi người chọn máy Mac này — OpenClaw sẽ cài đặt mọi thứ và duy trì chạy trong nền. Bạn có thể thay đổi bất cứ lúc nào trong Cài đặt."
+      "source": "Most people pick this Mac — Operator installs everything and keeps it running in the background. You can change this anytime in Settings.",
+      "translated": "Hầu hết mọi người chọn máy Mac này — Operator sẽ cài đặt mọi thứ và duy trì chạy trong nền. Bạn có thể thay đổi bất cứ lúc nào trong Cài đặt."
     },
     {
       "id": "native.apple.21f1053c1054db24",
@@ -19920,8 +19920,8 @@
     },
     {
       "id": "native.apple.d54084b48f40aa0a",
-      "source": "OK — OpenClaw won’t start anything yet. Pick Local or Remote later in Settings → General.",
-      "translated": "OK — OpenClaw sẽ chưa khởi động gì cả. Chọn Cục bộ hoặc Từ xa sau trong Cài đặt → Chung."
+      "source": "OK — Operator won’t start anything yet. Pick Local or Remote later in Settings → General.",
+      "translated": "OK — Operator sẽ chưa khởi động gì cả. Chọn Cục bộ hoặc Từ xa sau trong Cài đặt → Chung."
     },
     {
       "id": "native.apple.8d9eb247d41a0ca7",
@@ -20030,8 +20030,8 @@
     },
     {
       "id": "native.apple.5a3f4f943c8ee86a",
-      "source": "/Applications/OpenClaw.app/.../openclaw",
-      "translated": "/Applications/OpenClaw.app/.../openclaw"
+      "source": "/Applications/Operator.app/.../openclaw",
+      "translated": "/Applications/Operator.app/.../openclaw"
     },
     {
       "id": "native.apple.56e9b0831ec1eded",
@@ -20075,8 +20075,8 @@
     },
     {
       "id": "native.apple.2a50c3ee94dde35d",
-      "source": "The current gateway.remote.token value is not plain text. OpenClaw for macOS cannot use it directly; enter a plaintext token here to replace it.",
-      "translated": "Giá trị gateway.remote.token hiện tại không phải là văn bản thuần túy. OpenClaw for macOS không thể sử dụng trực tiếp; hãy nhập token dạng văn bản thuần túy tại đây để thay thế."
+      "source": "The current gateway.remote.token value is not plain text. Operator for macOS cannot use it directly; enter a plaintext token here to replace it.",
+      "translated": "Giá trị gateway.remote.token hiện tại không phải là văn bản thuần túy. Operator for macOS không thể sử dụng trực tiếp; hãy nhập token dạng văn bản thuần túy tại đây để thay thế."
     },
     {
       "id": "native.apple.ef011af3c0e22127",
@@ -20095,8 +20095,8 @@
     },
     {
       "id": "native.apple.ce0d1241d7417406",
-      "source": "These macOS permissions let OpenClaw automate apps and capture context on this Mac. Status updates automatically.",
-      "translated": "Các quyền macOS này cho phép OpenClaw tự động hóa ứng dụng và thu thập ngữ cảnh trên máy Mac này. Trạng thái sẽ tự động cập nhật."
+      "source": "These macOS permissions let Operator automate apps and capture context on this Mac. Status updates automatically.",
+      "translated": "Các quyền macOS này cho phép Operator tự động hóa ứng dụng và thu thập ngữ cảnh trên máy Mac này. Trạng thái sẽ tự động cập nhật."
     },
     {
       "id": "native.apple.42af85cdf91d0264",
@@ -20105,8 +20105,8 @@
     },
     {
       "id": "native.apple.d0b8cf59f852b3d0",
-      "source": "Install OpenClaw",
-      "translated": "Cài đặt OpenClaw"
+      "source": "Install Operator",
+      "translated": "Cài đặt Operator"
     },
     {
       "id": "native.apple.0b0fc42b8827e01f",
@@ -20180,8 +20180,8 @@
     },
     {
       "id": "native.apple.952e85bfb2d4b4f5",
-      "source": "On your gateway host: install/update the `openclaw` package and make sure credentials exist\n(typically `~/.openclaw/credentials/oauth.json`). Then connect again if needed.",
-      "translated": "Trên máy chủ gateway của bạn: cài đặt/cập nhật gói `openclaw` và đảm bảo thông tin xác thực tồn tại\n(thường là `~/.openclaw/credentials/oauth.json`). Sau đó kết nối lại nếu cần."
+      "source": "On your gateway host: install/update the `openclaw` package and make sure credentials exist\n(typically `~/.operator/credentials/oauth.json`). Then connect again if needed.",
+      "translated": "Trên máy chủ gateway của bạn: cài đặt/cập nhật gói `openclaw` và đảm bảo thông tin xác thực tồn tại\n(thường là `~/.operator/credentials/oauth.json`). Sau đó kết nối lại nếu cần."
     },
     {
       "id": "native.apple.4e5ccb411db3e80f",
@@ -20190,8 +20190,8 @@
     },
     {
       "id": "native.apple.f99e39e248dbc8ed",
-      "source": "Click the OpenClaw menu bar icon for quick chat and status.",
-      "translated": "Nhấp vào biểu tượng OpenClaw trên thanh menu để trò chuyện nhanh và xem trạng thái."
+      "source": "Click the Operator menu bar icon for quick chat and status.",
+      "translated": "Nhấp vào biểu tượng Operator trên thanh menu để trò chuyện nhanh và xem trạng thái."
     },
     {
       "id": "native.apple.1b6cfcf3be8765c2",
@@ -20325,13 +20325,13 @@
     },
     {
       "id": "native.apple.11b1b5e9dd510766",
-      "source": "A node wants to connect to OpenClaw.",
-      "translated": "Một node muốn kết nối với OpenClaw."
+      "source": "A node wants to connect to Operator.",
+      "translated": "Một node muốn kết nối với Operator."
     },
     {
       "id": "native.apple.2e9d9d1f5d4346d4",
-      "source": "A device wants to connect to OpenClaw.",
-      "translated": "Một thiết bị muốn kết nối với OpenClaw."
+      "source": "A device wants to connect to Operator.",
+      "translated": "Một thiết bị muốn kết nối với Operator."
     },
     {
       "id": "native.apple.2412e85f7d11395e",
@@ -20340,8 +20340,8 @@
     },
     {
       "id": "native.apple.a09a61f4efe1e63e",
-      "source": "OpenClaw Mac app",
-      "translated": "Ứng dụng OpenClaw Mac"
+      "source": "Operator Mac app",
+      "translated": "Ứng dụng Operator Mac"
     },
     {
       "id": "native.apple.6b29ec65de666dab",
@@ -20410,8 +20410,8 @@
     },
     {
       "id": "native.apple.4344ff6c0e9d7187",
-      "source": "OpenClaw only asks for macOS capabilities when a feature needs them.",
-      "translated": "OpenClaw chỉ yêu cầu các khả năng của macOS khi một tính năng cần đến chúng."
+      "source": "Operator only asks for macOS capabilities when a feature needs them.",
+      "translated": "Operator chỉ yêu cầu các khả năng của macOS khi một tính năng cần đến chúng."
     },
     {
       "id": "native.apple.4fecdab98e2f6a11",
@@ -20575,13 +20575,13 @@
     },
     {
       "id": "native.apple.65c21de72f06fd33",
-      "source": "OpenClaw updated",
-      "translated": "Đã cập nhật OpenClaw"
+      "source": "Operator updated",
+      "translated": "Đã cập nhật Operator"
     },
     {
       "id": "native.apple.6197fc2d1ebd6b2e",
-      "source": "Finishing your OpenClaw update",
-      "translated": "Đang hoàn tất cập nhật OpenClaw"
+      "source": "Finishing your Operator update",
+      "translated": "Đang hoàn tất cập nhật Operator"
     },
     {
       "id": "native.apple.226b698fbbfc3cc4",
@@ -20595,8 +20595,8 @@
     },
     {
       "id": "native.apple.91debe404bb7affc",
-      "source": "The managed OpenClaw runtime could not be reinstalled.",
-      "translated": "Không thể cài đặt lại môi trường chạy OpenClaw được quản lý."
+      "source": "The managed Operator runtime could not be reinstalled.",
+      "translated": "Không thể cài đặt lại môi trường chạy Operator được quản lý."
     },
     {
       "id": "native.apple.1cc391ec928070c4",
@@ -20620,43 +20620,43 @@
     },
     {
       "id": "native.apple.69b54e24b90414dd",
-      "source": "OpenClaw \\(receipt.toVersion) and its Gateway are ready.",
-      "translated": "OpenClaw \\(receipt.toVersion) và Gateway đã sẵn sàng."
+      "source": "Operator \\(receipt.toVersion) and its Gateway are ready.",
+      "translated": "Operator \\(receipt.toVersion) và Gateway đã sẵn sàng."
     },
     {
       "id": "native.apple.f9d6fa6d7aaf23b6",
-      "source": "OpenClaw \\(receipt.toVersion) and its Mac node runtime are ready.",
-      "translated": "OpenClaw \\(receipt.toVersion) và môi trường chạy của nút Mac đã sẵn sàng."
+      "source": "Operator \\(receipt.toVersion) and its Mac node runtime are ready.",
+      "translated": "Operator \\(receipt.toVersion) và môi trường chạy của nút Mac đã sẵn sàng."
     },
     {
       "id": "native.apple.a3fa88f5fd3c2732",
-      "source": "Your agent could not be notified yet. OpenClaw will retry after the next app launch.",
-      "translated": "Chưa thể thông báo cho tác nhân của bạn. OpenClaw sẽ thử lại sau lần khởi chạy ứng dụng tiếp theo."
+      "source": "Your agent could not be notified yet. Operator will retry after the next app launch.",
+      "translated": "Chưa thể thông báo cho tác nhân của bạn. Operator sẽ thử lại sau lần khởi chạy ứng dụng tiếp theo."
     },
     {
       "id": "native.apple.e9020028ddab1ba6",
-      "source": "OpenClaw could not notify your agent automatically. The app and Gateway update are complete.",
-      "translated": "OpenClaw không thể tự động thông báo cho tác nhân của bạn. Quá trình cập nhật ứng dụng và Gateway đã hoàn tất."
+      "source": "Operator could not notify your agent automatically. The app and Gateway update are complete.",
+      "translated": "Operator không thể tự động thông báo cho tác nhân của bạn. Quá trình cập nhật ứng dụng và Gateway đã hoàn tất."
     },
     {
       "id": "native.apple.afc120cf0a96ea30",
-      "source": "OpenClaw could not notify your agent automatically. The app and Mac node update are complete.",
-      "translated": "OpenClaw không thể tự động thông báo cho tác nhân của bạn. Quá trình cập nhật ứng dụng và nút Mac đã hoàn tất."
+      "source": "Operator could not notify your agent automatically. The app and Mac node update are complete.",
+      "translated": "Operator không thể tự động thông báo cho tác nhân của bạn. Quá trình cập nhật ứng dụng và nút Mac đã hoàn tất."
     },
     {
       "id": "native.apple.71ad85442725f45c",
-      "source": "OpenClaw could not confirm the agent notification. It will not retry, to avoid a duplicate welcome.",
-      "translated": "OpenClaw không thể xác nhận thông báo cho tác nhân. OpenClaw sẽ không thử lại để tránh gửi lời chào mừng trùng lặp."
+      "source": "Operator could not confirm the agent notification. It will not retry, to avoid a duplicate welcome.",
+      "translated": "Operator không thể xác nhận thông báo cho tác nhân. Operator sẽ không thử lại để tránh gửi lời chào mừng trùng lặp."
     },
     {
       "id": "native.apple.a3deea03e4870dd0",
-      "source": "The remote Gateway is older than this Mac app, so OpenClaw skipped the agent notification.",
-      "translated": "Gateway từ xa cũ hơn ứng dụng Mac này, nên OpenClaw đã bỏ qua thông báo cho tác tử."
+      "source": "The remote Gateway is older than this Mac app, so Operator skipped the agent notification.",
+      "translated": "Gateway từ xa cũ hơn ứng dụng Mac này, nên Operator đã bỏ qua thông báo cho tác tử."
     },
     {
       "id": "native.apple.3636a8b503ff00d2",
-      "source": "The Gateway remains paused, so OpenClaw did not wake your agent.",
-      "translated": "Gateway vẫn đang tạm dừng, nên OpenClaw không đánh thức tác tử của bạn."
+      "source": "The Gateway remains paused, so Operator did not wake your agent.",
+      "translated": "Gateway vẫn đang tạm dừng, nên Operator không đánh thức tác tử của bạn."
     },
     {
       "id": "native.apple.0f533623878f3d67",
@@ -20700,8 +20700,8 @@
     },
     {
       "id": "native.apple.9ac2dfa295929a92",
-      "source": "OpenClaw installed the update but could not verify the Gateway connection.",
-      "translated": "OpenClaw đã cài đặt bản cập nhật nhưng không thể xác minh kết nối Gateway."
+      "source": "Operator installed the update but could not verify the Gateway connection.",
+      "translated": "Operator đã cài đặt bản cập nhật nhưng không thể xác minh kết nối Gateway."
     },
     {
       "id": "native.apple.3abafcfb64b362fb",
@@ -20710,8 +20710,8 @@
     },
     {
       "id": "native.apple.00e3d2037782506c",
-      "source": "OpenClaw could not read the Gateway service ownership record. Retry after checking the Gateway LaunchAgent.",
-      "translated": "OpenClaw không thể đọc bản ghi quyền sở hữu dịch vụ Gateway. Hãy thử lại sau khi kiểm tra LaunchAgent của Gateway."
+      "source": "Operator could not read the Gateway service ownership record. Retry after checking the Gateway LaunchAgent.",
+      "translated": "Operator không thể đọc bản ghi quyền sở hữu dịch vụ Gateway. Hãy thử lại sau khi kiểm tra LaunchAgent của Gateway."
     },
     {
       "id": "native.apple.c4b8806a570dad31",
@@ -20720,8 +20720,8 @@
     },
     {
       "id": "native.apple.0483bf19d612560b",
-      "source": "OpenClaw could not read the node service ownership record. Retry after checking the node LaunchAgent.",
-      "translated": "OpenClaw không thể đọc bản ghi quyền sở hữu dịch vụ nút. Hãy thử lại sau khi kiểm tra LaunchAgent của nút."
+      "source": "Operator could not read the node service ownership record. Retry after checking the node LaunchAgent.",
+      "translated": "Operator không thể đọc bản ghi quyền sở hữu dịch vụ nút. Hãy thử lại sau khi kiểm tra LaunchAgent của nút."
     },
     {
       "id": "native.apple.d0f712a2ed470a3e",
@@ -20780,23 +20780,23 @@
     },
     {
       "id": "native.apple.b52cb4aae7ca6573",
-      "source": "Paste the token configured on the gateway host. On the gateway host, run `openclaw config get gateway.auth.token`. If the gateway uses an environment variable instead, use `OPENCLAW_GATEWAY_TOKEN`.",
-      "translated": "Paste the token configured on the gateway host. On the gateway host, run `openclaw config get gateway.auth.token`. If the gateway uses an environment variable instead, use `OPENCLAW_GATEWAY_TOKEN`."
+      "source": "Paste the token configured on the gateway host. On the gateway host, run `operator config get gateway.auth.token`. If the gateway uses an environment variable instead, use `OPERATOR_GATEWAY_TOKEN`.",
+      "translated": "Paste the token configured on the gateway host. On the gateway host, run `operator config get gateway.auth.token`. If the gateway uses an environment variable instead, use `OPERATOR_GATEWAY_TOKEN`."
     },
     {
       "id": "native.apple.bbb87d21ce8a291e",
-      "source": "Check `gateway.auth.token` or `OPENCLAW_GATEWAY_TOKEN` on the gateway host and try again.",
-      "translated": "Kiểm tra `gateway.auth.token` hoặc `OPENCLAW_GATEWAY_TOKEN` trên máy chủ Gateway rồi thử lại."
+      "source": "Check `gateway.auth.token` or `OPERATOR_GATEWAY_TOKEN` on the gateway host and try again.",
+      "translated": "Kiểm tra `gateway.auth.token` hoặc `OPERATOR_GATEWAY_TOKEN` trên máy chủ Gateway rồi thử lại."
     },
     {
       "id": "native.apple.c26f61d639591f81",
-      "source": "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `OPENCLAW_GATEWAY_TOKEN` before starting the gateway.",
-      "translated": "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `OPENCLAW_GATEWAY_TOKEN` before starting the gateway."
+      "source": "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `OPERATOR_GATEWAY_TOKEN` before starting the gateway.",
+      "translated": "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `OPERATOR_GATEWAY_TOKEN` before starting the gateway."
     },
     {
       "id": "native.apple.83145f8f53d7be34",
-      "source": "Scan or paste a fresh setup code from an already-paired OpenClaw client, then try again.",
-      "translated": "Quét hoặc dán mã thiết lập mới từ một ứng dụng khách OpenClaw đã ghép đôi, rồi thử lại."
+      "source": "Scan or paste a fresh setup code from an already-paired Operator client, then try again.",
+      "translated": "Quét hoặc dán mã thiết lập mới từ một ứng dụng khách Operator đã ghép đôi, rồi thử lại."
     },
     {
       "id": "native.apple.a8bf4f7ab4a35dc0",
@@ -20805,8 +20805,8 @@
     },
     {
       "id": "native.apple.52c0f97f0b3bb792",
-      "source": "Approve this device from an already-paired OpenClaw client. In your OpenClaw chat, run `/pair approve`, then click **Check connection** again.",
-      "translated": "Approve this device from an already-paired OpenClaw client. In your OpenClaw chat, run `/pair approve`, then click **Check connection** again."
+      "source": "Approve this device from an already-paired Operator client. In your Operator chat, run `/pair approve`, then click **Check connection** again.",
+      "translated": "Approve this device from an already-paired Operator client. In your Operator chat, run `/pair approve`, then click **Check connection** again."
     },
     {
       "id": "native.apple.e73170e4ab1dbe8f",
@@ -20815,8 +20815,8 @@
     },
     {
       "id": "native.apple.e3f983b8c517da29",
-      "source": "Gateway token mismatch. Check gateway.auth.token or OPENCLAW_GATEWAY_TOKEN on the gateway host.",
-      "translated": "Mã Gateway không khớp. Kiểm tra gateway.auth.token hoặc OPENCLAW_GATEWAY_TOKEN trên máy chủ Gateway."
+      "source": "Gateway token mismatch. Check gateway.auth.token or OPERATOR_GATEWAY_TOKEN on the gateway host.",
+      "translated": "Mã Gateway không khớp. Kiểm tra gateway.auth.token hoặc OPERATOR_GATEWAY_TOKEN trên máy chủ Gateway."
     },
     {
       "id": "native.apple.cd96754a96e5aa35",
@@ -20835,8 +20835,8 @@
     },
     {
       "id": "native.apple.3e5a2b2a24f73418",
-      "source": "Pairing required. In an already-paired OpenClaw client, run /pair approve, then check the connection again.",
-      "translated": "Pairing required. In an already-paired OpenClaw client, run /pair approve, then check the connection again."
+      "source": "Pairing required. In an already-paired Operator client, run /pair approve, then check the connection again.",
+      "translated": "Pairing required. In an already-paired Operator client, run /pair approve, then check the connection again."
     },
     {
       "id": "native.apple.58e76e9c8b04290a",
@@ -20880,48 +20880,48 @@
     },
     {
       "id": "native.apple.2d7556d00f123112",
-      "source": "OpenClaw needs notification permission to show alerts for agent actions.",
-      "translated": "OpenClaw cần quyền thông báo để hiển thị cảnh báo cho các hành động của tác nhân."
+      "source": "Operator needs notification permission to show alerts for agent actions.",
+      "translated": "Operator cần quyền thông báo để hiển thị cảnh báo cho các hành động của tác nhân."
     },
     {
       "id": "native.apple.d9e7be03543b508f",
-      "source": "OpenClaw captures the screen when the agent needs screenshots for context.",
-      "translated": "OpenClaw chụp màn hình khi tác nhân cần ảnh chụp màn hình để làm ngữ cảnh."
+      "source": "Operator captures the screen when the agent needs screenshots for context.",
+      "translated": "Operator chụp màn hình khi tác nhân cần ảnh chụp màn hình để làm ngữ cảnh."
     },
     {
       "id": "native.apple.eca927767423799c",
-      "source": "OpenClaw can capture photos or short video clips when requested by the agent.",
-      "translated": "OpenClaw có thể chụp ảnh hoặc quay các đoạn video ngắn khi tác nhân yêu cầu."
+      "source": "Operator can capture photos or short video clips when requested by the agent.",
+      "translated": "Operator có thể chụp ảnh hoặc quay các đoạn video ngắn khi tác nhân yêu cầu."
     },
     {
       "id": "native.apple.9389d1100944a1fd",
-      "source": "OpenClaw can share your location when requested by the agent.",
-      "translated": "OpenClaw có thể chia sẻ vị trí của bạn khi tác nhân yêu cầu."
+      "source": "Operator can share your location when requested by the agent.",
+      "translated": "Operator có thể chia sẻ vị trí của bạn khi tác nhân yêu cầu."
     },
     {
       "id": "native.apple.59da76aed1cb07ee",
-      "source": "OpenClaw uses the local network to connect to your remote OpenClaw gateway over LAN, Tailnet, or SSH.",
-      "translated": "OpenClaw sử dụng mạng cục bộ để kết nối với OpenClaw gateway từ xa của bạn qua LAN, Tailnet hoặc SSH."
+      "source": "Operator uses the local network to connect to your remote Operator gateway over LAN, Tailnet, or SSH.",
+      "translated": "Operator sử dụng mạng cục bộ để kết nối với Operator gateway từ xa của bạn qua LAN, Tailnet hoặc SSH."
     },
     {
       "id": "native.apple.5db9a976fd1c7fcb",
-      "source": "OpenClaw needs the mic for Voice Wake tests and agent audio capture.",
-      "translated": "OpenClaw cần micrô để kiểm tra Voice Wake và thu âm thanh cho tác nhân."
+      "source": "Operator needs the mic for Voice Wake tests and agent audio capture.",
+      "translated": "Operator cần micrô để kiểm tra Voice Wake và thu âm thanh cho tác nhân."
     },
     {
       "id": "native.apple.b7aba524ef867e7f",
-      "source": "OpenClaw uses speech recognition to detect your Voice Wake trigger phrase.",
-      "translated": "OpenClaw sử dụng tính năng nhận dạng giọng nói để phát hiện cụm từ kích hoạt Voice Wake của bạn."
+      "source": "Operator uses speech recognition to detect your Voice Wake trigger phrase.",
+      "translated": "Operator sử dụng tính năng nhận dạng giọng nói để phát hiện cụm từ kích hoạt Voice Wake của bạn."
     },
     {
       "id": "native.apple.2d5411b5cc54a93e",
-      "source": "OpenClaw needs Automation (AppleScript) permission to drive Terminal and other apps for agent actions.",
-      "translated": "OpenClaw cần quyền Automation (AppleScript) để điều khiển Terminal và các ứng dụng khác cho các hành động của tác nhân."
+      "source": "Operator needs Automation (AppleScript) permission to drive Terminal and other apps for agent actions.",
+      "translated": "Operator cần quyền Automation (AppleScript) để điều khiển Terminal và các ứng dụng khác cho các hành động của tác nhân."
     },
     {
       "id": "native.apple.e16fc45de0f2bb86",
-      "source": "OpenClaw can access Reminders when requested by the agent for the apple-reminders skill.",
-      "translated": "OpenClaw có thể truy cập Reminders khi tác nhân yêu cầu cho kỹ năng apple-reminders."
+      "source": "Operator can access Reminders when requested by the agent for the apple-reminders skill.",
+      "translated": "Operator có thể truy cập Reminders khi tác nhân yêu cầu cho kỹ năng apple-reminders."
     },
     {
       "id": "native.apple.6f7c6ef00a40a571",
@@ -21060,8 +21060,8 @@
     },
     {
       "id": "native.apple.59bed721dff1a25f",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.04b9c8402f19b8ce",
@@ -21310,8 +21310,8 @@
     },
     {
       "id": "native.apple.d769a8ac65441d48",
-      "source": "Saved to openclaw.json under skills.entries.\\(self.editor.skillKey)",
-      "translated": "Đã lưu vào openclaw.json trong skills.entries.\\(self.editor.skillKey)"
+      "source": "Saved to operator.json under skills.entries.\\(self.editor.skillKey)",
+      "translated": "Đã lưu vào operator.json trong skills.entries.\\(self.editor.skillKey)"
     },
     {
       "id": "native.apple.af47aadb262d225d",
@@ -21350,8 +21350,8 @@
     },
     {
       "id": "native.apple.4b27b3be5f3f1f66",
-      "source": "OpenClaw",
-      "translated": "OpenClaw"
+      "source": "Operator",
+      "translated": "Operator"
     },
     {
       "id": "native.apple.9427da914cdbfbf3",
@@ -21700,8 +21700,8 @@
     },
     {
       "id": "native.apple.800bb607f45c05e4",
-      "source": "Stored in ~/.openclaw/openclaw.json. Prefer OPENCLAW_GATEWAY_PASSWORD for production.",
-      "translated": "Được lưu trong ~/.openclaw/openclaw.json. Nên dùng OPENCLAW_GATEWAY_PASSWORD cho môi trường production."
+      "source": "Stored in ~/.operator/operator.json. Prefer OPERATOR_GATEWAY_PASSWORD for production.",
+      "translated": "Được lưu trong ~/.operator/operator.json. Nên dùng OPERATOR_GATEWAY_PASSWORD cho môi trường production."
     },
     {
       "id": "native.apple.3942d43ca047de29",
@@ -21980,8 +21980,8 @@
     },
     {
       "id": "native.apple.237e9371a693b0ff",
-      "source": "OpenClaw reacts when any trigger appears in a transcription. Keep phrases short to avoid false positives.",
-      "translated": "OpenClaw phản hồi khi bất kỳ từ kích hoạt nào xuất hiện trong bản chép lời. Giữ cụm từ ngắn để tránh nhận nhầm."
+      "source": "Operator reacts when any trigger appears in a transcription. Keep phrases short to avoid false positives.",
+      "translated": "Operator phản hồi khi bất kỳ từ kích hoạt nào xuất hiện trong bản chép lời. Giữ cụm từ ngắn để tránh nhận nhầm."
     },
     {
       "id": "native.apple.2bcc6f4eca98f7f2",
@@ -22800,8 +22800,8 @@
     },
     {
       "id": "native.apple.1823d7bddaa73a1a",
-      "source": "OpenClaw could not read the gateway certificate for %@.",
-      "translated": "OpenClaw không thể đọc chứng chỉ của Gateway cho %@."
+      "source": "Operator could not read the gateway certificate for %@.",
+      "translated": "Operator không thể đọc chứng chỉ của Gateway cho %@."
     },
     {
       "id": "native.apple.b737f84578f558eb",

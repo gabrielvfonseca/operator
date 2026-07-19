@@ -1,5 +1,5 @@
 // Qqbot plugin module implements qqbot test support behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export function makeQqbotSecretRefConfig(): OperatorConfig {
   return {

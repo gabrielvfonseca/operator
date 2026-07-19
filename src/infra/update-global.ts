@@ -3,7 +3,7 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { BUNDLED_RUNTIME_SIDECAR_PATHS } from "../plugins/runtime-sidecar-paths.js";
 import { pathExists } from "../utils.js";
 import {
@@ -55,11 +55,11 @@ export type ResolvedGlobalInstallTarget = ResolvedGlobalInstallCommand & {
   directNodeModulesRoot?: boolean;
 };
 
-const PRIMARY_PACKAGE_NAME = "operator";
+const PRIMARY_PACKAGE_NAME = "@gabrielvfonseca/operator";
 const ALL_PACKAGE_NAMES = [PRIMARY_PACKAGE_NAME] as const;
 const GLOBAL_RENAME_PREFIX = ".";
 /** npm-compatible spec used when the user asks to install the moving main branch. */
-const OPERATOR_MAIN_PACKAGE_SPEC = "github:operator/operator#main";
+const OPERATOR_MAIN_PACKAGE_SPEC = "github:openclaw/openclaw#main";
 const COREPACK_ENABLE_DOWNLOAD_PROMPT_DEFAULT = "0";
 const NPM_GLOBAL_INSTALL_QUIET_FLAGS = ["--no-fund", "--no-audit", "--loglevel=error"] as const;
 const PNPM_OPERATOR_BUILD_ALLOWLIST_FLAG = `--allow-build=${PRIMARY_PACKAGE_NAME}`;
@@ -186,7 +186,7 @@ function stripPrimaryPackageAlias(spec: string): string {
 }
 
 /**
- * Extracts a pinned installed version from package specs like `operator@1.2.3`.
+ * Extracts a pinned installed version from package specs like `openclaw@1.2.3`.
  * Moving tags, URLs, git refs, and aliases return null because they cannot be
  * compared reliably after install.
  */
@@ -658,7 +658,7 @@ function inferGlobalRootFromPackageRoot(pkgRoot?: string | null): string | null 
   return path.basename(globalRoot) === "node_modules" ? globalRoot : null;
 }
 
-function resolveOperatorPackageRootFromGlobalRoot(params: {
+function resolvePackageRootFromGlobalRoot(params: {
   globalRoot: string;
   packageName?: string;
 }): string {
@@ -809,7 +809,7 @@ async function listPnpmIsolatedGlobalPackages(params: {
     if (!manifest?.dependencies || !(packageName in manifest.dependencies)) {
       continue;
     }
-    const packageRoot = resolveOperatorPackageRootFromGlobalRoot({
+    const packageRoot = resolvePackageRootFromGlobalRoot({
       globalRoot: path.join(installDir, "node_modules"),
       packageName,
     });
@@ -962,7 +962,7 @@ function resolveBunGlobalInstallSpec(spec: string): string {
   const hasScheme = /^[a-z][a-z0-9+.-]*:/iu.test(trimmed) && !isWindowsAbsolutePath;
   const target = /\.(?:tgz|tar\.gz)$/iu.test(trimmed) && !hasScheme ? `file:${trimmed}` : trimmed;
   // Bun needs an alias to replace the existing global dependency. A bare
-  // tarball is added beside it and can form an operator dependency loop.
+  // tarball is added beside it and can form an openclaw dependency loop.
   return `${PRIMARY_PACKAGE_NAME}@${target}`;
 }
 
@@ -1086,7 +1086,7 @@ export async function resolveGlobalInstallTarget(params: {
     pnpmIsolatedPackage?.layoutVersion ??
     resolvePnpmIsolatedLayoutVersion(verifiedPnpmIsolatedGlobalRoot);
   const fallbackPackageRoot = targetGlobalRoot
-    ? resolveOperatorPackageRootFromGlobalRoot({
+    ? resolvePackageRootFromGlobalRoot({
         globalRoot: targetGlobalRoot,
         packageName: params.packageName,
       })

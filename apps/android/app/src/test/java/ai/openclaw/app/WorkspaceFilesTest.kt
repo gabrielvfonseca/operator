@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.ui.isWorkspaceDirectoryRequestInFlight
+import ai.operator.app.ui.isWorkspaceDirectoryRequestInFlight
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

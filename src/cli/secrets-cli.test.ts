@@ -92,7 +92,7 @@ function createConfigureInteractiveResult(options?: {
     preflight: {
       mode: "dry-run" as const,
       changed: options?.changed ?? false,
-      changedFiles: options?.changed ? ["/tmp/openclaw.json"] : [],
+      changedFiles: options?.changed ? ["/tmp/operator.json"] : [],
       checks: {
         resolvability: true,
         resolvabilityComplete: options?.resolvabilityComplete ?? true,
@@ -113,7 +113,7 @@ function createSecretsApplyResult(options?: {
   return {
     mode: options?.mode ?? "dry-run",
     changed: options?.changed ?? false,
-    changedFiles: options?.changed ? ["/tmp/openclaw.json"] : [],
+    changedFiles: options?.changed ? ["/tmp/operator.json"] : [],
     checks: {
       resolvability: true,
       resolvabilityComplete: options?.resolvabilityComplete ?? true,
@@ -128,7 +128,7 @@ function createSecretsApplyResult(options?: {
 async function withPlanFile(run: (planPath: string) => Promise<void>) {
   const planPath = path.join(
     os.tmpdir(),
-    `openclaw-secrets-cli-test-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
+    `operator-secrets-cli-test-${Date.now()}-${Math.random().toString(16).slice(2)}.json`,
   );
   await fs.writeFile(planPath, `${JSON.stringify(createManualSecretsPlan())}\n`, "utf8");
   try {
@@ -185,7 +185,7 @@ describe("secrets CLI", () => {
   it("explains Gateway reload failures without duplicate doctor noise", async () => {
     callGatewayFromCli.mockRejectedValue(
       new Error(
-        "gateway closed (1006 abnormal closure). Gateway target: ws://127.0.0.1:18789 Source: local loopback Config: /tmp/openclaw.json Bind: loopback Possible causes: - Gateway not yet ready. Run `openclaw doctor` for diagnostics.",
+        "gateway closed (1006 abnormal closure). Gateway target: ws://127.0.0.1:18789 Source: local loopback Config: /tmp/operator.json Bind: loopback Possible causes: - Gateway not yet ready. Run `openclaw doctor` for diagnostics.",
       ),
     );
 

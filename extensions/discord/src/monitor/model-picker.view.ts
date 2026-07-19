@@ -1,12 +1,12 @@
-// Discord plugin module implements model picker.view behavior.
-import type { APISelectMenuOption } from "discord-api-types/v10";
-import { ButtonStyle } from "discord-api-types/v10";
 import type {
   ModelsProviderData,
   ModelsRuntimeChoice,
-} from "openclaw/plugin-sdk/models-provider-runtime";
-import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/models-provider-runtime";
+import { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+// Discord plugin module implements model picker.view behavior.
+import type { APISelectMenuOption } from "discord-api-types/v10";
+import { ButtonStyle } from "discord-api-types/v10";
 import {
   Button,
   Container,
@@ -220,7 +220,7 @@ function getRuntimeChoices(params: {
   }
   return [
     {
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     },
@@ -243,7 +243,7 @@ function resolveSelectedRuntime(params: {
   if (current && allowed.has(current)) {
     return current;
   }
-  return choices[0]?.id ?? "openclaw";
+  return choices[0]?.id ?? "@gabrielvfonseca/operator";
 }
 
 function resolveExplicitRuntimeState(params: {

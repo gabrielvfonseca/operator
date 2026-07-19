@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   type WorkerAdmissionHandshake,
   WORKER_PROTOCOL_MAX_FEATURE_LENGTH,
@@ -54,7 +54,7 @@ try {
   const actual = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
   const expected = JSON.parse(process.argv[2]);
   const shapeMatches =
-    Object.keys(actual).sort().join(",") === "bundleHash,operatorVersion,protocolFeatures";
+    Object.keys(actual).sort().join(",") === "bundleHash,openclawVersion,protocolFeatures";
   const featuresMatch =
     Array.isArray(actual.protocolFeatures) &&
     Array.isArray(expected.protocolFeatures) &&
@@ -455,7 +455,7 @@ case "$install" in
       exit 2
     fi
     OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --global --prefix "$npm_prefix" --ignore-scripts --omit=dev --no-audit --no-fund "$package_archive"
-    package_dir=$npm_prefix/lib/node_modules/operator
+    package_dir=$npm_prefix/lib/node_modules/openclaw
     if [ ! -f "$package_dir/operator.mjs" ]; then
       printf '%s\n' 'npm did not install the Operator package root' >&2
       exit 2
@@ -516,12 +516,12 @@ type WorkerBootstrapDependencies = {
 
 function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissionHandshake {
   const bundleHash = artifact.bundleHash.trim();
-  const operatorVersion = artifact.operatorVersion.trim();
+  const openclawVersion = artifact.operatorVersion.trim();
   const protocolFeatures = artifact.protocolFeatures.map((feature) => feature.trim());
   if (!BUNDLE_HASH_PATTERN.test(bundleHash)) {
     throw new Error("Worker bundle hash must be a lowercase SHA-256 digest");
   }
-  if (!operatorVersion) {
+  if (!openclawVersion) {
     throw new Error("Worker Operator version must be non-empty");
   }
   if (
@@ -534,10 +534,10 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   }
   if (artifact.install === "npm") {
     if (
-      !isExactSemverVersion(operatorVersion) ||
-      artifact.packageSpec !== `operator@${operatorVersion}`
+      !isExactSemverVersion(openclawVersion) ||
+      artifact.packageSpec !== `openclaw@${openclawVersion}`
     ) {
-      throw new Error(`Worker npm install must use exact package operator@${operatorVersion}`);
+      throw new Error(`Worker npm install must use exact package openclaw@${openclawVersion}`);
     }
     if (!NPM_INTEGRITY_PATTERN.test(artifact.packageIntegrity)) {
       throw new Error("Worker npm install requires a pinned SHA-512 package integrity");
@@ -545,7 +545,7 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   } else if (!BUNDLE_HASH_PATTERN.test(artifact.tarballSha256)) {
     throw new Error("Worker bundle archive digest must be a lowercase SHA-256 digest");
   }
-  return { bundleHash, operatorVersion, protocolFeatures };
+  return { bundleHash, openclawVersion, protocolFeatures };
 }
 
 function parseReceiptJson(

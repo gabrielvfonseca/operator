@@ -3,7 +3,7 @@ import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
   type OperatorPluginApi,
-} from "openclaw/plugin-sdk/channel-entry-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 
 function registerQQBotFull(api: OperatorPluginApi): void {
   if (api.registrationMode === "tool-discovery") {

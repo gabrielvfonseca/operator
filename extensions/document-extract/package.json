@@ -1,5 +1,5 @@
 {
-  "name": "@operator/document-extract-plugin",
+  "name": "@gabrielvfonseca/document-extract-plugin",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator local document extraction plugin",
@@ -8,9 +8,9 @@
     "clawpdf": "0.3.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

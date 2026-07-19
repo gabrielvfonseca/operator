@@ -62,7 +62,7 @@ describe("uninstallCommand", () => {
       runtime,
       expect.objectContaining({
         dryRun: true,
-        preservePaths: ["/tmp/.openclaw/workspace"],
+        preservePaths: ["/tmp/.operator/workspace"],
       }),
     );
   });
@@ -95,7 +95,7 @@ describe("uninstallCommand", () => {
     });
 
     expect(removeWorkspaceAttestationPaths).toHaveBeenCalledWith(
-      ["/tmp/.openclaw/workspace"],
+      ["/tmp/.operator/workspace"],
       runtime,
       { dryRun: true },
     );

@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import type { WorkerSessionPlacementRecord } from "../worker-environments/placement-store.js";
@@ -68,7 +68,7 @@ function targetWithEntry(entry?: {
     : undefined;
   return {
     agentId: "main",
-    storePath: "/tmp/openclaw-agent.sqlite",
+    storePath: "/tmp/operator-agent.sqlite",
     canonicalKey: sessionKey,
     storeKeys: [sessionKey],
     store: pinnedEntry ? { [sessionKey]: pinnedEntry } : {},

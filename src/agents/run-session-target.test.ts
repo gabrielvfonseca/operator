@@ -3,14 +3,14 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { parseSqliteSessionFileMarker } from "../config/sessions/sqlite-marker.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveAgentRunSessionTarget } from "./run-session-target.js";
 
 describe("agent run session target", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-run-session-target-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-run-session-target-"));
   });
 
   afterEach(() => {

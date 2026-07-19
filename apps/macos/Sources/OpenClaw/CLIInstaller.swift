@@ -1,7 +1,7 @@
 import Foundation
 
 extension Notification.Name {
-    static let openclawCLIInstalled = Notification.Name("openclaw.cli.installed")
+    static let openclawCLIInstalled = Notification.Name("operator.cli.installed")
 }
 
 enum CLIInstallBuild {
@@ -130,11 +130,11 @@ enum CLIInstaller {
         var message: String {
             switch self {
             case let .ready(_, version):
-                "OpenClaw Gateway \(version) is ready."
+                "Operator Gateway \(version) is ready."
             case .missing:
-                "OpenClaw Gateway is not installed yet."
+                "Operator Gateway is not installed yet."
             case .unusable:
-                "The OpenClaw Gateway could not be verified. Setup will repair it."
+                "The Operator Gateway could not be verified. Setup will repair it."
             case let .incompatible(_, found, required):
                 "Gateway \(found) does not match app \(required). Setup will update it."
             }
@@ -160,7 +160,7 @@ enum CLIInstaller {
     {
         var locations: [String] = []
         for basePath in searchPaths {
-            let candidate = URL(fileURLWithPath: basePath).appendingPathComponent("openclaw").path
+            let candidate = URL(fileURLWithPath: basePath).appendingPathComponent("@gabrielvfonseca/operator").path
             var isDirectory: ObjCBool = false
 
             guard fileManager.fileExists(atPath: candidate, isDirectory: &isDirectory),
@@ -327,9 +327,9 @@ enum CLIInstaller {
         statusHandler: @escaping @MainActor @Sendable (String) async -> Void) async -> Bool
     {
         let prefix = Self.installPrefix()
-        await statusHandler("Installing OpenClaw CLI (\(target.selector))…")
+        await statusHandler("Installing Operator CLI (\(target.selector))…")
         guard let installerURL = Bundle.main.url(forResource: "install-cli", withExtension: "sh") else {
-            await statusHandler("Install failed: installer resource is missing. Reinstall OpenClaw.")
+            await statusHandler("Install failed: installer resource is missing. Reinstall Operator.")
             return false
         }
         let cmd = self.installScriptCommand(
@@ -347,10 +347,10 @@ enum CLIInstaller {
             }
             let parsed = self.parseInstallEvents(response.stdout)
             let installedVersion = parsed.last { $0.event == "done" }?.version
-            let summary = installedVersion.map { "Installed openclaw \($0)." } ?? "Installed openclaw."
+            let summary = installedVersion.map { "Installed operator \($0)." } ?? "Installed operator."
             self.rememberInstallPolicy(target)
             await statusHandler(summary)
-            NotificationCenter.default.post(name: .openclawCLIInstalled, object: nil)
+            NotificationCenter.default.post(name: .operatorCLIInstalled, object: nil)
             return true
         }
 
@@ -368,7 +368,7 @@ enum CLIInstaller {
 
     private static func installPrefix() -> String {
         FileManager().homeDirectoryForCurrentUser
-            .appendingPathComponent(".openclaw")
+            .appendingPathComponent(".operator")
             .path
     }
 
@@ -418,8 +418,8 @@ enum CLIInstaller {
     {
         let executable = self.managedExecutableLocation()
         await statusHandler(repair
-            ? String(localized: "Repairing the OpenClaw Gateway update…")
-            : String(localized: "Updating the OpenClaw Gateway to \(targetVersion)…"))
+            ? String(localized: "Repairing the Operator Gateway update…")
+            : String(localized: "Updating the Operator Gateway to \(targetVersion)…"))
         let command = self.managedUpdateCommand(
             executable: executable,
             targetVersion: targetVersion,
@@ -463,8 +463,8 @@ enum CLIInstaller {
         }
 
         self.rememberInstallPolicy(.exact(targetVersion))
-        NotificationCenter.default.post(name: .openclawCLIInstalled, object: nil)
-        await statusHandler(String(localized: "OpenClaw Gateway \(installedVersion) is installed."))
+        NotificationCenter.default.post(name: .operatorCLIInstalled, object: nil)
+        await statusHandler(String(localized: "Operator Gateway \(installedVersion) is installed."))
         return .success(
             fromVersion: summary?.before?.version,
             toVersion: installedVersion)

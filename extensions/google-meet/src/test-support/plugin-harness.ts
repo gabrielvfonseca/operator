@@ -1,6 +1,6 @@
 // Google Meet plugin module implements plugin harness behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { vi } from "vitest";
 
 type GoogleMeetTestPluginEntry = {

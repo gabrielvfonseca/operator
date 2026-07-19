@@ -1,7 +1,7 @@
 // Model list probe tests cover runtime probing while listing configured models.
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 
 let probeModule: typeof import("./list.probe.js");
 
@@ -91,8 +91,8 @@ describe("runAuthProbes", () => {
       const result = await module.runAuthProbes({
         cfg: {} as never,
         agentId: "probe-agent",
-        agentDir: "/tmp/openclaw-probe-agent",
-        workspaceDir: "/tmp/openclaw-probe-workspace",
+        agentDir: "/tmp/operator-probe-agent",
+        workspaceDir: "/tmp/operator-probe-workspace",
         providers: ["openai"],
         modelCandidates: ["openai/gpt-5.5"],
         options: {
@@ -188,8 +188,8 @@ describe("runAuthProbes", () => {
       await module.runAuthProbes({
         cfg: { models: { providers: { openai: providerConfig } } },
         agentId: "probe-agent",
-        agentDir: "/tmp/openclaw-probe-agent",
-        workspaceDir: "/tmp/openclaw-probe-workspace",
+        agentDir: "/tmp/operator-probe-agent",
+        workspaceDir: "/tmp/operator-probe-workspace",
         providers: ["openai"],
         modelCandidates: ["openai/gpt-5.5"],
         options: {
@@ -204,7 +204,7 @@ describe("runAuthProbes", () => {
       const configKeyCall = runEmbeddedAgent.mock.calls.find(([params]) =>
         params.authProfileId?.startsWith("openai:probe-"),
       );
-      expect(configKeyCall?.[0].agentDir).not.toBe("/tmp/openclaw-probe-agent");
+      expect(configKeyCall?.[0].agentDir).not.toBe("/tmp/operator-probe-agent");
       expect(configKeyCall?.[0].authProfileIdSource).toBe("user");
       expect(configKeyCall?.[0].config).toMatchObject({
         models: {
@@ -291,8 +291,8 @@ describe("runAuthProbes", () => {
       await module.runAuthProbes({
         cfg,
         agentId: "probe-agent",
-        agentDir: "/tmp/openclaw-probe-agent",
-        workspaceDir: "/tmp/openclaw-probe-workspace",
+        agentDir: "/tmp/operator-probe-agent",
+        workspaceDir: "/tmp/operator-probe-workspace",
         providers: ["openai"],
         modelCandidates: ["openai/gpt-5.5"],
         options: {
@@ -308,8 +308,8 @@ describe("runAuthProbes", () => {
       // auth order cleared, so only the marker credential is exercised — and no
       // synthetic profile is pinned, letting the runtime resolve the marker.
       const call = runEmbeddedAgent.mock.calls[0]?.[0];
-      expect(call?.agentDir).not.toBe("/tmp/openclaw-probe-agent");
-      expect(call?.agentDir).toContain("openclaw-auth-probe-");
+      expect(call?.agentDir).not.toBe("/tmp/operator-probe-agent");
+      expect(call?.agentDir).toContain("operator-auth-probe-");
       expect(call?.config?.auth?.order?.openai).toEqual([]);
       expect(call?.config?.models?.providers?.openai?.apiKey).toBe(
         cfg.models.providers.openai.apiKey,

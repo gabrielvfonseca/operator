@@ -118,8 +118,8 @@ describe("ACP event ledger", () => {
   });
 
   it("persists SQLite-backed replay state across ledger instances", async () => {
-    await withTempDir({ prefix: "openclaw-acp-ledger-" }, async (dir) => {
-      const databasePath = path.join(dir, "openclaw.sqlite");
+    await withTempDir({ prefix: "operator-acp-ledger-" }, async (dir) => {
+      const databasePath = path.join(dir, "operator.sqlite");
       const first = createSqliteAcpEventLedger({ path: databasePath, now: () => 1000 });
       await first.startSession({
         sessionId: "session-1",
@@ -154,9 +154,9 @@ describe("ACP event ledger", () => {
   });
 
   it("imports legacy file-backed replay state into SQLite", async () => {
-    await withTempDir({ prefix: "openclaw-acp-ledger-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-acp-ledger-" }, async (dir) => {
       const filePath = path.join(dir, "acp", "event-ledger.json");
-      const databasePath = path.join(dir, "openclaw.sqlite");
+      const databasePath = path.join(dir, "operator.sqlite");
       await fs.mkdir(path.dirname(filePath), { recursive: true });
       await fs.writeFile(
         filePath,
@@ -216,9 +216,9 @@ describe("ACP event ledger", () => {
   });
 
   it("marks SQLite-backed replay incomplete when event retention truncates history", async () => {
-    await withTempDir({ prefix: "openclaw-acp-ledger-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-acp-ledger-" }, async (dir) => {
       const ledger = createSqliteAcpEventLedger({
-        path: path.join(dir, "openclaw.sqlite"),
+        path: path.join(dir, "operator.sqlite"),
         maxEventsPerSession: 1,
       });
       await ledger.startSession({
@@ -251,8 +251,8 @@ describe("ACP event ledger", () => {
   });
 
   it("keeps footprint aggregates consistent while the byte budget evicts", async () => {
-    await withTempDir({ prefix: "openclaw-acp-ledger-" }, async (dir) => {
-      const databasePath = path.join(dir, "openclaw.sqlite");
+    await withTempDir({ prefix: "operator-acp-ledger-" }, async (dir) => {
+      const databasePath = path.join(dir, "operator.sqlite");
       const ledger = createSqliteAcpEventLedger({
         path: databasePath,
         // Small enough that appends force byte-budget eviction repeatedly.

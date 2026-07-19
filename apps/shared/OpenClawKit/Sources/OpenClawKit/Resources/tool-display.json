@@ -447,9 +447,9 @@
         "proposal_id"
       ]
     },
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "emoji": "🦀",
-      "title": "OpenClaw",
+      "title": "Operator",
       "detailKeys": [
         "action",
         "path",

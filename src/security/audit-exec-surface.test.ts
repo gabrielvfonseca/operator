@@ -37,20 +37,20 @@ function requireFinding(
 describe("security audit exec surface findings", () => {
   // Redirect the Operator home (OPERATOR_HOME wins over HOME/USERPROFILE in
   // `resolveRawHomeDir`) to a per-test tempdir so `saveExecApprovals` never
-  // touches the real `~/.openclaw/exec-approvals.json` on the host running
+  // touches the real `~/.operator/exec-approvals.json` on the host running
   // the suite.
   let envSnapshot: ReturnType<typeof captureEnv> | undefined;
   let tempRoot = "";
   let tempCaseIndex = 0;
 
   beforeAll(async () => {
-    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-exec-approvals-"));
+    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-exec-approvals-"));
   });
 
   beforeEach(async () => {
     envSnapshot = captureEnv(["OPERATOR_HOME", "HOME", "USERPROFILE"]);
     const tempDir = path.join(tempRoot, `case-${++tempCaseIndex}`);
-    await fs.mkdir(path.join(tempDir, ".openclaw"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, ".operator"), { recursive: true });
     // OPERATOR_HOME takes precedence over HOME/USERPROFILE in resolveRawHomeDir,
     // so all three must point at the tempdir to neutralize whichever the host
     // happens to have set.

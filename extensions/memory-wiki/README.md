@@ -1,4 +1,4 @@
-# @openclaw/memory-wiki
+# @gabrielvfonseca/memory-wiki
 
 Persistent wiki compiler and Obsidian-friendly knowledge vault for **Operator**.
 
@@ -28,7 +28,7 @@ Put config under `plugins.entries.memory-wiki.config`:
 
   vault: {
     scope: "global", // or "agent"
-    path: "~/.openclaw/wiki/main",
+    path: "~/.operator/wiki/main",
     renderMode: "obsidian", // or "native"
   },
 
@@ -86,7 +86,7 @@ normalized agent id:
   vaultMode: "bridge",
   vault: {
     scope: "agent",
-    path: "~/.openclaw/wiki",
+    path: "~/.operator/wiki",
   },
   bridge: {
     enabled: true,
@@ -99,16 +99,16 @@ normalized agent id:
 ```
 
 This resolves agents such as `support` and `marketing` to
-`~/.openclaw/wiki/support` and `~/.openclaw/wiki/marketing`. With no explicit
-path, the parent defaults to `~/.openclaw/wiki`; the default `main` agent
-therefore keeps the existing `~/.openclaw/wiki/main` path. In global scope,
+`~/.operator/wiki/support` and `~/.operator/wiki/marketing`. With no explicit
+path, the parent defaults to `~/.operator/wiki`; the default `main` agent
+therefore keeps the existing `~/.operator/wiki/main` path. In global scope,
 `vault.path` remains the exact shared vault path.
 
 Wiki tools and compiled prompt/corpus supplements resolve the active runtime
 agent on each call. In bridge mode, an agent vault imports only public memory
 artifacts whose `agentIds` includes that agent; unowned and other-agent
 artifacts are skipped. CLI and Gateway operations require an explicit agent in
-multi-agent setups; use `openclaw wiki --agent <agentId> ...` or pass `agentId`
+multi-agent setups; use `operator wiki --agent <agentId> ...` or pass `agentId`
 to the `wiki.*` RPC request. A single configured agent may remain implicit.
 
 Configuration validation rejects agent scope with either
@@ -138,52 +138,52 @@ The plugin initializes a vault like this:
   reports/
   _attachments/
   _views/
-  .openclaw-wiki/
+  .operator-wiki/
 ```
 
 Generated content stays inside managed blocks. Human note blocks are preserved.
 
-Key beliefs can live in structured `claims` frontmatter with per-claim evidence, confidence, and status. Compile also emits machine-readable digests under `.openclaw-wiki/cache/` so agent/runtime consumers do not have to scrape markdown pages.
+Key beliefs can live in structured `claims` frontmatter with per-claim evidence, confidence, and status. Compile also emits machine-readable digests under `.operator-wiki/cache/` so agent/runtime consumers do not have to scrape markdown pages.
 
 When `render.createBacklinks` is enabled, compile adds deterministic `## Related` blocks to pages. Those blocks list source pages, pages that reference the current page, and nearby pages that share the same source ids.
 
 When `render.createDashboards` is enabled, compile also maintains report dashboards under `reports/` for open questions, contradictions, low-confidence pages, and stale pages.
 
-Unmanaged raw Markdown can live under `sources/` without Operator page frontmatter. Add `<!-- openclaw:wiki:raw-source -->` near the top of the page body to opt it out of wiki page metadata and freshness lint; generated or source-sync tracked imports still require their structured metadata.
+Unmanaged raw Markdown can live under `sources/` without Operator page frontmatter. Add `<!-- operator:wiki:raw-source -->` near the top of the page body to opt it out of wiki page metadata and freshness lint; generated or source-sync tracked imports still require their structured metadata.
 
 ## CLI
 
 ```bash
-openclaw wiki status
-openclaw wiki doctor
-openclaw wiki init
-openclaw wiki ingest ./notes/alpha.md
-openclaw wiki compile
-openclaw wiki lint
-openclaw wiki search "alpha"
-openclaw wiki get entity.alpha --from 1 --lines 80
+operator wiki status
+operator wiki doctor
+operator wiki init
+operator wiki ingest ./notes/alpha.md
+operator wiki compile
+operator wiki lint
+operator wiki search "alpha"
+operator wiki get entity.alpha --from 1 --lines 80
 
-openclaw wiki apply synthesis "Alpha Summary" \
+operator wiki apply synthesis "Alpha Summary" \
   --body "Short synthesis body" \
   --source-id source.alpha
 
-openclaw wiki apply metadata entity.alpha \
+operator wiki apply metadata entity.alpha \
   --source-id source.alpha \
   --status review \
   --question "Still active?"
 
-openclaw wiki bridge import
-openclaw wiki unsafe-local import
+operator wiki bridge import
+operator wiki unsafe-local import
 
-openclaw wiki obsidian status
-openclaw wiki obsidian search "alpha"
-openclaw wiki obsidian open syntheses/alpha-summary.md
-openclaw wiki obsidian command workspace:quick-switcher
-openclaw wiki obsidian daily
+operator wiki obsidian status
+operator wiki obsidian search "alpha"
+operator wiki obsidian open syntheses/alpha-summary.md
+operator wiki obsidian command workspace:quick-switcher
+operator wiki obsidian daily
 
 # Agent-scoped vault
-openclaw wiki --agent support status
-openclaw wiki --agent support search "refund policy"
+operator wiki --agent support status
+operator wiki --agent support search "refund policy"
 ```
 
 ## Agent tools
@@ -198,7 +198,7 @@ The plugin also registers a non-exclusive memory corpus supplement, so shared `m
 
 `wiki_apply` accepts structured `claims` payloads for synthesis and metadata updates, so the wiki can store claim-level evidence instead of only page-level prose.
 
-When `context.includeCompiledDigestPrompt` is enabled, the memory prompt supplement also appends a compact snapshot from `.openclaw-wiki/cache/agent-digest.json`. Legacy prompt assembly sees that automatically, and non-legacy context engines can pick it up when they explicitly consume memory prompt supplements via `buildActiveMemoryPromptSection(...)`.
+When `context.includeCompiledDigestPrompt` is enabled, the memory prompt supplement also appends a compact snapshot from `.operator-wiki/cache/agent-digest.json`. Legacy prompt assembly sees that automatically, and non-legacy context engines can pick it up when they explicitly consume memory prompt supplements via `buildActiveMemoryPromptSection(...)`.
 
 ## Gateway RPC
 
@@ -233,5 +233,5 @@ unknown ids fail in multi-agent setups.
 - Bridge mode reads the active memory plugin through public seams only.
 - Agent scope is incompatible with `unsafe-local` and official Obsidian CLI actions.
 - Wiki pages are compiled artifacts, not the ultimate source of truth. Keep provenance attached to raw sources, memory artifacts, and daily notes.
-- The compiled agent digests in `.openclaw-wiki/cache/agent-digest.json` and `.openclaw-wiki/cache/claims.jsonl` are the stable machine-facing view of the wiki.
+- The compiled agent digests in `.operator-wiki/cache/agent-digest.json` and `.operator-wiki/cache/claims.jsonl` are the stable machine-facing view of the wiki.
 - Obsidian CLI support requires the official `obsidian` CLI to be installed and available on `PATH`.

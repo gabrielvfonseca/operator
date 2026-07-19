@@ -1,18 +1,21 @@
 // OpenRouter OAuth support exchanges PKCE browser login codes for API keys.
 import { createServer } from "node:http";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { ProviderAuthContext, ProviderAuthMethod } from "openclaw/plugin-sdk/plugin-entry";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type {
+  ProviderAuthContext,
+  ProviderAuthMethod,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   buildApiKeyCredential,
   generatePkceVerifierChallenge,
   type ProviderAuthResult,
-} from "openclaw/plugin-sdk/provider-auth";
-import { generateOAuthState } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { generateOAuthState } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { applyOpenrouterConfig, OPENROUTER_DEFAULT_MODEL_REF } from "./onboard.js";
 
 const PROVIDER_ID = "openrouter";

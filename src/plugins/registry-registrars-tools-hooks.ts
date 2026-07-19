@@ -1,6 +1,6 @@
 import path from "node:path";
-import { uniqueValues } from "@operator/normalization-core/string-normalization";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { uniqueValues } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { AnyAgentTool } from "../agents/tools/common.js";
 import { registerInternalHook, unregisterInternalHook } from "../hooks/internal-hooks.js";
 import type { HookEntry } from "../hooks/types.js";

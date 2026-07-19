@@ -1,4 +1,4 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -52,8 +52,8 @@ class CanvasNavigationPolicyTest {
       listOf(
         "https://example.com/canvas",
         "https://xn--mnich-kva.example/canvas",
-        "http://gateway.local:18789/__openclaw__/canvas/",
-        "http://10.0.2.2:18789/__openclaw__/canvas/",
+        "http://gateway.local:18789/__operator__/canvas/",
+        "http://10.0.2.2:18789/__operator__/canvas/",
         CanvasActionTrust.scaffoldAssetUrl,
       )
     accepted.forEach { url ->
@@ -77,8 +77,8 @@ class CanvasNavigationPolicyTest {
     controller.navigate("http://127.0.0.1:18789")
     assertNull(controller.currentUrl())
 
-    controller.navigate("http://10.0.2.2:18789/__openclaw__/canvas/")
-    assertEquals("http://10.0.2.2:18789/__openclaw__/canvas/", controller.currentUrl())
+    controller.navigate("http://10.0.2.2:18789/__operator__/canvas/")
+    assertEquals("http://10.0.2.2:18789/__operator__/canvas/", controller.currentUrl())
   }
 
   @Test

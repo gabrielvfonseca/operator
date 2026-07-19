@@ -1,9 +1,9 @@
 /** Protects active auth profile metadata while doctor repairs broader config state. */
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { splitTrailingAuthProfile } from "../agents/model-ref-profile.js";
 import type { AuthProfileConfig } from "../config/types.auth.js";
 import type { OperatorConfig } from "../config/types.operator.js";

@@ -2,7 +2,7 @@
 import type {
   ChannelBotLoopProtectionConfig,
   MentionPatternsPolicyConfig,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   ContextVisibilityMode,
   DmPolicy,

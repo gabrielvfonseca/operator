@@ -9,7 +9,7 @@ export class SystemAgentInferenceUnavailableError extends Error {
     readonly failures: readonly unknown[] = [],
   ) {
     super(
-      "Operator could not reach working inference. Run `operator onboard` to reconnect and live-test AI, then try again.",
+      "Operator could not reach working inference. Run `openclaw onboard` to reconnect and live-test AI, then try again.",
     );
     this.name = "SystemAgentInferenceUnavailableError";
   }

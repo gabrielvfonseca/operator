@@ -1,5 +1,5 @@
 // Code region helpers find fenced and inline code spans in Markdown text.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 export interface CodeRegion {
   start: number;
   end: number;

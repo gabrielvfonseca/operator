@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { mapThinkingLevelForProvider } from "../../agents/embedded-agent-runner/utils.js";
 import type {
   LocalTurnPlacementClaim,

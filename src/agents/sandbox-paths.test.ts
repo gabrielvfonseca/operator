@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
   resolveAllowedManagedMediaPath,
@@ -36,7 +36,7 @@ function makeTmpProbePath(prefix: string): string {
 }
 
 async function withManagedMediaRoot<T>(run: (ctx: { stateDir: string }) => Promise<T>) {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-managed-media-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-managed-media-"));
   try {
     return await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       await fs.mkdir(path.join(stateDir, "media", "outbound"), { recursive: true });
@@ -106,11 +106,11 @@ describe("resolveSandboxPath", () => {
   it("still shortens roots beneath the home directory", async () => {
     const home = path.join(os.homedir(), "test-home");
     await withEnvAsync({ HOME: home, OPERATOR_HOME: undefined }, async () => {
-      const root = path.join(home, "openclaw-sandbox");
+      const root = path.join(home, "operator-sandbox");
       const outside = path.dirname(root);
 
       expect(() => resolveSandboxPath({ filePath: outside, cwd: root, root })).toThrow(
-        `Path escapes sandbox root (~${path.sep}openclaw-sandbox): ${outside}`,
+        `Path escapes sandbox root (~${path.sep}operator-sandbox): ${outside}`,
       );
     });
   });

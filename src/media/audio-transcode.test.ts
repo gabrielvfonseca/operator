@@ -3,7 +3,7 @@ import { existsSync, realpathSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 
 const runFfmpegMock = vi.hoisted(() => vi.fn());
 

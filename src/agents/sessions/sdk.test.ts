@@ -1,4 +1,7 @@
-import { createAssistantMessageEventStream, type AssistantMessage } from "openclaw/plugin-sdk/llm";
+import {
+  createAssistantMessageEventStream,
+  type AssistantMessage,
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 // Agent session SDK tests cover default tool wiring, prompt preservation, and
 // session write-lock behavior.
 import { Type } from "typebox";
@@ -250,7 +253,7 @@ describe("AgentSession queued user turns", () => {
       message: {
         role: "user",
         content: "visible group prompt",
-        __openclaw: { senderId: "user-42", senderName: "Ada" },
+        __operator: { senderId: "user-42", senderName: "Ada" },
       },
       recorder,
     });
@@ -284,12 +287,12 @@ describe("createAgentSession attribution headers", () => {
     });
 
     expect(providerOptions.headers).toMatchObject({
-      "HTTP-Referer": "https://openclaw.ai",
+      "HTTP-Referer": "https://operator.ai",
       "X-OpenRouter-Title": "Operator",
       "X-OpenRouter-Categories": "cli-agent",
     });
     expect(endpointOptions.headers).toMatchObject({
-      "HTTP-Referer": "https://openclaw.ai",
+      "HTTP-Referer": "https://operator.ai",
       "X-OpenRouter-Title": "Operator",
       "X-OpenRouter-Categories": "cli-agent",
     });
@@ -307,8 +310,8 @@ describe("createAgentSession attribution headers", () => {
       baseUrl: "https://gateway.ai.cloudflare.com/v1/account/gateway/openai",
     });
 
-    expect(providerOptions.headers).toMatchObject({ "User-Agent": "openclaw" });
-    expect(endpointOptions.headers).toMatchObject({ "User-Agent": "openclaw" });
+    expect(providerOptions.headers).toMatchObject({ "User-Agent": "@gabrielvfonseca/operator" });
+    expect(endpointOptions.headers).toMatchObject({ "User-Agent": "@gabrielvfonseca/operator" });
   });
 });
 

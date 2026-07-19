@@ -2,11 +2,11 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import type { ChannelLegacyStateMigrationPlan } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { statRegularFileSync } from "openclaw/plugin-sdk/security-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { ChannelLegacyStateMigrationPlan } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { statRegularFileSync } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   listIMessageAccountIds,
   resolveDefaultIMessageAccountId,

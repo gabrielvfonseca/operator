@@ -3,7 +3,7 @@ import { rmSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import * as tar from "tar";
 import { describe, expect, it, vi } from "vitest";
 import { saveAuthProfileStore } from "../agents/auth-profiles/store.js";
@@ -15,7 +15,7 @@ import {
   openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import {
   createBackupArchive,
   formatBackupCreateSummary,
@@ -29,8 +29,8 @@ import { requireNodeSqlite } from "./node-sqlite.js";
 function makeResult(overrides: Partial<BackupCreateResult> = {}): BackupCreateResult {
   return {
     createdAt: "2026-01-01T00:00:00.000Z",
-    archiveRoot: "openclaw-backup-2026-01-01",
-    archivePath: "/tmp/openclaw-backup.tar.gz",
+    archiveRoot: "operator-backup-2026-01-01",
+    archivePath: "/tmp/operator-backup.tar.gz",
     dryRun: false,
     includeWorkspace: true,
     onlyConfig: false,
@@ -105,7 +105,7 @@ function createUnsafeIndexDrift(sqlitePath: string): void {
 }
 
 describe("formatBackupCreateSummary", () => {
-  const backupArchiveLine = "Backup archive: /tmp/openclaw-backup.tar.gz";
+  const backupArchiveLine = "Backup archive: /tmp/operator-backup.tar.gz";
 
   it.each([
     {
@@ -117,7 +117,7 @@ describe("formatBackupCreateSummary", () => {
             kind: "state",
             sourcePath: "/state",
             archivePath: "archive/state",
-            displayPath: "~/.openclaw",
+            displayPath: "~/.operator",
           },
         ],
         skipped: [
@@ -126,17 +126,17 @@ describe("formatBackupCreateSummary", () => {
             sourcePath: "/workspace",
             displayPath: "~/Projects/openclaw",
             reason: "covered",
-            coveredBy: "~/.openclaw",
+            coveredBy: "~/.operator",
           },
         ],
       }),
       expected: [
         backupArchiveLine,
         "Included 1 path:",
-        "- state: ~/.openclaw",
+        "- state: ~/.operator",
         "Skipped 1 path:",
-        "- workspace: ~/Projects/openclaw (covered by ~/.openclaw)",
-        "Created /tmp/openclaw-backup.tar.gz",
+        "- workspace: ~/Projects/openclaw (covered by ~/.operator)",
+        "Created /tmp/operator-backup.tar.gz",
         "Archive verification: passed",
       ],
     },
@@ -149,21 +149,21 @@ describe("formatBackupCreateSummary", () => {
             kind: "config",
             sourcePath: "/config",
             archivePath: "archive/config",
-            displayPath: "~/.openclaw/config.json",
+            displayPath: "~/.operator/config.json",
           },
           {
             kind: "credentials",
             sourcePath: "/oauth",
             archivePath: "archive/oauth",
-            displayPath: "~/.openclaw/oauth",
+            displayPath: "~/.operator/oauth",
           },
         ],
       }),
       expected: [
         backupArchiveLine,
         "Included 2 paths:",
-        "- config: ~/.openclaw/config.json",
-        "- credentials: ~/.openclaw/oauth",
+        "- config: ~/.operator/config.json",
+        "- credentials: ~/.operator/oauth",
         "Dry run only; archive was not written.",
       ],
     },
@@ -180,17 +180,17 @@ describe("formatBackupCreateSummary", () => {
               kind: "state",
               sourcePath: "/state",
               archivePath: "archive/state",
-              displayPath: "~/.openclaw",
+              displayPath: "~/.operator",
             },
           ],
           skippedVolatileCount: 3,
         }),
       ),
     ).toEqual([
-      "Backup archive: /tmp/openclaw-backup.tar.gz",
+      "Backup archive: /tmp/operator-backup.tar.gz",
       "Included 1 path:",
-      "- state: ~/.openclaw",
-      "Created /tmp/openclaw-backup.tar.gz",
+      "- state: ~/.operator",
+      "Created /tmp/operator-backup.tar.gz",
       "Skipped 3 volatile files (live sessions, cron logs, queues, sockets, pid/tmp).",
     ]);
   });
@@ -408,7 +408,7 @@ describe("createBackupVolatileStatCache", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-volatile-stat-cache-",
+        prefix: "operator-backup-volatile-stat-cache-",
         scenario: "minimal",
       },
       async (state) => {
@@ -454,7 +454,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-invalid-now-",
+        prefix: "operator-backup-invalid-now-",
         scenario: "minimal",
       },
       async (state) => {
@@ -471,7 +471,7 @@ describe("createBackupArchive", () => {
           });
 
           expect(result.createdAt).toBe("2026-05-30T12:00:00.000Z");
-          expect(path.basename(result.archivePath)).toContain("openclaw-backup.tar.gz");
+          expect(path.basename(result.archivePath)).toContain("operator-backup.tar.gz");
           expect(path.basename(result.archivePath)).not.toContain("NaN");
         } finally {
           dateNowSpy.mockRestore();
@@ -484,7 +484,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-invalid-fallback-now-",
+        prefix: "operator-backup-invalid-fallback-now-",
         scenario: "minimal",
       },
       async (state) => {
@@ -501,7 +501,7 @@ describe("createBackupArchive", () => {
           });
 
           expect(result.createdAt).toBe("1970-01-01T00:00:00.000Z");
-          expect(path.basename(result.archivePath)).toContain("openclaw-backup.tar.gz");
+          expect(path.basename(result.archivePath)).toContain("operator-backup.tar.gz");
           expect(path.basename(result.archivePath)).not.toContain("NaN");
         } finally {
           dateNowSpy.mockRestore();
@@ -514,7 +514,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "split",
-        prefix: "openclaw-backup-volatile-",
+        prefix: "operator-backup-volatile-",
         scenario: "minimal",
       },
       async (state) => {
@@ -580,7 +580,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-sqlite-queue-",
+        prefix: "operator-backup-sqlite-queue-",
         scenario: "minimal",
       },
       async (state) => {
@@ -605,10 +605,10 @@ describe("createBackupArchive", () => {
           });
           const entries = await listArchiveEntries(result.archivePath);
           const archivedDbEntry = entries.find((entry) =>
-            entry.endsWith("/state/state/openclaw.sqlite"),
+            entry.endsWith("/state/state/operator.sqlite"),
           );
           expect(archivedDbEntry).toBeDefined();
-          expect(entries.some((entry) => entry.endsWith("/state/state/openclaw.sqlite-wal"))).toBe(
+          expect(entries.some((entry) => entry.endsWith("/state/state/operator.sqlite-wal"))).toBe(
             false,
           );
 
@@ -639,7 +639,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-unsafe-index-",
+        prefix: "operator-backup-unsafe-index-",
         scenario: "minimal",
       },
       async (state) => {
@@ -667,7 +667,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-foreign-key-",
+        prefix: "operator-backup-foreign-key-",
         scenario: "minimal",
       },
       async (state) => {
@@ -709,7 +709,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-agent-sqlite-",
+        prefix: "operator-backup-agent-sqlite-",
         scenario: "minimal",
       },
       async (state) => {
@@ -733,7 +733,7 @@ describe("createBackupArchive", () => {
         );
         closeOperatorAgentDatabasesForTest();
         const sqlite = requireNodeSqlite();
-        const liveDbPath = path.join(state.agentDir(), "openclaw-agent.sqlite");
+        const liveDbPath = path.join(state.agentDir(), "operator-agent.sqlite");
         const deletedSecretMarker = "OPERATOR_DELETED_SECRET_PAGE_MARKER";
         const deletedSecret = `${deletedSecretMarker}-${"x".repeat(16_384)}`;
         const liveDb = new sqlite.DatabaseSync(liveDbPath);
@@ -759,12 +759,12 @@ describe("createBackupArchive", () => {
         });
         const entries = await listArchiveEntries(result.archivePath);
         const archivedDbEntry = entries.find((entry) =>
-          entry.endsWith("/state/agents/main/agent/openclaw-agent.sqlite"),
+          entry.endsWith("/state/agents/main/agent/operator-agent.sqlite"),
         );
         expect(archivedDbEntry).toBeDefined();
         expect(
           entries.some((entry) =>
-            entry.endsWith("/state/agents/main/agent/openclaw-agent.sqlite-wal"),
+            entry.endsWith("/state/agents/main/agent/operator-agent.sqlite-wal"),
           ),
         ).toBe(false);
 
@@ -797,13 +797,13 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-agent-node-modules-",
+        prefix: "operator-backup-agent-node-modules-",
         scenario: "minimal",
       },
       async (state) => {
         const outputDir = state.path("backups");
         const extractDir = state.path("extract");
-        const dbPath = state.statePath("agents", "node_modules", "agent", "openclaw-agent.sqlite");
+        const dbPath = state.statePath("agents", "node_modules", "agent", "operator-agent.sqlite");
         await fs.mkdir(path.dirname(dbPath), { recursive: true });
         await fs.mkdir(outputDir, { recursive: true });
         await fs.mkdir(extractDir, { recursive: true });
@@ -831,12 +831,12 @@ describe("createBackupArchive", () => {
           });
           const entries = await listArchiveEntries(result.archivePath);
           const archivedDbEntry = entries.find((entry) =>
-            entry.endsWith("/state/agents/node_modules/agent/openclaw-agent.sqlite"),
+            entry.endsWith("/state/agents/node_modules/agent/operator-agent.sqlite"),
           );
           expect(archivedDbEntry).toBeDefined();
           expect(
             entries.some((entry) =>
-              entry.endsWith("/state/agents/node_modules/agent/openclaw-agent.sqlite-wal"),
+              entry.endsWith("/state/agents/node_modules/agent/operator-agent.sqlite-wal"),
             ),
           ).toBe(false);
 
@@ -867,7 +867,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-nested-sqlite-",
+        prefix: "operator-backup-nested-sqlite-",
         scenario: "minimal",
       },
       async (state) => {
@@ -966,7 +966,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-plugin-capability-",
+        prefix: "operator-backup-plugin-capability-",
         scenario: "minimal",
       },
       async (state) => {
@@ -999,7 +999,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-plugin-deleted-bytes-",
+        prefix: "operator-backup-plugin-deleted-bytes-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1050,7 +1050,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-malformed-sqlite-",
+        prefix: "operator-backup-malformed-sqlite-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1077,7 +1077,7 @@ describe("createBackupArchive", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-backup-late-sqlite-",
+          prefix: "operator-backup-late-sqlite-",
           scenario: "minimal",
         },
         async (state) => {
@@ -1125,7 +1125,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-orphan-sqlite-sidecars-",
+        prefix: "operator-backup-orphan-sqlite-sidecars-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1159,7 +1159,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-memory-reindex-lock-",
+        prefix: "operator-backup-memory-reindex-lock-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1212,7 +1212,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-symlinked-sqlite-",
+        prefix: "operator-backup-symlinked-sqlite-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1249,14 +1249,14 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-global-sqlite-symlink-",
+        prefix: "operator-backup-global-sqlite-symlink-",
         scenario: "minimal",
       },
       async (state) => {
         const outputDir = state.path("backups");
         const extractDir = state.path("extract");
         const externalDbPath = path.join(state.workspaceDir, "external-global.sqlite");
-        const linkedDbPath = state.statePath("state", "openclaw.sqlite");
+        const linkedDbPath = state.statePath("state", "operator.sqlite");
         await state.writeConfig({
           agents: {
             list: [{ id: "main", default: true, workspace: state.workspaceDir }],
@@ -1296,7 +1296,7 @@ describe("createBackupArchive", () => {
           });
           const entries = await listArchiveEntryDetails(result.archivePath);
           const archivedDbEntries = entries.filter((entry) =>
-            entry.path.endsWith("/state/state/openclaw.sqlite"),
+            entry.path.endsWith("/state/state/operator.sqlite"),
           );
           expect(archivedDbEntries).toEqual([
             expect.objectContaining({
@@ -1348,12 +1348,12 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-global-sqlite-directory-",
+        prefix: "operator-backup-global-sqlite-directory-",
         scenario: "minimal",
       },
       async (state) => {
         const outputDir = state.path("backups");
-        const globalDbPath = state.statePath("state", "openclaw.sqlite");
+        const globalDbPath = state.statePath("state", "operator.sqlite");
         await fs.mkdir(globalDbPath, { recursive: true });
         await fs.mkdir(outputDir, { recursive: true });
 
@@ -1373,7 +1373,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-plugin-deps-",
+        prefix: "operator-backup-plugin-deps-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1388,7 +1388,7 @@ describe("createBackupArchive", () => {
           recursive: true,
         });
         await fs.writeFile(
-          path.join(stateDir, "extensions", "demo", "openclaw.plugin.json"),
+          path.join(stateDir, "extensions", "demo", "operator.plugin.json"),
           '{"id":"demo"}\n',
           "utf8",
         );
@@ -1432,7 +1432,7 @@ describe("createBackupArchive", () => {
         const entries = await listArchiveEntries(result.archivePath);
 
         const entrySuffixes = entries.map((entry) => entry.replace(/^.*\/state\//, "/state/"));
-        expect(entrySuffixes).toContain("/state/extensions/demo/openclaw.plugin.json");
+        expect(entrySuffixes).toContain("/state/extensions/demo/operator.plugin.json");
         expect(entrySuffixes).toContain("/state/extensions/demo/src/index.js");
         expect(entrySuffixes).toContain("/state/node_modules/root-dep/index.js");
         expect(entrySuffixes).toContain("/state/node_modules/root-dep/fixture.sqlite");
@@ -1453,13 +1453,13 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-hardlink-",
+        prefix: "operator-backup-hardlink-",
         scenario: "minimal",
       },
       async (state) => {
         const stateDir = state.stateDir;
         const outputDir = state.path("backups");
-        const sourcePath = path.join(stateDir, "workspace-adx", "openclaw-src", "node_modules");
+        const sourcePath = path.join(stateDir, "workspace-adx", "operator-src", "node_modules");
         const targetPath = path.join(sourcePath, "esbuild", "bin", "esbuild");
         const hardlinkPath = path.join(sourcePath, "@esbuild", "darwin-arm64", "bin", "esbuild");
         await fs.mkdir(path.dirname(targetPath), { recursive: true });
@@ -1492,7 +1492,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-tmp-overlap-",
+        prefix: "operator-backup-tmp-overlap-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1529,7 +1529,7 @@ describe("createBackupArchive", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-backup-tmp-equals-state-",
+        prefix: "operator-backup-tmp-equals-state-",
         scenario: "minimal",
       },
       async (state) => {
@@ -1604,7 +1604,7 @@ describe("createBackupArchive", () => {
         await withOperatorTestState(
           {
             layout: "state-only",
-            prefix: "openclaw-backup-mode-",
+            prefix: "operator-backup-mode-",
             scenario: "minimal",
           },
           async (state) => {

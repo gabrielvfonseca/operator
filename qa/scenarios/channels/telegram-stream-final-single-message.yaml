@@ -37,7 +37,7 @@ flow:
             senderId: qa-stream-operator
             senderName: QA Stream Operator
             text:
-              expr: "`@openclaw Quiet streaming QA check. Reply exactly: ${config.marker}`"
+              expr: "`@operator Quiet streaming QA check. Reply exactly: ${config.marker}`"
         - waitForOutbound:
             conversation: { id: telegram-stream-room, kind: channel }
             sinceIndex: { ref: outboundStartIndex }

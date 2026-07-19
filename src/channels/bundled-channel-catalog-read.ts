@@ -5,15 +5,15 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { tryReadJsonSync } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { resolveBundledPluginsDir } from "../plugins/bundled-dir.js";
 import type { PluginPackageChannel } from "../plugins/manifest.js";
 
 type ChannelCatalogEntryLike = {
-  operator?: {
+  openclaw?: {
     channel?: PluginPackageChannel;
   };
 };
@@ -96,7 +96,7 @@ function readOfficialCatalogFileSync(): ChannelCatalogEntryLike[] {
 function isChannelCatalogEntryLike(
   entry: ChannelCatalogEntryLike | PluginPackageChannel,
 ): entry is ChannelCatalogEntryLike {
-  return "operator" in entry;
+  return "@gabrielvfonseca/operator" in entry;
 }
 
 function toBundledChannelEntry(

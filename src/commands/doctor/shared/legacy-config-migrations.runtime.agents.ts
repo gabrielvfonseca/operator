@@ -1,6 +1,6 @@
 // Legacy runtime agent config migrations for memory, heartbeat, sandbox, and runtime policy keys.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   isCanonicalToolProviderPolicyKey,
   normalizeToolProviderPolicyKey,
@@ -47,26 +47,26 @@ type LegacyAgentRuntimeIntent = {
 const MEMORY_SEARCH_RULE: LegacyConfigRule = {
   path: ["memorySearch"],
   message:
-    'top-level memorySearch was moved; use agents.defaults.memorySearch instead. Run "operator doctor --fix".',
+    'top-level memorySearch was moved; use agents.defaults.memorySearch instead. Run "openclaw doctor --fix".',
 };
 
 const LEGACY_MEMORY_SEARCH_AUTO_PROVIDER_RULES: LegacyConfigRule[] = [
   {
     path: ["memorySearch", "provider"],
     message:
-      'memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "operator doctor --fix".',
+      'memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "openclaw doctor --fix".',
     match: isLegacyMemorySearchAutoProvider,
   },
   {
     path: ["agents", "defaults", "memorySearch", "provider"],
     message:
-      'agents.defaults.memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "operator doctor --fix".',
+      'agents.defaults.memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "openclaw doctor --fix".',
     match: isLegacyMemorySearchAutoProvider,
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "operator doctor --fix".',
+      'agents.list[].memorySearch.provider = "auto" is legacy; use "openai" explicitly. Run "openclaw doctor --fix".',
     match: hasAgentListLegacyMemorySearchAutoProvider,
   },
 ];
@@ -75,17 +75,17 @@ const LEGACY_MEMORY_SEARCH_STORE_PATH_RULES: LegacyConfigRule[] = [
   {
     path: ["memorySearch", "store", "path"],
     message:
-      'memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "operator doctor --fix".',
+      'memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "openclaw doctor --fix".',
   },
   {
     path: ["agents", "defaults", "memorySearch", "store", "path"],
     message:
-      'agents.defaults.memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "operator doctor --fix".',
+      'agents.defaults.memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "openclaw doctor --fix".',
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "operator doctor --fix".',
+      'agents.list[].memorySearch.store.path is legacy; memory indexes now live in each agent database. Run "openclaw doctor --fix".',
     match: hasAgentListMemorySearchStorePath,
   },
 ];
@@ -100,13 +100,13 @@ const LEGACY_SANDBOX_SCOPE_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "sandbox"],
     message:
-      'agents.defaults.sandbox.perSession is legacy; use agents.defaults.sandbox.scope instead. Run "operator doctor --fix".',
+      'agents.defaults.sandbox.perSession is legacy; use agents.defaults.sandbox.scope instead. Run "openclaw doctor --fix".',
     match: (value) => hasLegacySandboxPerSession(value),
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].sandbox.perSession is legacy; use agents.list[].sandbox.scope instead. Run "operator doctor --fix".',
+      'agents.list[].sandbox.perSession is legacy; use agents.list[].sandbox.scope instead. Run "openclaw doctor --fix".',
     match: (value) => hasLegacyAgentListSandboxPerSession(value),
   },
 ];
@@ -115,30 +115,30 @@ const LEGACY_AGENT_RUNTIME_POLICY_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "agentRuntime", "fallback"],
     message:
-      'agents.defaults.agentRuntime is ignored; set models.providers.<provider>.agentRuntime or a model-scoped agentRuntime instead. Run "operator doctor --fix".',
+      'agents.defaults.agentRuntime is ignored; set models.providers.<provider>.agentRuntime or a model-scoped agentRuntime instead. Run "openclaw doctor --fix".',
   },
   {
     path: ["agents", "defaults", "embeddedHarness"],
     message:
-      'agents.defaults.embeddedHarness is legacy and ignored; set provider/model runtime policy instead. Run "operator doctor --fix".',
+      'agents.defaults.embeddedHarness is legacy and ignored; set provider/model runtime policy instead. Run "openclaw doctor --fix".',
     match: (value) => getRecord(value) !== null,
   },
   {
     path: ["agents", "defaults", "agentRuntime"],
     message:
-      'agents.defaults.agentRuntime is ignored; set models.providers.<provider>.agentRuntime or a model-scoped agentRuntime instead. Run "operator doctor --fix".',
+      'agents.defaults.agentRuntime is ignored; set models.providers.<provider>.agentRuntime or a model-scoped agentRuntime instead. Run "openclaw doctor --fix".',
     match: (value) => getRecord(value) !== null,
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].agentRuntime is ignored; set provider/model runtime policy instead. Run "operator doctor --fix".',
+      'agents.list[].agentRuntime is ignored; set provider/model runtime policy instead. Run "openclaw doctor --fix".',
     match: (value) => hasAgentListRuntimePolicy(value),
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].embeddedHarness is legacy and ignored; set provider/model runtime policy instead. Run "operator doctor --fix".',
+      'agents.list[].embeddedHarness is legacy and ignored; set provider/model runtime policy instead. Run "openclaw doctor --fix".',
     match: (value) => hasLegacyAgentListEmbeddedHarness(value),
   },
 ];
@@ -147,13 +147,13 @@ const DEPRECATED_EMBEDDED_AGENT_KEY_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "embeddedPi"],
     message:
-      'agents.defaults.embeddedPi is legacy; use agents.defaults.embeddedAgent instead. Run "operator doctor --fix".',
+      'agents.defaults.embeddedPi is legacy; use agents.defaults.embeddedAgent instead. Run "openclaw doctor --fix".',
     match: (value) => getRecord(value) !== null,
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].embeddedPi is legacy; use agents.list[].embeddedAgent instead. Run "operator doctor --fix".',
+      'agents.list[].embeddedPi is legacy; use agents.list[].embeddedAgent instead. Run "openclaw doctor --fix".',
     match: (value) => hasLegacyAgentListEmbeddedAgentKey(value),
   },
 ];
@@ -162,7 +162,7 @@ const LEGACY_AGENT_LLM_TIMEOUT_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "llm"],
     message:
-      'agents.defaults.llm is legacy; use models.providers.<id>.timeoutSeconds for slow model/provider timeouts. Run "operator doctor --fix".',
+      'agents.defaults.llm is legacy; use models.providers.<id>.timeoutSeconds for slow model/provider timeouts. Run "openclaw doctor --fix".',
     match: (value) => getRecord(value) !== null,
   },
 ];
@@ -171,19 +171,19 @@ const IGNORED_AGENT_MODEL_TIMEOUT_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "model"],
     message:
-      'agents.defaults.model.timeoutMs is ignored; agent model config only selects primary/fallback models. Run "operator doctor --fix" to remove it.',
+      'agents.defaults.model.timeoutMs is ignored; agent model config only selects primary/fallback models. Run "openclaw doctor --fix" to remove it.',
     match: (value) => hasOwnTimeoutMs(value),
   },
   {
     path: ["agents", "defaults", "subagents", "model"],
     message:
-      'agents.defaults.subagents.model.timeoutMs is ignored; subagent model config only selects primary/fallback models. Run "operator doctor --fix" to remove it.',
+      'agents.defaults.subagents.model.timeoutMs is ignored; subagent model config only selects primary/fallback models. Run "openclaw doctor --fix" to remove it.',
     match: (value) => hasOwnTimeoutMs(value),
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].model.timeoutMs and agents.list[].subagents.model.timeoutMs are ignored; agent model config only selects primary/fallback models. Run "operator doctor --fix" to remove them.',
+      'agents.list[].model.timeoutMs and agents.list[].subagents.model.timeoutMs are ignored; agent model config only selects primary/fallback models. Run "openclaw doctor --fix" to remove them.',
     match: (value) => hasAgentListModelTimeout(value),
   },
 ];
@@ -192,13 +192,13 @@ const PROFILE_CONFIGURED_TOOL_SECTION_RULES: LegacyConfigRule[] = [
   {
     path: ["tools"],
     message:
-      'tools.profile filters explicit configured-section tool grants; run "operator doctor --fix" to rewrite the explicit grants into a valid allowlist.',
+      'tools.profile filters explicit configured-section tool grants; run "openclaw doctor --fix" to rewrite the explicit grants into a valid allowlist.',
     match: (value) => toolProfileConfiguredSectionsNeedExplicitRepair(value),
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].tools.profile filters explicit configured-section tool grants; run "operator doctor --fix" to rewrite the explicit grants into a valid allowlist.',
+      'agents.list[].tools.profile filters explicit configured-section tool grants; run "openclaw doctor --fix" to rewrite the explicit grants into a valid allowlist.',
     match: (value, root) => {
       const globalTools = getRecord(root.tools);
       const inheritedProfile =
@@ -225,24 +225,24 @@ const SILENT_REPLY_LEGACY_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "silentReplyRewrite"],
     message:
-      'agents.defaults.silentReplyRewrite was removed; exact NO_REPLY is no longer rewritten to visible fallback text. Run "operator doctor --fix" to remove it.',
+      'agents.defaults.silentReplyRewrite was removed; exact NO_REPLY is no longer rewritten to visible fallback text. Run "openclaw doctor --fix" to remove it.',
   },
   {
     path: ["agents", "defaults", "silentReply"],
     message:
-      'agents.defaults.silentReply.direct was removed; direct chats never receive NO_REPLY prompt guidance. Run "operator doctor --fix" to remove it.',
+      'agents.defaults.silentReply.direct was removed; direct chats never receive NO_REPLY prompt guidance. Run "openclaw doctor --fix" to remove it.',
     match: (value) => Object.hasOwn(getRecord(value) ?? {}, "direct"),
   },
   {
     path: ["surfaces"],
     message:
-      'surfaces.*.silentReplyRewrite was removed; exact NO_REPLY is no longer rewritten to visible fallback text. Run "operator doctor --fix" to remove it.',
+      'surfaces.*.silentReplyRewrite was removed; exact NO_REPLY is no longer rewritten to visible fallback text. Run "openclaw doctor --fix" to remove it.',
     match: (value) => hasSurfaceSilentReplyRewrite(value),
   },
   {
     path: ["surfaces"],
     message:
-      'surfaces.*.silentReply.direct was removed; direct chats never receive NO_REPLY prompt guidance. Run "operator doctor --fix" to remove it.',
+      'surfaces.*.silentReply.direct was removed; direct chats never receive NO_REPLY prompt guidance. Run "openclaw doctor --fix" to remove it.',
     match: (value) => hasSurfaceSilentReplyDirect(value),
   },
 ];
@@ -251,12 +251,12 @@ const SYSTEM_PROMPT_OVERRIDE_LEGACY_RULES: LegacyConfigRule[] = [
   {
     path: ["agents", "defaults", "systemPromptOverride"],
     message:
-      'agents.defaults.systemPromptOverride was removed; Operator owns the generated system prompt. Run "operator doctor --fix" to remove it.',
+      'agents.defaults.systemPromptOverride was removed; Operator owns the generated system prompt. Run "openclaw doctor --fix" to remove it.',
   },
   {
     path: ["agents", "list"],
     message:
-      'agents.list[].systemPromptOverride was removed; Operator owns the generated system prompt. Run "operator doctor --fix" to remove it.',
+      'agents.list[].systemPromptOverride was removed; Operator owns the generated system prompt. Run "openclaw doctor --fix" to remove it.',
     match: (value) => hasAgentListSystemPromptOverride(value),
   },
 ];
@@ -493,7 +493,7 @@ function resolveLegacyAgentRuntimeIntent(raw: unknown): LegacyAgentRuntimeIntent
     return undefined;
   }
   const runtime = typeof record.id === "string" ? record.id.trim().toLowerCase() : "";
-  if (!runtime || runtime === "auto" || runtime === "operator") {
+  if (!runtime || runtime === "auto" || runtime === "@gabrielvfonseca/operator") {
     return undefined;
   }
   const alias = listLegacyRuntimeModelProviderAliases().find(

@@ -1,17 +1,20 @@
 // Discord plugin module implements send.voice behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   extensionForMime,
   maxBytesForKind,
   unlinkIfExists,
-} from "openclaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import type { RetryConfig } from "openclaw/plugin-sdk/retry-runtime";
-import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { loadWebMediaRaw } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import type { RetryConfig } from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
+import {
+  tempWorkspace,
+  resolvePreferredOperatorTmpDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { loadWebMediaRaw } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 import { resolveDiscordAccount } from "./accounts.js";
 import type { RequestClient } from "./internal/discord.js";
 import { parseAndResolveChannelRecipient } from "./recipient-resolution.js";

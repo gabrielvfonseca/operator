@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as configModule from "../config/config.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { projectDefaultInferenceRoute } from "./inference-route.js";
 
@@ -114,7 +114,7 @@ function snapshot(hash: string | null, config: OperatorConfig): ConfigSnapshot {
   return {
     exists: hash !== null,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash,
     config,
     sourceConfig: config,
@@ -139,7 +139,7 @@ function codexPluginMetadataSnapshot(homeScope: "agent" | "user") {
           hooks: [],
           rootDir: "/tmp/codex",
           source: "/tmp/codex/index.js",
-          manifestPath: "/tmp/codex/openclaw.plugin.json",
+          manifestPath: "/tmp/codex/operator.plugin.json",
           configSchema: {
             type: "object",
             additionalProperties: false,
@@ -175,7 +175,7 @@ function materializePluginDefaults(
 
 function baseParams(overrides: Partial<Parameters<typeof applySystemAgentSetup>[0]> = {}) {
   return {
-    workspace: "/tmp/openclaw-workspace",
+    workspace: "/tmp/operator-workspace",
     surface: "gateway" as const,
     runtime,
     ...overrides,
@@ -256,7 +256,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
       mocks.state.persistedConfig = result.nextConfig;
       return {
         nextConfig: result.nextConfig,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: mocks.state.commitPreviousHash,
         persistedHash: "persisted",
         result: result.result,
@@ -322,7 +322,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
 
     expect(result.configHashBefore).toBeNull();
     expect(mocks.state.persistedConfig).toMatchObject({
-      agents: { defaults: { workspace: "/tmp/openclaw-workspace" } },
+      agents: { defaults: { workspace: "/tmp/operator-workspace" } },
     });
   });
 
@@ -349,7 +349,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     mocks.state.initialSnapshot = snapshot("reserved", config);
 
     await expect(applySystemAgentSetup(baseParams())).rejects.toThrow(
-      'Agent id "openclaw" is reserved',
+      'Agent id "@gabrielvfonseca/operator" is reserved',
     );
 
     expect(mocks.commit).not.toHaveBeenCalled();
@@ -457,7 +457,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
     expect(mocks.state.persistedConfig).toMatchObject({
       agents: {
         defaults: {
-          workspace: "/tmp/openclaw-workspace",
+          workspace: "/tmp/operator-workspace",
           maxConcurrent: 7,
           model: { primary: "openai/gpt-5.5" },
         },
@@ -465,7 +465,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
       logging: { level: "debug" },
       plugins: { entries: { codex: { enabled: true } } },
     });
-    expect(result.configPath).toBe("/tmp/openclaw.json");
+    expect(result.configPath).toBe("/tmp/operator.json");
   });
 
   it("rejects route drift before opening the config transaction", async () => {
@@ -587,7 +587,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
       mocks.state.persistedConfig = result.nextConfig;
       return {
         nextConfig: result.nextConfig,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: "hash-2",
         persistedHash: "persisted",
         result: result.result,
@@ -644,7 +644,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
       mocks.state.persistedConfig = drifted;
       return {
         nextConfig: drifted,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: "probe",
         persistedHash: "persisted",
         result: result.result,
@@ -777,7 +777,7 @@ describe("applySystemAgentSetup transaction boundaries", () => {
       mocks.events.push("commit");
       return {
         nextConfig: result.nextConfig,
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: "probe",
         persistedHash: currentHash,
         result: result.result,

@@ -35,7 +35,7 @@ vi.resetModules();
 const { installPluginFromNpmPackArchive, installPluginFromNpmSpec, PLUGIN_INSTALL_ERROR_CODE } =
   await import("./install.js");
 
-const suiteTempRootTracker = createSuiteTempRootTracker("openclaw-plugin-install-npm-spec");
+const suiteTempRootTracker = createSuiteTempRootTracker("operator-plugin-install-npm-spec");
 let previousNpmGlobalConfig: string | undefined;
 let npmGlobalConfigPath: string;
 let npmPackArchiveInstallCase: {
@@ -84,7 +84,7 @@ function npmViewArgv(spec: string): string[] {
     "version",
     "dist.integrity",
     "dist.shasum",
-    "openclaw",
+    "@gabrielvfonseca/operator",
     "--json",
   ];
 }
@@ -238,7 +238,7 @@ function writeInstalledNpmPlugin(params: {
     JSON.stringify({
       name: params.packageName,
       version: params.version,
-      openclaw: params.openclaw ?? { extensions: ["./dist/index.js"] },
+      operator: params.operator ?? { extensions: ["./dist/index.js"] },
       ...(params.dependency
         ? { dependencies: { [params.dependency.name]: params.dependency.version } }
         : {}),
@@ -247,7 +247,7 @@ function writeInstalledNpmPlugin(params: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify({
       id: params.pluginId ?? params.packageName,
       name: params.pluginId ?? params.packageName,
@@ -416,7 +416,7 @@ function prunePluginLocalOperatorPeerLinks(npmRoot: string) {
       if (packageNodeModules && !packageNodeModules.isDirectory()) {
         continue;
       }
-      fs.rmSync(path.join(packageNodeModulesDir, "openclaw"), {
+      fs.rmSync(path.join(packageNodeModulesDir, "@gabrielvfonseca/operator"), {
         recursive: true,
         force: true,
       });
@@ -473,7 +473,7 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
               integrity: viewPackage.integrity ?? "sha512-plugin-test",
               shasum: viewPackage.shasum ?? "pluginshasum",
             },
-            ...(viewPackage.openclaw ? { openclaw: viewPackage.openclaw } : {}),
+            ...(viewPackage.operator ? { operator: viewPackage.operator } : {}),
           }),
         );
       }
@@ -515,12 +515,12 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
         const installedPackages: MockNpmPackage[] = [];
         prunePluginLocalOperatorPeerLinks(npmRoot);
         for (const packageName of Object.keys(manifest.dependencies ?? {})) {
-          if (packageName === "openclaw") {
-            const openclawRoot = path.join(npmRoot, "node_modules", "openclaw");
+          if (packageName === "@gabrielvfonseca/operator") {
+            const openclawRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
             fs.mkdirSync(openclawRoot, { recursive: true });
             fs.writeFileSync(
               path.join(openclawRoot, "package.json"),
-              JSON.stringify({ name: "openclaw", version: "0.0.0-test" }),
+              JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }),
               "utf8",
             );
             continue;
@@ -547,11 +547,11 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
             version: pkg.installedVersion ?? pkg.version,
           });
           if (pkg.materializesRootOperator) {
-            const openclawRoot = path.join(npmRoot, "node_modules", "openclaw");
+            const openclawRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
             fs.mkdirSync(openclawRoot, { recursive: true });
             fs.writeFileSync(
               path.join(openclawRoot, "package.json"),
-              JSON.stringify({ name: "openclaw", version: "2026.5.3" }),
+              JSON.stringify({ name: "@gabrielvfonseca/operator", version: "2026.5.3" }),
               "utf8",
             );
           }
@@ -566,12 +566,12 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
       }
       if (argv[0] === "npm" && argv[1] === "uninstall") {
         const packageName = (argv as string[]).at(-1);
-        if (packageName === "openclaw") {
+        if (packageName === "@gabrielvfonseca/operator") {
           const npmRoot = options?.cwd;
           if (!npmRoot) {
             throw new Error(`unexpected npm uninstall command: ${(argv as string[]).join(" ")}`);
           }
-          fs.rmSync(path.join(npmRoot, "node_modules", "openclaw"), {
+          fs.rmSync(path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator"), {
             recursive: true,
             force: true,
           });
@@ -617,7 +617,7 @@ beforeEach(() => {
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
-    `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
+    `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
   resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
@@ -631,7 +631,7 @@ beforeAll(async () => {
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
-    `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
+    `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
   resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
@@ -639,12 +639,12 @@ beforeAll(async () => {
 
   const stateDir = suiteTempRootTracker.makeTempDir();
   const npmRoot = path.join(stateDir, "npm");
-  const archivePath = path.join(stateDir, "openclaw-pack-demo-1.2.3.tgz");
+  const archivePath = path.join(stateDir, "operator-pack-demo-1.2.3.tgz");
   fs.writeFileSync(archivePath, "fixture pack contents", "utf8");
 
   mockNpmViewAndInstallMany([
     {
-      packageName: "@operator/pack-demo",
+      packageName: "@gabrielvfonseca/pack-demo",
       version: "1.2.3",
       pluginId: "pack-demo",
       npmRoot,
@@ -653,8 +653,8 @@ beforeAll(async () => {
       packArchivePath: archivePath,
     },
     {
-      spec: "@operator/voice-call@0.0.1",
-      packageName: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
+      packageName: "@gabrielvfonseca/voice-call",
       version: "0.0.1",
       pluginId: "voice-call",
       npmRoot,
@@ -668,12 +668,12 @@ beforeAll(async () => {
   });
   const npmProjectRoot = resolvePluginNpmProjectDir({
     npmDir: npmRoot,
-    packageName: "@operator/pack-demo",
+    packageName: "@gabrielvfonseca/pack-demo",
   });
   const managedManifest = JSON.parse(
     await fs.promises.readFile(path.join(npmProjectRoot, "package.json"), "utf8"),
   ) as { dependencies?: Record<string, string> };
-  const dependencySpec = managedManifest.dependencies?.["@operator/pack-demo"];
+  const dependencySpec = managedManifest.dependencies?.["@gabrielvfonseca/pack-demo"];
   const stagedArchivePath = dependencySpec
     ? resolveManagedFileDependency(npmProjectRoot, dependencySpec)
     : null;
@@ -696,7 +696,7 @@ beforeAll(async () => {
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
-    `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
+    `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
   resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
@@ -706,8 +706,8 @@ beforeAll(async () => {
   const npmRoot = path.join(stateDir, "npm");
 
   mockNpmViewAndInstall({
-    spec: "@operator/voice-call@0.0.1",
-    packageName: "@operator/voice-call",
+    spec: "@gabrielvfonseca/voice-call@0.0.1",
+    packageName: "@gabrielvfonseca/voice-call",
     version: "0.0.1",
     pluginId: "voice-call",
     npmRoot,
@@ -715,7 +715,7 @@ beforeAll(async () => {
   });
 
   const result = await installPluginFromNpmSpec({
-    spec: "@operator/voice-call@0.0.1",
+    spec: "@gabrielvfonseca/voice-call@0.0.1",
     npmDir: npmRoot,
     logger: { info: () => {}, warn: () => {} },
   });
@@ -736,7 +736,7 @@ describe("installPluginFromNpmSpec", () => {
 
     await expect(
       installPluginFromNpmSpec({
-        spec: "@operator/voice-call@0.0.1",
+        spec: "@gabrielvfonseca/voice-call@0.0.1",
         npmDir: path.join(suiteTempRootTracker.makeTempDir(), "npm"),
         logger: { info: () => {}, warn: () => {} },
       }),
@@ -785,16 +785,18 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(result.pluginId).toBe("pack-demo");
-    expect(result.targetDir).toBe(resolveTestPluginPackageDir(npmRoot, "@operator/pack-demo"));
-    expect(result.npmResolution?.resolvedSpec).toBe("@operator/pack-demo@1.2.3");
+    expect(result.targetDir).toBe(
+      resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/pack-demo"),
+    );
+    expect(result.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/pack-demo@1.2.3");
     expect(result.npmResolution?.integrity).toBe("sha512-pack-demo");
-    expect(result.npmTarballName).toBe("openclaw-pack-demo-1.2.3.tgz");
+    expect(result.npmTarballName).toBe("operator-pack-demo-1.2.3.tgz");
     expectNpmInstallIntoProject({
       calls,
       npmRoot,
-      packageName: "@operator/pack-demo",
+      packageName: "@gabrielvfonseca/pack-demo",
     });
-    expect(dependencySpec).toMatch(/^file:\.\/_openclaw-pack-archives\/.+\.tgz$/);
+    expect(dependencySpec).toMatch(/^file:\.\/_operator-pack-archives\/.+\.tgz$/);
     expect(dependencySpec).not.toContain(archivePath);
     expect(stagedArchiveContents).toBe("fixture pack contents");
   });
@@ -831,16 +833,16 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.error).toContain("unsupported npm pack package name");
     expect(fs.existsSync(path.join(victimDir, "keep.txt"))).toBe(true);
     expect(fs.existsSync(path.join(npmRoot, "package.json"))).toBe(false);
-    expect(fs.existsSync(path.join(npmRoot, "_openclaw-pack-archives"))).toBe(false);
+    expect(fs.existsSync(path.join(npmRoot, "_operator-pack-archives"))).toBe(false);
     expect(runCommandWithTimeoutMock.mock.calls).toHaveLength(1);
   });
 
   it("updates staged npm pack archives when dangerous-looking code is present", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const packageName = "@operator/pack-demo";
-    const archiveV1Path = path.join(stateDir, "openclaw-pack-demo-1.0.0.tgz");
-    const archiveV2Path = path.join(stateDir, "openclaw-pack-demo-2.0.0.tgz");
+    const packageName = "@gabrielvfonseca/pack-demo";
+    const archiveV1Path = path.join(stateDir, "operator-pack-demo-1.0.0.tgz");
+    const archiveV2Path = path.join(stateDir, "operator-pack-demo-2.0.0.tgz");
     fs.writeFileSync(archiveV1Path, "v1 pack contents", "utf8");
     fs.writeFileSync(archiveV2Path, "v2 pack contents", "utf8");
 
@@ -911,8 +913,8 @@ describe("installPluginFromNpmSpec", () => {
   it("installs staged npm pack archives with dangerous-looking code", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const packageName = "@operator/pack-demo";
-    const archivePath = path.join(stateDir, "openclaw-pack-demo-2.0.0.tgz");
+    const packageName = "@gabrielvfonseca/pack-demo";
+    const archivePath = path.join(stateDir, "operator-pack-demo-2.0.0.tgz");
     fs.writeFileSync(archivePath, "v2 pack contents", "utf8");
 
     mockNpmViewAndInstallMany([
@@ -946,7 +948,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, packageName))).toBe(true);
   });
 
-  it("installs npm plugins into .openclaw/npm", async () => {
+  it("installs npm plugins into .operator/npm", async () => {
     const { calls, dependencyInstalled, npmRoot, result } = npmSpecInstallCase;
 
     expect(result.ok).toBe(true);
@@ -954,20 +956,22 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(result.pluginId).toBe("voice-call");
-    expect(result.targetDir).toBe(resolveTestPluginPackageDir(npmRoot, "@operator/voice-call"));
-    expect(result.npmResolution?.resolvedSpec).toBe("@operator/voice-call@0.0.1");
+    expect(result.targetDir).toBe(
+      resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/voice-call"),
+    );
+    expect(result.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/voice-call@0.0.1");
     expect(result.npmResolution?.integrity).toBe("sha512-plugin-test");
     expect(dependencyInstalled).toBe(true);
     expectNpmInstallIntoProject({
       calls,
       npmRoot,
-      packageName: "@operator/voice-call",
+      packageName: "@gabrielvfonseca/voice-call",
     });
   });
 
   it("keeps lazy imports from a loaded old npm generation available across updates", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
-    const packageName = "@operator/codex";
+    const packageName = "@gabrielvfonseca/codex";
     mockNpmViewAndInstall({
       spec: `${packageName}@1.0.0`,
       packageName,
@@ -1058,7 +1062,7 @@ describe("installPluginFromNpmSpec", () => {
 
   it("does not mutate a retained generation when an exact rollback reuses its artifact key", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
-    const packageName = "@operator/codex";
+    const packageName = "@gabrielvfonseca/codex";
     const install = async (version: string, options: { mode?: "update" }) =>
       installPluginFromNpmSpec({
         spec: `${packageName}@${version}`,
@@ -1141,7 +1145,7 @@ describe("installPluginFromNpmSpec", () => {
 
   it("installs into a fresh generation when the legacy npm target is retained", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
-    const packageName = "@operator/codex";
+    const packageName = "@gabrielvfonseca/codex";
     const legacyPackageDir = resolveTestPluginPackageDir(npmRoot, packageName);
     fs.mkdirSync(legacyPackageDir, { recursive: true });
     await markRetainedManagedNpmInstall({
@@ -1186,7 +1190,7 @@ describe("installPluginFromNpmSpec", () => {
 
   it("allocates a fresh generation when a plain install selects a retained artifact", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
-    const packageName = "@operator/codex";
+    const packageName = "@gabrielvfonseca/codex";
     const legacyPackageDir = resolveTestPluginPackageDir(npmRoot, packageName);
     const retainedGenerationPackageDir = resolveTestPluginGenerationPackageDir({
       npmRoot,
@@ -1307,7 +1311,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.error).toContain("integrity sha512-evil");
     expect(result.error).toContain("expected sha512-safe");
     expect(managedInstallAttempts).toBe(1);
-    expect(fs.existsSync(path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects"))).toBe(
+    expect(fs.existsSync(path.join(npmProjectRoot, "_operator-quarantined-npm-projects"))).toBe(
       false,
     );
     expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "drift-plugin"))).toBe(false);
@@ -1353,7 +1357,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.error).toContain("version 1.0.1");
     expect(result.error).toContain("expected 1.0.0");
     expect(managedInstallAttempts).toBe(1);
-    expect(fs.existsSync(path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects"))).toBe(
+    expect(fs.existsSync(path.join(npmProjectRoot, "_operator-quarantined-npm-projects"))).toBe(
       false,
     );
     expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "version-drift-plugin"))).toBe(false);
@@ -1409,7 +1413,7 @@ describe("installPluginFromNpmSpec", () => {
     ) as { packages?: Record<string, { integrity?: string }> };
     expect(installed.packages?.[`node_modules/${packageName}`]?.integrity).toBe("sha512-safe");
     expect(
-      fs.readdirSync(path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects")),
+      fs.readdirSync(path.join(npmProjectRoot, "_operator-quarantined-npm-projects")),
     ).toHaveLength(1);
   });
 
@@ -1463,7 +1467,7 @@ describe("installPluginFromNpmSpec", () => {
       );
       expect(result.error).toContain(`${missingField} missing`);
       expect(
-        fs.readdirSync(path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects")),
+        fs.readdirSync(path.join(npmProjectRoot, "_operator-quarantined-npm-projects")),
       ).toHaveLength(1);
       expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, packageName))).toBe(false);
     },
@@ -1523,8 +1527,8 @@ describe("installPluginFromNpmSpec", () => {
       };
       manifest.dependencies ??= {};
       manifest.dependencies[addedPeerName] = "2.0.0";
-      manifest.openclaw ??= {};
-      manifest.openclaw.managedPeerDependencies = [addedPeerName];
+      manifest.operator ??= {};
+      manifest.operator.managedPeerDependencies = [addedPeerName];
       fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
       mutatedPeerAfterQuarantine = true;
     };
@@ -1550,7 +1554,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.SECURITY_SCAN_BLOCKED);
     expect(managedInstallAttempts).toBe(2);
     expect(mutatedPeerAfterQuarantine).toBe(true);
-    const quarantineParent = path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects");
+    const quarantineParent = path.join(npmProjectRoot, "_operator-quarantined-npm-projects");
     const quarantines = fs.readdirSync(quarantineParent);
     expect(quarantines).toHaveLength(1);
     expect(
@@ -1573,7 +1577,7 @@ describe("installPluginFromNpmSpec", () => {
       openclaw?: { managedPeerDependencies?: string[] };
     };
     expect(manifest.dependencies?.[addedPeerName]).toBeUndefined();
-    expect(manifest.openclaw?.managedPeerDependencies ?? []).not.toContain(addedPeerName);
+    expect(manifest.operator?.managedPeerDependencies ?? []).not.toContain(addedPeerName);
   });
 
   it("quarantines and retries once when package-lock omits the installed plugin", async () => {
@@ -1622,7 +1626,7 @@ describe("installPluginFromNpmSpec", () => {
     );
     expect(managedInstallAttempts).toBe(2);
     expect(
-      fs.readdirSync(path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects")),
+      fs.readdirSync(path.join(npmProjectRoot, "_operator-quarantined-npm-projects")),
     ).toHaveLength(1);
     expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "missing-lock-plugin"))).toBe(false);
   });
@@ -1630,7 +1634,7 @@ describe("installPluginFromNpmSpec", () => {
   it("repairs omitted current-platform packages with a fresh npm cache", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const packageName = "@operator/codex-fixture";
+    const packageName = "@gabrielvfonseca/codex-fixture";
     const platformPackage = "@vendor/codex-platform";
     const npmProjectRoot = resolvePluginNpmProjectDir({ npmDir: npmRoot, packageName });
     const platformPackageLocation = path.posix.join(
@@ -1647,7 +1651,7 @@ describe("installPluginFromNpmSpec", () => {
       pluginId: "codex-fixture",
       npmRoot,
       expectedDependencySpec: "1.0.0",
-      openclaw: {
+      operator: {
         extensions: ["./dist/index.js"],
         install: { requiredPlatformPackages: [platformPackage] },
       },
@@ -1692,7 +1696,7 @@ describe("installPluginFromNpmSpec", () => {
 
     expect(result.ok).toBe(true);
     expect(managedInstallAttempts).toBe(2);
-    expect(repairCacheDir).toContain("openclaw-npm-cache-");
+    expect(repairCacheDir).toContain("operator-npm-cache-");
     expect(fs.existsSync(repairCacheDir)).toBe(false);
     expect(warnings).toContain(
       `npm omitted current-platform package(s) ${platformPackage}; retrying once with a fresh cache.`,
@@ -1702,7 +1706,7 @@ describe("installPluginFromNpmSpec", () => {
   it("rejects installs that still omit current-platform packages after repair", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const packageName = "@operator/codex-fixture";
+    const packageName = "@gabrielvfonseca/codex-fixture";
     const platformPackage = "@vendor/codex-platform";
     const npmProjectRoot = resolvePluginNpmProjectDir({ npmDir: npmRoot, packageName });
     const platformPackageLocation = path.posix.join(
@@ -1718,7 +1722,7 @@ describe("installPluginFromNpmSpec", () => {
       pluginId: "codex-fixture",
       npmRoot,
       expectedDependencySpec: "1.0.0",
-      openclaw: {
+      operator: {
         extensions: ["./dist/index.js"],
         install: { requiredPlatformPackages: [platformPackage] },
       },
@@ -1763,7 +1767,7 @@ describe("installPluginFromNpmSpec", () => {
   it("quarantines and rebuilds a corrupt managed npm project after npm from-argument failures", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const packageName = "@operator/voice-call";
+    const packageName = "@gabrielvfonseca/voice-call";
     const warnings: string[] = [];
     const npmProjectRoot = resolvePluginNpmProjectDir({ npmDir: npmRoot, packageName });
     const stalePackageDir = path.join(npmProjectRoot, "node_modules", "stale-plugin");
@@ -1818,7 +1822,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(warnings.some((warning) => warning.includes("managed npm project corruption"))).toBe(
       true,
     );
-    const quarantineParent = path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects");
+    const quarantineParent = path.join(npmProjectRoot, "_operator-quarantined-npm-projects");
     const quarantines = fs.readdirSync(quarantineParent);
     expect(quarantines).toHaveLength(1);
     const quarantineDir = path.join(quarantineParent, quarantines[0] ?? "");
@@ -1931,7 +1935,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(managedInstallAttempts).toBeGreaterThanOrEqual(2);
     expect(result.error).toContain("npm install failed after managed npm project recovery");
     expect(result.error).toContain("Original npm error");
-    const quarantineParent = path.join(npmProjectRoot, "_openclaw-quarantined-npm-projects");
+    const quarantineParent = path.join(npmProjectRoot, "_operator-quarantined-npm-projects");
     const quarantines = fs.readdirSync(quarantineParent);
     expect(quarantines).toHaveLength(1);
     expect(
@@ -1991,7 +1995,7 @@ describe("installPluginFromNpmSpec", () => {
           version: "1.0.0",
           pluginId: "peer-plugin",
           npmRoot,
-          peerDependencies: { openclaw: "^2026.0.0" },
+          peerDependencies: { operator: "^2026.0.0" },
         },
         {
           spec: "next-plugin@1.0.0",
@@ -2010,7 +2014,9 @@ describe("installPluginFromNpmSpec", () => {
       expect(first.ok).toBe(true);
       const peerPluginDir = resolveTestPluginPackageDir(npmRoot, "peer-plugin");
       expect(
-        fs.lstatSync(path.join(peerPluginDir, "node_modules", "openclaw")).isSymbolicLink(),
+        fs
+          .lstatSync(path.join(peerPluginDir, "node_modules", "@gabrielvfonseca/operator"))
+          .isSymbolicLink(),
       ).toBe(true);
 
       const second = await installPluginFromNpmSpec({
@@ -2024,7 +2030,9 @@ describe("installPluginFromNpmSpec", () => {
         expect(second.error).not.toContain("peer-plugin/node_modules/openclaw");
       }
       expect(
-        fs.lstatSync(path.join(peerPluginDir, "node_modules", "openclaw")).isSymbolicLink(),
+        fs
+          .lstatSync(path.join(peerPluginDir, "node_modules", "@gabrielvfonseca/operator"))
+          .isSymbolicLink(),
       ).toBe(true);
     },
   );
@@ -2043,7 +2051,7 @@ describe("installPluginFromNpmSpec", () => {
           version: "1.0.0",
           pluginId: "peer-plugin",
           npmRoot,
-          peerDependencies: { openclaw: "^2026.0.0" },
+          peerDependencies: { operator: "^2026.0.0" },
         },
         {
           spec: "next-plugin@1.0.0",
@@ -2086,16 +2094,16 @@ describe("installPluginFromNpmSpec", () => {
 
     resolveOperatorPackageRootSyncMock.mockReturnValue(null);
     mockNpmViewAndInstall({
-      spec: "@operator/codex@2026.5.7",
-      packageName: "@operator/codex",
+      spec: "@gabrielvfonseca/codex@2026.5.7",
+      packageName: "@gabrielvfonseca/codex",
       version: "2026.5.7",
-      pluginId: "@operator/codex",
+      pluginId: "@gabrielvfonseca/codex",
       npmRoot,
-      peerDependencies: { openclaw: ">=2026.5.7" },
+      peerDependencies: { operator: ">=2026.5.7" },
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/codex@2026.5.7",
+      spec: "@gabrielvfonseca/codex@2026.5.7",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
     });
@@ -2104,15 +2112,17 @@ describe("installPluginFromNpmSpec", () => {
     if (result.ok) {
       return;
     }
-    expect(result.error).toContain("@operator/codex");
+    expect(result.error).toContain("@gabrielvfonseca/codex");
     expect(result.error).toContain("plugin-local node_modules/openclaw link");
     expect(
       warnings.some((warning) => warning.includes("Could not locate openclaw package root")),
     ).toBe(true);
-    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@operator/codex"))).toBe(false);
+    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/codex"))).toBe(
+      false,
+    );
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/codex",
+      packageName: "@gabrielvfonseca/codex",
     });
     expect(fs.existsSync(path.join(npmProjectRoot, "package.json"))).toBe(false);
   });
@@ -2123,13 +2133,13 @@ describe("installPluginFromNpmSpec", () => {
     vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
 
     mockNpmViewAndInstall({
-      spec: "@operator/whatsapp@2026.5.27",
-      packageName: "@operator/whatsapp",
+      spec: "@gabrielvfonseca/whatsapp@2026.5.27",
+      packageName: "@gabrielvfonseca/whatsapp",
       version: "2026.5.27",
       pluginId: "whatsapp",
       npmRoot,
-      peerDependencies: { openclaw: ">=2026.5.27" },
-      openclaw: {
+      peerDependencies: { operator: ">=2026.5.27" },
+      operator: {
         extensions: ["./dist/index.js"],
         install: { minHostVersion: ">=2026.4.25" },
         compat: { pluginApi: ">=2026.5.27" },
@@ -2137,7 +2147,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/whatsapp@2026.5.27",
+      spec: "@gabrielvfonseca/whatsapp@2026.5.27",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -2165,26 +2175,26 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/whatsapp",
-        packageName: "@operator/whatsapp",
+        spec: "@gabrielvfonseca/whatsapp",
+        packageName: "@gabrielvfonseca/whatsapp",
         version: "2026.5.27",
         pluginId: "whatsapp",
         npmRoot,
         versions: ["2026.5.26", "2026.5.27"],
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           install: { minHostVersion: ">=2026.4.25" },
           compat: { pluginApi: ">=2026.5.27" },
         },
       },
       {
-        spec: "@operator/whatsapp@2026.5.26",
-        packageName: "@operator/whatsapp",
+        spec: "@gabrielvfonseca/whatsapp@2026.5.26",
+        packageName: "@gabrielvfonseca/whatsapp",
         version: "2026.5.26",
         pluginId: "whatsapp",
         npmRoot,
         expectedDependencySpec: "2026.5.26",
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           install: { minHostVersion: ">=2026.4.25" },
           compat: { pluginApi: ">=2026.5.10-beta.1" },
@@ -2193,7 +2203,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/whatsapp",
+      spec: "@gabrielvfonseca/whatsapp",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
     });
@@ -2202,13 +2212,18 @@ describe("installPluginFromNpmSpec", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.npmResolution?.resolvedSpec).toBe("@operator/whatsapp@2026.5.26");
+    expect(result.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/whatsapp@2026.5.26");
     expect(result.npmResolution?.version).toBe("2026.5.26");
-    expect(warnings.join("\n")).toContain("using newest compatible @operator/whatsapp@2026.5.26");
+    expect(warnings.join("\n")).toContain(
+      "using newest compatible @gabrielvfonseca/whatsapp@2026.5.26",
+    );
     expect(
       JSON.parse(
         fs.readFileSync(
-          path.join(resolveTestPluginPackageDir(npmRoot, "@operator/whatsapp"), "package.json"),
+          path.join(
+            resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/whatsapp"),
+            "package.json",
+          ),
           "utf8",
         ),
       ).version,
@@ -2220,7 +2235,7 @@ describe("installPluginFromNpmSpec", () => {
     const npmRoot = path.join(stateDir, "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/whatsapp",
+      packageName: "@gabrielvfonseca/whatsapp",
     });
     const warnings: string[] = [];
     fs.mkdirSync(npmProjectRoot, { recursive: true });
@@ -2229,17 +2244,17 @@ describe("installPluginFromNpmSpec", () => {
       JSON.stringify({
         private: true,
         dependencies: {
-          "@operator/whatsapp": "2026.5.26",
+          "@gabrielvfonseca/whatsapp": "2026.5.26",
         },
       }),
       "utf8",
     );
     writeInstalledNpmPlugin({
-      packageName: "@operator/whatsapp",
+      packageName: "@gabrielvfonseca/whatsapp",
       version: "2026.5.26",
       pluginId: "whatsapp",
       npmRoot: npmProjectRoot,
-      openclaw: {
+      operator: {
         extensions: ["./dist/index.js"],
         install: { minHostVersion: ">=2026.4.25" },
         compat: { pluginApi: ">=2026.5.10-beta.1" },
@@ -2248,26 +2263,26 @@ describe("installPluginFromNpmSpec", () => {
     vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.10-beta.1");
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/whatsapp",
-        packageName: "@operator/whatsapp",
+        spec: "@gabrielvfonseca/whatsapp",
+        packageName: "@gabrielvfonseca/whatsapp",
         version: "2026.5.27",
         pluginId: "whatsapp",
         npmRoot,
         versions: ["2026.5.26", "2026.5.27"],
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           install: { minHostVersion: ">=2026.4.25" },
           compat: { pluginApi: ">=2026.5.27" },
         },
       },
       {
-        spec: "@operator/whatsapp@2026.5.26",
-        packageName: "@operator/whatsapp",
+        spec: "@gabrielvfonseca/whatsapp@2026.5.26",
+        packageName: "@gabrielvfonseca/whatsapp",
         version: "2026.5.26",
         pluginId: "whatsapp",
         npmRoot,
         expectedDependencySpec: "2026.5.26",
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           install: { minHostVersion: ">=2026.4.25" },
           compat: { pluginApi: ">=2026.5.10-beta.1" },
@@ -2276,7 +2291,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/whatsapp",
+      spec: "@gabrielvfonseca/whatsapp",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
@@ -2286,12 +2301,17 @@ describe("installPluginFromNpmSpec", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.npmResolution?.resolvedSpec).toBe("@operator/whatsapp@2026.5.26");
-    expect(warnings.join("\n")).toContain("using newest compatible @operator/whatsapp@2026.5.26");
+    expect(result.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/whatsapp@2026.5.26");
+    expect(warnings.join("\n")).toContain(
+      "using newest compatible @gabrielvfonseca/whatsapp@2026.5.26",
+    );
     expect(
       JSON.parse(
         fs.readFileSync(
-          path.join(resolveTestPluginPackageDir(npmRoot, "@operator/whatsapp"), "package.json"),
+          path.join(
+            resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/whatsapp"),
+            "package.json",
+          ),
           "utf8",
         ),
       ).version,
@@ -2299,7 +2319,7 @@ describe("installPluginFromNpmSpec", () => {
     const managedManifest = JSON.parse(
       fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(managedManifest.dependencies?.["@operator/whatsapp"]).toBe("2026.5.26");
+    expect(managedManifest.dependencies?.["@gabrielvfonseca/whatsapp"]).toBe("2026.5.26");
     expect(
       runCommandWithTimeoutMock.mock.calls.some(([argv]) => isManagedNpmInstallCommand(argv)),
     ).toBe(true);
@@ -2313,25 +2333,25 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/msteams@beta",
-        packageName: "@operator/msteams",
+        spec: "@gabrielvfonseca/msteams@beta",
+        packageName: "@gabrielvfonseca/msteams",
         version: "2026.5.28-beta.4",
         pluginId: "msteams",
         npmRoot,
         versions: ["2026.5.28-beta.3", "2026.5.28-beta.4"],
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           compat: { pluginApi: ">=2026.5.28-beta.4" },
         },
       },
       {
-        spec: "@operator/msteams@2026.5.28-beta.3",
-        packageName: "@operator/msteams",
+        spec: "@gabrielvfonseca/msteams@2026.5.28-beta.3",
+        packageName: "@gabrielvfonseca/msteams",
         version: "2026.5.28-beta.3",
         pluginId: "msteams",
         npmRoot,
         expectedDependencySpec: "2026.5.28-beta.3",
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           compat: { pluginApi: ">=2026.5.28-beta.3" },
         },
@@ -2339,7 +2359,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/msteams@beta",
+      spec: "@gabrielvfonseca/msteams@beta",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
@@ -2349,19 +2369,19 @@ describe("installPluginFromNpmSpec", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.npmResolution?.resolvedSpec).toBe("@operator/msteams@2026.5.28-beta.3");
+    expect(result.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/msteams@2026.5.28-beta.3");
     expect(result.npmResolution?.version).toBe("2026.5.28-beta.3");
     expect(warnings.join("\n")).toContain(
-      "using newest compatible @operator/msteams@2026.5.28-beta.3",
+      "using newest compatible @gabrielvfonseca/msteams@2026.5.28-beta.3",
     );
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/msteams",
+      packageName: "@gabrielvfonseca/msteams",
     });
     const managedManifest = JSON.parse(
       fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(managedManifest.dependencies?.["@operator/msteams"]).toBe("2026.5.28-beta.3");
+    expect(managedManifest.dependencies?.["@gabrielvfonseca/msteams"]).toBe("2026.5.28-beta.3");
   });
 
   it("does not resolve explicit prerelease tags to stable compatible versions", async () => {
@@ -2371,13 +2391,13 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/msteams@beta",
-        packageName: "@operator/msteams",
+        spec: "@gabrielvfonseca/msteams@beta",
+        packageName: "@gabrielvfonseca/msteams",
         version: "2026.5.28-beta.4",
         pluginId: "msteams",
         npmRoot,
         versions: ["2026.5.27", "2026.5.28-beta.4"],
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           compat: { pluginApi: ">=2026.5.28-beta.4" },
         },
@@ -2385,7 +2405,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/msteams@beta",
+      spec: "@gabrielvfonseca/msteams@beta",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: () => {} },
@@ -2409,13 +2429,13 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/msteams@beta",
-        packageName: "@operator/msteams",
+        spec: "@gabrielvfonseca/msteams@beta",
+        packageName: "@gabrielvfonseca/msteams",
         version: "2026.5.28-beta.4",
         pluginId: "msteams",
         npmRoot,
         versions: ["2026.5.28-alpha.10", "2026.5.28-beta.4"],
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
           compat: { pluginApi: ">=2026.5.28-beta.4" },
         },
@@ -2423,7 +2443,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/msteams@beta",
+      spec: "@gabrielvfonseca/msteams@beta",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: () => {} },
@@ -2452,7 +2472,7 @@ describe("installPluginFromNpmSpec", () => {
         version: "1.0.0",
         pluginId: "required-peer-plugin",
         npmRoot,
-        peerDependencies: { openclaw: "^2026.0.0" },
+        peerDependencies: { operator: "^2026.0.0" },
         materializesRootOperator: true,
       });
 
@@ -2468,7 +2488,9 @@ describe("installPluginFromNpmSpec", () => {
         packageName: "required-peer-plugin",
       });
       const requiredPeerPluginDir = resolveTestPluginPackageDir(npmRoot, "required-peer-plugin");
-      expect(fs.existsSync(path.join(npmProjectRoot, "node_modules", "openclaw"))).toBe(false);
+      expect(
+        fs.existsSync(path.join(npmProjectRoot, "node_modules", "@gabrielvfonseca/operator")),
+      ).toBe(false);
       const lockfile = JSON.parse(
         fs.readFileSync(path.join(npmProjectRoot, "package-lock.json"), "utf8"),
       ) as {
@@ -2476,7 +2498,9 @@ describe("installPluginFromNpmSpec", () => {
       };
       expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
       expect(
-        fs.lstatSync(path.join(requiredPeerPluginDir, "node_modules", "openclaw")).isSymbolicLink(),
+        fs
+          .lstatSync(path.join(requiredPeerPluginDir, "node_modules", "@gabrielvfonseca/operator"))
+          .isSymbolicLink(),
       ).toBe(true);
     },
   );
@@ -2486,16 +2510,18 @@ describe("installPluginFromNpmSpec", () => {
     const npmRoot = path.join(stateDir, "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/discord",
+      packageName: "@gabrielvfonseca/discord",
     });
-    fs.mkdirSync(path.join(npmProjectRoot, "node_modules", "openclaw"), { recursive: true });
+    fs.mkdirSync(path.join(npmProjectRoot, "node_modules", "@gabrielvfonseca/operator"), {
+      recursive: true,
+    });
     fs.writeFileSync(
       path.join(npmProjectRoot, "package.json"),
       JSON.stringify(
         {
           private: true,
           dependencies: {
-            openclaw: "2026.5.4",
+            operator: "2026.5.4",
           },
         },
         null,
@@ -2511,16 +2537,16 @@ describe("installPluginFromNpmSpec", () => {
           packages: {
             "": {
               dependencies: {
-                openclaw: "2026.5.4",
+                operator: "2026.5.4",
               },
             },
             "node_modules/openclaw": {
               version: "2026.5.4",
-              resolved: "https://registry.npmjs.org/openclaw/-/openclaw-2026.5.4.tgz",
+              resolved: "https://registry.npmjs.org/openclaw/-/operator-2026.5.4.tgz",
             },
           },
           dependencies: {
-            openclaw: {
+            operator: {
               version: "2026.5.4",
             },
           },
@@ -2531,26 +2557,26 @@ describe("installPluginFromNpmSpec", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(npmProjectRoot, "node_modules", "openclaw", "package.json"),
+      path.join(npmProjectRoot, "node_modules", "@gabrielvfonseca/operator", "package.json"),
       JSON.stringify({
-        name: "openclaw",
+        name: "@gabrielvfonseca/operator",
         version: "2026.5.4",
       }),
       "utf-8",
     );
 
     mockNpmViewAndInstall({
-      spec: "@operator/discord@beta",
-      packageName: "@operator/discord",
+      spec: "@gabrielvfonseca/discord@beta",
+      packageName: "@gabrielvfonseca/discord",
       version: "2026.5.5-beta.1",
       pluginId: "discord",
       npmRoot,
-      peerDependencies: { openclaw: ">=2026.5.5-beta.1" },
+      peerDependencies: { operator: ">=2026.5.5-beta.1" },
       expectedDependencySpec: "2026.5.5-beta.1",
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/discord@beta",
+      spec: "@gabrielvfonseca/discord@beta",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -2559,8 +2585,8 @@ describe("installPluginFromNpmSpec", () => {
     const manifest = JSON.parse(
       fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(manifest.dependencies).not.toHaveProperty("openclaw");
-    expect(manifest.dependencies?.["@operator/discord"]).toBe("2026.5.5-beta.1");
+    expect(manifest.dependencies).not.toHaveProperty("@gabrielvfonseca/operator");
+    expect(manifest.dependencies?.["@gabrielvfonseca/discord"]).toBe("2026.5.5-beta.1");
     const lockfile = JSON.parse(
       fs.readFileSync(path.join(npmProjectRoot, "package-lock.json"), "utf8"),
     ) as {
@@ -2568,13 +2594,13 @@ describe("installPluginFromNpmSpec", () => {
       dependencies?: Record<string, unknown>;
     };
     expect(lockfile.packages?.["node_modules/openclaw"]).toBeUndefined();
-    expect(lockfile.dependencies?.openclaw).toBeUndefined();
+    expect(lockfile.dependencies?.operator).toBeUndefined();
   });
 
   it("preserves the active host openclaw runtime package during npm plugin installs", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const hostPackageRoot = path.join(npmRoot, "node_modules", "openclaw");
+    const hostPackageRoot = path.join(npmRoot, "node_modules", "@gabrielvfonseca/operator");
     fs.mkdirSync(hostPackageRoot, { recursive: true });
     fs.writeFileSync(
       path.join(npmRoot, "package.json"),
@@ -2582,7 +2608,7 @@ describe("installPluginFromNpmSpec", () => {
         {
           private: true,
           dependencies: {
-            openclaw: "2026.5.12-beta.6",
+            operator: "2026.5.12-beta.6",
           },
         },
         null,
@@ -2598,7 +2624,7 @@ describe("installPluginFromNpmSpec", () => {
           packages: {
             "": {
               dependencies: {
-                openclaw: "2026.5.12-beta.6",
+                operator: "2026.5.12-beta.6",
               },
             },
             "node_modules/openclaw": {
@@ -2614,7 +2640,7 @@ describe("installPluginFromNpmSpec", () => {
     fs.writeFileSync(
       path.join(hostPackageRoot, "package.json"),
       JSON.stringify({
-        name: "openclaw",
+        name: "@gabrielvfonseca/operator",
         version: "2026.5.12-beta.6",
       }),
       "utf-8",
@@ -2622,8 +2648,8 @@ describe("installPluginFromNpmSpec", () => {
 
     resolveOperatorPackageRootSyncMock.mockReturnValue(hostPackageRoot);
     mockNpmViewAndInstall({
-      spec: "@xdarkicex/openclaw-memory-libravdb@1.4.69",
-      packageName: "@xdarkicex/openclaw-memory-libravdb",
+      spec: "@xdarkicex/operator-memory-libravdb@1.4.69",
+      packageName: "@xdarkicex/operator-memory-libravdb",
       version: "1.4.69",
       pluginId: "libravdb-memory",
       npmRoot,
@@ -2631,7 +2657,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@xdarkicex/openclaw-memory-libravdb@1.4.69",
+      spec: "@xdarkicex/operator-memory-libravdb@1.4.69",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -2643,19 +2669,19 @@ describe("installPluginFromNpmSpec", () => {
     const baseManifest = JSON.parse(
       fs.readFileSync(path.join(npmRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(baseManifest.dependencies?.openclaw).toBe("2026.5.12-beta.6");
-    expect(baseManifest.dependencies?.["@xdarkicex/openclaw-memory-libravdb"]).toBeUndefined();
+    expect(baseManifest.dependencies?.operator).toBe("2026.5.12-beta.6");
+    expect(baseManifest.dependencies?.["@xdarkicex/operator-memory-libravdb"]).toBeUndefined();
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@xdarkicex/openclaw-memory-libravdb",
+      packageName: "@xdarkicex/operator-memory-libravdb",
     });
     const projectManifest = JSON.parse(
       fs.readFileSync(path.join(npmProjectRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(projectManifest.dependencies?.["@xdarkicex/openclaw-memory-libravdb"]).toBe("1.4.69");
+    expect(projectManifest.dependencies?.["@xdarkicex/operator-memory-libravdb"]).toBe("1.4.69");
     expect(fs.existsSync(hostPackageRoot)).toBe(true);
     expect(result.targetDir).toBe(
-      resolveTestPluginPackageDir(npmRoot, "@xdarkicex/openclaw-memory-libravdb"),
+      resolveTestPluginPackageDir(npmRoot, "@xdarkicex/operator-memory-libravdb"),
     );
     expect(
       runCommandWithTimeoutMock.mock.calls.some(
@@ -2663,7 +2689,7 @@ describe("installPluginFromNpmSpec", () => {
           Array.isArray(argv) &&
           argv[0] === "npm" &&
           argv[1] === "uninstall" &&
-          argv.includes("openclaw"),
+          argv.includes("@gabrielvfonseca/operator"),
       ),
     ).toBe(false);
   });
@@ -2703,14 +2729,16 @@ describe("installPluginFromNpmSpec", () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/voice-call",
+      packageName: "@gabrielvfonseca/voice-call",
     });
     runCommandWithTimeoutMock.mockImplementation(
       async (argv: string[], options?: { cwd?: string }) => {
-        if (JSON.stringify(argv) === JSON.stringify(npmViewArgv("@operator/voice-call@0.0.1"))) {
+        if (
+          JSON.stringify(argv) === JSON.stringify(npmViewArgv("@gabrielvfonseca/voice-call@0.0.1"))
+        ) {
           return successfulSpawn(
             JSON.stringify({
-              name: "@operator/voice-call",
+              name: "@gabrielvfonseca/voice-call",
               version: "0.0.1",
               dist: {
                 integrity: "sha512-plugin-test",
@@ -2748,9 +2776,12 @@ describe("installPluginFromNpmSpec", () => {
         }
         if (argv[0] === "npm" && argv[1] === "uninstall") {
           if (!(argv as string[]).includes("--legacy-peer-deps")) {
-            fs.mkdirSync(path.join(options?.cwd ?? npmRoot, "node_modules", "openclaw"), {
-              recursive: true,
-            });
+            fs.mkdirSync(
+              path.join(options?.cwd ?? npmRoot, "node_modules", "@gabrielvfonseca/operator"),
+              {
+                recursive: true,
+              },
+            );
           }
           return successfulSpawn("");
         }
@@ -2759,7 +2790,7 @@ describe("installPluginFromNpmSpec", () => {
     );
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.1",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -2772,7 +2803,7 @@ describe("installPluginFromNpmSpec", () => {
       fs.promises.access(path.join(npmProjectRoot, "package.json")),
     ).rejects.toHaveProperty("code", "ENOENT");
     await expect(
-      fs.promises.access(path.join(npmProjectRoot, "node_modules", "openclaw")),
+      fs.promises.access(path.join(npmProjectRoot, "node_modules", "@gabrielvfonseca/operator")),
     ).rejects.toHaveProperty("code", "ENOENT");
   });
 
@@ -2780,7 +2811,7 @@ describe("installPluginFromNpmSpec", () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     const npmProjectRoot = resolvePluginNpmProjectDir({
       npmDir: npmRoot,
-      packageName: "@operator/codex",
+      packageName: "@gabrielvfonseca/codex",
     });
     fs.mkdirSync(npmProjectRoot, { recursive: true });
     fs.writeFileSync(
@@ -2789,7 +2820,7 @@ describe("installPluginFromNpmSpec", () => {
         {
           private: true,
           dependencies: {
-            "@operator/codex": "0.0.1",
+            "@gabrielvfonseca/codex": "0.0.1",
           },
         },
         null,
@@ -2799,10 +2830,10 @@ describe("installPluginFromNpmSpec", () => {
     );
     writeNpmRootPackageLock({
       npmRoot: npmProjectRoot,
-      dependencies: { "@operator/codex": "0.0.1" },
+      dependencies: { "@gabrielvfonseca/codex": "0.0.1" },
       packages: [
         {
-          packageName: "@operator/codex",
+          packageName: "@gabrielvfonseca/codex",
           version: "0.0.1",
           npmRoot: npmProjectRoot,
         },
@@ -2811,17 +2842,17 @@ describe("installPluginFromNpmSpec", () => {
     const hostRoot = suiteTempRootTracker.makeTempDir();
     fs.writeFileSync(
       path.join(hostRoot, "package.json"),
-      `${JSON.stringify({ name: "openclaw", version: "0.0.0-test" }, null, 2)}\n`,
+      `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: "0.0.0-test" }, null, 2)}\n`,
       "utf8",
     );
     resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
     const installedDir = writeInstalledNpmPlugin({
       npmRoot: npmProjectRoot,
-      packageName: "@operator/codex",
+      packageName: "@gabrielvfonseca/codex",
       version: "0.0.1",
-      peerDependencies: { openclaw: "*" },
+      peerDependencies: { operator: "*" },
     });
-    const peerLink = path.join(installedDir, "node_modules", "openclaw");
+    const peerLink = path.join(installedDir, "node_modules", "@gabrielvfonseca/operator");
     fs.mkdirSync(path.dirname(peerLink), { recursive: true });
     fs.symlinkSync(hostRoot, peerLink, "junction");
 
@@ -2839,7 +2870,7 @@ describe("installPluginFromNpmSpec", () => {
           "@openclaw",
           "codex",
           "node_modules",
-          "openclaw",
+          "@gabrielvfonseca/operator",
         );
         const shouldCopyPeerLink = options.filter
           ? await options.filter(peerLink, destinationPeerLink)
@@ -2857,10 +2888,10 @@ describe("installPluginFromNpmSpec", () => {
     });
     runCommandWithTimeoutMock.mockImplementation(
       async (argv: string[], options?: { cwd?: string }) => {
-        if (JSON.stringify(argv) === JSON.stringify(npmViewArgv("@operator/codex@0.0.2"))) {
+        if (JSON.stringify(argv) === JSON.stringify(npmViewArgv("@gabrielvfonseca/codex@0.0.2"))) {
           return successfulSpawn(
             JSON.stringify({
-              name: "@operator/codex",
+              name: "@gabrielvfonseca/codex",
               version: "0.0.2",
               dist: {
                 integrity: "sha512-plugin-test",
@@ -2884,7 +2915,7 @@ describe("installPluginFromNpmSpec", () => {
             dependencies: manifest.dependencies ?? {},
             packages: [
               {
-                packageName: "@operator/codex",
+                packageName: "@gabrielvfonseca/codex",
                 version: "0.0.1",
                 npmRoot: npmRootLocal,
               },
@@ -2908,7 +2939,7 @@ describe("installPluginFromNpmSpec", () => {
 
     try {
       const result = await installPluginFromNpmSpec({
-        spec: "@operator/codex@0.0.2",
+        spec: "@gabrielvfonseca/codex@0.0.2",
         npmDir: npmRoot,
         mode: "update",
         logger: { info: () => {}, warn: () => {} },
@@ -2934,7 +2965,7 @@ describe("installPluginFromNpmSpec", () => {
       path.join(hostRoot, "package.json"),
       `${JSON.stringify(
         {
-          name: "openclaw",
+          name: "@gabrielvfonseca/operator",
         },
         null,
         2,
@@ -2956,8 +2987,8 @@ describe("installPluginFromNpmSpec", () => {
     );
     resolveOperatorPackageRootSyncMock.mockReturnValue(hostRoot);
     mockNpmViewAndInstall({
-      spec: "@operator/voice-call@0.0.1",
-      packageName: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
+      packageName: "@gabrielvfonseca/voice-call",
       version: "0.0.1",
       pluginId: "voice-call",
       npmRoot,
@@ -2979,7 +3010,7 @@ describe("installPluginFromNpmSpec", () => {
             expect(manifest.overrides?.["node-domexception"]).toBe(
               "npm:@nolyfill/domexception@1.0.28",
             );
-            expect(manifest.openclaw?.managedOverrides).toEqual([
+            expect(manifest.operator?.managedOverrides).toEqual([
               "axios",
               "nested",
               "node-domexception",
@@ -2999,7 +3030,7 @@ describe("installPluginFromNpmSpec", () => {
               semver: "1.2.3",
             },
           });
-          expect(manifest.openclaw?.managedOverrides).toEqual(["axios", "nested"]);
+          expect(manifest.operator?.managedOverrides).toEqual(["axios", "nested"]);
         }
         return await baseImplementation?.(argv, options);
       },
@@ -3007,7 +3038,7 @@ describe("installPluginFromNpmSpec", () => {
 
     const warnings: string[] = [];
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.1",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
     });
@@ -3177,22 +3208,22 @@ describe("installPluginFromNpmSpec", () => {
 
   const officialLaunchPluginCases = [
     {
-      spec: "@operator/acpx",
+      spec: "@gabrielvfonseca/acpx",
       pluginId: "acpx",
       indexJs: `import { spawn } from "node:child_process";\nspawn("codex-acp", []);`,
     },
     {
-      spec: "@operator/codex",
+      spec: "@gabrielvfonseca/codex",
       pluginId: "codex",
       indexJs: `import { spawn } from "node:child_process";\nspawn("codex", ["app-server"]);`,
     },
     {
-      spec: "@operator/google-meet",
+      spec: "@gabrielvfonseca/google-meet",
       pluginId: "google-meet",
       indexJs: `import { spawnSync } from "node:child_process";\nspawnSync("node", ["bridge.js"]);`,
     },
     {
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       pluginId: "voice-call",
       indexJs: `import { spawn } from "node:child_process";\nspawn("ngrok", ["http", "3000"]);`,
     },
@@ -3285,17 +3316,17 @@ describe("installPluginFromNpmSpec", () => {
   it("rejects duplicate npm installs unless update mode is requested", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const installRoot = resolveTestPluginPackageDir(npmRoot, "@operator/voice-call");
+    const installRoot = resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/voice-call");
     fs.mkdirSync(installRoot, { recursive: true });
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@operator/voice-call",
+      name: "@gabrielvfonseca/voice-call",
       version: "0.0.1",
       integrity: "sha512-plugin-test",
       shasum: "pluginshasum",
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.1",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
       npmDir: npmRoot,
       mode: "install",
     });
@@ -3315,19 +3346,19 @@ describe("installPluginFromNpmSpec", () => {
   it("allows duplicate npm installs in update mode", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const installRoot = resolveTestPluginPackageDir(npmRoot, "@operator/voice-call");
+    const installRoot = resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/voice-call");
     fs.mkdirSync(installRoot, { recursive: true });
     fs.writeFileSync(path.join(installRoot, "old.txt"), "old", "utf-8");
     mockNpmViewAndInstall({
-      spec: "@operator/voice-call@0.0.2",
-      packageName: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call@0.0.2",
+      packageName: "@gabrielvfonseca/voice-call",
       version: "0.0.2",
       pluginId: "voice-call",
       npmRoot,
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.2",
+      spec: "@gabrielvfonseca/voice-call@0.0.2",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: () => {} },
@@ -3340,7 +3371,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.targetDir).toBe(
       resolveTestPluginGenerationPackageDir({
         npmRoot,
-        packageName: "@operator/voice-call",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.2",
       }),
     );
@@ -3350,7 +3381,7 @@ describe("installPluginFromNpmSpec", () => {
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot: resolveTestPluginGenerationProjectDir({
         npmRoot,
-        packageName: "@operator/voice-call",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.2",
       }),
     });
@@ -3362,15 +3393,15 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/voice-call@0.0.1",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call@0.0.1",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.1",
         pluginId: "voice-call",
         npmRoot,
       },
       {
-        spec: "@operator/whatsapp@0.0.1",
-        packageName: "@operator/whatsapp",
+        spec: "@gabrielvfonseca/whatsapp@0.0.1",
+        packageName: "@gabrielvfonseca/whatsapp",
         version: "0.0.1",
         pluginId: "whatsapp",
         npmRoot,
@@ -3378,7 +3409,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result1 = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.1",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -3386,7 +3417,7 @@ describe("installPluginFromNpmSpec", () => {
 
     runCommandWithTimeoutMock.mockClear();
     const result2 = await installPluginFromNpmSpec({
-      spec: "@operator/whatsapp@0.0.1",
+      spec: "@gabrielvfonseca/whatsapp@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -3395,15 +3426,19 @@ describe("installPluginFromNpmSpec", () => {
     expectNpmInstallIntoProject({
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot,
-      packageName: "@operator/whatsapp",
+      packageName: "@gabrielvfonseca/whatsapp",
     });
-    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@operator/voice-call"))).toBe(true);
-    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@operator/whatsapp"))).toBe(true);
+    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/voice-call"))).toBe(
+      true,
+    );
+    expect(fs.existsSync(resolveTestPluginPackageDir(npmRoot, "@gabrielvfonseca/whatsapp"))).toBe(
+      true,
+    );
   });
 
   it("aborts when integrity drift callback rejects the fetched artifact", async () => {
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@operator/voice-call",
+      name: "@gabrielvfonseca/voice-call",
       version: "0.0.1",
       integrity: "sha512-new",
       shasum: "newshasum",
@@ -3411,7 +3446,7 @@ describe("installPluginFromNpmSpec", () => {
 
     const onIntegrityDrift = vi.fn(async () => false);
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@0.0.1",
+      spec: "@gabrielvfonseca/voice-call@0.0.1",
       expectedIntegrity: "sha512-old",
       onIntegrityDrift,
     });
@@ -3434,7 +3469,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@operator/not-found",
+      spec: "@gabrielvfonseca/not-found",
       logger: { info: () => {}, warn: () => {} },
     });
     expect(result.ok).toBe(false);
@@ -3445,20 +3480,20 @@ describe("installPluginFromNpmSpec", () => {
 
   it("rejects implicit prerelease npm specs with beta guidance", async () => {
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@operator/voice-call",
+      name: "@gabrielvfonseca/voice-call",
       version: "0.0.2-beta.1",
       integrity: "sha512-beta",
       shasum: "betashasum",
     });
 
     const rejected = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       logger: { info: () => {}, warn: () => {} },
     });
     expect(rejected.ok).toBe(false);
     if (!rejected.ok) {
       expect(rejected.error).toContain("prerelease version 0.0.2-beta.1");
-      expect(rejected.error).toContain('"@operator/voice-call@beta"');
+      expect(rejected.error).toContain('"@gabrielvfonseca/voice-call@beta"');
     }
   });
 
@@ -3467,15 +3502,15 @@ describe("installPluginFromNpmSpec", () => {
     const warnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/voice-call",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.2-beta.1",
         npmRoot: officialNpmRoot,
         versions: ["0.0.1", "0.0.2-beta.1"],
       },
       {
-        spec: "@operator/voice-call@0.0.1",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call@0.0.1",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.1",
         pluginId: "voice-call",
         npmRoot: officialNpmRoot,
@@ -3484,7 +3519,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const officialFallback = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       npmDir: officialNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -3498,8 +3533,10 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(officialFallback.npmResolution?.version).toBe("0.0.1");
-    expect(officialFallback.npmResolution?.resolvedSpec).toBe("@operator/voice-call@0.0.1");
-    expect(warnings.join("\n")).toContain("falling back to stable @operator/voice-call@0.0.1");
+    expect(officialFallback.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/voice-call@0.0.1");
+    expect(warnings.join("\n")).toContain(
+      "falling back to stable @gabrielvfonseca/voice-call@0.0.1",
+    );
   });
 
   it("keeps stable correction versions when resolving official npm packages", async () => {
@@ -3507,8 +3544,8 @@ describe("installPluginFromNpmSpec", () => {
     const correctionWarnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/voice-call",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "2026.5.3-1",
         pluginId: "voice-call",
         npmRoot: correctionNpmRoot,
@@ -3518,7 +3555,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const stableCorrection = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       npmDir: correctionNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -3532,7 +3569,9 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(stableCorrection.npmResolution?.version).toBe("2026.5.3-1");
-    expect(stableCorrection.npmResolution?.resolvedSpec).toBe("@operator/voice-call@2026.5.3-1");
+    expect(stableCorrection.npmResolution?.resolvedSpec).toBe(
+      "@gabrielvfonseca/voice-call@2026.5.3-1",
+    );
     expect(correctionWarnings).toStrictEqual([]);
   });
 
@@ -3541,16 +3580,16 @@ describe("installPluginFromNpmSpec", () => {
     const prereleaseOnlyWarnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@operator/voice-call",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.1-beta.1",
         pluginId: "voice-call",
         npmRoot: prereleaseOnlyNpmRoot,
         versions: ["0.0.1-beta.1", "0.0.2-beta.1"],
       },
       {
-        spec: "@operator/voice-call@0.0.2-beta.1",
-        packageName: "@operator/voice-call",
+        spec: "@gabrielvfonseca/voice-call@0.0.2-beta.1",
+        packageName: "@gabrielvfonseca/voice-call",
         version: "0.0.2-beta.1",
         pluginId: "voice-call",
         npmRoot: prereleaseOnlyNpmRoot,
@@ -3559,7 +3598,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const prereleaseOnly = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       npmDir: prereleaseOnlyNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -3573,18 +3612,20 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(prereleaseOnly.npmResolution?.version).toBe("0.0.2-beta.1");
-    expect(prereleaseOnly.npmResolution?.resolvedSpec).toBe("@operator/voice-call@0.0.2-beta.1");
+    expect(prereleaseOnly.npmResolution?.resolvedSpec).toBe(
+      "@gabrielvfonseca/voice-call@0.0.2-beta.1",
+    );
     expect(prereleaseOnlyWarnings.join("\n")).toContain("has no stable npm versions yet");
     expect(prereleaseOnlyWarnings.join("\n")).toContain(
-      "using newest prerelease @operator/voice-call@0.0.2-beta.1",
+      "using newest prerelease @gabrielvfonseca/voice-call@0.0.2-beta.1",
     );
   });
 
   it("accepts explicit prerelease npm dist-tags", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     mockNpmViewAndInstall({
-      spec: "@operator/voice-call@beta",
-      packageName: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call@beta",
+      packageName: "@gabrielvfonseca/voice-call",
       version: "0.0.2-beta.1",
       pluginId: "voice-call",
       integrity: "sha512-beta",
@@ -3593,7 +3634,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const accepted = await installPluginFromNpmSpec({
-      spec: "@operator/voice-call@beta",
+      spec: "@gabrielvfonseca/voice-call@beta",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -3602,11 +3643,11 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(accepted.npmResolution?.version).toBe("0.0.2-beta.1");
-    expect(accepted.npmResolution?.resolvedSpec).toBe("@operator/voice-call@0.0.2-beta.1");
+    expect(accepted.npmResolution?.resolvedSpec).toBe("@gabrielvfonseca/voice-call@0.0.2-beta.1");
     expectNpmInstallIntoProject({
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot,
-      packageName: "@operator/voice-call",
+      packageName: "@gabrielvfonseca/voice-call",
     });
   });
 });

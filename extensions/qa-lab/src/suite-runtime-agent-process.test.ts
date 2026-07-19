@@ -1,7 +1,7 @@
 // Qa Lab tests cover suite runtime agent process plugin behavior.
 import { EventEmitter } from "node:events";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const spawnMock = vi.hoisted(() => vi.fn());
@@ -257,11 +257,11 @@ describe("qa suite runtime agent process helpers", () => {
         alternateModel: "openai/gpt-5.6-luna-mini",
         providerMode: "mock-openai",
       } as never,
-      ["openclaw", "-m", "overview"],
+      ["@gabrielvfonseca/operator", "-m", "overview"],
       {
         env: {
           OPERATOR_STATE_DIR: "/tmp/isolated-state",
-          OPERATOR_CONFIG_PATH: "/tmp/isolated-state/openclaw.json",
+          OPERATOR_CONFIG_PATH: "/tmp/isolated-state/operator.json",
         },
       },
     );
@@ -275,14 +275,14 @@ describe("qa suite runtime agent process helpers", () => {
     expect(spawnCall?.[0]).toBe("/usr/bin/node");
     expect(spawnCall?.[1]).toEqual([
       path.join("/repo", "dist", "index.js"),
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "-m",
       "overview",
     ]);
     const spawnEnv = (spawnCall?.[2] as { env?: Record<string, string> } | undefined)?.env;
     expect(spawnEnv?.PATH).toBe("/usr/bin");
     expect(spawnEnv?.OPERATOR_STATE_DIR).toBe("/tmp/isolated-state");
-    expect(spawnEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/isolated-state/openclaw.json");
+    expect(spawnEnv?.OPERATOR_CONFIG_PATH).toBe("/tmp/isolated-state/operator.json");
   });
 
   it("parses json qa cli output when requested", async () => {
@@ -670,7 +670,7 @@ describe("qa suite runtime agent process helpers", () => {
       name: "Memory Dreaming Promotion",
       payload: {
         kind: "systemEvent",
-        text: "__openclaw_memory_core_short_term_promotion_dream__",
+        text: "__operator_memory_core_short_term_promotion_dream__",
       },
     };
     const current = {
@@ -678,7 +678,7 @@ describe("qa suite runtime agent process helpers", () => {
       name: "Memory Dreaming Promotion",
       payload: {
         kind: "agentTurn",
-        message: "__openclaw_memory_core_short_term_promotion_dream__",
+        message: "__operator_memory_core_short_term_promotion_dream__",
         lightContext: true,
       },
       sessionTarget: "isolated",

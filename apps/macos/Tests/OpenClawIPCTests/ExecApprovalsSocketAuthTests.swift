@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct ExecApprovalsSocketAuthTests {
     @Test
@@ -165,10 +165,10 @@ struct ExecApprovalsSocketAuthTests {
         #expect(decoded.approvalSource == "auto-review")
         #expect(decoded.approvalDecision == nil)
         #expect(decoded.policySnapshot?.allowlistRules == [
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/A"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/A", source: .allowAlways),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/ä"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/A"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/A", source: .allowAlways),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/ä"),
         ])
         switch ExecHostRequestEvaluator.validateRequest(decoded) {
         case let .success(validated):
@@ -178,7 +178,7 @@ struct ExecApprovalsSocketAuthTests {
         }
     }
 
-    private static let policySnapshot = OpenClawSystemRunApprovalPolicySnapshot(
+    private static let policySnapshot = OperatorSystemRunApprovalPolicySnapshot(
         security: .full,
         ask: .off,
         askFallback: .deny,

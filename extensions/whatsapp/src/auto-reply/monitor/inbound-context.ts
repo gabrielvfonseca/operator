@@ -1,6 +1,6 @@
 // Whatsapp plugin module implements inbound context behavior.
-import { filterChannelInboundQuoteContext } from "openclaw/plugin-sdk/channel-inbound";
-import { filterSupplementalContextItems } from "openclaw/plugin-sdk/security-runtime";
+import { filterChannelInboundQuoteContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { filterSupplementalContextItems } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   getComparableIdentityValues,
   getReplyContext,

@@ -4,8 +4,8 @@
  * Agent startup uses this to merge configured channel capabilities with prompt
  * tools and thread-bound spawn features that depend on channel policy.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntriesLower } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntriesLower } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   resolveThreadBindingSpawnPolicy,
   supportsAutomaticThreadBindingSpawn,

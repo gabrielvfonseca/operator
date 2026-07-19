@@ -28,7 +28,7 @@ describe("browser hook client actions", () => {
       ref: "e12",
       targetId: "tab-1",
       timeoutMs: 30_000,
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     });
 
     const call = lastFetchCall();

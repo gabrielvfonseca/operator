@@ -3,7 +3,7 @@
  * app-server sessions.
  */
 import { existsSync } from "node:fs";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
 import { describeControlFailure } from "./capabilities.js";
 import {
   isCodexAppServerConnectionClosedError,

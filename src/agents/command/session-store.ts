@@ -1,7 +1,7 @@
 /**
  * Updates persisted session metadata after agent command runs.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   resolveCompactionSessionFile,
   setSessionRuntimeModel,

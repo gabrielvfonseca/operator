@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private actor SystemAgentGatewayConfig {
     private var token = "a"
@@ -70,7 +70,7 @@ private func systemAgentSessionID(from message: URLSessionWebSocketTask.Message)
     }
     guard let data,
           let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-          object["method"] as? String == "openclaw.chat",
+          object["method"] as? String == "operator.chat",
           let params = object["params"] as? [String: Any]
     else { return nil }
     return params["sessionId"] as? String
@@ -166,7 +166,7 @@ private func transientVerificationErrorResponse(id: String) -> Data {
 @Suite(.serialized)
 @MainActor
 struct OnboardingSystemAgentChatTests {
-    @Test func `onboarding wires OpenClaw agent handoff`() {
+    @Test func `onboarding wires Operator agent handoff`() {
         let state = AppState(preview: true)
         state.connectionMode = .local
         let view = OnboardingView(state: state)
@@ -176,7 +176,7 @@ struct OnboardingSystemAgentChatTests {
         #expect(view.systemAgentState.chat.onAgentHandoff != nil)
     }
 
-    @Test func `relaunch with pending inference resumes OpenClaw`() async throws {
+    @Test func `relaunch with pending inference resumes Operator`() async throws {
         let suiteName = "OnboardingPendingInferenceResumeTests-\(UUID().uuidString)"
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
@@ -192,9 +192,9 @@ struct OnboardingSystemAgentChatTests {
                 }
                 if respondToSystemAgentHealth(task: task, id: id, method: method) { return }
                 switch method {
-                case "openclaw.setup.verify":
+                case "operator.setup.verify":
                     task.emitReceiveSuccess(.data(verifiedInferenceResponse(id: id)))
-                case "openclaw.chat":
+                case "operator.chat":
                     task.emitReceiveSuccess(.data(systemAgentResponse(id: id)))
                 default:
                     break
@@ -229,8 +229,8 @@ struct OnboardingSystemAgentChatTests {
         #expect(view.aiSetup.connectedModelRef == "openai/gpt-5.5")
         #expect(await methods.snapshot() == [
             "health",
-            "openclaw.setup.verify",
-            "openclaw.chat",
+            "operator.setup.verify",
+            "operator.chat",
         ])
     }
 
@@ -248,15 +248,15 @@ struct OnboardingSystemAgentChatTests {
                 await methods.record(method)
                 if respondToSystemAgentHealth(task: task, id: id, method: method) { return }
                 switch method {
-                case "openclaw.setup.verify":
+                case "operator.setup.verify":
                     let priorVerifications = await methods.snapshot().filter {
-                        $0 == "openclaw.setup.verify"
+                        $0 == "operator.setup.verify"
                     }.count
                     let response = priorVerifications == 1
                         ? transientVerificationErrorResponse(id: id)
                         : verifiedInferenceResponse(id: id)
                     task.emitReceiveSuccess(.data(response))
-                case "openclaw.chat":
+                case "operator.chat":
                     task.emitReceiveSuccess(.data(systemAgentResponse(id: id)))
                 default:
                     break
@@ -315,9 +315,9 @@ struct OnboardingSystemAgentChatTests {
         #expect(scheduledDeadlines.count == 1)
         #expect(await methods.snapshot() == [
             "health",
-            "openclaw.setup.verify",
+            "operator.setup.verify",
             "health",
-            "openclaw.setup.verify",
+            "operator.setup.verify",
         ])
     }
 
@@ -335,7 +335,7 @@ struct OnboardingSystemAgentChatTests {
                 else { return }
                 await methods.record(method)
                 if respondToSystemAgentHealth(task: task, id: id, method: method) { return }
-                guard method == "openclaw.setup.verify" else { return }
+                guard method == "operator.setup.verify" else { return }
                 _ = await gate.waitIfFirst()
                 task.emitReceiveSuccess(.data(verifiedInferenceResponse(id: id)))
             })
@@ -357,7 +357,7 @@ struct OnboardingSystemAgentChatTests {
 
         let staleResume = view.resumePendingSystemAgent(modelRef: "openai/gpt-5.5")
         for _ in 0..<200 {
-            if await methods.snapshot() == ["health", "openclaw.setup.verify"] {
+            if await methods.snapshot() == ["health", "operator.setup.verify"] {
                 break
             }
             try? await Task.sleep(nanoseconds: 5_000_000)
@@ -392,9 +392,9 @@ struct OnboardingSystemAgentChatTests {
                 switch method {
                 case "agents.list":
                     task.emitReceiveSuccess(.data(configuredAgentsResponse(id: id)))
-                case "openclaw.setup.verify":
+                case "operator.setup.verify":
                     task.emitReceiveSuccess(.data(verifiedInferenceResponse(id: id)))
-                case "openclaw.chat":
+                case "operator.chat":
                     task.emitReceiveSuccess(.data(systemAgentResponse(id: id)))
                 default:
                     break
@@ -447,12 +447,12 @@ struct OnboardingSystemAgentChatTests {
         #expect(await methods.snapshot() == [
             "agents.list",
             "health",
-            "openclaw.setup.verify",
-            "openclaw.chat",
+            "operator.setup.verify",
+            "operator.chat",
         ])
     }
 
-    @Test func `fresh inference presents and starts OpenClaw immediately`() async throws {
+    @Test func `fresh inference presents and starts Operator immediately`() async throws {
         let session = GatewayTestWebSocketSession(taskFactory: {
             GatewayTestWebSocketTask(sendHook: { task, message, sendIndex in
                 guard sendIndex > 0,
@@ -573,7 +573,7 @@ struct OnboardingSystemAgentChatTests {
         #expect(session.snapshotMakeCount() == 1)
         #expect(session.latestTask()?.snapshotSendCount() == 2)
         #expect(chat.messages.map(\.text) == ["ready", "must stay on route a"])
-        #expect(chat.errorMessage == "The Gateway connection changed. Restart OpenClaw to reconnect.")
+        #expect(chat.errorMessage == "The Gateway connection changed. Restart Operator to reconnect.")
         #expect(await recorder.snapshot() == [routeASessionID])
 
         let restartTask = try #require(chat.restartAfterError())
@@ -631,7 +631,7 @@ struct OnboardingSystemAgentChatTests {
         #expect(chat.messages.isEmpty)
         #expect(replyCount == 0)
         #expect(handoffCount == 0)
-        #expect(chat.errorMessage == "The Gateway connection changed. Restart OpenClaw to reconnect.")
+        #expect(chat.errorMessage == "The Gateway connection changed. Restart Operator to reconnect.")
     }
 
     @Test func `cancelled initial request exposes restart and recovers`() async throws {
@@ -667,7 +667,7 @@ struct OnboardingSystemAgentChatTests {
         await requestGate.release()
         await startTask.value
 
-        #expect(chat.errorMessage == "OpenClaw was interrupted. Restart to try again.")
+        #expect(chat.errorMessage == "Operator was interrupted. Restart to try again.")
         #expect(!chat.isSending)
         #expect(chat.messages.isEmpty)
 

@@ -8,6 +8,6 @@ export const page = definePage({
   component: () =>
     import("./memory-import-page.ts").then(() => ({
       header: true,
-      render: () => html`<openclaw-memory-import-page></openclaw-memory-import-page>`,
+      render: () => html`<operator-memory-import-page></operator-memory-import-page>`,
     })),
 });

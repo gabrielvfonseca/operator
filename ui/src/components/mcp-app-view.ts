@@ -72,7 +72,7 @@ function hostContext(element: Element | undefined, height: number): HostContext 
   };
 }
 
-class OpenClawAppBridge extends AppBridge {
+class OperatorAppBridge extends AppBridge {
   setListToolsHandler(handler: (params: ListToolsRequest["params"]) => Promise<ListToolsResult>) {
     this.replaceRequestHandler(ListToolsRequestSchema, (request) => handler(request.params));
   }
@@ -227,9 +227,9 @@ export class McpAppView extends LitElement {
         return;
       }
 
-      const bridge = new OpenClawAppBridge(
+      const bridge = new OperatorAppBridge(
         null,
-        { name: "OpenClaw", version: "1.0.0" },
+        { name: "Operator", version: "1.0.0" },
         buildMcpAppHostCapabilities(payload.csp),
         { hostContext: hostContext(mount, this.height) },
       );

@@ -1,8 +1,8 @@
-import { parseStrictPositiveInteger } from "@operator/normalization-core/number-coercion";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { normalizeSessionsGroupBy, type SessionsGroupBy } from "../../lib/sessions/grouping.ts";
 import { getSafeLocalStorage } from "../../local-storage.ts";
 
-const GROUP_BY_STORAGE_KEY = "openclaw:sessions:group-by";
+const GROUP_BY_STORAGE_KEY = "operator:sessions:group-by";
 
 export function loadStoredGroupBy(): SessionsGroupBy {
   return normalizeSessionsGroupBy(getSafeLocalStorage()?.getItem(GROUP_BY_STORAGE_KEY));

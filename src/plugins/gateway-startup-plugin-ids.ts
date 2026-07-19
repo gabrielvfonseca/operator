@@ -1,15 +1,15 @@
 /** Resolves plugin ids that should load during Gateway startup. */
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
 import {
   buildModelCatalogMergeKey,
   parseModelCatalogRef,
-} from "@operator/model-catalog-core/model-catalog-refs";
+} from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { collectConfiguredAgentHarnessRuntimes } from "../agents/harness-runtimes.js";
 import { splitTrailingAuthProfile } from "../agents/model-ref-profile.js";
 import {

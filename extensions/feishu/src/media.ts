@@ -2,22 +2,25 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Readable } from "node:stream";
-import type * as Lark from "@larksuiteoapi/node-sdk";
-import type { MessageReceipt } from "openclaw/plugin-sdk/channel-outbound";
-import { mediaKindFromMime } from "openclaw/plugin-sdk/media-mime";
+import type { MessageReceipt } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { mediaKindFromMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
 import {
   MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS,
   runFfmpeg,
   runFfprobe,
-} from "openclaw/plugin-sdk/media-runtime";
-import { saveMediaBuffer, type SavedMedia } from "openclaw/plugin-sdk/media-store";
-import { readRegularFile, writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { saveMediaBuffer, type SavedMedia } from "@gabrielvfonseca/operator/plugin-sdk/media-store";
+import {
+  readRegularFile,
+  writeExternalFileWithinRoot,
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolvePreferredOperatorTmpDir,
   withTempWorkspace,
   withTempDownloadPath,
-} from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import type * as Lark from "@larksuiteoapi/node-sdk";
 import type { ClawdbotConfig } from "../runtime-api.js";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
@@ -331,7 +334,7 @@ async function saveMessageResourceWithType(params: {
   const meta = extractFeishuDownloadMetadata(response);
   const saved = await saveFeishuResponseMedia({
     response,
-    tmpDirPrefix: "openclaw-feishu-resource-",
+    tmpDirPrefix: "operator-feishu-resource-",
     errorPrefix: "Feishu message resource download failed",
     maxBytes: params.maxBytes,
     contentType: meta.contentType,

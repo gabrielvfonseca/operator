@@ -1,4 +1,4 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.awaitCancellation
@@ -26,7 +26,7 @@ class VoiceWakeManagerTest {
 
     session.emit(VoiceWakeRecognitionEvent.Ready)
     session.retire()
-    session.emit(VoiceWakeRecognitionEvent.Transcript("openclaw stale command", isFinal = true))
+    session.emit(VoiceWakeRecognitionEvent.Transcript("operator stale command", isFinal = true))
 
     assertEquals(listOf(VoiceWakeRecognitionEvent.Ready), events)
   }
@@ -49,14 +49,14 @@ class VoiceWakeManagerTest {
       assertTrue(manager.isListening.value)
       assertEquals("Listening", manager.statusText.value)
 
-      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("OpenClaw, show", isFinal = false))
+      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("Operator, show", isFinal = false))
       runCurrent()
       assertEquals(emptyList<VoiceWakeMatch>(), commands)
 
-      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("OpenClaw, show status", isFinal = true))
+      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("Operator, show status", isFinal = true))
       runCurrent()
 
-      assertEquals(listOf(VoiceWakeMatch("OpenClaw", "show status")), commands)
+      assertEquals(listOf(VoiceWakeMatch("Operator", "show status")), commands)
       assertEquals("show status", manager.lastTriggeredCommand.value)
       assertEquals(1, recognizer.stopCount)
 
@@ -147,7 +147,7 @@ class VoiceWakeManagerTest {
 
       manager.setForeground(true)
       manager.setEnabled(true)
-      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("openclaw show status", isFinal = true))
+      recognizer.emit(VoiceWakeRecognitionEvent.Transcript("operator show status", isFinal = true))
       runCurrent()
       assertTrue(commandStarted)
 
@@ -232,7 +232,7 @@ class VoiceWakeManagerTest {
       context = RuntimeEnvironment.getApplication(),
       scope = this,
       recognizer = recognizer,
-      initialTriggerWords = listOf("openclaw"),
+      initialTriggerWords = listOf("@gabrielvfonseca/operator"),
       onCommand = onCommand,
       restartDelayMs = 1,
       hasRecordAudioPermission = hasPermission,

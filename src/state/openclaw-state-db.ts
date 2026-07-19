@@ -33,19 +33,19 @@ import {
 } from "../infra/sqlite-wal.js";
 import { migrateLegacyCronRunLogsToTaskRuns } from "../infra/state-migrations.cron-run-logs.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
-import * as operatorApprovalMigration from "./operator-state-db-operator-approval-migration.js";
+import * as operatorApprovalMigration from "./openclaw-state-db-operator-approval-migration.js";
 import {
   ensureColumn,
   tableExists,
   tableHasColumn,
   tablePrimaryKeyColumns,
-} from "./operator-state-db-schema-helpers.js";
-import type { DB as OperatorStateKyselyDatabase } from "./operator-state-db.generated.js";
+} from "./openclaw-state-db-schema-helpers.js";
+import type { DB as OperatorStateKyselyDatabase } from "./openclaw-state-db.generated.js";
 import {
   resolveOperatorStateSqliteDir,
   resolveOperatorStateSqlitePath,
-} from "./operator-state-db.paths.js";
-import { OPERATOR_STATE_SCHEMA_SQL } from "./operator-state-schema.generated.js";
+} from "./openclaw-state-db.paths.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
 
 /**
  * Shared Operator SQLite state database lifecycle and metadata writers.
@@ -149,7 +149,7 @@ export function assertOperatorStateDatabaseForMaintenance(
   }
   if (userVersion !== OPERATOR_STATE_SCHEMA_VERSION) {
     throw new Error(
-      `Operator state database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
+      `Operator state database ${options.pathname} uses schema version ${userVersion}; run openclaw doctor --fix before compacting it.`,
     );
   }
 
@@ -166,7 +166,7 @@ export function assertOperatorStateDatabaseForMaintenance(
     const schemaVersion =
       typeof metadata.schema_version === "number" ? metadata.schema_version : "invalid";
     throw new Error(
-      `Operator state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPERATOR_STATE_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
+      `Operator state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPERATOR_STATE_SCHEMA_VERSION}; run openclaw doctor --fix before compacting it.`,
     );
   }
   assertSqliteSchemaContains(
@@ -743,13 +743,13 @@ function assertCanonicalStateSchemaShape(db: DatabaseSync, pathname: string): vo
   operatorApprovalMigration.assertCanonicalOperatorApprovalKinds(db, pathname);
   if (!hasCanonicalAgentDatabasesPrimaryKey(db)) {
     throw new Error(
-      `Operator state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy agent database registry schema; run openclaw doctor --fix to migrate it.`,
     );
   }
   if (!hasCanonicalAuditEventsSchema(db)) {
     if (canRepairLegacyAuditEventsSchema(db)) {
       throw new Error(
-        `Operator state database ${pathname} has a legacy audit event schema; run operator doctor --fix to migrate it.`,
+        `Operator state database ${pathname} has a legacy audit event schema; run openclaw doctor --fix to migrate it.`,
       );
     }
     throw new Error(

@@ -1,6 +1,6 @@
 // Imported by agent.test.ts to keep its mocked suite in one Vitest module graph.
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import { isAgentRunRestartAbortReason } from "../../agents/run-termination.js";
@@ -1260,7 +1260,7 @@ describe("gateway agent handler", () => {
     vi.setSystemTime(new Date("2026-05-07T12:00:00.000Z"));
     const staleEntry = {
       sessionId: "old-session-id",
-      sessionFile: "/tmp/operator/agents/main/sessions/old-session-id.jsonl",
+      sessionFile: "/tmp/openclaw/agents/main/sessions/old-session-id.jsonl",
       updatedAt: 0,
       sessionStartedAt: 0,
     };
@@ -1293,7 +1293,7 @@ describe("gateway agent handler", () => {
     vi.setSystemTime(now);
     const missingTranscriptEntry = {
       sessionId: "failed-missing-session-id",
-      sessionFile: "/tmp/operator/missing/failed-missing-session-id.jsonl",
+      sessionFile: "/tmp/openclaw/missing/failed-missing-session-id.jsonl",
       status: "failed",
       updatedAt: now,
       sessionStartedAt: now,

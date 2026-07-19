@@ -1,5 +1,5 @@
 // Searxng plugin module implements searxng client behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   DEFAULT_SEARCH_COUNT,
@@ -14,14 +14,14 @@ import {
   withTrustedWebSearchEndpoint,
   wrapWebContent,
   writeCache,
-} from "openclaw/plugin-sdk/provider-web-search";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import {
   assertHttpUrlTargetsPrivateNetwork,
   isBlockedHostnameOrIp,
   isPrivateIpAddress,
   resolvePinnedHostnameWithPolicy,
   type LookupFn,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   resolveSearxngBaseUrl,
   resolveSearxngCategories,

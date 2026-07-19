@@ -1,5 +1,5 @@
 /** Builds the per-run built-in and plugin tool inventory. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   SourceReplyDeliveryMode,
   TaskSuggestionDeliveryMode,
@@ -14,7 +14,6 @@ import { isEmbeddedMode } from "../infra/embedded-mode.js";
 import { getActiveSecretsRuntimeConfigSnapshot } from "../secrets/runtime-state.js";
 import { getActiveRuntimeWebToolsMetadata } from "../secrets/runtime-web-tools-state.js";
 import { isCronRunSessionKey } from "../sessions/session-key-utils.js";
-import type { SkillWorkshopRunOptions } from "../skills/workshop/types.js";
 import { resolveTranscriptsConfig } from "../transcripts/config.js";
 import { normalizeDeliveryContext } from "../utils/delivery-context.js";
 import type { GatewayMessageChannel } from "../utils/message-channel.js";
@@ -25,18 +24,18 @@ import {
   wrapToolWithBeforeToolCallHook,
 } from "./agent-tools.before-tool-call.js";
 import type { AuthProfileStore } from "./auth-profiles/types.js";
-import { resolveOperatorPluginToolsForOptions } from "./operator-plugin-tools.js";
+import { resolveOperatorPluginToolsForOptions } from "./openclaw-plugin-tools.js";
 import {
   isToolExplicitlyAllowedByFactoryPolicy,
   mergeFactoryPolicyList,
   resolveImageToolFactoryAvailable,
   resolveOptionalMediaToolFactoryPlan,
-} from "./operator-tools.media-factory-plan.js";
-import { applyNodesToolWorkspaceGuard } from "./operator-tools.nodes-workspace-guard.js";
+} from "./openclaw-tools.media-factory-plan.js";
+import { applyNodesToolWorkspaceGuard } from "./openclaw-tools.nodes-workspace-guard.js";
 import {
   collectPresentOperatorTools,
   shouldIncludeUpdatePlanToolForOperatorTools,
-} from "./operator-tools.registration.js";
+} from "./openclaw-tools.registration.js";
 import type { SandboxFsBridge } from "./sandbox/fs-bridge.js";
 import type { SpawnedToolContext } from "./spawned-context.js";
 import type { ToolFsPolicy } from "./tool-fs-policy.js";
@@ -59,7 +58,7 @@ import { createImageTool } from "./tools/image-tool.js";
 import { createMessageTool } from "./tools/message-tool.js";
 import { createMusicGenerateTool } from "./tools/music-generate-tool.js";
 import { createNodesTool } from "./tools/nodes-tool.js";
-import { createOperatorDelegateToolsForRun } from "./tools/operator-delegate-tool.js";
+import { createOperatorDelegateToolsForRun } from "./tools/openclaw-delegate-tool.js";
 import { createPdfTool } from "./tools/pdf-tool.js";
 import { createSessionStatusTool } from "./tools/session-status-tool.js";
 import { createSessionsHistoryTool } from "./tools/sessions-history-tool.js";
@@ -69,7 +68,6 @@ import { createSessionsSendTool } from "./tools/sessions-send-tool.js";
 import { createSessionsSpawnTool } from "./tools/sessions-spawn-tool.js";
 import { createSessionsTool } from "./tools/sessions-tool.js";
 import { createSessionsYieldTool } from "./tools/sessions-yield-tool.js";
-import { createConfiguredSkillWorkshopTool } from "./tools/skill-workshop-tool-factory.js";
 import { createSubagentsTool } from "./tools/subagents-tool.js";
 import { createTaskSuggestionTools } from "./tools/task-suggestion-tools.js";
 import { createTranscriptsTool } from "./tools/transcripts-tool.js";
@@ -78,6 +76,9 @@ import { createUpdatePlanTool } from "./tools/update-plan-tool.js";
 import { createVideoGenerateTool } from "./tools/video-generate-tool.js";
 import { createWebFetchTool, createWebSearchTool } from "./tools/web-tools.js";
 import { resolveWorkspaceRoot } from "./workspace-dir.js";
+import { buildMemoryTools } from "../memory/tools.js";
+import { createMemoryOrchestrator } from "../memory/orchestrator.js";
+import { DEFAULT_MEMORY_SUBSYSTEM_CONFIG } from "../memory/config.js";
 /**
  * Drops tools whose requiredClientCaps the originating gateway client did not
  * declare. Capability availability is a hard fact, not policy: every tool
@@ -156,8 +157,6 @@ export function createOperatorTools(
     modelProvider?: string;
     /** Active model id for provider/model-specific tool gating. */
     modelId?: string;
-    /** Internal review-run restrictions and proposal provenance. */
-    skillWorkshop?: SkillWorkshopRunOptions;
     /** If true, nodes action="invoke" can call media-returning commands directly. */
     allowMediaInvokeCommands?: boolean;
     /** Explicit agent ID override for cron/hook sessions. */
@@ -242,7 +241,7 @@ export function createOperatorTools(
   const runtimeCwd = resolveWorkspaceRoot(
     options?.cwd ?? options?.workspaceDir ?? inferredWorkspaceDir,
   );
-  options?.recordToolPrepStage?.("operator-tools:session-workspace");
+  options?.recordToolPrepStage?.("openclaw-tools:session-workspace");
   const deliveryContext = normalizeDeliveryContext({
     channel: options?.agentChannel,
     to: options?.agentTo,
@@ -296,7 +295,7 @@ export function createOperatorTools(
         deferAutoModelResolution: true,
       })
     : null;
-  options?.recordToolPrepStage?.("operator-tools:image-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:image-tool");
   const imageGenerateTool = optionalMediaTools.imageGenerate
     ? createImageGenerateTool({
         config: options?.config,
@@ -310,7 +309,7 @@ export function createOperatorTools(
         onAsyncTaskStarted: mediaGenerationAsyncStartCallback,
       })
     : null;
-  options?.recordToolPrepStage?.("operator-tools:image-generate-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:image-generate-tool");
   const videoGenerateTool = optionalMediaTools.videoGenerate
     ? createVideoGenerateTool({
         config: options?.config,
@@ -324,7 +323,7 @@ export function createOperatorTools(
         onAsyncTaskStarted: mediaGenerationAsyncStartCallback,
       })
     : null;
-  options?.recordToolPrepStage?.("operator-tools:video-generate-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:video-generate-tool");
   const musicGenerateTool = optionalMediaTools.musicGenerate
     ? createMusicGenerateTool({
         config: options?.config,
@@ -338,7 +337,7 @@ export function createOperatorTools(
         onAsyncTaskStarted: mediaGenerationAsyncStartCallback,
       })
     : null;
-  options?.recordToolPrepStage?.("operator-tools:music-generate-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:music-generate-tool");
   const pdfTool =
     optionalMediaTools.pdf && options?.agentDir?.trim()
       ? createPdfTool({
@@ -351,7 +350,7 @@ export function createOperatorTools(
           deferAutoModelResolution: true,
         })
       : null;
-  options?.recordToolPrepStage?.("operator-tools:pdf-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:pdf-tool");
   const webSearchTool = createWebSearchTool({
     config: options?.config,
     agentDir: options?.agentDir,
@@ -359,14 +358,14 @@ export function createOperatorTools(
     runtimeWebSearch: runtimeWebTools?.search,
     lateBindRuntimeConfig: true,
   });
-  options?.recordToolPrepStage?.("operator-tools:web-search-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:web-search-tool");
   const webFetchTool = createWebFetchTool({
     config: options?.config,
     sandboxed: options?.sandboxed,
     runtimeWebFetch: runtimeWebTools?.fetch,
     lateBindRuntimeConfig: true,
   });
-  options?.recordToolPrepStage?.("operator-tools:web-fetch-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:web-fetch-tool");
   const messageTool = options?.disableMessageTool
     ? null
     : createMessageTool({
@@ -398,7 +397,7 @@ export function createOperatorTools(
         conversationReadOrigin: options?.conversationReadOrigin,
       });
   const heartbeatTool = options?.enableHeartbeatTool ? createHeartbeatResponseTool() : null;
-  options?.recordToolPrepStage?.("operator-tools:message-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:message-tool");
   const nodesToolBase = createNodesTool({
     agentSessionKey: options?.agentSessionKey,
     agentChannel: options?.agentChannel,
@@ -415,7 +414,7 @@ export function createOperatorTools(
     sandboxRoot: options?.sandboxRoot,
     workspaceDir,
   });
-  options?.recordToolPrepStage?.("operator-tools:nodes-tool");
+  options?.recordToolPrepStage?.("openclaw-tools:nodes-tool");
   const embedded = isEmbeddedMode();
   const explicitFactoryAllowlist = mergeFactoryPolicyList(
     resolvedConfig?.tools?.allow,
@@ -528,19 +527,6 @@ export function createOperatorTools(
       sessionAgentId,
       config: resolvedConfig,
     }),
-    ...(options?.sandboxed
-      ? []
-      : [
-          createConfiguredSkillWorkshopTool({
-            workspaceDir,
-            config: resolvedConfig,
-            agentId: sessionAgentId,
-            sessionKey: options?.runSessionKey ?? options?.agentSessionKey,
-            runId: options?.runId,
-            messageId: options?.currentMessageId,
-            run: options?.skillWorkshop,
-          }),
-        ]),
     ...(includeUpdatePlanTool ? [createUpdatePlanTool()] : []),
     createSessionsListTool({
       agentSessionKey: options?.agentSessionKey,
@@ -605,6 +591,11 @@ export function createOperatorTools(
       agentSessionKey: options?.agentSessionKey,
       config: resolvedConfig,
     }),
+    ...buildMemoryTools(
+      createMemoryOrchestrator(DEFAULT_MEMORY_SUBSYSTEM_CONFIG),
+      sessionAgentId,
+      options?.sessionId ?? options?.runSessionKey,
+    ),
     createSessionStatusTool({
       agentSessionKey: options?.agentSessionKey,
       runSessionKey: options?.runSessionKey,
@@ -621,7 +612,7 @@ export function createOperatorTools(
     }),
     ...collectPresentOperatorTools([webSearchTool, webFetchTool, imageTool, pdfTool]),
   ];
-  options?.recordToolPrepStage?.("operator-tools:core-tool-list");
+  options?.recordToolPrepStage?.("openclaw-tools:core-tool-list");
   let allTools = tools;
   if (!options?.disablePluginTools) {
     const existingToolNames = new Set<string>();
@@ -636,11 +627,11 @@ export function createOperatorTools(
         existingToolNames,
       }),
     ];
-    options?.recordToolPrepStage?.("operator-tools:plugin-tools");
+    options?.recordToolPrepStage?.("openclaw-tools:plugin-tools");
   }
 
   allTools = filterToolsByClientCaps(allTools, options?.clientCaps);
-  options?.recordToolPrepStage?.("operator-tools:client-capabilities");
+  options?.recordToolPrepStage?.("openclaw-tools:client-capabilities");
 
   const hookAgentId = options?.requesterAgentIdOverride ?? sessionAgentId;
   const wrapGatewayCallerIdentity = createGatewayToolCallerWrapper(hookAgentId, options);
@@ -660,7 +651,7 @@ export function createOperatorTools(
     ...defaultHookContext,
     ...options?.beforeToolCallHookContext,
   };
-  options?.recordToolPrepStage?.("operator-tools:tool-hooks");
+  options?.recordToolPrepStage?.("openclaw-tools:tool-hooks");
   return allTools
     .map((tool) =>
       isToolWrappedWithBeforeToolCallHook(tool)

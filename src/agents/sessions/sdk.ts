@@ -4,7 +4,7 @@
  * Selects models, wires built-in/custom tools, loads resources, and creates AgentSession instances.
  */
 import { join } from "node:path";
-import { clampThinkingLevel } from "@operator/ai/internal/runtime";
+import { clampThinkingLevel } from "@gabrielvfonseca/ai/internal/runtime";
 import {
   resolveThinkingDefaultForModel,
   type ThinkingCatalogEntry,
@@ -170,7 +170,7 @@ function getAttributionHeaders(
     baseUrl.includes("gateway.ai.cloudflare.com")
   ) {
     return {
-      "User-Agent": "operator",
+      "User-Agent": "@gabrielvfonseca/operator",
     };
   }
 

@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import OperatorKit
 
 @MainActor
 protocol MacNodeRuntimeMainActorServices: Sendable {
@@ -8,7 +8,7 @@ protocol MacNodeRuntimeMainActorServices: Sendable {
         screenIndex: Int?,
         maxWidth: Int?,
         quality: Double?,
-        format: OpenClawScreenSnapshotFormat?) async throws
+        format: OperatorScreenSnapshotFormat?) async throws
         -> ScreenSnapshotResult
 
     func recordScreen(
@@ -21,13 +21,13 @@ protocol MacNodeRuntimeMainActorServices: Sendable {
     func locationAuthorizationStatus() -> CLAuthorizationStatus
     func locationAccuracyAuthorization() -> CLAccuracyAuthorization
     func currentLocation(
-        desiredAccuracy: OpenClawLocationAccuracy,
+        desiredAccuracy: OperatorLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
 
     func performComputerAct(
-        _ params: OpenClawComputerActParams,
-        lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+        _ params: OperatorComputerActParams,
+        lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
     func releaseHeldInput(lifecycleGeneration: UInt64) async
 }
 
@@ -42,7 +42,7 @@ final class LiveMacNodeRuntimeMainActorServices: MacNodeRuntimeMainActorServices
         screenIndex: Int?,
         maxWidth: Int?,
         quality: Double?,
-        format: OpenClawScreenSnapshotFormat?) async throws
+        format: OperatorScreenSnapshotFormat?) async throws
         -> ScreenSnapshotResult
     {
         try await self.screenSnapshotter.snapshot(
@@ -76,7 +76,7 @@ final class LiveMacNodeRuntimeMainActorServices: MacNodeRuntimeMainActorServices
     }
 
     func currentLocation(
-        desiredAccuracy: OpenClawLocationAccuracy,
+        desiredAccuracy: OperatorLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     {
@@ -87,8 +87,8 @@ final class LiveMacNodeRuntimeMainActorServices: MacNodeRuntimeMainActorServices
     }
 
     func performComputerAct(
-        _ params: OpenClawComputerActParams,
-        lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+        _ params: OperatorComputerActParams,
+        lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
     {
         try await self.computerAction.perform(
             params,

@@ -1,10 +1,10 @@
 // Discord tests cover manager plugin behavior.
 import { PassThrough, type Readable } from "node:stream";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type {
   RealtimeVoiceAgentControlResult,
   RealtimeVoiceForcedConsultCoordinator,
-} from "openclaw/plugin-sdk/realtime-voice";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { ChannelType } from "../internal/discord.js";
 import { createVoiceCaptureState } from "./capture-state.js";
@@ -219,12 +219,12 @@ vi.mock("openclaw/plugin-sdk/agent-runtime", async () => {
     ...actual,
     agentCommandFromIngress: agentCommandMock,
     getTtsProvider: vi.fn(() => "openai"),
-    resolveAgentDir: vi.fn(() => "/tmp/openclaw-agent"),
+    resolveAgentDir: vi.fn(() => "/tmp/operator-agent"),
     resolveTtsConfig: vi.fn(() => ({
       modelOverrides: {},
       providerConfigs: {},
     })),
-    resolveTtsPrefsPath: vi.fn(() => "/tmp/openclaw-tts.json"),
+    resolveTtsPrefsPath: vi.fn(() => "/tmp/operator-tts.json"),
   };
 });
 
@@ -1037,7 +1037,7 @@ describe("DiscordVoiceManager", () => {
 
     await manager.join({ guildId: "g1", channelId: "1001" });
 
-    expect(getVoiceConnectionMock).toHaveBeenCalledWith("g1", "openclaw:default");
+    expect(getVoiceConnectionMock).toHaveBeenCalledWith("g1", "operator:default");
     expect(staleConnection.destroy).toHaveBeenCalledTimes(1);
     expectConnectedStatus(manager, "1001");
   });
@@ -1049,15 +1049,15 @@ describe("DiscordVoiceManager", () => {
     await firstManager.join({ guildId: "g1", channelId: "1001" });
     await secondManager.join({ guildId: "g1", channelId: "1002" });
 
-    expect(getVoiceConnectionMock).toHaveBeenNthCalledWith(1, "g1", "openclaw:first");
-    expect(getVoiceConnectionMock).toHaveBeenNthCalledWith(2, "g1", "openclaw:second");
+    expect(getVoiceConnectionMock).toHaveBeenNthCalledWith(1, "g1", "operator:first");
+    expect(getVoiceConnectionMock).toHaveBeenNthCalledWith(2, "g1", "operator:second");
     expect(joinVoiceChannelMock).toHaveBeenNthCalledWith(
       1,
-      expect.objectContaining({ group: "openclaw:first" }),
+      expect.objectContaining({ group: "operator:first" }),
     );
     expect(joinVoiceChannelMock).toHaveBeenNthCalledWith(
       2,
-      expect.objectContaining({ group: "openclaw:second" }),
+      expect.objectContaining({ group: "operator:second" }),
     );
   });
 
@@ -2879,8 +2879,8 @@ describe("DiscordVoiceManager", () => {
     expect(bridgeParams?.autoRespondToAudio).toBe(false);
     expect(bridgeParams?.instructions).toContain("same Operator agent");
     expect(bridgeParams?.instructions).toContain("short natural backchannel");
-    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("openclaw_agent_consult");
-    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("openclaw_agent_control");
+    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("operator_agent_consult");
+    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("operator_agent_control");
     const player = getLastAudioPlayer();
     bridgeParams?.audioSink?.sendAudio(Buffer.alloc(24_000));
     expect(player.play).toHaveBeenCalled();
@@ -2890,7 +2890,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-1",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "what did I ask?" },
       },
       realtimeSessionMock,
@@ -2951,7 +2951,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-control",
         callId: "call-control",
-        name: "openclaw_agent_control",
+        name: "operator_agent_control",
         args: { text: "revísalo en WebUI", mode: "steer" },
       },
       realtimeSessionMock,
@@ -3057,7 +3057,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-control",
         callId: "call-control",
-        name: "openclaw_agent_control",
+        name: "operator_agent_control",
         args: { text: "check this", mode: "steer" },
       },
       realtimeSessionMock,
@@ -3100,7 +3100,7 @@ describe("DiscordVoiceManager", () => {
         {
           itemId: "item-empty-consult",
           callId: "call-empty-consult",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           args: {},
         },
         realtimeSessionMock,
@@ -3142,7 +3142,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-exact",
         callId: "call-exact",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: {
           question: "Speak the provided exact answer verbatim to the Discord voice channel.",
           context: 'Provided answer text: "already answered"\\nSpoken style: verbatim only',
@@ -3154,7 +3154,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-internal",
         callId: "call-internal",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: {
           question: [
             "Speak this exact Operator answer to the Discord voice channel, without adding, removing, or rephrasing words.",
@@ -4630,7 +4630,7 @@ describe("DiscordVoiceManager", () => {
 
     expect(lastAgentCommandArgs().message).toBe("What?");
     expect(lastAgentCommandArgs().message).not.toContain("consultPolicy");
-    expect(lastAgentCommandArgs().message).not.toContain("openclaw_agent_consult");
+    expect(lastAgentCommandArgs().message).not.toContain("operator_agent_consult");
     expectUserMessageIncludes("Could you repeat that?");
   });
 
@@ -4928,7 +4928,7 @@ describe("DiscordVoiceManager", () => {
         {
           itemId: "item-owner",
           callId: "call-owner",
-          name: "openclaw_agent_consult",
+          name: "operator_agent_consult",
           args: { question: "owner question" },
         },
         realtimeSessionMock,
@@ -4994,7 +4994,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-late",
         callId: "call-late",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "late question" },
       },
       realtimeSessionMock,
@@ -5018,7 +5018,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-late-unsuppressed",
         callId: "call-late-unsuppressed",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "late question" },
       },
       realtimeSessionMock,
@@ -5078,7 +5078,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-cancelled",
         callId: "call-cancelled",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "cancelled question" },
       },
       realtimeSessionMock,
@@ -5146,7 +5146,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-late",
         callId: "call-late",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "late question" },
       },
       realtimeSessionMock,
@@ -5179,7 +5179,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-retry",
         callId: "call-retry",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "retry question" },
       },
       realtimeSessionMock,
@@ -5242,7 +5242,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-late",
         callId: "call-late",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "late question" },
       },
       realtimeSessionMock,
@@ -5318,7 +5318,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-late",
         callId: "call-late",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "late question" },
       },
       realtimeSessionMock,
@@ -5387,7 +5387,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-old",
         callId: "call-old",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "repeat question" },
       },
       realtimeSessionMock,
@@ -5409,7 +5409,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-new",
         callId: "call-new",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "repeat question" },
       },
       realtimeSessionMock,
@@ -5534,14 +5534,14 @@ describe("DiscordVoiceManager", () => {
       | undefined;
     expect(bridgeParams?.autoRespondToAudio).toBe(true);
     expect(bridgeParams?.interruptResponseOnInputAudio).toBe(false);
-    expect(bridgeParams?.instructions).toContain("Call openclaw_agent_consult");
-    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("openclaw_agent_consult");
+    expect(bridgeParams?.instructions).toContain("Call operator_agent_consult");
+    expect(bridgeParams?.tools?.map((tool) => tool.name)).toContain("operator_agent_consult");
 
     bridgeParams?.onToolCall?.(
       {
         itemId: "item-1",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "check my Discord" },
       },
       realtimeSessionMock,
@@ -5601,7 +5601,7 @@ describe("DiscordVoiceManager", () => {
     expect(bridgeParams?.instructions).toContain("Operator realtime voice profile context");
     expect(bridgeParams?.instructions).toContain("Name: Wilfred");
     expect(bridgeParams?.instructions).toContain("short natural backchannel");
-    expect(bridgeParams?.instructions).toContain("Call openclaw_agent_consult");
+    expect(bridgeParams?.instructions).toContain("Call operator_agent_consult");
   });
 
   it("routes bidi realtime consults through a configured voice agent session target", async () => {
@@ -5671,7 +5671,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-1",
         callId: "call-1",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "check the maintainer channel context" },
       },
       realtimeSessionMock,
@@ -5739,7 +5739,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-guest",
         callId: "call-guest",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "guest question" },
       },
       realtimeSessionMock,
@@ -5811,7 +5811,7 @@ describe("DiscordVoiceManager", () => {
       {
         itemId: "item-guest",
         callId: "call-guest",
-        name: "openclaw_agent_consult",
+        name: "operator_agent_consult",
         args: { question: "guest question" },
       },
       realtimeSessionMock,

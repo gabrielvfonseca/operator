@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { ProviderPlugin } from "openclaw/plugin-sdk/provider-model-shared";
+import type { ProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createWizardPrompter as buildWizardPrompter } from "../../test/helpers/wizard-prompter.js";
 import { DEFAULT_BOOTSTRAP_FILENAME } from "../agents/workspace.js";
@@ -146,7 +146,7 @@ const resolveGatewayPort = vi.hoisted(() =>
 );
 const readConfigFileSnapshot = vi.hoisted(() =>
   vi.fn(async () => ({
-    path: "/tmp/.openclaw/openclaw.json",
+    path: "/tmp/.operator/operator.json",
     exists: false,
     raw: null as string | null,
     parsed: {},
@@ -300,7 +300,7 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("../commands/onboard-helpers.js", () => ({
-  DEFAULT_WORKSPACE: "/tmp/openclaw-workspace",
+  DEFAULT_WORKSPACE: "/tmp/operator-workspace",
   applyWizardMetadata: (cfg: unknown) => cfg,
   summarizeExistingConfig: () => "summary",
   handleReset: async () => {},
@@ -388,7 +388,7 @@ describe("runSetupWizard", () => {
   let suiteCase = 0;
 
   beforeAll(async () => {
-    suiteRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-onboard-suite-"));
+    suiteRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-onboard-suite-"));
   });
 
   afterAll(async () => {
@@ -427,7 +427,7 @@ describe("runSetupWizard", () => {
     }));
     readConfigFileSnapshot.mockReset();
     readConfigFileSnapshot.mockResolvedValue({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: false,
       raw: null,
       parsed: {},
@@ -505,7 +505,7 @@ describe("runSetupWizard", () => {
   it("skips provider entries without an id during preferred-provider lookup", async () => {
     setupChannels.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -568,7 +568,7 @@ describe("runSetupWizard", () => {
 
   it("exits when config is invalid", async () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -757,7 +757,7 @@ describe("runSetupWizard", () => {
 
   it("skips the security acknowledgement after it was accepted once", async () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -850,7 +850,7 @@ describe("runSetupWizard", () => {
   it("allows size-drop writes for pending plugin install record migration", async () => {
     replaceConfigFile.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -859,7 +859,7 @@ describe("runSetupWizard", () => {
       config: {
         plugins: {
           installs: {
-            demo: { source: "npm", spec: "@operator/demo-plugin" },
+            demo: { source: "npm", spec: "@gabrielvfonseca/demo-plugin" },
           },
         },
       },
@@ -960,7 +960,7 @@ describe("runSetupWizard", () => {
     promptDefaultModel.mockClear();
     replaceConfigFile.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -1433,7 +1433,7 @@ describe("runSetupWizard", () => {
       },
     ]);
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -1487,7 +1487,7 @@ describe("runSetupWizard", () => {
     process.env.OPERATOR_GATEWAY_PASSWORD = "gateway-ref-password"; // pragma: allowlist secret
     probeGatewayReachable.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.openclaw/openclaw.json",
+      path: "/tmp/.operator/operator.json",
       exists: true,
       raw: "{}",
       parsed: {},

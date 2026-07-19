@@ -2,7 +2,7 @@
 import { resolveIsNixMode } from "./paths.js";
 
 /** Agent-first Nix install docs shown when runtime config writes are blocked. */
-const NIX_OPERATOR_AGENT_FIRST_URL = "https://github.com/operator/nix-operator#quick-start";
+const NIX_OPERATOR_AGENT_FIRST_URL = "https://github.com/openclaw/nix-openclaw#quick-start";
 /** Public Operator Nix overview shown with immutable-config errors. */
 const OPERATOR_NIX_OVERVIEW_URL = "https://docs.operator.ai/install/nix";
 
@@ -20,10 +20,10 @@ export class NixModeConfigMutationError extends Error {
 function formatNixModeConfigMutationMessage(params: { configPath?: string } = {}): string {
   return [
     "Config is managed by Nix (`OPERATOR_NIX_MODE=1`), so Operator treats operator.json as immutable.",
-    "This usually means nix-operator, the first-party Nix distribution, or another Nix-managed package set this mode.",
+    "This usually means nix-openclaw, the first-party Nix distribution, or another Nix-managed package set this mode.",
     ...(params.configPath ? [`Config path: ${params.configPath}`] : []),
-    "Do not run setup, onboarding, operator update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
-    "Edit the Nix source for this install instead. For nix-operator, edit `programs.operator.config` or `instances.<name>.config`, then rebuild with Home Manager or NixOS.",
+    "Do not run setup, onboarding, openclaw update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
+    "Edit the Nix source for this install instead. For nix-openclaw, edit `programs.operator.config` or `instances.<name>.config`, then rebuild with Home Manager or NixOS.",
     `Agent-first Nix setup: ${NIX_OPERATOR_AGENT_FIRST_URL}`,
     `Operator Nix overview: ${OPERATOR_NIX_OVERVIEW_URL}`,
   ].join("\n");

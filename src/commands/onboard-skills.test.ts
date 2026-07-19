@@ -78,7 +78,7 @@ function createBundledSkill(params: {
   return {
     name: params.name,
     description: params.description,
-    source: "openclaw-bundled",
+    source: "operator-bundled",
     bundled: true,
     filePath: `/tmp/skills/${params.name}`,
     baseDir: `/tmp/skills/${params.name}`,
@@ -118,7 +118,7 @@ function createWorkspaceSkill(
 ): ReturnType<typeof createBundledSkill> {
   return {
     ...createBundledSkill(params),
-    source: "openclaw-workspace",
+    source: "operator-workspace",
     bundled: false,
   };
 }

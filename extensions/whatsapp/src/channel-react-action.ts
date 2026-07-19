@@ -1,6 +1,6 @@
 // Whatsapp plugin module implements channel react action behavior.
-import { readBooleanParam } from "openclaw/plugin-sdk/boolean-param";
-import { jsonResult } from "openclaw/plugin-sdk/channel-actions";
+import { readBooleanParam } from "@gabrielvfonseca/operator/plugin-sdk/boolean-param";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 import {
   isWhatsAppGroupJid,
   resolveAuthorizedWhatsAppOutboundTarget,

@@ -1,9 +1,9 @@
 // Slack plugin module implements channel.setup behavior.
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
+import { formatAllowFromLowercase } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import type { ResolvedSlackAccount } from "./accounts.js";
 import {
   listSlackAccountIds,

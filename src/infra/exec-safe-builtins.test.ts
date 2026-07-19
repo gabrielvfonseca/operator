@@ -1,5 +1,5 @@
 // Tests shell builtin detection for safe execution policy.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   evaluateExecAllowlist,

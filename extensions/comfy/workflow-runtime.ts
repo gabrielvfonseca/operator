@@ -1,40 +1,40 @@
 // Comfy plugin module implements workflow runtime behavior.
 import fs from "node:fs/promises";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { canResolveEnvSecretRefInReadOnlyPath } from "openclaw/plugin-sdk/extension-shared";
-import { extensionForMime } from "openclaw/plugin-sdk/media-mime";
-import { resolvePositiveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { canResolveEnvSecretRefInReadOnlyPath } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+import { resolvePositiveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   isProviderApiKeyConfigured,
   type AuthProfileStore,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   normalizeBaseUrl,
   readProviderJsonResponse,
   resolveProviderHttpRequestConfig,
-} from "openclaw/plugin-sdk/provider-http";
-import { readResponseWithLimit } from "openclaw/plugin-sdk/response-limit-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { readResponseWithLimit } from "@gabrielvfonseca/operator/plugin-sdk/response-limit-runtime";
 import {
   normalizeSecretInputString,
   resolveSecretInputString,
-} from "openclaw/plugin-sdk/secret-input-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
 import {
   fetchWithSsrFGuard,
   isPrivateOrLoopbackHost,
   mergeSsrFPolicies,
   ssrfPolicyFromHttpBaseUrlAllowedOrigin,
   type SsrFPolicy,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   asBoolean,
   isRecord,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolveUserPath } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolveUserPath } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 
 const DEFAULT_COMFY_LOCAL_BASE_URL = "http://127.0.0.1:8188";
 const DEFAULT_COMFY_CLOUD_BASE_URL = "https://cloud.comfy.org";
@@ -119,7 +119,7 @@ function setComfyFetchGuardForTesting(impl: typeof fetchWithSsrFGuard | null): v
 }
 
 if (process.env.VITEST === "true") {
-  Reflect.set(globalThis, Symbol.for("openclaw.comfyTestApi"), {
+  Reflect.set(globalThis, Symbol.for("operator.comfyTestApi"), {
     getConfig: getComfyConfig,
     setFetchGuard: setComfyFetchGuardForTesting,
   });

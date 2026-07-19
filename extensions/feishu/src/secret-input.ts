@@ -1,2 +1,5 @@
 // Feishu plugin module implements secret input behavior.
-export { buildSecretInputSchema, hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input";
+export {
+  buildSecretInputSchema,
+  hasConfiguredSecretInput,
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";

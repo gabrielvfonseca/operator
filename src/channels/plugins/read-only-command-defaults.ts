@@ -3,7 +3,7 @@
  *
  * Reads native command/skill defaults from installed plugin manifests without loading plugins.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { isBlockedObjectKey } from "../../infra/prototype-keys.js";
 import { isInstalledPluginEnabled } from "../../plugins/installed-plugin-index.js";

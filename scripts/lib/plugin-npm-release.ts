@@ -1,4 +1,4 @@
-// Plugin Npm Release script supports OpenClaw repository automation.
+// Plugin Npm Release script supports Operator repository automation.
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -111,20 +111,20 @@ type PublishablePluginPackageCandidate<TPackageJson extends PluginPackageJson = 
     readmeText?: string;
   };
 
-export const OPENCLAW_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/openclaw/openclaw";
+export const OPERATOR_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/openclaw/openclaw";
 
 export function collectRequiredLatestDependencies(packageJson: PluginPackageJson): {
   dependencies: RequiredLatestDependency[];
   errors: string[];
 } {
-  const configured = packageJson.openclaw?.release?.requireLatestDependencies;
+  const configured = packageJson.operator?.release?.requireLatestDependencies;
   if (configured === undefined) {
     return { dependencies: [], errors: [] };
   }
   if (!Array.isArray(configured)) {
     return {
       dependencies: [],
-      errors: ["openclaw.release.requireLatestDependencies must be an array of package names."],
+      errors: ["operator.release.requireLatestDependencies must be an array of package names."],
     };
   }
 
@@ -139,14 +139,14 @@ export function collectRequiredLatestDependencies(packageJson: PluginPackageJson
   for (const value of configured) {
     if (typeof value !== "string" || !value.trim()) {
       errors.push(
-        "openclaw.release.requireLatestDependencies must contain only non-empty package names.",
+        "operator.release.requireLatestDependencies must contain only non-empty package names.",
       );
       continue;
     }
     const packageName = value.trim();
     if (seen.has(packageName)) {
       errors.push(
-        `openclaw.release.requireLatestDependencies must not contain duplicate package names; found "${packageName}".`,
+        `operator.release.requireLatestDependencies must not contain duplicate package names; found "${packageName}".`,
       );
       continue;
     }
@@ -155,7 +155,7 @@ export function collectRequiredLatestDependencies(packageJson: PluginPackageJson
     const version = runtimeDependencies[packageName];
     if (typeof version !== "string" || !version.trim()) {
       errors.push(
-        `openclaw.release.requireLatestDependencies must reference package.json dependencies or optionalDependencies; "${packageName}" is not a runtime dependency.`,
+        `operator.release.requireLatestDependencies must reference package.json dependencies or optionalDependencies; "${packageName}" is not a runtime dependency.`,
       );
       continue;
     }
@@ -355,17 +355,17 @@ export function collectPublishablePluginPackageErrors(
   const errors: string[] = [];
   const packageName = packageJson.name?.trim() ?? "";
   const packageVersion = packageJson.version?.trim() ?? "";
-  const installNpmSpec = normalizeOptionalString(packageJson.openclaw?.install?.npmSpec);
+  const installNpmSpec = normalizeOptionalString(packageJson.operator?.install?.npmSpec);
   const repositoryUrl =
     typeof packageJson.repository === "string"
       ? packageJson.repository.trim()
       : (packageJson.repository?.url?.trim() ?? "");
-  const extensions = packageJson.openclaw?.extensions ?? [];
+  const extensions = packageJson.operator?.extensions ?? [];
   const requiredLatestDependencies = collectRequiredLatestDependencies(packageJson);
 
-  if (!packageName.startsWith("@operator/")) {
+  if (!packageName.startsWith("@gabrielvfonseca/")) {
     errors.push(
-      `package name must start with "@operator/"; found "${packageName || "<missing>"}".`,
+      `package name must start with "@gabrielvfonseca/"; found "${packageName || "<missing>"}".`,
     );
   }
   if (packageJson.private === true) {
@@ -377,9 +377,9 @@ export function collectPublishablePluginPackageErrors(
   if (!candidate.readmeText?.trim()) {
     errors.push("README.md must exist and contain package documentation.");
   }
-  if (repositoryUrl !== OPENCLAW_PLUGIN_NPM_REPOSITORY_URL) {
+  if (repositoryUrl !== OPERATOR_PLUGIN_NPM_REPOSITORY_URL) {
     errors.push(
-      `package.json repository.url must be "${OPENCLAW_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "${repositoryUrl || "<missing>"}".`,
+      `package.json repository.url must be "${OPERATOR_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "${repositoryUrl || "<missing>"}".`,
     );
   }
   if (!packageVersion) {
@@ -390,13 +390,13 @@ export function collectPublishablePluginPackageErrors(
     );
   }
   if (!Array.isArray(extensions) || extensions.length === 0) {
-    errors.push("openclaw.extensions must contain at least one entry.");
+    errors.push("operator.extensions must contain at least one entry.");
   }
   if (extensions.some((entry) => typeof entry !== "string" || !entry.trim())) {
-    errors.push("openclaw.extensions must contain only non-empty strings.");
+    errors.push("operator.extensions must contain only non-empty strings.");
   }
   if (!installNpmSpec) {
-    errors.push("openclaw.install.npmSpec must be a non-empty string for publishable plugins.");
+    errors.push("operator.install.npmSpec must be a non-empty string for publishable plugins.");
   }
   errors.push(...requiredLatestDependencies.errors);
   errors.push(
@@ -432,7 +432,7 @@ export function collectPublishablePluginPackages(
     if (hasSelectedPackageNames && !selectedPackageNames.has(packageName)) {
       continue;
     }
-    if (packageJson.openclaw?.release?.publishToNpm !== true) {
+    if (packageJson.operator?.release?.publishToNpm !== true) {
       continue;
     }
 
@@ -460,7 +460,7 @@ export function collectPublishablePluginPackages(
       version,
       channel: parsedVersion.channel,
       publishTag: resolveNpmPublishPlan(version, undefined, filters.npmDistTag).publishTag,
-      installNpmSpec: normalizeOptionalString(packageJson.openclaw?.install?.npmSpec),
+      installNpmSpec: normalizeOptionalString(packageJson.operator?.install?.npmSpec),
       ...(requiredLatestDependencies.length > 0 ? { requiredLatestDependencies } : {}),
     });
   }
@@ -644,7 +644,7 @@ export function assertPluginReleaseVersionFloors(
 export type NpmLatestVersionResolver = (packageName: string) => string;
 
 function runNpmView(args: string[]): string {
-  const tempDir = mkdtempSync(join(tmpdir(), "openclaw-plugin-npm-view-"));
+  const tempDir = mkdtempSync(join(tmpdir(), "operator-plugin-npm-view-"));
   const userconfigPath = join(tempDir, "npmrc");
   writeFileSync(userconfigPath, "");
 

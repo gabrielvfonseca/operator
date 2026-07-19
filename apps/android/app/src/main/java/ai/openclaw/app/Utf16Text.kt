@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 internal fun String.takeUtf16Safe(maxChars: Int): String {
   if (length <= maxChars) return this

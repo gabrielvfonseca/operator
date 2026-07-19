@@ -1,6 +1,6 @@
 // Anthropic tests cover stream wrappers plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createAnthropicBetaHeadersWrapper,

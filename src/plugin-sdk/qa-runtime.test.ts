@@ -174,7 +174,7 @@ describe("plugin-sdk qa-runtime", () => {
 
     await qa.parseAsync([
       "node",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "telegram",
       "--repo-root",
       "/tmp/repo",

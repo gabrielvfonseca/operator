@@ -1,10 +1,10 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 /**
  * Mention-pattern policy resolver.
  *
  * Applies provider and conversation allow/deny rules to mention pattern matching.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { MentionPatternsMode, MentionPatternsPolicyConfig } from "../config/types.messages.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 

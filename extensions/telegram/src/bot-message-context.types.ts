@@ -1,14 +1,14 @@
-// Telegram type declarations define plugin contracts.
-import type { Bot } from "grammy";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   DmPolicy,
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+// Telegram type declarations define plugin contracts.
+import type { Bot } from "grammy";
 import type { StickerMetadata, TelegramContext } from "./bot/types.js";
 import type { TelegramReplyChainEntry } from "./message-cache.js";
 import type { TelegramSendChatActionHandler } from "./sendchataction-401-backoff.js";

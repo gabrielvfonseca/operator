@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { reconcileNodePairingOnConnect } from "../gateway/node-connect-reconcile.js";
 import { resetPluginLoaderTestStateForTest } from "../plugins/loader.test-fixtures.js";
 import { testing as runtimeRegistryLoaderTesting } from "../plugins/runtime/runtime-registry-loader.js";

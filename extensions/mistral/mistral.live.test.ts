@@ -3,8 +3,8 @@ import {
   normalizeTranscriptForMatch,
   runRealtimeSttLiveTest,
   synthesizeElevenLabsLiveSpeech,
-} from "openclaw/plugin-sdk/provider-test-contracts";
-import { isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
+import { isLiveTestEnabled } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { mistralMediaUnderstandingProvider } from "./media-understanding-provider.js";
 import { buildMistralRealtimeTranscriptionProvider } from "./realtime-transcription-provider.js";
@@ -33,7 +33,7 @@ describeLive("mistral plugin live", () => {
     });
 
     const normalized = normalizeTranscriptForMatch(transcript?.text ?? "");
-    expect(normalized).toContain("openclaw");
+    expect(normalized).toContain("@gabrielvfonseca/operator");
     expect(normalized).toContain("mistral");
   }, 90_000);
 

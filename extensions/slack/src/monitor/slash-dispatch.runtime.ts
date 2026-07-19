@@ -2,14 +2,14 @@
 import {
   recordInboundSessionMetaSafe as recordInboundSessionMetaSafeImpl,
   resolveConversationLabel as resolveConversationLabelImpl,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { resolveMarkdownTableMode as resolveMarkdownTableModeImpl } from "openclaw/plugin-sdk/markdown-table-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { resolveMarkdownTableMode as resolveMarkdownTableModeImpl } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
 import {
   dispatchReplyWithDispatcher as dispatchReplyWithDispatcherImpl,
   finalizeInboundContext as finalizeInboundContextImpl,
   resolveChunkMode as resolveChunkModeImpl,
-} from "openclaw/plugin-sdk/reply-runtime";
-import { resolveAgentRoute as resolveAgentRouteImpl } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveAgentRoute as resolveAgentRouteImpl } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { deliverSlackSlashReplies as deliverSlackSlashRepliesImpl } from "./replies.js";
 
 type ResolveChunkMode = typeof import("openclaw/plugin-sdk/reply-runtime").resolveChunkMode;

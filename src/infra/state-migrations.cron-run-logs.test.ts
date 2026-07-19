@@ -9,14 +9,14 @@ import {
   openOperatorStateDatabase,
 } from "../state/openclaw-state-db.js";
 import { resetTaskRegistryForTests } from "../tasks/task-runtime.test-helpers.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 
 const CRON_RUN_LOG_TASK_IMPORT_MIGRATION_ID = "state:cron-run-logs-to-task-runs:v1";
 
 describe("cron run-log task import", () => {
   it("imports legacy cron history into task runs once at state database open", async () => {
     await withOperatorTestState(
-      { layout: "state-only", prefix: "openclaw-cron-run-log-import-" },
+      { layout: "state-only", prefix: "operator-cron-run-log-import-" },
       async (state) => {
         const storePath = state.path("cron", "jobs.json");
         const storeKey = cronStoreKey(storePath);

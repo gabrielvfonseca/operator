@@ -119,10 +119,10 @@ describe("structured state integrity findings", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv(["HOME", "OPERATOR_HOME", "OPERATOR_STATE_DIR"]);
-    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-state-integrity-"));
+    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-state-integrity-"));
     setTestEnvValue("HOME", tempHome);
     setTestEnvValue("OPERATOR_HOME", tempHome);
-    setTestEnvValue("OPERATOR_STATE_DIR", path.join(tempHome, ".openclaw"));
+    setTestEnvValue("OPERATOR_STATE_DIR", path.join(tempHome, ".operator"));
   });
 
   afterEach(() => {
@@ -141,18 +141,18 @@ describe("structured state integrity findings", () => {
 
     expect(issue).toEqual({
       kind: "missing-state-dir",
-      path: path.join(tempHome, ".openclaw"),
+      path: path.join(tempHome, ".operator"),
     });
     expect(stateIntegrityIssueToHealthFinding(issue)).toMatchObject({
       checkId: "core/doctor/state-integrity",
       severity: "error",
-      path: path.join(tempHome, ".openclaw"),
+      path: path.join(tempHome, ".operator"),
       fixHint: "Run `openclaw doctor --fix` to create the state directory.",
     });
     expect(stateIntegrityIssueToRepairEffect(issue)).toEqual({
       kind: "state",
       action: "would-create-state-dir",
-      target: path.join(tempHome, ".openclaw"),
+      target: path.join(tempHome, ".operator"),
       dryRunSafe: false,
     });
   });
@@ -161,8 +161,8 @@ describe("structured state integrity findings", () => {
     if (process.platform === "win32") {
       return;
     }
-    const stateDir = path.join(tempHome, ".openclaw");
-    const configPath = path.join(tempHome, "openclaw.json");
+    const stateDir = path.join(tempHome, ".operator");
+    const configPath = path.join(tempHome, "operator.json");
     fs.mkdirSync(stateDir, { recursive: true, mode: 0o755 });
     fs.chmodSync(stateDir, 0o755);
     fs.writeFileSync(configPath, "{}\n", { mode: 0o644 });
@@ -194,8 +194,8 @@ describe("structured state integrity findings", () => {
     if (process.platform === "win32") {
       return;
     }
-    const stateDir = path.join(tempHome, ".openclaw");
-    const configPath = path.join(tempHome, "openclaw.json");
+    const stateDir = path.join(tempHome, ".operator");
+    const configPath = path.join(tempHome, "operator.json");
     fs.writeFileSync(configPath, "{}\n", { mode: 0o644 });
     fs.chmodSync(configPath, 0o644);
 
@@ -260,8 +260,8 @@ describe("doctor state integrity oauth dir checks", () => {
       "OPERATOR_OAUTH_DIR",
       "OPERATOR_AGENT_DIR",
     ]);
-    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-state-integrity-"));
-    const stateDir = path.join(tempHome, ".openclaw");
+    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "operator-doctor-state-integrity-"));
+    const stateDir = path.join(tempHome, ".operator");
     setTestEnvValue("HOME", tempHome);
     setTestEnvValue("OPERATOR_HOME", tempHome);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
@@ -575,7 +575,7 @@ describe("doctor state integrity oauth dir checks", () => {
       );
       fs.symlinkSync(originalHome, symlinkHome, "dir");
       try {
-        const symlinkStateDir = path.join(symlinkHome, ".openclaw");
+        const symlinkStateDir = path.join(symlinkHome, ".operator");
         setTestEnvValue("HOME", symlinkHome);
         setTestEnvValue("OPERATOR_HOME", symlinkHome);
         setTestEnvValue("OPERATOR_STATE_DIR", symlinkStateDir);
@@ -629,7 +629,7 @@ describe("doctor state integrity oauth dir checks", () => {
     expect(confirmRuntimeRepair).toHaveBeenCalled();
   });
 
-  it("prints openclaw-only verification hints when recent sessions are missing transcripts", async () => {
+  it("prints operator-only verification hints when recent sessions are missing transcripts", async () => {
     const cfg: OperatorConfig = {};
     writeSessionStore(cfg, {
       "agent:main:main": {
@@ -769,7 +769,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("does not let synthetic heartbeat metadata override mixed transcript history", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-heartbeat-main-mixed-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-heartbeat-main-mixed-"));
     try {
       const transcriptPath = path.join(tempDir, "session.jsonl");
       fs.writeFileSync(
@@ -792,7 +792,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("does not let heartbeat-looking routing metadata skip mixed transcript checks", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-heartbeat-main-route-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-heartbeat-main-route-"));
     try {
       const transcriptPath = path.join(tempDir, "session.jsonl");
       fs.writeFileSync(
@@ -817,7 +817,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("does not classify transcripts with real user activity after 400 heartbeat messages", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-heartbeat-main-cap-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-heartbeat-main-cap-"));
     try {
       const transcriptPath = path.join(tempDir, "session.jsonl");
       const heartbeatMessages = Array.from({ length: 400 }, () =>
@@ -839,7 +839,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("keeps the heartbeat main-session helper conservative", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-heartbeat-main-helper-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-heartbeat-main-helper-"));
     try {
       const transcriptPath = path.join(tempDir, "session.jsonl");
       fs.writeFileSync(
@@ -877,7 +877,7 @@ describe("doctor state integrity oauth dir checks", () => {
       "main-session",
     );
 
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-tui-pointer-clear-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-tui-pointer-clear-"));
     try {
       await writeTuiLastSessionKey({
         scopeKey: "terminal",

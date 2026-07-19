@@ -1,7 +1,7 @@
 import Darwin
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 struct ExecApprovalsSocketPathGuardTests {
@@ -49,7 +49,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent rejects parent traversal before normalization`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-traversal-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-traversal-\(UUID().uuidString)", isDirectory: true)
         let socketPath = "\(root.path)/missing/../escape/approvals.sock"
 
         do {
@@ -69,7 +69,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent accepts current directory components`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-dot-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-dot-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
 
@@ -80,7 +80,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent validates directories hidden behind nested symlinks`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-nested-link-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-nested-link-\(UUID().uuidString)", isDirectory: true)
         let victim = root.appendingPathComponent("victim", isDirectory: true)
         let unsafe = root.appendingPathComponent("unsafe", isDirectory: true)
         let redirect = unsafe.appendingPathComponent("redirect", isDirectory: true)
@@ -109,7 +109,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent rejects mutating extended ACL`() throws {
         let parent = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-acl-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-acl-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: parent) }
         try FileManager().createDirectory(at: parent, withIntermediateDirectories: true)
         try FileManager().setAttributes([.posixPermissions: 0o700], ofItemAtPath: parent.path)
@@ -138,7 +138,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent accepts mutating ACL for current user`() throws {
         let parent = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-owner-acl-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-owner-acl-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: parent) }
         try FileManager().createDirectory(at: parent, withIntermediateDirectories: true)
         try FileManager().setAttributes([.posixPermissions: 0o700], ofItemAtPath: parent.path)
@@ -161,16 +161,16 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `socket path resolves under the configured state directory`() async throws {
         let stateDir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: stateDir) }
 
         // String-level assertion only. The isolation lock serializes env
         // mutation but not env consumption: concurrent suites that resolve
-        // OPENCLAW_STATE_DIR mid-window would create this directory and the
+        // OPERATOR_STATE_DIR mid-window would create this directory and the
         // old filesystem assertions here flaked on their 0755 default
         // (#104019). Creation-with-0700 is covered by the explicit-path
         // tests in this suite.
-        await TestIsolation.withEnvValues(["OPENCLAW_STATE_DIR": stateDir.path]) {
+        await TestIsolation.withEnvValues(["OPERATOR_STATE_DIR": stateDir.path]) {
             let socketPath = ExecApprovalsStore.socketPath()
             #expect(socketPath == stateDir.appendingPathComponent("exec-approvals.sock").path)
         }
@@ -179,7 +179,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden canonical parent directory creates it with 0700 permissions`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-guard-\(UUID().uuidString)", isDirectory: true)
         let stateDir = root.appendingPathComponent("state", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
 
@@ -194,7 +194,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden custom socket parent creates nested private directories`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-custom-socket-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-custom-socket-\(UUID().uuidString)", isDirectory: true)
         let parent = root.appendingPathComponent("nested/private", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
 
@@ -209,7 +209,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden existing custom parent does not change permissions`() throws {
         let parent = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-existing-socket-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-existing-socket-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: parent) }
         try FileManager().createDirectory(at: parent, withIntermediateDirectories: true)
         try FileManager().setAttributes([.posixPermissions: 0o755], ofItemAtPath: parent.path)
@@ -225,7 +225,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden existing private parent rejects unsafe ancestor`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-unsafe-socket-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-unsafe-socket-\(UUID().uuidString)", isDirectory: true)
         let parent = root.appendingPathComponent("private", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: parent, withIntermediateDirectories: true)
@@ -251,7 +251,7 @@ struct ExecApprovalsSocketPathGuardTests {
         let sharedTmp = "/private/tmp"
         let before = try FileManager().attributesOfItem(atPath: sharedTmp)
         let beforePermissions = (before[.posixPermissions] as? NSNumber)?.intValue ?? -1
-        let socketPath = "\(sharedTmp)/openclaw-exec-approvals-\(UUID().uuidString).sock"
+        let socketPath = "\(sharedTmp)/operator-exec-approvals-\(UUID().uuidString).sock"
 
         do {
             try ExecApprovalsSocketPathGuard.hardenParentDirectory(for: socketPath)
@@ -293,7 +293,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `remove existing socket rejects symlink path`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
 
@@ -319,7 +319,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `remove existing socket rejects regular file path`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
 

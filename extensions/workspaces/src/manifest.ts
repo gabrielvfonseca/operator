@@ -9,8 +9,8 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { FsSafeError, root as fsRoot } from "openclaw/plugin-sdk/security-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+import { FsSafeError, root as fsRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import { normalizeWorkspaceDataLogicalPath } from "./binding-contract.js";
 
 export const CUSTOM_WIDGET_NAME_PATTERN = /^(?!__proto__$)[A-Za-z0-9._-]{1,64}$/;

@@ -1,10 +1,10 @@
 {
-  "name": "@operator/amazon-bedrock-provider",
+  "name": "@gabrielvfonseca/amazon-bedrock-provider",
   "version": "2026.7.2",
   "description": "Operator Amazon Bedrock provider plugin with model discovery, embeddings, and guardrail support.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -16,14 +16,14 @@
     "@smithy/types": "4.15.1"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/amazon-bedrock-provider",
+      "npmSpec": "@gabrielvfonseca/amazon-bedrock-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.12-beta.1"
     },

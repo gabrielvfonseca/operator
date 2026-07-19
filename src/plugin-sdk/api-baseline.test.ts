@@ -26,11 +26,11 @@ describe("Plugin SDK API baseline", () => {
   });
 
   it("normalizes dependency source paths to stable node_modules paths", () => {
-    const repoRoot = path.join(path.sep, "workspace", "openclaw-worktree");
+    const repoRoot = path.join(path.sep, "workspace", "operator-worktree");
     const linkedDependencyPath = path.join(
       path.sep,
       "workspace",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "node_modules",
       "@openclaw",
       "fs-safe",
@@ -58,7 +58,7 @@ describe("Plugin SDK API baseline", () => {
   });
 
   it("keeps repo source paths relative when a parent directory is named node_modules", () => {
-    const repoRoot = path.join(path.sep, "workspace", "node_modules", "openclaw");
+    const repoRoot = path.join(path.sep, "workspace", "node_modules", "@gabrielvfonseca/operator");
     const sourcePath = path.join(repoRoot, "src", "plugin-sdk", "core.ts");
 
     expect(normalizePluginSdkApiSourcePath(repoRoot, sourcePath)).toBe("src/plugin-sdk/core.ts");

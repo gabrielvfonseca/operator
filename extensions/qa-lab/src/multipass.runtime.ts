@@ -3,21 +3,21 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { OperatorCrablineChannelDriverSelection } from "@operator/crabline";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
-import { appendRegularFile } from "openclaw/plugin-sdk/security-runtime";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { appendRegularFile } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import type { OperatorCrablineChannelDriverSelection } from "@openclaw/crabline";
 import type { QaProviderMode } from "./model-selection.js";
 import { resolveQaForwardedLiveEnv, resolveQaLiveProviderConfigPath } from "./providers/env.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE, getQaProvider } from "./providers/index.js";
 import type { RuntimeId } from "./runtime-parity.js";
 import { shellQuote } from "./shell-quote.js";
 
-const MULTIPASS_MOUNTED_REPO_PATH = "/workspace/openclaw-host";
+const MULTIPASS_MOUNTED_REPO_PATH = "/workspace/operator-host";
 const MULTIPASS_GUEST_REPO_PATH = "/workspace/openclaw";
-const MULTIPASS_GUEST_CODEX_HOME_PATH = "/workspace/openclaw-codex-home";
+const MULTIPASS_GUEST_CODEX_HOME_PATH = "/workspace/operator-codex-home";
 const MULTIPASS_GUEST_PACKAGES = [
   "build-essential",
   "ca-certificates",
@@ -269,12 +269,12 @@ function createQaMultipassPlan(params: {
     liveProviderConfig && fs.existsSync(liveProviderConfig.path)
       ? liveProviderConfig.path
       : undefined;
-  const vmName = `openclaw-qa-${createVmSuffix()}`;
+  const vmName = `operator-qa-${createVmSuffix()}`;
   const guestOutputDir = resolveGuestMountedPath(params.repoRoot, outputDir);
   const qaCommand = appendScenarioArgs(
     [
       "pnpm",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "qa",
       "suite",
       "--transport",

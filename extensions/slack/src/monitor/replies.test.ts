@@ -182,7 +182,7 @@ describe("deliverReplies identity passthrough", () => {
       .mockResolvedValueOnce({ messageId: "media-ts", channelId: "C123" })
       .mockResolvedValueOnce({ messageId: "chart-ts", channelId: "C123" });
     const identity = { username: "Bot", iconEmoji: ":chart_with_upwards_trend:" };
-    const metadata = { event_type: "openclaw_test", event_payload: { source: "chart" } };
+    const metadata = { event_type: "operator_test", event_payload: { source: "chart" } };
     const listenerClient = { chat: { postMessage: vi.fn() } } as never;
     const eventScope = {
       apiAppId: "A1",
@@ -318,7 +318,7 @@ describe("deliverReplies identity passthrough", () => {
         elements: [
           {
             type: "button",
-            action_id: "openclaw:reply_button",
+            action_id: "operator:reply_button",
             text: { type: "plain_text", text: "Option A" },
             value: "reply_1_option_a",
           },
@@ -380,7 +380,7 @@ describe("deliverReplies identity passthrough", () => {
     expect(blocks[0]?.type).toBe("section");
     expect(blocks[1]?.type).toBe("actions");
     expect(blocks[1]?.elements).toHaveLength(1);
-    expect(blocks[1]?.elements?.[0]?.action_id).toBe("openclaw:reply_button:1:1");
+    expect(blocks[1]?.elements?.[0]?.action_id).toBe("operator:reply_button:1:1");
     expect(blocks[1]?.elements?.[0]?.style).toBe("primary");
     expect(blocks[1]?.elements?.[0]?.value).toBe("approve");
   });
@@ -615,7 +615,7 @@ describe("deliverSlackSlashReplies chunking", () => {
         elements: [
           {
             type: "button",
-            action_id: "openclaw:reply_button",
+            action_id: "operator:reply_button",
             text: { type: "plain_text", text: "Refresh" },
             value: "refresh",
           },
@@ -718,7 +718,7 @@ describe("deliverSlackSlashReplies chunking", () => {
       elements: [
         {
           type: "button",
-          action_id: "openclaw:reply_button",
+          action_id: "operator:reply_button",
           text: { type: "plain_text", text: "Refresh" },
           value: "refresh",
         },

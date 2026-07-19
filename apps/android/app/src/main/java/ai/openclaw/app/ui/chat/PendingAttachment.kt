@@ -1,8 +1,8 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.OutgoingAttachment
-import ai.openclaw.app.chat.VOICE_NOTE_MIME_TYPE
-import ai.openclaw.app.chat.VoiceNoteRecording
+import ai.operator.app.chat.OutgoingAttachment
+import ai.operator.app.chat.VOICE_NOTE_MIME_TYPE
+import ai.operator.app.chat.VoiceNoteRecording
 import java.util.Base64
 
 /** Attachment staged in a composer until the next chat.send call. */

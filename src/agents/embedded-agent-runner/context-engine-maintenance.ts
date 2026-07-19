@@ -2,7 +2,7 @@
  * Schedules and runs deferred context-engine turn maintenance.
  */
 import { randomUUID } from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveContextEngineOwnerPluginId } from "../../context-engine/registry.js";
 import type {

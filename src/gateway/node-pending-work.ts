@@ -6,7 +6,7 @@ import {
   isFutureDateTimestampMs,
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 
 // Pending node work is an in-memory per-node queue for gateway prompts such as
 // status/location requests. Nodes drain it opportunistically after reconnecting.

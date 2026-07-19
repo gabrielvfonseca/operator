@@ -3,8 +3,8 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { DELIVERY_NO_REPLY_RUNTIME_CONTRACT } from "openclaw/plugin-sdk/agent-runtime-test-contracts";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { DELIVERY_NO_REPLY_RUNTIME_CONTRACT } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { setCliSessionBinding } from "../../agents/cli-session.js";
 import type { OperatorConfig } from "../../config/config.js";
@@ -687,7 +687,7 @@ function createQueuedRun(
 describe("createFollowupRunner reply-lane admission", () => {
   it("drops stale active-goal context after the persisted goal completes", async () => {
     runEmbeddedAgentMock.mockResolvedValueOnce({ payloads: [], meta: {} });
-    const storePath = "/tmp/openclaw-followup-completed-goal.json";
+    const storePath = "/tmp/operator-followup-completed-goal.json";
     const activeEntry: SessionEntry = {
       sessionId: "session-completed-goal",
       updatedAt: 1,
@@ -750,7 +750,7 @@ describe("createFollowupRunner reply-lane admission", () => {
     // Regression: the queued path built runEmbeddedAgent params inline and
     // dropped run.clientCaps, so capability-gated tools vanished after drain.
     runEmbeddedAgentMock.mockResolvedValueOnce({ payloads: [], meta: {} });
-    const storePath = "/tmp/openclaw-followup-client-caps.json";
+    const storePath = "/tmp/operator-followup-client-caps.json";
     const sessionEntry: SessionEntry = { sessionId: "session-client-caps", updatedAt: 1 };
     registerFollowupTestSessionStore(storePath, { main: sessionEntry });
     const runner = createFollowupRunner({
@@ -780,7 +780,7 @@ describe("createFollowupRunner reply-lane admission", () => {
   });
 
   it("adopts a matching admission-time model lock for queued execution", async () => {
-    const storePath = "/tmp/openclaw-followup-admission-model-lock.json";
+    const storePath = "/tmp/operator-followup-admission-model-lock.json";
     const queuedEntry: SessionEntry = {
       sessionId: "catalog-adopted-session",
       updatedAt: 1,
@@ -1794,7 +1794,7 @@ describe("createFollowupRunner runtime config", () => {
         },
       },
     };
-    const storePath = "/tmp/openclaw-followup-room-event-cli.json";
+    const storePath = "/tmp/operator-followup-room-event-cli.json";
     const sessionEntry: SessionEntry = {
       sessionId: "session-cli-room-event",
       updatedAt: Date.now(),
@@ -2457,7 +2457,7 @@ describe("createFollowupRunner runtime config", () => {
             "claude-cli": { command: "claude" },
           },
           models: {
-            "openai/gpt-5.6-sol": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.6-sol": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             "anthropic/claude-opus-4-7": { agentRuntime: { id: "claude-cli" } },
           },
         },
@@ -3870,7 +3870,7 @@ describe("createFollowupRunner progress forwarding", () => {
 
   it("suppresses queued follow-up progress when verbose progress is disabled", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-followup-progress-off-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-followup-progress-off-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4345,7 +4345,7 @@ describe("createFollowupRunner progress forwarding", () => {
 describe("createFollowupRunner compaction", () => {
   it("adds verbose auto-compaction notice and tracks count", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-compaction-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4392,7 +4392,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("suppresses queued auto-compaction notice when verbose is turned off", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-quiet-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-compaction-quiet-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4439,7 +4439,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("tracks auto-compaction from embedded result metadata even when no compaction event is emitted", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-meta-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-compaction-meta-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4503,7 +4503,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("refreshes queued followup runs to the rotated transcript", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-queue-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-compaction-queue-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4566,7 +4566,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("does not count failed compaction end events in followup runs", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-failed-")),
+      await fs.mkdtemp(path.join(tmpdir(), "operator-compaction-failed-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -4623,7 +4623,7 @@ describe("createFollowupRunner compaction", () => {
   });
 
   it("injects the post-compaction refresh prompt before followup runs after preflight compaction", async () => {
-    const workspaceDir = await fs.mkdtemp(path.join(tmpdir(), "openclaw-preflight-followup-"));
+    const workspaceDir = await fs.mkdtemp(path.join(tmpdir(), "operator-preflight-followup-"));
     const storePath = path.join(workspaceDir, "sessions.json");
     const transcriptPath = path.join(workspaceDir, "session.jsonl");
     await fs.writeFile(
@@ -5027,7 +5027,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
   }
 
   it("persists usage even when replies are suppressed", async () => {
-    const storePath = "/tmp/openclaw-followup-usage.json";
+    const storePath = "/tmp/operator-followup-usage.json";
     const sessionKey = "main";
     const sessionEntry: SessionEntry = { sessionId: "session", updatedAt: Date.now() };
     const sessionStore: Record<string, SessionEntry> = { [sessionKey]: sessionEntry };
@@ -5085,7 +5085,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
   });
 
   it("passes queued config into usage persistence during drained followups", async () => {
-    const storePath = "/tmp/openclaw-followup-usage-cfg.json";
+    const storePath = "/tmp/operator-followup-usage-cfg.json";
     const sessionKey = "main";
     const sessionEntry: SessionEntry = { sessionId: "session", updatedAt: Date.now() };
     const sessionStore: Record<string, SessionEntry> = { [sessionKey]: sessionEntry };
@@ -5268,7 +5268,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
   });
 
   it("uses providerUsed for snapshot freshness when agent metadata overrides the run provider", async () => {
-    const storePath = "/tmp/openclaw-followup-usage-provider.json";
+    const storePath = "/tmp/operator-followup-usage-provider.json";
     const sessionKey = "main";
     const sessionEntry: SessionEntry = { sessionId: "session", updatedAt: Date.now() };
     const sessionStore: Record<string, SessionEntry> = { [sessionKey]: sessionEntry };
@@ -5322,7 +5322,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
   });
 
   it("preserves user-facing session model state for queued internal announce fallback", async () => {
-    const storePath = "/tmp/openclaw-followup-internal-announce-usage.json";
+    const storePath = "/tmp/operator-followup-internal-announce-usage.json";
     const sessionKey = "main";
     const sessionEntry: SessionEntry = {
       sessionId: "session",
@@ -5937,7 +5937,7 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
       ...staleSessionEntry,
       sendPolicy: "deny",
     };
-    const storePath = path.join(tmpdir(), "openclaw-followup-send-policy.json");
+    const storePath = path.join(tmpdir(), "operator-followup-send-policy.json");
     registerFollowupTestSessionStore(storePath, { main: persistedSessionEntry });
     const { onBlockReply } = await runMessagingCase({
       agentResult: { payloads: [{ text: "must stay private" }] },

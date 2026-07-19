@@ -2,11 +2,11 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeNullableString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   SystemRunApprovalFileOperand,
   SystemRunApprovalPlan,

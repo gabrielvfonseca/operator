@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { Command } from "commander";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi } from "./api.js";
 import type { VoiceCallRuntime } from "./runtime-entry.js";
@@ -253,12 +253,12 @@ describe("voice-call plugin", () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllEnvs();
-    delete (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.voice-call.runtime")];
+    delete (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.voice-call.runtime")];
     delete (globalThis as Record<PropertyKey, unknown>)[
-      Symbol.for("openclaw.voice-call.runtimePromise")
+      Symbol.for("operator.voice-call.runtimePromise")
     ];
     delete (globalThis as Record<PropertyKey, unknown>)[
-      Symbol.for("openclaw.voice-call.runtimeStopPromise")
+      Symbol.for("operator.voice-call.runtimeStopPromise")
     ];
   });
 
@@ -348,7 +348,7 @@ describe("voice-call plugin", () => {
   it("still starts the webhook runtime for gateway CLI processes", async () => {
     const previousArgv = process.argv;
     vi.stubEnv("OPERATOR_CLI", "1");
-    process.argv = ["node", "openclaw", "gateway", "run"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "gateway", "run"];
     const { service } = setup({ provider: "mock" });
 
     try {

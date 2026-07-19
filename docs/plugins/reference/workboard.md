@@ -11,8 +11,8 @@ Dashboard workboard for agent-owned issues and sessions.
 
 ## Distribution
 
-- Package: `@operator/workboard`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/workboard`
+- Install route: included in Operator
 
 ## Surface
 

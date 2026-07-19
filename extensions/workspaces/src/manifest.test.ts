@@ -192,7 +192,7 @@ describe("snapshotApprovedWidget", () => {
 async function withWidget(
   run: (ctx: { stateDir: string; widgetDir: string }) => Promise<void>,
 ): Promise<void> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-manifest-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-manifest-"));
   try {
     const widgetDir = path.join(stateDir, "workspaces", "widgets", "demo");
     await fs.mkdir(widgetDir, { recursive: true });

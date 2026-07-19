@@ -2,7 +2,7 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "openclaw/plugin-sdk/channel-entry-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 import type { OperatorConfig, PluginRuntime, ResolvedNostrAccount } from "./api.js";
 
 function createNostrProfileHttpHandler() {

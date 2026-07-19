@@ -16,12 +16,12 @@ Each agent has its own:
 
 - **Workspace**: files, `AGENTS.md`/`SOUL.md`/`USER.md`, local notes, persona rules.
 - **State directory** (`agentDir`): auth profiles, model registry, per-agent config.
-- **Session store**: chat history and routing state in `~/.openclaw/agents/<agentId>/agent/openclaw-agent.sqlite`.
+- **Session store**: chat history and routing state in `~/.operator/agents/<agentId>/agent/operator-agent.sqlite`.
 
 Auth profiles are per-agent, read from:
 
 ```text
-~/.openclaw/agents/<agentId>/agent/auth-profiles.json
+~/.operator/agents/<agentId>/agent/auth-profiles.json
 ```
 
 <Note>
@@ -29,10 +29,10 @@ Auth profiles are per-agent, read from:
 </Note>
 
 <Warning>
-Never reuse `agentDir` across agents — it causes auth/session state collisions. When a secondary agent's local OAuth credential is expired or its refresh fails, OpenClaw reads through to the default/main agent's credential for the same profile id and adopts whichever token is freshest, without copying the refresh token into the secondary agent's store. If you want a fully independent OAuth account, sign in from that agent. If you copy credentials manually, copy only portable static `api_key` or `token` profiles — OAuth refresh material is not portable by default (`copyToAgents` can opt a profile in explicitly).
+Never reuse `agentDir` across agents — it causes auth/session state collisions. When a secondary agent's local OAuth credential is expired or its refresh fails, Operator reads through to the default/main agent's credential for the same profile id and adopts whichever token is freshest, without copying the refresh token into the secondary agent's store. If you want a fully independent OAuth account, sign in from that agent. If you copy credentials manually, copy only portable static `api_key` or `token` profiles — OAuth refresh material is not portable by default (`copyToAgents` can opt a profile in explicitly).
 </Warning>
 
-Skills load from each agent workspace plus shared roots such as `~/.openclaw/skills`, then filter by the effective agent skill allowlist. Use `agents.defaults.skills` for a shared baseline and `agents.list[].skills` for a per-agent replacement (explicit entries replace the default, they do not merge). See [Skills: per-agent vs shared](/tools/skills#per-agent-vs-shared-skills) and [Skills: agent allowlists](/tools/skills#agent-allowlists).
+Skills load from each agent workspace plus shared roots such as `~/.operator/skills`, then filter by the effective agent skill allowlist. Use `agents.defaults.skills` for a shared baseline and `agents.list[].skills` for a per-agent replacement (explicit entries replace the default, they do not merge). See [Skills: per-agent vs shared](/tools/skills#per-agent-vs-shared-skills) and [Skills: agent allowlists](/tools/skills#agent-allowlists).
 
 Plugin-owned storage follows that plugin's configuration; adding a second agent
 does not automatically split every global plugin store. For example, configure
@@ -47,29 +47,29 @@ when personas must not share compiled wiki knowledge.
 
 | What                             | Default                                                                                | Override                                                                                 |
 | -------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Config                           | `~/.openclaw/openclaw.json`                                                            | `OPENCLAW_CONFIG_PATH`                                                                   |
-| State dir                        | `~/.openclaw`                                                                          | `OPENCLAW_STATE_DIR`                                                                     |
-| Default agent's workspace        | `~/.openclaw/workspace` (or `workspace-<profile>` when `OPENCLAW_PROFILE` is set)      | `agents.list[].workspace`, then `agents.defaults.workspace`, or `OPENCLAW_WORKSPACE_DIR` |
+| Config                           | `~/.operator/operator.json`                                                            | `OPERATOR_CONFIG_PATH`                                                                   |
+| State dir                        | `~/.operator`                                                                          | `OPERATOR_STATE_DIR`                                                                     |
+| Default agent's workspace        | `~/.operator/workspace` (or `workspace-<profile>` when `OPERATOR_PROFILE` is set)      | `agents.list[].workspace`, then `agents.defaults.workspace`, or `OPERATOR_WORKSPACE_DIR` |
 | Other agents' workspace          | `<stateDir>/workspace-<agentId>` (or `<agents.defaults.workspace>/<agentId>` when set) | `agents.list[].workspace`                                                                |
-| Agent dir                        | `~/.openclaw/agents/<agentId>/agent`                                                   | `agents.list[].agentDir`                                                                 |
-| Sessions and transcripts         | `~/.openclaw/agents/<agentId>/agent/openclaw-agent.sqlite`                             | —                                                                                        |
-| Legacy/archive session artifacts | `~/.openclaw/agents/<agentId>/sessions`                                                | —                                                                                        |
+| Agent dir                        | `~/.operator/agents/<agentId>/agent`                                                   | `agents.list[].agentDir`                                                                 |
+| Sessions and transcripts         | `~/.operator/agents/<agentId>/agent/operator-agent.sqlite`                             | —                                                                                        |
+| Legacy/archive session artifacts | `~/.operator/agents/<agentId>/sessions`                                                | —                                                                                        |
 
 ### Single-agent mode (default)
 
-If you configure nothing, OpenClaw runs one agent:
+If you configure nothing, Operator runs one agent:
 
 - `agentId` defaults to `main`.
 - Sessions key as `agent:main:<mainKey>` (default `mainKey` is `main`).
-- Workspace defaults to `~/.openclaw/workspace` (or `workspace-<profile>` when `OPENCLAW_PROFILE` is set to something other than `default`).
-- State defaults to `~/.openclaw/agents/main/agent`.
+- Workspace defaults to `~/.operator/workspace` (or `workspace-<profile>` when `OPERATOR_PROFILE` is set to something other than `default`).
+- State defaults to `~/.operator/agents/main/agent`.
 
 ## Agent helper
 
 Add a new isolated agent:
 
 ```bash
-openclaw agents add work
+operator agents add work
 ```
 
 Flags: `--workspace <dir>`, `--model <id>`, `--agent-dir <dir>`, `--bind <channel[:accountId]>` (repeatable), `--non-interactive` (requires `--workspace`).
@@ -77,7 +77,7 @@ Flags: `--workspace <dir>`, `--model <id>`, `--agent-dir <dir>`, `--bind <channe
 Add `bindings` to route inbound messages (the wizard offers to do this for you), then verify:
 
 ```bash
-openclaw agents list --bindings
+operator agents list --bindings
 ```
 
 ## Quick start
@@ -85,11 +85,11 @@ openclaw agents list --bindings
 <Steps>
   <Step title="Create each agent workspace">
     ```bash
-    openclaw agents add coding
-    openclaw agents add social
+    operator agents add coding
+    operator agents add social
     ```
 
-    Each agent gets its own workspace with `SOUL.md`, `AGENTS.md`, and optional `USER.md`, plus a dedicated `agentDir` and session store under `~/.openclaw/agents/<agentId>`.
+    Each agent gets its own workspace with `SOUL.md`, `AGENTS.md`, and optional `USER.md`, plus a dedicated `agentDir` and session store under `~/.operator/agents/<agentId>`.
 
   </Step>
   <Step title="Create channel accounts">
@@ -100,7 +100,7 @@ openclaw agents list --bindings
     - WhatsApp: link each phone number per account.
 
     ```bash
-    openclaw channels login --channel whatsapp --account work
+    operator channels login --channel whatsapp --account work
     ```
 
     See channel guides: [Discord](/channels/discord), [Telegram](/channels/telegram), [WhatsApp](/channels/whatsapp).
@@ -111,9 +111,9 @@ openclaw agents list --bindings
   </Step>
   <Step title="Restart and verify">
     ```bash
-    openclaw gateway restart
-    openclaw agents list --bindings
-    openclaw channels status --probe
+    operator gateway restart
+    operator agents list --bindings
+    operator channels status --probe
     ```
   </Step>
 </Steps>
@@ -143,7 +143,7 @@ compiled knowledge separate from a marketing agent's, set
         config: {
           vault: {
             scope: "agent",
-            path: "~/.openclaw/wiki",
+            path: "~/.operator/wiki",
           },
         },
       },
@@ -152,9 +152,9 @@ compiled knowledge separate from a marketing agent's, set
 }
 ```
 
-The configured path is the parent directory. OpenClaw appends the normalized
-agent id, producing paths such as `~/.openclaw/wiki/support` and
-`~/.openclaw/wiki/marketing`. Agent-scoped CLI and Gateway operations require
+The configured path is the parent directory. Operator appends the normalized
+agent id, producing paths such as `~/.operator/wiki/support` and
+`~/.operator/wiki/marketing`. Agent-scoped CLI and Gateway operations require
 an explicit agent when multiple agents are configured. See
 [Memory Wiki per-agent vaults](/plugins/memory-wiki#per-agent-vaults) for bridge
 filtering, migration, and trust-boundary details.
@@ -208,8 +208,8 @@ Direct chats collapse to the agent's main session key by default, so true isolat
 {
   agents: {
     list: [
-      { id: "alex", workspace: "~/.openclaw/workspace-alex" },
-      { id: "mia", workspace: "~/.openclaw/workspace-mia" },
+      { id: "alex", workspace: "~/.operator/workspace-alex" },
+      { id: "mia", workspace: "~/.operator/workspace-mia" },
     ],
   },
   bindings: [
@@ -245,7 +245,7 @@ Bindings are deterministic and most-specific wins. See [Channel routing](/channe
 
 Channels that support multiple accounts (e.g. WhatsApp) use `accountId` to identify each login. Each `accountId` routes to its own agent, so one server can host multiple phone numbers without mixing sessions.
 
-Set `channels.<channel>.defaultAccount` to choose the account used when `accountId` is omitted. When unset, OpenClaw falls back to `default` if present, otherwise the first configured account id (sorted).
+Set `channels.<channel>.defaultAccount` to choose the account used when `accountId` is omitted. When unset, Operator falls back to `default` if present, otherwise the first configured account id (sorted).
 
 Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imessage`, `irc`, `line`, `mattermost`, `matrix`, `nextcloud-talk`, `nostr`, `signal`, `slack`, `telegram`, `whatsapp`, `zalo`, `zalouser`.
 
@@ -266,8 +266,8 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
     {
       agents: {
         list: [
-          { id: "main", workspace: "~/.openclaw/workspace-main" },
-          { id: "coding", workspace: "~/.openclaw/workspace-coding" },
+          { id: "main", workspace: "~/.operator/workspace-main" },
+          { id: "coding", workspace: "~/.operator/workspace-coding" },
         ],
       },
       bindings: [
@@ -313,8 +313,8 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
     {
       agents: {
         list: [
-          { id: "main", workspace: "~/.openclaw/workspace-main" },
-          { id: "alerts", workspace: "~/.openclaw/workspace-alerts" },
+          { id: "main", workspace: "~/.operator/workspace-main" },
+          { id: "alerts", workspace: "~/.operator/workspace-alerts" },
         ],
       },
       bindings: [
@@ -352,11 +352,11 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
     Link each account before starting the gateway:
 
     ```bash
-    openclaw channels login --channel whatsapp --account personal
-    openclaw channels login --channel whatsapp --account biz
+    operator channels login --channel whatsapp --account personal
+    operator channels login --channel whatsapp --account biz
     ```
 
-    `~/.openclaw/openclaw.json` (JSON5):
+    `~/.operator/operator.json` (JSON5):
 
     ```js
     {
@@ -366,14 +366,14 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
             id: "home",
             default: true,
             name: "Home",
-            workspace: "~/.openclaw/workspace-home",
-            agentDir: "~/.openclaw/agents/home/agent",
+            workspace: "~/.operator/workspace-home",
+            agentDir: "~/.operator/agents/home/agent",
           },
           {
             id: "work",
             name: "Work",
-            workspace: "~/.openclaw/workspace-work",
-            agentDir: "~/.openclaw/agents/work/agent",
+            workspace: "~/.operator/workspace-work",
+            agentDir: "~/.operator/agents/work/agent",
           },
         ],
       },
@@ -406,12 +406,12 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
         whatsapp: {
           accounts: {
             personal: {
-              // Optional override. Default: ~/.openclaw/credentials/whatsapp/personal
-              // authDir: "~/.openclaw/credentials/whatsapp/personal",
+              // Optional override. Default: ~/.operator/credentials/whatsapp/personal
+              // authDir: "~/.operator/credentials/whatsapp/personal",
             },
             biz: {
-              // Optional override. Default: ~/.openclaw/credentials/whatsapp/biz
-              // authDir: "~/.openclaw/credentials/whatsapp/biz",
+              // Optional override. Default: ~/.operator/credentials/whatsapp/biz
+              // authDir: "~/.operator/credentials/whatsapp/biz",
             },
           },
         },
@@ -435,13 +435,13 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
           {
             id: "chat",
             name: "Everyday",
-            workspace: "~/.openclaw/workspace-chat",
+            workspace: "~/.operator/workspace-chat",
             model: "anthropic/claude-sonnet-4-6",
           },
           {
             id: "opus",
             name: "Deep Work",
-            workspace: "~/.openclaw/workspace-opus",
+            workspace: "~/.operator/workspace-opus",
             model: "anthropic/claude-opus-4-6",
           },
         ],
@@ -466,13 +466,13 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
           {
             id: "chat",
             name: "Everyday",
-            workspace: "~/.openclaw/workspace-chat",
+            workspace: "~/.operator/workspace-chat",
             model: "anthropic/claude-sonnet-4-6",
           },
           {
             id: "opus",
             name: "Deep Work",
-            workspace: "~/.openclaw/workspace-opus",
+            workspace: "~/.operator/workspace-opus",
             model: "anthropic/claude-opus-4-6",
           },
         ],
@@ -500,7 +500,7 @@ Channels supporting multiple accounts: `discord`, `feishu`, `googlechat`, `imess
           {
             id: "family",
             name: "Family",
-            workspace: "~/.openclaw/workspace-family",
+            workspace: "~/.operator/workspace-family",
             identity: { name: "Family Bot" },
             groupChat: {
               mentionPatterns: ["@family", "@familybot", "@Family Bot"],
@@ -551,7 +551,7 @@ Each agent can have its own sandbox and tool restrictions:
     list: [
       {
         id: "personal",
-        workspace: "~/.openclaw/workspace-personal",
+        workspace: "~/.operator/workspace-personal",
         sandbox: {
           mode: "off",  // No sandbox for personal agent
         },
@@ -559,7 +559,7 @@ Each agent can have its own sandbox and tool restrictions:
       },
       {
         id: "family",
-        workspace: "~/.openclaw/workspace-family",
+        workspace: "~/.operator/workspace-family",
         sandbox: {
           mode: "all",     // Always sandboxed
           scope: "agent",  // One container per agent

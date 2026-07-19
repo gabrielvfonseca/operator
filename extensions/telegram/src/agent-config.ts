@@ -1,5 +1,5 @@
 // Telegram helper module supports agent config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 type ReasoningDefault = "on" | "stream" | "off";
 

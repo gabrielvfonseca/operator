@@ -6,7 +6,7 @@ import { createPdfTool } from "./tools/pdf-tool.js";
 describe("createOperatorTools PDF registration", () => {
   it("includes the pdf tool when the pdf factory returns a tool", () => {
     const pdfTool = createPdfTool({
-      agentDir: "/tmp/openclaw-agent-main",
+      agentDir: "/tmp/operator-agent-main",
       config: {
         agents: {
           defaults: {

@@ -3,8 +3,8 @@
  * Evaluates shell allowlists, auto-review, durable approvals, follow-up routing,
  * and approved command execution for gateway-backed exec calls.
  */
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { describeInterpreterInlineEval } from "../infra/command-analysis/inline-eval.js";
 import { detectPolicyInlineEval } from "../infra/command-analysis/policy.js";
 import { emitTrustedSecurityEvent } from "../infra/diagnostic-events.js";

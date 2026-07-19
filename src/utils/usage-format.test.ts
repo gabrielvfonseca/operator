@@ -3,7 +3,7 @@ import nodeFs from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import {
@@ -69,7 +69,7 @@ describe("usage-format", () => {
 
   beforeEach(async () => {
     envSnapshot = captureEnv(["OPERATOR_AGENT_DIR", "OPERATOR_STATE_DIR"]);
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-usage-format-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-usage-format-"));
     agentDir = path.join(stateDir, "agents", "main", "agent");
     process.env.OPERATOR_STATE_DIR = stateDir;
     delete process.env.OPERATOR_AGENT_DIR;

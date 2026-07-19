@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -245,14 +245,14 @@ struct ExecApprovalsUIRollbackTests {
         _ body: (URL) async throws -> T) async throws -> T
     {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-approvals-ui-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-approvals-ui-\(UUID().uuidString)", isDirectory: true)
         let home = root.appendingPathComponent("home", isDirectory: true)
         let stateDir = root.appendingPathComponent("state", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
 
         return try await TestIsolation.withIsolatedState(env: [
-            "OPENCLAW_HOME": home.path,
-            "OPENCLAW_STATE_DIR": stateDir.path,
+            "OPERATOR_HOME": home.path,
+            "OPERATOR_STATE_DIR": stateDir.path,
         ]) {
             try await body(stateDir)
         }

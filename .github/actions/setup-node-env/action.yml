@@ -54,7 +54,7 @@ runs:
       run: |
         set -euo pipefail
         source "$GITHUB_ACTION_PATH/../setup-pnpm-store-cache/ensure-node.sh"
-        openclaw_ensure_node "$REQUESTED_NODE_VERSION"
+        operator_ensure_node "$REQUESTED_NODE_VERSION"
 
     - name: Setup pnpm
       id: setup-pnpm
@@ -87,7 +87,7 @@ runs:
         # feature snapshots separate from protected pushes. The v2 marker lets
         # exact warm hits trust the snapshotted stock layout without rescanning.
         key: ${{ github.repository }}-node-deps-bind-v2-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'protected' }}-${{ inputs.node-version }}-frozen-${{ inputs.frozen-lockfile }}-${{ hashFiles('**/package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc', '.pnpmfile.cjs', 'pnpmfile.cjs', '.github/actions/setup-node-env/sticky-importers.sh', 'scripts/postinstall-bundled-plugins.mjs', 'scripts/preinstall-package-manager-warning.mjs', 'scripts/prepare-git-hooks.mjs') }}
-        path: /var/tmp/openclaw-node-deps
+        path: /var/tmp/operator-node-deps
         # v1.4.0 skips commit after failed/cancelled steps or ambiguous failure
         # detection, so an incomplete first hydration cannot seed this key.
         commit: if-missing
@@ -105,7 +105,7 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        sticky_root=/var/tmp/openclaw-node-deps
+        sticky_root=/var/tmp/operator-node-deps
         sticky_modules="$sticky_root/node_modules"
         sticky_store="$sticky_root/store"
         workspace_modules="$GITHUB_WORKSPACE/node_modules"
@@ -122,7 +122,7 @@ runs:
         echo "PNPM_CONFIG_STORE_DIR=$sticky_store" >> "$GITHUB_ENV"
         # pnpm exec may reconcile a restored workspace before nested builds.
         # Sticky jobs already have every build tool, so invoke their Node entrypoints directly.
-        echo "OPENCLAW_BUILD_ALL_NO_PNPM=1" >> "$GITHUB_ENV"
+        echo "OPERATOR_BUILD_ALL_NO_PNPM=1" >> "$GITHUB_ENV"
 
     - name: Setup Bun
       if: inputs.install-bun == 'true'
@@ -157,7 +157,7 @@ runs:
         CI: "true"
         FROZEN_LOCKFILE: ${{ inputs.frozen-lockfile }}
         STICKY_DISK: ${{ inputs.sticky-disk }}
-        STICKY_ROOT: /var/tmp/openclaw-node-deps
+        STICKY_ROOT: /var/tmp/operator-node-deps
       run: |
         set -euo pipefail
         export PATH="$NODE_BIN:$PATH"

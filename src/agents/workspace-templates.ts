@@ -5,7 +5,7 @@
  */
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveOperatorPackageRoot } from "../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../infra/openclaw-root.js";
 import { pathExists } from "../utils.js";
 
 const FALLBACK_TEMPLATE_DIR = path.resolve(

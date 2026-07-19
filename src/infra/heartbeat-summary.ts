@@ -1,5 +1,5 @@
 // Summarizes heartbeat config for CLI and UI display.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentConfig, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import {
   DEFAULT_HEARTBEAT_ACK_MAX_CHARS,

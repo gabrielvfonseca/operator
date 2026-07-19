@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw Featherless AI provider plugin."
+summary: "Operator Featherless AI provider plugin."
 read_when:
   - You are installing, configuring, or auditing the featherless plugin
 title: "Featherless plugin"
@@ -7,12 +7,12 @@ title: "Featherless plugin"
 
 # Featherless plugin
 
-OpenClaw Featherless AI provider plugin.
+Operator Featherless AI provider plugin.
 
 ## Distribution
 
-- Package: `@operator/featherless-provider`
-- Install route: npm; ClawHub: `clawhub:@operator/featherless-provider`
+- Package: `@gabrielvfonseca/featherless-provider`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/featherless-provider`
 
 ## Surface
 

@@ -2,8 +2,8 @@
 import {
   normalizeOptionalLowercaseString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeCsvOrLooseStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeCsvOrLooseStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import JSON5 from "json5";
 import { LEGACY_MANIFEST_KEYS, MANIFEST_KEY } from "../compat/legacy-names.js";
 import { parseBooleanValue } from "../utils/boolean.js";

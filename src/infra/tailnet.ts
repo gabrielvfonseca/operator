@@ -1,6 +1,6 @@
 // Discovers local Tailscale tailnet addresses.
-import { isIpInCidr } from "@operator/net-policy/ip";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { isIpInCidr } from "@gabrielvfonseca/net-policy/ip";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { listExternalInterfaceAddresses, readNetworkInterfaces } from "./network-interfaces.js";
 
 /** Tailnet addresses discovered on external local interfaces. */

@@ -1,6 +1,6 @@
 /** Resolves and emits cron failure-alert notifications. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { resolveFailoverReasonFromError } from "../../agents/failover-error.js";
 import type { CronFailureNotificationDelivery, CronJob, CronMessageChannel } from "../types.js";
 import type { CronServiceState } from "./state.js";

@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
+import {
+  configureSqliteConnectionPragmas,
+  migrateSqliteSchemaToStrict,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import type {
   WorkboardArtifact,
   WorkboardAttachment,
@@ -15,12 +20,7 @@ import type {
   WorkboardProof,
   WorkboardRunAttempt,
   WorkboardWorkerLog,
-} from "@operator/workboard-contract";
-import {
-  configureSqliteConnectionPragmas,
-  migrateSqliteSchemaToStrict,
-} from "openclaw/plugin-sdk/plugin-state-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+} from "@gabrielvfonseca/workboard-contract";
 import type {
   PersistedWorkboardAttachment,
   PersistedWorkboardBoard,

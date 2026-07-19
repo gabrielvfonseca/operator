@@ -1,31 +1,31 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatGatewayRequestTests {
     @Test func `session targets share normalization while preserving platform routing policy`() {
-        #expect(OpenClawChatSessionTarget.resolve(
+        #expect(OperatorChatSessionTarget.resolve(
             " Matrix:Channel:Room ",
             selectedAgentID: " Reviewer ",
             policy: .scopeBareKeysToSelectedAgent) == .init(
             sessionKey: "agent:reviewer:Matrix:Channel:Room",
             agentID: nil))
-        #expect(OpenClawChatSessionTarget.resolve(
+        #expect(OperatorChatSessionTarget.resolve(
             " main ",
             selectedAgentID: " Reviewer ",
             policy: .preserveBareKeys) == .init(sessionKey: "main", agentID: nil))
-        #expect(OpenClawChatSessionTarget.resolve(
+        #expect(OperatorChatSessionTarget.resolve(
             " GLOBAL ",
             selectedAgentID: " Reviewer ",
             policy: .preserveBareKeys) == .init(sessionKey: "GLOBAL", agentID: "reviewer"))
-        #expect(OpenClawChatSessionTarget.resolve(
+        #expect(OperatorChatSessionTarget.resolve(
             "agent:ops:main",
             selectedAgentID: "reviewer",
             policy: .scopeBareKeysToSelectedAgent) == .init(
             sessionKey: "agent:ops:main",
             agentID: nil))
-        #expect(OpenClawChatSessionTarget.resolve(
+        #expect(OperatorChatSessionTarget.resolve(
             "agent::main",
             selectedAgentID: "reviewer",
             policy: .scopeBareKeysToSelectedAgent) == .init(
@@ -34,7 +34,7 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `list sessions request normalizes optional filters`() {
-        let request = OpenClawChatGatewayRequests.sessionsList(
+        let request = OperatorChatGatewayRequests.sessionsList(
             limit: 12,
             search: "  incident  ",
             archived: true)
@@ -49,7 +49,7 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `session patch request preserves explicit null clearing`() {
-        let request = OpenClawChatGatewayRequests.patchSession(
+        let request = OperatorChatGatewayRequests.patchSession(
             sessionKey: "global",
             agentID: "reviewer",
             label: .some(nil),
@@ -69,7 +69,7 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `settings patch request encodes default model as null`() {
-        let request = OpenClawChatGatewayRequests.patchSessionSettings(
+        let request = OperatorChatGatewayRequests.patchSessionSettings(
             sessionKey: "agent:main:main",
             agentID: nil,
             model: .some(nil))
@@ -79,7 +79,7 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `settings patch request encodes model and thinking atomically`() {
-        let request = OpenClawChatGatewayRequests.patchSessionSettings(
+        let request = OperatorChatGatewayRequests.patchSessionSettings(
             sessionKey: "global",
             agentID: "reviewer",
             model: .some("openai/gpt-5.6-sol"),
@@ -93,7 +93,7 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `fork and create requests preserve routing identity`() {
-        let fork = OpenClawChatGatewayRequests.forkSession(
+        let fork = OperatorChatGatewayRequests.forkSession(
             parentSessionKey: "agent:reviewer:telegram:group:1",
             agentID: "reviewer")
         #expect(fork.method == "sessions.create")
@@ -101,7 +101,7 @@ struct ChatGatewayRequestTests {
         #expect(fork.params["agentId"]?.value as? String == "reviewer")
         #expect(fork.params["fork"]?.value as? Bool == true)
 
-        let create = OpenClawChatGatewayRequests.createSession(
+        let create = OperatorChatGatewayRequests.createSession(
             key: "agent:reviewer:new",
             agentID: "reviewer",
             label: nil,
@@ -114,21 +114,21 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `commands request selects session agent before fallback`() {
-        let scoped = OpenClawChatGatewayRequests.commandsList(
+        let scoped = OperatorChatGatewayRequests.commandsList(
             sessionKey: "agent:reviewer:main",
             fallbackAgentID: "fallback")
         #expect(scoped.params["scope"]?.value as? String == "text")
         #expect(scoped.params["includeArgs"]?.value as? Bool == true)
         #expect(scoped.params["agentId"]?.value as? String == "reviewer")
 
-        let global = OpenClawChatGatewayRequests.commandsList(
+        let global = OperatorChatGatewayRequests.commandsList(
             sessionKey: "global",
             fallbackAgentID: "reviewer")
         #expect(global.params["agentId"]?.value as? String == "reviewer")
     }
 
     @Test func `send request shares attachment encoding and timeout policy`() throws {
-        let request = OpenClawChatGatewayRequests.sendMessage(
+        let request = OperatorChatGatewayRequests.sendMessage(
             sessionKey: "global",
             agentID: " reviewer ",
             expectedSessionRoutingContract: " per-sender|main|reviewer ",
@@ -148,9 +148,9 @@ struct ChatGatewayRequestTests {
     }
 
     @Test func `long running requests share exact gateway timeout margins`() {
-        #expect(OpenClawChatGatewayRequests.agentWait(runID: "run-1", timeoutMs: 1).timeoutMs == 5001)
-        #expect(OpenClawChatGatewayRequests.agentWait(runID: "run-1", timeoutMs: 30000).timeoutMs == 35000)
-        #expect(OpenClawChatGatewayRequests.compactSession(
+        #expect(OperatorChatGatewayRequests.agentWait(runID: "run-1", timeoutMs: 1).timeoutMs == 5001)
+        #expect(OperatorChatGatewayRequests.agentWait(runID: "run-1", timeoutMs: 30000).timeoutMs == 35000)
+        #expect(OperatorChatGatewayRequests.compactSession(
             sessionKey: "main",
             agentID: nil).timeoutMs == 0)
     }
@@ -158,25 +158,25 @@ struct ChatGatewayRequestTests {
 
 struct ChatGatewayPayloadCodecTests {
     @Test func `session key extracts canonical agent identity`() {
-        #expect(OpenClawChatSessionKey.agentID(from: " agent:Reviewer:main ") == "Reviewer")
-        #expect(OpenClawChatSessionKey.agentID(from: "agent::main") == nil)
-        #expect(OpenClawChatSessionKey.agentID(from: "global") == nil)
+        #expect(OperatorChatSessionKey.agentID(from: " agent:Reviewer:main ") == "Reviewer")
+        #expect(OperatorChatSessionKey.agentID(from: "agent::main") == nil)
+        #expect(OperatorChatSessionKey.agentID(from: "global") == nil)
     }
 
     @Test func `agent wait distinguishes terminal and retryable timeouts`() throws {
-        #expect(try OpenClawChatGatewayPayloadCodec.decodeAgentWaitObservation(
+        #expect(try OperatorChatGatewayPayloadCodec.decodeAgentWaitObservation(
             Data(#"{"status":"completed"}"#.utf8)) == .terminal(.completed))
-        #expect(try OpenClawChatGatewayPayloadCodec.decodeAgentWaitObservation(
+        #expect(try OperatorChatGatewayPayloadCodec.decodeAgentWaitObservation(
             Data(#"{"status":"pending"}"#.utf8)) == .checkAgain)
-        #expect(try OpenClawChatGatewayPayloadCodec.decodeAgentWaitObservation(
+        #expect(try OperatorChatGatewayPayloadCodec.decodeAgentWaitObservation(
             Data(#"{"status":"timeout","timeoutPhase":"queue"}"#.utf8)) == .checkAgain)
-        #expect(try OpenClawChatGatewayPayloadCodec.decodeAgentWaitObservation(
+        #expect(try OperatorChatGatewayPayloadCodec.decodeAgentWaitObservation(
             Data(#"{"status":"timeout","timeoutPhase":"provider"}"#.utf8)) ==
             .terminal(.failed(message: "Run timed out")))
     }
 
     @Test func `routing identity decodes agent and canonical contract`() throws {
-        let identity = try OpenClawChatGatewayPayloadCodec.decodeSessionRoutingIdentity(
+        let identity = try OperatorChatGatewayPayloadCodec.decodeSessionRoutingIdentity(
             Data(#"{"defaultId":"Work","mainKey":"Primary","scope":"global","agents":[]}"#.utf8))
 
         #expect(identity.defaultAgentID == "work")
@@ -184,11 +184,11 @@ struct ChatGatewayPayloadCodecTests {
     }
 
     @Test func `model choices preserve metadata and replace blank names`() throws {
-        let choices = try OpenClawChatGatewayPayloadCodec.decodeModelChoices(Data(
+        let choices = try OperatorChatGatewayPayloadCodec.decodeModelChoices(Data(
             #"{"models":[{"id":"gpt-5","name":"  ","provider":"openai","contextWindow":200000,"reasoning":true}]}"#
                 .utf8))
 
-        #expect(choices == [OpenClawChatModelChoice(
+        #expect(choices == [OperatorChatModelChoice(
             modelID: "gpt-5",
             name: "gpt-5",
             provider: "openai",
@@ -197,7 +197,7 @@ struct ChatGatewayPayloadCodecTests {
     }
 
     @Test func `command choice normalizes source aliases and identity`() {
-        let choice = OpenClawChatGatewayPayloadCodec.commandChoice(CommandEntry(
+        let choice = OperatorChatGatewayPayloadCodec.commandChoice(CommandEntry(
             name: "review",
             textaliases: [" /review ", ""],
             description: "Review changes",
@@ -220,7 +220,7 @@ struct ChatGatewayPayloadCodecTests {
                 "agentId": AnyCodable("main"),
                 "reason": AnyCodable("command-metadata"),
             ]))
-        guard case let .sessionsChanged(change) = OpenClawChatGatewayPayloadCodec.event(from: sessionsChanged)
+        guard case let .sessionsChanged(change) = OperatorChatGatewayPayloadCodec.event(from: sessionsChanged)
         else {
             Issue.record("expected sessionsChanged")
             return
@@ -238,14 +238,14 @@ struct ChatGatewayPayloadCodecTests {
                 "sessionKey": AnyCodable("main"),
                 "state": AnyCodable("final"),
             ]))
-        guard case let .chat(payload) = OpenClawChatGatewayPayloadCodec.event(from: chat) else {
+        guard case let .chat(payload) = OperatorChatGatewayPayloadCodec.event(from: chat) else {
             Issue.record("expected chat")
             return
         }
         #expect(payload.runId == "run-1")
         #expect(payload.sessionKey == "main")
         #expect(payload.state == "final")
-        #expect(OpenClawChatGatewayPayloadCodec.event(from: EventFrame(
+        #expect(OperatorChatGatewayPayloadCodec.event(from: EventFrame(
             type: "event",
             event: "unknown")) == nil)
     }

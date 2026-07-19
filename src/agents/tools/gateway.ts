@@ -3,11 +3,11 @@
  *
  * Resolves gateway URL/token overrides, local credentials, and least-privilege operator scopes.
  */
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   GATEWAY_CLIENT_MODES,
   GATEWAY_CLIENT_NAMES,
@@ -497,7 +497,7 @@ function staleGatewayAgentRuntimeIdentityError(cause: unknown): Error {
   return new Error(
     [
       "The running Gateway is from an older Operator build and rejected current agent runtime connection metadata.",
-      "Restart the Gateway with `operator gateway restart`, then retry.",
+      "Restart the Gateway with `openclaw gateway restart`, then retry.",
     ].join(" "),
     { cause },
   );

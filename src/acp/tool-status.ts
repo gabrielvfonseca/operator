@@ -1,4 +1,4 @@
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const ACP_TOOL_TERMINAL_OUTCOMES = {
   completed: "completed",

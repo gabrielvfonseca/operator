@@ -1,10 +1,10 @@
 // Configure wizard Gateway port, bind, auth, and Tailscale prompts.
-import { validateDottedDecimalIPv4Input } from "@operator/net-policy/ipv4";
+import { validateDottedDecimalIPv4Input } from "@gabrielvfonseca/net-policy/ipv4";
 import {
   normalizeOptionalString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatPortRangeHint } from "../cli/error-format.js";
 import { parsePort } from "../cli/shared/parse-port.js";

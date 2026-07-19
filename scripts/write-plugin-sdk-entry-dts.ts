@@ -1,4 +1,4 @@
-// Write Plugin Sdk Entry Dts script supports OpenClaw repository automation.
+// Write Plugin Sdk Entry Dts script supports Operator repository automation.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -44,17 +44,17 @@ const RUNTIME_SHIMS: Partial<Record<string, string>> = {
   ].join("\n"),
 };
 
-const USE_CANONICAL_DECLARATIONS = process.env.OPENCLAW_PLUGIN_SDK_CANONICAL_DTS === "1";
+const USE_CANONICAL_DECLARATIONS = process.env.OPERATOR_PLUGIN_SDK_CANONICAL_DTS === "1";
 
 function isBareImportSpecifier(id: string): boolean {
   if (
-    id === "@operator/llm-core" ||
-    id.startsWith("@operator/llm-core/") ||
-    id === "@operator/model-catalog-core/model-catalog-types" ||
-    id === "@operator/retry" ||
-    id.startsWith("@operator/normalization-core/") ||
-    id.startsWith("@operator/media-core/") ||
-    id.startsWith("@operator/acp-core/")
+    id === "@gabrielvfonseca/llm-core" ||
+    id.startsWith("@gabrielvfonseca/llm-core/") ||
+    id === "@gabrielvfonseca/model-catalog-core/model-catalog-types" ||
+    id === "@gabrielvfonseca/retry" ||
+    id.startsWith("@gabrielvfonseca/normalization-core/") ||
+    id.startsWith("@gabrielvfonseca/media-core/") ||
+    id.startsWith("@gabrielvfonseca/acp-core/")
   ) {
     return false;
   }
@@ -84,7 +84,7 @@ function copyFlatDeclarations(fromDir: string, toDir: string): void {
 }
 
 const distPluginSdkDir = path.join(process.cwd(), "dist/plugin-sdk");
-const shouldBuildPrivateQaEntries = process.env.OPENCLAW_BUILD_PRIVATE_QA === "1";
+const shouldBuildPrivateQaEntries = process.env.OPERATOR_BUILD_PRIVATE_QA === "1";
 const flatDeclarationEntrypoints = shouldBuildPrivateQaEntries
   ? pluginSdkEntrypoints
   : publicPluginSdkEntrypoints;
@@ -100,7 +100,7 @@ if (USE_CANONICAL_DECLARATIONS) {
     }
   }
 } else {
-  const flatDeclarationTempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-sdk-dts-"));
+  const flatDeclarationTempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-sdk-dts-"));
   try {
     await build({
       clean: true,
@@ -136,7 +136,7 @@ for (const entry of pluginSdkEntrypoints) {
 
   const packageTypeOut = path.join(
     process.cwd(),
-    `sdks/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
+    `packages/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
   );
   fs.mkdirSync(path.dirname(packageTypeOut), { recursive: true });
   fs.writeFileSync(

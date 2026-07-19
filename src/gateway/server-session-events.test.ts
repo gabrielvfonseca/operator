@@ -11,7 +11,7 @@ const sessionRow = vi.hoisted(() => ({
   thinkingLevels: [{ id: "ultra", label: "ultra" }],
   thinkingOptions: ["ultra"],
   thinkingDefault: "medium",
-  agentRuntime: { id: "openclaw", source: "model" },
+  agentRuntime: { id: "@gabrielvfonseca/operator", source: "model" },
 }));
 const isEmbeddedAgentRunActiveMock = vi.hoisted(() => vi.fn());
 
@@ -99,7 +99,7 @@ describe("createTranscriptUpdateBroadcastHandler", () => {
     expect(payload).toMatchObject({
       session: {
         thinkingLevel: "ultra",
-        agentRuntime: { id: "openclaw" },
+        agentRuntime: { id: "@gabrielvfonseca/operator" },
       },
     });
     expect(payload).not.toHaveProperty("thinkingLevels");
@@ -146,7 +146,7 @@ describe("createTranscriptUpdateBroadcastHandler", () => {
       }),
     ).resolves.toMatchObject({
       message: {
-        __openclaw: {
+        __operator: {
           id: "message-1",
           idempotencyKey: "client-turn-3",
           seq: 1,
@@ -160,7 +160,7 @@ describe("createTranscriptUpdateBroadcastHandler", () => {
       emitAssistantTranscriptUpdate(false, {
         role: "user",
         content: [{ type: "text", text: "Owner turn" }],
-        __openclaw: { senderIsOwner: true },
+        __operator: { senderIsOwner: true },
       }),
     ).resolves.toMatchObject({
       senderIsOwner: true,

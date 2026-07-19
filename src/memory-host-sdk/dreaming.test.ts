@@ -293,11 +293,11 @@ describe("memory dreaming host helpers", () => {
       resolveMemoryDreamingPluginId({
         plugins: {
           slots: {
-            memory: "memos-local-openclaw-plugin",
+            memory: "memos-local-operator-plugin",
           },
         },
       } as OperatorConfig),
-    ).toBe("memos-local-openclaw-plugin");
+    ).toBe("memos-local-operator-plugin");
   });
 
   it("reads dreaming config from the configured memory-slot owner", () => {
@@ -305,10 +305,10 @@ describe("memory dreaming host helpers", () => {
       resolveMemoryDreamingPluginConfig({
         plugins: {
           slots: {
-            memory: "memos-local-openclaw-plugin",
+            memory: "memos-local-operator-plugin",
           },
           entries: {
-            "memos-local-openclaw-plugin": {
+            "memos-local-operator-plugin": {
               config: {
                 dreaming: {
                   enabled: true,

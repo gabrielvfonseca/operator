@@ -194,7 +194,7 @@ function formatStartupMigrationFailure(params: { warnings: string[]; blockers: s
   return [
     "Operator startup migrations did not complete cleanly; refusing to report the gateway ready.",
     ...details,
-    'Run "operator doctor --fix" against the mounted state/config, then restart the container.',
+    'Run "openclaw doctor --fix" against the mounted state/config, then restart the container.',
   ].join("\n");
 }
 
@@ -458,7 +458,7 @@ export async function runDoctorConfigPreflight(
           ? []
           : snapshot.valid
             ? await runStartupUpgradeConvergence({ cfg: baseConfig, env: process.env })
-            : ['Operator config is invalid; run "operator doctor --fix" before startup.'];
+            : ['Operator config is invalid; run "openclaw doctor --fix" before startup.'];
       if (startupMigrationWarnings.length > 0 || blockers.length > 0) {
         throw new Error(
           formatStartupMigrationFailure({

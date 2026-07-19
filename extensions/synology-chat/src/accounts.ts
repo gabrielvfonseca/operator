@@ -8,10 +8,10 @@ import {
   listCombinedAccountIds,
   resolveMergedAccountConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
-import { resolveDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { parseStrictInteger } from "openclaw/plugin-sdk/number-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { resolveDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { parseStrictInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type {
   SynologyChatChannelConfig,
   ResolvedSynologyChatAccount,

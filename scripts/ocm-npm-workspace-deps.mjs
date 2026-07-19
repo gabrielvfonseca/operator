@@ -6,10 +6,10 @@ import { tmpdir } from "node:os";
 import { delimiter, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const WORKSPACE_DIRS_ENV = "OPENCLAW_OCM_WORKSPACE_DEPENDENCY_DIRS";
-const REAL_NPM_ENV = "OPENCLAW_OCM_REAL_NPM_BIN";
-const ALLOW_UNRELEASED_CHANGELOG_ENV = "OPENCLAW_PREPACK_ALLOW_UNRELEASED_CHANGELOG";
-const RUNTIME_BUILD_PROFILE_ENV = "OPENCLAW_OCM_RUNTIME_BUILD_PROFILE";
+const WORKSPACE_DIRS_ENV = "OPERATOR_OCM_WORKSPACE_DEPENDENCY_DIRS";
+const REAL_NPM_ENV = "OPERATOR_OCM_REAL_NPM_BIN";
+const ALLOW_UNRELEASED_CHANGELOG_ENV = "OPERATOR_PREPACK_ALLOW_UNRELEASED_CHANGELOG";
+const RUNTIME_BUILD_PROFILE_ENV = "OPERATOR_OCM_RUNTIME_BUILD_PROFILE";
 const supportedRuntimeBuildProfiles = new Set(["sourcePerformance"]);
 const fullGitCommitPattern = /^[0-9a-f]{40}$/iu;
 
@@ -49,7 +49,7 @@ export function buildInstallManifest(rootArchive, workspacePackages) {
   return {
     private: true,
     dependencies: {
-      openclaw: pathToFileURL(rootArchive).href,
+      operator: pathToFileURL(rootArchive).href,
       ...Object.fromEntries(
         workspacePackages.map(({ name, tarball }) => [name, pathToFileURL(tarball).href]),
       ),
@@ -106,7 +106,7 @@ export function resolveRuntimePackEnvironment(
     return result.status === 0 ? result.stdout.trim() : null;
   },
 ) {
-  const explicitTimestamp = env.OPENCLAW_BUILD_TIMESTAMP?.trim();
+  const explicitTimestamp = env.OPERATOR_BUILD_TIMESTAMP?.trim();
   const explicitCommit = env.GIT_COMMIT?.trim() || env.GIT_SHA?.trim();
   const checkedOutCommit = explicitCommit ? null : readGitCommit()?.trim();
   const commit = explicitCommit || checkedOutCommit || env.GITHUB_SHA?.trim();
@@ -115,7 +115,7 @@ export function resolveRuntimePackEnvironment(
   }
   return {
     ...env,
-    OPENCLAW_BUILD_TIMESTAMP: explicitTimestamp || now().toISOString(),
+    OPERATOR_BUILD_TIMESTAMP: explicitTimestamp || now().toISOString(),
     ...(commit ? { GIT_COMMIT: commit.toLowerCase() } : {}),
   };
 }
@@ -142,7 +142,7 @@ function runChecked(command, args, options = {}) {
 
 function supportsPreparedRuntimePack(env) {
   const script = `
-    const mod = await import("./scripts/openclaw-prepack.ts");
+    const mod = await import("./scripts/operator-prepack.ts");
     process.exit(typeof mod.preparePrepackArtifacts === "function" ? 0 : 1);
   `;
   const result = runNpm(
@@ -166,7 +166,7 @@ function prepareRuntimePack(profile, env) {
     stdio: "inherit",
   });
   const script = `
-    const mod = await import("./scripts/openclaw-prepack.ts");
+    const mod = await import("./scripts/operator-prepack.ts");
     await mod.preparePrepackArtifacts();
   `;
   runChecked(process.execPath, ["--import", "tsx", "--input-type=module", "--eval", script], {
@@ -260,7 +260,7 @@ function patchRootArchiveWorkspaceDependencies(rootArchive, workspacePackages, o
   }
 
   writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
-  const patchedArchive = join(outputDir, "openclaw-root-patched.tgz");
+  const patchedArchive = join(outputDir, "operator-root-patched.tgz");
   runTar(["-czf", patchedArchive, "-C", unpackDir, "package"]);
   return patchedArchive;
 }
@@ -295,7 +295,7 @@ function main() {
     return result.status ?? 1;
   }
 
-  const packDir = mkdtempSync(join(tmpdir(), "openclaw-ocm-workspace-deps-"));
+  const packDir = mkdtempSync(join(tmpdir(), "operator-ocm-workspace-deps-"));
   try {
     const workspacePackages = packWorkspaceDependencies(npm, workspaceDirs, packDir);
     const rootArchive = patchRootArchiveWorkspaceDependencies(

@@ -1,9 +1,9 @@
 // Active-session shutdown tracker tests protect the in-memory drain list used
 // when gateway shutdown, restart, or lifecycle cleanup must emit one session_end.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   forgetActiveSessionForShutdown,
   listActiveSessionsForShutdown,

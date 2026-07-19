@@ -1,6 +1,6 @@
 // Covers Windows command-output code page parsing and decoding.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   createWindowsOutputDecoder,

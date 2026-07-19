@@ -1,16 +1,16 @@
 ---
-summary: "CLI reference for `openclaw directory` (self, peers, groups)"
+summary: "CLI reference for `operator directory` (self, peers, groups)"
 read_when:
   - You want to look up contacts/groups/self ids for a channel
   - You are developing a channel directory adapter
 title: "Directory"
 ---
 
-# `openclaw directory`
+# `operator directory`
 
 Directory lookups for channels that support them: contacts/peers, groups, and "me" (self).
 
-Results are meant to be pasted into other commands, especially `openclaw message send --target ...`.
+Results are meant to be pasted into other commands, especially `operator message send --target ...`.
 
 ## Common flags
 
@@ -28,8 +28,8 @@ Default (non-JSON) output is `id` (and sometimes `name`) separated by a tab.
 ## Using results with `message send`
 
 ```bash
-openclaw directory peers list --channel slack --query "U0"
-openclaw message send --channel slack --target user:U012ABCDEF --message "hello"
+operator directory peers list --channel slack --query "U0"
+operator message send --channel slack --target user:U012ABCDEF --message "hello"
 ```
 
 ## ID formats by channel
@@ -49,23 +49,23 @@ openclaw message send --channel slack --target user:U012ABCDEF --message "hello"
 ## Self ("me")
 
 ```bash
-openclaw directory self --channel zalouser
+operator directory self --channel zalouser
 ```
 
 ## Peers (contacts/users)
 
 ```bash
-openclaw directory peers list --channel zalouser
-openclaw directory peers list --channel zalouser --query "name"
-openclaw directory peers list --channel zalouser --limit 50
+operator directory peers list --channel zalouser
+operator directory peers list --channel zalouser --query "name"
+operator directory peers list --channel zalouser --limit 50
 ```
 
 ## Groups
 
 ```bash
-openclaw directory groups list --channel zalouser
-openclaw directory groups list --channel zalouser --query "work"
-openclaw directory groups members --channel zalouser --group-id <id>
+operator directory groups list --channel zalouser
+operator directory groups list --channel zalouser --query "work"
+operator directory groups members --channel zalouser --group-id <id>
 ```
 
 ## Related

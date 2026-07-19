@@ -1,6 +1,6 @@
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 // Voice Call tests cover cli plugin behavior.
 import { Command } from "commander";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 const callGatewayFromCliMock = vi.hoisted(() => vi.fn());
 

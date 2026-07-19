@@ -1,8 +1,8 @@
 /**
  * Limits embedded-agent history length from session-key policy.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AgentMessage } from "../runtime/index.js";
 

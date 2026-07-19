@@ -5,7 +5,7 @@
  */
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
 import { resolveBundledPluginsDir } from "../../plugins/bundled-dir.js";
 
 const OPERATOR_PACKAGE_ROOT =

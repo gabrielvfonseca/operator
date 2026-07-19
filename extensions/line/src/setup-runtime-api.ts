@@ -4,7 +4,10 @@ export {
   formatDocsLink,
   setSetupChannelEnabled,
   splitSetupEntries,
-} from "openclaw/plugin-sdk/setup";
-export type { ChannelSetupDmPolicy, ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+export type {
+  ChannelSetupDmPolicy,
+  ChannelSetupWizard,
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 export { listLineAccountIds, normalizeAccountId, resolveLineAccount } from "./accounts.js";
 export type { LineConfig } from "./types.js";

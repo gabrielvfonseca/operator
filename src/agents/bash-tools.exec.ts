@@ -10,7 +10,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeChatChannelId } from "../channels/ids.js";
 import {
   type ExecAsk,
@@ -32,7 +32,7 @@ import {
   normalizeHostOverrideEnvVarKey,
   sanitizeHostExecEnvWithDiagnostics,
 } from "../infra/host-env-security.js";
-import { OPERATOR_CLI_ENV_VAR } from "../infra/operator-exec-env.js";
+import { OPERATOR_CLI_ENV_VAR } from "../infra/openclaw-exec-env.js";
 import {
   getShellPathFromLoginShell,
   resolveShellEnvFallbackTimeoutMs,

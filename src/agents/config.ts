@@ -84,13 +84,13 @@ export function getExamplesPath(): string {
 }
 
 // =============================================================================
-// App Config (from package.json operatorConfig)
+// App Config (from package.json openclawConfig)
 // =============================================================================
 
 interface PackageJson {
   name?: string;
   version?: string;
-  operatorConfig?: {
+  openclawConfig?: {
     name?: string;
     configDir?: string;
   };
@@ -99,7 +99,7 @@ interface PackageJson {
 const pkg = JSON.parse(readFileSync(getPackageJsonPath(), "utf-8")) as PackageJson;
 
 const openClawConfigName: string | undefined = pkg.operatorConfig?.name;
-export const APP_NAME: string = openClawConfigName || "operator";
+export const APP_NAME: string = openClawConfigName || "@gabrielvfonseca/operator";
 export const CONFIG_DIR_NAME: string = pkg.operatorConfig?.configDir || ".operator";
 export const VERSION: string = pkg.version || "0.0.0";
 

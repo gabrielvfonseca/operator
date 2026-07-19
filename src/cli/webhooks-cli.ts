@@ -1,5 +1,5 @@
 // Webhook CLI registrations, currently Gmail Pub/Sub setup and service runner commands.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import { formatDocsLink } from "../../packages/terminal-core/src/links.js";
 import { theme } from "../../packages/terminal-core/src/theme.js";
@@ -114,7 +114,7 @@ function parseGmailSetupOptions(raw: Record<string, unknown>): GmailSetupOptions
   const account = normalizeOptionalString(accountRaw) ?? "";
   if (!account) {
     throw new Error(
-      `--account is required. Example: ${formatCliCommand("operator webhooks gmail setup --account default")}.`,
+      `--account is ...
     );
   }
   const common = parseGmailCommonOptions(raw);

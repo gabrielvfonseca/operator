@@ -1,7 +1,7 @@
 // Moonshot plugin entrypoint registers its Operator integration.
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
-import { buildOpenAICompatibleReplayPolicy } from "openclaw/plugin-sdk/provider-model-shared";
-import { buildProviderStreamFamilyHooks } from "openclaw/plugin-sdk/provider-stream-family";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
+import { buildOpenAICompatibleReplayPolicy } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { buildProviderStreamFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-family";
 import { applyMoonshotNativeStreamingUsageCompat } from "./api.js";
 import { moonshotMediaUnderstandingProvider } from "./media-understanding-provider.js";
 import {

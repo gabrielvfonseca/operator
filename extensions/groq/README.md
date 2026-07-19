@@ -5,8 +5,8 @@ Official Operator provider plugin for Groq.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/groq-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/groq-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/groq> for setup and configuration.
+See <https://docs.operator.ai/providers/groq> for setup and configuration.

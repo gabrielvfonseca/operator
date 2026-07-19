@@ -161,11 +161,11 @@ async function stageManifestEntry(
   });
 }
 
-// tsdown keeps some @operator workspace packages external of dist (never-bundle list),
+// tsdown keeps some @openclaw workspace packages external of dist (never-bundle list),
 // so shipped dist imports them at runtime; scan staged bytes for those specifiers to
 // know which workspace builds must ride along in the bundle.
 const OPERATOR_IMPORT_SPECIFIER_PATTERN =
-  /["'`](@operator\/[a-z0-9-]+)(?:\/[A-Za-z0-9./_-]+)?["'`]/gu;
+  /["'`](@openclaw\/[a-z0-9-]+)(?:\/[A-Za-z0-9./_-]+)?["'`]/gu;
 
 function collectOpenclawImportSpecifiers(
   relativePath: string,

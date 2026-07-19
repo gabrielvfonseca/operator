@@ -298,7 +298,7 @@ export function createProfileAvailability({
       return (
         `Chrome MCP existing-session attach for profile "${profile.name}" could not connect to Chrome. ` +
         "Enable remote debugging in the browser inspect page, keep the browser open, approve the attach prompt, and retry. " +
-        'If you do not need your signed-in browser session, use the managed "openclaw" profile instead.' +
+        'If you do not need your signed-in browser session, use the managed "@gabrielvfonseca/operator" profile instead.' +
         detail
       );
     }
@@ -542,7 +542,7 @@ export function createProfileAvailability({
     if (!runtime.running) {
       const detail = await describeCdpFailure(PROFILE_ATTACH_RETRY_TIMEOUT_MS);
       throw new BrowserProfileUnavailableError(
-        `Port ${profile.cdpPort} is in use for profile "${profile.name}" but not by openclaw. ` +
+        `Port ${profile.cdpPort} is in use for profile "${profile.name}" but not by operator. ` +
           `${formatLocalPortOwnershipHint(profile)} ${detail}`,
       );
     }

@@ -2,19 +2,19 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { ChannelType } from "discord-api-types/v10";
-import { getSessionBindingService } from "openclaw/plugin-sdk/conversation-runtime";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { getSessionBindingService } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateSyncKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { ChannelType } from "discord-api-types/v10";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { setDiscordRuntime } from "../runtime.js";
 import { EMPTY_DISCORD_TEST_CONFIG } from "../test-support/config.js";
@@ -742,7 +742,7 @@ describe("thread binding lifecycle", () => {
   it("persists touched activity timestamps across restart when persistence is enabled", async () => {
     vi.useFakeTimers();
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-thread-bindings-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-thread-bindings-"));
     process.env.OPERATOR_STATE_DIR = stateDir;
     try {
       testing.resetThreadBindingsForTests();
@@ -1259,7 +1259,7 @@ describe("thread binding lifecycle", () => {
     hoisted.restPost.mockClear();
 
     const bound = await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:openclaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:operator-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1269,8 +1269,8 @@ describe("thread binding lifecycle", () => {
       placement: "current",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
       },
     });
 
@@ -1309,7 +1309,7 @@ describe("thread binding lifecycle", () => {
     });
 
     await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:openclaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:operator-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1319,15 +1319,15 @@ describe("thread binding lifecycle", () => {
       placement: "current",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
         agentId: "codex",
         boundBy: "system",
       },
     });
 
     await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:openclaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:operator-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1350,8 +1350,8 @@ describe("thread binding lifecycle", () => {
     );
     expectFields(requireRecord(resolved.metadata, "resolved metadata"), "resolved metadata", {
       pluginBindingOwner: "plugin",
-      pluginId: "openclaw-codex-app-server",
-      pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+      pluginId: "operator-codex-app-server",
+      pluginRoot: "/Users/huntharo/github/operator-app-server",
       agentId: "codex",
       boundBy: "system",
       label: "codex-dm",
@@ -1545,12 +1545,12 @@ describe("thread binding lifecycle", () => {
       threadId: "user:1177378744822943744",
       channelId: "user:1177378744822943744",
       targetKind: "acp",
-      targetSessionKey: "plugin-binding:openclaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:operator-codex-app-server:dm",
       agentId: "codex",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
       },
     });
 
@@ -1573,7 +1573,7 @@ describe("thread binding lifecycle", () => {
     );
     expectFields(requireRecord(binding.metadata, "binding metadata"), "binding metadata", {
       pluginBindingOwner: "plugin",
-      pluginId: "openclaw-codex-app-server",
+      pluginId: "operator-codex-app-server",
     });
   });
 
@@ -1873,7 +1873,7 @@ describe("thread binding lifecycle", () => {
 
   it("persists unbinds even when no manager is active", () => {
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-thread-bindings-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-thread-bindings-"));
     process.env.OPERATOR_STATE_DIR = stateDir;
     try {
       testing.resetThreadBindingsForTests();

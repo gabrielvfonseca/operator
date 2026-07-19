@@ -11,8 +11,8 @@ Automatic work journal: captures periodic screen snapshots from a paired node an
 
 ## Distribution
 
-- Package: `@operator/logbook`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/logbook`
+- Install route: included in Operator
 
 ## Surface
 

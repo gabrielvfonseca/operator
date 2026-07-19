@@ -1,4 +1,4 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Feishu plugin module implements setup surface behavior.
 import {
   DEFAULT_ACCOUNT_ID,
@@ -14,8 +14,8 @@ import {
   type DmPolicy,
   type OperatorConfig,
   type SecretInput,
-} from "openclaw/plugin-sdk/setup";
-import { normalizeOptionalString as normalizeString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { normalizeOptionalString as normalizeString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveDefaultFeishuAccountId, resolveFeishuAccount } from "./accounts.js";
 import type { AppRegistrationResult } from "./app-registration.js";
 import type { FeishuConfig, FeishuDomain } from "./types.js";

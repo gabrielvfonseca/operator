@@ -1,6 +1,6 @@
 // Msteams plugin module implements resolve allowlist behavior.
-import { mapAllowlistResolutionInputs } from "openclaw/plugin-sdk/allow-from";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { mapAllowlistResolutionInputs } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { MSTeamsConfig } from "../runtime-api.js";
 import { findGraphUsersByExactIdentity } from "./graph-users.js";
 import {

@@ -60,7 +60,7 @@ vi.mock("../../config/config.js", () => ({
     const writePayload = { nextConfig: transformed.nextConfig, afterWrite };
     await replaceConfigFileMock(writePayload);
     return {
-      path: snapshot.path ?? "/tmp/openclaw.json",
+      path: snapshot.path ?? "/tmp/operator.json",
       previousHash,
       persistedHash: "persisted-hash",
       snapshot,
@@ -254,8 +254,8 @@ async function withTempConfigPath<T>(
   initialConfig: Record<string, unknown>,
   run: (configPath: string) => Promise<T>,
 ): Promise<T> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-allowlist-config-"));
-  const configPath = path.join(dir, "openclaw.json");
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-allowlist-config-"));
+  const configPath = path.join(dir, "operator.json");
   const previous = process.env.OPERATOR_CONFIG_PATH;
   setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
   await fs.writeFile(configPath, JSON.stringify(initialConfig, null, 2), "utf-8");

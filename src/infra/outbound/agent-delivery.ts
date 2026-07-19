@@ -1,6 +1,6 @@
 // Agent delivery planning resolves final reply destinations from explicit
 // options, session history, turn source, bindings, and channel route hooks.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveChannelDefaultAccountId } from "../../channels/plugins/helpers.js";
 import type { ChannelOutboundTargetMode } from "../../channels/plugins/types.public.js";
 import type { ChannelId } from "../../channels/plugins/types.public.js";
@@ -72,7 +72,7 @@ function resolveAgentDeliveryPlan(params: {
    * overrides session-level `lastChannel` to prevent cross-channel reply
    * routing in shared sessions (dmScope="main").
    *
-   * @see https://github.com/operator/operator/issues/24152
+   * @see https://github.com/openclaw/openclaw/issues/24152
    */
   turnSourceChannel?: string;
   /** Turn-source `to` — paired with `turnSourceChannel`. */

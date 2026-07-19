@@ -1,6 +1,6 @@
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Telegram plugin module implements client fetch behavior.
 import type { ApiClientOptions } from "grammy";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import type { TelegramTransport } from "./fetch.js";
 import { isTelegramMisdirectedRequestError, tagTelegramNetworkError } from "./network-errors.js";
 import { resolveTelegramRequestTimeoutMs } from "./request-timeouts.js";

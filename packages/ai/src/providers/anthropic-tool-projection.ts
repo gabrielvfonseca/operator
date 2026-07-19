@@ -1,4 +1,4 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { projectRuntimeToolInputSchema } from "./tool-schema-json-projection.js";
 
 type AnthropicToolDescriptor = {

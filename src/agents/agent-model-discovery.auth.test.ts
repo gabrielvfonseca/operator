@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { describe, expect, it, vi } from "vitest";
 import { resolveAgentCredentialMapFromStore } from "./agent-auth-credentials.js";
 import { addEnvBackedAgentCredentials } from "./agent-auth-discovery-core.js";
@@ -49,7 +49,7 @@ vi.mock("./model-auth-env.js", () => ({
 }));
 
 async function createAgentDir(): Promise<string> {
-  return await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-agent-auth-storage-"));
+  return await fs.mkdtemp(path.join(os.tmpdir(), "operator-agent-auth-storage-"));
 }
 
 async function withAgentDir(run: (agentDir: string) => Promise<void>): Promise<void> {

@@ -2,7 +2,7 @@
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveUserPath } from "../utils.js";
 import { createPluginRecord } from "./loader-records.js";
 import { createPluginRegistry } from "./registry.js";
@@ -25,7 +25,7 @@ function createTestRegistry(runtime: PluginRuntime) {
 
 describe("plugin registry runtime config scope", () => {
   it("resolves plugin API paths against the plugin root", () => {
-    const pluginRoot = path.join(os.tmpdir(), "openclaw-plugins", "demo");
+    const pluginRoot = path.join(os.tmpdir(), "operator-plugins", "demo");
     const pluginRegistry = createTestRegistry(createPluginRuntime());
     const record = createPluginRecord({
       id: "path-plugin",
@@ -48,7 +48,7 @@ describe("plugin registry runtime config scope", () => {
   it("adds plugin context to lazy runtime resolution failures", () => {
     const runtime = new Proxy({} as PluginRuntime, {
       get() {
-        throw new Error("Unable to resolve plugin runtime module; loader=/tmp/openclaw-loader.js");
+        throw new Error("Unable to resolve plugin runtime module; loader=/tmp/operator-loader.js");
       },
     });
     const pluginRegistry = createTestRegistry(runtime);
@@ -83,10 +83,10 @@ describe("plugin registry runtime config scope", () => {
     let replaceScope = getPluginRuntimeGatewayRequestScope();
     const config = {} as OperatorConfig;
     const replaceResult = {
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       previousHash: null,
       persistedHash: "persisted-hash",
-      snapshot: { path: "/tmp/openclaw.json" },
+      snapshot: { path: "/tmp/operator.json" },
       nextConfig: config,
       afterWrite: { mode: "auto" },
       followUp: { mode: "auto", requiresRestart: false },
@@ -561,7 +561,7 @@ describe("plugin registry runtime config scope", () => {
     await expect(
       voiceApi.runtime.agent.runEmbeddedAgent({
         ...delegatedRunParams,
-        agentHarnessRuntimeOverride: "openclaw",
+        agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
       }),
     ).rejects.toThrow("only with its exact persisted identity and harness");
     await expect(

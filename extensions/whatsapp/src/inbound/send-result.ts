@@ -1,13 +1,16 @@
-// Whatsapp plugin module implements send result behavior.
-import type { WAMessage, WAMessageKey } from "baileys";
 import {
   createMessageReceiptFromOutboundResults,
   listMessageReceiptPlatformIds,
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { normalizeStringEntries, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import {
+  normalizeStringEntries,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Whatsapp plugin module implements send result behavior.
+import type { WAMessage, WAMessageKey } from "baileys";
 
 export type WhatsAppSendKind =
   | "contact"

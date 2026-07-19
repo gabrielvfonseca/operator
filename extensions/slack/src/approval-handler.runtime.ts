@@ -1,6 +1,3 @@
-// Slack plugin module implements approval handler behavior.
-import type { App } from "@slack/bolt";
-import type { Block, KnownBlock } from "@slack/web-api";
 import type {
   ChannelApprovalCapabilityHandlerContext,
   ExecApprovalExpiredView,
@@ -12,14 +9,17 @@ import type {
   PluginApprovalPendingView,
   PluginApprovalResolvedView,
   ResolvedApprovalView,
-} from "openclaw/plugin-sdk/approval-handler-runtime";
-import { createChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
-import { buildChannelApprovalNativeTargetKey } from "openclaw/plugin-sdk/approval-native-runtime";
-import { buildApprovalPresentationFromActionDescriptors } from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { logError } from "openclaw/plugin-sdk/logging-core";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { createChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { buildChannelApprovalNativeTargetKey } from "@gabrielvfonseca/operator/plugin-sdk/approval-native-runtime";
+import { buildApprovalPresentationFromActionDescriptors } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logError } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+// Slack plugin module implements approval handler behavior.
+import type { App } from "@slack/bolt";
+import type { Block, KnownBlock } from "@slack/web-api";
 import {
   isSlackAnyNativeApprovalClientEnabled,
   shouldHandleSlackNativeApprovalRequest,

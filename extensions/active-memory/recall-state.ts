@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
-import { closeActiveMemorySearchManager } from "openclaw/plugin-sdk/memory-host-search";
+import { closeActiveMemorySearchManager } from "@gabrielvfonseca/operator/plugin-sdk/memory-host-search";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { resolveActiveMemoryCleanupConfig } from "./config.js";
 import {
   CACHE_SWEEP_INTERVAL_MS,

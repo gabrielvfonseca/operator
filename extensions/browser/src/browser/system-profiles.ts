@@ -5,7 +5,7 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import type { OperatorConfig } from "../config/config.js";
 import { getRuntimeConfig } from "../config/config.js";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { resolveOperatorUserDataDir } from "./chrome.js";
 import { usesOperatorMockKeychain } from "./chrome.profile-decoration.js";
 import { BrowserProfileUnavailableError } from "./errors.js";
@@ -42,7 +42,10 @@ export type ImportSystemProfileResult = {
   domains: string[];
 };
 
-type CreateProfile = (params: { name: string; driver?: "openclaw" }) => Promise<unknown>;
+type CreateProfile = (params: {
+  name: string;
+  driver?: "@gabrielvfonseca/operator";
+}) => Promise<unknown>;
 
 type SystemProfileDeps = {
   platform?: NodeJS.Platform;
@@ -140,7 +143,7 @@ function snapshotCookieDatabase(source: string): {
 } {
   const tmpRoot = resolvePreferredOperatorTmpDir();
   fs.mkdirSync(tmpRoot, { recursive: true });
-  const tempDir = fs.mkdtempSync(path.join(tmpRoot, "openclaw-system-cookies-"));
+  const tempDir = fs.mkdtempSync(path.join(tmpRoot, "operator-system-cookies-"));
   const databasePath = path.join(tempDir, "Cookies");
   const sourceDatabase = new DatabaseSync(source, { readOnly: true });
   try {
@@ -192,11 +195,11 @@ export async function importSystemProfileCookies(
   }
 
   if (!(into in runtime.ctx.state().resolved.profiles)) {
-    await runtime.createProfile({ name: into, driver: "openclaw" });
+    await runtime.createProfile({ name: into, driver: "@gabrielvfonseca/operator" });
   }
   const profileCtx = runtime.ctx.forProfile(into);
   if (
-    profileCtx.profile.driver !== "openclaw" ||
+    profileCtx.profile.driver !== "@gabrielvfonseca/operator" ||
     !profileCtx.profile.cdpIsLoopback ||
     profileCtx.profile.attachOnly
   ) {

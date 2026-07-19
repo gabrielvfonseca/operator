@@ -1,5 +1,5 @@
 // Mattermost plugin module implements slash commands behavior.
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { MattermostClient } from "./client.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────

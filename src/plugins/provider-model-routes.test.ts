@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ModelApi } from "../config/types.models.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderResolveModelRoutesContext } from "../plugin-sdk/provider-model-types.js";
 import {
   createProviderModelRoutesResolver,
@@ -192,14 +192,14 @@ describe("provider model route adapter", () => {
       }),
     ).toEqual({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-responses",
           baseUrl: "https://model.example.test/v1",
           authRequirement: "api-key",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });

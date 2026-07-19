@@ -1,6 +1,6 @@
 // Extracts provider contract public artifacts from plugin manifests.
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { loadBundledPluginPublicArtifactModuleSync } from "./public-surface-loader.js";
 import type { ProviderPlugin } from "./types.js";
 

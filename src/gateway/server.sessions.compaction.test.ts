@@ -737,7 +737,7 @@ test("sessions.compact without maxLines runs embedded manual compaction for chec
   expect(compactionCall.cwd).toBe("/tmp/task-repo");
   expect(callConfig.agents?.defaults?.model?.primary).toBe("anthropic/claude-opus-4-6");
   expect(callConfig.agents?.defaults?.workspace).toBe(
-    path.join(os.tmpdir(), "openclaw-gateway-test"),
+    path.join(os.tmpdir(), "operator-gateway-test"),
   );
   expect(compactionCall.provider).toBe("anthropic");
   expect(compactionCall.model).toBe("claude-opus-4-6");
@@ -1633,7 +1633,7 @@ test("sessions.compact maxLines aborts without trimming rows when an active run 
 });
 
 test("sessions.patch preserves nested model ids under provider overrides", async () => {
-  await withTempDir({ prefix: "openclaw-gw-sessions-nested-" }, async (dir) => {
+  await withTempDir({ prefix: "operator-gw-sessions-nested-" }, async (dir) => {
     const storePath = path.join(dir, "sessions.json");
     const runtimeConfig = {
       agents: {

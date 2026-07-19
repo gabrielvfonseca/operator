@@ -5,8 +5,8 @@
  */
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import type { AgentTool } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AgentTool } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { Type } from "typebox";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -103,7 +103,7 @@ describe("agent tool definition adapter", () => {
       ask: "off",
     });
     const [definition] = toToolDefinitions([tool]);
-    const missingWorkdir = path.join(os.tmpdir(), `openclaw-missing-denied-cwd-${Date.now()}`);
+    const missingWorkdir = path.join(os.tmpdir(), `operator-missing-denied-cwd-${Date.now()}`);
 
     const existing = await expectDefined(definition, "definition test invariant").execute(
       "call-denied-existing-cwd",

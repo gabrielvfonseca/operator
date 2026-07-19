@@ -26,7 +26,7 @@ function resolveOperatorVersion(): string {
  * Build a combined User-Agent string that preserves the Teams SDK identity
  * and appends the Operator version.
  *
- * Format: "teams.ts[apps]/<sdk-version> Operator/<openclaw-version>"
+ * Format: "teams.ts[apps]/<sdk-version> Operator/<operator-version>"
  * Example: "teams.ts[apps]/2.0.5 Operator/2026.3.22"
  *
  * This lets the Teams backend track SDK usage while also identifying the
@@ -46,7 +46,7 @@ export function buildUserAgent(): string {
  * only contribute the Operator piece — passing the full `buildUserAgent()`
  * would double-print the SDK token.
  *
- * Format: "Operator/<openclaw-version>"
+ * Format: "Operator/<operator-version>"
  */
 export function buildOperatorUserAgentFragment(): string {
   return `Operator/${resolveOperatorVersion()}`;

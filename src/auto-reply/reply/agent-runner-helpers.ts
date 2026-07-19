@@ -1,9 +1,9 @@
 /** Helper predicates and gates used while streaming agent-runner payloads. */
-import { isAudioFileName } from "@operator/media-core/mime";
+import { isAudioFileName } from "@gabrielvfonseca/media-core/mime";
 import {
   hasOutboundReplyContent,
   resolveSendableOutboundReplyParts,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { loadSessionEntry } from "../../config/sessions/session-accessor.js";
 import { normalizeVerboseLevel, type VerboseLevel } from "../thinking.js";
 import type { ReplyPayload } from "../types.js";

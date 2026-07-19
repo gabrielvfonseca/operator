@@ -1,5 +1,5 @@
 // 导入运行时配置缓存清除函数，确保配置更新后 getRuntimeConfig() 能读取到最新值
-import { clearRuntimeConfigSnapshot } from "openclaw/plugin-sdk/runtime-config-snapshot";
+import { clearRuntimeConfigSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 // Qqbot plugin module implements register group allways behavior.
 import type { ApproveRuntimeGetter } from "../../adapter/commands.port.js";
 import type { SlashCommandRegistry } from "../slash-commands.js";

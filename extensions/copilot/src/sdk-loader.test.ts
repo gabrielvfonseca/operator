@@ -103,7 +103,7 @@ describe("sdk-loader", () => {
         // Intentionally NOT injecting fallbackImport; exercise the default.
       })) as unknown as { openclawDefaultImporterSentinel?: boolean };
 
-      expect(sdk.openclawDefaultImporterSentinel).toBe(true);
+      expect(sdk.operatorDefaultImporterSentinel).toBe(true);
       expect(primaryImport).toHaveBeenCalledTimes(1);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
@@ -127,7 +127,7 @@ describe("sdk-loader", () => {
       }),
     ).rejects.toMatchObject({
       code: "COPILOT_SDK_MISSING",
-      message: expect.stringContaining("openclaw plugins install @operator/copilot"),
+      message: expect.stringContaining("openclaw plugins install @gabrielvfonseca/copilot"),
     });
 
     expect(fallbackImport).not.toHaveBeenCalled();
@@ -154,7 +154,7 @@ describe("sdk-loader", () => {
     expect(message).toContain("primary boom");
     expect(message).toContain(path.join(fallbackDir, "node_modules", "@github", "copilot-sdk"));
     expect(message).toContain(COPILOT_SDK_SPEC);
-    expect(message).toContain("openclaw plugins install @operator/copilot");
+    expect(message).toContain("openclaw plugins install @gabrielvfonseca/copilot");
   });
 
   it("caches successful loads across calls when cache is enabled", async () => {

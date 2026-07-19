@@ -1,5 +1,5 @@
 /** Detects interim cron replies that should wait for or retry subagent work. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const SUBAGENT_FOLLOWUP_HINTS = [
   "subagent spawned",

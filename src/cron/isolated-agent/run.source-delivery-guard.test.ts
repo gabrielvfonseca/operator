@@ -390,7 +390,7 @@ describe("executeCronRun sourceDelivery mapping", () => {
   it("forwards an explicit Operator runtime override to cron execution", async () => {
     mockRunCronFallbackPassthrough();
     const cronSession = makeCronSession() as MutableCronSession;
-    cronSession.sessionEntry.agentRuntimeOverride = "openclaw";
+    cronSession.sessionEntry.agentRuntimeOverride = "@gabrielvfonseca/operator";
     cronSession.sessionEntry.agentHarnessId = "codex";
     const executor = makeExecutor({
       cfgWithAgentDefaults: {
@@ -414,7 +414,7 @@ describe("executeCronRun sourceDelivery mapping", () => {
         provider: "openai",
         model: "gpt-5.6-luna",
         thinkLevel: "ultra",
-        agentHarnessRuntimeOverride: "openclaw",
+        agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
       }),
     );
     expect(getEmbeddedRunArg()).not.toHaveProperty("agentHarnessId");

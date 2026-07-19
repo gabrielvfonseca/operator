@@ -4,8 +4,11 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import * as path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/security-runtime";
-import { asRecord, readStringValue } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import {
+  asRecord,
+  readStringValue,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type CanvasSnapshotPayload = {
   format: CanvasSnapshotFormat;
@@ -44,7 +47,7 @@ export function parseCanvasSnapshotPayload(value: unknown): CanvasSnapshotPayloa
 }
 
 function resolveCliName(): string {
-  return "openclaw";
+  return "@gabrielvfonseca/operator";
 }
 
 function resolveCanvasSnapshotId(id: string): string {

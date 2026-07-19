@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveSessionModelIdentityRef, resolveSessionModelRef } from "./session-model-ref.js";
 
 function modelConfig(primary: string, models?: Record<string, object>): OperatorConfig {

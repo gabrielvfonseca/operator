@@ -37,7 +37,7 @@ let virtualModulesCase: {
 
 beforeAll(async () => {
   const { loadExtensions } = await import("./loader.js");
-  const dir = await mkdtemp(join(tmpdir(), "openclaw-extension-sdk-"));
+  const dir = await mkdtemp(join(tmpdir(), "operator-extension-sdk-"));
   tempDirs.push(dir);
   const extensionPath = join(dir, "extension.ts");
   await writeFile(extensionPath, "export default function extension() {}\n");
@@ -63,11 +63,11 @@ describe("loadExtensions in Bun binary mode", () => {
     expect(virtualModulesCase.virtualModuleIds).toEqual(
       expect.arrayContaining([
         "openclaw/plugin-sdk/agent-core",
-        "@operator/plugin-sdk/agent-core",
+        "@gabrielvfonseca/plugin-sdk/agent-core",
         "openclaw/plugin-sdk/llm",
-        "@operator/plugin-sdk/llm",
+        "@gabrielvfonseca/plugin-sdk/llm",
         "openclaw/plugin-sdk/agent-sessions",
-        "@operator/plugin-sdk/agent-sessions",
+        "@gabrielvfonseca/plugin-sdk/agent-sessions",
       ]),
     );
   });

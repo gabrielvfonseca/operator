@@ -11,7 +11,7 @@ private final class DashboardWindowContentView: NSView {
 /// The dashboard's empty unified toolbar exists only to grow the titlebar to
 /// 52pt so the traffic lights align with the hosted web chrome. `View > Hide
 /// Toolbar` (and ⌥⌘T) would collapse the titlebar while the web inset stays
-/// pinned at `--openclaw-native-titlebar-height`, resurrecting the traffic-light
+/// pinned at `--operator-native-titlebar-height`, resurrecting the traffic-light
 /// misalignment. Refusing the toggle keeps the two heights in lockstep.
 private final class DashboardWindow: NSWindow {
     override func toggleToolbarShown(_: Any?) {}
@@ -226,7 +226,7 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
         // The handler is the dashboard's ownership probe. Notify the live page so
         // its update target stays correct when connection mode or ownership changes.
         self.webView.evaluateJavaScript(
-            "window.dispatchEvent(new CustomEvent('openclaw:native-update-availability-changed'))")
+            "window.dispatchEvent(new CustomEvent('operator:native-update-availability-changed'))")
     }
 
     // MARK: - WKUIDelegate
@@ -316,7 +316,7 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
 
     private static func makeJavaScriptConfirmAlert(message: String, host: String?) -> NSAlert {
         let alert = NSAlert()
-        alert.messageText = "OpenClaw Dashboard"
+        alert.messageText = "Operator Dashboard"
         if let host, !host.isEmpty {
             alert.informativeText = "\(host) is asking:\n\n\(message)"
         } else {
@@ -603,7 +603,7 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
             // JS treated its posted message as handled; return this click to
             // the gateway updater after withdrawing the native bridge.
             self.webView.evaluateJavaScript(
-                "window.dispatchEvent(new CustomEvent('openclaw:native-update-declined'))")
+                "window.dispatchEvent(new CustomEvent('operator:native-update-declined'))")
             return
         }
         updater.checkForUpdates(nil)
@@ -712,9 +712,9 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
         let canGoForward = self.webView.canGoForward ? "true" : "false"
         self.webView.evaluateJavaScript(
             """
-            window.__OPENCLAW_NATIVE_HISTORY__ = {canGoBack:\(canGoBack),canGoForward:\(canGoForward)};
-            window.dispatchEvent(new CustomEvent('openclaw:native-history-state', \
-            {detail:window.__OPENCLAW_NATIVE_HISTORY__}));
+            window.__OPERATOR_NATIVE_HISTORY__ = {canGoBack:\(canGoBack),canGoForward:\(canGoForward)};
+            window.dispatchEvent(new CustomEvent('operator:native-history-state', \
+            {detail:window.__OPERATOR_NATIVE_HISTORY__}));
             """)
     }
 
@@ -769,12 +769,12 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
             topRightDragRegion.topAnchor.constraint(equalTo: container.topAnchor),
             topRightDragRegion.heightAnchor.constraint(equalToConstant: 6),
         ])
-        window.title = "OpenClaw"
+        window.title = "Operator"
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
         // An empty unified toolbar grows the transparent titlebar to 52pt so the
         // traffic lights sit vertically centered against the web titlebar row
-        // (--openclaw-native-titlebar-height); without it they hug the top edge.
+        // (--operator-native-titlebar-height); without it they hug the top edge.
         window.toolbar = NSToolbar(identifier: "DashboardWindowTitlebar")
         window.toolbarStyle = .unified
         window.titlebarSeparatorStyle = .none
@@ -799,36 +799,36 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
         // Deliberately no native fallback for pages that ignore this flag
         // (older gateway bundles, failure pages): they keep their own in-page
         // toggles plus back/forward gestures and the Cmd-[/] menu items.
-        let capabilityScript = "window.__OPENCLAW_NATIVE_WEB_CHROME__ = true;"
+        let capabilityScript = "window.__OPERATOR_NATIVE_WEB_CHROME__ = true;"
         userContentController.addUserScript(
             WKUserScript(source: capabilityScript, injectionTime: .atDocumentStart, forMainFrameOnly: true))
         // Narrow widths need no rules here: the Control UI's own
-        // `html.openclaw-native-macos` styles fold the titlebar clearance into
+        // `html.operator-native-macos` styles fold the titlebar clearance into
         // the drawer topbar row (layout.mobile.css); their body-qualified
         // !important selectors also outrank the rules older app builds inject.
         let css = """
-        html.openclaw-native-macos {
+        html.operator-native-macos {
           /* Matches the 52pt unified-toolbar titlebar so the web buttons and the
              traffic lights share one vertical center. */
-          --openclaw-native-titlebar-height: 52px;
+          --operator-native-titlebar-height: 52px;
         }
         @media (min-width: 700px) {
           /* Both desktop navigation surfaces must clear AppKit's window controls
              and drag regions or their first interactive row becomes unreachable. */
-          html.openclaw-native-macos .sidebar-shell,
-          html.openclaw-native-macos .settings-sidebar__header {
-            padding-top: max(14px, var(--openclaw-native-titlebar-height)) !important;
+          html.operator-native-macos .sidebar-shell,
+          html.operator-native-macos .settings-sidebar__header {
+            padding-top: max(14px, var(--operator-native-titlebar-height)) !important;
           }
         }
         """
         let script = """
         (() => {
           try {
-            if (document.getElementById("openclaw-native-macos-chrome")) return;
+            if (document.getElementById("operator-native-macos-chrome")) return;
             const style = document.createElement("style");
-            style.id = "openclaw-native-macos-chrome";
+            style.id = "operator-native-macos-chrome";
             style.textContent = \(Self.jsStringLiteral(css));
-            document.documentElement.classList.add("openclaw-native-macos", "openclaw-native-web-chrome");
+            document.documentElement.classList.add("operator-native-macos", "operator-native-web-chrome");
             document.head.appendChild(style);
           } catch {}
         })();
@@ -862,7 +862,7 @@ final class DashboardWindowController: NSWindowController, WKNavigationDelegate,
             const allowedPath = \(Self.jsStringLiteral(allowedPath));
             if (location.origin !== allowedOrigin) return;
             if (allowedPath !== "/" && !location.pathname.startsWith(allowedPath)) return;
-            Object.defineProperty(window, "__OPENCLAW_NATIVE_CONTROL_AUTH__", {
+            Object.defineProperty(window, "__OPERATOR_NATIVE_CONTROL_AUTH__", {
               value: \(json),
               configurable: true,
             });

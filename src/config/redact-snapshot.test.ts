@@ -1,6 +1,6 @@
 // Covers config snapshot redaction and restoration behavior.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import JSON5 from "json5";
 import { describe, expect, it } from "vitest";
 import { redactSnapshotTestHints as mainSchemaHints } from "../../test/helpers/config/redact-snapshot-test-hints.js";
@@ -13,7 +13,7 @@ import {
   type TestSnapshot,
 } from "./redact-snapshot.test-helpers.js";
 import { buildConfigSchema } from "./schema.js";
-import type { ConfigFileSnapshot, OperatorConfig } from "./types.openclaw.js";
+import type { ConfigFileSnapshot, OperatorConfig } from "./types.operator.js";
 
 function expectNestedPairValue(
   source: Record<string, Record<string, Record<string, unknown>>>,
@@ -63,7 +63,7 @@ describe("redactConfigSnapshot", () => {
             {
               id: "demo",
               rootDir: "/private/plugin/root",
-              manifestPath: "/private/plugin/root/openclaw.plugin.json",
+              manifestPath: "/private/plugin/root/operator.plugin.json",
             },
           ],
           diagnostics: [],
@@ -455,7 +455,7 @@ describe("redactConfigSnapshot", () => {
       enabled: true,
       exec: {
         source: "exec",
-        command: "/usr/local/bin/openclaw-install-policy",
+        command: "/usr/local/bin/operator-install-policy",
         env: {
           POLICY_TOKEN: "operator-policy-secret-token",
           AUDIT_ENDPOINT: "operator-policy-secret-endpoint",
@@ -471,7 +471,7 @@ describe("redactConfigSnapshot", () => {
             enabled: true,
             exec: {
               source: "exec",
-              command: "/usr/local/bin/openclaw-install-policy",
+              command: "/usr/local/bin/operator-install-policy",
               env: {
                 POLICY_TOKEN: "operator-policy-secret-token",
                 AUDIT_ENDPOINT: "operator-policy-secret-endpoint",

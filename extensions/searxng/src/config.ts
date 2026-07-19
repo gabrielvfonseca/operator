@@ -1,9 +1,9 @@
 // Searxng helper module supports config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeResolvedSecretInputString,
   normalizeSecretInput,
-} from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 
 type SearxngPluginConfig = {
   webSearch?: {

@@ -1,3 +1,16 @@
+import {
+  expectDeliveryTraceMatchesGolden,
+  runDeliveryTraceScenario,
+  type DeliveryTraceInStep,
+  type DeliveryTraceStep,
+  type TraceEvent,
+  type TraceNormalizer,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type {
+  ReplyDispatchKind,
+  ReplyPayload,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 // Slack delivery trace goldens: replayable wire-level lifecycle recordings.
 //
 // Drives the real dispatch wiring (dispatchPreparedSlackMessage → deliverSlackPayload
@@ -11,16 +24,6 @@
 // buffer_size (256 chars), and stop() can be the first network call for short replies.
 // Refresh goldens with OPERATOR_TRACE_UPDATE=1 (see delivery-trace harness docs).
 import { ChatStreamer } from "@slack/web-api/dist/chat-stream.js";
-import {
-  expectDeliveryTraceMatchesGolden,
-  runDeliveryTraceScenario,
-  type DeliveryTraceInStep,
-  type DeliveryTraceStep,
-  type TraceEvent,
-  type TraceNormalizer,
-} from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ReplyDispatchKind, ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
 import { afterAll, afterEach, describe, it, vi } from "vitest";
 import type { PreparedSlackMessage } from "./monitor/message-handler/types.js";
 
@@ -202,7 +205,7 @@ const BLOCKS_FINAL_PRESENTATION = {
       type: "buttons",
       buttons: [
         { label: "Approve release", action: { type: "callback", value: "approve-release" } },
-        { label: "Release notes", url: "https://docs.openclaw.ai/release" },
+        { label: "Release notes", url: "https://docs.operator.ai/release" },
       ],
     },
   ],

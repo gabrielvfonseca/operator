@@ -1,7 +1,10 @@
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type {
+  AnyAgentTool,
+  SandboxContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 // Copilot tests cover tool bridge plugin behavior.
 import type { Tool as SdkTool, ToolInvocation, ToolResultObject } from "@github/copilot-sdk";
-import { expectDefined } from "@operator/normalization-core";
-import type { AnyAgentTool, SandboxContext } from "openclaw/plugin-sdk/agent-harness-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createCopilotToolBridge } from "./tool-bridge.js";
 
@@ -211,25 +214,25 @@ describe("createCopilotToolBridge", () => {
 
   it("preserves direct-only Operator through the exact Copilot allowlist", async () => {
     const systemAgentTool = makeTool({
-      name: "openclaw",
+      name: "@gabrielvfonseca/operator",
       catalogMode: "direct-only",
     } as never);
 
     const result = await createCopilotToolBridge({
-      agentId: "openclaw",
+      agentId: "@gabrielvfonseca/operator",
       attemptParams: {
-        runId: "openclaw-turn-1",
-        sessionKey: "agent:openclaw:main",
-        toolsAllow: ["openclaw"],
+        runId: "operator-turn-1",
+        sessionKey: "agent:operator:main",
+        toolsAllow: ["@gabrielvfonseca/operator"],
       } as never,
       createOperatorCodingTools: async () => [systemAgentTool],
       modelId: "gpt-4.1",
       modelProvider: "github-copilot",
-      sessionId: "openclaw-session",
+      sessionId: "operator-session",
     });
 
     expect(result.sourceTools).toEqual([systemAgentTool]);
-    expect(result.sdkTools.map((tool) => tool.name)).toEqual(["openclaw"]);
+    expect(result.sdkTools.map((tool) => tool.name)).toEqual(["@gabrielvfonseca/operator"]);
   });
 
   it("compacts the Copilot tool surface behind tool_search controls when enabled", async () => {
@@ -1669,7 +1672,7 @@ describe("createCopilotToolBridge tool conversion", () => {
     type CatalogExecutor = (params: {
       tool: AnyAgentTool;
       toolName: string;
-      source: "openclaw";
+      source: "@gabrielvfonseca/operator";
       sourceName: string;
       toolCallId: string;
       parentToolCallId: string;
@@ -1712,7 +1715,7 @@ describe("createCopilotToolBridge tool conversion", () => {
       )({
         tool: target,
         toolName: "message",
-        source: "openclaw",
+        source: "@gabrielvfonseca/operator",
         sourceName: "core",
         toolCallId: "catalog-send-1",
         parentToolCallId: "tool-search-1",

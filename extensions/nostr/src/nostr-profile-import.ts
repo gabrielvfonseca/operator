@@ -5,8 +5,8 @@
  * Used to import existing profiles before editing.
  */
 
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { SimplePool, type Event } from "nostr-tools";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
 import type { NostrProfile } from "./config-schema.js";
 import { contentToProfile, type ProfileContent } from "./nostr-profile-core.js";
 import { validateUrlSafety } from "./nostr-profile-url-safety.js";

@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --import tsx
-// Telegram User Crabbox Proof script supports OpenClaw repository automation.
+// Telegram User Crabbox Proof script supports Operator repository automation.
 
 import {
   type ChildProcess,
@@ -12,7 +12,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { clampTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { clampTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { sleep } from "../lib/sleep.mjs";
 import { resolveWindowsTaskkillPath } from "../lib/windows-taskkill.mjs";
 import { createPnpmRunnerSpawnSpec } from "../pnpm-runner.mjs";
@@ -159,10 +159,10 @@ export const COMMAND_TIMEOUT_MS = 30 * 60 * 1000;
 const COMMAND_TIMEOUT_KILL_GRACE_MS = 5_000;
 const COMMAND_PROCESS_TREE_EXIT_POLL_MS = 25;
 export const REMOTE_SETUP_COMMAND_TIMEOUT_MS = 90 * 60 * 1000;
-const REMOTE_ROOT = "/tmp/openclaw-telegram-user-crabbox";
+const REMOTE_ROOT = "/tmp/operator-telegram-user-crabbox";
 const CREDENTIAL_SCRIPT = fileURLToPath(new URL("./telegram-user-credential.ts", import.meta.url));
 export function readTelegramUserProofLogTailBytes(env: NodeJS.ProcessEnv = process.env): number {
-  return readPositiveIntEnv("OPENCLAW_TELEGRAM_USER_PROOF_LOG_TAIL_BYTES", 256 * 1024, env);
+  return readPositiveIntEnv("OPERATOR_TELEGRAM_USER_PROOF_LOG_TAIL_BYTES", 256 * 1024, env);
 }
 
 const LOG_READY_TAIL_BYTES = readTelegramUserProofLogTailBytes();
@@ -183,7 +183,7 @@ const TELEGRAM_PROOF_CROP = {
 function usageText() {
   return [
     "Usage:",
-    "  node --import tsx scripts/e2e/telegram-user-crabbox-proof.ts [probe] [--text /status] [--expect OpenClaw]",
+    "  node --import tsx scripts/e2e/telegram-user-crabbox-proof.ts [probe] [--text /status] [--expect Operator]",
     "  node --import tsx scripts/e2e/telegram-user-crabbox-proof.ts start [--tdlib-url <url>]",
     "  node --import tsx scripts/e2e/telegram-user-crabbox-proof.ts send --session <session.json> --text <text>",
     "  node --import tsx scripts/e2e/telegram-user-crabbox-proof.ts run --session <session.json> -- <remote command>",
@@ -208,7 +208,7 @@ function usageText() {
     "  --pr <number>                 Pull request number for publish.",
     "  --record-fps <fps>             Desktop recording frames per second. Default: 24.",
     "  --record-seconds <seconds>    Desktop video duration. Default: 35.",
-    "  --repo <owner/name>           GitHub repo for publish. Default: openclaw/openclaw.",
+    "  --repo <owner/name>           GitHub repo for publish. Default: openclaw/operator.",
     "  --session <path>              Session file from start. Default: <output-dir>/session.json.",
     "  --summary <text>              Artifact publish summary.",
     "  --full-artifacts              Publish all session artifacts. Default publishes only the motion GIF.",
@@ -294,21 +294,21 @@ export function parseArgs(argvInput: string[]): Options {
   const opts: Options = {
     crabboxClass: "standard",
     command,
-    crabboxBin: trimToValue(process.env.OPENCLAW_TELEGRAM_USER_CRABBOX_BIN) ?? "crabbox",
+    crabboxBin: trimToValue(process.env.OPERATOR_TELEGRAM_USER_CRABBOX_BIN) ?? "crabbox",
     desktopChatTitle:
-      trimToValue(process.env.OPENCLAW_TELEGRAM_USER_DESKTOP_CHAT_TITLE) ?? "OpenClaw Testing",
+      trimToValue(process.env.OPERATOR_TELEGRAM_USER_DESKTOP_CHAT_TITLE) ?? "Operator Testing",
     dryRun: false,
-    expect: ["OpenClaw"],
+    expect: ["Operator"],
     gatewayPort: 19_879,
     idleTimeout: "60m",
     keepBox: false,
-    mockResponseText: "OPENCLAW_E2E_OK",
+    mockResponseText: "OPERATOR_E2E_OK",
     mockPort: 19_882,
     outputDir: path.join(DEFAULT_OUTPUT_ROOT, createTelegramProofRunId()),
     previewCropWidth: TELEGRAM_PROOF_CROP.cropWidth,
     previewFps: 24,
     previewWidth: 1920,
-    provider: process.env.OPENCLAW_TELEGRAM_USER_CRABBOX_PROVIDER?.trim() || "aws",
+    provider: process.env.OPERATOR_TELEGRAM_USER_CRABBOX_PROVIDER?.trim() || "aws",
     publishFullArtifacts: false,
     publishRepo: "openclaw/openclaw",
     recordFps: 24,
@@ -319,7 +319,7 @@ export function parseArgs(argvInput: string[]): Options {
     timeoutMs: 90_000,
     ttl: "120m",
     userDriverScript:
-      trimToValue(process.env.OPENCLAW_TELEGRAM_USER_DRIVER_SCRIPT) ?? DEFAULT_USER_DRIVER,
+      trimToValue(process.env.OPERATOR_TELEGRAM_USER_DRIVER_SCRIPT) ?? DEFAULT_USER_DRIVER,
   };
   const commandSeparator = argv.indexOf("--");
   if (command === "run" && commandSeparator >= 0) {
@@ -454,7 +454,7 @@ function repoRoot() {
     !fs.existsSync(path.join(cwd, "package.json")) ||
     !fs.existsSync(path.join(cwd, "scripts/e2e/mock-openai-server.mjs"))
   ) {
-    throw new Error("Run from the OpenClaw repo root.");
+    throw new Error("Run from the Operator repo root.");
   }
   return cwd;
 }
@@ -499,8 +499,8 @@ function childProcessBaseEnv() {
     "LANG",
     "LC_ALL",
     "NODE_OPTIONS",
-    "OPENCLAW_BUILD_PRIVATE_QA",
-    "OPENCLAW_ENABLE_PRIVATE_QA_CLI",
+    "OPERATOR_BUILD_PRIVATE_QA",
+    "OPERATOR_ENABLE_PRIVATE_QA_CLI",
     "PATH",
     "PNPM_HOME",
     "SHELL",
@@ -533,14 +533,14 @@ function mockServerEnv(params: { mockPort: number; mockResponseText: string; req
 function gatewayEnv(params: { configPath: string; stateDir: string; sutToken: string }) {
   return {
     ...childProcessBaseEnv(),
-    OPENAI_API_KEY: "sk-openclaw-e2e-mock",
-    OPENCLAW_CONFIG_PATH: params.configPath,
-    OPENCLAW_STATE_DIR: params.stateDir,
+    OPENAI_API_KEY: "sk-operator-e2e-mock",
+    OPERATOR_CONFIG_PATH: params.configPath,
+    OPERATOR_STATE_DIR: params.stateDir,
     TELEGRAM_BOT_TOKEN: params.sutToken,
   };
 }
 
-export function createOpenClawGatewaySpawnSpec(params: {
+export function createOperatorGatewaySpawnSpec(params: {
   env: NodeJS.ProcessEnv;
   gatewayPort: number;
   repoRoot: string;
@@ -556,7 +556,7 @@ export function createOpenClawGatewaySpawnSpec(params: {
     nodeExecPath: params.nodeExecPath,
     npmExecPath: params.npmExecPath,
     platform: params.platform,
-    pnpmArgs: ["openclaw", "gateway", "--port", String(params.gatewayPort)],
+    pnpmArgs: ["@gabrielvfonseca/operator", "gateway", "--port", String(params.gatewayPort)],
   });
   return {
     args: spec.args,
@@ -1111,12 +1111,12 @@ function writeSutConfig(params: {
   outputDir: string;
   testerId: string;
 }) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-tg-crabbox-sut-"));
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-tg-crabbox-sut-"));
   const stateDir = path.join(tempRoot, "state");
   const workspace = path.join(tempRoot, "workspace");
   fs.mkdirSync(stateDir, { recursive: true });
   fs.mkdirSync(workspace, { recursive: true });
-  const configPath = path.join(tempRoot, "openclaw.json");
+  const configPath = path.join(tempRoot, "operator.json");
   const config = {
     agents: {
       defaults: {
@@ -1188,7 +1188,7 @@ function writeSutConfig(params: {
 }
 
 type StartLocalSutDeps = {
-  createGatewaySpawnSpec?: typeof createOpenClawGatewaySpawnSpec;
+  createGatewaySpawnSpec?: typeof createOperatorGatewaySpawnSpec;
   drainUpdates?: typeof drainSutUpdates;
   spawnLoggedCommand?: typeof spawnLogged;
   waitForOutputReady?: typeof waitForOutput;
@@ -1212,7 +1212,7 @@ export async function startLocalSut(
   const writeConfig = deps.writeConfig ?? writeSutConfig;
   const spawnLoggedCommand = deps.spawnLoggedCommand ?? spawnLogged;
   const waitForOutputReady = deps.waitForOutputReady ?? waitForOutput;
-  const createGatewaySpawnSpec = deps.createGatewaySpawnSpec ?? createOpenClawGatewaySpawnSpec;
+  const createGatewaySpawnSpec = deps.createGatewaySpawnSpec ?? createOperatorGatewaySpawnSpec;
   let gateway: ReturnType<typeof spawnLogged> | undefined;
   let mock: ReturnType<typeof spawnLogged> | undefined;
   try {
@@ -1338,7 +1338,7 @@ async function startLocalSutDaemon(params: {
     await waitForLog(mockLog, /mock-openai listening/u, "mock-openai", 10_000);
 
     const gatewayEnvVars = gatewayEnv({ ...config, sutToken: params.sutToken });
-    const gatewaySpec = createOpenClawGatewaySpawnSpec({
+    const gatewaySpec = createOperatorGatewaySpawnSpec({
       env: gatewayEnvVars,
       gatewayPort: params.gatewayPort,
       repoRoot: params.repoRoot,
@@ -1621,14 +1621,14 @@ set -euo pipefail
 root=${REMOTE_ROOT}
 tdlib_sha256=${tdlibSha256}
 tdlib_url=${tdlibUrl}
-setup_step_timeout_kill_after="\${OPENCLAW_TELEGRAM_USER_SETUP_KILL_AFTER_SECONDS:-30}s"
-apt_timeout="\${OPENCLAW_TELEGRAM_USER_APT_TIMEOUT_SECONDS:-900}s"
-download_timeout="\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_TIMEOUT_SECONDS:-600}"
-download_connect_timeout="\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}"
-download_retries="\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_RETRIES:-3}"
-download_retry_delay="\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_RETRY_DELAY_SECONDS:-5}"
-tdlib_clone_timeout="\${OPENCLAW_TELEGRAM_USER_TDLIB_CLONE_TIMEOUT_SECONDS:-600}s"
-tdlib_build_timeout="\${OPENCLAW_TELEGRAM_USER_TDLIB_BUILD_TIMEOUT_SECONDS:-1800}s"
+setup_step_timeout_kill_after="\${OPERATOR_TELEGRAM_USER_SETUP_KILL_AFTER_SECONDS:-30}s"
+apt_timeout="\${OPERATOR_TELEGRAM_USER_APT_TIMEOUT_SECONDS:-900}s"
+download_timeout="\${OPERATOR_TELEGRAM_USER_DOWNLOAD_TIMEOUT_SECONDS:-600}"
+download_connect_timeout="\${OPERATOR_TELEGRAM_USER_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}"
+download_retries="\${OPERATOR_TELEGRAM_USER_DOWNLOAD_RETRIES:-3}"
+download_retry_delay="\${OPERATOR_TELEGRAM_USER_DOWNLOAD_RETRY_DELAY_SECONDS:-5}"
+tdlib_clone_timeout="\${OPERATOR_TELEGRAM_USER_TDLIB_CLONE_TIMEOUT_SECONDS:-600}s"
+tdlib_build_timeout="\${OPERATOR_TELEGRAM_USER_TDLIB_BUILD_TIMEOUT_SECONDS:-1800}s"
 run_setup_step() {
   local label="$1"
   local timeout_value="$2"
@@ -1651,7 +1651,7 @@ download_file() {
 mkdir -p "$root"
 tar -xzf "$root/state.tgz" -C "$root"
 run_setup_step "apt-get update" "$apt_timeout" sudo apt-get update -y
-run_setup_step "apt-get install" "$apt_timeout" sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y curl git cmake g++ make zlib1g-dev libssl-dev python3 ffmpeg scrot xz-utils tar wmctrl xdotool x11-utils zbar-tools libopengl0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxkbcommon-x11-0 >/tmp/openclaw-telegram-apt.log
+run_setup_step "apt-get install" "$apt_timeout" sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y curl git cmake g++ make zlib1g-dev libssl-dev python3 ffmpeg scrot xz-utils tar wmctrl xdotool x11-utils zbar-tools libopengl0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxkbcommon-x11-0 >/tmp/operator-telegram-apt.log
 if ! command -v python3 >/dev/null 2>&1; then
   echo "python3 is required" >&2
   exit 127
@@ -2189,8 +2189,8 @@ async function startSession(root: string, opts: Options, outputDir: string) {
 
   const convexEnvFile = expandHome(opts.envFile ?? DEFAULT_CONVEX_ENV_FILE);
   const hasConvexEnv =
-    trimToValue(process.env.OPENCLAW_QA_CONVEX_SITE_URL) &&
-    trimToValue(process.env.OPENCLAW_QA_CONVEX_SECRET_CI);
+    trimToValue(process.env.OPERATOR_QA_CONVEX_SITE_URL) &&
+    trimToValue(process.env.OPERATOR_QA_CONVEX_SECRET_CI);
   if (!hasConvexEnv && !fs.existsSync(convexEnvFile)) {
     throw new Error(`Missing Convex env file: ${opts.envFile ?? DEFAULT_CONVEX_ENV_FILE}`);
   }
@@ -2279,10 +2279,10 @@ async function startSession(root: string, opts: Options, outputDir: string) {
       },
       webvnc: `${opts.crabboxBin} webvnc --provider ${opts.provider} --target ${opts.target} --id ${leaseId} --open`,
       commands: {
-        send: `openclaw-telegram-user-crabbox-proof send --session ${path.relative(root, pathname)} --text '/status'`,
-        view: `openclaw-telegram-user-crabbox-proof view --session ${path.relative(root, pathname)} --message-id <message-id>`,
-        run: `openclaw-telegram-user-crabbox-proof run --session ${path.relative(root, pathname)} -- bash -lc 'source ${REMOTE_ROOT}/env.sh && python3 ${REMOTE_ROOT}/user-driver.py transcript --limit 20 --json'`,
-        finish: `openclaw-telegram-user-crabbox-proof finish --session ${path.relative(root, pathname)} --preview-crop telegram-window`,
+        send: `operator-telegram-user-crabbox-proof send --session ${path.relative(root, pathname)} --text '/status'`,
+        view: `operator-telegram-user-crabbox-proof view --session ${path.relative(root, pathname)} --message-id <message-id>`,
+        run: `operator-telegram-user-crabbox-proof run --session ${path.relative(root, pathname)} -- bash -lc 'source ${REMOTE_ROOT}/env.sh && python3 ${REMOTE_ROOT}/user-driver.py transcript --limit 20 --json'`,
+        finish: `operator-telegram-user-crabbox-proof finish --session ${path.relative(root, pathname)} --preview-crop telegram-window`,
       },
     };
   } catch (error) {
@@ -2614,7 +2614,7 @@ async function publishSessionArtifacts(root: string, opts: Options, outputDir: s
           ? "Telegram real-user Crabbox session artifacts"
           : "Telegram real-user Crabbox session motion GIF"),
       "--template",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       ...(opts.dryRun ? ["--dry-run"] : []),
     ],
     cwd: root,
@@ -2671,7 +2671,7 @@ async function main() {
     return;
   }
 
-  const localRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-crabbox-"));
+  const localRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-telegram-crabbox-"));
   const summary: JsonObject = {
     artifacts: {},
     crabbox: { provider: opts.provider, target: opts.target },
@@ -2688,8 +2688,8 @@ async function main() {
   try {
     const convexEnvFile = expandHome(opts.envFile ?? DEFAULT_CONVEX_ENV_FILE);
     const hasConvexEnv =
-      trimToValue(process.env.OPENCLAW_QA_CONVEX_SITE_URL) &&
-      trimToValue(process.env.OPENCLAW_QA_CONVEX_SECRET_CI);
+      trimToValue(process.env.OPERATOR_QA_CONVEX_SITE_URL) &&
+      trimToValue(process.env.OPERATOR_QA_CONVEX_SECRET_CI);
     if (!hasConvexEnv && !fs.existsSync(convexEnvFile)) {
       throw new Error(`Missing Convex env file: ${opts.envFile ?? DEFAULT_CONVEX_ENV_FILE}`);
     }

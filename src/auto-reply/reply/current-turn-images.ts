@@ -1,6 +1,6 @@
 // Tracks image attachments that belong to the current reply turn.
-import { mimeTypeFromFilePath } from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { mimeTypeFromFilePath } from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";
 import { formatErrorMessage } from "../../infra/errors.js";

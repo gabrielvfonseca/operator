@@ -30,7 +30,7 @@ and what the automatic resume looks like.
 
 ## Graceful restarts drain first
 
-A requested restart (`openclaw gateway restart`, a config change that requires
+A requested restart (`operator gateway restart`, a config change that requires
 a restart, or a gateway update) does not kill in-flight work immediately. The
 gateway stops accepting new work, then waits for active agent turns and
 background tasks to finish, up to a drain budget (5 minutes by default). Most
@@ -107,7 +107,7 @@ approval), the session is not blindly re-run; the agent instead posts a short
 notice asking the user to resend the last request. For WebChat, that notice is
 written directly to the session history so it remains visible after reconnect.
 
-OpenClaw can also reconstruct interrupted read-only [Code Mode](/reference/code-mode)
+Operator can also reconstruct interrupted read-only [Code Mode](/reference/code-mode)
 work. Code Mode marks these runs as restart-safe and rejects side-effecting
 catalog tools or plugin namespaces before they execute. If a restart lands on
 the `wait` control, the new gateway reconstructs the turn from its transcript
@@ -150,8 +150,8 @@ agent picks up exactly where it left off, on the same channel and thread.
   suppresses auto-start side services on the next boot, so a crashing gateway
   does not amplify itself. It recovers once the unclean-boot window drains.
 - **Metrics:** recovery activity is exported via
-  [Prometheus](/gateway/prometheus) as `openclaw_session_recovery_total` and
-  `openclaw_session_recovery_age_seconds`.
+  [Prometheus](/gateway/prometheus) as `operator_session_recovery_total` and
+  `operator_session_recovery_age_seconds`.
 - **Logs:** recovery decisions are logged under the
   `main-session-restart-recovery` and `subagent-interrupted-resume`
   subsystems.

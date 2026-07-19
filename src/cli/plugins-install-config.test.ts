@@ -2,12 +2,15 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { bundledPluginRootAt, repoInstallSpec } from "openclaw/plugin-sdk/test-fixtures";
+import {
+  bundledPluginRootAt,
+  repoInstallSpec,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import { hashConfigIncludeRaw } from "../config/includes.js";
 import type { ConfigWriteOptions } from "../config/io.js";
-import type { ConfigFileSnapshot } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot } from "../config/types.operator.js";
 import {
   resolvePluginInstallRequestContext,
   type PluginInstallRequestContext,
@@ -90,8 +93,8 @@ function makeSnapshot(overrides: Partial<ConfigFileSnapshot> = {}): ConfigFileSn
 
 describe("loadConfigForInstall", () => {
   const discordNpmRequest = {
-    rawSpec: "@operator/discord",
-    normalizedSpec: "@operator/discord",
+    rawSpec: "@gabrielvfonseca/discord",
+    normalizedSpec: "@gabrielvfonseca/discord",
     installKind: "plugin",
     bundledPluginId: "discord",
     allowInvalidConfigRecovery: true,
@@ -193,7 +196,7 @@ describe("loadConfigForInstall", () => {
     );
 
     const request = resolvePluginInstallRequestContext({
-      rawSpec: "npm:@operator/discord@2026.5.22",
+      rawSpec: "npm:@gabrielvfonseca/discord@2026.5.22",
     });
     if (!request.ok) {
       throw new Error(request.error);
@@ -211,7 +214,7 @@ describe("loadConfigForInstall", () => {
     });
   });
 
-  it.each(["file:@operator/discord", "FILE:@operator/discord"])(
+  it.each(["file:@gabrielvfonseca/discord", "FILE:@gabrielvfonseca/discord"])(
     "does not treat %s as an official plugin recovery request",
     (rawSpec) => {
       const request = resolvePluginInstallRequestContext({ rawSpec });
@@ -256,7 +259,7 @@ describe("loadConfigForInstall", () => {
     );
 
     const request = resolvePluginInstallRequestContext({
-      rawSpec: "@operator/discord@2026.5.22",
+      rawSpec: "@gabrielvfonseca/discord@2026.5.22",
     });
     if (!request.ok) {
       throw new Error(request.error);
@@ -440,7 +443,7 @@ describe("loadConfigForInstall", () => {
     );
 
     const request = resolvePluginInstallRequestContext({
-      rawSpec: "npm:@operator/discord",
+      rawSpec: "npm:@gabrielvfonseca/discord",
     });
     if (!request.ok) {
       throw new Error(request.error);
@@ -475,7 +478,7 @@ describe("loadConfigForInstall", () => {
     );
 
     const request = resolvePluginInstallRequestContext({
-      rawSpec: "@operator/brave-plugin",
+      rawSpec: "@gabrielvfonseca/brave-plugin",
     });
     if (!request.ok) {
       throw new Error(request.error);
@@ -516,7 +519,7 @@ describe("loadConfigForInstall", () => {
   });
 
   it("allows recovery through an exact single-file top-level plugins include", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-include-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-include-"));
     const configPath = path.join(tempRoot, "config.json5");
     const pluginsPath = path.join(tempRoot, "plugins.json5");
     const pluginsRaw = `${JSON.stringify({ entries: {} }, null, 2)}\n`;
@@ -685,7 +688,7 @@ describe("loadConfigForInstall", () => {
   });
 
   it("blocks config mutations when plugins and hooks share one canonical include target", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-shared-include-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-shared-include-"));
     const configPath = path.join(tempRoot, "config.json5");
     const sharedPath = path.join(tempRoot, "shared.json5");
     const sharedRaw = "{}\n";
@@ -731,7 +734,7 @@ describe("loadConfigForInstall", () => {
   });
 
   it("blocks both mutations when an external include aliases the other section target", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-aliased-include-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-aliased-include-"));
     const configPath = path.join(tempRoot, "config.json5");
     const sharedPath = path.join(tempRoot, "shared.json5");
     const externalHooksPath = path.join(
@@ -783,7 +786,7 @@ describe("loadConfigForInstall", () => {
   });
 
   it("blocks nested plugins includes before plugin installation", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-nested-include-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-plugin-nested-include-"));
     const configPath = path.join(tempRoot, "config.json5");
     const pluginsPath = path.join(tempRoot, "plugins.json5");
     const pluginsRaw = `${JSON.stringify({ entries: { $include: "./entries.json5" } }, null, 2)}\n`;

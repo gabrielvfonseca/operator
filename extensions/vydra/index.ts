@@ -1,6 +1,6 @@
 // Vydra plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
 import { buildVydraImageGenerationProvider } from "./image-generation-provider.js";
 import { applyVydraConfig, VYDRA_DEFAULT_IMAGE_MODEL_REF } from "./onboard.js";
 import { buildVydraSpeechProvider } from "./speech-provider.js";

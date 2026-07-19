@@ -1,15 +1,15 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import OperatorKit
 import UIKit
 
-typealias OpenClawCameraSnapResult = (format: String, base64: String, width: Int, height: Int)
-typealias OpenClawCameraClipResult = (format: String, base64: String, durationMs: Int, hasAudio: Bool)
+typealias OperatorCameraSnapResult = (format: String, base64: String, width: Int, height: Int)
+typealias OperatorCameraClipResult = (format: String, base64: String, durationMs: Int, hasAudio: Bool)
 
 protocol CameraServicing: Sendable {
     func listDevices() async -> [CameraController.CameraDeviceInfo]
-    func snap(params: OpenClawCameraSnapParams) async throws -> OpenClawCameraSnapResult
-    func clip(params: OpenClawCameraClipParams) async throws -> OpenClawCameraClipResult
+    func snap(params: OperatorCameraSnapParams) async throws -> OperatorCameraSnapResult
+    func clip(params: OperatorCameraClipParams) async throws -> OperatorCameraClipResult
 }
 
 protocol ScreenRecordingServicing: Sendable {
@@ -25,10 +25,10 @@ protocol ScreenRecordingServicing: Sendable {
 protocol LocationServicing: Sendable {
     func authorizationStatus() -> CLAuthorizationStatus
     func accuracyAuthorization() -> CLAccuracyAuthorization
-    func ensureAuthorization(mode: OpenClawLocationMode) async -> CLAuthorizationStatus
+    func ensureAuthorization(mode: OperatorLocationMode) async -> CLAuthorizationStatus
     func currentLocation(
-        params: OpenClawLocationGetParams,
-        desiredAccuracy: OpenClawLocationAccuracy,
+        params: OperatorLocationGetParams,
+        desiredAccuracy: OperatorLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     func setBackgroundLocationUpdatesEnabled(_ enabled: Bool)
@@ -40,32 +40,32 @@ protocol LocationServicing: Sendable {
 
 @MainActor
 protocol DeviceStatusServicing: Sendable {
-    func status() async throws -> OpenClawDeviceStatusPayload
-    func info() -> OpenClawDeviceInfoPayload
+    func status() async throws -> OperatorDeviceStatusPayload
+    func info() -> OperatorDeviceInfoPayload
 }
 
 protocol PhotosServicing: Sendable {
-    func latest(params: OpenClawPhotosLatestParams) async throws -> OpenClawPhotosLatestPayload
+    func latest(params: OperatorPhotosLatestParams) async throws -> OperatorPhotosLatestPayload
 }
 
 protocol ContactsServicing: Sendable {
-    func search(params: OpenClawContactsSearchParams) async throws -> OpenClawContactsSearchPayload
-    func add(params: OpenClawContactsAddParams) async throws -> OpenClawContactsAddPayload
+    func search(params: OperatorContactsSearchParams) async throws -> OperatorContactsSearchPayload
+    func add(params: OperatorContactsAddParams) async throws -> OperatorContactsAddPayload
 }
 
 protocol CalendarServicing: Sendable {
-    func events(params: OpenClawCalendarEventsParams) async throws -> OpenClawCalendarEventsPayload
-    func add(params: OpenClawCalendarAddParams) async throws -> OpenClawCalendarAddPayload
+    func events(params: OperatorCalendarEventsParams) async throws -> OperatorCalendarEventsPayload
+    func add(params: OperatorCalendarAddParams) async throws -> OperatorCalendarAddPayload
 }
 
 protocol RemindersServicing: Sendable {
-    func list(params: OpenClawRemindersListParams) async throws -> OpenClawRemindersListPayload
-    func add(params: OpenClawRemindersAddParams) async throws -> OpenClawRemindersAddPayload
+    func list(params: OperatorRemindersListParams) async throws -> OperatorRemindersListPayload
+    func add(params: OperatorRemindersAddParams) async throws -> OperatorRemindersAddPayload
 }
 
 protocol MotionServicing: Sendable {
-    func activities(params: OpenClawMotionActivityParams) async throws -> OpenClawMotionActivityPayload
-    func pedometer(params: OpenClawPedometerParams) async throws -> OpenClawPedometerPayload
+    func activities(params: OperatorMotionActivityParams) async throws -> OperatorMotionActivityPayload
+    func pedometer(params: OperatorPedometerParams) async throws -> OperatorPedometerPayload
 }
 
 struct WatchMessagingStatus: Equatable {
@@ -97,7 +97,7 @@ struct WatchExecApprovalResolveEvent: Codable, Equatable {
     var replyId: String
     var approvalId: String
     var gatewayStableID: String?
-    var decision: OpenClawWatchExecApprovalDecision
+    var decision: OperatorWatchExecApprovalDecision
     var sentAtMs: Int64?
     var transport: String
 }
@@ -137,7 +137,7 @@ struct WatchAppSnapshotRequestEvent: Equatable {
 
 struct WatchAppCommandEvent: Codable, Equatable {
     var commandId: String
-    var command: OpenClawWatchAppCommand
+    var command: OperatorWatchAppCommand
     var sessionKey: String?
     var gatewayStableID: String?
     var text: String?
@@ -164,20 +164,20 @@ protocol WatchMessagingServicing: AnyObject, Sendable {
     func sendDirectNodeSetup(setupCode: String) async throws -> WatchNotificationSendResult
     func sendNotification(
         id: String,
-        params: OpenClawWatchNotifyParams,
+        params: OperatorWatchNotifyParams,
         gatewayStableID: String?) async throws -> WatchNotificationSendResult
     func sendExecApprovalPrompt(
-        _ message: OpenClawWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalPromptMessage) async throws -> WatchNotificationSendResult
     func sendExecApprovalResolved(
-        _ message: OpenClawWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalResolvedMessage) async throws -> WatchNotificationSendResult
     func sendExecApprovalExpired(
-        _ message: OpenClawWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalExpiredMessage) async throws -> WatchNotificationSendResult
     func syncExecApprovalSnapshot(
-        _ message: OpenClawWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchExecApprovalSnapshotMessage) async throws -> WatchNotificationSendResult
     func syncAppSnapshot(
-        _ message: OpenClawWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchAppSnapshotMessage) async throws -> WatchNotificationSendResult
     func sendChatCompletion(
-        _ message: OpenClawWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
+        _ message: OperatorWatchChatCompletionMessage) async throws -> WatchNotificationSendResult
 }
 
 extension CameraController: CameraServicing {}

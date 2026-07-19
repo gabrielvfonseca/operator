@@ -1,5 +1,5 @@
 /** Prepares queued follow-up payloads for source-channel delivery. */
-import { hasOutboundReplyContent } from "operator/plugin-sdk/reply-payload";
+import { hasOutboundReplyContent } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import type { MessagingToolSend } from "../../agents/embedded-agent-messaging.types.js";
 import type { ReplyToMode } from "../../config/types.base.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

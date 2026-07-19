@@ -5,7 +5,7 @@ import { setTimeout as sleep } from "node:timers/promises";
  * Dispatches normalized actions to either Playwright-backed Operator browser
  * control or Chrome MCP existing-session operations with navigation guards.
  */
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import { formatErrorMessage } from "../../infra/errors.js";
 import {
   ChromeMcpDocumentUnavailableError,

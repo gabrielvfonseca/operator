@@ -1,18 +1,18 @@
 // Feishu plugin module implements client behavior.
 import type { Agent } from "node:https";
 import { createRequire } from "node:module";
-import * as Lark from "@larksuiteoapi/node-sdk";
 import {
   readPluginPackageVersion,
   resolveAmbientNodeProxyAgent,
-} from "openclaw/plugin-sdk/extension-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import * as Lark from "@larksuiteoapi/node-sdk";
 import { resolveConfiguredHttpTimeoutMs } from "./client-timeout.js";
 import type { FeishuConfig, FeishuDomain, ResolvedFeishuAccount } from "./types.js";
 
 const require = createRequire(import.meta.url);
 const pluginVersion = readPluginPackageVersion({ require });
 
-const FEISHU_USER_AGENT = `openclaw-feishu-builtin/${pluginVersion}/${process.platform}`;
+const FEISHU_USER_AGENT = `operator-feishu-builtin/${pluginVersion}/${process.platform}`;
 
 const FEISHU_WS_CONFIG = {
   pingTimeout: 3,

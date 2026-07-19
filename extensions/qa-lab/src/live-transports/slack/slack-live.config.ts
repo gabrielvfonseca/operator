@@ -1,7 +1,7 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // QA Lab Slack credentials, instrumentation, and channel config.
 import type { WebClient } from "@slack/web-api";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
 import {
   type SlackQaRuntimeEnv,
   type SlackQaConfigOverrides,

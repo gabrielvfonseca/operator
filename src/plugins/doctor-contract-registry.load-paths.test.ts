@@ -18,7 +18,7 @@ const repoRoot = path.resolve(import.meta.dirname, "../..");
 
 function makeTempDir(): string {
   const dir = fs.mkdtempSync(
-    path.join(fs.realpathSync(os.tmpdir()), "openclaw-doctor-contract-load-paths-"),
+    path.join(fs.realpathSync(os.tmpdir()), "operator-doctor-contract-load-paths-"),
   );
   tempDirs.push(dir);
   return dir;
@@ -30,7 +30,7 @@ function makeHermeticDoctorEnv(stateDir: string): NodeJS.ProcessEnv {
     HOME: stateDir,
     OPERATOR_HOME: stateDir,
     OPERATOR_STATE_DIR: stateDir,
-    OPERATOR_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
+    OPERATOR_CONFIG_PATH: path.join(stateDir, "operator.json"),
     OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
   };
 }
@@ -38,7 +38,7 @@ function makeHermeticDoctorEnv(stateDir: string): NodeJS.ProcessEnv {
 function writeDoctorPlugin(pluginRoot: string, pluginId: string): void {
   fs.mkdirSync(pluginRoot, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginRoot, "openclaw.plugin.json"),
+    path.join(pluginRoot, "operator.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,
@@ -100,7 +100,7 @@ module.exports = {
 function writeDistDoctorPlugin(pluginRoot: string, pluginId: string): void {
   fs.mkdirSync(path.join(pluginRoot, "dist"), { recursive: true });
   fs.writeFileSync(
-    path.join(pluginRoot, "openclaw.plugin.json"),
+    path.join(pluginRoot, "operator.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,
@@ -117,10 +117,10 @@ function writeDistDoctorPlugin(pluginRoot: string, pluginId: string): void {
     path.join(pluginRoot, "package.json"),
     JSON.stringify(
       {
-        name: `@operator/${pluginId}`,
+        name: `@gabrielvfonseca/${pluginId}`,
         version: "0.0.0-test",
         type: "module",
-        openclaw: {
+        operator: {
           extensions: ["./dist/index.js"],
         },
       },
@@ -149,7 +149,7 @@ module.exports = {
 function writeDoctorSessionOwnerPlugin(pluginRoot: string, pluginId: string): void {
   fs.mkdirSync(pluginRoot, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginRoot, "openclaw.plugin.json"),
+    path.join(pluginRoot, "operator.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,

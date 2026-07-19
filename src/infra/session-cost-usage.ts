@@ -2,10 +2,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
-import { expectDefined } from "@operator/normalization-core";
-import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { NormalizedUsage, UsageLike } from "../agents/usage.js";
 import { normalizeUsage } from "../agents/usage.js";
 import { stripInboundMetadata } from "../auto-reply/reply/strip-inbound-meta.js";
@@ -41,7 +41,7 @@ import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { stripEnvelope, stripMessageIdHints } from "../shared/chat-envelope.js";
-import { resolveOperatorAgentSqlitePath } from "../state/operator-agent-db.js";
+import { resolveOperatorAgentSqlitePath } from "../state/openclaw-agent-db.js";
 import { runTasksWithConcurrency } from "../utils/run-with-concurrency.js";
 import { countToolResults, extractToolCallNames } from "../utils/transcript-tools.js";
 import {

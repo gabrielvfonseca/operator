@@ -72,7 +72,10 @@ function normalizeOperatorLoopbackUrl(value: string): string {
 function canonicalizeSystemAgentTurnStateForResume(
   server: BundleMcpConfig["mcpServers"][string],
 ): BundleMcpConfig["mcpServers"][string] {
-  if (!isRecord(server.env) || server.env[OPERATOR_TOOLS_MCP_TOOLS_ENV] !== "operator") {
+  if (
+    !isRecord(server.env) ||
+    server.env[OPERATOR_TOOLS_MCP_TOOLS_ENV] !== "@gabrielvfonseca/operator"
+  ) {
     return server;
   }
   // The host reissues approval authority through a fresh stdio server each turn.
@@ -93,7 +96,7 @@ function canonicalizeBundleMcpConfigForResume(config: BundleMcpConfig): BundleMc
   const canonicalServers = Object.fromEntries(
     Object.entries(config.mcpServers).map(([name, server]) => {
       const canonicalServer = canonicalizeSystemAgentTurnStateForResume(server);
-      if (name !== "operator" || typeof canonicalServer.url !== "string") {
+      if (name !== "@gabrielvfonseca/operator" || typeof canonicalServer.url !== "string") {
         return [name, sortJsonValue(canonicalServer)];
       }
       return [
@@ -213,7 +216,7 @@ export async function prepareCliBundleMcpConfig(params: {
   /**
    * Serve exactly these servers, skipping user/plugin/additional merges.
    * Ring-zero Operator runs use this so the CLI harness sees only the
-   * operator MCP server instead of the normal operator tool surface.
+   * openclaw MCP server instead of the normal openclaw tool surface.
    */
   exclusiveConfig?: BundleMcpConfig;
   env?: Record<string, string>;

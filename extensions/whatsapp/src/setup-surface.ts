@@ -1,11 +1,11 @@
 // Whatsapp plugin module implements setup surface behavior.
-import type { ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
+import type { ChannelSetupWizard } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import {
   DEFAULT_ACCOUNT_ID,
   setSetupChannelEnabled,
   createSetupTranslator,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { listWhatsAppAccountIds, resolveWhatsAppAuthDir } from "./accounts.js";
 import { formatWhatsAppWebAuthStatusState, readWebAuthState } from "./auth-store.js";
 

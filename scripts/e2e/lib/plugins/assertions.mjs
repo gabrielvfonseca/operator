@@ -12,7 +12,7 @@ import {
 import { readTextFileTail } from "../text-file-utils.mjs";
 
 const command = process.argv[2];
-const scratchRoot = process.env.OPENCLAW_PLUGINS_TMP_DIR || os.tmpdir();
+const scratchRoot = process.env.OPERATOR_PLUGINS_TMP_DIR || os.tmpdir();
 const readJson = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
 const scratchFile = (name) => path.join(scratchRoot, name);
 const ERROR_DETAIL_TAIL_BYTES = 16 * 1024;
@@ -21,10 +21,10 @@ const LOG_SCAN_CHUNK_BYTES = 64 * 1024;
 function readClawHubPreflightLimits() {
   return {
     bodyMaxBytes: readPositiveIntEnv(
-      "OPENCLAW_PLUGINS_E2E_CLAWHUB_PREFLIGHT_BODY_MAX_BYTES",
+      "OPERATOR_PLUGINS_E2E_CLAWHUB_PREFLIGHT_BODY_MAX_BYTES",
       1024 * 1024,
     ),
-    timeoutMs: readPositiveIntEnv("OPENCLAW_PLUGINS_E2E_CLAWHUB_PREFLIGHT_TIMEOUT_MS", 30_000),
+    timeoutMs: readPositiveIntEnv("OPERATOR_PLUGINS_E2E_CLAWHUB_PREFLIGHT_TIMEOUT_MS", 30_000),
   };
 }
 
@@ -113,8 +113,8 @@ function fileContainsText(file, needle) {
 
 function getInstallRecords() {
   const configPath = openClawConfigPath();
-  const config = readOpenClawConfig();
-  const allowLegacyCompat = process.env.OPENCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT === "1";
+  const config = readOperatorConfig();
+  const allowLegacyCompat = process.env.OPERATOR_PACKAGE_ACCEPTANCE_LEGACY_COMPAT === "1";
   const index = readPluginInstallIndex({
     configPath,
     fallbackRecords: allowLegacyCompat ? (config.plugins?.installs ?? {}) : {},
@@ -126,21 +126,21 @@ function getInstallRecords() {
 }
 
 function openClawConfigPath() {
-  return path.join(process.env.HOME, ".openclaw", "openclaw.json");
+  return path.join(process.env.HOME, ".operator", "operator.json");
 }
 
-function readOpenClawConfig() {
+function readOperatorConfig() {
   const configPath = openClawConfigPath();
-  return fs.existsSync(configPath) ? readRequiredOpenClawConfig() : {};
+  return fs.existsSync(configPath) ? readRequiredOperatorConfig() : {};
 }
 
-function readRequiredOpenClawConfig() {
+function readRequiredOperatorConfig() {
   const configPath = openClawConfigPath();
   try {
     return readJson(configPath);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`failed to read OpenClaw config ${configPath}: ${message}`, { cause: error });
+    throw new Error(`failed to read Operator config ${configPath}: ${message}`, { cause: error });
   }
 }
 
@@ -155,7 +155,7 @@ function assertPluginRemoved(params) {
     throw new Error(`${params.pluginId} install record still present after uninstall`);
   }
 
-  const config = readOpenClawConfig();
+  const config = readOperatorConfig();
   if (config.plugins?.entries?.[params.pluginId]) {
     throw new Error(`${params.pluginId} config entry still present after uninstall`);
   }
@@ -216,7 +216,7 @@ function recordFixturePluginTrust() {
   const pluginId = process.argv[3];
   const pluginRoot = process.argv[4];
   const enabled = process.argv[5] === "1";
-  const configPath = path.join(process.env.HOME, ".openclaw", "openclaw.json");
+  const configPath = path.join(process.env.HOME, ".operator", "operator.json");
   const config = fs.existsSync(configPath) ? readJson(configPath) : {};
   const plugins = (config.plugins ??= {});
   const entries = (plugins.entries ??= {});
@@ -499,7 +499,7 @@ function assertGitPlugin() {
   if (!installPath || !fs.existsSync(installPath)) {
     throw new Error(`git install path missing on disk: ${installPath}`);
   }
-  const gitRoot = path.join(process.env.HOME, ".openclaw", "git");
+  const gitRoot = path.join(process.env.HOME, ".operator", "git");
   if (!installPath.endsWith(`${path.sep}repo`)) {
     throw new Error(`git install path should point at cloned repo root: ${installPath}`);
   }
@@ -548,7 +548,7 @@ function assertRealPathInside(parentPath, childPath, label) {
 }
 
 function assertClawHubExternalInstallContract(installPath) {
-  const openclawPeerPath = path.join(installPath, "node_modules", "openclaw");
+  const openclawPeerPath = path.join(installPath, "node_modules", "@gabrielvfonseca/operator");
   if (!fs.existsSync(openclawPeerPath)) {
     throw new Error(`missing ClawHub openclaw peer symlink: ${openclawPeerPath}`);
   }
@@ -669,10 +669,10 @@ function assertNpmPlugin() {
   if (record.source !== "npm") {
     throw new Error(`unexpected npm install source: ${record.source}`);
   }
-  if (record.spec !== "@operator/demo-plugin-npm@0.0.1") {
+  if (record.spec !== "@gabrielvfonseca/demo-plugin-npm@0.0.1") {
     throw new Error(`unexpected npm spec: ${record.spec}`);
   }
-  if (record.resolvedName !== "@operator/demo-plugin-npm") {
+  if (record.resolvedName !== "@gabrielvfonseca/demo-plugin-npm") {
     throw new Error(`unexpected npm resolved name: ${record.resolvedName}`);
   }
   if (record.resolvedVersion !== "0.0.1") {
@@ -746,17 +746,17 @@ function assertNpmPluginRemoved() {
   }
 }
 
-function assertInvalidOpenClawExtensionsRejected() {
+function assertInvalidOperatorExtensionsRejected() {
   const pluginId = "demo-plugin-invalid-metadata";
-  for (const expected of ["openclaw.extensions[1]", "non-empty string"]) {
+  for (const expected of ["operator.extensions[1]", "non-empty string"]) {
     assertTextFileIncludes(
-      scratchFile("plugins-invalid-openclaw-extensions.log"),
+      scratchFile("plugins-invalid-operator-extensions.log"),
       expected,
       "malformed metadata install output",
     );
   }
 
-  const list = readJson(scratchFile("plugins-invalid-openclaw-extensions-list.json"));
+  const list = readJson(scratchFile("plugins-invalid-operator-extensions-list.json"));
   if ((list.plugins || []).some((entry) => entry.id === pluginId)) {
     throw new Error(`${pluginId} listed after rejected install`);
   }
@@ -766,7 +766,7 @@ function assertInvalidOpenClawExtensionsRejected() {
     throw new Error(`${pluginId} install record persisted after rejected install`);
   }
 
-  const managedInstallPath = path.join(process.env.HOME, ".openclaw", "extensions", pluginId);
+  const managedInstallPath = path.join(process.env.HOME, ".operator", "extensions", pluginId);
   if (fs.existsSync(managedInstallPath)) {
     throw new Error(`${pluginId} managed install directory exists after rejected install`);
   }
@@ -840,7 +840,7 @@ async function assertClawHubPreflight() {
   const limits = readClawHubPreflightLimits();
   const packageName = parseClawHubPackageName(spec);
   const baseUrl = (
-    process.env.OPENCLAW_CLAWHUB_URL ||
+    process.env.OPERATOR_CLAWHUB_URL ||
     process.env.CLAWHUB_URL ||
     "https://clawhub.ai"
   ).replace(/\/+$/, "");
@@ -916,9 +916,9 @@ function assertClawHubInstalled() {
     throw new Error(`unexpected ClawHub inspect plugin id: ${inspect.plugin?.id}`);
   }
 
-  const configPath = path.join(process.env.HOME, ".openclaw", "openclaw.json");
+  const configPath = path.join(process.env.HOME, ".operator", "operator.json");
   const config = fs.existsSync(configPath) ? readJson(configPath) : {};
-  const allowLegacyCompat = process.env.OPENCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT === "1";
+  const allowLegacyCompat = process.env.OPERATOR_PACKAGE_ACCEPTANCE_LEGACY_COMPAT === "1";
   const index = readPluginInstallIndex({
     configPath,
     fallbackRecords: allowLegacyCompat ? (config.plugins?.installs ?? {}) : {},
@@ -951,7 +951,7 @@ function assertClawHubInstalled() {
   if (!fs.existsSync(installPath)) {
     throw new Error(`ClawHub install path missing on disk: ${installPath}`);
   }
-  const extensionsRoot = path.join(process.env.HOME, ".openclaw", "extensions");
+  const extensionsRoot = path.join(process.env.HOME, ".operator", "extensions");
   assertRealPathInside(extensionsRoot, installPath, "ClawHub install path");
   if (record.artifactKind === "npm-pack") {
     assertClawHubExternalInstallContract(installPath);
@@ -969,7 +969,7 @@ function assertClawHubRemoved() {
     throw new Error(`ClawHub plugin still listed after uninstall: ${pluginId}`);
   }
 
-  const configPath = path.join(process.env.HOME, ".openclaw", "openclaw.json");
+  const configPath = path.join(process.env.HOME, ".operator", "operator.json");
   const config = fs.existsSync(configPath) ? readJson(configPath) : {};
   const installRecords = readPluginInstallRecords({
     configPath,
@@ -979,7 +979,7 @@ function assertClawHubRemoved() {
     throw new Error(`ClawHub install record still present after uninstall: ${pluginId}`);
   }
 
-  const configAfterUninstallPath = path.join(process.env.HOME, ".openclaw", "openclaw.json");
+  const configAfterUninstallPath = path.join(process.env.HOME, ".operator", "operator.json");
   const configAfterUninstall = fs.existsSync(configAfterUninstallPath)
     ? readJson(configAfterUninstallPath)
     : {};
@@ -1023,7 +1023,7 @@ const commands = {
   "plugin-npm": assertNpmPlugin,
   "plugin-npm-update": assertNpmPluginUpdateUnchanged,
   "plugin-npm-removed": assertNpmPluginRemoved,
-  "invalid-openclaw-extensions": assertInvalidOpenClawExtensionsRejected,
+  "invalid-operator-extensions": assertInvalidOperatorExtensionsRejected,
   "bundle-disabled": assertClaudeBundleDisabled,
   "bundle-inspect": assertClaudeBundleInspect,
   "slash-install": assertSlashInstall,

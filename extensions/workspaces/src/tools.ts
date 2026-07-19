@@ -1,10 +1,10 @@
-import { jsonResult } from "openclaw/plugin-sdk/core";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginToolContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { getPluginRuntimeGatewayRequestScope } from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { getPluginRuntimeGatewayRequestScope } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import { Type } from "typebox";
 import { workspaceBroadcast, type WorkspaceBroadcast } from "./broadcast.js";
 import {

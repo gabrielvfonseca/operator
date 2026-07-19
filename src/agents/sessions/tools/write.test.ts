@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it } from "vitest";
 import { createWriteTool, type WriteOperations } from "./write.js";
 
@@ -19,7 +19,7 @@ describe("write tool", () => {
   });
 
   async function createTempPath(name = "demo.txt") {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-write-tool-"));
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-write-tool-"));
     return path.join(tmpDir, name);
   }
 

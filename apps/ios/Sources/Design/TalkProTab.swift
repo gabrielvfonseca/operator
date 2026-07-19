@@ -1,4 +1,4 @@
-import OpenClawChatUI
+import OperatorChatUI
 import SwiftUI
 
 struct TalkProTab: View {
@@ -10,13 +10,13 @@ struct TalkProTab: View {
     @AppStorage("talk.background.enabled") private var talkBackgroundEnabled: Bool = false
     @State private var showPermissionPrompt = false
     @State private var showTalkIssueDetails = false
-    let headerLeadingAction: OpenClawSidebarHeaderAction?
+    let headerLeadingAction: OperatorSidebarHeaderAction?
     let ownsNavigationStack: Bool
     var openSettings: () -> Void
     var openVoiceSettings: () -> Void
 
     init(
-        headerLeadingAction: OpenClawSidebarHeaderAction? = nil,
+        headerLeadingAction: OperatorSidebarHeaderAction? = nil,
         ownsNavigationStack: Bool = true,
         openSettings: @escaping () -> Void,
         openVoiceSettings: (() -> Void)? = nil)
@@ -66,7 +66,7 @@ struct TalkProTab: View {
                                 self.showPermissionPrompt = false
                             } label: {
                                 Text("Not Now")
-                                    .font(OpenClawType.subheadSemiBold)
+                                    .font(OperatorType.subheadSemiBold)
                             }
                         }
                     }
@@ -108,7 +108,7 @@ struct TalkProTab: View {
         .toolbar {
             if let headerLeadingAction {
                 ToolbarItem(placement: .topBarLeading) {
-                    OpenClawSidebarRevealButton(action: headerLeadingAction)
+                    OperatorSidebarRevealButton(action: headerLeadingAction)
                 }
             }
         }
@@ -127,10 +127,10 @@ struct TalkProTab: View {
 
                 VStack(spacing: 4) {
                     Text(self.state.title)
-                        .font(OpenClawType.title3SemiBold)
+                        .font(OperatorType.title3SemiBold)
                         .multilineTextAlignment(.center)
                     self.heroSubtitle
-                        .font(OpenClawType.subhead)
+                        .font(OperatorType.subhead)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
@@ -141,7 +141,7 @@ struct TalkProTab: View {
                     } icon: {
                         Image(systemName: self.state.primaryButtonIcon)
                     }
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                     // Match the icon to the label; otherwise the symbol picks up the tint color.
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -184,22 +184,22 @@ struct TalkProTab: View {
         Section("Controls") {
             Toggle(isOn: self.talkSpeakerphoneBinding) {
                 Text("Speakerphone")
-                    .font(OpenClawType.body)
+                    .font(OperatorType.body)
             }
             .accessibilityIdentifier("talk-speakerphone-control")
             Toggle(isOn: self.$talkBackgroundEnabled) {
                 Text("Background listening")
-                    .font(OpenClawType.body)
+                    .font(OperatorType.body)
             }
             .accessibilityIdentifier("talk-background-listening-control")
             Button(action: self.openVoiceSettings) {
                 HStack {
                     Label("Voice & Talk Settings", systemImage: "slider.horizontal.3")
-                        .font(OpenClawType.body)
+                        .font(OperatorType.body)
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.forward")
-                        .font(OpenClawType.footnoteSemiBold)
+                        .font(OperatorType.footnoteSemiBold)
                         .foregroundStyle(.tertiary)
                 }
                 .contentShape(Rectangle())
@@ -223,16 +223,16 @@ struct TalkProTab: View {
     private var heroSubtitle: some View {
         if self.state.prefersPermissionCopy {
             Text("Gateway approval is required before this phone can capture voice.")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         } else if self.appModel.isAppleReviewDemoModeEnabled {
             Text("Voice is disabled in Apple Review demo mode.")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         } else if !self.gatewayConnected {
             Text("Connect to your gateway to start a voice conversation.")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         } else if !self.appModel.talkMode.gatewayTalkConfigLoaded {
             Text("Open Voice settings after the gateway loads Talk configuration.")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         } else {
             let subtitle = (appModel.talkMode.gatewayTalkVoiceModeSubtitle ?? "")
                 .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -240,10 +240,10 @@ struct TalkProTab: View {
                 Text(verbatim: String(
                     format: String(localized: "Routes voice to %@."),
                     self.appModel.chatAgentName))
-                    .font(OpenClawType.subhead)
+                    .font(OperatorType.subhead)
             } else {
                 Text(verbatim: subtitle)
-                    .font(OpenClawType.subhead)
+                    .font(OperatorType.subhead)
             }
         }
     }
@@ -356,7 +356,7 @@ extension TalkWaveformPalette {
     /// system grays so the idle wave tracks light/dark appearance.
     static let openClawBrand = TalkWaveformPalette(
         active: [
-            OpenClawBrand.accent,
+            OperatorBrand.accent,
             Color(red: 0.95, green: 0.45, blue: 0.30),
             Color(red: 0.45, green: 0.08, blue: 0.12),
         ],
@@ -399,7 +399,7 @@ struct TalkProState: Equatable {
         if self.isSpeaking { return "Speaking" }
         if self.isListening { return "Listening" }
         if self.phase == .connecting { return "Connecting" }
-        if self.phase == .thinking { return "Asking OpenClaw" }
+        if self.phase == .thinking { return "Asking Operator" }
         if self.isEnabled { return "Ready to talk" }
         return "Talk is off"
     }
@@ -409,12 +409,12 @@ struct TalkProState: Equatable {
         if !self.gatewayConnected { return .secondary }
         switch self.permissionState {
         case .requestFailed, .loadFailed:
-            return OpenClawBrand.danger
+            return OperatorBrand.danger
         case .missingScope, .requestingUpgrade, .upgradeRequested, .apiKeyMissing:
-            return OpenClawBrand.warn
+            return OperatorBrand.warn
         default:
-            if !self.isConfigLoaded { return OpenClawBrand.warn }
-            return self.isEnabled ? OpenClawBrand.ok : OpenClawBrand.accentHot
+            if !self.isConfigLoaded { return OperatorBrand.warn }
+            return self.isEnabled ? OperatorBrand.ok : OperatorBrand.accentHot
         }
     }
 

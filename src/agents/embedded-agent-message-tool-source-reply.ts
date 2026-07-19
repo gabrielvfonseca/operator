@@ -1,8 +1,8 @@
 /**
  * Detects message-tool sends that delivered a visible reply to the current source.
  */
-import { safeParseJson } from "@operator/normalization-core";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { safeParseJson } from "@gabrielvfonseca/normalization-core";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { SourceReplyDeliveryMode } from "../auto-reply/get-reply-options.types.js";
 import {
   isMessageToolConversationCreateActionName,

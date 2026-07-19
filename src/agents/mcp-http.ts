@@ -7,7 +7,7 @@
 import {
   redactSensitiveUrl,
   redactSensitiveUrlLikeString,
-} from "@operator/net-policy/redact-sensitive-url";
+} from "@gabrielvfonseca/net-policy/redact-sensitive-url";
 import { isMcpConfigRecord, toMcpStringRecord } from "./mcp-config-shared.js";
 
 /** Supported HTTP-based MCP transport flavors. */

@@ -12,7 +12,7 @@ import {
   type RequestPermissionRequest,
   type SessionNotification,
 } from "@agentclientprotocol/sdk";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { ensureOperatorCliOnPath } from "../infra/path-env.js";
 import {
   buildAcpClientStripKeys,
@@ -108,7 +108,7 @@ async function createAcpClient(opts: AcpClientOptions = {}): Promise<AcpClientHa
   const serverArgs = buildServerArgs(opts);
 
   const entryPath = resolveSelfEntryPath();
-  const defaultServerCommand = entryPath ? process.execPath : "operator";
+  const defaultServerCommand = entryPath ? process.execPath : "@gabrielvfonseca/operator";
   const defaultServerArgs = entryPath ? [entryPath, ...serverArgs] : serverArgs;
   const serverCommand = opts.serverCommand ?? defaultServerCommand;
   const effectiveArgs = opts.serverCommand || !entryPath ? serverArgs : defaultServerArgs;

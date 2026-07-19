@@ -1,5 +1,5 @@
 // Browser tests cover pw tools core.interactions.navigation guard plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   getPwToolsCoreNavigationGuardMocks,

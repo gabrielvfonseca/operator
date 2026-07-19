@@ -1,5 +1,5 @@
 // CLI channel option formatter backed by generated startup metadata when available.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { readCliStartupMetadata } from "./startup-metadata.js";
 
 let precomputedChannelOptions: string[] | null | undefined;

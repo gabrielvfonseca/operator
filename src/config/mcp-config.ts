@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Normalizes MCP server config for runtime launch and validation.
 import { isRecord } from "../utils.js";
 import { readSourceConfigSnapshot } from "./io.js";

@@ -11,7 +11,7 @@ OS-level sandboxed tool execution via MXC for MXC-capable Windows hosts: runs co
 
 ## Distribution
 
-- Package: `@operator/mxc-sandbox`
+- Package: `@gabrielvfonseca/mxc-sandbox`
 - Install route: npm; ClawHub
 
 ## Surface

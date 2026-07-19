@@ -1,6 +1,6 @@
 // Resolves the configured default agent route shared by Operator inference calls.
 import { isDeepStrictEqual } from "node:util";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   cliBackendAcceptsAuthProfileForwarding,
   resolveCliExecutionAuthProfileId,
@@ -44,7 +44,7 @@ export type DefaultInferenceRouteProjection = {
   tools: OperatorConfig["tools"];
 };
 
-const SYSTEM_AGENT_EXECUTION_AGENT_ID = "operator";
+const SYSTEM_AGENT_EXECUTION_AGENT_ID = "@gabrielvfonseca/operator";
 
 function projectSystemAgentExecutionConfig(
   config: OperatorConfig,

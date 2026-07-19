@@ -1,5 +1,5 @@
 ---
-summary: "Adds Chutes model provider support to OpenClaw."
+summary: "Adds Chutes model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the chutes plugin
 title: "Chutes plugin"
@@ -7,12 +7,12 @@ title: "Chutes plugin"
 
 # Chutes plugin
 
-Adds Chutes model provider support to OpenClaw.
+Adds Chutes model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/chutes-provider`
-- Install route: npm; ClawHub: `clawhub:@operator/chutes-provider`
+- Package: `@gabrielvfonseca/chutes-provider`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/chutes-provider`
 
 ## Surface
 

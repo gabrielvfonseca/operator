@@ -2,12 +2,12 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { CreateSandboxBackendParams } from "openclaw/plugin-sdk/sandbox";
+import type { CreateSandboxBackendParams } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import {
   createSandboxBrowserConfig,
   createSandboxPruneConfig,
   createSandboxSshConfig,
-} from "openclaw/plugin-sdk/test-fixtures";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createOpenShellSandboxBackendFactory } from "./backend.js";
 import { resolveOpenShellPluginConfig } from "./config.js";
@@ -48,10 +48,10 @@ function createOpenShellBackendSandboxConfig(): CreateSandboxBackendParams["cfg"
     backend: "openshell",
     scope: "session",
     workspaceAccess: "rw",
-    workspaceRoot: "/tmp/openclaw-sandboxes",
+    workspaceRoot: "/tmp/operator-sandboxes",
     docker: {
-      image: "openclaw-sandbox:bookworm-slim",
-      containerPrefix: "openclaw-sbx-",
+      image: "operator-sandbox:bookworm-slim",
+      containerPrefix: "operator-sbx-",
       workdir: "/workspace",
       readOnlyRoot: false,
       tmpfs: [],
@@ -60,7 +60,7 @@ function createOpenShellBackendSandboxConfig(): CreateSandboxBackendParams["cfg"
       binds: [],
       env: {},
     },
-    ssh: createSandboxSshConfig("/tmp/openclaw-sandboxes"),
+    ssh: createSandboxSshConfig("/tmp/operator-sandboxes"),
     browser: createSandboxBrowserConfig(),
     tools: { allow: ["*"], deny: [] },
     prune: createSandboxPruneConfig(),
@@ -78,7 +78,7 @@ describe("openshell backend exec workdir validation", () => {
     vi.clearAllMocks();
     cliMocks.createOpenShellSshSession.mockResolvedValue({
       command: "ssh",
-      configPath: "/tmp/openclaw-openshell-test-ssh-config",
+      configPath: "/tmp/operator-openshell-test-ssh-config",
       host: "openshell-test",
     });
     cliMocks.runOpenShellCli.mockResolvedValue({
@@ -87,7 +87,7 @@ describe("openshell backend exec workdir validation", () => {
       stderr: "",
     });
     sdkMocks.runSshSandboxCommand.mockImplementation(async ({ remoteCommand }) => ({
-      stdout: String(remoteCommand).includes("openclaw-validate-workdir")
+      stdout: String(remoteCommand).includes("operator-validate-workdir")
         ? Buffer.from("/workspace\n")
         : Buffer.alloc(0),
       stderr: Buffer.alloc(0),
@@ -107,7 +107,7 @@ describe("openshell backend exec workdir validation", () => {
     vi.stubEnv("ANTHROPIC_API_KEY", "fixture");
     vi.stubEnv("LANG", "en_US.UTF-8");
     vi.stubEnv("NODE_ENV", "test");
-    const workspaceDir = await makeTempDir("openclaw-openshell-workspace-");
+    const workspaceDir = await makeTempDir("operator-openshell-workspace-");
     await fs.writeFile(path.join(workspaceDir, "seed.txt"), "seed", "utf8");
     const backendFactory = createOpenShellSandboxBackendFactory({
       pluginConfig: resolveOpenShellPluginConfig({
@@ -158,7 +158,7 @@ describe("openshell backend exec workdir validation", () => {
   });
 
   it("does not reuse validation-time workspace preparation after discard", async () => {
-    const workspaceDir = await makeTempDir("openclaw-openshell-workspace-");
+    const workspaceDir = await makeTempDir("operator-openshell-workspace-");
     await fs.writeFile(path.join(workspaceDir, "seed.txt"), "seed", "utf8");
     const backendFactory = createOpenShellSandboxBackendFactory({
       pluginConfig: resolveOpenShellPluginConfig({

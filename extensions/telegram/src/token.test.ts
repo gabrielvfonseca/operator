@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveTelegramBotUserIdFromToken, resolveTelegramToken } from "./token.js";
 
@@ -23,7 +23,7 @@ describe("resolveTelegramToken", () => {
   const tempDirs: string[] = [];
 
   function createTempDir(): string {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-token-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-telegram-token-"));
     tempDirs.push(dir);
     return dir;
   }

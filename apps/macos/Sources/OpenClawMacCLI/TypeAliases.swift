@@ -1,5 +1,5 @@
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 
-typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
-typealias KitAnyCodable = OpenClawKit.AnyCodable
+typealias ProtoAnyCodable = OperatorProtocol.AnyCodable
+typealias KitAnyCodable = OperatorKit.AnyCodable

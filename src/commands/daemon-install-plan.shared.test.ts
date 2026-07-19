@@ -71,15 +71,15 @@ describe("resolveDaemonServicePathDirs openclaw discovery", () => {
   it.skipIf(process.platform === "win32")(
     "finds the PATH shim that resolves to the active package entrypoint",
     () => {
-      const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-daemon-path-"));
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-daemon-path-"));
       try {
         const binDir = path.join(root, "bin");
-        const packageDir = path.join(root, "lib", "node_modules", "openclaw");
-        const entrypoint = path.join(packageDir, "openclaw.mjs");
+        const packageDir = path.join(root, "lib", "node_modules", "@gabrielvfonseca/operator");
+        const entrypoint = path.join(packageDir, "operator.mjs");
         fs.mkdirSync(binDir, { recursive: true });
         fs.mkdirSync(packageDir, { recursive: true });
         fs.writeFileSync(entrypoint, "");
-        fs.symlinkSync(entrypoint, path.join(binDir, "openclaw"));
+        fs.symlinkSync(entrypoint, path.join(binDir, "@gabrielvfonseca/operator"));
 
         expect(
           resolveDaemonServicePathDirs({
@@ -97,17 +97,17 @@ describe("resolveDaemonServicePathDirs openclaw discovery", () => {
   it.skipIf(process.platform === "win32")(
     "ignores unrelated openclaw commands elsewhere on PATH",
     () => {
-      const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-daemon-path-"));
+      const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-daemon-path-"));
       try {
         const binDir = path.join(root, "bin");
-        const activeEntrypoint = path.join(root, "active", "openclaw.mjs");
-        const otherEntrypoint = path.join(root, "other", "openclaw.mjs");
+        const activeEntrypoint = path.join(root, "active", "operator.mjs");
+        const otherEntrypoint = path.join(root, "other", "operator.mjs");
         fs.mkdirSync(binDir, { recursive: true });
         fs.mkdirSync(path.dirname(activeEntrypoint), { recursive: true });
         fs.mkdirSync(path.dirname(otherEntrypoint), { recursive: true });
         fs.writeFileSync(activeEntrypoint, "");
         fs.writeFileSync(otherEntrypoint, "");
-        fs.symlinkSync(otherEntrypoint, path.join(binDir, "openclaw"));
+        fs.symlinkSync(otherEntrypoint, path.join(binDir, "@gabrielvfonseca/operator"));
 
         expect(
           resolveDaemonServicePathDirs({

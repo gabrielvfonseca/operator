@@ -4,8 +4,8 @@ import {
   type SearchConfigRecord,
   type WebSearchProviderToolExecutionContext,
   wrapWebContent,
-} from "openclaw/plugin-sdk/provider-web-search";
-import type { WebSearchProviderPlugin } from "openclaw/plugin-sdk/provider-web-search-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
+import type { WebSearchProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search-contract";
 import {
   runBoundedCodexAppServerTurn,
   type CodexBoundedTurnOptions,

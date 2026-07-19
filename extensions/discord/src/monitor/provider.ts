@@ -1,20 +1,26 @@
-import { loadModelCatalog } from "openclaw/plugin-sdk/agent-runtime";
+import { loadModelCatalog } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 // Discord provider module implements model/runtime integration.
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import { createConnectedChannelStatusPatch } from "openclaw/plugin-sdk/gateway-runtime";
-import { resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { logVerbose, warn } from "openclaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { createNonExitingRuntime, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type {
+  OperatorConfig,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createConnectedChannelStatusPatch } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { resolveTextChunkLimit } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { logVerbose, warn } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  createNonExitingRuntime,
+  type RuntimeEnv,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveOpenProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { resolveDiscordAccountAllowFrom, resolveDiscordAccountDmPolicy } from "../accounts.js";
 import type { DiscordCommandDeployHashStore } from "../command-deploy-store.js";
 import { GatewayCloseCodes } from "../internal/gateway.js";

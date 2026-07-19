@@ -10,7 +10,7 @@ import {
   reconcileOpenAICompletionsToolChoice,
   resolveOpenAIReasoningEffortForModel,
   type OpenAIReasoningEffort,
-} from "@operator/ai/internal/openai";
+} from "@gabrielvfonseca/ai/internal/openai";
 import {
   applyProviderReportedUsageCost,
   calculateCost,
@@ -21,10 +21,10 @@ import {
   getFirstStreamEventTimeoutMs,
   parseStreamingJson,
   withFirstStreamEventTimeout,
-} from "@operator/ai/internal/runtime";
-import { stripSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/ai/internal/runtime";
+import { stripSystemPromptCacheBoundary } from "@gabrielvfonseca/ai/internal/shared";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import OpenAI from "openai";
 import type { ChatCompletionChunk } from "openai/resources/chat/completions.js";
 import type { Context, Model } from "../llm/types.js";
@@ -305,7 +305,7 @@ export function createOpenAICompletionsTransportStreamFn(): StreamFn {
           params = nextParams as typeof params;
         }
         if (
-          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
             ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
@@ -1928,7 +1928,7 @@ const completionsTesting = {
 };
 
 declare global {
-  var operatorOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
+  var openclawOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {

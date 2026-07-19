@@ -1,5 +1,5 @@
 /** Generic adapter for provider-owned model route public artifacts. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   resolveMergedModelProviderConfig,
   resolveMergedModelProviderModels,

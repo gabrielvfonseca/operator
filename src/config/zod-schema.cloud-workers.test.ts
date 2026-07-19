@@ -25,7 +25,7 @@ describe("OperatorSchema cloudWorkers config", () => {
             settings: {
               host: "worker.example.test",
               port: 22,
-              user: "openclaw",
+              user: "@gabrielvfonseca/operator",
               keyRef: {
                 source: "file",
                 provider: "default",
@@ -47,7 +47,7 @@ describe("OperatorSchema cloudWorkers config", () => {
           settings: {
             host: "worker.example.test",
             port: 22,
-            user: "openclaw",
+            user: "@gabrielvfonseca/operator",
             keyRef: {
               source: "file",
               provider: "default",

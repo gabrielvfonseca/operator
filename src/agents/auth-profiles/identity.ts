@@ -3,7 +3,7 @@
  * Keeps profile id construction and human metadata lookup centralized for auth
  * status, storage, and provider selection.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AuthProfileStore } from "./types.js";
 

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { withTestTimeout } from "../../../test/helpers/promise.js";
 import type { MsgContext } from "../../auto-reply/templating.js";
@@ -68,7 +68,7 @@ vi.mock("../../gateway/session-archive.runtime.js", async (importOriginal) => {
 
 function createTestTrajectoryEvent(sessionId: string): TrajectoryEvent {
   return {
-    traceSchema: "openclaw-trajectory",
+    traceSchema: "operator-trajectory",
     schemaVersion: 1,
     traceId: sessionId,
     source: "runtime",
@@ -86,7 +86,7 @@ describe("session accessor seam", () => {
 
   beforeEach(() => {
     cleanupArchivedSessionTranscriptsMock.mockReset();
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-session-accessor-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-session-accessor-"));
     storePath = path.join(tempDir, "sessions.json");
     transcriptPath = path.join(tempDir, "session.jsonl");
   });
@@ -963,7 +963,7 @@ describe("session accessor seam", () => {
       updatedAt: 10,
       initializationPending: true,
     });
-    const databasePath = path.join(tempDir, "openclaw-agent.sqlite");
+    const databasePath = path.join(tempDir, "operator-agent.sqlite");
     const fixedTime = new Date("2020-01-01T00:00:00.000Z");
     fs.utimesSync(databasePath, fixedTime, fixedTime);
 
@@ -2992,7 +2992,7 @@ describe("session accessor seam", () => {
         sessionKey,
         storePath,
       })?.entry.sessionFile,
-    ).toBe(`sqlite:main:session-1:${path.join(tempDir, "openclaw-agent.sqlite")}`);
+    ).toBe(`sqlite:main:session-1:${path.join(tempDir, "operator-agent.sqlite")}`);
   });
 
   it("tracks replacement and deletion transcript mutations", async () => {

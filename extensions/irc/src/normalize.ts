@@ -1,10 +1,10 @@
-import { buildChannelOutboundSessionRoute } from "openclaw/plugin-sdk/channel-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { buildChannelOutboundSessionRoute } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Irc helper module supports normalize behavior.
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { hasIrcControlChars } from "./control-chars.js";
 import type { IrcInboundMessage } from "./types.js";
 

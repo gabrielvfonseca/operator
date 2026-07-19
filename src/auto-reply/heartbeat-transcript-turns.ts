@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isHeartbeatUserMessage, isRealNonHeartbeatUserMessage } from "./heartbeat-filter.js";
 
 /** Remove complete scheduled heartbeat turns, including visible work, from a shared transcript. */

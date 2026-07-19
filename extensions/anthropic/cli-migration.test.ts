@@ -2,7 +2,7 @@
 import type {
   ProviderAuthContext,
   ProviderAuthMethodNonInteractiveContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { readClaudeCliCredentialsForSetup, readClaudeCliCredentialsForSetupNonInteractive } =
@@ -326,7 +326,7 @@ describe("anthropic cli migration", () => {
           models: {
             "anthropic/claude-opus-4-7": {
               alias: "Opus",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
             "anthropic/claude-sonnet-4-6": {
               alias: "Sonnet",
@@ -344,7 +344,7 @@ describe("anthropic cli migration", () => {
 
     expect(defaults.models?.["anthropic/claude-opus-4-7"]).toEqual({
       alias: "Opus",
-      agentRuntime: { id: "openclaw" },
+      agentRuntime: { id: "@gabrielvfonseca/operator" },
     });
     expect(defaults.models?.["anthropic/claude-sonnet-4-6"]).toEqual({
       alias: "Sonnet",

@@ -4,4 +4,4 @@ export {
   type OperatorPluginApi,
   type OperatorPluginHttpRouteHandler,
   type PluginLogger,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";

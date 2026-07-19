@@ -1,13 +1,13 @@
 {
-  "name": "@operator/onepassword",
+  "name": "@gabrielvfonseca/onepassword",
   "version": "2026.7.2",
   "private": true,
   "description": "1Password secrets broker for Operator",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

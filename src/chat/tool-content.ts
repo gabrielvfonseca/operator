@@ -1,5 +1,5 @@
 // Normalizes tool result content for chat transcript rendering.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const TOOL_USE_ID_FIELDS = [
   "id",

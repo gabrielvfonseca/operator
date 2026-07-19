@@ -185,7 +185,7 @@
     },
     "realtime.agentId": {
       "label": "Realtime Consult Agent",
-      "help": "Operator agent id used by openclaw_agent_consult. Defaults to \"main\".",
+      "help": "Operator agent id used by operator_agent_consult. Defaults to \"main\".",
       "advanced": true
     },
     "realtime.toolPolicy": {
@@ -461,7 +461,7 @@
           },
           "instructions": {
             "type": "string",
-            "default": "You are joining a private Google Meet as an Operator voice transport. Keep spoken replies brief and natural. In agent mode, wait for Operator consult results and speak them exactly. In bidi mode, answer directly and call openclaw_agent_consult for deeper reasoning, current information, or tools."
+            "default": "You are joining a private Google Meet as an Operator voice transport. Keep spoken replies brief and natural. In agent mode, wait for Operator consult results and speak them exactly. In bidi mode, answer directly and call operator_agent_consult for deeper reasoning, current information, or tools."
           },
           "introMessage": {
             "type": "string",
@@ -469,7 +469,7 @@
           },
           "agentId": {
             "type": "string",
-            "description": "Operator agent id used by openclaw_agent_consult. Defaults to \"main\"."
+            "description": "Operator agent id used by operator_agent_consult. Defaults to \"main\"."
           },
           "toolPolicy": {
             "type": "string",

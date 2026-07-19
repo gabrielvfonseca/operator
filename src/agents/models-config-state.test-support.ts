@@ -1,4 +1,4 @@
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 import { MODELS_JSON_STATE } from "./models-config-state.js";
 
 export function resetModelsJsonReadyCacheForTest(): void {

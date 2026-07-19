@@ -1,6 +1,6 @@
-project: OpenClaw.xcodeproj
+project: Operator.xcodeproj
 schemes:
-  - OpenClaw
+  - Operator
 retain_codable_properties: true
 retain_swift_ui_previews: true
 retain_objc_accessible: true

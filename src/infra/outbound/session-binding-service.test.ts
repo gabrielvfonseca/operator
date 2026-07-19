@@ -129,7 +129,7 @@ describe("session binding service", () => {
 
   beforeEach(async () => {
     previousStateDir = process.env.OPERATOR_STATE_DIR;
-    testStateDir = await tempDirs.make("openclaw-session-binding-");
+    testStateDir = await tempDirs.make("operator-session-binding-");
     process.env.OPERATOR_STATE_DIR = testStateDir;
     testing.resetSessionBindingAdaptersForTests();
     setMinimalCurrentConversationRegistry();

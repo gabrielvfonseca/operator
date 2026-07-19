@@ -54,7 +54,7 @@ function buildAgentToolResultMiddlewareFactory(
   sessionManager: SessionManager,
   runId?: string,
 ): ExtensionFactory {
-  const runner = createAgentToolResultMiddlewareRunner({ runtime: "operator" });
+  const runner = createAgentToolResultMiddlewareRunner({ runtime: "@gabrielvfonseca/operator" });
   return (agent) => {
     agent.on("tool_result", async (rawEvent: unknown, ctx: { cwd?: string }) => {
       const event = recordFromUnknown(rawEvent) as AgentToolResultEvent;

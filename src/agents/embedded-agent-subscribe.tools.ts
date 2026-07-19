@@ -1,13 +1,13 @@
 /** Sanitizes, extracts, and classifies embedded-agent tool execution results. */
-import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { asOptionalRecord as readRecord } from "@operator/normalization-core/record-coerce";
+import { estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { asOptionalRecord as readRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   normalizeOptionalStringifiedId,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getChannelPlugin, normalizeChannelId } from "../channels/plugins/index.js";
 import type { ChannelMessageActionName } from "../channels/plugins/types.public.js";
 import type { OperatorConfig } from "../config/types.operator.js";

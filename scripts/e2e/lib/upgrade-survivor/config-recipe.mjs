@@ -109,13 +109,13 @@ const representativeConfigSteps = [
 
 const scenarioConfigSteps = new Map([
   [
-    "acpx-openclaw-tools-bridge",
+    "acpx-operator-tools-bridge",
     [
       configSetJsonFile(
-        "plugins-acpx-openclaw-tools-bridge",
-        "acpx-openclaw-tools-bridge",
+        "plugins-acpx-operator-tools-bridge",
+        "acpx-operator-tools-bridge",
         "plugins",
-        "plugins-acpx-openclaw-tools-bridge.json",
+        "plugins-acpx-operator-tools-bridge.json",
       ),
     ],
   ],
@@ -137,7 +137,7 @@ const scenarioConfigSteps = new Map([
       {
         id: "logging-file",
         intent: "logging",
-        argv: ["config", "set", "logging.file", "~/openclaw-upgrade-survivor/gateway.jsonl"],
+        argv: ["config", "set", "logging.file", "~/operator-upgrade-survivor/gateway.jsonl"],
       },
     ],
   ],
@@ -201,16 +201,16 @@ const recipe = [
 ];
 
 function selectedScenario() {
-  return process.env.OPENCLAW_UPGRADE_SURVIVOR_SCENARIO || "base";
+  return process.env.OPERATOR_UPGRADE_SURVIVOR_SCENARIO || "base";
 }
 
 function adaptStepForBaseline(step, baselineVersion, summary) {
   if (
-    step.intent === "acpx-openclaw-tools-bridge" &&
+    step.intent === "acpx-operator-tools-bridge" &&
     isReleaseBefore(baselineVersion, "2026.4.22")
   ) {
-    if (!summary.skippedIntents.includes("acpx-openclaw-tools-bridge")) {
-      summary.skippedIntents.push("acpx-openclaw-tools-bridge");
+    if (!summary.skippedIntents.includes("acpx-operator-tools-bridge")) {
+      summary.skippedIntents.push("acpx-operator-tools-bridge");
     }
     return null;
   }
@@ -252,22 +252,22 @@ function adaptStepForBaseline(step, baselineVersion, summary) {
   return step;
 }
 
-export function resolveUpgradeSurvivorOpenClawCommand(argv, params = {}) {
+export function resolveUpgradeSurvivorOperatorCommand(argv, params = {}) {
   const platform = params.platform ?? process.platform;
   if (platform === "win32") {
     const comSpec = params.comSpec ?? resolveWindowsCmdExePath(params.env ?? process.env);
     return {
       command: comSpec,
-      args: ["/d", "/s", "/c", buildCmdExeCommandLine("openclaw.cmd", argv)],
-      commandLabel: ["openclaw", ...argv].join(" "),
+      args: ["/d", "/s", "/c", buildCmdExeCommandLine("operator.cmd", argv)],
+      commandLabel: ["@gabrielvfonseca/operator", ...argv].join(" "),
       shell: false,
       windowsVerbatimArguments: true,
     };
   }
   return {
-    command: "openclaw",
+    command: "@gabrielvfonseca/operator",
     args: argv,
-    commandLabel: ["openclaw", ...argv].join(" "),
+    commandLabel: ["@gabrielvfonseca/operator", ...argv].join(" "),
     shell: false,
   };
 }
@@ -276,8 +276,8 @@ function errorCode(error) {
   return error && typeof error === "object" && "code" in error ? String(error.code) : undefined;
 }
 
-export function runUpgradeSurvivorOpenClawStep(step, params = {}) {
-  const invocation = resolveUpgradeSurvivorOpenClawCommand(step.argv);
+export function runUpgradeSurvivorOperatorStep(step, params = {}) {
+  const invocation = resolveUpgradeSurvivorOperatorCommand(step.argv);
   const run = params.spawnSyncCommand ?? spawnSync;
   const timeoutMs = params.timeoutMs ?? CONFIG_COMMAND_TIMEOUT_MS;
   const maxBuffer = params.maxBufferBytes ?? CONFIG_COMMAND_MAX_BUFFER_BYTES;
@@ -336,7 +336,7 @@ function applyRecipe() {
     if (!adaptedStep) {
       continue;
     }
-    const outcome = runUpgradeSurvivorOpenClawStep(adaptedStep);
+    const outcome = runUpgradeSurvivorOperatorStep(adaptedStep);
     summary.steps.push(outcome);
     writeJson(summaryPath, summary);
     if (!outcome.ok) {

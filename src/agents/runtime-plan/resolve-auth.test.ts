@@ -1,4 +1,4 @@
-import type { Model } from "openclaw/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileStore } from "../auth-profiles.js";
 import {

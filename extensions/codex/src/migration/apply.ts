@@ -8,23 +8,23 @@ import {
   MIGRATION_REASON_TARGET_EXISTS,
   summarizeMigrationItems,
   writeMigrationConfigPath,
-} from "openclaw/plugin-sdk/migration";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration";
 import {
   archiveMigrationItem,
   copyMemoryMigrationFileItem,
   copyMigrationFileItem,
   withCachedMigrationConfigRuntime,
   writeMigrationReport,
-} from "openclaw/plugin-sdk/migration-runtime";
-import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration-runtime";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type {
   MigrationApplyResult,
   MigrationItem,
   MigrationPlan,
   MigrationProviderContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { defaultCodexAppInventoryCache } from "../app-server/app-inventory-cache.js";
 import {
   resolveCodexAppServerAuthAccountCacheKey,

@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Test registry fixture for command authorization across Discord and phone-based channels. */
-import { lowercasePreservingWhitespace } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { lowercasePreservingWhitespace } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { afterEach, beforeEach } from "vitest";
 import { normalizeE164 } from "../../plugin-sdk/account-resolution.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";

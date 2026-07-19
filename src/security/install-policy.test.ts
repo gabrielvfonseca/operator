@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   killPidIfAlive,
   readPidFile,
@@ -17,7 +17,7 @@ type InstallPolicyRequest = Parameters<typeof runInstallPolicy>[0]["request"];
 const tempDirs: string[] = [];
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-install-policy-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-install-policy-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -81,7 +81,12 @@ function baseRequest(sourcePath: string): InstallPolicyRequest {
     targetName: "weather",
     sourcePath,
     sourcePathKind: "directory",
-    source: { kind: "clawhub", authority: "openclaw", mutable: false, network: true },
+    source: {
+      kind: "clawhub",
+      authority: "@gabrielvfonseca/operator",
+      mutable: false,
+      network: true,
+    },
     origin: { type: "clawhub", slug: "weather", version: "1.0.0" },
     request: {
       kind: "skill-install",
@@ -164,12 +169,12 @@ describe("runInstallPolicy", () => {
     expect(result).toEqual({});
     const captured = JSON.parse(await fs.readFile(capturePath, "utf8")) as Record<string, unknown>;
     expect(captured.protocolVersion).toBe(1);
-    expect(captured.openclawVersion).toEqual(expect.any(String));
+    expect(captured.operatorVersion).toEqual(expect.any(String));
     expect(captured.targetType).toBe("skill");
     expect(captured.sourcePath).toBe(sourceDir);
     expect(captured.source).toEqual({
       kind: "clawhub",
-      authority: "openclaw",
+      authority: "@gabrielvfonseca/operator",
       mutable: false,
       network: true,
     });

@@ -1,6 +1,6 @@
 import CryptoKit
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import OSLog
 
 private struct NodeInvokeRequestPayload: Codable {
@@ -144,7 +144,7 @@ public actor GatewayNodeSession {
         let task: Task<Void, Never>
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "node.gateway")
+    private let logger = Logger(subsystem: "ai.operator", category: "node.gateway")
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
     private static let defaultInvokeTimeoutMs = 30000
@@ -196,7 +196,7 @@ public actor GatewayNodeSession {
         onInvoke: @escaping @Sendable (BridgeInvokeRequest) async -> BridgeInvokeResponse,
         onOperationSettled: (@Sendable () async -> Void)? = nil) async -> BridgeInvokeResponse
     {
-        let timeoutLogger = Logger(subsystem: "ai.openclaw", category: "node.gateway")
+        let timeoutLogger = Logger(subsystem: "ai.operator", category: "node.gateway")
         let timeout: Int = {
             if let timeoutMs {
                 return min(max(0, timeoutMs), Self.maxInvokeTimeoutMs)
@@ -262,7 +262,7 @@ public actor GatewayNodeSession {
                 latch.resume(BridgeInvokeResponse(
                     id: request.id,
                     ok: false,
-                    error: OpenClawNodeError(
+                    error: OperatorNodeError(
                         code: .unavailable,
                         message: "node invoke timed out")))
             }
@@ -1077,7 +1077,7 @@ extension GatewayNodeSession {
                 response: BridgeInvokeResponse(
                     id: request.id,
                     ok: false,
-                    error: OpenClawNodeError(
+                    error: OperatorNodeError(
                         code: .unavailable,
                         message: "UNAVAILABLE: node lifecycle transition in progress")),
                 channel: channel,
@@ -1129,7 +1129,7 @@ extension GatewayNodeSession {
               self.channel != nil
         else { return Self.staleRouteInvokeResponse(requestId: request.id) }
         let requiresRouteScopedCancellation = request.command == "computer.act" ||
-            OpenClawTalkCommand(rawValue: request.command) != nil
+            OperatorTalkCommand(rawValue: request.command) != nil
         guard requiresRouteScopedCancellation else {
             return await onInvoke(request)
         }
@@ -1243,7 +1243,7 @@ extension GatewayNodeSession {
         BridgeInvokeResponse(
             id: requestId,
             ok: false,
-            error: OpenClawNodeError(
+            error: OperatorNodeError(
                 code: .unavailable,
                 message: self.staleRouteInvokeMessage))
     }
@@ -1275,7 +1275,7 @@ extension GatewayNodeSession {
                 return BridgeInvokeResponse(
                     id: request.id,
                     ok: false,
-                    error: OpenClawNodeError(
+                    error: OperatorNodeError(
                         code: .invalidRequest,
                         message: "INVALID_REQUEST: computer.act idempotency key reused with different parameters"))
             }
@@ -1310,7 +1310,7 @@ extension GatewayNodeSession {
             return BridgeInvokeResponse(
                 id: request.id,
                 ok: false,
-                error: OpenClawNodeError(
+                error: OperatorNodeError(
                     code: .unavailable,
                     message: "UNAVAILABLE: computer.act receipt capacity exhausted"))
         }
@@ -1472,11 +1472,11 @@ extension GatewayNodeSession {
         return true
     }
 
-    private func decodeInvokeRequest(from payload: OpenClawProtocol.AnyCodable) throws -> NodeInvokeRequestPayload {
+    private func decodeInvokeRequest(from payload: OperatorProtocol.AnyCodable) throws -> NodeInvokeRequestPayload {
         try self.decodeEventPayload(from: payload)
     }
 
-    private func decodeEventPayload<T: Decodable>(from payload: OpenClawProtocol.AnyCodable) throws -> T {
+    private func decodeEventPayload<T: Decodable>(from payload: OperatorProtocol.AnyCodable) throws -> T {
         do {
             let data = try encoder.encode(payload)
             return try self.decoder.decode(T.self, from: data)

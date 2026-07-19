@@ -1,4 +1,4 @@
-import { expectDefined, isRecord } from "@operator/normalization-core";
+import { expectDefined, isRecord } from "@gabrielvfonseca/normalization-core";
 
 export type ChatSplitPane = { id: string; sessionKey: string };
 type ChatSplitColumn = { id: string; panes: ChatSplitPane[]; paneWeights: number[] };

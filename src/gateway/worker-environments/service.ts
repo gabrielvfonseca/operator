@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   type WorkerAdmissionHandshake,
   type WorkerConnectParams,

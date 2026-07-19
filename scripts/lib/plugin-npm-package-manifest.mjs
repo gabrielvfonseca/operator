@@ -322,7 +322,7 @@ function installMissingOptionalBundledDependencies(params) {
 }
 
 function packageOptsOutOfBundledRuntimeDependencies(packageJson) {
-  return packageJson?.openclaw?.release?.bundleRuntimeDependencies === false;
+  return packageJson?.operator?.release?.bundleRuntimeDependencies === false;
 }
 
 function shouldBundleDependencies(value, packageJson) {
@@ -447,8 +447,8 @@ export function resolveAugmentedPluginNpmPackageJson(params) {
     files: plan.packageFiles,
     peerDependencies: plan.packagePeerMetadata.peerDependencies,
     peerDependenciesMeta: plan.packagePeerMetadata.peerDependenciesMeta,
-    openclaw: {
-      ...plan.packageJson.openclaw,
+    operator: {
+      ...plan.packageJson.operator,
       runtimeExtensions: plan.runtimeExtensions,
       ...(plan.runtimeSetupEntry
         ? {
@@ -584,7 +584,7 @@ export function mergeGeneratedChannelConfigs(manifest, generatedChannelConfigs) 
 export function resolveAugmentedPluginNpmManifest(params) {
   const repoRoot = path.resolve(params.repoRoot ?? ".");
   const packageDir = resolvePackageDir(repoRoot, params.packageDir);
-  const manifestPath = path.join(packageDir, "openclaw.plugin.json");
+  const manifestPath = path.join(packageDir, "operator.plugin.json");
   if (!fs.existsSync(manifestPath)) {
     return {
       manifestPath,
@@ -739,7 +739,7 @@ function main(argv = process.argv.slice(2)) {
   return withAugmentedPluginNpmManifestForPackage(
     {
       packageDir,
-      bundleDependencies: process.env.OPENCLAW_PLUGIN_NPM_BUNDLE_DEPENDENCIES,
+      bundleDependencies: process.env.OPERATOR_PLUGIN_NPM_BUNDLE_DEPENDENCIES,
     },
     ({ packageDir: cwd }) => {
       const result = spawnCommandSync(command, args, {

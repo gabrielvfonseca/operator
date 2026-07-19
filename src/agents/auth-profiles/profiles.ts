@@ -6,8 +6,8 @@
 import {
   findNormalizedProviderKey,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { resolveProviderIdForAuth } from "../provider-auth-aliases.js";
 import { normalizeAuthProfileCredential } from "./credential-normalize.js";

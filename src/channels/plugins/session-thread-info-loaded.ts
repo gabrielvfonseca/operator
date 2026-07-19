@@ -3,7 +3,7 @@
  *
  * Uses only already loaded channel hooks to resolve thread suffix metadata on hot paths.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   parseRawSessionConversationRef,
   parseThreadSessionSuffix,

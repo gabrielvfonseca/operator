@@ -1,7 +1,7 @@
 // Covers maintenance reconciliation for managed task-flow records.
 import { afterEach, describe, expect, it } from "vitest";
 import { captureEnv } from "../test-utils/env.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import { SUBAGENT_KILL_TASK_ERROR } from "./detached-task-runtime-contract.js";
 import { createRunningTaskRun as createRunningTaskRunOrNull } from "./task-executor.js";
 import {
@@ -61,7 +61,7 @@ async function withTaskFlowMaintenanceStateDir(
   await withOperatorTestState(
     {
       layout: "state-only",
-      prefix: "openclaw-task-flow-maintenance-",
+      prefix: "operator-task-flow-maintenance-",
     },
     async (state) => {
       resetTaskRegistryDeliveryRuntimeForTests();

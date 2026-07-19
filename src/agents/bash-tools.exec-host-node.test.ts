@@ -4,7 +4,7 @@
  * auto-review, and follow-up execution paths.
  */
 import crypto from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ExecAllowlistEntry } from "../infra/exec-approvals.types.js";
 import { MAX_SAFE_TIMEOUT_DELAY_MS } from "../utils/timer-delay.js";
@@ -1778,7 +1778,7 @@ describe("executeNodeHostCommand", () => {
           : [
               {
                 resolution: null,
-                argv: ["openclaw", "status"],
+                argv: ["@gabrielvfonseca/operator", "status"],
                 raw: "openclaw status",
               },
               {
@@ -1850,7 +1850,7 @@ describe("executeNodeHostCommand", () => {
               }
             : {
                 resolution: null,
-                argv: ["openclaw", "config", "get", "security.audit.suppressions"],
+                argv: ["@gabrielvfonseca/operator", "config", "get", "security.audit.suppressions"],
                 raw: "openclaw config get security.audit.suppressions",
               },
         ],

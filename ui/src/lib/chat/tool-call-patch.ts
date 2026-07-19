@@ -1,4 +1,4 @@
-import { asNullableRecord as asRecord } from "@operator/normalization-core/record-coerce";
+import { asNullableRecord as asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   MAX_DIFF_RENDER_LINES,
   type DiffLine,

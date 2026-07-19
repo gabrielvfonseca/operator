@@ -2,7 +2,7 @@ import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupTempDirs, makeTempDir } from "../../test/helpers/temp-dir.js";
 import { drainFormattedSystemEvents } from "../auto-reply/reply/session-system-events.js";
 import { upsertSessionEntry } from "../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { setHeartbeatWakeHandler } from "../infra/heartbeat-wake.js";
 import {
   enqueueSystemEvent,
@@ -40,7 +40,7 @@ const cfg = {} as OperatorConfig;
 let disposeHeartbeatWakeHandler: (() => void) | undefined;
 
 function createDatabaseOptions() {
-  const stateDir = makeTempDir(tempDirs, "openclaw-session-state-");
+  const stateDir = makeTempDir(tempDirs, "operator-session-state-");
   vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
   return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }

@@ -36,7 +36,7 @@ vi.mock("../../infra/git-commit.js", () => ({
 }));
 
 vi.mock("../cli-name.js", () => ({
-  resolveCliName: () => "openclaw",
+  resolveCliName: () => "@gabrielvfonseca/operator",
   replaceCliName: (cmd: string) => cmd,
 }));
 
@@ -118,7 +118,7 @@ describe("configureProgramHelp", () => {
   }
 
   it("adds root help hint and marks commands with subcommands", () => {
-    process.argv = ["node", "openclaw", "--help"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "--help"];
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
 
@@ -130,7 +130,7 @@ describe("configureProgramHelp", () => {
   });
 
   it("includes banner and docs/examples in root help output", () => {
-    process.argv = ["node", "openclaw", "--help"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "--help"];
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
 
@@ -142,11 +142,11 @@ describe("configureProgramHelp", () => {
     expect(version).toBe(testProgramContext.programVersion);
     expect(options?.mode).toBe("default");
     expect(help).toContain("Examples:");
-    expect(help).toContain("https://docs.openclaw.ai/cli");
+    expect(help).toContain("https://docs.operator.ai/cli");
   });
 
   it("suppresses banner formatting when parent default help requests it", () => {
-    process.argv = ["node", "openclaw", "channels"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "channels"];
     process.env.OPERATOR_SUPPRESS_HELP_BANNER = "1";
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
@@ -157,18 +157,26 @@ describe("configureProgramHelp", () => {
   });
 
   it("prints version and exits immediately when version flags are present", () => {
-    process.argv = ["node", "openclaw", "--version"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "--version"];
     expectVersionExit({ expectedVersion: "Operator 9.9.9-test (abc1234)" });
   });
 
   it("prints version and exits immediately without commit metadata", () => {
-    process.argv = ["node", "openclaw", "--version"];
+    process.argv = ["node", "@gabrielvfonseca/operator", "--version"];
     resolveCommitHashMock.mockReturnValue(null);
     expectVersionExit({ expectedVersion: "Operator 9.9.9-test" });
   });
 
   it("does not treat subcommand --version options as root version requests", () => {
-    process.argv = ["node", "openclaw", "skills", "verify", "discrawl", "--version", "1.0.0"];
+    process.argv = [
+      "node",
+      "@gabrielvfonseca/operator",
+      "skills",
+      "verify",
+      "discrawl",
+      "--version",
+      "1.0.0",
+    ];
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const exitSpy = vi.spyOn(process, "exit").mockImplementation(((code?: number) => {
       throw new Error(`exit:${code ?? ""}`);

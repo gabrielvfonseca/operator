@@ -1,5 +1,5 @@
 /** Cold adapter for provider-owned OpenAI model route facts. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { resolveMergedModelProviderConfig } from "../config/model-provider-config.js";
 import type { ModelApi } from "../config/types.models.js";
 import type { OperatorConfig } from "../config/types.operator.js";

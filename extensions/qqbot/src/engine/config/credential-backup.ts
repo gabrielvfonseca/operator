@@ -3,7 +3,7 @@
  * 凭证暂存与恢复。
  *
  * Solves the "hot-upgrade interrupted, appId/secret vanished from
- * openclaw.json" failure mode.
+ * operator.json" failure mode.
  *
  * Mechanics:
  *   - After each successful gateway start we snapshot the currently

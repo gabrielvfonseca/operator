@@ -1,4 +1,4 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
@@ -111,7 +111,7 @@ class A2UIHandler(
       """
       (() => {
         try {
-          const host = globalThis.openclawA2UI;
+          const host = globalThis.operatorA2UI;
           return !!host && typeof host.applyMessages === 'function';
         } catch (_) {
           return false;
@@ -123,7 +123,7 @@ class A2UIHandler(
       """
       (() => {
         try {
-          const host = globalThis.openclawA2UI;
+          const host = globalThis.operatorA2UI;
           if (!host) return { ok: false, error: "missing openclawA2UI" };
           return host.reset();
         } catch (e) {
@@ -136,7 +136,7 @@ class A2UIHandler(
       """
       (() => {
         try {
-          const host = globalThis.openclawA2UI;
+          const host = globalThis.operatorA2UI;
           if (!host) return { ok: false, error: "missing openclawA2UI" };
           const messages = $messagesJson;
           return host.applyMessages(messages);

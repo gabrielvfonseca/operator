@@ -2,7 +2,7 @@ import UIKit
 import XCTest
 
 @MainActor
-final class OpenClawSnapshotUITests: XCTestCase {
+final class OperatorSnapshotUITests: XCTestCase {
     private struct ScreenshotTarget {
         let initialTab: String
         let initialDestination: String
@@ -66,7 +66,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
 
     func testOnboardingExplainsCapabilitiesAndTrust() {
         let app = XCUIApplication()
-        app.launchArguments += ["--openclaw-reset-onboarding"]
+        app.launchArguments += ["--operator-reset-onboarding"]
         app.launch()
         self.app = app
 
@@ -378,7 +378,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
                 initialTab: "chat",
                 initialDestination: "chat",
                 name: "chat-empty-starters"),
-            additionalArguments: ["--openclaw-empty-chat-fixture"])
+            additionalArguments: ["--operator-empty-chat-fixture"])
 
         let starter = try XCTUnwrap(self.app?.buttons["chat-starter-summarize-status"])
         XCTAssertTrue(starter.waitForExistence(timeout: 8))
@@ -386,7 +386,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
         self.attachScreenshot(named: "chat-empty-starters")
 
         starter.tap()
-        let sentText = "Summarize the current OpenClaw status and tell me what needs attention."
+        let sentText = "Summarize the current Operator status and tell me what needs attention."
         let sentRows = self.app?.staticTexts.matching(NSPredicate(format: "label == %@", sentText))
         XCTAssertTrue(sentRows?.firstMatch.waitForExistence(timeout: 5) == true)
         XCTAssertEqual(sentRows?.count, 1)
@@ -403,7 +403,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
                 initialDestination: "chat",
                 name: "chat-empty-starters-german"),
             additionalArguments: [
-                "--openclaw-empty-chat-fixture",
+                "--operator-empty-chat-fixture",
                 "-AppleLanguages",
                 "(de)",
                 "-AppleLocale",
@@ -411,12 +411,12 @@ final class OpenClawSnapshotUITests: XCTestCase {
             ])
 
         XCTAssertTrue(self.app?.staticTexts["Woran möchtest du arbeiten?"].waitForExistence(timeout: 8) == true)
-        let starter = try XCTUnwrap(self.app?.buttons["OpenClaw-Status prüfen"])
+        let starter = try XCTUnwrap(self.app?.buttons["Operator-Status prüfen"])
         XCTAssertTrue(starter.exists)
         starter.tap()
         XCTAssertTrue(
             self.app?.staticTexts[
-                "Fasse den aktuellen OpenClaw-Status zusammen und sage mir, was Aufmerksamkeit erfordert.",
+                "Fasse den aktuellen Operator-Status zusammen und sage mir, was Aufmerksamkeit erfordert.",
             ].waitForExistence(timeout: 5) == true)
         self.attachScreenshot(named: "chat-empty-starters-german")
     }
@@ -432,10 +432,10 @@ final class OpenClawSnapshotUITests: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments += [
-            "--openclaw-reset-onboarding",
-            "--openclaw-initial-tab",
+            "--operator-reset-onboarding",
+            "--operator-initial-tab",
             "settings",
-            "--openclaw-initial-destination",
+            "--operator-initial-destination",
             "settings",
         ]
         app.launch()
@@ -585,7 +585,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
         activityChat.tap()
         XCTAssertTrue(chatTab.isSelected)
 
-        let returnButton = try XCTUnwrap(self.app?.buttons["OpenClawChatBackToControlDetailButton"])
+        let returnButton = try XCTUnwrap(self.app?.buttons["OperatorChatBackToControlDetailButton"])
         XCTAssertTrue(returnButton.waitForExistence(timeout: 5))
         XCTAssertEqual(returnButton.label, "Back to Activity")
         self.attachScreenshot(named: "chat-return-to-activity")
@@ -640,7 +640,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
 
         // Build scrollable history through the paired app before checking reader behavior.
         for index in 0..<3 {
-            let seedMarker = "OPENCLAW_E2E_SEED_\(index)_\(Int(Date().timeIntervalSince1970 * 1000))"
+            let seedMarker = "OPERATOR_E2E_SEED_\(index)_\(Int(Date().timeIntervalSince1970 * 1000))"
             let seedContext = String(repeating: "Reader context \(index). ", count: 6)
             self.sendLiveGatewayMessage(
                 "\(seedContext)Reply exactly with \(seedMarker) and no other text.",
@@ -648,7 +648,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
                 in: app)
         }
 
-        let replyMarker = "OPENCLAW_E2E_OK_\(Int(Date().timeIntervalSince1970 * 1000))"
+        let replyMarker = "OPERATOR_E2E_OK_\(Int(Date().timeIntervalSince1970 * 1000))"
         self.sendLiveGatewayMessage(
             "Reply exactly with \(replyMarker) and no other text.",
             expecting: replyMarker,
@@ -686,9 +686,9 @@ final class OpenClawSnapshotUITests: XCTestCase {
 
     func testManualAuthRetryUsesEditedToken() throws {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["OPENCLAW_IOS_RETRY_E2E"] == "1",
-            "Set OPENCLAW_IOS_RETRY_E2E=1 with a local token-auth Gateway on port 18920")
-        let token = try XCTUnwrap(ProcessInfo.processInfo.environment["OPENCLAW_IOS_RETRY_TOKEN"])
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_RETRY_E2E"] == "1",
+            "Set OPERATOR_IOS_RETRY_E2E=1 with a local token-auth Gateway on port 18920")
+        let token = try XCTUnwrap(ProcessInfo.processInfo.environment["OPERATOR_IOS_RETRY_TOKEN"])
 
         let app = XCUIApplication()
         addUIInterruptionMonitor(withDescription: "Local network access") { alert in
@@ -696,7 +696,7 @@ final class OpenClawSnapshotUITests: XCTestCase {
             alert.buttons["Allow"].tap()
             return true
         }
-        app.launchArguments += ["--openclaw-reset-onboarding"]
+        app.launchArguments += ["--operator-reset-onboarding"]
         app.launch()
         self.app = app
 
@@ -737,8 +737,8 @@ final class OpenClawSnapshotUITests: XCTestCase {
 
     func testPhotosLimitedAccess() throws {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["OPENCLAW_IOS_PHOTOS_E2E"] == "1",
-            "Set OPENCLAW_IOS_PHOTOS_E2E=1 to exercise the system Photos prompt")
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_PHOTOS_E2E"] == "1",
+            "Set OPERATOR_IOS_PHOTOS_E2E=1 to exercise the system Photos prompt")
         addUIInterruptionMonitor(withDescription: "Photos access") { alert in
             for title in ["Limit Access…", "Select Photos…"] where alert.buttons[title].exists {
                 alert.buttons[title].tap()
@@ -794,19 +794,19 @@ final class OpenClawSnapshotUITests: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments += [
-            "--openclaw-initial-tab",
+            "--operator-initial-tab",
             target.initialTab,
-            "--openclaw-initial-destination",
+            "--operator-initial-destination",
             target.initialDestination,
-            "--openclaw-sidebar-visibility",
+            "--operator-sidebar-visibility",
             "hidden",
         ]
         if screenshotMode {
-            app.launchArguments.append("--openclaw-screenshot-mode")
+            app.launchArguments.append("--operator-screenshot-mode")
         }
         app.launchArguments += additionalArguments
         if let appearance {
-            app.launchArguments += ["--openclaw-appearance", appearance]
+            app.launchArguments += ["--operator-appearance", appearance]
         }
         app.launch()
         self.app = app
@@ -831,10 +831,10 @@ final class OpenClawSnapshotUITests: XCTestCase {
         initialDestination: String) throws -> XCUIApplication
     {
         try XCTSkipUnless(
-            ProcessInfo.processInfo.environment["OPENCLAW_IOS_LIVE_GATEWAY"] == "1",
-            "Set OPENCLAW_IOS_LIVE_GATEWAY=1 and provide a fresh setup code")
+            ProcessInfo.processInfo.environment["OPERATOR_IOS_LIVE_GATEWAY"] == "1",
+            "Set OPERATOR_IOS_LIVE_GATEWAY=1 and provide a fresh setup code")
 
-        if let setupCode = ProcessInfo.processInfo.environment["OPENCLAW_IOS_LIVE_SETUP_CODE"] {
+        if let setupCode = ProcessInfo.processInfo.environment["OPERATOR_IOS_LIVE_SETUP_CODE"] {
             UIPasteboard.general.string = setupCode
         }
 
@@ -845,10 +845,10 @@ final class OpenClawSnapshotUITests: XCTestCase {
             return true
         }
         app.launchArguments += [
-            "--openclaw-reset-onboarding",
-            "--openclaw-initial-tab",
+            "--operator-reset-onboarding",
+            "--operator-initial-tab",
             initialTab,
-            "--openclaw-initial-destination",
+            "--operator-initial-destination",
             initialDestination,
         ]
         app.launch()
@@ -882,9 +882,9 @@ final class OpenClawSnapshotUITests: XCTestCase {
         self.app?.terminate()
         let app = XCUIApplication()
         app.launchArguments += [
-            "--openclaw-initial-tab",
+            "--operator-initial-tab",
             initialTab,
-            "--openclaw-initial-destination",
+            "--operator-initial-destination",
             initialDestination,
         ]
         app.launch()

@@ -1,13 +1,13 @@
 import AppKit
 import Observation
-import OpenClawKit
+import OperatorKit
 
 @MainActor
 @Observable
 final class TalkModeController {
     static let shared = TalkModeController()
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "talk.controller")
+    private let logger = Logger(subsystem: "ai.operator", category: "talk.controller")
 
     private(set) var phase: TalkModePhase = .idle
     private(set) var isPaused: Bool = false

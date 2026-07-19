@@ -10,7 +10,7 @@ import { parseSqliteSessionFileMarker } from "../../../config/sessions/sqlite-ma
 import { resolveQuotaSuspensionEntryMaintenance } from "../../../config/sessions/store-maintenance.js";
 import type { SessionEntry as ConfigSessionEntry } from "../../../config/sessions/types.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
-import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantMessage } from "../../../shared/transcript-only-openclaw-assistant.js";
 import type { AgentMessage } from "../../runtime/index.js";
 import { guardSessionManager } from "../../session-tool-result-guard-wrapper.js";
 import { sanitizeToolUseResultPairing } from "../../session-transcript-repair.js";

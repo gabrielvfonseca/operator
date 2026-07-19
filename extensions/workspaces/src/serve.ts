@@ -10,8 +10,8 @@
 import fs from "node:fs/promises";
 import type { ServerResponse } from "node:http";
 import path from "node:path";
-import { root as fsRoot } from "openclaw/plugin-sdk/security-runtime";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+import { root as fsRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import {
   CUSTOM_WIDGET_NAME_PATTERN,
   matchesApprovedFile,

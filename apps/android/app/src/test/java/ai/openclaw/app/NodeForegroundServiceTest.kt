@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.app.Notification
 import android.app.Service
@@ -162,7 +162,7 @@ class NodeForegroundServiceTest {
           .get()
           .onStartCommand(
             Intent(app, NodeForegroundService::class.java)
-              .setAction("ai.openclaw.app.action.STOP"),
+              .setAction("ai.operator.app.action.STOP"),
             0,
             1,
           )
@@ -190,7 +190,7 @@ class NodeForegroundServiceTest {
           .get()
           .onStartCommand(
             Intent(app, NodeForegroundService::class.java)
-              .setAction("ai.openclaw.app.action.STOP"),
+              .setAction("ai.operator.app.action.STOP"),
             0,
             1,
           )
@@ -199,7 +199,7 @@ class NodeForegroundServiceTest {
           .get()
           .onStartCommand(
             Intent(app, NodeForegroundService::class.java)
-              .setAction("ai.openclaw.app.action.RESUME"),
+              .setAction("ai.operator.app.action.RESUME"),
             0,
             2,
           )

@@ -1,6 +1,6 @@
 // Applies idle and overall deadlines to fetch response-body reads.
-import { toErrorObject } from "@operator/normalization-core/error-coercion";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { toErrorObject } from "@gabrielvfonseca/normalization-core/error-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 
 type TimeoutErrorFactory = (params: { timeoutMs: number }) => Error;
 

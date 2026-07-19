@@ -2,7 +2,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Parsed `/plugins` command variants accepted by auto-reply command handling. */
 type PluginsCommand =

@@ -1,4 +1,4 @@
-import OpenClawChatUI
+import OperatorChatUI
 import SwiftUI
 
 struct CommandCenterTab: View {
@@ -8,12 +8,12 @@ struct CommandCenterTab: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.scenePhase) private var scenePhase
-    @State private var defaultChatSessionEntry: OpenClawChatSessionEntry?
-    @State private var recentChatSessions: [OpenClawChatSessionEntry] = []
+    @State private var defaultChatSessionEntry: OperatorChatSessionEntry?
+    @State private var recentChatSessions: [OperatorChatSessionEntry] = []
     var ownsNavigationStack: Bool = true
     var usesNativeNavigationChrome: Bool = false
-    var headerTitle: String = "OpenClaw"
-    var headerLeadingAction: OpenClawSidebarHeaderAction?
+    var headerTitle: String = "Operator"
+    var headerLeadingAction: OperatorSidebarHeaderAction?
     var showsHeaderMark: Bool = true
     var openChat: () -> Void
     var openSettings: () -> Void
@@ -74,18 +74,18 @@ struct CommandCenterTab: View {
                                 self.recentSessions
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
-                            .padding(.horizontal, OpenClawProMetric.pagePadding)
+                            .padding(.horizontal, OperatorProMetric.pagePadding)
                         } else {
                             self.defaultChatSessionSection
-                                .padding(.horizontal, OpenClawProMetric.pagePadding)
+                                .padding(.horizontal, OperatorProMetric.pagePadding)
                             self.recentSessions
-                                .padding(.horizontal, OpenClawProMetric.pagePadding)
+                                .padding(.horizontal, OperatorProMetric.pagePadding)
                         }
                     }
                     .padding(.top, 18)
                     .padding(.bottom, 18)
                 }
-                .safeAreaPadding(.bottom, OpenClawProMetric.bottomScrollInset)
+                .safeAreaPadding(.bottom, OperatorProMetric.bottomScrollInset)
             }
         }
         .navigationTitle(self.headerTitle)
@@ -119,32 +119,32 @@ struct CommandCenterTab: View {
     }
 
     private var header: some View {
-        OpenClawAdaptiveHeaderRow(
+        OperatorAdaptiveHeaderRow(
             title: .localized(self.headerTitle),
             subtitle: .localized(self.gatewaySubtitle),
-            titleFont: OpenClawType.title3SemiBold,
-            subtitleFont: OpenClawType.caption,
+            titleFont: OperatorType.title3SemiBold,
+            subtitleFont: OperatorType.caption,
             subtitleLineLimit: 1)
         {
             if let headerLeadingAction {
-                OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)
+                OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
             } else if Self.shouldShowHeaderMark(
                 hasLeadingAction: headerLeadingAction != nil,
                 showsHeaderMark: self.showsHeaderMark)
             {
-                OpenClawProMark(size: 28, shadowRadius: 5)
+                OperatorProMark(size: 28, shadowRadius: 5)
             }
         } accessory: {
             Button(action: self.openSettings) {
                 Image(systemName: "gearshape.fill")
-                    .font(OpenClawType.subheadSemiBold)
-                    .frame(width: OpenClawProMetric.compactControlSize, height: OpenClawProMetric.compactControlSize)
+                    .font(OperatorType.subheadSemiBold)
+                    .frame(width: OperatorProMetric.compactControlSize, height: OperatorProMetric.compactControlSize)
             }
             .openClawGlassButton()
             .accessibilityLabel("Gateway settings")
             .accessibilityHint("Opens gateway settings")
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     @ViewBuilder
@@ -178,33 +178,33 @@ struct CommandCenterTab: View {
                         icon: "server.rack",
                         title: "Address",
                         value: self.gatewayAddressText,
-                        color: OpenClawBrand.accentForeground)
+                        color: OperatorBrand.accentForeground)
                     Divider().frame(height: 38)
                     self.gatewayFact(
                         icon: "person.2.fill",
                         title: "Agents",
                         value: self.gatewayAgentCountText,
-                        color: OpenClawBrand.accentHotForeground)
+                        color: OperatorBrand.accentHotForeground)
                 }
                 .padding(.vertical, 7)
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private func gatewayFact(icon: String, title: String, value: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 5) {
                 Image(systemName: icon)
-                    .font(OpenClawType.caption2Bold)
+                    .font(OperatorType.caption2Bold)
                     .foregroundStyle(color)
                 Text(title)
-                    .font(OpenClawType.caption2Medium)
+                    .font(OperatorType.caption2Medium)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
             Text(value)
-                .font(OpenClawType.captionSemiBold)
+                .font(OperatorType.captionSemiBold)
                 .foregroundStyle(title == "Connection" ? color : .primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.72)
@@ -291,7 +291,7 @@ struct CommandCenterTab: View {
     private func cardHeader(title: String) -> some View {
         HStack(spacing: 8) {
             Text(title)
-                .font(OpenClawType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 8)
         }
@@ -321,11 +321,11 @@ struct CommandCenterTab: View {
     private var gatewayStatusColor: Color {
         switch self.gatewayDisplayState {
         case .connected:
-            OpenClawBrand.ok
+            OperatorBrand.ok
         case .connecting:
-            OpenClawBrand.accent
+            OperatorBrand.accent
         case .error:
-            OpenClawBrand.warn
+            OperatorBrand.warn
         case .disconnected:
             .secondary
         }
@@ -351,7 +351,7 @@ struct CommandCenterTab: View {
             detail: self.defaultChatActivityText,
             state: isOpen ? "open" : "default",
             trailing: "chat",
-            color: isOpen ? OpenClawBrand.accent : OpenClawBrand.ok,
+            color: isOpen ? OperatorBrand.accent : OperatorBrand.ok,
             progress: nil,
             route: .chat(nil),
             isUnread: self.defaultChatSessionEntry?.unread == true,
@@ -366,7 +366,7 @@ struct CommandCenterTab: View {
         return Self.relativeTimeText(forMilliseconds: activityAt)
     }
 
-    private var recentSessionPreviewSessions: [OpenClawChatSessionEntry] {
+    private var recentSessionPreviewSessions: [OperatorChatSessionEntry] {
         CommandSessionGrouping.previewSelection(
             self.recentChatSessions,
             currentKey: self.appModel.chatSessionKey)
@@ -412,7 +412,7 @@ struct CommandCenterTab: View {
         }
     }
 
-    private func open(_ session: OpenClawChatSessionEntry) {
+    private func open(_ session: OperatorChatSessionEntry) {
         self.open(.chat(session.key), unread: session.unread == true)
     }
 
@@ -421,7 +421,7 @@ struct CommandCenterTab: View {
     }
 
     private func patchSession(
-        _ session: OpenClawChatSessionEntry,
+        _ session: OperatorChatSessionEntry,
         label: String?? = nil,
         category: String?? = nil,
         pinned: Bool? = nil,
@@ -439,13 +439,13 @@ struct CommandCenterTab: View {
         }
     }
 
-    private func deleteSession(_ session: OpenClawChatSessionEntry) {
+    private func deleteSession(_ session: OperatorChatSessionEntry) {
         self.performSessionMutation(resetActiveSessionKey: session.key) { transport in
             try await transport.deleteSession(key: session.key)
         }
     }
 
-    private func archiveSession(_ session: OpenClawChatSessionEntry) {
+    private func archiveSession(_ session: OperatorChatSessionEntry) {
         self.performSessionMutation(resetActiveSessionKey: session.key) { transport in
             try await transport.patchSession(
                 key: session.key,
@@ -457,7 +457,7 @@ struct CommandCenterTab: View {
         }
     }
 
-    private func forkSession(_ session: OpenClawChatSessionEntry) {
+    private func forkSession(_ session: OperatorChatSessionEntry) {
         Task {
             do {
                 let key = try await self.appModel.makeChatTransport().forkSession(parentKey: session.key)
@@ -469,7 +469,7 @@ struct CommandCenterTab: View {
 
     private func performSessionMutation(
         resetActiveSessionKey: String? = nil,
-        _ operation: @escaping (any OpenClawChatTransport) async throws -> Void)
+        _ operation: @escaping (any OperatorChatTransport) async throws -> Void)
     {
         Task {
             do {
@@ -505,7 +505,7 @@ struct CommandCenterTab: View {
         self.applySessions(sessions)
     }
 
-    private func applySessions(_ sessions: [OpenClawChatSessionEntry]) {
+    private func applySessions(_ sessions: [OperatorChatSessionEntry]) {
         self.defaultChatSessionEntry = sessions.first {
             $0.key == self.appModel.defaultChatSessionKey
         }
@@ -515,8 +515,8 @@ struct CommandCenterTab: View {
     }
 
     private static func sessionChoices(
-        _ sessions: [OpenClawChatSessionEntry],
-        defaultSessionKey: String) -> [OpenClawChatSessionEntry]
+        _ sessions: [OperatorChatSessionEntry],
+        defaultSessionKey: String) -> [OperatorChatSessionEntry]
     {
         sessions.filter {
             self.isRecentChatSession($0.key, defaultSessionKey: defaultSessionKey)
@@ -524,7 +524,7 @@ struct CommandCenterTab: View {
     }
 
     static func sessionWorkItem(
-        for session: OpenClawChatSessionEntry,
+        for session: OperatorChatSessionEntry,
         currentSessionKey: String) -> WorkItem
     {
         let isCurrent = session.key == currentSessionKey
@@ -535,14 +535,14 @@ struct CommandCenterTab: View {
             detail: Self.sessionDetail(session),
             state: isCurrent ? "open" : "recent",
             trailing: "chat",
-            color: isCurrent ? OpenClawBrand.accent : OpenClawBrand.ok,
+            color: isCurrent ? OperatorBrand.accent : OperatorBrand.ok,
             progress: nil,
             route: .chat(session.key),
             isUnread: session.unread == true,
             isPinned: session.pinned == true)
     }
 
-    fileprivate static func sessionTitle(_ session: OpenClawChatSessionEntry) -> String {
+    fileprivate static func sessionTitle(_ session: OperatorChatSessionEntry) -> String {
         let label = session.label?.trimmingCharacters(in: .whitespacesAndNewlines)
         if let label, !label.isEmpty {
             return label
@@ -601,7 +601,7 @@ struct CommandCenterTab: View {
             .joined(separator: " ")
     }
 
-    fileprivate static func sessionDetail(_ session: OpenClawChatSessionEntry) -> String {
+    fileprivate static func sessionDetail(_ session: OperatorChatSessionEntry) -> String {
         let activityAt = session.lastActivityAt ?? session.updatedAt
         if let activityAt, activityAt > 0 {
             return self.relativeTimeText(forMilliseconds: activityAt)
@@ -702,7 +702,7 @@ struct CommandSessionsScreen: View {
     /// Group mutations need the full session store, not a recency window.
     private static let groupMemberFetchLimit = 10000
 
-    @State private var sessions: [OpenClawChatSessionEntry] = []
+    @State private var sessions: [OperatorChatSessionEntry] = []
     @State private var isLoading = false
     @State private var loadErrorText: String?
     @State private var showArchived = false
@@ -710,12 +710,12 @@ struct CommandSessionsScreen: View {
     @State private var groupEditor: GroupEditor?
     @State private var groupDraftText = ""
     @State private var groupPendingDelete: String?
-    let headerLeadingAction: OpenClawSidebarHeaderAction?
+    let headerLeadingAction: OperatorSidebarHeaderAction?
     let usesNativeNavigationChrome: Bool
     let openChat: () -> Void
 
     init(
-        headerLeadingAction: OpenClawSidebarHeaderAction? = nil,
+        headerLeadingAction: OperatorSidebarHeaderAction? = nil,
         usesNativeNavigationChrome: Bool = false,
         openChat: @escaping () -> Void)
     {
@@ -737,7 +737,7 @@ struct CommandSessionsScreen: View {
                 .padding(.top, 16)
                 .padding(.bottom, 18)
             }
-            .safeAreaPadding(.bottom, OpenClawProMetric.bottomScrollInset)
+            .safeAreaPadding(.bottom, OperatorProMetric.bottomScrollInset)
         }
         .navigationTitle("Sessions")
         .navigationBarTitleDisplayMode(.inline)
@@ -747,20 +747,20 @@ struct CommandSessionsScreen: View {
         }
         .alert(self.groupEditorTitle, isPresented: self.groupEditorBinding) {
             TextField("Group name", text: self.$groupDraftText)
-                .font(OpenClawType.body)
+                .font(OperatorType.body)
             Button {
                 self.commitGroupEditor()
             } label: {
                 Text(self.groupEditor == .create
                     ? LocalizedStringKey("Create")
                     : LocalizedStringKey("Save"))
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
             }
             Button(role: .cancel) {
                 self.groupEditor = nil
             } label: {
                 Text("Cancel")
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
             }
         }
         .alert(
@@ -772,36 +772,36 @@ struct CommandSessionsScreen: View {
                 self.deleteGroup(group)
             } label: {
                 Text("Delete Group")
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
             }
             Button(role: .cancel) {} label: {
                 Text("Cancel")
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
             }
         } message: { group in
             Text(verbatim: String(
                 format: String(
                     localized: "Sessions in \u{201C}%@\u{201D} move back to Ungrouped."),
                 group))
-                .font(OpenClawType.caption)
+                .font(OperatorType.caption)
         }
     }
 
     private var header: some View {
         HStack(alignment: .top, spacing: 12) {
             if let headerLeadingAction {
-                OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)
+                OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
             }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Sessions")
-                    .font(OpenClawType.title2)
+                    .font(OperatorType.title2)
                 Text(self.headerDetail)
-                    .font(OpenClawType.captionMedium)
+                    .font(OperatorType.captionMedium)
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private var sessionsPanel: some View {
@@ -811,7 +811,7 @@ struct CommandSessionsScreen: View {
                     Text(self.showArchived
                         ? LocalizedStringKey("Archived sessions")
                         : LocalizedStringKey("Recent sessions"))
-                        .font(OpenClawType.subheadBold)
+                        .font(OperatorType.subheadBold)
                     Spacer(minLength: 8)
                     if self.isLoading {
                         ProgressView()
@@ -820,7 +820,7 @@ struct CommandSessionsScreen: View {
                     if self.sessionControlsAvailable {
                         Toggle(isOn: self.$showArchived) {
                             Text("Show Archived")
-                                .font(OpenClawType.captionMedium)
+                                .font(OperatorType.captionMedium)
                         }
                         .toggleStyle(.switch)
                         .controlSize(.mini)
@@ -866,7 +866,7 @@ struct CommandSessionsScreen: View {
                 }
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private var headerDetail: String {
@@ -883,7 +883,7 @@ struct CommandSessionsScreen: View {
             AttributedString(localized: "^[\(count) session](inflect: true)").characters)
     }
 
-    private var visibleSessions: [OpenClawChatSessionEntry] {
+    private var visibleSessions: [OperatorChatSessionEntry] {
         self.sessions
             .filter { CommandCenterTab.isRecentChatSession(
                 $0.key,
@@ -927,7 +927,7 @@ struct CommandSessionsScreen: View {
     @ViewBuilder
     private func sectionHeader(_ section: CommandSessionSection) -> some View {
         let title = Text(section.title)
-            .font(OpenClawType.captionSemiBold)
+            .font(OperatorType.captionSemiBold)
             .foregroundStyle(.secondary)
             .padding(.horizontal, 4)
         // Group management only applies to custom categories, never the
@@ -948,20 +948,20 @@ struct CommandSessionsScreen: View {
             self.groupEditor = .rename(group)
         } label: {
             Label("Rename Group…", systemImage: "pencil")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         }
         Button {
             self.groupDraftText = ""
             self.groupEditor = .create
         } label: {
             Label("New Group…", systemImage: "folder.badge.plus")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         }
         Button(role: .destructive) {
             self.groupPendingDelete = group
         } label: {
             Label("Delete Group…", systemImage: "trash")
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
         }
     }
 
@@ -1051,7 +1051,7 @@ struct CommandSessionsScreen: View {
         }
     }
 
-    private func sessionRow(_ session: OpenClawChatSessionEntry) -> some View {
+    private func sessionRow(_ session: OperatorChatSessionEntry) -> some View {
         let item = CommandCenterTab.sessionWorkItem(
             for: session,
             currentSessionKey: self.appModel.chatSessionKey)
@@ -1076,7 +1076,7 @@ struct CommandSessionsScreen: View {
                 delete: { self.deleteSession(session) }))
     }
 
-    private func open(_ session: OpenClawChatSessionEntry) {
+    private func open(_ session: OperatorChatSessionEntry) {
         self.openSessionKey(session.key, unread: session.unread == true)
     }
 
@@ -1087,7 +1087,7 @@ struct CommandSessionsScreen: View {
     }
 
     private func patchSession(
-        _ session: OpenClawChatSessionEntry,
+        _ session: OperatorChatSessionEntry,
         label: String?? = nil,
         category: String?? = nil,
         pinned: Bool? = nil,
@@ -1105,13 +1105,13 @@ struct CommandSessionsScreen: View {
         }
     }
 
-    private func deleteSession(_ session: OpenClawChatSessionEntry) {
+    private func deleteSession(_ session: OperatorChatSessionEntry) {
         self.performMutation(resetActiveSessionKey: session.key) { transport in
             try await transport.deleteSession(key: session.key)
         }
     }
 
-    private func toggleArchived(_ session: OpenClawChatSessionEntry) {
+    private func toggleArchived(_ session: OperatorChatSessionEntry) {
         let archivesSession = !self.showArchived && session.archived != true
         self.performMutation(resetActiveSessionKey: archivesSession ? session.key : nil) { transport in
             try await transport.patchSession(
@@ -1124,7 +1124,7 @@ struct CommandSessionsScreen: View {
         }
     }
 
-    private func forkSession(_ session: OpenClawChatSessionEntry) {
+    private func forkSession(_ session: OperatorChatSessionEntry) {
         Task {
             do {
                 let key = try await self.appModel.makeChatTransport().forkSession(parentKey: session.key)
@@ -1138,7 +1138,7 @@ struct CommandSessionsScreen: View {
 
     private func performMutation(
         resetActiveSessionKey: String? = nil,
-        _ operation: @escaping (any OpenClawChatTransport) async throws -> Void)
+        _ operation: @escaping (any OperatorChatTransport) async throws -> Void)
     {
         Task {
             do {

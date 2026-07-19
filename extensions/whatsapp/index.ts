@@ -2,8 +2,8 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "openclaw/plugin-sdk/channel-entry-contract";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 
 function registerWhatsAppCallTool(api: OperatorPluginApi): void {
   const registerTool = loadBundledEntryExportSync<(api: OperatorPluginApi) => void>(

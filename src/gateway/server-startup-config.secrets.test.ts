@@ -84,7 +84,7 @@ function asConfig(value: unknown): OperatorConfig {
 function buildSnapshot(config: OperatorConfig): ConfigFileSnapshot {
   const raw = `${JSON.stringify(config, null, 2)}\n`;
   return buildTestConfigSnapshot({
-    path: "/tmp/openclaw-startup-secrets-test.json",
+    path: "/tmp/operator-startup-secrets-test.json",
     exists: true,
     raw,
     parsed: config,
@@ -198,7 +198,7 @@ function readTimelineEvents(filePath: string): Array<Record<string, unknown>> {
 }
 
 function installDiagnosticsTimelineEnv() {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-startup-secrets-timeline-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-startup-secrets-timeline-"));
   const timelinePath = path.join(root, "timeline.jsonl");
   const previousDiagnostics = process.env.OPERATOR_DIAGNOSTICS;
   const previousTimelinePath = process.env.OPERATOR_DIAGNOSTICS_TIMELINE_PATH;
@@ -225,7 +225,7 @@ function installDiagnosticsTimelineEnv() {
 
 /** Isolate path-based auth store discovery so prior full-suite env cannot force slow path. */
 function installIsolatedStartupFastPathEnv() {
-  const root = mkdtempSync(path.join(tmpdir(), "openclaw-startup-fast-path-env-"));
+  const root = mkdtempSync(path.join(tmpdir(), "operator-startup-fast-path-env-"));
   const keys = [
     "OPERATOR_HOME",
     "OPERATOR_STATE_DIR",
@@ -238,7 +238,7 @@ function installIsolatedStartupFastPathEnv() {
   }
   process.env.OPERATOR_HOME = path.join(root, "home");
   process.env.OPERATOR_STATE_DIR = path.join(root, "state");
-  process.env.OPERATOR_CONFIG_PATH = path.join(root, "state", "openclaw.json");
+  process.env.OPERATOR_CONFIG_PATH = path.join(root, "state", "operator.json");
   process.env.OPERATOR_OAUTH_DIR = path.join(root, "credentials");
 
   return {
@@ -438,7 +438,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("rejects a managed reload prepared before an OAuth credential mutation", async () => {
-    const agentDir = "/tmp/openclaw-managed-auth-store-cas";
+    const agentDir = "/tmp/operator-managed-auth-store-cas";
     const initial = preparedSnapshot(gatewayTokenConfig({}));
     const candidate: PreparedSecretsRuntimeSnapshot = {
       ...preparedSnapshotWithGatewayToken(initial.sourceConfig, "candidate-token"),
@@ -969,7 +969,7 @@ describe("gateway startup config secret preflight", () => {
 
   it("activates no-SecretRef startup config without importing the full secrets runtime", async () => {
     vi.resetModules();
-    const agentDir = mkdtempSync(path.join(tmpdir(), "openclaw-startup-fast-path-"));
+    const agentDir = mkdtempSync(path.join(tmpdir(), "operator-startup-fast-path-"));
     const isolatedEnv = installIsolatedStartupFastPathEnv();
     const runtimeImport = vi.fn();
     const prepareRuntimeSecretsSnapshot = vi.fn(async ({ config }) => preparedSnapshot(config));
@@ -1089,7 +1089,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("retries a stale startup fast-path preflight against the newer runtime context", async () => {
-    const agentDir = autoCleanupTempDirs.make("openclaw-startup-fast-path-cas-");
+    const agentDir = autoCleanupTempDirs.make("operator-startup-fast-path-cas-");
     let clearImportedSecretsRuntimeSnapshot: (() => void) | undefined;
     const config = (port: number) =>
       gatewayTokenConfig(
@@ -1154,7 +1154,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("grafts live auth stores onto one-shot config-write snapshots", async () => {
-    const agentDir = "/tmp/openclaw-managed-write-auth-store";
+    const agentDir = "/tmp/operator-managed-write-auth-store";
     const credential = {
       type: "api_key" as const,
       provider: "openai",
@@ -1210,7 +1210,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("keeps the full secrets runtime path when startup config has a SecretRef", async () => {
-    const harness = createGatewayStartupSecretsRuntimeHarness("openclaw-startup-secret-ref-");
+    const harness = createGatewayStartupSecretsRuntimeHarness("operator-startup-secret-ref-");
     await expectImportedStartupConfigUsesFullSecretsRuntime(
       harness,
       asConfig({
@@ -1230,7 +1230,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("keeps the full secrets runtime path when auth profile files are present", async () => {
-    const harness = createGatewayStartupSecretsRuntimeHarness("openclaw-startup-auth-store-");
+    const harness = createGatewayStartupSecretsRuntimeHarness("operator-startup-auth-store-");
     writeFileSync(
       path.join(harness.agentDir, "auth-profiles.json"),
       `${JSON.stringify({

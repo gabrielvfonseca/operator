@@ -2,14 +2,18 @@
  * Azure Speech provider descriptor. It reads config/env defaults, parses speech
  * directives, lists voices, and calls the Azure TTS runtime helper.
  */
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "openclaw/plugin-sdk/speech-core";
-import { asFiniteNumber, asObject, trimToUndefined } from "openclaw/plugin-sdk/speech-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import {
+  asFiniteNumber,
+  asObject,
+  trimToUndefined,
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
 import {
   azureSpeechTTS,
   DEFAULT_AZURE_SPEECH_AUDIO_FORMAT,

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { extractFrontmatterBlock } from "../../../packages/markdown-core/src/frontmatter.js";
 import { resolveWorkspaceTemplateSearchDirs } from "../../agents/workspace-templates.js";
 import { resolveDefaultAgentWorkspaceDir } from "../../agents/workspace.js";
@@ -68,7 +68,7 @@ async function ensureDevWorkspace(dir: string) {
   const [agents, soul, tools, identity, user] = await Promise.all([
     loadDevTemplate(
       "AGENTS.dev.md",
-      `# AGENTS.md - Operator Dev Workspace\n\nDefault dev workspace for operator gateway --dev.\n`,
+      `# AGENTS.md - Operator Dev Workspace\n\nDefault dev workspace for openclaw gateway --dev.\n`,
     ),
     loadDevTemplate(
       "SOUL.dev.md",

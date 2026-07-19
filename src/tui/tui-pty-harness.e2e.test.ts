@@ -491,7 +491,7 @@ async function writeTuiPtyFixtureScript(dir: string) {
 }
 
 async function startTuiFixture(opts: { env?: NodeJS.ProcessEnv } = {}) {
-  const tempDir = await mkdtemp(path.join(tmpdir(), "openclaw-tui-pty-"));
+  const tempDir = await mkdtemp(path.join(tmpdir(), "operator-tui-pty-"));
   const scriptPath = await writeTuiPtyFixtureScript(tempDir);
   const logPath = path.join(tempDir, "fixture-log.jsonl");
   const run = startPty(process.execPath, ["--import", "tsx", scriptPath], {

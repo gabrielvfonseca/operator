@@ -1,5 +1,5 @@
 // ACP Core type module defines shared TypeScript contracts.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const ACP_PROVENANCE_MODE_VALUES = ["off", "meta", "meta+receipt"] as const;
 

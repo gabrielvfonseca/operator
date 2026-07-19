@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private struct StoredGatewayPreference {
     let stableID: String?
@@ -79,10 +79,10 @@ struct AppStateRemoteConfigTests {
     func `route edit during config read fails the source snapshot closed`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [connectionModeKey: AppState.ConnectionMode.remote.rawValue])
         {
-            #expect(OpenClawConfigFile.saveDict([
+            #expect(OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -162,10 +162,10 @@ struct AppStateRemoteConfigTests {
     func `invalid remote edit retires the prior canonical gateway route`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [connectionModeKey: AppState.ConnectionMode.remote.rawValue])
         {
-            #expect(OpenClawConfigFile.saveDict([
+            #expect(OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -196,10 +196,10 @@ struct AppStateRemoteConfigTests {
     func `remote identity edit updates canonical SSH config before routing resumes`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [connectionModeKey: AppState.ConnectionMode.remote.rawValue])
         {
-            #expect(OpenClawConfigFile.saveDict([
+            #expect(OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -220,7 +220,7 @@ struct AppStateRemoteConfigTests {
             #expect(state._testGatewayConfigIsCurrentForRouting)
             let persisted = CommandResolver.connectionSettings()
             #expect(persisted.identity == "/tmp/new-identity")
-            let remote = (OpenClawConfigFile.loadDict()["gateway"] as? [String: Any])?["remote"]
+            let remote = (OperatorConfigFile.loadDict()["gateway"] as? [String: Any])?["remote"]
                 as? [String: Any]
             #expect(remote?["sshIdentity"] as? String == "/tmp/new-identity")
         }
@@ -334,10 +334,10 @@ struct AppStateRemoteConfigTests {
         defer { restoreGatewayPreference(previousGatewayPreference) }
 
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [connectionModeKey: AppState.ConnectionMode.remote.rawValue])
         {
-            #expect(OpenClawConfigFile.saveDict([
+            #expect(OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -371,13 +371,13 @@ struct AppStateRemoteConfigTests {
         defer { restoreGatewayPreference(previousGatewayPreference) }
 
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [
                 connectionModeKey: AppState.ConnectionMode.remote.rawValue,
                 remoteTargetKey: "alice@gateway-a.example.test",
                 remoteIdentityKey: "/tmp/gateway-a-id",
             ]) {
-                #expect(OpenClawConfigFile.saveDict([
+                #expect(OperatorConfigFile.saveDict([
                     "gateway": [
                         "mode": "remote",
                         "remote": [
@@ -417,13 +417,13 @@ struct AppStateRemoteConfigTests {
         defer { restoreGatewayPreference(previousGatewayPreference) }
 
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [
                 connectionModeKey: AppState.ConnectionMode.remote.rawValue,
                 remoteTargetKey: "alice@gateway-a.example.test",
                 remoteIdentityKey: "/tmp/gateway-a-id",
             ]) {
-                #expect(OpenClawConfigFile.saveDict([
+                #expect(OperatorConfigFile.saveDict([
                     "gateway": [
                         "mode": "remote",
                         "remote": [
@@ -596,10 +596,10 @@ struct AppStateRemoteConfigTests {
     func `app state init does not infer loopback host into remote target`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [remoteTargetKey: nil])
         {
-            OpenClawConfigFile.saveDict([
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -617,10 +617,10 @@ struct AppStateRemoteConfigTests {
     func `app state init preserves existing remote target when remote url is loopback`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [remoteTargetKey: "alice@gateway.example"])
         {
-            OpenClawConfigFile.saveDict([
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [
@@ -638,10 +638,10 @@ struct AppStateRemoteConfigTests {
     func `app state init preserves legacy SSH tunnel config until transport is explicit`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["OPERATOR_CONFIG_PATH": configPath],
             defaults: [remoteTargetKey: nil])
         {
-            OpenClawConfigFile.saveDict([
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "remote",
                     "remote": [

@@ -1,6 +1,6 @@
 // Tests queue setting normalization and directive parsing.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import { resolveQueueSettings } from "./settings.js";
 
 describe("resolveQueueSettings", () => {

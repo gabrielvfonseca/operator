@@ -1,4 +1,4 @@
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const MUTATING_TOOL_NAMES = new Set([
   "write",

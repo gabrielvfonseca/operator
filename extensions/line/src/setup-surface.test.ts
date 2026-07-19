@@ -1,14 +1,14 @@
 // Line tests cover setup surface plugin behavior.
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { createStartAccountContext } from "openclaw/plugin-sdk/channel-test-helpers";
+import { createStartAccountContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import {
   createPluginSetupWizardConfigure,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { bundledPluginRoot } from "openclaw/plugin-sdk/test-fixtures";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { bundledPluginRoot } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import ts from "typescript";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime, ResolvedLineAccount } from "../api.js";
@@ -110,7 +110,11 @@ function collectRuntimeApiPreExports(runtimeApiPath: string): string[] {
   );
   const preExports = new Set<string>();
   let pluginSdkLineRuntimeSeen = false;
-  const removedLineRuntimeSpecifier = ["openclaw", "plugin-sdk", "line-runtime"].join("/");
+  const removedLineRuntimeSpecifier = [
+    "@gabrielvfonseca/operator",
+    "plugin-sdk",
+    "line-runtime",
+  ].join("/");
 
   for (const statement of runtimeApiFile.statements) {
     if (!ts.isExportDeclaration(statement)) {

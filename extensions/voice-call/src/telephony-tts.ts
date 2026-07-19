@@ -1,12 +1,12 @@
 // Voice Call plugin module implements telephony tts behavior.
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import { mergeDeep } from "openclaw/plugin-sdk/plugin-config-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { mergeDeep } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import {
   parseTtsDirectives,
   type SpeechModelOverridePolicy,
   type SpeechProviderConfig,
   type TtsDirectiveOverrides,
-} from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import type { VoiceCallTtsConfig } from "./config.js";
 import type { CoreConfig } from "./core-bridge.js";
 import { convertPcmToMulaw8k } from "./telephony-audio.js";

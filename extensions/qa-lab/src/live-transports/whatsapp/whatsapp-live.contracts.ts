@@ -1,10 +1,10 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 // QA Lab WhatsApp live domain contracts.
 import type {
   WhatsAppQaDriverObservedMessage,
   WhatsAppQaDriverSession,
-} from "@operator/whatsapp/api.js";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/whatsapp/api.js";
 import type { startQaGatewayChild } from "../../gateway-child.js";
 
 export type WhatsAppQaRuntimeEnv = {

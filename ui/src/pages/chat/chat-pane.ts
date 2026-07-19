@@ -1,5 +1,5 @@
+import { asNullableRecord as catalogRawRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { consume } from "@lit/context";
-import { asNullableRecord as catalogRawRecord } from "@operator/normalization-core/record-coerce";
 import { html, nothing } from "lit";
 import { property, state as litState } from "lit/decorators.js";
 import type {
@@ -59,7 +59,7 @@ import {
   uiSessionEventMatches,
 } from "../../lib/sessions/session-key.ts";
 import { SessionUnreadPatchGuard } from "../../lib/sessions/unread.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { PollController } from "../../lit/poll-controller.ts";
 import { catalogMessageId } from "./catalog-message-id.ts";
 import { refreshChatAvatar } from "./chat-avatar.ts";
@@ -248,7 +248,7 @@ function keyboardEventPathMatches(event: KeyboardEvent, selector: string): boole
     .some((target) => target instanceof Element && target.matches(selector));
 }
 
-class ChatPane extends OpenClawLightDomElement {
+class ChatPane extends OperatorLightDomElement {
   // One lifecycle-owned minute tick refreshes both relative labels and external PR state.
   readonly minutePoll = new PollController(this, 60_000, () => {
     this.requestUpdate();
@@ -1859,7 +1859,7 @@ class ChatPane extends OpenClawLightDomElement {
           ${renderSessionWorkspaceToggle(sessionWorkspace)}
           ${!this.narrow
             ? html`
-                <openclaw-tooltip .content=${t("chat.splitView.splitDown")}>
+                <operator-tooltip .content=${t("chat.splitView.splitDown")}>
                   <button
                     class="btn btn--ghost btn--icon chat-icon-btn"
                     type="button"
@@ -1868,8 +1868,8 @@ class ChatPane extends OpenClawLightDomElement {
                   >
                     ${icons.panelBottomOpen}
                   </button>
-                </openclaw-tooltip>
-                <openclaw-tooltip .content=${t("chat.splitView.splitRight")}>
+                </operator-tooltip>
+                <operator-tooltip .content=${t("chat.splitView.splitRight")}>
                   <button
                     class="btn btn--ghost btn--icon chat-icon-btn"
                     type="button"
@@ -1878,10 +1878,10 @@ class ChatPane extends OpenClawLightDomElement {
                   >
                     ${icons.panelRightOpen}
                   </button>
-                </openclaw-tooltip>
+                </operator-tooltip>
               `
             : nothing}
-          <openclaw-tooltip .content=${t("chat.splitView.closePane")}>
+          <operator-tooltip .content=${t("chat.splitView.closePane")}>
             <button
               class="btn btn--ghost btn--icon chat-icon-btn"
               type="button"
@@ -1890,7 +1890,7 @@ class ChatPane extends OpenClawLightDomElement {
             >
               ${icons.x}
             </button>
-          </openclaw-tooltip>
+          </operator-tooltip>
         </div>
       </div>
     `;
@@ -2221,13 +2221,13 @@ class ChatPane extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-chat-pane")) {
-  customElements.define("openclaw-chat-pane", ChatPane);
+if (!customElements.get("operator-chat-pane")) {
+  customElements.define("operator-chat-pane", ChatPane);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "openclaw-chat-pane": ChatPane;
+    "operator-chat-pane": ChatPane;
   }
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

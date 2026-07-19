@@ -2,14 +2,14 @@
 import {
   channelIngressRoutes,
   resolveStableChannelMessageIngress,
-} from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { resolveChannelStreamingBlockEnabled } from "openclaw/plugin-sdk/channel-outbound";
-import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "openclaw/plugin-sdk/inbound-envelope";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { resolveChannelStreamingBlockEnabled } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "@gabrielvfonseca/operator/plugin-sdk/inbound-envelope";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveAllowlistProviderRuntimeGroupPolicy,

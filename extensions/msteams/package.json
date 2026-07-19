@@ -1,10 +1,10 @@
 {
-  "name": "@operator/msteams",
+  "name": "@gabrielvfonseca/msteams",
   "version": "2026.7.2",
   "description": "Operator Microsoft Teams channel plugin for bot conversations.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -16,20 +16,20 @@
   },
   "devDependencies": {
     "@microsoft/teams.common": "2.0.13",
-    "@operator/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
     "jose": "6.2.3",
     "jwks-rsa": "3.2.2",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -53,7 +53,7 @@
       }
     },
     "install": {
-      "npmSpec": "@operator/msteams",
+      "npmSpec": "@gabrielvfonseca/msteams",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },

@@ -1,6 +1,6 @@
 // Qqbot plugin module implements narrowing behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginRuntime } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type { GatewayAccount } from "../engine/types.js";
 import type { ResolvedQQBotAccount } from "../types.js";
 

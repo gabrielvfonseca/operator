@@ -12,7 +12,7 @@ import {
   replaceSessionEntry,
   updateSessionLastRoute,
 } from "../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { listSessionsFromStore } from "./session-utils.js";
 
@@ -49,7 +49,7 @@ function createTelegramDirectContext(): MsgContext {
 
 describe("Telegram direct session recreation after delete", () => {
   const suiteRootTracker = createSuiteTempRootTracker({
-    prefix: "openclaw-telegram-session-recreate-",
+    prefix: "operator-telegram-session-recreate-",
   });
 
   beforeAll(async () => {

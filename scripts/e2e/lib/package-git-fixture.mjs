@@ -22,7 +22,7 @@ function withoutAiRuntimeDependency(value) {
   if (!Array.isArray(value)) {
     return value;
   }
-  const next = value.filter((entry) => entry !== "@operator/ai");
+  const next = value.filter((entry) => entry !== "@gabrielvfonseca/ai");
   return next.length > 0 ? next : undefined;
 }
 
@@ -35,13 +35,13 @@ function prepare(root) {
     return;
   }
 
-  const aiRuntimeTarget = path.join(root, ".openclaw-fixture", "packages", "ai");
+  const aiRuntimeTarget = path.join(root, ".operator-fixture", "packages", "ai");
   fs.rmSync(aiRuntimeTarget, { force: true, recursive: true });
   fs.mkdirSync(path.dirname(aiRuntimeTarget), { recursive: true });
   fs.renameSync(aiRuntimeSource, aiRuntimeTarget);
 
   packageJson.dependencies ??= {};
-  packageJson.dependencies["@operator/ai"] = "file:.openclaw-fixture/packages/ai";
+  packageJson.dependencies["@gabrielvfonseca/ai"] = "file:.operator-fixture/packages/ai";
   packageJson.bundleDependencies = withoutAiRuntimeDependency(packageJson.bundleDependencies);
   packageJson.bundledDependencies = withoutAiRuntimeDependency(packageJson.bundledDependencies);
   if (packageJson.bundleDependencies === undefined) {

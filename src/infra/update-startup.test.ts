@@ -12,7 +12,7 @@ import {
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -33,7 +33,7 @@ const {
     status: "started" as const,
     pid: 12345,
     command: "openclaw update --yes --channel beta --timeout 2700",
-    logPath: "/tmp/openclaw-handoff.log",
+    logPath: "/tmp/operator-handoff.log",
   })),
 }));
 
@@ -212,7 +212,7 @@ describe("update-startup", () => {
     vi.setSystemTime(new Date("2026-01-17T10:00:00Z"));
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-update-check-suite-",
+      prefix: "operator-update-check-suite-",
       env: {
         OPERATOR_NO_AUTO_UPDATE: undefined,
         OPERATOR_SERVICE_KIND: undefined,
@@ -255,7 +255,7 @@ describe("update-startup", () => {
       status: "started",
       pid: 12345,
       command: "openclaw update --yes --channel beta --timeout 2700",
-      logPath: "/tmp/openclaw-handoff.log",
+      logPath: "/tmp/operator-handoff.log",
     });
     resetUpdateAvailableStateForTest();
   });
@@ -1100,7 +1100,7 @@ describe("update-startup", () => {
       version: "2.0.0-beta.1",
       tag: "beta",
       command: "openclaw update --yes --channel beta --timeout 2700",
-      logPath: "/tmp/openclaw-handoff.log",
+      logPath: "/tmp/operator-handoff.log",
     });
   });
 

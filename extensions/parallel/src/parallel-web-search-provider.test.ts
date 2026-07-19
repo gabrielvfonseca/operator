@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 
@@ -150,7 +150,7 @@ describe("parallel web search provider", () => {
     expect(
       testing.resolveParallelSearchEndpoint({ baseUrl: "ftp://proxy.example/parallel" }),
     ).toEqual({
-      docs: "https://docs.openclaw.ai/tools/parallel-search",
+      docs: "https://docs.operator.ai/tools/parallel-search",
       error: "invalid_base_url",
       message:
         "plugins.entries.parallel.config.webSearch.baseUrl must be a valid http(s) URL. Got: ftp://proxy.example/parallel",
@@ -333,12 +333,12 @@ describe("parallel web search provider", () => {
       error: "missing_parallel_api_key",
       message:
         "web_search (parallel) needs a Parallel API key. Set PARALLEL_API_KEY in the Gateway environment, or configure plugins.entries.parallel.config.webSearch.apiKey.",
-      docs: "https://docs.openclaw.ai/tools/parallel-search",
+      docs: "https://docs.operator.ai/tools/parallel-search",
     });
   });
 
   it("identifies the plugin via a versioned User-Agent header", () => {
-    expect(testing.USER_AGENT).toMatch(/^openclaw-parallel\/\d+\.\d+\.\d+/);
+    expect(testing.USER_AGENT).toMatch(/^operator-parallel\/\d+\.\d+\.\d+/);
   });
 
   it("treats objective as optional and omits it from the request when absent", async () => {
@@ -360,11 +360,11 @@ describe("parallel web search provider", () => {
     if (!tool) {
       throw new Error("Expected tool definition");
     }
-    const result = await tool.execute({ search_queries: ["openclaw"] });
+    const result = await tool.execute({ search_queries: ["@gabrielvfonseca/operator"] });
     expect(endpointMockState.calls).toHaveLength(1);
     const body = readMockedBody(endpointMockState.calls[0]) as Record<string, unknown>;
     expect(body).not.toHaveProperty("objective");
-    expect(body).toMatchObject({ search_queries: ["openclaw"] });
+    expect(body).toMatchObject({ search_queries: ["@gabrielvfonseca/operator"] });
     expect(result).not.toHaveProperty("objective");
     expect(result).toMatchObject({ provider: "parallel" });
   });
@@ -487,7 +487,7 @@ describe("parallel web search provider", () => {
     });
     const headers = (call.init.headers ?? {}) as Record<string, string>;
     expect(headers["x-api-key"]).toBe("par-secret");
-    expect(headers["User-Agent"]).toMatch(/^openclaw-parallel\//);
+    expect(headers["User-Agent"]).toMatch(/^operator-parallel\//);
     expect(result).toMatchObject({
       provider: "parallel",
       searchId: "search_test",
@@ -547,7 +547,7 @@ describe("parallel web search provider", () => {
     }
     await tool.execute({
       objective: "Find Operator",
-      search_queries: ["openclaw"],
+      search_queries: ["@gabrielvfonseca/operator"],
     });
     expect(endpointMockState.calls).toHaveLength(1);
     const body = readMockedBody(endpointMockState.calls[0]) as {
@@ -577,7 +577,7 @@ describe("parallel web search provider", () => {
     const error = await tool
       .execute({
         objective: `parallel-error-body-${Date.now()}`,
-        search_queries: ["openclaw"],
+        search_queries: ["@gabrielvfonseca/operator"],
       })
       .catch((cause: unknown) => cause);
 
@@ -613,7 +613,7 @@ describe("parallel web search provider", () => {
     const error = await tool
       .execute({
         objective: `parallel-success-body-${Date.now()}-${Math.random()}`,
-        search_queries: ["openclaw"],
+        search_queries: ["@gabrielvfonseca/operator"],
       })
       .catch((cause: unknown) => cause);
 
@@ -649,7 +649,7 @@ describe("parallel web search provider", () => {
     }
     const result = (await tool.execute({
       objective: `parallel-success-ok-${Date.now()}-${Math.random()}`,
-      search_queries: ["openclaw"],
+      search_queries: ["@gabrielvfonseca/operator"],
     })) as { provider?: string; searchId?: string; count?: number };
     expect(result).toMatchObject({ provider: "parallel", searchId: "ok", count: 1 });
   });

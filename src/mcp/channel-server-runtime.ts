@@ -32,7 +32,7 @@ export async function createChannelMcpRuntime(
   const claudeChannelMode = opts.claudeChannelMode ?? "auto";
   const capabilities = getChannelMcpCapabilities(claudeChannelMode);
   const server = new McpServer(
-    { name: "operator", version: VERSION },
+    { name: "@gabrielvfonseca/operator", version: VERSION },
     capabilities ? { capabilities } : undefined,
   );
   const bridge = new OperatorChannelBridge(cfg, {

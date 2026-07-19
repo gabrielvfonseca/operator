@@ -1,5 +1,5 @@
 // Configured media size helpers resolve maximum byte limits by media kind.
-import { maxBytesForKind, type MediaKind } from "@operator/media-core/constants";
+import { maxBytesForKind, type MediaKind } from "@gabrielvfonseca/media-core/constants";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { MEDIA_MAX_BYTES } from "./store.js";
 

@@ -1,5 +1,5 @@
 ---
-summary: "Adds SGLang model provider support to OpenClaw."
+summary: "Adds SGLang model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the sglang plugin
 title: "SGLang plugin"
@@ -7,12 +7,12 @@ title: "SGLang plugin"
 
 # SGLang plugin
 
-Adds SGLang model provider support to OpenClaw.
+Adds SGLang model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/sglang-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/sglang-provider`
+- Install route: included in Operator
 
 ## Surface
 

@@ -1,6 +1,6 @@
 /** Resolves effective plugin ids from config, installed records, and activation metadata. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   listExplicitlyDisabledChannelIdsForConfig,
   listPotentialConfiguredChannelIds,

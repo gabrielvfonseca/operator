@@ -2,13 +2,13 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { defineChannelAliasMigration } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import {
   hasLegacyFlatAllowPrivateNetworkAlias,
   migrateLegacyFlatAllowPrivateNetworkAlias,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { isRecord } from "./record-shared.js";
 import type { MatrixStreamingMode } from "./types.js";
 

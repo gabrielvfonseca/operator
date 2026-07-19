@@ -1,5 +1,5 @@
 // Skills CLI for workspace status, install/update, ClawHub verification, and workshop proposals.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import {
   GATEWAY_CLIENT_MODES,
@@ -462,7 +462,7 @@ export function registerSkillsCli(program: Command) {
     .option("--global", "Install into the shared managed skills directory", false)
     .option("--agent <id>", "Target agent workspace (defaults to cwd-inferred, then default agent)")
     .option("--as <slug>", "Install a git/local skill under this slug")
-    .addHelpText("after", "\nExamples:\n  operator skills install @owner/weather\n")
+    .addHelpText("after", "\nExamples:\n  openclaw skills install @owner/weather\n")
     .action(
       async (
         slug: string,
@@ -650,7 +650,7 @@ export function registerSkillsCli(program: Command) {
       false,
     )
     .option("--agent <id>", "Target agent workspace (defaults to cwd-inferred, then default agent)")
-    .addHelpText("after", "\nExamples:\n  operator skills verify @owner/weather\n")
+    .addHelpText("after", "\nExamples:\n  openclaw skills verify @owner/weather\n")
     .action(
       async (
         slug: string,

@@ -1,8 +1,8 @@
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 /**
  * Browser CLI form fill, wait, and evaluate commands.
  */
 import type { Command } from "commander";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { resolveBrowserActExecutionBudgetMs } from "../../browser/act-policy.js";
 import type { BrowserActRequest } from "../../browser/client-actions.types.js";
 import {

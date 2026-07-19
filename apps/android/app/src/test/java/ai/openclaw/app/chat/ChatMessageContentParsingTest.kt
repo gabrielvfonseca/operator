@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject

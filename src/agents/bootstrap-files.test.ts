@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearInternalHooks,
@@ -104,7 +104,7 @@ function registerBootstrapFileHook(relativePath = "BOOTSTRAP.md") {
 }
 
 async function createHeartbeatAgentsWorkspace() {
-  const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+  const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
   await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "check inbox", "utf8");
   await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "repo rules", "utf8");
   return workspaceDir;
@@ -112,7 +112,7 @@ async function createHeartbeatAgentsWorkspace() {
 
 async function writeCompletedWorkspaceState(workspaceDir: string): Promise<void> {
   await fs.writeFile(
-    path.join(workspaceDir, "openclaw-workspace-state.json"),
+    path.join(workspaceDir, "operator-workspace-state.json"),
     `${JSON.stringify({
       version: 1,
       bootstrapSeededAt: "2026-05-16T00:00:00.000Z",
@@ -123,9 +123,9 @@ async function writeCompletedWorkspaceState(workspaceDir: string): Promise<void>
 }
 
 async function writeLegacyCompletedWorkspaceState(workspaceDir: string): Promise<void> {
-  await fs.mkdir(path.join(workspaceDir, ".openclaw"), { recursive: true });
+  await fs.mkdir(path.join(workspaceDir, ".operator"), { recursive: true });
   await fs.writeFile(
-    path.join(workspaceDir, ".openclaw", "workspace-state.json"),
+    path.join(workspaceDir, ".operator", "workspace-state.json"),
     `${JSON.stringify({
       version: 1,
       bootstrapSeededAt: "2026-05-16T00:00:00.000Z",
@@ -150,7 +150,7 @@ describe("resolveBootstrapFilesForRun", () => {
   it("applies bootstrap hook overrides", async () => {
     registerExtraBootstrapFileHook();
 
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
 
     const filePaths = files.map((file) => file.path);
@@ -160,7 +160,7 @@ describe("resolveBootstrapFilesForRun", () => {
   it("drops malformed hook files with missing/invalid paths", async () => {
     registerMalformedBootstrapFileHook();
 
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     const warnings: string[] = [];
     const files = await resolveBootstrapFilesForRun({
       workspaceDir,
@@ -183,7 +183,7 @@ describe("resolveBootstrapFilesForRun", () => {
   it("dedupes hook-injected bootstrap paths relative to the workspace", async () => {
     registerDuplicateBootstrapFileHook();
 
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     const agentsPath = path.join(workspaceDir, "AGENTS.md");
     await fs.writeFile(agentsPath, "workspace rules", "utf8");
 
@@ -200,7 +200,7 @@ describe("resolveBootstrapFilesForRun", () => {
   });
 
   it("ignores stale workspace BOOTSTRAP.md once setup is completed", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeCompletedWorkspaceState(workspaceDir);
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
@@ -212,7 +212,7 @@ describe("resolveBootstrapFilesForRun", () => {
   });
 
   it("ignores stale workspace BOOTSTRAP.md when legacy setup state is completed", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeLegacyCompletedWorkspaceState(workspaceDir);
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
@@ -224,8 +224,8 @@ describe("resolveBootstrapFilesForRun", () => {
   });
 
   it("keeps BOOTSTRAP.md when current setup state cannot be read", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
-    await fs.mkdir(path.join(workspaceDir, "openclaw-workspace-state.json"), {
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
+    await fs.mkdir(path.join(workspaceDir, "operator-workspace-state.json"), {
       recursive: true,
     });
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
@@ -238,7 +238,7 @@ describe("resolveBootstrapFilesForRun", () => {
 
   it("does not let hooks re-add stale root BOOTSTRAP.md after setup is completed", async () => {
     registerBootstrapFileHook();
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeCompletedWorkspaceState(workspaceDir);
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
@@ -250,7 +250,7 @@ describe("resolveBootstrapFilesForRun", () => {
 
   it("ignores stale root BOOTSTRAP.md for home-relative workspace paths", async () => {
     registerBootstrapFileHook();
-    const parentDir = await makeTempWorkspace("openclaw-bootstrap-home-");
+    const parentDir = await makeTempWorkspace("operator-bootstrap-home-");
     const workspaceDir = path.join(parentDir, "workspace");
     await fs.mkdir(workspaceDir, { recursive: true });
     await writeCompletedWorkspaceState(workspaceDir);
@@ -267,7 +267,7 @@ describe("resolveBootstrapFilesForRun", () => {
 
   it("keeps hook-added nested BOOTSTRAP.md after setup is completed", async () => {
     registerBootstrapFileHook(path.join("packages", "core", "BOOTSTRAP.md"));
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.mkdir(path.join(workspaceDir, "packages", "core"), { recursive: true });
     await writeCompletedWorkspaceState(workspaceDir);
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
@@ -287,7 +287,7 @@ describe("resolveBootstrapFilesForRun", () => {
   });
 
   it("keeps subagent sessions to project and tool bootstrap files", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-subagent-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-subagent-");
     await Promise.all(
       [
         ["AGENTS.md", "project rules"],
@@ -316,7 +316,7 @@ describe("resolveBootstrapFilesForRun", () => {
   });
 
   it("keeps cron sessions on their existing minimal bootstrap files", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-cron-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-cron-");
     await Promise.all(
       [
         ["AGENTS.md", "project rules"],
@@ -358,7 +358,7 @@ describe("resolveBootstrapContextForRun", () => {
   it("returns context files for hook-adjusted bootstrap files", async () => {
     registerExtraBootstrapFileHook();
 
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     const result = await resolveBootstrapContextForRun({ workspaceDir });
     const extra = result.contextFiles.find(
       (file) => file.path === path.join(workspaceDir, "EXTRA.md"),
@@ -368,7 +368,7 @@ describe("resolveBootstrapContextForRun", () => {
   });
 
   it("keeps BOOTSTRAP.md available in shared injected context for non-attempt consumers", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "ritual", "utf8");
     await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
 
@@ -382,7 +382,7 @@ describe("resolveBootstrapContextForRun", () => {
   });
 
   it("uses heartbeat-only bootstrap files in lightweight heartbeat mode", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "check inbox", "utf8");
     await fs.writeFile(path.join(workspaceDir, "SOUL.md"), "persona", "utf8");
 
@@ -397,7 +397,7 @@ describe("resolveBootstrapContextForRun", () => {
   });
 
   it("keeps bootstrap context empty in lightweight cron mode", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "check inbox", "utf8");
 
     const files = await resolveBootstrapFilesForRun({
@@ -410,7 +410,7 @@ describe("resolveBootstrapContextForRun", () => {
   });
 
   it("excludes HEARTBEAT.md from commitment-only context", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "global work", "utf8");
     await fs.writeFile(path.join(workspaceDir, "SOUL.md"), "persona", "utf8");
 
@@ -464,7 +464,7 @@ describe("resolveBootstrapContextForRun", () => {
   });
 
   it("keeps HEARTBEAT.md for actual heartbeat runs even when the prompt section is disabled", async () => {
-    const workspaceDir = await makeTempWorkspace("openclaw-bootstrap-");
+    const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "check inbox", "utf8");
 
     const files = await resolveBootstrapFilesForRun({
@@ -491,7 +491,7 @@ describe("hasCompletedBootstrapTurn", () => {
   let tmpDir: string;
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(await fs.realpath("/tmp"), "openclaw-bootstrap-turn-"));
+    tmpDir = await fs.mkdtemp(path.join(await fs.realpath("/tmp"), "operator-bootstrap-turn-"));
   });
 
   afterEach(async () => {

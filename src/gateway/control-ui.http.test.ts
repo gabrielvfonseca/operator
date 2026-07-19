@@ -11,13 +11,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
 import { normalizeAssistantIdentity } from "../../ui/src/lib/assistant-identity.ts";
 import { resolveStateDir } from "../config/paths.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   approveDevicePairing,
   ensureDeviceToken,
   requestDevicePairing,
 } from "../infra/device-pairing.js";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { AVATAR_MAX_DATA_URL_CHARS } from "../shared/avatar-limits.js";
 import { AVATAR_MAX_BYTES } from "../shared/avatar-policy.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -69,7 +69,7 @@ describe("handleControlUiHttpRequest", () => {
     indexHtml?: string;
     fn: (tmp: string) => Promise<T>;
   }) {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-"));
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-"));
     try {
       await fs.writeFile(path.join(tmp, "index.html"), params.indexHtml ?? "<html></html>\n");
       return await params.fn(tmp);
@@ -250,7 +250,7 @@ describe("handleControlUiHttpRequest", () => {
     headers?: IncomingMessage["headers"];
   }) {
     return await runAssistantMediaRequest({
-      url: `/__openclaw__/assistant-media?${params.meta ? "meta=1&" : ""}source=${encodeURIComponent(params.filePath)}`,
+      url: `/__operator__/assistant-media?${params.meta ? "meta=1&" : ""}source=${encodeURIComponent(params.filePath)}`,
       method: "GET",
       auth: createTrustedProxyAuth(),
       trustedProxies: ["10.0.0.1"],
@@ -323,7 +323,7 @@ describe("handleControlUiHttpRequest", () => {
     siblingDir: string;
     fn: (paths: { root: string; sibling: string }) => Promise<T>;
   }) {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-root-"));
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-root-"));
     try {
       const root = path.join(tmp, "ui");
       const sibling = path.join(tmp, params.siblingDir);
@@ -341,7 +341,7 @@ describe("handleControlUiHttpRequest", () => {
     browserMetadata?: boolean;
     fn: (token: string) => Promise<T>;
   }) {
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-device-token-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-device-token-"));
     try {
       return await withEnvAsync({ OPERATOR_HOME: tempHome }, async () => {
         const deviceId = "control-ui-device";
@@ -352,7 +352,7 @@ describe("handleControlUiHttpRequest", () => {
           scopes: ["operator.read"],
           ...(params.browserMetadata
             ? {
-                clientId: "openclaw-control-ui",
+                clientId: "operator-control-ui",
                 clientMode: "webchat",
               }
             : {}),
@@ -412,7 +412,7 @@ describe("handleControlUiHttpRequest", () => {
           "Permissions-Policy",
           "camera=*, microphone=*, geolocation=*, clipboard-write=*",
         );
-        expect(responseBody(end)).toContain('data-openclaw-terminal-enabled="false"');
+        expect(responseBody(end)).toContain('data-operator-terminal-enabled="false"');
       },
     });
   });
@@ -434,7 +434,7 @@ describe("handleControlUiHttpRequest", () => {
           (call) => call[0] === "Content-Security-Policy",
         )?.[1];
         expect(String(csp)).toContain("script-src 'self' 'wasm-unsafe-eval'");
-        expect(responseBody(end)).toContain('data-openclaw-terminal-enabled="true"');
+        expect(responseBody(end)).toContain('data-operator-terminal-enabled="true"');
       },
     });
   });
@@ -452,7 +452,7 @@ describe("handleControlUiHttpRequest", () => {
           (call) => call[0] === "Content-Security-Policy",
         )?.[1];
         expect(String(csp)).not.toContain("'wasm-unsafe-eval'");
-        expect(responseBody(end)).toContain('data-openclaw-terminal-enabled="false"');
+        expect(responseBody(end)).toContain('data-operator-terminal-enabled="false"');
 
         const bootstrap = makeMockHttpResponse();
         await handleControlUiHttpRequest(
@@ -476,7 +476,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const { res, handled } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -506,7 +506,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, filename);
         await fs.writeFile(filePath, Buffer.from("fixture"));
         const { res, handled } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -528,7 +528,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, filename);
         await fs.writeFile(filePath, Buffer.from("fixture"));
         const { res, handled } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -551,7 +551,7 @@ describe("handleControlUiHttpRequest", () => {
 
     try {
       const { res, handled } = await runAssistantMediaRequest({
-        url: `/__openclaw__/assistant-media?source=${encodeURIComponent(`media://inbound/${id}`)}&token=test-token`,
+        url: `/__operator__/assistant-media?source=${encodeURIComponent(`media://inbound/${id}`)}&token=test-token`,
         method: "GET",
         auth: { mode: "token", token: "test-token", allowTailscale: false },
       });
@@ -575,7 +575,7 @@ describe("handleControlUiHttpRequest", () => {
 
     try {
       const { res, handled, end } = await runAssistantMediaRequest({
-        url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(`media://inbound/${id}`)}&token=test-token`,
+        url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(`media://inbound/${id}`)}&token=test-token`,
         method: "GET",
         auth: { mode: "token", token: "test-token", allowTailscale: false },
       });
@@ -595,12 +595,12 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   it("rejects assistant local media outside allowed preview roots", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-media-blocked-"));
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-media-blocked-"));
     try {
       const filePath = path.join(tmp, "photo.png");
       await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
       const { res, handled, end } = await runAssistantMediaRequest({
-        url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
+        url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&token=test-token`,
         method: "GET",
         auth: { mode: "token", token: "test-token", allowTailscale: false },
       });
@@ -617,7 +617,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const { res, handled, end } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&token=test-token`,
+          url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&token=test-token`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -644,7 +644,7 @@ describe("handleControlUiHttpRequest", () => {
           const filePath = path.join(tmpRoot, "photo.png");
           await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
           const { res, handled, end } = await runAssistantMediaRequest({
-            url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&token=test-token`,
+            url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&token=test-token`,
             method: "GET",
             auth: { mode: "token", token: "test-token", allowTailscale: false },
           });
@@ -672,7 +672,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const meta = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}`,
+          url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
           headers: {
@@ -687,7 +687,7 @@ describe("handleControlUiHttpRequest", () => {
         expect(payload.mediaTicket).toMatch(/^v1\./);
 
         const media = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(payload.mediaTicket ?? "")}`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(payload.mediaTicket ?? "")}`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -696,7 +696,7 @@ describe("handleControlUiHttpRequest", () => {
 
         const shortenedTicket = payload.mediaTicket?.slice(0, -1) ?? "";
         const rejected = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(shortenedTicket)}`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(shortenedTicket)}`,
           method: "GET",
           auth: { mode: "token", token: "test-auth-token", allowTailscale: false },
         });
@@ -713,7 +713,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const meta = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}`,
+          url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
           headers: {
@@ -725,7 +725,7 @@ describe("handleControlUiHttpRequest", () => {
         };
 
         const refresh = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(payload.mediaTicket ?? "")}`,
+          url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent(filePath)}&mediaTicket=${encodeURIComponent(payload.mediaTicket ?? "")}`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -743,7 +743,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const { res, handled, end } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=v1.invalid.invalid`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&mediaTicket=v1.invalid.invalid`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -756,7 +756,7 @@ describe("handleControlUiHttpRequest", () => {
 
   it("reports assistant local media availability failures with a reason", async () => {
     const { res, handled, end } = await runAssistantMediaRequest({
-      url: `/__openclaw__/assistant-media?meta=1&source=${encodeURIComponent("/Users/test/Documents/private.pdf")}&token=test-token`,
+      url: `/__operator__/assistant-media?meta=1&source=${encodeURIComponent("/Users/test/Documents/private.pdf")}&token=test-token`,
       method: "GET",
       auth: { mode: "token", token: "test-token", allowTailscale: false },
     });
@@ -776,7 +776,7 @@ describe("handleControlUiHttpRequest", () => {
         const filePath = path.join(tmpRoot, "photo.png");
         await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
         const { res, handled, end } = await runAssistantMediaRequest({
-          url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}`,
+          url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}`,
           method: "GET",
           auth: { mode: "token", token: "test-token", allowTailscale: false },
         });
@@ -796,7 +796,7 @@ describe("handleControlUiHttpRequest", () => {
             const filePath = path.join(tmpRoot, "photo.png");
             await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
             const { res, handled } = await runAssistantMediaRequest({
-              url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}`,
+              url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}`,
               method: "GET",
               auth: { mode: "token", token: "shared-token", allowTailscale: false },
               headers: {
@@ -829,7 +829,7 @@ describe("handleControlUiHttpRequest", () => {
             const filePath = path.join(tmpRoot, "photo.png");
             await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
             const { res, handled } = await runAssistantMediaRequest({
-              url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}`,
+              url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}`,
               method: "GET",
               auth,
               headers: {
@@ -853,7 +853,7 @@ describe("handleControlUiHttpRequest", () => {
             const filePath = path.join(tmpRoot, "photo.png");
             await fs.writeFile(filePath, Buffer.from("not-a-real-png"));
             const { res, handled } = await runAssistantMediaRequest({
-              url: `/__openclaw__/assistant-media?source=${encodeURIComponent(filePath)}&token=${encodeURIComponent(operatorToken)}`,
+              url: `/__operator__/assistant-media?source=${encodeURIComponent(filePath)}&token=${encodeURIComponent(operatorToken)}`,
               method: "GET",
               auth: { mode: "token", token: "shared-token", allowTailscale: false },
             });
@@ -893,7 +893,7 @@ describe("handleControlUiHttpRequest", () => {
         const { res, handled, end } = await runTrustedProxyAssistantMediaRequest({
           filePath,
           headers: {
-            "x-openclaw-scopes": "operator.approvals",
+            "x-operator-scopes": "operator.approvals",
           },
         });
         expectMissingOperatorReadResponse({ handled, res, end });
@@ -911,7 +911,7 @@ describe("handleControlUiHttpRequest", () => {
           filePath,
           meta: true,
           headers: {
-            "x-openclaw-scopes": "",
+            "x-operator-scopes": "",
           },
         });
         expectMissingOperatorReadResponse({ handled, res, end });
@@ -959,7 +959,7 @@ describe("handleControlUiHttpRequest", () => {
         );
         expect(handled).toBe(true);
         expect(end).toHaveBeenCalledWith(
-          html.replace("<html", '<html data-openclaw-terminal-enabled="false"'),
+          html.replace("<html", '<html data-operator-terminal-enabled="false"'),
         );
       },
     });
@@ -982,7 +982,7 @@ describe("handleControlUiHttpRequest", () => {
         );
         expect(handled).toBe(true);
         const body = String(end.mock.calls[0]?.[0] ?? "");
-        expect(body).toContain('data-openclaw-control-ui-base-path="/openclaw"');
+        expect(body).toContain('data-operator-control-ui-base-path="/openclaw"');
         expect(body).toContain('href="/openclaw/manifest.webmanifest"');
         expect(body).toContain('href="/openclaw/favicon.svg"');
         expect(body).not.toContain('href="/manifest.webmanifest"');
@@ -1375,18 +1375,18 @@ describe("handleControlUiHttpRequest", () => {
     });
   });
 
-  it("serves bootstrap config under the configured /__openclaw__ basePath (#66946)", async () => {
+  it("serves bootstrap config under the configured /__operator__ basePath (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
           {
-            url: "/__openclaw__/control-ui-config.json",
+            url: "/__operator__/control-ui-config.json",
             method: "GET",
           } as IncomingMessage,
           res,
           {
-            basePath: "/__openclaw__",
+            basePath: "/__operator__",
             root: { kind: "resolved", path: tmp },
             config: {
               agents: { defaults: { workspace: tmp } },
@@ -1397,25 +1397,25 @@ describe("handleControlUiHttpRequest", () => {
         expect(handled).toBe(true);
         expect(res.statusCode).not.toBe(404);
         const parsed = parseBootstrapPayload(end);
-        expect(parsed.basePath).toBe("/__openclaw__");
+        expect(parsed.basePath).toBe("/__operator__");
         expect(parsed.assistantAgentId).toBe("main");
       },
     });
   });
 
   // Real reported scenario: the gateway has NO configured `gateway.controlUi.basePath`,
-  // so the SPA is served at the default `/__openclaw__/` namespace. The browser opens
-  // the default entry, `inferBasePathFromPathname("/__openclaw__/")` yields `/__openclaw__`,
-  // and the loader fetches `/__openclaw__/control-ui-config.json`. Before this fix the
+  // so the SPA is served at the default `/__operator__/` namespace. The browser opens
+  // the default entry, `inferBasePathFromPathname("/__operator__/")` yields `/__operator__`,
+  // and the loader fetches `/__operator__/control-ui-config.json`. Before this fix the
   // gateway only matched the bare `/control-ui-config.json` for an empty base path, so the
   // default-entry request 404ed (issue #66946). This case fails without the namespace alias.
-  it("serves bootstrap config at the default /__openclaw__ entry with no configured basePath (#66946)", async () => {
+  it("serves bootstrap config at the default /__operator__ entry with no configured basePath (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end } = makeMockHttpResponse();
         const handled = await handleControlUiHttpRequest(
           {
-            url: "/__openclaw__/control-ui-config.json",
+            url: "/__operator__/control-ui-config.json",
             method: "GET",
           } as IncomingMessage,
           res,
@@ -1525,11 +1525,11 @@ describe("handleControlUiHttpRequest", () => {
     });
   });
 
-  it("does not serve bootstrap config from the doubled /__openclaw__/__openclaw path (#66946)", async () => {
+  it("does not serve bootstrap config from the doubled /__operator__/__openclaw path (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const { res, end, handled } = await runControlUiRequest({
-          url: "/__openclaw__/__openclaw/control-ui-config.json",
+          url: "/__operator__/__openclaw/control-ui-config.json",
           method: "GET",
           rootPath: tmp,
         });
@@ -1539,7 +1539,7 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   it("serves local avatar bytes through hardened avatar handler", async () => {
-    const tmp = avatarTempDirs.make("openclaw-avatar-http-");
+    const tmp = avatarTempDirs.make("operator-avatar-http-");
     try {
       const avatarPath = path.join(tmp, "main.png");
       await fs.writeFile(avatarPath, "avatar-bytes\n");
@@ -1564,7 +1564,7 @@ describe("handleControlUiHttpRequest", () => {
   ] as const)(
     "validates %s avatar requests without reading bytes and closes the descriptor",
     async (_name, url, method) => {
-      const tmp = avatarTempDirs.make("openclaw-avatar-no-read-");
+      const tmp = avatarTempDirs.make("operator-avatar-no-read-");
       const read = vi.spyOn(fsSync, "read");
       const closeSync = vi.spyOn(fsSync, "closeSync");
       try {
@@ -1588,7 +1588,7 @@ describe("handleControlUiHttpRequest", () => {
   );
 
   it("rejects hardlinked avatar bytes and reports matching metadata", async () => {
-    const tmp = avatarTempDirs.make("openclaw-avatar-http-hardlink-");
+    const tmp = avatarTempDirs.make("operator-avatar-http-hardlink-");
     try {
       await fs.writeFile(path.join(tmp, "original.png"), REAL_PNG);
       await fs.link(path.join(tmp, "original.png"), path.join(tmp, "avatar.png"));
@@ -1616,7 +1616,7 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   it("bounds an avatar route file that grows after its descriptor is pinned", async () => {
-    const tmp = avatarTempDirs.make("openclaw-avatar-http-growth-");
+    const tmp = avatarTempDirs.make("operator-avatar-http-growth-");
     const avatarPath = path.join(tmp, "avatar.png");
     try {
       await fs.writeFile(avatarPath, REAL_PNG);
@@ -1638,8 +1638,8 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   it("rejects avatar symlink paths from resolver", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-avatar-http-link-"));
-    const outside = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-avatar-http-outside-"));
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-avatar-http-link-"));
+    const outside = await fs.mkdtemp(path.join(os.tmpdir(), "operator-avatar-http-outside-"));
     try {
       const outsideFile = path.join(outside, "secret.txt");
       await fs.writeFile(outsideFile, "outside-secret\n");
@@ -1660,7 +1660,7 @@ describe("handleControlUiHttpRequest", () => {
   });
 
   it("serves local avatar bytes when auth is enabled and the token is valid", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-avatar-auth-"));
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-avatar-auth-"));
     try {
       const avatarPath = path.join(tmp, "main.png");
       await fs.writeFile(avatarPath, "avatar-bytes\n");
@@ -1685,7 +1685,7 @@ describe("handleControlUiHttpRequest", () => {
   it("serves local avatar bytes when paired device-token auth is valid", async () => {
     await withPairedOperatorDeviceToken({
       fn: async (operatorToken) => {
-        const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-avatar-device-token-"));
+        const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "operator-avatar-device-token-"));
         try {
           const avatarPath = path.join(tmp, "main.png");
           await fs.writeFile(avatarPath, "avatar-bytes\n");
@@ -1765,7 +1765,7 @@ describe("handleControlUiHttpRequest", () => {
     const { res, handled, end } = await runTrustedProxyAvatarRequest({
       meta: true,
       headers: {
-        "x-openclaw-scopes": "",
+        "x-operator-scopes": "",
       },
     });
 
@@ -1776,7 +1776,7 @@ describe("handleControlUiHttpRequest", () => {
     await withControlUiRoot({
       fn: async (tmp) => {
         const assetsDir = path.join(tmp, "assets");
-        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-outside-"));
+        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-outside-"));
         try {
           const outsideFile = path.join(outsideDir, "secret.txt");
           await fs.mkdir(assetsDir, { recursive: true });
@@ -2136,7 +2136,7 @@ describe("handleControlUiHttpRequest", () => {
           expect(setHeader).toHaveBeenCalledWith("Cache-Control", "no-cache");
           expect(setHeader).toHaveBeenCalledWith("Content-Encoding", "gzip");
           expect(gunzipSync(end.mock.calls[0]?.[0] as Buffer).toString()).toContain(
-            '<html data-openclaw-terminal-enabled="false">',
+            '<html data-operator-terminal-enabled="false">',
           );
           expect(closeSync.mock.invocationCallOrder.at(-1)).toBeLessThan(
             end.mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY,
@@ -2226,7 +2226,7 @@ describe("handleControlUiHttpRequest", () => {
           } else {
             expect(responseBody(end)).toContain("approval-spa");
             if (basePath) {
-              expect(responseBody(end)).toContain('data-openclaw-control-ui-base-path="/openclaw"');
+              expect(responseBody(end)).toContain('data-operator-control-ui-base-path="/openclaw"');
             }
           }
         }
@@ -2272,7 +2272,7 @@ describe("handleControlUiHttpRequest", () => {
   it("rejects symlinked SPA fallback index.html outside control-ui root", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
-        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-index-outside-"));
+        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-index-outside-"));
         try {
           const outsideIndex = path.join(outsideDir, "index.html");
           await fs.writeFile(outsideIndex, "<html>outside</html>\n");
@@ -2295,7 +2295,7 @@ describe("handleControlUiHttpRequest", () => {
   it("rejects hardlinked index.html for non-package control-ui roots", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {
-        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ui-index-hardlink-"));
+        const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ui-index-hardlink-"));
         try {
           const outsideIndex = path.join(outsideDir, "index.html");
           await fs.writeFile(outsideIndex, "<html>outside-hardlink</html>\n");
@@ -2361,10 +2361,10 @@ describe("handleControlUiHttpRequest", () => {
         await fs.writeFile(path.join(tmp, "sw.js"), "self.addEventListener('push', () => {});");
 
         for (const [url, expectedType] of [
-          ["/__openclaw__/favicon.svg", "image/svg+xml"],
-          ["/__openclaw__/manifest.webmanifest", "application/manifest+json; charset=utf-8"],
-          ["/__openclaw__/apple-touch-icon.png", "image/png"],
-          ["/__openclaw__/sw.js", "application/javascript; charset=utf-8"],
+          ["/__operator__/favicon.svg", "image/svg+xml"],
+          ["/__operator__/manifest.webmanifest", "application/manifest+json; charset=utf-8"],
+          ["/__operator__/apple-touch-icon.png", "image/png"],
+          ["/__operator__/sw.js", "application/javascript; charset=utf-8"],
         ] as const) {
           const { res, end, handled } = await runControlUiRequest({
             url,

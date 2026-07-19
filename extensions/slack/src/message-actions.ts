@@ -1,8 +1,11 @@
 // Slack plugin module implements message actions behavior.
-import { createActionGate } from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionName } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { extractToolSend, type ChannelToolSend } from "openclaw/plugin-sdk/tool-send";
+import { createActionGate } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelMessageActionName } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  extractToolSend,
+  type ChannelToolSend,
+} from "@gabrielvfonseca/operator/plugin-sdk/tool-send";
 import { listEnabledSlackAccounts, resolveSlackAccount } from "./accounts.js";
 import { normalizeSlackThreadTsCandidate, resolveSlackThreadTsValue } from "./thread-ts.js";
 

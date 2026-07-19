@@ -6,8 +6,8 @@ This document provides comprehensive guidance for operators responsible for depl
 
 - **GitHub:** https://github.com/gabrielvfonseca/operator
 - **Website:** https://operator.ai
-- **Discord:** https://discord.gg/clawd
-- **X/Twitter:** [@openclaw](https://x.com/openclaw)
+- **Discord:** https://discord.gg/operator
+- **X/Twitter:** [@gabfon_](https://x.com/gabfon_)
 
 ## Operator Overview
 
@@ -32,14 +32,14 @@ docker run -d \
   -v "$(pwd)/data:/opt/operator/data" \
   -p 3000:3000 \
   -e OPERATOR_AUTH_TOKEN=your-secret-token \
-  openclaw/operator:latest
+  ghcr.io/gabrielvfonseca/operator:latest
 
 # For production with SSL
 cat > docker-compose.yml << EOF
 version: '3.8'
 services:
   operator:
-    image: openclaw/operator:latest
+    image: ghcr.io/gabrielvfonseca/operator:latest
     ports:
       - \"3000:3000\"
       - \"8080:8080\"
@@ -452,7 +452,7 @@ operator gateway run --config instance-1.json
 docker-compose.yml
 services:
   operator:
-    image: openclaw/operator:latest
+    image: ghcr.io/gabrielvfonseca/operator:latest
     deploy:
       resources:
         limits:

@@ -3,7 +3,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AssistantMessage } from "openclaw/plugin-sdk/llm";
+import type { AssistantMessage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, describe, expect, test } from "vitest";
 import { replaceTranscriptEvents } from "../config/sessions/session-accessor.js";
 import { resolveSqliteTargetFromSessionStorePath } from "../config/sessions/session-sqlite-target.js";
@@ -29,7 +29,7 @@ import {
 installGatewayTestHooks();
 
 const AUTH_HEADER = { Authorization: "Bearer test-gateway-token-1234567890" };
-const READ_SCOPE_HEADER = { "x-openclaw-scopes": "operator.read" };
+const READ_SCOPE_HEADER = { "x-operator-scopes": "operator.read" };
 const cleanupDirs: string[] = [];
 
 afterEach(async () => {
@@ -47,7 +47,7 @@ type SessionHistoryTestDatabase = Pick<
 >;
 
 async function createSessionStoreFile(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-history-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-history-"));
   cleanupDirs.push(dir);
   const storePath = path.join(dir, "sessions.json");
   testState.sessionStorePath = storePath;
@@ -211,7 +211,7 @@ function makeDeliveryMirrorAssistantMessage(
   return {
     ...makeTranscriptAssistantMessage({
       ...params,
-      provider: "openclaw",
+      provider: "@gabrielvfonseca/operator",
       model: "delivery-mirror",
     }),
     api: OPERATOR_TRANSCRIPT_ARTIFACT_API,

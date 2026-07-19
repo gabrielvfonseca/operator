@@ -177,7 +177,7 @@ async function sendAgentWsRequestAndWaitFinal(
 const gwSessionTempDirs: string[] = [];
 
 async function useTempSessionStorePath() {
-  const dir = makeTempDir(gwSessionTempDirs, "openclaw-gw-");
+  const dir = makeTempDir(gwSessionTempDirs, "operator-gw-");
   testState.sessionStorePath = path.join(dir, "sessions.json");
 }
 

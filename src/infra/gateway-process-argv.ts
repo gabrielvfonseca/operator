@@ -1,6 +1,6 @@
 // Parses gateway process command lines for process discovery.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 function normalizeProcArg(arg: string): string {
   return normalizeLowercaseStringOrEmpty(arg.replaceAll("\\", "/"));
@@ -28,7 +28,7 @@ export function isOperatorCommandArgv(args: string[], command: string): boolean 
   if (normalized.some((arg) => ENTRY_CANDIDATES.some((entry) => arg.endsWith(entry)))) {
     return true;
   }
-  return exe.endsWith("/operator") || exe === "operator";
+  return exe.endsWith("/openclaw") || exe === "@gabrielvfonseca/operator";
 }
 
 export function isGatewayArgv(args: string[], opts?: { allowGatewayBinary?: boolean }): boolean {

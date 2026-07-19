@@ -18,7 +18,7 @@ afterEach(async () => {
 });
 
 async function fixture() {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-quiescence-test-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-quiescence-test-"));
   roots.push(root);
   const home = path.join(root, "home");
   let workspace = path.join(root, "workspace");
@@ -59,7 +59,7 @@ async function quiesce(input: Awaited<ReturnType<typeof fixture>>) {
 
 function leasePath(home: string, workspace: string, nonce: string) {
   const key = createHash("sha256").update(workspace).digest("hex");
-  return path.join(home, ".openclaw-worker", "quiescence", `${key}.${nonce}.json`);
+  return path.join(home, ".operator-worker", "quiescence", `${key}.${nonce}.json`);
 }
 
 async function resume(input: Awaited<ReturnType<typeof fixture>>, nonce: string) {
@@ -186,7 +186,7 @@ describe("remote workspace quiescence scripts", () => {
 
 describe("remote workspace manifest script", () => {
   it("keeps base tombstones in the final ignored-path verification", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-manifest-tombstone-test-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-manifest-tombstone-test-"));
     roots.push(root);
     const home = path.join(root, "home");
     const workspace = path.join(root, "workspace");
@@ -200,7 +200,7 @@ describe("remote workspace manifest script", () => {
         "-c",
         "user.name=Operator Test",
         "-c",
-        "user.email=test@openclaw.invalid",
+        "user.email=test@operator.invalid",
         "commit",
         "--quiet",
         "-m",
@@ -265,7 +265,7 @@ describe("remote workspace manifest script", () => {
   });
 
   it("drops stale descendants when a tracked directory becomes a file", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-manifest-test-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-manifest-test-"));
     roots.push(root);
     const home = path.join(root, "home");
     const workspace = path.join(root, "workspace");
@@ -279,7 +279,7 @@ describe("remote workspace manifest script", () => {
         "-c",
         "user.name=Operator Test",
         "-c",
-        "user.email=test@openclaw.invalid",
+        "user.email=test@operator.invalid",
         "commit",
         "--quiet",
         "-m",
@@ -329,7 +329,7 @@ describe("remote workspace manifest script", () => {
       await fs.readFile(
         path.join(
           home,
-          ".openclaw-worker",
+          ".operator-worker",
           "manifests",
           current.stdout.trim().slice("sha256:".length) + ".json",
         ),

@@ -1,8 +1,8 @@
 // Doctor-only repair for the operator approval kind constraint.
 import type { DatabaseSync } from "node:sqlite";
 import { runSqliteImmediateTransactionSync } from "../infra/sqlite-transaction.js";
-import { tableExists } from "./operator-state-db-schema-helpers.js";
-import { OPERATOR_STATE_SCHEMA_SQL } from "./operator-state-schema.generated.js";
+import { tableExists } from "./openclaw-state-db-schema-helpers.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
 
 const COLUMNS = [
   "approval_id",
@@ -53,7 +53,7 @@ function hasCanonicalOperatorApprovalKinds(db: DatabaseSync): boolean {
 export function assertCanonicalOperatorApprovalKinds(db: DatabaseSync, pathname: string): void {
   if (!hasCanonicalOperatorApprovalKinds(db)) {
     throw new Error(
-      `Operator state database ${pathname} has a legacy operator approval schema; run operator doctor --fix to migrate it.`,
+      `Operator state database ${pathname} has a legacy operator approval schema; run openclaw doctor --fix to migrate it.`,
     );
   }
 }

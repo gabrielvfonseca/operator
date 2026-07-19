@@ -2,11 +2,11 @@ import type { DatabaseSync } from "node:sqlite";
 import type { Insertable, Selectable } from "kysely";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
 import { isLockOwnerDefinitelyStale } from "../../infra/stale-lock-file.js";
-import type { DB as OperatorStateKyselyDatabase } from "../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 import type { ManagedWorktreeOwnerKind, ManagedWorktreeRecord } from "./types.js";
 
 type WorktreesTable = OperatorStateKyselyDatabase["worktrees"];

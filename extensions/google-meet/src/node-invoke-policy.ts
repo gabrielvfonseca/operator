@@ -2,7 +2,7 @@ import type {
   OperatorPluginNodeInvokePolicy,
   OperatorPluginNodeInvokePolicyContext,
   OperatorPluginNodeInvokePolicyResult,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import type { GoogleMeetConfig } from "./config.js";
 import { normalizeMeetUrl } from "./meet-url.js";
 

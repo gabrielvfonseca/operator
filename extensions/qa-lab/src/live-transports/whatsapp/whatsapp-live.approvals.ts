@@ -1,10 +1,10 @@
 // QA Lab WhatsApp native approval scenarios.
 import { randomUUID } from "node:crypto";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import type {
   WhatsAppQaDriverObservedMessage,
   WhatsAppQaDriverSession,
-} from "@operator/whatsapp/api.js";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/whatsapp/api.js";
 import {
   assertApprovalDecisionResult,
   formatApprovalResultValue,

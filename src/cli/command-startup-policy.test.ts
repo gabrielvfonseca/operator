@@ -100,21 +100,21 @@ describe("command-startup-policy", () => {
     ).toBe(false);
     expect(
       resolvePolicy({
-        argv: ["node", "openclaw", "agent", "--json"],
+        argv: ["node", "@gabrielvfonseca/operator", "agent", "--json"],
         commandPath: ["agent"],
         jsonOutputMode: true,
       }).loadPlugins,
     ).toBe(false);
     expect(
       resolvePolicy({
-        argv: ["node", "openclaw", "agent", "--json", "--local"],
+        argv: ["node", "@gabrielvfonseca/operator", "agent", "--json", "--local"],
         commandPath: ["agent"],
         jsonOutputMode: true,
       }).loadPlugins,
     ).toBe(true);
     expect(
       resolvePolicy({
-        argv: ["node", "openclaw", "agent"],
+        argv: ["node", "@gabrielvfonseca/operator", "agent"],
         commandPath: ["agent"],
       }).loadPlugins,
     ).toBe(true);

@@ -3,7 +3,7 @@
 import {
   MAX_TIMER_TIMEOUT_MS,
   resolveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { MsgContext } from "../auto-reply/templating.js";
 import type { OperatorConfig } from "../config/types.js";
 import type {

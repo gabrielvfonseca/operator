@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { useAutoCleanupTempDirTracker } from "../../test/helpers/temp-dir.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { openGatewayAssistantAvatar, resolveGatewayAssistantAvatar } from "./assistant-avatar.js";
 import { resolveAssistantIdentity } from "./assistant-identity.js";
 
@@ -16,7 +16,7 @@ const tempRoots = useAutoCleanupTempDirTracker(afterEach);
 type GatewayAssistantAvatarProjection = ReturnType<typeof resolveGatewayAssistantAvatar>;
 
 function createWorkspace(): { workspace: string; cfg: OperatorConfig } {
-  const root = tempRoots.make("openclaw-gateway-avatar-");
+  const root = tempRoots.make("operator-gateway-avatar-");
   const workspace = path.join(root, "workspace");
   fs.mkdirSync(workspace);
   return {

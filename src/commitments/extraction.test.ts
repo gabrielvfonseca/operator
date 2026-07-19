@@ -31,7 +31,7 @@ describe("commitment extraction", () => {
   });
 
   async function createConfig(): Promise<OperatorConfig> {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-commitments-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-commitments-"));
     tmpDirs.push(tmpDir);
     stateDirEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
     setTestEnvValue("OPERATOR_STATE_DIR", tmpDir);

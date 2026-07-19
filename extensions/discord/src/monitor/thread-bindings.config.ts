@@ -1,11 +1,11 @@
 // Discord helper module supports thread bindings behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   resolveThreadBindingIdleTimeoutMs,
   resolveThreadBindingMaxAgeMs,
   resolveThreadBindingsEnabled,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { normalizeAccountId } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 
 export { resolveThreadBindingsEnabled };
 

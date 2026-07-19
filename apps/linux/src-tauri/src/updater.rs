@@ -14,7 +14,7 @@ pub(crate) const PROGRESS_EVENT: &str = "updater://progress";
 pub(crate) const READY_EVENT: &str = "updater://ready";
 pub(crate) const ERROR_EVENT: &str = "updater://error";
 
-const RELEASE_URL: &str = "https://github.com/openclaw/openclaw/releases/latest";
+const RELEASE_URL: &str = "https://github.com/operator/operator/releases/latest";
 const AUTO_CHECK_DELAY: Duration = Duration::from_secs(3);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -251,7 +251,7 @@ mod tests {
             InstallKind::SystemPackage
         );
         assert_eq!(
-            install_kind_from_appimage_env(Some(OsString::from("/tmp/OpenClaw.AppImage"))),
+            install_kind_from_appimage_env(Some(OsString::from("/tmp/Operator.AppImage"))),
             InstallKind::AppImage
         );
     }

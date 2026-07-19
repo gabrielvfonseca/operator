@@ -1,5 +1,5 @@
 {
-  "name": "@operator/model-catalog-core",
+  "name": "@gabrielvfonseca/model-catalog-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -9,7 +9,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "dependencies": {
-    "@operator/normalization-core": "workspace:*"
+    "@gabrielvfonseca/normalization-core": "workspace:*"
   },
   "exports": {
     ".": {

@@ -1,7 +1,7 @@
 // Github Copilot plugin module implements model metadata behavior.
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { supportsClaudeAdaptiveThinking } from "openclaw/plugin-sdk/provider-model-shared";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { supportsClaudeAdaptiveThinking } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type CopilotRuntimeApi = "anthropic-messages" | "openai-completions" | "openai-responses";
 type CopilotReasoningCompat = {

@@ -1,5 +1,5 @@
 // Ollama tests cover web search provider plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 import { createOllamaWebSearchProvider as createContractOllamaWebSearchProvider } from "../web-search-contract-api.js";
@@ -134,7 +134,7 @@ function expectOllamaWebSearchRequest(
       method: "POST",
       headers: params.headers ?? { "Content-Type": "application/json" },
       body: JSON.stringify({
-        query: params.query ?? "openclaw",
+        query: params.query ?? "@gabrielvfonseca/operator",
         max_results: params.maxResults ?? 5,
       }),
       signal: request.init.signal,
@@ -204,7 +204,7 @@ describe("ollama web search provider", () => {
     expect(provider.credentialPath).toBe("");
     expect(applied.plugins?.entries?.ollama?.enabled).toBe(true);
     mockSuccessfulSearchResponse();
-    await runOllamaWebSearch({ config: createOllamaConfig(), query: "openclaw" });
+    await runOllamaWebSearch({ config: createOllamaConfig(), query: "@gabrielvfonseca/operator" });
     expect(fetchRequest().url).toBe("http://ollama.local:11434/api/experimental/web_search");
   });
 
@@ -212,7 +212,7 @@ describe("ollama web search provider", () => {
     mockSuccessfulSearchResponse();
     await runOllamaWebSearch({
       config: createOllamaConfigWithWebSearchBaseUrl("http://localhost:11434/v1"),
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
     });
     expect(fetchRequest().url).toBe("http://localhost:11434/api/experimental/web_search");
   });
@@ -221,7 +221,7 @@ describe("ollama web search provider", () => {
     mockSuccessfulSearchResponse();
     await runOllamaWebSearch({
       config: createOllamaConfig({ baseUrl: "https://ollama.com" }),
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
     });
     expect(fetchRequest().url).toBe("https://ollama.com/api/web_search");
   });
@@ -233,7 +233,7 @@ describe("ollama web search provider", () => {
         baseUrl: undefined,
         baseURL: "http://remote-ollama:11434/v1",
       } as OllamaProviderConfigOverride),
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
     });
     expect(fetchRequest().url).toBe("http://remote-ollama:11434/api/experimental/web_search");
   });
@@ -246,7 +246,7 @@ describe("ollama web search provider", () => {
           results: [
             {
               title: "Operator",
-              url: "https://openclaw.ai/docs",
+              url: "https://operator.ai/docs",
               content: "Gateway docs and setup details",
             },
           ],
@@ -280,7 +280,7 @@ describe("ollama web search provider", () => {
     expect(result.query).toBe("openclaw docs");
     expect(result.provider).toBe("ollama");
     expect(result.count).toBe(1);
-    expectSingleSearchResultUrl(result.results, "https://openclaw.ai/docs");
+    expectSingleSearchResultUrl(result.results, "https://operator.ai/docs");
     expect(release).toHaveBeenCalledTimes(1);
   });
 
@@ -305,7 +305,7 @@ describe("ollama web search provider", () => {
 
     const result = await runOllamaWebSearch({
       config: createOllamaConfig(),
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
     });
 
     expect(result.count).toBe(1);
@@ -336,7 +336,7 @@ describe("ollama web search provider", () => {
         baseUrl: "https://ollama.com",
         apiKey: "cloud-config-secret",
       }),
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
     });
 
     expect(result.count).toBe(1);
@@ -383,7 +383,7 @@ describe("ollama web search provider", () => {
 
       const result = await runOllamaWebSearch({
         config: createOllamaConfig(),
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
       });
 
       expect(result.count).toBe(1);
@@ -426,7 +426,7 @@ describe("ollama web search provider", () => {
     await expect(
       runOllamaWebSearch({
         config: createOllamaConfig(),
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
       }),
     ).rejects.toThrow("Ollama web search: malformed JSON response");
   });
@@ -447,7 +447,7 @@ describe("ollama web search provider", () => {
     await expect(
       runOllamaWebSearch({
         config: createOllamaConfig(),
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
       }),
     ).rejects.toThrow("Ollama web search: JSON response exceeds 16777216 bytes");
 
@@ -485,7 +485,7 @@ describe("ollama web search provider", () => {
           apiKey: "OLLAMA_API_KEY",
           baseUrl: "https://ollama.com",
         }),
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
       });
       expect(fetchRequest().init?.headers?.Authorization).toBe("Bearer real-secret-from-env");
     } finally {

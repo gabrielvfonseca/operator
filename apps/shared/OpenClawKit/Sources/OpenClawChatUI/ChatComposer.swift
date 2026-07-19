@@ -15,10 +15,10 @@ private struct CleanChatComposerSurface: ViewModifier {
         content
             .background(
                 RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-                    .fill(OpenClawChatTheme.composerField))
+                    .fill(OperatorChatTheme.composerField))
             .overlay(
                 RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-                    .strokeBorder(OpenClawChatTheme.composerBorder, lineWidth: 1))
+                    .strokeBorder(OperatorChatTheme.composerBorder, lineWidth: 1))
         #else
         if #available(iOS 26.0, *) {
             content
@@ -30,7 +30,7 @@ private struct CleanChatComposerSurface: ViewModifier {
                     in: RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-                        .strokeBorder(OpenClawChatTheme.composerBorder, lineWidth: 1))
+                        .strokeBorder(OperatorChatTheme.composerBorder, lineWidth: 1))
         }
         #endif
     }
@@ -43,7 +43,7 @@ private enum CleanChatComposerMetrics {
 private struct CompactChatAttachmentLabel: View {
     var body: some View {
         Image(systemName: "paperclip")
-            .font(OpenClawChatTypography.display(size: 15, weight: .semibold, relativeTo: .subheadline))
+            .font(OperatorChatTypography.display(size: 15, weight: .semibold, relativeTo: .subheadline))
             .foregroundStyle(.secondary)
             .frame(width: CleanChatComposerMetrics.controlHeight, height: CleanChatComposerMetrics.controlHeight)
             .contentShape(Rectangle())
@@ -58,20 +58,20 @@ private struct SlashPanelHeightKey: PreferenceKey {
 }
 
 @MainActor
-struct OpenClawChatComposer: View {
-    @Bindable var viewModel: OpenClawChatViewModel
-    let style: OpenClawChatView.Style
+struct OperatorChatComposer: View {
+    @Bindable var viewModel: OperatorChatViewModel
+    let style: OperatorChatView.Style
     let showsSessionSwitcher: Bool
     let userAccent: Color?
     let assistantName: String?
     let assistantAvatarText: String?
     let assistantAvatarTint: Color?
-    let composerChrome: OpenClawChatView.ComposerChrome
+    let composerChrome: OperatorChatView.ComposerChrome
     let isComposerEnabled: Bool
     let isAttachmentInputEnabled: Bool
     let messagePlaceholder: String?
-    let talkControl: OpenClawChatTalkControl?
-    let voiceNoteControl: OpenClawChatVoiceNoteControl?
+    let talkControl: OperatorChatTalkControl?
+    let voiceNoteControl: OperatorChatVoiceNoteControl?
 
     @State private var isSlashPopoverPresented = false
     @State private var suppressNextSlashPopoverUpdate = false
@@ -96,7 +96,7 @@ struct OpenClawChatComposer: View {
             }
 
             if let voiceNoteControl, voiceNoteControl.recorder.isRecording {
-                OpenClawVoiceNoteRecordingRow(recorder: voiceNoteControl.recorder)
+                OperatorVoiceNoteRecordingRow(recorder: voiceNoteControl.recorder)
                     .padding(self.editorPadding)
             } else {
                 self.editor
@@ -117,21 +117,21 @@ struct OpenClawChatComposer: View {
                             topTrailing: 0),
                         style: .continuous)
                     shape
-                        .fill(OpenClawChatTheme.composerBackground)
-                        .overlay(shape.strokeBorder(OpenClawChatTheme.composerBorder, lineWidth: 1))
+                        .fill(OperatorChatTheme.composerBackground)
+                        .overlay(shape.strokeBorder(OperatorChatTheme.composerBorder, lineWidth: 1))
                         .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
                 } else {
                     let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     shape
-                        .fill(OpenClawChatTheme.composerBackground)
-                        .overlay(shape.strokeBorder(OpenClawChatTheme.composerBorder, lineWidth: 1))
+                        .fill(OperatorChatTheme.composerBackground)
+                        .overlay(shape.strokeBorder(OperatorChatTheme.composerBorder, lineWidth: 1))
                         .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
                 }
                 #else
                 let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 shape
-                    .fill(OpenClawChatTheme.composerBackground)
-                    .overlay(shape.strokeBorder(OpenClawChatTheme.composerBorder, lineWidth: 1))
+                    .fill(OperatorChatTheme.composerBackground)
+                    .overlay(shape.strokeBorder(OperatorChatTheme.composerBorder, lineWidth: 1))
                     .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
                 #endif
             }
@@ -189,7 +189,7 @@ struct OpenClawChatComposer: View {
                     }
                     if self.viewModel.showsModelPicker {
                         self.modelPicker
-                        if self.viewModel.modelSelectionID != OpenClawChatViewModel.defaultModelSelectionID {
+                        if self.viewModel.modelSelectionID != OperatorChatViewModel.defaultModelSelectionID {
                             self.modelPinButton
                         }
                     }
@@ -206,7 +206,7 @@ struct OpenClawChatComposer: View {
                 self.refreshButton
                 self.attachmentPicker
                 if let voiceNoteControl, !voiceNoteControl.isTalkActive {
-                    OpenClawVoiceNoteButton(
+                    OperatorVoiceNoteButton(
                         control: voiceNoteControl,
                         compact: false,
                         isComposerEnabled: self.isComposerEnabled,
@@ -219,10 +219,10 @@ struct OpenClawChatComposer: View {
 
     private func contextUsageIndicator(_ fraction: Double) -> some View {
         let percentage = Int((fraction * 100).rounded())
-        let color = fraction >= 0.8 ? OpenClawChatTheme.warning : OpenClawChatTheme.muted
+        let color = fraction >= 0.8 ? OperatorChatTheme.warning : OperatorChatTheme.muted
         return ZStack {
             Circle()
-                .stroke(OpenClawChatTheme.muted.opacity(0.2), lineWidth: 2)
+                .stroke(OperatorChatTheme.muted.opacity(0.2), lineWidth: 2)
             Circle()
                 .trim(from: 0, to: fraction)
                 .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round))
@@ -243,12 +243,12 @@ struct OpenClawChatComposer: View {
         {
             ForEach(self.viewModel.thinkingLevelOptions) { option in
                 Text(option.label)
-                    .font(OpenClawChatTypography.captionSemiBold)
+                    .font(OperatorChatTypography.captionSemiBold)
                     .tag(option.id)
             }
         } label: {
             Text("Thinking")
-                .font(OpenClawChatTypography.captionSemiBold)
+                .font(OperatorChatTypography.captionSemiBold)
         }
         .labelsHidden()
         .pickerStyle(.menu)
@@ -264,8 +264,8 @@ struct OpenClawChatComposer: View {
             set: { next in self.viewModel.selectModel(next) }))
         {
             Text(self.viewModel.defaultModelLabel)
-                .font(OpenClawChatTypography.captionSemiBold)
-                .tag(OpenClawChatViewModel.defaultModelSelectionID)
+                .font(OperatorChatTypography.captionSemiBold)
+                .tag(OperatorChatViewModel.defaultModelSelectionID)
             if sections.pinned.isEmpty, sections.recent.isEmpty {
                 // No pins/recents yet: keep the pre-feature flat list without section chrome.
                 self.modelOptions(sections.remaining)
@@ -275,7 +275,7 @@ struct OpenClawChatComposer: View {
                         self.modelOptions(sections.pinned)
                     } header: {
                         Text("Pinned")
-                            .font(OpenClawChatTypography.captionSemiBold)
+                            .font(OperatorChatTypography.captionSemiBold)
                     }
                 }
                 if !sections.recent.isEmpty {
@@ -283,7 +283,7 @@ struct OpenClawChatComposer: View {
                         self.modelOptions(sections.recent)
                     } header: {
                         Text("Recent")
-                            .font(OpenClawChatTypography.captionSemiBold)
+                            .font(OperatorChatTypography.captionSemiBold)
                     }
                 }
                 if !sections.remaining.isEmpty {
@@ -291,13 +291,13 @@ struct OpenClawChatComposer: View {
                         self.modelOptions(sections.remaining)
                     } header: {
                         Text("Models")
-                            .font(OpenClawChatTypography.captionSemiBold)
+                            .font(OperatorChatTypography.captionSemiBold)
                     }
                 }
             }
         } label: {
             Text("Model")
-                .font(OpenClawChatTypography.captionSemiBold)
+                .font(OperatorChatTypography.captionSemiBold)
         }
         .labelsHidden()
         .pickerStyle(.menu)
@@ -306,10 +306,10 @@ struct OpenClawChatComposer: View {
         .help("Model")
     }
 
-    private func modelOptions(_ models: [OpenClawChatModelChoice]) -> some View {
+    private func modelOptions(_ models: [OperatorChatModelChoice]) -> some View {
         ForEach(models) { model in
             Text(model.displayLabel)
-                .font(OpenClawChatTypography.captionSemiBold)
+                .font(OperatorChatTypography.captionSemiBold)
                 .tag(model.selectionID)
         }
     }
@@ -332,12 +332,12 @@ struct OpenClawChatComposer: View {
         {
             ForEach(self.viewModel.sessionChoices, id: \.key) { session in
                 Text(session.displayName ?? session.key)
-                    .font(OpenClawChatTypography.mono(size: 12, relativeTo: .caption))
+                    .font(OperatorChatTypography.mono(size: 12, relativeTo: .caption))
                     .tag(session.key)
             }
         } label: {
             Text("Session")
-                .font(OpenClawChatTypography.captionSemiBold)
+                .font(OperatorChatTypography.captionSemiBold)
         }
         .labelsHidden()
         .pickerStyle(.menu)
@@ -408,11 +408,11 @@ struct OpenClawChatComposer: View {
             HStack(spacing: 6) {
                 ForEach(
                     self.viewModel.attachments,
-                    id: \OpenClawPendingAttachment.id)
-                { (att: OpenClawPendingAttachment) in
+                    id: \OperatorPendingAttachment.id)
+                { (att: OperatorPendingAttachment) in
                     HStack(spacing: 6) {
                         if let img = att.preview {
-                            OpenClawPlatformImageFactory.image(img)
+                            OperatorPlatformImageFactory.image(img)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 22, height: 22)
@@ -420,22 +420,22 @@ struct OpenClawChatComposer: View {
                         } else if att.mimeType.hasPrefix("audio/") {
                             Image(systemName: "waveform")
                             Text("Voice note")
-                                .font(OpenClawChatTypography.caption)
+                                .font(OperatorChatTypography.caption)
                             if let durationSeconds = att.durationSeconds {
                                 Text(openClawVoiceNoteDurationLabel(durationSeconds))
-                                    .font(OpenClawChatTypography.caption)
+                                    .font(OperatorChatTypography.caption)
                                     .foregroundStyle(.secondary)
                             }
                         } else {
                             Image(systemName: "photo")
                             Text(att.fileName)
-                                .font(OpenClawChatTypography.caption)
+                                .font(OperatorChatTypography.caption)
                                 .lineLimit(1)
                         }
 
                         if att.preview != nil {
                             Text(att.fileName)
-                                .font(OpenClawChatTypography.caption)
+                                .font(OperatorChatTypography.caption)
                                 .lineLimit(1)
                         }
 
@@ -448,7 +448,7 @@ struct OpenClawChatComposer: View {
                     }
                     .padding(.horizontal, 8)
                     .padding(.vertical, 5)
-                    .background(OpenClawChatTheme.accent.opacity(0.08))
+                    .background(OperatorChatTheme.accent.opacity(0.08))
                     .clipShape(Capsule())
                 }
             }
@@ -489,7 +489,7 @@ struct OpenClawChatComposer: View {
             self.editorOverlay
 
             Rectangle()
-                .fill(OpenClawChatTheme.divider)
+                .fill(OperatorChatTheme.divider)
                 .frame(height: 1)
                 .padding(.horizontal, 2)
 
@@ -508,10 +508,10 @@ struct OpenClawChatComposer: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(OpenClawChatTheme.composerField)
+                .fill(OperatorChatTheme.composerField)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .strokeBorder(OpenClawChatTheme.composerBorder)))
+                        .strokeBorder(OperatorChatTheme.composerBorder)))
         .padding(self.editorPadding)
     }
 
@@ -524,7 +524,7 @@ struct OpenClawChatComposer: View {
                     .frame(width: self.cleanIconControlSize, height: self.cleanEditorMinHeight)
 
                 if let voiceNoteControl, !voiceNoteControl.isTalkActive {
-                    OpenClawVoiceNoteButton(
+                    OperatorVoiceNoteButton(
                         control: voiceNoteControl,
                         compact: true,
                         isComposerEnabled: self.isComposerEnabled,
@@ -565,15 +565,15 @@ struct OpenClawChatComposer: View {
         }
     }
 
-    private func talkButton(_ talkControl: OpenClawChatTalkControl) -> some View {
+    private func talkButton(_ talkControl: OperatorChatTalkControl) -> some View {
         Button {
             talkControl.toggle(self.viewModel.sessionKey)
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: talkControl.isEnabled ? "stop.fill" : "waveform")
-                    .font(OpenClawChatTypography.captionSemiBold)
+                    .font(OperatorChatTypography.captionSemiBold)
                 Text(talkControl.isEnabled ? "Stop" : "Talk")
-                    .font(OpenClawChatTypography.captionSemiBold)
+                    .font(OperatorChatTypography.captionSemiBold)
                     .lineLimit(1)
             }
             .foregroundStyle(talkControl.isEnabled ? .white : .primary)
@@ -596,12 +596,12 @@ struct OpenClawChatComposer: View {
         .help(self.talkHelpText(talkControl))
     }
 
-    private func compactTalkButton(_ talkControl: OpenClawChatTalkControl) -> some View {
+    private func compactTalkButton(_ talkControl: OperatorChatTalkControl) -> some View {
         Button {
             talkControl.toggle(self.viewModel.sessionKey)
         } label: {
             Image(systemName: talkControl.isEnabled ? "stop.fill" : "waveform")
-                .font(OpenClawChatTypography.body(size: 14, weight: .semibold, relativeTo: .subheadline))
+                .font(OperatorChatTypography.body(size: 14, weight: .semibold, relativeTo: .subheadline))
                 .foregroundStyle(.white)
                 .frame(width: self.cleanIconControlSize, height: self.cleanIconControlSize)
                 // Prominent filled circle so the mic reads as the primary action,
@@ -610,7 +610,7 @@ struct OpenClawChatComposer: View {
                     Circle()
                         .fill(talkControl.isEnabled
                             ? self.talkButtonFill(talkControl)
-                            : AnyShapeStyle(OpenClawChatTheme.accent))
+                            : AnyShapeStyle(OperatorChatTheme.accent))
                         .opacity(talkControl.isGatewayConnected || talkControl.isEnabled ? 1 : 0.4)
                 }
                 .frame(width: self.cleanControlHeight, height: self.cleanControlHeight)
@@ -624,30 +624,30 @@ struct OpenClawChatComposer: View {
         .help(self.talkHelpText(talkControl))
     }
 
-    private func talkButtonFill(_ talkControl: OpenClawChatTalkControl) -> AnyShapeStyle {
+    private func talkButtonFill(_ talkControl: OperatorChatTalkControl) -> AnyShapeStyle {
         if talkControl.isEnabled {
-            return AnyShapeStyle(OpenClawChatTheme.userBubble)
+            return AnyShapeStyle(OperatorChatTheme.userBubble)
         }
         if !talkControl.isGatewayConnected {
             return AnyShapeStyle(Color.secondary.opacity(0.12))
         }
-        return OpenClawChatTheme.subtleCard
+        return OperatorChatTheme.subtleCard
     }
 
-    private func talkButtonStroke(_ talkControl: OpenClawChatTalkControl) -> Color {
+    private func talkButtonStroke(_ talkControl: OperatorChatTalkControl) -> Color {
         if talkControl.isEnabled {
             return Color.white.opacity(0.18)
         }
-        return OpenClawChatTheme.composerBorder
+        return OperatorChatTheme.composerBorder
     }
 
-    private func talkAccessibilityValue(_ talkControl: OpenClawChatTalkControl) -> String {
+    private func talkAccessibilityValue(_ talkControl: OperatorChatTalkControl) -> String {
         let status = talkControl.statusText.trimmingCharacters(in: .whitespacesAndNewlines)
         let provider = talkControl.providerLabel.trimmingCharacters(in: .whitespacesAndNewlines)
         return [status, provider].filter { !$0.isEmpty }.joined(separator: ", ")
     }
 
-    private func talkHelpText(_ talkControl: OpenClawChatTalkControl) -> String {
+    private func talkHelpText(_ talkControl: OperatorChatTalkControl) -> String {
         if !talkControl.isGatewayConnected, !talkControl.isEnabled {
             return "Connect the gateway before starting realtime chat"
         }
@@ -661,7 +661,7 @@ struct OpenClawChatComposer: View {
                 .fill(self.connectionOK ? .green : .orange)
                 .frame(width: 7, height: 7)
             Text(self.connectionStatusText)
-                .font(OpenClawChatTypography.caption2)
+                .font(OperatorChatTypography.caption2)
                 .foregroundStyle(.secondary)
         }
         .padding(.horizontal, self.composerChrome == .clean ? 0 : 8)
@@ -669,7 +669,7 @@ struct OpenClawChatComposer: View {
         .background {
             if self.composerChrome == .full {
                 Capsule()
-                    .fill(OpenClawChatTheme.subtleCard)
+                    .fill(OperatorChatTheme.subtleCard)
             }
         }
     }
@@ -684,7 +684,7 @@ struct OpenClawChatComposer: View {
         ZStack(alignment: self.editorOverlayAlignment) {
             if self.viewModel.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 Text(self.placeholderText)
-                    .font(OpenClawChatTypography.body)
+                    .font(OperatorChatTypography.body)
                     .foregroundStyle(.tertiary)
                     .padding(.horizontal, self.cleanFieldTextInset)
                     .padding(.vertical, self.composerChrome == .clean ? 0 : 4)
@@ -716,7 +716,7 @@ struct OpenClawChatComposer: View {
                 "",
                 text: self.$viewModel.input,
                 axis: .vertical)
-                .font(OpenClawChatTypography.body)
+                .font(OperatorChatTypography.body)
                 .textFieldStyle(.plain)
                 .lineLimit(1...4)
                 .fixedSize(horizontal: false, vertical: true)
@@ -743,7 +743,7 @@ struct OpenClawChatComposer: View {
     }
 }
 
-extension OpenClawChatComposer {
+extension OperatorChatComposer {
     private var slashQuery: String? {
         let text = self.viewModel.input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard text.hasPrefix("/"), !text.hasPrefix("//") else { return nil }
@@ -769,7 +769,7 @@ extension OpenClawChatComposer {
                 HStack(spacing: 10) {
                     ProgressView()
                     Text("Loading commands")
-                        .font(OpenClawChatTypography.caption)
+                        .font(OperatorChatTypography.caption)
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, minHeight: 96)
@@ -778,16 +778,16 @@ extension OpenClawChatComposer {
             {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Commands unavailable")
-                        .font(OpenClawChatTypography.footnoteSemiBold)
+                        .font(OperatorChatTypography.footnoteSemiBold)
                     Text(error)
-                        .font(OpenClawChatTypography.caption)
+                        .font(OperatorChatTypography.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(3)
                     Button {
                         self.viewModel.refreshSlashCommands()
                     } label: {
                         Text("Retry")
-                            .font(OpenClawChatTypography.captionSemiBold)
+                            .font(OperatorChatTypography.captionSemiBold)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
@@ -796,7 +796,7 @@ extension OpenClawChatComposer {
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else if matches.isEmpty {
                 Text("No matching commands")
-                    .font(OpenClawChatTypography.caption)
+                    .font(OperatorChatTypography.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, minHeight: 96)
             } else {
@@ -848,20 +848,20 @@ extension OpenClawChatComposer {
     }
 
     private func slashCommandRow(
-        _ command: OpenClawChatCommandChoice,
+        _ command: OperatorChatCommandChoice,
         isHighlighted: Bool) -> some View
     {
         HStack(alignment: .top, spacing: 0) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(command.displayInvocation)
-                    .font(OpenClawChatTypography.mono(
+                    .font(OperatorChatTypography.mono(
                         size: 15,
                         weight: .semibold,
                         relativeTo: .subheadline))
                     .lineLimit(1)
                 if !command.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Text(command.description)
-                        .font(OpenClawChatTypography.caption)
+                        .font(OperatorChatTypography.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
                 }
@@ -898,7 +898,7 @@ extension OpenClawChatComposer {
         .allowsHitTesting(false)
     }
 
-    private func selectSlashCommand(_ command: OpenClawChatCommandChoice) {
+    private func selectSlashCommand(_ command: OperatorChatCommandChoice) {
         self.suppressNextSlashPopoverUpdate = true
         self.viewModel.applySlashCommandSelection(command)
         self.setSlashPanelPresented(false)
@@ -987,7 +987,7 @@ extension OpenClawChatComposer {
     #endif
 }
 
-extension OpenClawChatComposer {
+extension OperatorChatComposer {
     @ViewBuilder
     private var sendButton: some View {
         if self.viewModel.pendingRunCount > 0, !self.viewModel.hasDraftToSend {
@@ -998,7 +998,7 @@ extension OpenClawChatComposer {
                     ProgressView().controlSize(.mini)
                 } else {
                     Image(systemName: "stop.fill")
-                        .font(OpenClawChatTypography.display(size: 13, weight: .semibold, relativeTo: .caption))
+                        .font(OperatorChatTypography.display(size: 13, weight: .semibold, relativeTo: .caption))
                 }
             }
             .buttonStyle(.plain)
@@ -1006,7 +1006,7 @@ extension OpenClawChatComposer {
             .frame(width: self.sendButtonSize, height: self.sendButtonSize)
             .background(
                 RoundedRectangle(cornerRadius: self.sendButtonCornerRadius, style: .continuous)
-                    .fill(OpenClawChatTheme.danger)
+                    .fill(OperatorChatTheme.danger)
                     .frame(width: self.sendButtonVisualSize, height: self.sendButtonVisualSize))
             .contentShape(Rectangle())
             .accessibilityLabel("Stop response")
@@ -1019,7 +1019,7 @@ extension OpenClawChatComposer {
                     ProgressView().controlSize(.mini)
                 } else {
                     Image(systemName: "arrow.up")
-                        .font(OpenClawChatTypography.display(size: 13, weight: .semibold, relativeTo: .caption))
+                        .font(OperatorChatTypography.display(size: 13, weight: .semibold, relativeTo: .caption))
                 }
             }
             .buttonStyle(.plain)
@@ -1130,7 +1130,7 @@ extension OpenClawChatComposer {
     }
 
     private var sendButtonFill: Color {
-        self.userAccent ?? OpenClawChatTheme.userBubble
+        self.userAccent ?? OperatorChatTheme.userBubble
     }
 
     private var disabledSendButtonFill: Color {

@@ -1,6 +1,6 @@
 /** Tests plugin module loader cache keys and lifecycle reset behavior. */
 import path from "node:path";
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import type { PluginModuleLoaderFactory } from "./plugin-module-loader-cache.js";
 
@@ -104,7 +104,7 @@ describe("getCachedPluginModuleLoader", () => {
       cache,
       modulePath: "/repo/dist/extensions/demo/api.ts",
       importerUrl: "file:///repo/src/plugins/public-surface-loader.ts",
-      argvEntry: "/repo/openclaw.mjs",
+      argvEntry: "/repo/operator.mjs",
       preferBuiltDist: true,
       loaderFilename: "file:///repo/src/plugins/public-surface-loader.ts",
     });
@@ -112,7 +112,7 @@ describe("getCachedPluginModuleLoader", () => {
       cache,
       modulePath: "/repo/dist/extensions/demo/api.ts",
       importerUrl: "file:///repo/src/plugins/public-surface-loader.ts",
-      argvEntry: "/repo/openclaw.mjs",
+      argvEntry: "/repo/operator.mjs",
       preferBuiltDist: true,
       loaderFilename: "file:///repo/src/plugins/bundled-channel-config-metadata.ts",
     });
@@ -143,7 +143,7 @@ describe("getCachedPluginModuleLoader", () => {
       cache,
       modulePath: "/repo/extensions/demo/index.ts",
       importerUrl: "file:///repo/src/plugins/setup-registry.ts",
-      argvEntry: "/repo/openclaw.mjs",
+      argvEntry: "/repo/operator.mjs",
       loaderFilename: "file:///repo/src/plugins/source-loader.ts",
     } as const;
 
@@ -691,7 +691,7 @@ describe("getCachedPluginModuleLoader", () => {
     expect(result.fromSourceTransform).toBe(true);
     const options = requireRecord(callArg(createJiti, 0, 1, "jiti options"), "jiti options");
     expect(options.tryNative).toBe(false);
-    expect(options.nativeModules).toEqual(["openclaw"]);
+    expect(options.nativeModules).toEqual(["@gabrielvfonseca/operator"]);
     // With tryNative: false the wrapper must route every target through the source transformer
     // so its alias rewrites still apply; native require must not be consulted.
     expect(nativeStub).not.toHaveBeenCalled();

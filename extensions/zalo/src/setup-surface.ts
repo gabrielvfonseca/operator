@@ -10,7 +10,7 @@ import {
   type OperatorConfig,
   type SecretInput,
   createSetupTranslator,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { resolveZaloAccount } from "./accounts.js";
 import { noteZaloTokenHelp, promptZaloAllowFrom } from "./setup-allow-from.js";
 import { zaloDmPolicy } from "./setup-core.js";

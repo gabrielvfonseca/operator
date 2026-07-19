@@ -1,5 +1,5 @@
 // Checks whether a requester can read or mutate task-flow records.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   findLatestTaskFlowForOwnerKey,
   getTaskFlowById,

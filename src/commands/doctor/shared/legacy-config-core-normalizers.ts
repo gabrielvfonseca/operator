@@ -1,9 +1,9 @@
 // Core legacy config normalizers for shipped keys retired outside the rule table.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../../../packages/terminal-core/src/ansi.js";
 import { resolveSingleAccountKeysToMove } from "../../../channels/plugins/setup-promotion-helpers.js";
 import { resolveNormalizedProviderModelMaxTokens } from "../../../config/defaults.js";
@@ -254,7 +254,7 @@ function resolveLegacyWholeAgentRuntimePolicy(raw: unknown):
     return undefined;
   }
   const runtime = normalizeOptionalLowercaseString(raw.id);
-  if (!runtime || runtime === "auto" || runtime === "operator") {
+  if (!runtime || runtime === "auto" || runtime === "@gabrielvfonseca/operator") {
     return undefined;
   }
   const alias = listLegacyRuntimeModelProviderAliases().find(

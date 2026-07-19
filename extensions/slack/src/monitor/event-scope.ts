@@ -1,6 +1,6 @@
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Slack plugin module validates non-serializable per-event Enterprise Grid scope.
 import type { WebClient, WebClientOptions } from "@slack/web-api";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { getSlackListenerUploadCompletionClient } from "../client.js";
 import type { SlackInstallationIdentity } from "./enterprise-install.js";
 

@@ -331,7 +331,7 @@ function createAssistantMirrorMessage(params: {
     role: "assistant",
     content: [{ type: "text", text: params.text }],
     api: "openai-responses",
-    provider: "operator",
+    provider: "@gabrielvfonseca/operator",
     model: "delivery-mirror",
     usage: {
       input: 0,
@@ -344,7 +344,7 @@ function createAssistantMirrorMessage(params: {
     stopReason: "stop",
     timestamp: Date.now(),
     ...(params.idempotencyKey ? { idempotencyKey: params.idempotencyKey } : {}),
-    ...(params.deliveryMirror ? { operatorDeliveryMirror: params.deliveryMirror } : {}),
+    ...(params.deliveryMirror ? { openclawDeliveryMirror: params.deliveryMirror } : {}),
   };
 }
 
@@ -391,7 +391,7 @@ function extractAssistantMirrorComparableText(
 }
 
 function isDeliveryMirrorAssistantMessage(message: SessionTranscriptAssistantMessage): boolean {
-  return message.provider === "operator" && message.model === "delivery-mirror";
+  return message.provider === "@gabrielvfonseca/operator" && message.model === "delivery-mirror";
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

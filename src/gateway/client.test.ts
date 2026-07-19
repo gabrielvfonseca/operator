@@ -162,7 +162,7 @@ vi.mock("ws", () => ({
   WebSocket: MockWebSocket,
 }));
 
-vi.mock("@operator/proxyline", () => ({
+vi.mock("@openclaw/proxyline", () => ({
   installGlobalProxy: installGlobalProxyMock,
 }));
 
@@ -561,7 +561,7 @@ describe("GatewayClient security checks", () => {
     process.env.OPERATOR_ALLOW_INSECURE_PRIVATE_WS = "1";
     const onConnectError = vi.fn();
     const client = new GatewayClient({
-      url: "ws://openclaw-gateway.ai:18789",
+      url: "ws://operator-gateway.ai:18789",
       onConnectError,
     });
 
@@ -709,7 +709,7 @@ describe("GatewayClient close handling", () => {
 
   it("clears stale token on device token mismatch close", () => {
     const onClose = vi.fn();
-    const env = { OPERATOR_HOME: "/tmp/custom-openclaw-home" };
+    const env = { OPERATOR_HOME: "/tmp/custom-operator-home" };
     const client = createClientWithIdentity("dev-1", onClose, { env });
 
     client.start();
@@ -1735,7 +1735,7 @@ describe("GatewayClient connect auth payload", () => {
     });
     const env = {
       ...process.env,
-      OPERATOR_STATE_DIR: "/tmp/openclaw-client-service-state",
+      OPERATOR_STATE_DIR: "/tmp/operator-client-service-state",
     } as NodeJS.ProcessEnv;
     const client = new GatewayClient({
       url: "ws://127.0.0.1:18789",
@@ -2055,7 +2055,7 @@ describe("GatewayClient connect auth payload", () => {
       token: "stored-device-token",
       scopes: ["operator.read"],
     });
-    const env = { OPERATOR_HOME: "/tmp/custom-openclaw-home" };
+    const env = { OPERATOR_HOME: "/tmp/custom-operator-home" };
     const client = new GatewayClient({
       url: "ws://127.0.0.1:18789",
       env,

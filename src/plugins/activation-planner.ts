@@ -1,7 +1,7 @@
 /** Computes which manifest-owned plugins need activation for commands, routes, providers, or capabilities. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.js";
 import { normalizePluginsConfig } from "./config-state.js";
 import {

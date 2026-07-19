@@ -1,6 +1,6 @@
 /** Builds API-key provider auth methods that write profiles and config updates. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { upsertAuthProfileWithLock } from "../agents/auth-profiles/profiles.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import type { OperatorConfig } from "../config/types.operator.js";

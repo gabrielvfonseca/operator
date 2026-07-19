@@ -43,7 +43,7 @@ describe("withCachedMigrationConfigRuntime", () => {
         });
         runtimeConfig = structuredClone(draft);
         return {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           previousHash: null,
           persistedHash: "test-persisted-hash",
           snapshot: {} as never,
@@ -58,7 +58,7 @@ describe("withCachedMigrationConfigRuntime", () => {
       async (params: ReplaceConfigFileParams): Promise<ReplaceConfigFileResult> => {
         runtimeConfig = structuredClone(params.nextConfig);
         return {
-          path: "/tmp/openclaw.json",
+          path: "/tmp/operator.json",
           previousHash: null,
           persistedHash: "test-persisted-hash",
           snapshot: {} as never,
@@ -111,7 +111,7 @@ describe("copyMigrationFileItem", () => {
 
   it("uses unique backup paths for same-basename targets in the same millisecond", async () => {
     vi.spyOn(Date, "now").mockReturnValue(123);
-    const root = tempDirs.make("openclaw-migration-runtime-");
+    const root = tempDirs.make("operator-migration-runtime-");
     const reportDir = path.join(root, "report");
     const sourceOne = path.join(root, "source-one", "AGENTS.md");
     const sourceTwo = path.join(root, "source-two", "AGENTS.md");
@@ -163,7 +163,7 @@ describe("copyMigrationFileItem", () => {
 
 describe("copyMemoryMigrationFileItem", () => {
   it("rejects source bytes that changed after the reviewed plan", async () => {
-    const root = tempDirs.make("openclaw-memory-copy-");
+    const root = tempDirs.make("operator-memory-copy-");
     const workspaceDir = path.join(root, "workspace");
     const source = path.join(root, "source", "MEMORY.md");
     const target = path.join(workspaceDir, "memory", "imports", "codex", "MEMORY.md");
@@ -205,7 +205,7 @@ describe("copyMemoryMigrationFileItem", () => {
   });
 
   it("does not read source paths for non-actionable memory items", async () => {
-    const missingSource = path.join(tempDirs.make("openclaw-memory-copy-"), "missing.md");
+    const missingSource = path.join(tempDirs.make("operator-memory-copy-"), "missing.md");
     const item = createMigrationItem({
       id: "memory:missing",
       kind: "memory",
@@ -237,7 +237,7 @@ describe("copyMemoryMigrationFileItem", () => {
     if (process.platform === "win32") {
       return;
     }
-    const root = tempDirs.make("openclaw-memory-copy-");
+    const root = tempDirs.make("operator-memory-copy-");
     const workspaceDir = path.join(root, "workspace");
     const outsideDir = path.join(root, "outside");
     const source = path.join(root, "source", "MEMORY.md");
@@ -266,7 +266,7 @@ describe("copyMemoryMigrationFileItem", () => {
   });
 
   it("backs up and replaces an existing memory file within the workspace root", async () => {
-    const root = tempDirs.make("openclaw-memory-copy-");
+    const root = tempDirs.make("operator-memory-copy-");
     const workspaceDir = path.join(root, "workspace");
     const source = path.join(root, "source", "MEMORY.md");
     const target = path.join(workspaceDir, "memory", "imports", "codex", "MEMORY.md");
@@ -299,12 +299,12 @@ describe("copyMemoryMigrationFileItem", () => {
     }
     await expect(fs.readFile(backupPath, "utf8")).resolves.toBe("old memory");
     await expect(
-      fs.access(path.join(workspaceDir, ".openclaw-memory-import-staging")),
+      fs.access(path.join(workspaceDir, ".operator-memory-import-staging")),
     ).rejects.toThrow();
   });
 
   it("keeps the existing memory file when its backup cannot be persisted", async () => {
-    const root = tempDirs.make("openclaw-memory-copy-");
+    const root = tempDirs.make("operator-memory-copy-");
     const workspaceDir = path.join(root, "workspace");
     const source = path.join(root, "source", "MEMORY.md");
     const target = path.join(workspaceDir, "memory", "imports", "codex", "MEMORY.md");
@@ -333,7 +333,7 @@ describe("copyMemoryMigrationFileItem", () => {
   });
 
   it("does not clobber an existing memory file when replacement is disabled", async () => {
-    const root = tempDirs.make("openclaw-memory-copy-");
+    const root = tempDirs.make("operator-memory-copy-");
     const workspaceDir = path.join(root, "workspace");
     const source = path.join(root, "source", "MEMORY.md");
     const target = path.join(workspaceDir, "memory", "imports", "codex", "MEMORY.md");
@@ -359,7 +359,7 @@ describe("copyMemoryMigrationFileItem", () => {
 
 describe("writeMigrationReport", () => {
   it("redacts nested secret-looking config values in JSON reports", async () => {
-    const root = tempDirs.make("openclaw-migration-report-");
+    const root = tempDirs.make("operator-migration-report-");
     const reportDir = path.join(root, "report");
 
     await writeMigrationReport({

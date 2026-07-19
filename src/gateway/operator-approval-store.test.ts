@@ -43,7 +43,7 @@ function getOperatorApproval(params: Parameters<typeof getOperatorApprovalDetail
 const tempDirs: string[] = [];
 
 function createDatabaseOptions(): OperatorStateDatabaseOptions {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-operator-approval-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-operator-approval-"));
   tempDirs.push(stateDir);
   return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }

@@ -3,7 +3,7 @@ import type {
   ProviderAuthContext,
   ProviderAuthMethod,
   ProviderAuthMethodNonInteractiveContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   applyAuthProfileConfig,
   buildApiKeyCredential,
@@ -14,9 +14,9 @@ import {
   type SecretInput,
   upsertAuthProfileWithLock,
   validateApiKeyInput,
-} from "openclaw/plugin-sdk/provider-auth-api-key";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-onboard";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   DEFAULT_PIXVERSE_REGION,
   PIXVERSE_BASE_URL_BY_REGION,

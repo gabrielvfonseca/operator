@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatMarkdownBlockSegmenterTests {
     private func segments(_ markdown: String, isComplete: Bool = true) -> [ChatMarkdownBlock] {

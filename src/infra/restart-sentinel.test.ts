@@ -69,7 +69,7 @@ beforeEach(() => {
 });
 
 async function withRestartSentinelStateDir(run: () => Promise<void>): Promise<void> {
-  await withTempDir({ prefix: "openclaw-sentinel-" }, async (tempDir) => {
+  await withTempDir({ prefix: "operator-sentinel-" }, async (tempDir) => {
     try {
       await withEnvAsync({ OPERATOR_STATE_DIR: tempDir }, run);
     } finally {

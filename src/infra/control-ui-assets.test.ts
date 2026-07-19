@@ -167,7 +167,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
   });
 
   it("resolves control-ui root for dist bundle argv1 and moduleUrl candidates", () => {
-    const pkgRoot = abs("fixtures/openclaw-bundle");
+    const pkgRoot = abs("fixtures/operator-bundle");
     (
       openclawRoot.resolveOperatorPackageRootSync as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValueOnce(pkgRoot);
@@ -208,7 +208,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
   });
 
   it("detects package-proven control-ui roots", () => {
-    const pkgRoot = abs("fixtures/openclaw-package-root");
+    const pkgRoot = abs("fixtures/operator-package-root");
     const uiDir = path.join(pkgRoot, "dist", "control-ui");
     setDir(uiDir);
     setFile(path.join(uiDir, "index.html"), "<html></html>\n");
@@ -224,7 +224,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
   });
 
   it("does not treat fallback roots as package-proven", () => {
-    const pkgRoot = abs("fixtures/openclaw-package-root");
+    const pkgRoot = abs("fixtures/operator-package-root");
     const fallbackRoot = abs("fixtures/fallback-root/dist/control-ui");
     setDir(fallbackRoot);
     setFile(path.join(fallbackRoot, "index.html"), "<html></html>\n");

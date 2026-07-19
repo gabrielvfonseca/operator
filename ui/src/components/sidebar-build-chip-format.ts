@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { ControlUiBuildInfo } from "../build-info.ts";
 import { formatTimeAgo } from "../lib/format.ts";
 

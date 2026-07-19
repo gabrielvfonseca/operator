@@ -1,10 +1,10 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Xai plugin entrypoint registers its Operator integration.
-import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-import { defaultToolStreamExtraParams } from "openclaw/plugin-sdk/provider-stream-shared";
-import { jsonResult } from "openclaw/plugin-sdk/provider-web-search";
+import type { OperatorPluginToolContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { defaultToolStreamExtraParams } from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
+import { jsonResult } from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search";
 import {
   applyXaiRuntimeModelCompat,
   buildXaiImageGenerationProvider,

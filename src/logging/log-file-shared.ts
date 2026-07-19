@@ -1,4 +1,4 @@
-export const LOG_PREFIX = "operator";
+export const LOG_PREFIX = "@gabrielvfonseca/operator";
 export const LOG_SUFFIX = ".log";
 
 export function canUseNodeFs(): boolean {

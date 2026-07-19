@@ -1,5 +1,5 @@
 // Generates short labels for sessions from conversation context.
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import {
   completeWithPreparedSimpleCompletionModel,

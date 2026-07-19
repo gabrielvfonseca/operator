@@ -2,9 +2,12 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { asObjectRecord, defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  asObjectRecord,
+  defineChannelAliasMigration,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 
 // Feishu's legacy boolean `streaming` gated streaming-card replies with an
 // enabled default, so it migrates through the mode path (true → "partial",

@@ -1,5 +1,5 @@
 // Model/auth provider selection step shared by the classic wizard and bootstrap onboarding.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { AuthChoice, OnboardOptions } from "../commands/onboard-types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";

@@ -1,7 +1,7 @@
 import CoreLocation
 import Testing
-@testable import OpenClaw
-@testable import OpenClawKit
+@testable import Operator
+@testable import OperatorKit
 
 @Suite(.serialized) struct LocationPermissionSummaryTests {
     @Test func `location settings presentation uses apple access labels`() {
@@ -30,7 +30,7 @@ import Testing
         #expect(whileUsing.accessLevelText == "While Using the App")
         #expect(always.accessLevelText == "Always")
         #expect(whileUsingWithAlwaysGrant.accessLevelText == "While Using the App")
-        #expect(OpenClawLocationMode.off.locationAccessLevelText == nil)
+        #expect(OperatorLocationMode.off.locationAccessLevelText == nil)
     }
 
     @Test func `location sharing control follows selected mode while permission is pending`() {
@@ -313,7 +313,7 @@ import Testing
                 UserDefaults.standard.removeObject(forKey: defaultsKey)
             }
         }
-        UserDefaults.standard.set(OpenClawLocationMode.always.rawValue, forKey: defaultsKey)
+        UserDefaults.standard.set(OperatorLocationMode.always.rawValue, forKey: defaultsKey)
         let locationService = MockLocationService(authorizationStatus: .authorizedAlways)
         let appModel = NodeAppModel(locationService: locationService)
 
@@ -349,14 +349,14 @@ private final class MockLocationService: LocationServicing, @unchecked Sendable 
         .fullAccuracy
     }
 
-    func ensureAuthorization(mode: OpenClawLocationMode) async -> CLAuthorizationStatus {
+    func ensureAuthorization(mode: OperatorLocationMode) async -> CLAuthorizationStatus {
         _ = mode
         return self.status
     }
 
     func currentLocation(
-        params: OpenClawLocationGetParams,
-        desiredAccuracy: OpenClawLocationAccuracy,
+        params: OperatorLocationGetParams,
+        desiredAccuracy: OperatorLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     {

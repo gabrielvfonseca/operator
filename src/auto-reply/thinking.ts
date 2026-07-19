@@ -1,5 +1,5 @@
 // Thinking/reasoning level catalog helpers for auto-reply model controls.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { resolveClaudeThinkingProfile } from "../plugins/provider-claude-thinking.js";
 import {
   BASE_THINKING_LEVELS,
@@ -32,7 +32,7 @@ export type {
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   resolveProviderBinaryThinking,
   resolveProviderDefaultThinkingLevel,

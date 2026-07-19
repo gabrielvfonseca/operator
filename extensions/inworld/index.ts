@@ -1,5 +1,5 @@
 // Inworld plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { buildInworldSpeechProvider } from "./speech-provider.js";
 
 export default definePluginEntry({

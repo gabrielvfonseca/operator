@@ -1,5 +1,5 @@
 // Normalizes plugin scope identifiers and scope lists.
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 
 /** Normalizes plugin id scope input into a sorted unique string list. */
 export function normalizePluginIdScope(ids?: readonly unknown[]): string[] | undefined {

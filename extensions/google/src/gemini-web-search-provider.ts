@@ -1,14 +1,14 @@
 // Google provider module implements model/runtime integration.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   createWebSearchProviderContractFields,
   mergeScopedSearchConfig,
   resolveProviderWebSearchPluginConfig,
   type WebSearchProviderPlugin,
   type WebSearchProviderToolDefinition,
-} from "openclaw/plugin-sdk/provider-web-search-config-contract";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-web-search-config-contract";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const GEMINI_CREDENTIAL_PATH = "plugins.entries.google.config.webSearch.apiKey";
 const GOOGLE_PROVIDER_CREDENTIAL_PATH = "models.providers.google.apiKey";
@@ -122,7 +122,7 @@ export function createGeminiWebSearchProvider(): WebSearchProviderPlugin {
     envVars: ["GEMINI_API_KEY"],
     placeholder: "AIza...",
     signupUrl: "https://aistudio.google.com/apikey",
-    docsUrl: "https://docs.openclaw.ai/tools/web",
+    docsUrl: "https://docs.operator.ai/tools/web",
     autoDetectOrder: 20,
     credentialPath: GEMINI_CREDENTIAL_PATH,
     ...contractFields,

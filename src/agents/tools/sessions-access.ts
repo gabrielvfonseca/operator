@@ -3,7 +3,7 @@
  *
  * Adds Operator session-key alias normalization and sandbox requester scoping over SDK visibility contracts.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveSandboxSessionToolsVisibility } from "../../plugin-sdk/session-visibility.js";
 import { isSubagentSessionKey } from "../../routing/session-key.js";

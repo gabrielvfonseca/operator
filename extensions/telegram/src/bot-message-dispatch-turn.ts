@@ -1,13 +1,16 @@
-import { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
-import { runChannelInboundEvent } from "openclaw/plugin-sdk/channel-inbound";
+import { logTypingFailure } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import { runChannelInboundEvent } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 // Telegram plugin module wires inbound turn execution to Telegram delivery controllers.
 import {
   createChannelMessageReplyPipeline,
   resolveChannelStreamingPreviewToolProgress,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isFastModeAutoProgressPayload } from "openclaw/plugin-sdk/reply-payload";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type {
+  OperatorConfig,
+  TelegramAccountConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isFastModeAutoProgressPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import type { TelegramMessageContext } from "./bot-message-context.js";
 import type { TelegramDeliveryController } from "./bot-message-dispatch-delivery.js";

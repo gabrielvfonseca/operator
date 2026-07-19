@@ -1,5 +1,5 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { runAgentHarnessBeforeMessageWriteHook } from "../../agents/harness/hook-helpers.js";
 import {
   appendAssistantMessageToSessionTranscript,

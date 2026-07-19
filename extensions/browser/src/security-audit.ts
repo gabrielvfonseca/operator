@@ -1,11 +1,14 @@
 /**
  * Browser plugin security audit checks for auth and remote CDP exposure.
  */
-import type { OperatorPluginSecurityAuditContext } from "openclaw/plugin-sdk/plugin-entry";
-import { hasConfiguredSecretInput } from "openclaw/plugin-sdk/secret-input";
-import { formatCliCommand } from "openclaw/plugin-sdk/setup-tools";
-import { isPrivateNetworkOptInEnabled, isPrivateIpAddress } from "openclaw/plugin-sdk/ssrf-policy";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorPluginSecurityAuditContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { hasConfiguredSecretInput } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
+import {
+  isPrivateNetworkOptInEnabled,
+  isPrivateIpAddress,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-policy";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { redactCdpUrl, resolveBrowserConfig, resolveProfile } from "./browser/config.js";
 import { resolveBrowserControlAuth } from "./browser/control-auth.js";
 import { hasNonEmptyString } from "./record-shared.js";

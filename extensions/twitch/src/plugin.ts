@@ -5,26 +5,26 @@
  * This is the primary entry point for the Twitch channel integration.
  */
 
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import { buildChannelConfigSchema } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";
 import {
   buildChannelOutboundSessionRoute,
   createChatChannelPlugin,
   stripChannelTargetPrefix,
-} from "openclaw/plugin-sdk/channel-core";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
 import {
   createLoggedPairingApprovalNotifier,
   createPairingPrefixStripper,
-} from "openclaw/plugin-sdk/channel-pairing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   buildPassiveProbedChannelStatusSummary,
   runStoppablePassiveMonitor,
-} from "openclaw/plugin-sdk/extension-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import { twitchMessageActions } from "./actions.js";
 import { removeClientManager } from "./client-manager-registry.js";
 import { TwitchConfigSchema } from "./config-schema.js";

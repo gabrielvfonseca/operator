@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Outbound delivery core runs plugin hooks, queue durability, channel adapter
 // sends, commit hooks, diagnostics, transcript mirroring, and payload outcomes.
 import { hasTrustedMessageAuditListeners } from "../../audit/message-audit-events.js";

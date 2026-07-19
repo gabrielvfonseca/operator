@@ -7,6 +7,6 @@ export const page = definePage({
   component: () =>
     import("./about-page.ts").then(() => ({
       header: true,
-      render: () => html`<openclaw-about-page></openclaw-about-page>`,
+      render: () => html`<operator-about-page></operator-about-page>`,
     })),
 });

@@ -3,7 +3,7 @@
  */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { sanitizeGoogleAssistantFirstOrdering } from "../../shared/google-turn-ordering.js";
 import { sliceUtf16Safe, truncateUtf16Safe } from "../../utils.js";

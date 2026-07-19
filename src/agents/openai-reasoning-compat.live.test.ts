@@ -1,7 +1,7 @@
 // Live checks for OpenAI reasoning compatibility and repaired tool replay payloads.
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
-import type { Model } from "openclaw/plugin-sdk/llm";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { getRuntimeConfig } from "../config/config.js";

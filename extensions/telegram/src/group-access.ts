@@ -1,13 +1,13 @@
 // Telegram plugin module implements group access behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelGroupPolicy } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ChannelGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   TelegramAccountConfig,
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { resolveOpenProviderRuntimeGroupPolicy } from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveOpenProviderRuntimeGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import { isSenderAllowed, type NormalizedAllowFrom } from "./bot-access.js";
 import { firstDefined } from "./bot-access.js";
 

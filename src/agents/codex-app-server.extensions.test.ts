@@ -32,14 +32,14 @@ function findDiagnostic(
 }
 
 function createTempDir(): string {
-  return createTempPluginDir(tempDirs, "openclaw-codex-ext-");
+  return createTempPluginDir(tempDirs, "operator-codex-ext-");
 }
 
 function createBundledTempDir(): string {
   // Bundled-only extension points are tested from the dist-runtime shape because
   // production rejects equivalent registrations from arbitrary plugin paths.
   delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
-  return createTempPluginDir(tempDirs, "openclaw-codex-ext-", {
+  return createTempPluginDir(tempDirs, "operator-codex-ext-", {
     parentDir: path.join(process.cwd(), "dist-runtime", "extensions"),
   });
 }
@@ -89,7 +89,7 @@ describe("agent tool result middleware", () => {
 
     loadOperatorPlugins(options);
     expect(listAgentToolResultMiddlewares("codex")).toHaveLength(1);
-    expect(listAgentToolResultMiddlewares("openclaw")).toHaveLength(0);
+    expect(listAgentToolResultMiddlewares("@gabrielvfonseca/operator")).toHaveLength(0);
 
     resetActivePluginRegistryForTest();
     expect(listAgentToolResultMiddlewares("codex")).toHaveLength(0);
@@ -120,7 +120,7 @@ describe("agent tool result middleware", () => {
       filename: "index.mjs",
       manifest: {
         contracts: {
-          agentToolResultMiddleware: ["openclaw"],
+          agentToolResultMiddleware: ["@gabrielvfonseca/operator"],
         },
       },
       body: `export default { id: "tool-result-middleware", register(api) {
@@ -201,12 +201,12 @@ describe("agent tool result middleware", () => {
       filename: "index.mjs",
       manifest: {
         contracts: {
-          agentToolResultMiddleware: ["openclaw", "codex"],
+          agentToolResultMiddleware: ["@gabrielvfonseca/operator", "codex"],
         },
       },
       body: `const middleware = () => undefined;
 export default { id: "tool-result-middleware", register(api) {
-  api.registerAgentToolResultMiddleware(middleware, { runtimes: ["openclaw"] });
+  api.registerAgentToolResultMiddleware(middleware, { runtimes: ["@gabrielvfonseca/operator"] });
   api.registerAgentToolResultMiddleware(middleware, { runtimes: ["codex"] });
 } };`,
     });
@@ -224,7 +224,7 @@ export default { id: "tool-result-middleware", register(api) {
       },
     });
 
-    expect(listAgentToolResultMiddlewares("openclaw")).toHaveLength(1);
+    expect(listAgentToolResultMiddlewares("@gabrielvfonseca/operator")).toHaveLength(1);
     expect(listAgentToolResultMiddlewares("codex")).toHaveLength(1);
   });
 
@@ -457,7 +457,7 @@ export default { id: "tool-result-middleware", register(api) {
           name: "setup-channel-middleware",
           version: "0.0.0",
           type: "module",
-          openclaw: {
+          operator: {
             extensions: [path.basename(pluginFile)],
             setupEntry: "setup.mjs",
           },

@@ -172,7 +172,7 @@ describe("openrouter image generation provider", () => {
       allowPrivateNetwork: false,
       defaultHeaders: {
         Authorization: "Bearer openrouter-key",
-        "HTTP-Referer": "https://openclaw.ai",
+        "HTTP-Referer": "https://operator.ai",
         "X-OpenRouter-Title": "Operator",
       },
       provider: "openrouter",
@@ -184,7 +184,7 @@ describe("openrouter image generation provider", () => {
     const headers = requireHeaders(request.headers);
     expect(Object.fromEntries(headers.entries())).toEqual({
       authorization: "Bearer openrouter-key",
-      "http-referer": "https://openclaw.ai",
+      "http-referer": "https://operator.ai",
       "x-openrouter-title": "Operator",
     });
     expect(request).toEqual({

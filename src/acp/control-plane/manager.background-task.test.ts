@@ -1,6 +1,6 @@
 /** Regression coverage for ACP background-task summary truncation boundaries. */
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   appendBackgroundTaskProgressSummary,
   resolveBackgroundTaskContext,

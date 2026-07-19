@@ -406,7 +406,7 @@ describe("buildEmbeddedCompactionRuntimeContext", () => {
       } as unknown as OperatorConfig,
       provider: "openai",
       modelId: "gpt-5.5",
-      harnessRuntime: "openclaw",
+      harnessRuntime: "@gabrielvfonseca/operator",
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
     });
@@ -419,7 +419,11 @@ describe("buildEmbeddedCompactionRuntimeContext", () => {
 
   it.each([
     { selection: "implicit Operator", harnessRuntime: undefined, nativeCompaction: undefined },
-    { selection: "bound Operator", harnessRuntime: "openclaw", nativeCompaction: undefined },
+    {
+      selection: "bound Operator",
+      harnessRuntime: "@gabrielvfonseca/operator",
+      nativeCompaction: undefined,
+    },
     { selection: "bound Codex", harnessRuntime: "codex", nativeCompaction: true },
   ])("keeps $selection ownership for custom OpenAI Responses compaction", (fixture) => {
     const result = resolveEmbeddedCompactionTarget({

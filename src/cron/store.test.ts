@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   archiveLegacyCronStoreForMigration,
@@ -26,7 +26,7 @@ let fixtureRoot = "";
 let caseId = 0;
 
 beforeAll(async () => {
-  fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cron-store-"));
+  fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cron-store-"));
 });
 
 afterAll(async () => {
@@ -89,11 +89,11 @@ describe("resolveCronStorePath", () => {
   });
 
   it("uses OPERATOR_HOME for tilde expansion", () => {
-    setTestEnvValue("OPERATOR_HOME", "/srv/openclaw-home");
+    setTestEnvValue("OPERATOR_HOME", "/srv/operator-home");
     setTestEnvValue("HOME", "/home/other");
 
     const result = resolveCronStorePath("~/cron/jobs.json");
-    expect(result).toBe(path.resolve("/srv/openclaw-home", "cron", "jobs.json"));
+    expect(result).toBe(path.resolve("/srv/operator-home", "cron", "jobs.json"));
   });
 });
 

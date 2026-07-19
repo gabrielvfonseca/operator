@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatMarkdownDisplayPreprocessorTests {
     @Test func `converts plain chat soft breaks to markdown hard breaks`() throws {

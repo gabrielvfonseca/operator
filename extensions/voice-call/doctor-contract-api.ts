@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   archiveLegacyStateSource,
   detectOperatorStateDatabaseSchemaMigrations,
@@ -11,7 +11,7 @@ import {
   type PluginStateKeyedStore,
   repairOperatorStateDatabaseSchema,
   type OperatorStateDatabaseSchemaMigration,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import {
   buildVoiceCallLegacyJsonlEventKey,
   CALL_RECORD_CHUNK_MAX_ENTRIES,
@@ -70,7 +70,7 @@ function resolveUserPath(input: string, env: NodeJS.ProcessEnv): string {
 
 /** Read the configured voice-call store path from either package id. */
 function getVoiceCallConfigStore(config: PluginDoctorStateMigrationParams["config"]): string {
-  for (const pluginId of ["voice-call", "@operator/voice-call"]) {
+  for (const pluginId of ["voice-call", "@gabrielvfonseca/voice-call"]) {
     const rawConfig = config.plugins?.entries?.[pluginId]?.config;
     if (!rawConfig || typeof rawConfig !== "object" || Array.isArray(rawConfig)) {
       continue;
@@ -96,7 +96,7 @@ function asRecord(value: unknown): Record<string, unknown> | undefined {
 /** Return Voice Call agents whose templated core session stores need migration. */
 export function resolveSessionStoreAgentIds(params: { cfg: OperatorConfig }): string[] {
   const agentIds = new Set<string>();
-  for (const pluginId of ["voice-call", "@operator/voice-call"]) {
+  for (const pluginId of ["voice-call", "@gabrielvfonseca/voice-call"]) {
     const entry = params.cfg.plugins?.entries?.[pluginId];
     if (!entry) {
       continue;
@@ -126,7 +126,7 @@ function resolveVoiceCallStorePath(params: {
   if (configuredStore) {
     return resolveUserPath(configuredStore, params.env);
   }
-  return path.join(resolveHome(params.env), ".openclaw", "voice-calls");
+  return path.join(resolveHome(params.env), ".operator", "voice-calls");
 }
 
 function resolveVoiceCallStateDatabaseEnv(

@@ -1,11 +1,11 @@
 // TTS config helpers read and normalize text-to-speech provider settings.
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { isRecord as isPlainObject } from "@operator/normalization-core/record-coerce";
+import { isRecord as isPlainObject } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.js";
 import type { TtsAutoMode, TtsConfig, TtsMode } from "../config/types.tts.js";
 import { mergeDeep } from "../infra/deep-merge.js";

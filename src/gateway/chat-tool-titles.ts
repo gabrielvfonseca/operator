@@ -16,7 +16,7 @@
  * never re-bills the same calls.
  */
 import { createHash } from "node:crypto";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { splitTrailingAuthProfile } from "../agents/model-ref-profile.js";
 import { parseModelRef } from "../agents/model-selection-normalize.js";
@@ -29,11 +29,11 @@ import type { OperatorConfig } from "../config/types.operator.js";
 import { logVerbose } from "../globals.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { redactToolPayloadText } from "../logging/redact.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../state/openclaw-agent-db.generated.js";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../state/operator-agent-db.js";
+} from "../state/openclaw-agent-db.js";
 
 const TOOL_TITLE_CACHE_SCOPE = "tool-call-titles";
 const TOOL_TITLES_MAX_ITEMS = 24;

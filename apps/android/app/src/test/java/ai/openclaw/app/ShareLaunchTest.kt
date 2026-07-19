@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.content.ClipData
 import android.content.Intent
@@ -89,7 +89,7 @@ class ShareLaunchTest {
       parseShareLaunchIntent(
         Intent(Intent.ACTION_SEND)
           .setType("image/jpeg")
-          .putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///data/data/ai.openclaw.app/private.jpg")),
+          .putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///data/data/ai.operator.app/private.jpg")),
       ),
     )
     assertNull(parseShareLaunchIntent(Intent(Intent.ACTION_SEND).setType("text/plain")))

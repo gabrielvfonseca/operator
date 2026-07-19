@@ -1,6 +1,6 @@
 // Duckduckgo helper module supports config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const DEFAULT_DDG_SAFE_SEARCH = "moderate";
 

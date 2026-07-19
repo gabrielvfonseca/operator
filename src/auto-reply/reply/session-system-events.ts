@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveUserTimezone } from "../../agents/date-time.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { buildChannelSummary } from "../../infra/channel-summary.js";

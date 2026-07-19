@@ -1,4 +1,4 @@
-import OpenClawKit
+import OperatorKit
 import SwiftUI
 import UserNotifications
 
@@ -15,18 +15,18 @@ private final class WatchNotificationPresentationDelegate: NSObject, UNUserNotif
 }
 
 enum WatchScreenshotMode {
-    private static let defaultsKey = "openclaw.watch.screenshotMode"
+    private static let defaultsKey = "operator.watch.screenshotMode"
     static let approvals = ProcessInfo.processInfo.arguments.contains(
-        "--openclaw-watch-approval-screenshot-mode")
-        || ProcessInfo.processInfo.environment["OPENCLAW_WATCH_APPROVAL_SCREENSHOT_MODE"] == "1"
-    static let enabled = ProcessInfo.processInfo.arguments.contains("--openclaw-watch-screenshot-mode")
-        || ProcessInfo.processInfo.environment["OPENCLAW_WATCH_SCREENSHOT_MODE"] == "1"
+        "--operator-watch-approval-screenshot-mode")
+        || ProcessInfo.processInfo.environment["OPERATOR_WATCH_APPROVAL_SCREENSHOT_MODE"] == "1"
+    static let enabled = ProcessInfo.processInfo.arguments.contains("--operator-watch-screenshot-mode")
+        || ProcessInfo.processInfo.environment["OPERATOR_WATCH_SCREENSHOT_MODE"] == "1"
         || UserDefaults.standard.bool(forKey: WatchScreenshotMode.defaultsKey)
         || WatchScreenshotMode.approvals
 }
 
 @main
-struct OpenClawWatchApp: App {
+struct OperatorWatchApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @State private var inboxStore = WatchInboxStore(
         requestNotificationAuthorization: !WatchScreenshotMode.enabled)
@@ -265,14 +265,14 @@ extension WatchInboxStore {
             transport: "screenshot")
         self.consume(
             appSnapshot: WatchAppSnapshotMessage(
-                gatewayStatus: OpenClawWatchAppStatus(code: .gatewayConnected),
+                gatewayStatus: OperatorWatchAppStatus(code: .gatewayConnected),
                 gatewayConnected: true,
                 agentName: "Molty",
                 agentAvatarURL: nil,
                 agentAvatarText: "M",
                 sessionKey: "watch-screenshot-session",
                 gatewayStableID: "watch-screenshot-gateway",
-                talkStatus: OpenClawWatchAppStatus(code: .talkReady),
+                talkStatus: OperatorWatchAppStatus(code: .talkReady),
                 talkEnabled: true,
                 talkListening: false,
                 talkSpeaking: false,

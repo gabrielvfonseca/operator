@@ -2,9 +2,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { LegacyConfigRule } from "../config/legacy.shared.js";
 import type { OperatorConfig } from "../config/types.js";
 import type {

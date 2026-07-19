@@ -1,5 +1,5 @@
 {
-  "name": "@operator/agent-core",
+  "name": "@gabrielvfonseca/agent-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -95,8 +95,8 @@
     }
   },
   "dependencies": {
-    "@operator/ai": "workspace:*",
-    "@operator/normalization-core": "workspace:*",
+    "@gabrielvfonseca/ai": "workspace:*",
+    "@gabrielvfonseca/normalization-core": "workspace:*",
     "typebox": "1.3.3"
   }
 }

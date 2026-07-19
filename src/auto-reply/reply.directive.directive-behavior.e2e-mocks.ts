@@ -116,7 +116,7 @@ vi.mock("../agents/thinking-runtime.js", async (importOriginal) => {
     ...actual,
     // These tests cover directive acknowledgements and persistence, not harness selection.
     // Keep each directive from loading unrelated provider-route metadata through auto selection.
-    resolveEffectiveAgentRuntime: () => "operator",
+    resolveEffectiveAgentRuntime: () => "@gabrielvfonseca/operator",
   };
 });
 

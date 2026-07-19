@@ -1,7 +1,7 @@
 // Qa Lab plugin module implements jsonl replay behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   runRuntimeParityScenario,
   type RuntimeId,
@@ -12,7 +12,7 @@ import {
 
 export type JsonlReplayInput = {
   directory: string;
-  runtimePair: ["openclaw", "codex"];
+  runtimePair: ["@gabrielvfonseca/operator", "codex"];
   providerMode: "mock-openai" | "live-frontier";
 };
 
@@ -35,7 +35,7 @@ type JsonlReplayResult = {
   transcripts: Array<{
     transcriptPath: string;
     userTurnCount: number;
-    cells: { openclaw: RuntimeParityCell[]; codex: RuntimeParityCell[] };
+    cells: { operator: RuntimeParityCell[]; codex: RuntimeParityCell[] };
     drift: Array<RuntimeParityResult["drift"]>;
     firstDriftAtTurn?: number;
   }>;
@@ -164,7 +164,7 @@ function defaultRunCell(): Promise<RuntimeParityScenarioExecution> {
 }
 
 function assertSupportedRuntimePair(runtimePair: JsonlReplayInput["runtimePair"]) {
-  if (runtimePair[0] !== "openclaw" || runtimePair[1] !== "codex") {
+  if (runtimePair[0] !== "@gabrielvfonseca/operator" || runtimePair[1] !== "codex") {
     throw new Error(`unsupported jsonl replay runtime pair: ${runtimePair.join(",")}`);
   }
 }
@@ -201,8 +201,8 @@ export async function runJsonlReplay(
   for (const transcriptPath of transcriptPaths) {
     const transcriptBytes = await fs.readFile(transcriptPath, "utf8");
     const turns = extractJsonlReplayUserTurns(transcriptBytes);
-    const cells: { openclaw: RuntimeParityCell[]; codex: RuntimeParityCell[] } = {
-      openclaw: [],
+    const cells: { operator: RuntimeParityCell[]; codex: RuntimeParityCell[] } = {
+      operator: [],
       codex: [],
     };
     const drift: Array<RuntimeParityResult["drift"]> = [];
@@ -220,7 +220,7 @@ export async function runJsonlReplay(
             providerMode: input.providerMode,
           }),
       });
-      cells.openclaw.push(parity.cells.openclaw);
+      cells.operator.push(parity.cells.operator);
       cells.codex.push(parity.cells.codex);
       drift.push(parity.drift);
       if (firstDriftAtTurn === undefined && parity.drift !== "none") {

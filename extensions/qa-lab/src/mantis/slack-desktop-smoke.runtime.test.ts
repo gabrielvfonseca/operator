@@ -268,10 +268,10 @@ describe("mantis Slack desktop smoke runtime", () => {
       .flatMap((entry) => entry.args);
     expect(rsyncArgs).not.toContain("--delete");
     expect(rsyncArgs).toContain(
-      "crabbox@203.0.113.10:/tmp/openclaw-mantis-slack-desktop-2026-05-04T13-00-00-000Z/",
+      "crabbox@203.0.113.10:/tmp/operator-mantis-slack-desktop-2026-05-04T13-00-00-000Z/",
     );
     expect(rsyncArgs).toContain(
-      "crabbox@203.0.113.10:/tmp/openclaw-mantis-slack-desktop-2026-05-04T13-00-00-000Z/slack-qa/",
+      "crabbox@203.0.113.10:/tmp/operator-mantis-slack-desktop-2026-05-04T13-00-00-000Z/slack-qa/",
     );
     await expect(fs.readFile(result.screenshotPath ?? "", "utf8")).resolves.toBe("png");
     await expect(fs.readFile(result.videoPath ?? "", "utf8")).resolves.toBe("mp4");
@@ -730,7 +730,7 @@ describe("mantis Slack desktop smoke runtime", () => {
     const remoteScript = runCommand?.args.at(-1);
     expect(remoteScript).toContain("setup_gateway=1");
     expect(remoteScript).toContain("openclaw gateway run");
-    expect(remoteScript).toContain('</dev/null >"$out/openclaw-gateway.log"');
+    expect(remoteScript).toContain('</dev/null >"$out/operator-gateway.log"');
     expect(remoteScript).toContain('kill -0 "$gateway_pid"');
     expect(remoteScript).toContain('disown "$gateway_pid"');
     expect(fetchMock.mock.calls.map(([url]) => describeFetchInput(url))).toEqual([
@@ -1111,7 +1111,7 @@ describe("mantis Slack desktop smoke runtime", () => {
 
     await qa.parseAsync([
       "node",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "mantis",
       "slack-desktop-smoke",
       "--approval-checkpoints",
@@ -1142,7 +1142,7 @@ describe("mantis Slack desktop smoke runtime", () => {
     await expect(
       qa.parseAsync([
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "mantis",
         "slack-desktop-smoke",
         "--approval-checkpoints",

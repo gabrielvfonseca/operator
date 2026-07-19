@@ -1,6 +1,6 @@
 // Searxng tests cover searxng client plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { LookupFn } from "openclaw/plugin-sdk/ssrf-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { LookupFn } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const endpointMockState = vi.hoisted(() => ({
@@ -55,7 +55,7 @@ describe("searxng client", () => {
     expect(
       testing.buildSearxngSearchUrl({
         baseUrl: "https://search.example.com/searxng",
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
         categories: "general,news",
         language: "en",
       }),
@@ -136,7 +136,7 @@ describe("searxng client", () => {
 
     const result = await runSearxngSearch({
       baseUrl: "http://127.0.0.1:8888",
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
       categories: "general",
       count: 5,
     });
@@ -145,7 +145,7 @@ describe("searxng client", () => {
     const { tookMs, ...stableResult } = result;
     expect(typeof tookMs).toBe("number");
     expect(stableResult).toEqual({
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
       provider: "searxng",
       count: 0,
       externalContent: {
@@ -166,7 +166,7 @@ describe("searxng client", () => {
 
     await runSearxngSearch({
       baseUrl: "http://127.0.0.1:8888",
-      query: "openclaw",
+      query: "@gabrielvfonseca/operator",
       categories: "general",
       signal: controller.signal,
     });
@@ -193,7 +193,7 @@ describe("searxng client", () => {
     await expect(
       runSearxngSearch({
         baseUrl: "http://127.0.0.1:8888",
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
         categories: "general",
       }),
     ).rejects.toThrow("SearXNG response incomplete after 7 bytes.");

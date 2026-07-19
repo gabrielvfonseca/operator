@@ -21,22 +21,22 @@ function parseSpecOrThrow(spec: string) {
 
 describe("npm registry spec validation", () => {
   it.each([
-    "@operator/voice-call",
-    "@operator/voice-call@1.2.3",
-    "@operator/voice-call@1.2.3-beta.4",
-    "@operator/voice-call@latest",
-    "@operator/voice-call@beta",
+    "@gabrielvfonseca/voice-call",
+    "@gabrielvfonseca/voice-call@1.2.3",
+    "@gabrielvfonseca/voice-call@1.2.3-beta.4",
+    "@gabrielvfonseca/voice-call@latest",
+    "@gabrielvfonseca/voice-call@beta",
   ])("accepts %s", (spec) => {
     expect(validateRegistryNpmSpec(spec)).toBeNull();
   });
 
   it.each([
     {
-      spec: "@operator/voice-call@^1.2.3",
+      spec: "@gabrielvfonseca/voice-call@^1.2.3",
       expected: "exact version or dist-tag",
     },
     {
-      spec: "@operator/voice-call@~1.2.3",
+      spec: "@gabrielvfonseca/voice-call@~1.2.3",
       expected: "exact version or dist-tag",
     },
     {
@@ -48,11 +48,11 @@ describe("npm registry spec validation", () => {
       expected: "URLs are not allowed",
     },
     {
-      spec: "@operator/voice-call@",
+      spec: "@gabrielvfonseca/voice-call@",
       expected: "missing version/tag after @",
     },
     {
-      spec: "@operator/voice-call@../beta",
+      spec: "@gabrielvfonseca/voice-call@../beta",
       expected: "invalid version/tag",
     },
   ])("rejects %s", ({ spec, expected }) => {
@@ -63,39 +63,39 @@ describe("npm registry spec validation", () => {
 describe("npm registry spec parsing helpers", () => {
   it.each([
     {
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       expected: {
-        name: "@operator/voice-call",
-        raw: "@operator/voice-call",
+        name: "@gabrielvfonseca/voice-call",
+        raw: "@gabrielvfonseca/voice-call",
         selectorKind: "none",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@operator/voice-call@beta",
+      spec: "@gabrielvfonseca/voice-call@beta",
       expected: {
-        name: "@operator/voice-call",
-        raw: "@operator/voice-call@beta",
+        name: "@gabrielvfonseca/voice-call",
+        raw: "@gabrielvfonseca/voice-call@beta",
         selector: "beta",
         selectorKind: "tag",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@operator/voice-call@2026.5.3-1",
+      spec: "@gabrielvfonseca/voice-call@2026.5.3-1",
       expected: {
-        name: "@operator/voice-call",
-        raw: "@operator/voice-call@2026.5.3-1",
+        name: "@gabrielvfonseca/voice-call",
+        raw: "@gabrielvfonseca/voice-call@2026.5.3-1",
         selector: "2026.5.3-1",
         selectorKind: "exact-version",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@operator/voice-call@1.2.3-beta.1",
+      spec: "@gabrielvfonseca/voice-call@1.2.3-beta.1",
       expected: {
-        name: "@operator/voice-call",
-        raw: "@operator/voice-call@1.2.3-beta.1",
+        name: "@gabrielvfonseca/voice-call",
+        raw: "@gabrielvfonseca/voice-call@1.2.3-beta.1",
         selector: "1.2.3-beta.1",
         selectorKind: "exact-version",
         selectorIsPrerelease: true,
@@ -106,11 +106,11 @@ describe("npm registry spec parsing helpers", () => {
   });
 
   it.each([
-    { spec: "@operator/voice-call", expected: true },
-    { spec: "@operator/voice-call@1.2.3", expected: true },
+    { spec: "@gabrielvfonseca/voice-call", expected: true },
+    { spec: "@gabrielvfonseca/voice-call@1.2.3", expected: true },
     { spec: "@other/voice-call", expected: false },
     { spec: "voice-call", expected: false },
-    { spec: "npm:@operator/voice-call", expected: false },
+    { spec: "npm:@gabrielvfonseca/voice-call", expected: false },
     { spec: undefined, expected: false },
   ])("detects Operator-org npm specs for %s", ({ spec, expected }) => {
     expect(isOperatorOrgNpmSpec(spec)).toBe(expected);
@@ -151,37 +151,37 @@ describe("npm registry spec parsing helpers", () => {
 describe("npm prerelease resolution policy", () => {
   it.each([
     {
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       resolvedVersion: "1.2.3-beta.1",
       expected: false,
     },
     {
-      spec: "@operator/voice-call@latest",
+      spec: "@gabrielvfonseca/voice-call@latest",
       resolvedVersion: "1.2.3-rc.1",
       expected: false,
     },
     {
-      spec: "@operator/voice-call@latest",
+      spec: "@gabrielvfonseca/voice-call@latest",
       resolvedVersion: "2026.5.3-1",
       expected: true,
     },
     {
-      spec: "@operator/voice-call@beta",
+      spec: "@gabrielvfonseca/voice-call@beta",
       resolvedVersion: "1.2.3-beta.4",
       expected: true,
     },
     {
-      spec: "@operator/voice-call@1.2.3-beta.1",
+      spec: "@gabrielvfonseca/voice-call@1.2.3-beta.1",
       resolvedVersion: "1.2.3-beta.1",
       expected: true,
     },
     {
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       resolvedVersion: "1.2.3",
       expected: true,
     },
     {
-      spec: "@operator/voice-call@latest",
+      spec: "@gabrielvfonseca/voice-call@latest",
       resolvedVersion: undefined,
       expected: true,
     },
@@ -196,12 +196,12 @@ describe("npm prerelease resolution policy", () => {
 
   it.each([
     {
-      spec: "@operator/voice-call",
+      spec: "@gabrielvfonseca/voice-call",
       resolvedVersion: "1.2.3-beta.1",
-      expected: `Use "@operator/voice-call@beta"`,
+      expected: `Use "@gabrielvfonseca/voice-call@beta"`,
     },
     {
-      spec: "@operator/voice-call@beta",
+      spec: "@gabrielvfonseca/voice-call@beta",
       resolvedVersion: "1.2.3-rc.1",
       expected: "Use an explicit prerelease tag or exact prerelease version",
     },

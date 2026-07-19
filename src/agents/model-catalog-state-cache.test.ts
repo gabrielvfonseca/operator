@@ -34,7 +34,7 @@ function configuredModel(id: string) {
 describe("model catalog state cache", () => {
   beforeEach(() => {
     envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
-    stateDir = mkdtempSync(join(tmpdir(), "openclaw-model-catalog-state-"));
+    stateDir = mkdtempSync(join(tmpdir(), "operator-model-catalog-state-"));
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
   });
 

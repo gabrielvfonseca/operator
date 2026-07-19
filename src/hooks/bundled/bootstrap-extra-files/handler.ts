@@ -1,5 +1,5 @@
 // Bootstrap extra files hook injects configured extra files into startup context.
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   filterBootstrapFilesForSession,
   loadExtraBootstrapFilesWithDiagnostics,

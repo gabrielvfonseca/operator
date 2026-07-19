@@ -1,5 +1,5 @@
 /** Resolves plugin config contract metadata for scanners and secret/config policy checks. */
-import { normalizeSortedUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeSortedUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { findBundledPluginMetadataById } from "./bundled-plugin-metadata.js";
 import { discoverOperatorPlugins, type PluginDiscoveryResult } from "./discovery.js";

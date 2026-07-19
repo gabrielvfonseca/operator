@@ -2,7 +2,7 @@
 import {
   applyAgentDefaultModelPrimary,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 
 export const OPENCODE_GO_DEFAULT_MODEL_REF = "opencode-go/kimi-k2.6";
 

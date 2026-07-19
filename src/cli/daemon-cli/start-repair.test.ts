@@ -94,7 +94,7 @@ describe("repairLoadedGatewayServiceForStart", () => {
     });
     readConfigFileSnapshotForWriteMock.mockResolvedValue({
       snapshot: { exists: true, valid: true, sourceConfig: {}, config: {} },
-      writeOptions: { expectedConfigPath: "/tmp/openclaw.json" },
+      writeOptions: { expectedConfigPath: "/tmp/operator.json" },
     });
     resolveOperatorWrapperPathMock.mockResolvedValue("/usr/bin/openclaw");
     formatGatewayServiceStartRepairIssuesMock.mockReturnValue(

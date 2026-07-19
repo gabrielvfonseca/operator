@@ -1,7 +1,7 @@
 /**
  * Wraps compaction calls with a safety timeout and abort cleanup.
  */
-import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
+import { finiteSecondsToTimerSafeMilliseconds } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { CompactResult, ContextEngine } from "../../context-engine/types.js";
 import { createAbortError } from "../../infra/abort-signal.js";

@@ -4,7 +4,7 @@
  * Live provider checks use this to decide when two provider ids belong to the
  * same plugin owner without repeating manifest/provider resolution work.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveOwningPluginIdsForProviderRef } from "../plugins/providers.js";
 

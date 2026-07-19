@@ -5,8 +5,8 @@ import path from "node:path";
 import type {
   OperatorPluginCommandDefinition,
   PluginCommandContext,
-} from "openclaw/plugin-sdk/core";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi } from "./api.js";
 
@@ -20,7 +20,7 @@ const pluginApiMocks = vi.hoisted(() => ({
   renderQrPngDataUrl: vi.fn(async () => "data:image/png;base64,ZmFrZXBuZw=="),
   resolveGatewayPort: vi.fn(() => 18789),
   resolveTailscaleServeGatewayUrlsWithRunner: vi.fn(async () => []),
-  resolvePreferredOperatorTmpDir: vi.fn(() => path.join(os.tmpdir(), "openclaw-device-pair-tests")),
+  resolvePreferredOperatorTmpDir: vi.fn(() => path.join(os.tmpdir(), "operator-device-pair-tests")),
   writeQrPngTempFile: vi.fn(async (dataValue: string, opts: { tmpRoot: string }) => {
     const dirPath = await fs.mkdtemp(path.join(opts.tmpRoot, "device-pair-qr-"));
     const filePath = path.join(dirPath, "pair-qr.png");
@@ -320,7 +320,7 @@ describe("device-pair /pair qr", () => {
     });
     expect(text).toContain("Scan this QR code with the Operator iOS app:");
     expect(payload.mediaUrl).toBeUndefined();
-    expect(payload.channelData?.openclawPairingQr).toEqual({
+    expect(payload.channelData?.operatorPairingQr).toEqual({
       setupCode: expect.any(String),
       expiresAtMs: expect.any(Number),
     });
@@ -974,7 +974,7 @@ describe("device-pair /pair default setup code", () => {
   it("allows mdns cleartext setup urls", async () => {
     const command = registerPairCommand({
       pluginConfig: {
-        publicUrl: "ws://openclaw.local:18789",
+        publicUrl: "ws://operator.local:18789",
       },
     });
     const result = await command.handler(
@@ -987,7 +987,7 @@ describe("device-pair /pair default setup code", () => {
     );
 
     expect(pluginApiMocks.issueDeviceBootstrapToken).toHaveBeenCalledTimes(1);
-    expect(requireText(result)).toContain("Gateway: ws://openclaw.local:18789");
+    expect(requireText(result)).toContain("Gateway: ws://operator.local:18789");
   });
 
   it("uses the advertised LAN helper for bind-derived setup urls", async () => {

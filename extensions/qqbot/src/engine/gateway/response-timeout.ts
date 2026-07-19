@@ -2,7 +2,7 @@
 import {
   finiteSecondsToTimerSafeMilliseconds,
   MAX_TIMER_TIMEOUT_MS,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 
 /**
  * QQBot outbound response watchdog timeout resolver.

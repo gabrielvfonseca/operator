@@ -5,11 +5,11 @@ import {
   decodeNodePtyResumeParams,
   runNodePtyCommand,
   validateClaudeSessionId,
-} from "openclaw/plugin-sdk/node-host";
+} from "@gabrielvfonseca/operator/plugin-sdk/node-host";
 import type {
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { resolveClaudeTerminalExecutable } from "./session-catalog-executable.js";
 import {
   CLAUDE_CLI_NODE_RUN_COMMAND,

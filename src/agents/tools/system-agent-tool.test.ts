@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => ({
   readConfigFileSnapshot: vi.fn(async () => ({
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "h",
     config: {},
     sourceConfig: {},

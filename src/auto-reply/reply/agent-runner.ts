@@ -1,7 +1,7 @@
 // Orchestrates reply agent execution, payload building, and delivery callbacks.
 import crypto from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   hasSessionAutoModelFallbackProvenance,
   hasConfiguredModelFallbacks,

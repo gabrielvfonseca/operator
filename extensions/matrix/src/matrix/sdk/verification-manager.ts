@@ -1,15 +1,15 @@
+// Matrix plugin module implements verification manager behavior.
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import {
+  resolveDateTimestampMs,
+  resolveTimestampMsToIsoString,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   VerificationPhase,
   VerificationRequestEvent,
   VerifierEvent,
 } from "matrix-js-sdk/lib/crypto-api/verification.js";
 import { VerificationMethod } from "matrix-js-sdk/lib/types.js";
-// Matrix plugin module implements verification manager behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import {
-  resolveDateTimestampMs,
-  resolveTimestampMsToIsoString,
-} from "openclaw/plugin-sdk/number-runtime";
 import { formatMatrixErrorMessage } from "../errors.js";
 
 export type MatrixVerificationMethod = "sas" | "show-qr" | "scan-qr";

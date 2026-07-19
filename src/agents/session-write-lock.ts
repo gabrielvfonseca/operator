@@ -7,7 +7,7 @@ import "../infra/fs-safe-defaults.js";
 import type fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { parseSqliteSessionFileMarker } from "../config/sessions/sqlite-marker.js";
 import { createFileLockManager } from "../infra/file-lock-manager.js";
 import { readGatewayProcessArgsSync as readProcessArgsSync } from "../infra/gateway-processes.js";
@@ -473,14 +473,18 @@ function isOperatorSessionOwnerArgv(args: string[]): boolean {
     return false;
   }
   const exe = (normalized[0] ?? "").replace(/\.(bat|cmd|exe)$/i, "");
-  if (exe === "operator" || exe.endsWith("/operator") || exe.endsWith("/operator-gateway")) {
+  if (
+    exe === "@gabrielvfonseca/operator" ||
+    exe.endsWith("/openclaw") ||
+    exe.endsWith("/operator-gateway")
+  ) {
     return true;
   }
   if (
     normalized.some(
       (arg) =>
-        arg === "operator" ||
-        arg.endsWith("/operator") ||
+        arg === "@gabrielvfonseca/operator" ||
+        arg.endsWith("/openclaw") ||
         arg === "operator.mjs" ||
         arg.endsWith("/operator.mjs"),
     )

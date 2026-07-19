@@ -1,6 +1,6 @@
 // Extracts web provider public artifacts from plugin entrypoints.
 import path from "node:path";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveEnabledBundledManifestContractPlugins } from "./bundled-manifest-contract-plugins.js";
 import { normalizePluginId } from "./config-state.js";
 import type { PluginLoadOptions } from "./loader.js";

@@ -1,7 +1,7 @@
 import {
   normalizeToolParameterSchema,
   type ToolParameterSchemaOptions,
-} from "@operator/ai/internal/openai";
+} from "@gabrielvfonseca/ai/internal/openai";
 /**
  * Tool schema normalization wrappers.
  * Applies provider-compatible parameter schema cleanup while preserving plugin

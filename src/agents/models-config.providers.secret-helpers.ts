@@ -1,7 +1,7 @@
 /**
  * Resolves configured provider secrets from env, profiles, and SecretRefs.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { coerceSecretRef, resolveSecretInputRef } from "../config/types.secrets.js";
 import { normalizeOptionalSecretInput } from "../utils/normalize-secret-input.js";

@@ -1,13 +1,13 @@
 // Telegram Mini App published URL resolution.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   resolveTailnetHostWithRunner,
   resolveTailscalePublishedHost,
   type TailscaleStatusCommandRunner,
-} from "openclaw/plugin-sdk/core";
-import { runCommandWithTimeout } from "openclaw/plugin-sdk/process-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { runCommandWithTimeout } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
 
-export const TELEGRAM_MINIAPP_PATH_PREFIX = "/__openclaw_tg_miniapp/";
+export const TELEGRAM_MINIAPP_PATH_PREFIX = "/__operator_tg_miniapp/";
 export const TELEGRAM_MINIAPP_URL_ERROR =
   "Mini App needs an HTTPS gateway URL. Set `gateway.tailscale.mode: serve` or `funnel`, then retry.";
 

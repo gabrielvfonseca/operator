@@ -5,8 +5,8 @@ Official Operator provider plugin for Qwen Cloud.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/qwen-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/qwen-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/qwen> for setup and configuration.
+See <https://docs.operator.ai/providers/qwen> for setup and configuration.

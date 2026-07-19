@@ -5,8 +5,11 @@ import {
   createMigrationConfigPatchItem,
   createMigrationManualItem,
   hasMigrationConfigPatchConflict,
-} from "openclaw/plugin-sdk/migration";
-import type { MigrationItem, MigrationProviderContext } from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration";
+import type {
+  MigrationItem,
+  MigrationProviderContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { importsMcpSensitiveValues, mapMcpServer, mcpManualItems } from "./config-mcp.js";
 import { providerConfig } from "./config-provider-contract.js";
 import {

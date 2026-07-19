@@ -3,14 +3,14 @@
  * Records failures under the store lock, applies WHAM usage probes for OpenAI
  * OAuth profiles, and exposes display helpers for unavailable profiles.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   asDateTimestampMs,
   isFutureDateTimestampMs,
   positiveSecondsToSafeMilliseconds,
   resolveExpiresAtMsFromDurationMs,
   resolveExpiresAtMsFromEpochSeconds,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { readProviderJsonResponse } from "../provider-http-errors.js";
@@ -269,9 +269,9 @@ async function probeWhamForCooldown(
     const defaultHeaders: Record<string, string> = {
       Authorization: `Bearer ${profile.access}`,
       Accept: "application/json",
-      originator: "operator",
+      originator: "@gabrielvfonseca/operator",
       ...(version ? { version } : {}),
-      "User-Agent": `operator/${version || "dev"}`,
+      "User-Agent": `openclaw/${version || "dev"}`,
     };
     if (profile.accountId) {
       defaultHeaders["ChatGPT-Account-Id"] = profile.accountId;

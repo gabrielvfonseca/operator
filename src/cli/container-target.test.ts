@@ -20,24 +20,33 @@ function requireSpawnCall(
 describe("parseCliContainerArgs", () => {
   it("extracts a root --container flag before the command", () => {
     expect(
-      parseCliContainerArgs(["node", "openclaw", "--container", "demo", "status", "--deep"]),
+      parseCliContainerArgs([
+        "node",
+        "@gabrielvfonseca/operator",
+        "--container",
+        "demo",
+        "status",
+        "--deep",
+      ]),
     ).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "openclaw", "status", "--deep"],
+      argv: ["node", "@gabrielvfonseca/operator", "status", "--deep"],
     });
   });
 
   it("accepts the equals form", () => {
-    expect(parseCliContainerArgs(["node", "openclaw", "--container=demo", "health"])).toEqual({
+    expect(
+      parseCliContainerArgs(["node", "@gabrielvfonseca/operator", "--container=demo", "health"]),
+    ).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "openclaw", "health"],
+      argv: ["node", "@gabrielvfonseca/operator", "health"],
     });
   });
 
   it("rejects a missing container value", () => {
-    expect(parseCliContainerArgs(["node", "openclaw", "--container"])).toEqual({
+    expect(parseCliContainerArgs(["node", "@gabrielvfonseca/operator", "--container"])).toEqual({
       ok: false,
       error: "--container requires a value",
     });
@@ -45,7 +54,13 @@ describe("parseCliContainerArgs", () => {
 
   it("does not consume an adjacent flag as the container value", () => {
     expect(
-      parseCliContainerArgs(["node", "openclaw", "--container", "--no-color", "status"]),
+      parseCliContainerArgs([
+        "node",
+        "@gabrielvfonseca/operator",
+        "--container",
+        "--no-color",
+        "status",
+      ]),
     ).toEqual({
       ok: false,
       error: "--container requires a value",
@@ -53,20 +68,27 @@ describe("parseCliContainerArgs", () => {
   });
 
   it("leaves argv unchanged when the flag is absent", () => {
-    expect(parseCliContainerArgs(["node", "openclaw", "status"])).toEqual({
+    expect(parseCliContainerArgs(["node", "@gabrielvfonseca/operator", "status"])).toEqual({
       ok: true,
       container: null,
-      argv: ["node", "openclaw", "status"],
+      argv: ["node", "@gabrielvfonseca/operator", "status"],
     });
   });
 
   it("extracts --container after the command like other root options", () => {
     expect(
-      parseCliContainerArgs(["node", "openclaw", "status", "--container", "demo", "--deep"]),
+      parseCliContainerArgs([
+        "node",
+        "@gabrielvfonseca/operator",
+        "status",
+        "--container",
+        "demo",
+        "--deep",
+      ]),
     ).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "openclaw", "status", "--deep"],
+      argv: ["node", "@gabrielvfonseca/operator", "status", "--deep"],
     });
   });
 
@@ -74,7 +96,7 @@ describe("parseCliContainerArgs", () => {
     expect(
       parseCliContainerArgs([
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "nodes",
         "run",
         "--",
@@ -89,7 +111,7 @@ describe("parseCliContainerArgs", () => {
       container: null,
       argv: [
         "node",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "nodes",
         "run",
         "--",
@@ -106,11 +128,16 @@ describe("parseCliContainerArgs", () => {
 describe("resolveCliContainerTarget", () => {
   it("uses argv first and falls back to OPERATOR_CONTAINER", () => {
     expect(
-      resolveCliContainerTarget(["node", "openclaw", "--container", "demo", "status"], {}),
+      resolveCliContainerTarget(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {},
+      ),
     ).toBe("demo");
-    expect(resolveCliContainerTarget(["node", "openclaw", "status"], {})).toBeNull();
     expect(
-      resolveCliContainerTarget(["node", "openclaw", "status"], {
+      resolveCliContainerTarget(["node", "@gabrielvfonseca/operator", "status"], {}),
+    ).toBeNull();
+    expect(
+      resolveCliContainerTarget(["node", "@gabrielvfonseca/operator", "status"], {
         OPERATOR_CONTAINER: "demo",
       } as NodeJS.ProcessEnv),
     ).toBe("demo");
@@ -119,9 +146,11 @@ describe("resolveCliContainerTarget", () => {
 
 describe("maybeRunCliInContainer", () => {
   it("passes through when no container target is provided", () => {
-    expect(maybeRunCliInContainer(["node", "openclaw", "status"], { env: {} })).toEqual({
+    expect(
+      maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], { env: {} }),
+    ).toEqual({
       handled: false,
-      argv: ["node", "openclaw", "status"],
+      argv: ["node", "@gabrielvfonseca/operator", "status"],
     });
   });
 
@@ -142,7 +171,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "status"], {
+      maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
         env: { OPERATOR_CONTAINER: "demo" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -162,7 +191,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "status",
       ],
       {
@@ -190,7 +219,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "openclaw", "status"], {
+    maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
       env: {
         OPERATOR_CONTAINER: "demo",
         OPERATOR_PROFILE: "work",
@@ -213,7 +242,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "status",
       ],
       {
@@ -241,7 +270,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "openclaw", "status"], {
+    maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
       env: {
         OPERATOR_CONTAINER: "demo",
         OPERATOR_PROXY_URL: " http://proxy.internal:3128 ",
@@ -262,7 +291,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "OPERATOR_PROXY_URL=http://proxy.internal:3128",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "status",
       ],
       {
@@ -295,7 +324,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "status"], {
+      maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
         env: {
           OPERATOR_CONTAINER: "demo",
           OPERATOR_PROXY_URL: ` ${proxyUrl} `,
@@ -321,7 +350,7 @@ describe("maybeRunCliInContainer", () => {
 
     let message = "";
     try {
-      maybeRunCliInContainer(["node", "openclaw", "status"], {
+      maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
         env: {
           OPERATOR_CONTAINER: "demo",
           OPERATOR_PROXY_URL:
@@ -359,7 +388,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "openclaw", "status"], {
+    maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "status"], {
       env: {
         OPERATOR_CONTAINER: "demo",
         OPERATOR_PROXY_URL: " http://127.0.0.1:3128 ",
@@ -393,10 +422,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toEqual({
       handled: true,
       exitCode: 0,
@@ -419,7 +451,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "status",
       ],
       {
@@ -446,10 +478,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "health"], {
-        env: { USER: "openclaw" } as NodeJS.ProcessEnv,
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "health"],
+        {
+          env: { USER: "@gabrielvfonseca/operator" } as NodeJS.ProcessEnv,
+          spawnSync,
+        },
+      ),
     ).toEqual({
       handled: true,
       exitCode: 0,
@@ -472,12 +507,12 @@ describe("maybeRunCliInContainer", () => {
         "-e",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "health",
       ],
       {
         stdio: "inherit",
-        env: { USER: "openclaw", OPERATOR_CONTAINER: "" },
+        env: { USER: "@gabrielvfonseca/operator", OPERATOR_CONTAINER: "" },
       },
     );
   });
@@ -503,10 +538,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: { USER: "somalley" } as NodeJS.ProcessEnv,
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: { USER: "somalley" } as NodeJS.ProcessEnv,
+          spawnSync,
+        },
+      ),
     ).toEqual({
       handled: true,
       exitCode: 0,
@@ -535,7 +573,7 @@ describe("maybeRunCliInContainer", () => {
         "-e",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "status",
       ],
       {
@@ -559,10 +597,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: { USER: "somalley" } as NodeJS.ProcessEnv,
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: { USER: "somalley" } as NodeJS.ProcessEnv,
+          spawnSync,
+        },
+      ),
     ).toThrow('No running container matched "demo" under podman or docker.');
 
     expect(spawnSync).toHaveBeenCalledTimes(2);
@@ -597,10 +638,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: { USER: "somalley" } as NodeJS.ProcessEnv,
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: { USER: "somalley" } as NodeJS.ProcessEnv,
+          spawnSync,
+        },
+      ),
     ).toThrow(
       'Container "demo" is running under multiple runtimes (podman, docker); use a unique container name.',
     );
@@ -622,7 +666,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "setup"], {
+    maybeRunCliInContainer(["node", "@gabrielvfonseca/operator", "--container", "demo", "setup"], {
       env: {},
       spawnSync,
       stdinIsTTY: true,
@@ -641,7 +685,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "OPERATOR_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "setup",
       ],
       {
@@ -668,10 +712,13 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "--container", "flag-demo", "health"], {
-        env: { OPERATOR_CONTAINER: "env-demo" } as NodeJS.ProcessEnv,
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "flag-demo", "health"],
+        {
+          env: { OPERATOR_CONTAINER: "env-demo" } as NodeJS.ProcessEnv,
+          spawnSync,
+        },
+      ),
     ).toEqual({
       handled: true,
       exitCode: 0,
@@ -692,21 +739,27 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toThrow('No running container matched "demo" under podman or docker.');
   });
 
   it("skips recursion when the bypass env is set", () => {
     expect(
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "status"], {
-        env: { OPERATOR_CLI_CONTAINER_BYPASS: "1" } as NodeJS.ProcessEnv,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
+        {
+          env: { OPERATOR_CLI_CONTAINER_BYPASS: "1" } as NodeJS.ProcessEnv,
+        },
+      ),
     ).toEqual({
       handled: false,
-      argv: ["node", "openclaw", "--container", "demo", "status"],
+      argv: ["node", "@gabrielvfonseca/operator", "--container", "demo", "status"],
     });
   });
 
@@ -717,10 +770,13 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "update"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "update"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toThrow(
       "openclaw update is not supported with --container; rebuild or restart the container image instead.",
     );
@@ -734,10 +790,13 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "--no-color", "update"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "--no-color", "update"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toThrow(
       "openclaw update is not supported with --container; rebuild or restart the container image instead.",
     );
@@ -751,10 +810,13 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "openclaw", "--container", "demo", "--update"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "--update"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toThrow(
       "openclaw update is not supported with --container; rebuild or restart the container image instead.",
     );

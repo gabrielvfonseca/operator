@@ -93,9 +93,9 @@ const detectZaiEndpoint = vi.hoisted(() => vi.fn<DetectZaiEndpoint>(async () => 
 vi.mock("../agents/agent-scope.js", () => ({
   resolveDefaultAgentId: () => "main",
   resolveAgentDir: (configForTest: unknown, agentId: string) =>
-    `${process.env.OPERATOR_STATE_DIR ?? "/tmp/openclaw-state"}/agents/${agentId}/agent`,
+    `${process.env.OPERATOR_STATE_DIR ?? "/tmp/operator-state"}/agents/${agentId}/agent`,
   resolveAgentWorkspaceDir: (configForTest: unknown, agentId: string) =>
-    `/tmp/openclaw-workspaces/${agentId}`,
+    `/tmp/operator-workspaces/${agentId}`,
   // Required by src/agents/model-runtime-policy.ts, which is transitively
   // imported through provider-auth-choice -> copilot-runtime-plugin-install ->
   // copilot-routing -> model-runtime-policy.
@@ -104,7 +104,7 @@ vi.mock("../agents/agent-scope.js", () => ({
 }));
 
 vi.mock("../agents/workspace.js", () => ({
-  resolveDefaultAgentWorkspaceDir: () => "/tmp/openclaw-workspace",
+  resolveDefaultAgentWorkspaceDir: () => "/tmp/operator-workspace",
 }));
 
 vi.mock("../infra/browser-open.js", () => ({
@@ -676,7 +676,7 @@ describe("applyAuthChoice", () => {
   let defaultProviderPlugins: ProviderPlugin[] = [];
 
   beforeAll(async () => {
-    authTestRoot = (await setupAuthTestEnv("openclaw-auth-")).stateDir;
+    authTestRoot = (await setupAuthTestEnv("operator-auth-")).stateDir;
     defaultProviderPlugins = await createDefaultProviderPlugins();
     resolvePluginProviders.mockReturnValue(defaultProviderPlugins);
   });

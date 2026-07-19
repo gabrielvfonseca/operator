@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   ReplySessionInitConflictError,
   runWithSessionInitConflictRetry,
@@ -170,7 +170,7 @@ describe("runWithSessionInitConflictRetry", () => {
 
 describe("initSessionState conflict retry wiring", () => {
   it("cancels the production backoff through the initializer signal", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-conflict-abort-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-conflict-abort-"));
     const controller = new AbortController();
     commitConflictControl.abortController = controller;
     commitConflictControl.commitCalls = 0;

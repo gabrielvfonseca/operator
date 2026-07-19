@@ -1,7 +1,7 @@
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 // Qa Lab plugin module implements cli behavior.
 import type { Command } from "commander";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
 import { collectString } from "./cli-options.js";
 import type {
   QaLabSelfCheckCommandOptions,
@@ -915,7 +915,7 @@ export function registerQaLabCli(program: Command) {
       parseQaCliTcpPortOption(value, "--qa-lab-port"),
     )
     .option("--provider-base-url <url>", "Provider base URL for the QA gateway")
-    .option("--image <name>", "Prebaked image name", "openclaw:qa-local-prebaked")
+    .option("--image <name>", "Prebaked image name", "operator:qa-local-prebaked")
     .option("--use-prebuilt-image", "Use image: instead of build: in docker-compose", false)
     .option(
       "--bind-ui-dist",
@@ -940,7 +940,7 @@ export function registerQaLabCli(program: Command) {
   qa.command("docker-build-image")
     .description("Build the prebaked QA Docker image with qa-channel + qa-lab bundled")
     .option("--repo-root <path>", "Repository root to target when running from a neutral cwd")
-    .option("--image <name>", "Image tag", "openclaw:qa-local-prebaked")
+    .option("--image <name>", "Image tag", "operator:qa-local-prebaked")
     .action(async (opts: { repoRoot?: string; image?: string }) => {
       await runQaDockerBuildImage(opts);
     });
@@ -956,7 +956,7 @@ export function registerQaLabCli(program: Command) {
       parseQaCliTcpPortOption(value, "--qa-lab-port"),
     )
     .option("--provider-base-url <url>", "Provider base URL for the QA gateway")
-    .option("--image <name>", "Image tag", "openclaw:qa-local-prebaked")
+    .option("--image <name>", "Image tag", "operator:qa-local-prebaked")
     .option("--use-prebuilt-image", "Use image: instead of build: in docker-compose", false)
     .option(
       "--bind-ui-dist",

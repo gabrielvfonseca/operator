@@ -6,7 +6,7 @@ import {
   getRuntimeAuthProfileStoreSnapshot,
   setRuntimeAuthProfileStoreSnapshot,
 } from "../agents/auth-profiles/runtime-snapshots.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   activateSecretsRuntimeSnapshot,
   clearSecretsRuntimeSnapshot,
@@ -396,7 +396,7 @@ describe("gateway aux handlers", () => {
   });
 
   it("rolls back stopped channels when a later restart fails", async () => {
-    const authAgentDir = "/tmp/openclaw-secrets-reload-concurrent-oauth";
+    const authAgentDir = "/tmp/operator-secrets-reload-concurrent-oauth";
     const buildReloadPlan = buildRestartChannelsPlan("slack", "zalo");
     activateSnapshot(slackZaloConfig("old-slack-secret", "old-zalo-secret"));
     const activateRuntimeSecrets = mockResolvedSecrets(

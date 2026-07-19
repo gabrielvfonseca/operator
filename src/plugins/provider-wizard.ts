@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Provider setup wizard helpers shared by provider plugins and CLI setup flows. */
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { normalizeProviderId } from "../agents/model-selection.js";
 import type { OperatorConfig } from "../config/types.operator.js";

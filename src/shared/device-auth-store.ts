@@ -1,5 +1,5 @@
 // Device auth store helpers persist and normalize paired device auth records.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   type DeviceAuthEntry,
   type DeviceAuthStore,

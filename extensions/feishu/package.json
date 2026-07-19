@@ -1,10 +1,10 @@
 {
-  "name": "@operator/feishu",
+  "name": "@gabrielvfonseca/feishu",
   "version": "2026.7.2",
   "description": "Operator Feishu/Lark channel plugin for chats and workplace tools (community maintained by @m1heng).",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -16,18 +16,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -46,7 +46,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@operator/feishu",
+      "npmSpec": "@gabrielvfonseca/feishu",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.29"
     },

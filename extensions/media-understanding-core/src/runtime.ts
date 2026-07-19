@@ -7,4 +7,4 @@ export {
   transcribeAudioFile,
   type RunMediaUnderstandingFileParams,
   type RunMediaUnderstandingFileResult,
-} from "openclaw/plugin-sdk/media-understanding-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-understanding-runtime";

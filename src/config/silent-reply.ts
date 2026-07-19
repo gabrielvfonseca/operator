@@ -1,5 +1,5 @@
 // Normalizes silent-reply config for channel response suppression.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   classifySilentReplyConversationType,
   resolveSilentReplyPolicyFromPolicies,

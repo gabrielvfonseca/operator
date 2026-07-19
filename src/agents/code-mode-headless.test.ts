@@ -72,8 +72,8 @@ describe("headless Code Mode", () => {
       await runCodeModeScriptHeadless({
         ctx,
         code: `
-          const first = await tools.call("openclaw:core:headless_first", {});
-          const second = await tools.call("openclaw:core:headless_second", {
+          const first = await tools.call("operator:core:headless_first", {});
+          const second = await tools.call("operator:core:headless_second", {
             value: first.result.details.value,
           });
           return second.result.details;
@@ -162,8 +162,8 @@ describe("headless Code Mode", () => {
       await runCodeModeScriptHeadless({
         ctx: createHeadlessHarness([tool]),
         code: `
-          await tools.call("openclaw:core:budgeted", {});
-          await tools.call("openclaw:core:budgeted", {});
+          await tools.call("operator:core:budgeted", {});
+          await tools.call("operator:core:budgeted", {});
           return true;
         `,
         maxToolCalls: 1,
@@ -197,7 +197,7 @@ describe("headless Code Mode", () => {
     const resultPromise = runCodeModeScriptHeadless({
       ctx: createHeadlessHarness([slow]),
       code: `
-        await tools.call("openclaw:core:slow_leg", {});
+        await tools.call("operator:core:slow_leg", {});
         return true;
       `,
       wallClockMs: 15_000,

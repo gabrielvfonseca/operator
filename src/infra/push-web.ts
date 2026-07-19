@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { resolveStateDir } from "../config/paths.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
 import {
@@ -65,7 +65,7 @@ function assertLegacyWebPushMigrationComplete(baseDir?: string): void {
   });
   if (pendingLegacyPath) {
     throw new Error(
-      `legacy Web Push state requires migration; run \`operator doctor --fix\` before using Web Push`,
+      `legacy Web Push state requires migration; run \`openclaw doctor --fix\` before using Web Push`,
     );
   }
 }

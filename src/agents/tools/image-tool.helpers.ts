@@ -3,8 +3,8 @@
  *
  * Handles model config, data URL decoding, provider lookup, and reasoning-only response validation.
  */
-import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { AssistantMessage } from "../../llm/types.js";
 import { extractAssistantText } from "../embedded-agent-utils.js";

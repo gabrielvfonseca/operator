@@ -52,13 +52,13 @@ hello from source
 \`\`\`
 
 ## Notes
-<!-- openclaw:human:start -->
-<!-- openclaw:human:end -->
+<!-- operator:human:start -->
+<!-- operator:human:end -->
 
 ## Related
-<!-- openclaw:wiki:related:start -->
+<!-- operator:wiki:related:start -->
 - No related pages yet.
-<!-- openclaw:wiki:related:end -->
+<!-- operator:wiki:related:end -->
 `);
     await expect(fs.readFile(path.join(config.vault.path, "index.md"), "utf8")).resolves.toContain(
       "[meeting notes](sources/meeting-notes.md)",

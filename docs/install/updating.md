@@ -1,38 +1,38 @@
 ---
-summary: "Updating OpenClaw safely (global install or source), plus rollback strategy"
+summary: "Updating Operator safely (global install or source), plus rollback strategy"
 read_when:
-  - Updating OpenClaw
+  - Updating Operator
   - Something breaks after an update
 title: "Updating"
 ---
 
-Keep OpenClaw up to date.
+Keep Operator up to date.
 
 For Docker, Podman, and Kubernetes image replacements, see
 [Upgrading container images](/install/docker#upgrading-container-images). The
 gateway runs startup-safe upgrade work before readiness and exits if mounted
 state needs manual repair.
 
-## Recommended: `openclaw update`
+## Recommended: `operator update`
 
-Detects your install type (npm, pnpm, Bun, or git), fetches the latest version, runs `openclaw doctor`, and restarts the gateway.
+Detects your install type (npm, pnpm, Bun, or git), fetches the latest version, runs `operator doctor`, and restarts the gateway.
 
 ```bash
-openclaw update
+operator update
 ```
 
 Switch channels or target a specific version:
 
 ```bash
-openclaw update --channel beta
-openclaw update --channel extended-stable
-openclaw update --channel dev
-openclaw update --dry-run   # preview without applying
+operator update --channel beta
+operator update --channel extended-stable
+operator update --channel dev
+operator update --dry-run   # preview without applying
 ```
 
-`openclaw update` has no `--verbose` flag (the installer does). For diagnostics use
+`operator update` has no `--verbose` flag (the installer does). For diagnostics use
 `--dry-run` to preview planned actions, `--json` for structured results, or
-`openclaw update status --json` to inspect channel and availability state.
+`operator update status --json` to inspect channel and availability state.
 
 `--channel beta` prefers the beta npm dist-tag, but falls back to stable/latest
 when the beta tag is missing or its version is older than the latest stable
@@ -40,7 +40,7 @@ release. Use `--tag beta` for a one-off package update pinned to the raw npm
 beta dist-tag instead.
 
 `--channel extended-stable` is package-only, and installation remains
-foreground-only. OpenClaw reads the public npm `extended-stable` selector,
+foreground-only. Operator reads the public npm `extended-stable` selector,
 verifies the selected exact package, and installs that exact version. Missing
 or inconsistent registry data fails closed; it never falls back to `latest`.
 If the selected version is older than the installed version, the normal
@@ -50,10 +50,10 @@ does not update `update.channel`.
 After the core swap, eligible official npm plugins with bare/default or
 `latest` intent converge to that exact core version. Exact pins and explicit
 non-`latest` tags, third-party plugins, and non-npm sources remain unchanged.
-Catalog installs created by current OpenClaw versions retain that default
+Catalog installs created by current Operator versions retain that default
 intent. Older records that contain only an exact version remain pinned because
-OpenClaw cannot safely distinguish an old automatic pin from a user pin; run
-`openclaw plugins update @operator/name` once on the extended-stable channel
+Operator cannot safely distinguish an old automatic pin from a user pin; run
+`operator plugins update @gabrielvfonseca/name` once on the extended-stable channel
 to opt that plugin back into exact-core tracking.
 
 `--channel dev` gives a persistent moving GitHub `main` checkout. For a one-off
@@ -69,31 +69,31 @@ See [Release channels](/install/development-channels) for channel semantics.
 ## Switch between npm and git installs
 
 Use channels to change the install type. The updater keeps your state, config,
-credentials, and workspace in `~/.openclaw`; it only changes which OpenClaw
+credentials, and workspace in `~/.operator`; it only changes which Operator
 code install the CLI and gateway use.
 
 ```bash
 # npm package install -> editable git checkout
-openclaw update --channel dev
+operator update --channel dev
 
 # git checkout -> npm package install
-openclaw update --channel stable
+operator update --channel stable
 ```
 
 Preview the install-mode switch first:
 
 ```bash
-openclaw update --channel dev --dry-run
-openclaw update --channel stable --dry-run
+operator update --channel dev --dry-run
+operator update --channel stable --dry-run
 ```
 
 `dev` ensures a git checkout, builds it, and installs the global CLI from that
 checkout. The `stable`, `extended-stable`, and `beta` channels use package
 installs. Extended-stable is rejected on a git checkout without mutating or
-converting it. If the gateway is already installed, `openclaw update` refreshes
+converting it. If the gateway is already installed, `operator update` refreshes
 the service metadata and restarts it unless you pass `--no-restart`.
 
-For package installs with a managed Gateway service, `openclaw update` targets
+For package installs with a managed Gateway service, `operator update` targets
 the package root used by that service. If the shell `openclaw` command comes
 from a different install, the updater prints both roots and the managed
 service's Node path, and checks that Node version against the target release's
@@ -102,24 +102,24 @@ service's Node path, and checks that Node version against the target release's
 ## Alternative: re-run the installer
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL https://operator.ai/install.sh | bash
 ```
 
 Add `--no-onboard` to skip onboarding. To force a specific install type, pass
 `--install-method git --no-onboard` or `--install-method npm --no-onboard`.
 
-If `openclaw update` fails after the npm package install phase, re-run the
+If `operator update` fails after the npm package install phase, re-run the
 installer instead. It does not call the updater; it runs the global package
 install directly and can recover a partially updated npm install.
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method npm
+curl -fsSL https://operator.ai/install.sh | bash -s -- --install-method npm
 ```
 
 Pin the recovery to a specific version or dist-tag with `--version`:
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method npm --version <version-or-dist-tag>
+curl -fsSL https://operator.ai/install.sh | bash -s -- --install-method npm --version <version-or-dist-tag>
 ```
 
 ## Alternative: manual npm, pnpm, or bun
@@ -128,67 +128,67 @@ curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method npm --ve
 npm i -g openclaw@latest
 ```
 
-Prefer `openclaw update` for supervised installs: it can coordinate the package
+Prefer `operator update` for supervised installs: it can coordinate the package
 swap with the running Gateway service. If you update manually on a supervised
 install, stop the managed Gateway first. Package managers replace files in
 place, and a running Gateway can otherwise try to load core or plugin files
 mid-swap. Restart the Gateway after the package manager finishes so it picks up
 the new install.
 
-For a root-owned Linux system-global install, if `openclaw update` fails with
+For a root-owned Linux system-global install, if `operator update` fails with
 `EACCES`, recover with system npm while keeping the Gateway stopped for the
 manual replacement. Use the same profile flags/environment you normally use for
 that Gateway. Replace `/usr/bin/npm` with the system npm that owns the
 root-owned global prefix on your host:
 
 ```bash
-openclaw gateway stop
+operator gateway stop
 sudo /usr/bin/npm i -g openclaw@latest
-openclaw gateway install --force
-openclaw gateway restart
+operator gateway install --force
+operator gateway restart
 ```
 
 Then verify:
 
 ```bash
-openclaw --version
+operator --version
 curl -fsS http://127.0.0.1:18789/readyz
-openclaw plugins list --json
-openclaw gateway status --deep --json
-openclaw doctor --lint --json
+operator plugins list --json
+operator gateway status --deep --json
+operator doctor --lint --json
 ```
 
-When `openclaw update` manages a global npm install, it installs the target
+When `operator update` manages a global npm install, it installs the target
 into a temporary npm prefix first. The candidate package validates the host
-Node version during `preinstall`; only then does OpenClaw verify the packaged
+Node version during `preinstall`; only then does Operator verify the packaged
 `dist` inventory and swap the clean package tree into the real global prefix. A
 packed completion guard is omitted from the expected inventory and removed only
 after `preinstall` succeeds, so skipped lifecycle scripts also fail before the
-swap. On npm 12 and newer, the updater approves only the candidate OpenClaw
+swap. On npm 12 and newer, the updater approves only the candidate Operator
 lifecycle; transitive dependency scripts remain blocked. This avoids npm
 overlaying a new package onto stale files from the old one. If the install
-command fails, OpenClaw retries once with `--omit=optional`, which helps hosts
+command fails, Operator retries once with `--omit=optional`, which helps hosts
 where native optional dependencies cannot compile.
 
-OpenClaw-managed npm update and plugin-update commands also clear npm's
+Operator-managed npm update and plugin-update commands also clear npm's
 `min-release-age` supply-chain quarantine (or the older `before` config key)
 for the child npm process. That policy exists for general protection, but an
-explicit OpenClaw update means "install the selected release now."
+explicit Operator update means "install the selected release now."
 
 ```bash
 pnpm add -g openclaw@latest
 ```
 
-If pnpm 11 installed OpenClaw 2026.7.1, run that manual command once. That
+If pnpm 11 installed Operator 2026.7.1, run that manual command once. That
 release predates pnpm 11's isolated global-package layout, so its updater can
 mistake another npm installation for the running CLI. Later releases retain
 pnpm ownership and follow the replacement package root during updates. They
 also use the owning manager's reported global bin directory and stop before
 mutation when the available pnpm command reports another global root or major,
-or when the invoking package is orphaned or not the only active OpenClaw
+or when the invoking package is orphaned or not the only active Operator
 install there.
 
-If OpenClaw shares a pnpm 11 global install group with another package, the
+If Operator shares a pnpm 11 global install group with another package, the
 automatic updater stops before changing the group. Update the original
 comma-separated group manually so its sibling packages and build policy stay
 intact.
@@ -201,27 +201,27 @@ bun add -g openclaw@latest
 
 <AccordionGroup>
   <Accordion title="Read-only package tree">
-    OpenClaw treats packaged global installs as read-only at runtime, even when the global package directory is writable by the current user. Plugin package installs live in OpenClaw-owned npm/git roots under the user config directory, and Gateway startup does not mutate the OpenClaw package tree.
+    Operator treats packaged global installs as read-only at runtime, even when the global package directory is writable by the current user. Plugin package installs live in Operator-owned npm/git roots under the user config directory, and Gateway startup does not mutate the Operator package tree.
 
-    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/openclaw`. OpenClaw supports that layout because plugin install/update commands write outside that global package directory.
+    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/openclaw`. Operator supports that layout because plugin install/update commands write outside that global package directory.
 
   </Accordion>
   <Accordion title="Hardened systemd units">
-    Give OpenClaw write access to its config/state roots so explicit plugin installs, plugin updates, and doctor cleanup can persist their changes:
+    Give Operator write access to its config/state roots so explicit plugin installs, plugin updates, and doctor cleanup can persist their changes:
 
     ```ini
-    ReadWritePaths=/var/lib/openclaw /home/openclaw/.openclaw /tmp
+    ReadWritePaths=/var/lib/operator /home/openclaw/.operator /tmp
     ```
 
   </Accordion>
   <Accordion title="Disk-space preflight">
-    Before package updates and explicit plugin installs, OpenClaw tries a best-effort disk-space check for the target volume. Low space produces a warning with the checked path, but does not block the update because filesystem quotas, snapshots, and network volumes can change after the check. The actual package-manager install and post-install verification remain authoritative.
+    Before package updates and explicit plugin installs, Operator tries a best-effort disk-space check for the target volume. Low space produces a warning with the checked path, but does not block the update because filesystem quotas, snapshots, and network volumes can change after the check. The actual package-manager install and post-install verification remain authoritative.
   </Accordion>
 </AccordionGroup>
 
 ## Auto-updater
 
-Off by default. Enable it in `~/.openclaw/openclaw.json`:
+Off by default. Enable it in `~/.operator/operator.json`:
 
 ```json5
 {
@@ -242,18 +242,18 @@ Off by default. Enable it in `~/.openclaw/openclaw.json`:
 | `stable`          | Waits `stableDelayHours` (default: 6), then applies with deterministic jitter across `stableJitterHours` (default: 12) for a spread rollout. |
 | `extended-stable` | Checks for a read-only update hint on startup and every 24 hours when `checkOnStart` is enabled. Never applies automatically.                |
 | `beta`            | Checks every `betaCheckIntervalHours` (default: 1) and applies immediately.                                                                  |
-| `dev`             | No automatic apply. Use `openclaw update` manually.                                                                                          |
+| `dev`             | No automatic apply. Use `operator update` manually.                                                                                          |
 
 The gateway also logs an update hint on startup (disable with
 `update.checkOnStart: false`). Stored extended-stable selections use this
 read-only hint path and the existing 24-hour hint interval, but never invoke
 automatic installation, handoff, restart, stable delay/jitter, or beta polling.
-For downgrade or incident recovery, set `OPENCLAW_NO_AUTO_UPDATE=1` in the gateway environment to block automatic applies even when `update.auto.enabled` is configured. Startup update hints can still run unless `update.checkOnStart` is also disabled.
+For downgrade or incident recovery, set `OPERATOR_NO_AUTO_UPDATE=1` in the gateway environment to block automatic applies even when `update.auto.enabled` is configured. Startup update hints can still run unless `update.checkOnStart` is also disabled.
 
 Package-manager updates requested through the live Gateway control-plane
 (`update.run`) do not replace the package tree inside the running Gateway
 process. On managed service installs, the Gateway starts a detached handoff,
-exits, and lets the normal `openclaw update --yes --json` CLI path stop the
+exits, and lets the normal `operator update --yes --json` CLI path stop the
 service, replace the package, refresh service metadata, restart, verify the
 Gateway version and reachability, and recover an installed-but-unloaded macOS
 LaunchAgent when possible. If the Gateway cannot make that handoff safely,
@@ -266,7 +266,7 @@ Gateways, and manually managed local Gateways.
 
 In the signed macOS app, a local app-owned Gateway changes that card to
 **Update Mac app + Gateway**. Sparkle updates the app first; after relaunch, the
-app runs `openclaw update --tag <app-version> --json`, restarts its Gateway,
+app runs `operator update --tag <app-version> --json`, restarts its Gateway,
 and verifies health in a setup-style progress window. The window appears only
 when that managed Gateway needs update, repair, or installation; app-only updates relaunch
 directly into the app. Failure details stay visible with Retry, [Update guide](/install/updating), and
@@ -287,7 +287,7 @@ only when the connected remote Gateway is at least as new as the app.
 ### Run doctor
 
 ```bash
-openclaw doctor
+operator doctor
 ```
 
 Migrates config, audits DM policies, and checks gateway health. Details: [Doctor](/gateway/doctor)
@@ -295,13 +295,13 @@ Migrates config, audits DM policies, and checks gateway health. Details: [Doctor
 ### Restart the gateway
 
 ```bash
-openclaw gateway restart
+operator gateway restart
 ```
 
 ### Verify
 
 ```bash
-openclaw health
+operator health
 ```
 
 </Steps>
@@ -310,7 +310,7 @@ openclaw health
 
 Rollback has two layers:
 
-1. Reinstall older OpenClaw code while keeping the current state.
+1. Reinstall older Operator code while keeping the current state.
 2. Restore pre-update state only when the older code cannot use a migrated
    config or database.
 
@@ -319,16 +319,16 @@ the backup.
 
 ### Before updating: create a verified backup
 
-`openclaw update` preserves an automatic pre-update config copy, but it does not
+`operator update` preserves an automatic pre-update config copy, but it does not
 create a full state recovery point. Before a significant update, create one
 explicitly:
 
 ```bash
 mkdir -p ~/Backups/openclaw
-openclaw backup create --output ~/Backups/openclaw --verify
+operator backup create --output ~/Backups/operator --verify
 ```
 
-The archive manifest records the OpenClaw version and the source paths included
+The archive manifest records the Operator version and the source paths included
 in the backup. The archive can contain credentials, auth profiles, and channel
 state, so store it with owner-only permissions and the same protection as the
 live state directory. See [Backup](/cli/backup) for included and intentionally
@@ -343,12 +343,12 @@ snapshot provided by your platform.
 List published versions, then preview and install the known-good version:
 
 ```bash
-npm view openclaw versions --json
-openclaw update --tag <known-good-version> --dry-run
-openclaw update --tag <known-good-version>
+npm view operator versions --json
+operator update --tag <known-good-version> --dry-run
+operator update --tag <known-good-version>
 ```
 
-`openclaw update --tag` is preferred over a direct package-manager install. It
+`operator update --tag` is preferred over a direct package-manager install. It
 detects the downgrade, asks for confirmation, runs managed plugin convergence
 and compatibility checks against the installed target, refreshes service
 metadata, restarts the Gateway, and verifies the running version. If the stored
@@ -357,7 +357,7 @@ channel is `extended-stable`, use
 be combined with the `extended-stable` selector.
 
 Package updates stage and verify the candidate before activation. If the
-filesystem swap or command-shim replacement fails, OpenClaw restores the old
+filesystem swap or command-shim replacement fails, Operator restores the old
 package automatically. After a successful swap, a later Gateway health failure
 reports the previous version and manual rollback instructions instead of
 automatically replacing the package again.
@@ -366,15 +366,15 @@ If the CLI update path is unavailable, use the same package manager and install
 scope that own the current Gateway:
 
 ```bash
-openclaw gateway stop
+operator gateway stop
 npm i -g openclaw@<known-good-version>
-openclaw gateway install --force
-openclaw gateway restart
+operator gateway install --force
+operator gateway restart
 ```
 
 Replace `npm` with `pnpm` or `bun` when that manager owns the install. During
 incident recovery, prevent an enabled auto-updater from immediately applying a
-newer release by setting `OPENCLAW_NO_AUTO_UPDATE=1` in the Gateway environment.
+newer release by setting `OPERATOR_NO_AUTO_UPDATE=1` in the Gateway environment.
 
 ### Roll back a source checkout
 
@@ -384,7 +384,7 @@ Use a clean checkout and select a known-good tag or commit:
 git fetch --all --tags
 git checkout --detach <known-good-tag-or-commit>
 pnpm install && pnpm build
-openclaw gateway restart
+operator gateway restart
 ```
 
 To return to latest: `git checkout main && git pull`.
@@ -396,12 +396,12 @@ an older commit.
 
 ### Downgrading across the session SQLite migration
 
-Before starting an older file-backed OpenClaw release, use the current CLI to
+Before starting an older file-backed Operator release, use the current CLI to
 restore archived legacy transcript artifacts:
 
 ```bash
-openclaw gateway stop
-openclaw doctor --session-sqlite restore --session-sqlite-all-agents
+operator gateway stop
+operator doctor --session-sqlite restore --session-sqlite-all-agents
 ```
 
 This does not delete SQLite data. Sessions created after the SQLite migration
@@ -415,27 +415,27 @@ Gateway and restore the verified pre-update filesystem, volume, or VM snapshot.
 Preserve the current state separately before restoring because this removes
 changes made after the snapshot.
 
-Broad `openclaw backup create` archives support creation and verification, but
+Broad `operator backup create` archives support creation and verification, but
 not in-place whole-archive activation. Extract a broad archive into a staging
 directory and use its `manifest.json` source-to-archive mapping for an offline
-restore. `openclaw backup sqlite restore` likewise writes a verified database
+restore. `operator backup sqlite restore` likewise writes a verified database
 to a fresh target; activating that target remains an explicit offline operator
 step.
 
 ### Verify the rollback
 
 ```bash
-openclaw --version
-openclaw health
-openclaw plugins list --json
-openclaw gateway status --deep --json
-openclaw doctor --lint --json
+operator --version
+operator health
+operator plugins list --json
+operator gateway status --deep --json
+operator doctor --lint --json
 ```
 
 ## If you are stuck
 
-- Run `openclaw doctor` again and read the output carefully.
-- For `openclaw update --channel dev` on source checkouts, the updater auto-bootstraps `pnpm` when needed. If you see a pnpm/corepack bootstrap error, install `pnpm` manually (or re-enable `corepack`) and rerun the update.
+- Run `operator doctor` again and read the output carefully.
+- For `operator update --channel dev` on source checkouts, the updater auto-bootstraps `pnpm` when needed. If you see a pnpm/corepack bootstrap error, install `pnpm` manually (or re-enable `corepack`) and rerun the update.
 - Check: [Troubleshooting](/gateway/troubleshooting)
 - Ask in Discord: [https://discord.gg/clawd](https://discord.gg/clawd)
 

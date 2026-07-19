@@ -18,10 +18,10 @@ It speaks **directly to the Gateway WebSocket** on the same port.
 
 If the Gateway is running on the same computer, open [http://127.0.0.1:18789/](http://127.0.0.1:18789/) (or [http://localhost:18789/](http://localhost:18789/)).
 
-If the page fails to load, start the Gateway first: `openclaw gateway`.
+If the page fails to load, start the Gateway first: `operator gateway`.
 
 <Note>
-On native Windows LAN binds, Windows Firewall or organization-managed Group Policy can still block the advertised LAN URL even when `127.0.0.1` works on the Gateway host. Run `openclaw gateway status --deep` on the Windows host; it reports likely-blocked ports, profile mismatches, and local firewall rules that policy may ignore.
+On native Windows LAN binds, Windows Firewall or organization-managed Group Policy can still block the advertised LAN URL even when `127.0.0.1` works on the Gateway host. Run `operator gateway status --deep` on the Windows host; it reports likely-blocked ports, profile mismatches, and local firewall rules that policy may ignore.
 </Note>
 
 Auth is supplied during the WebSocket handshake via:
@@ -40,21 +40,21 @@ Connecting from a new browser or device usually requires a **one-time pairing ap
 <Steps>
   <Step title="List pending requests">
     ```bash
-    openclaw devices list
+    operator devices list
     ```
   </Step>
   <Step title="Approve by request ID">
     ```bash
-    openclaw devices approve <requestId>
+    operator devices approve <requestId>
     ```
   </Step>
 </Steps>
 
-If the browser retries pairing with changed auth details (role/scopes/public key), the previous pending request is superseded and a new `requestId` is created; re-run `openclaw devices list` before approving.
+If the browser retries pairing with changed auth details (role/scopes/public key), the previous pending request is superseded and a new `requestId` is created; re-run `operator devices list` before approving.
 
-Switching an already-paired browser from read access to write/admin access is treated as an approval upgrade, not a silent reconnect: OpenClaw keeps the old approval active, blocks the broader reconnect, and asks you to approve the new scope set explicitly.
+Switching an already-paired browser from read access to write/admin access is treated as an approval upgrade, not a silent reconnect: Operator keeps the old approval active, blocks the broader reconnect, and asks you to approve the new scope set explicitly.
 
-Once approved, the device is remembered and won't require re-approval unless you revoke it with `openclaw devices revoke --device <id> --role <role>`. See [Devices CLI](/cli/devices) for token rotation, revocation, and the Paperclip / `openclaw_gateway` first-run approval flow.
+Once approved, the device is remembered and won't require re-approval unless you revoke it with `operator devices revoke --device <id> --role <role>`. See [Devices CLI](/cli/devices) for token rotation, revocation, and the Paperclip / `operator_gateway` first-run approval flow.
 
 <Note>
 - Direct local loopback browser connections (`127.0.0.1` / `localhost`) are auto-approved.
@@ -73,7 +73,7 @@ An already paired administrator can create the iOS/Android connection QR without
     Select **Devices**, then click **Pair mobile device** in the **Devices** card.
   </Step>
   <Step title="Connect the phone">
-    In the OpenClaw mobile app, open **Settings** → **Gateway** and scan the QR code. You can copy and paste the setup code instead.
+    In the Operator mobile app, open **Settings** → **Gateway** and scan the QR code. You can copy and paste the setup code instead.
   </Step>
   <Step title="Confirm the connection">
     The official iOS/Android app connects automatically. If **Pending approval** shows a request, review its role and scopes before approving it.
@@ -90,7 +90,7 @@ The assistant avatar override follows the same browser-local pattern: uploaded o
 
 ## Runtime config endpoint
 
-The Control UI fetches its runtime settings from `/control-ui-config.json`, resolved relative to the gateway's Control UI base path (for example `/__openclaw__/control-ui-config.json` under base path `/__openclaw__/`). That endpoint is gated by the same gateway auth as the rest of the HTTP surface: unauthenticated browsers cannot fetch it, and a successful fetch requires a valid gateway token/password, Tailscale Serve identity, or a trusted-proxy identity.
+The Control UI fetches its runtime settings from `/control-ui-config.json`, resolved relative to the gateway's Control UI base path (for example `/__operator__/control-ui-config.json` under base path `/__operator__/`). That endpoint is gated by the same gateway auth as the rest of the HTTP surface: unauthenticated browsers cannot fetch it, and a successful fetch requires a valid gateway token/password, Tailscale Serve identity, or a trusted-proxy identity.
 
 ## Gateway host status
 
@@ -134,7 +134,7 @@ overview counts. Each row opens a detail view; its overflow (`…`) menu enables
 or disables the plugin and offers **Remove** for externally installed plugins.
 It also lists configured [MCP servers](/cli/mcp) and supports adding, disabling,
 and removing them inline. The **Discover** tab is the store: featured plugins
-included with OpenClaw, official external plugins, and one-click MCP connectors
+included with Operator, official external plugins, and one-click MCP connectors
 for popular services. Typing in the search box queries
 [ClawHub](https://clawhub.ai/plugins) inline and appends a **From ClawHub**
 section with download counts and source-verification badges. Deep links can
@@ -152,7 +152,7 @@ is disabled and uses the selected agent's configured model.
 
 Included plugins are already present on the Gateway and show **Enable** or
 **Disable** instead of **Install**. For example, Workboard is included with
-OpenClaw but disabled by default, so its action is **Enable**. Bundled plugins
+Operator but disabled by default, so its action is **Enable**. Bundled plugins
 cannot be removed, only disabled.
 
 Reading the catalog and searching ClawHub require `operator.read`. Installing,
@@ -165,10 +165,10 @@ or removing plugin code requires a Gateway restart. Enabling or disabling an
 installed plugin can apply without a restart when the plugin and current
 Gateway runtime support it; otherwise the UI reports that a restart is
 required. OAuth-backed MCP connectors need a one-time
-`openclaw mcp login <name>` from the CLI after they are added.
+`operator mcp login <name>` from the CLI after they are added.
 
 The page intentionally focuses on inventory, discovery, install, enablement,
-and removal. Use [`openclaw plugins`](/cli/plugins) for arbitrary npm, git, or
+and removal. Use [`operator plugins`](/cli/plugins) for arbitrary npm, git, or
 local-path sources, updates, and advanced plugin configuration.
 
 ## Sidebar navigation
@@ -181,7 +181,7 @@ The **+** in the sidebar session-list header opens a full-page draft at `/new`: 
 
 Inside **Settings**, the dedicated sidebar starts with a **Search settings** field for quickly finding settings sections.
 
-A **Search** field at the top of the sidebar opens the command palette (⌘K). Clicking the OpenClaw brand in the sidebar header opens the clean New session start screen. When something needs action — failed or overdue cron jobs, expiring or expired model auth — compact attention chips appear above the sidebar footer and click through to the owning page. The footer shows the active agent as a chip — avatar (identity image or emoji), name, connection dot, and a live subtitle — with a **+** for a new session. Clicking the chip opens the agent menu: an agent switcher (multi-agent setups), "What can this agent do?", **Agent settings**, **Settings**, mobile pairing, **Docs**, the build chip, and the color-mode toggle. Rosters above ten agents get a filter field and list pinned agents first; pin or unpin agents from the Agents settings page, with the pinned set stored in the browser profile. Choosing an agent scopes Chat plus Usage, Automations, Tasks, Workboard, and Sessions to that agent. Each scoped page exposes an **Agent** control with **All agents** as an escape; this widens the shared page scope without changing the concrete chat agent, while direct session links still open their target. The Agents settings page keeps its own `?agent=` selection and does not follow the shared page scope. When the gateway runs from a source checkout on a branch other than `main`, the footer also shows that branch name in red so a non-release gateway is obvious at a glance (release installs never show it). Shift-Command-Comma opens **Settings** without overriding the browser's Command-Comma shortcut. The sidebar header also holds the collapse toggle (⌘B); collapsing hides the sidebar entirely for a full-width workspace, and a floating expand control (or ⌘B) brings it back; the macOS app hosts that toggle natively in the titlebar instead. The sidebar is the only navigation chrome on desktop, with no top bar. Narrow viewports swap the sidebar for a slide-over drawer behind a compact header row holding the drawer toggle, brand, and command-palette search; in the macOS app that header row folds the titlebar clearance into a single compact strip beside the window controls. Navigation uses regular browser history, so the browser's back/forward buttons traverse it; the macOS app adds a native sidebar toggle next to the window controls plus trackpad swipe gestures, with back/forward buttons at the sidebar's right edge while it is expanded and native search (command palette) and new-session buttons while it is collapsed.
+A **Search** field at the top of the sidebar opens the command palette (⌘K). Clicking the Operator brand in the sidebar header opens the clean New session start screen. When something needs action — failed or overdue cron jobs, expiring or expired model auth — compact attention chips appear above the sidebar footer and click through to the owning page. The footer shows the active agent as a chip — avatar (identity image or emoji), name, connection dot, and a live subtitle — with a **+** for a new session. Clicking the chip opens the agent menu: an agent switcher (multi-agent setups), "What can this agent do?", **Agent settings**, **Settings**, mobile pairing, **Docs**, the build chip, and the color-mode toggle. Rosters above ten agents get a filter field and list pinned agents first; pin or unpin agents from the Agents settings page, with the pinned set stored in the browser profile. Choosing an agent scopes Chat plus Usage, Automations, Tasks, Workboard, and Sessions to that agent. Each scoped page exposes an **Agent** control with **All agents** as an escape; this widens the shared page scope without changing the concrete chat agent, while direct session links still open their target. The Agents settings page keeps its own `?agent=` selection and does not follow the shared page scope. When the gateway runs from a source checkout on a branch other than `main`, the footer also shows that branch name in red so a non-release gateway is obvious at a glance (release installs never show it). Shift-Command-Comma opens **Settings** without overriding the browser's Command-Comma shortcut. The sidebar header also holds the collapse toggle (⌘B); collapsing hides the sidebar entirely for a full-width workspace, and a floating expand control (or ⌘B) brings it back; the macOS app hosts that toggle natively in the titlebar instead. The sidebar is the only navigation chrome on desktop, with no top bar. Narrow viewports swap the sidebar for a slide-over drawer behind a compact header row holding the drawer toggle, brand, and command-palette search; in the macOS app that header row folds the titlebar clearance into a single compact strip beside the window controls. Navigation uses regular browser history, so the browser's back/forward buttons traverse it; the macOS app adds a native sidebar toggle next to the window controls plus trackpad swipe gestures, with back/forward buttons at the sidebar's right edge while it is expanded and native search (command palette) and new-session buttons while it is collapsed.
 
 ## What it can do (today)
 
@@ -190,7 +190,7 @@ A **Search** field at the top of the sidebar opens the command palette (⌘K). C
     - Chat with the model via Gateway WS (`chat.history`, `chat.send`, `chat.abort`, `chat.inject`).
     - Chat history refreshes request a bounded recent window with per-message text caps, so large sessions do not force the browser to render a full transcript payload before chat becomes usable.
     - Hovering or keyboard-focusing a public GitHub issue or pull request link shows its state, title, author, recent activity, comments, and change statistics. The connected Gateway fetches and caches public metadata without changing the link target, including when the UI uses a remote Gateway. The Gateway uses `GH_TOKEN` or `GITHUB_TOKEN` when available, after confirming the repository is public; otherwise it uses GitHub's anonymous API with a longer cache.
-    - Talk through browser realtime sessions. OpenAI uses direct WebRTC, Google Live uses a constrained one-use browser token over WebSocket, and backend-only realtime voice plugins use the Gateway relay transport. Client-owned provider sessions start with `talk.client.create`; Gateway relay sessions start with `talk.session.create`. The relay keeps provider credentials on the Gateway while the browser streams microphone PCM through `talk.session.appendAudio`, forwards `openclaw_agent_consult` provider tool calls through `talk.client.toolCall` for Gateway policy and the larger configured OpenClaw model, and routes active-run voice steering through `talk.client.steer` or `talk.session.steer`.
+    - Talk through browser realtime sessions. OpenAI uses direct WebRTC, Google Live uses a constrained one-use browser token over WebSocket, and backend-only realtime voice plugins use the Gateway relay transport. Client-owned provider sessions start with `talk.client.create`; Gateway relay sessions start with `talk.session.create`. The relay keeps provider credentials on the Gateway while the browser streams microphone PCM through `talk.session.appendAudio`, forwards `operator_agent_consult` provider tool calls through `talk.client.toolCall` for Gateway policy and the larger configured Operator model, and routes active-run voice steering through `talk.client.steer` or `talk.session.steer`.
     - Stream tool calls and live tool output cards in Chat (agent events). Tool activity renders as kind-aware rows: shell commands show the syntax-highlighted command with terminal-style output; supported edit and write calls show bounded inline diffs, line numbers when available, and `+added -removed` stats; and consecutive calls collapse into a summary such as "Ran 13 commands, read 6 files, edited 9 files". While a run is live, the newest running call names the group header. Expand a row to inspect its remaining arguments and raw output.
     - Optional AI purpose titles for complex tool calls (long shell commands, argument-heavy plugin tools), enabled with `gateway.controlUi.toolTitles: true` (default off). Titles come from the batched `chat.toolTitles` method through standard utility-model routing — an explicit `utilityModel` (operator-chosen provider, like other utility tasks), else the session provider's declared small-model default — and cache gateway-side per agent. When the opt-in is off or no cheap model is usable, rows keep their deterministic labels and no model call happens.
     - Start or dismiss ephemeral model-suggested follow-up tasks; accepted suggestions open a fresh managed-worktree session with the proposed prompt.
@@ -216,7 +216,7 @@ A **Search** field at the top of the sidebar opens the command palette (⌘K). C
 
   </Accordion>
   <Accordion title="Config">
-    - View/edit `~/.openclaw/openclaw.json` (`config.get`, `config.set`).
+    - View/edit `~/.operator/operator.json` (`config.get`, `config.set`).
     - Agents: a settings page (**Settings → Agents**, `/settings/agents`) with per-agent tabs (Overview, Files, Tools, Skills, Channels, Automations, Memory). The Overview tab edits the agent's identity — display name, emoji, and an avatar image that is downscaled and size-bounded in the browser before `agents.update`. Saving stores configured identity fields and mirrors them to the workspace `IDENTITY.md`; configured values take precedence over manual edits to the same file fields.
     - Profile: a settings page showing the default agent's identity with all-time usage stats — lifetime tokens, peak day, longest session, activity streaks, a year-long token heatmap, top tools, and channel highlights (`usage.cost`, `sessions.usage`).
     - MCP has a dedicated settings page with read-only server rows (transport, enablement, OAuth/filter/parallel summaries), common operator commands, and the scoped `mcp` config editor; adding, enabling/disabling, and removing servers happens on the Plugins page.
@@ -254,7 +254,7 @@ A **Search** field at the top of the sidebar opens the command palette (⌘K). C
     - Advanced edit controls include delete-after-run, clear agent override, cron exact/stagger options, agent model/thinking overrides, and best-effort delivery toggles.
     - Form validation is inline with field-level errors; invalid values disable the save button until fixed.
     - Set `cron.webhookToken` to send a dedicated bearer token; if omitted, the webhook is sent without an auth header.
-    - `cron.webhook` is a deprecated legacy fallback: run `openclaw doctor --fix` to migrate stored jobs that still use `notify: true` to explicit per-job webhook or completion delivery.
+    - `cron.webhook` is a deprecated legacy fallback: run `operator doctor --fix` to migrate stored jobs that still use `notify: true` to explicit per-job webhook or completion delivery.
 
   </Accordion>
 </AccordionGroup>
@@ -262,7 +262,7 @@ A **Search** field at the top of the sidebar opens the command palette (⌘K). C
 ## Import assistant memory
 
 Open **Settings** → **Import Memory** to bring local Codex or Claude Code memory
-into an OpenClaw agent. The Gateway discovers supported local memory on its own
+into an Operator agent. The Gateway discovers supported local memory on its own
 host, so a remote Control UI imports from the Gateway computer rather than the
 browser computer.
 
@@ -282,14 +282,14 @@ selected workspace, where the active memory plugin can index them. Sources are
 never changed.
 
 Planning and applying require `operator.admin`. Every apply creates a verified
-OpenClaw backup when state exists, writes a redacted migration report, and keeps
+Operator backup when state exists, writes a redacted migration report, and keeps
 item-level backups before replacing existing destination files. See
 [Memory overview](/concepts/memory#import-from-coding-assistants) for paths and
 recall behavior.
 
 ## MCP page
 
-The dedicated MCP page is an operator view for OpenClaw-managed MCP servers under `mcp.servers`. It does not start MCP transports by itself; use it to inspect and edit saved config, then use `openclaw mcp doctor --probe` when you need live server proof.
+The dedicated MCP page is an operator view for Operator-managed MCP servers under `mcp.servers`. It does not start MCP transports by itself; use it to inspect and edit saved config, then use `operator mcp doctor --probe` when you need live server proof.
 
 Typical workflow:
 
@@ -299,7 +299,7 @@ Typical workflow:
 4. Manage servers (add, enable/disable, remove) on the **Plugins** page, which is the single interactive writer of `mcp.servers`; the row list here links to it.
 5. Edit the scoped `mcp` config section for server definitions, headers, TLS/mTLS paths, OAuth metadata, tool filters, and Codex projection metadata.
 6. Use **Save** for a config write, or **Save & Publish** when the running Gateway should apply the changed config.
-7. Run `openclaw mcp status --verbose`, `openclaw mcp doctor --probe`, or `openclaw mcp reload` from a terminal for static diagnostics, live proof, or cached-runtime disposal.
+7. Run `operator mcp status --verbose`, `operator mcp doctor --probe`, or `operator mcp reload` from a terminal for static diagnostics, live proof, or cached-runtime disposal.
 
 The page redacts credential-bearing URL-like values before rendering and quotes server names in command snippets so copied commands still work with spaces or shell metacharacters. Full CLI and config reference: [MCP](/cli/mcp).
 
@@ -314,16 +314,16 @@ Activity entries keep only sanitized summaries and redacted, truncated output pr
 The dockable operator terminal is disabled by default. To enable it, set `gateway.terminal.enabled: true` and restart the Gateway. The terminal requires an `operator.admin` connection and opens a host PTY in the active agent workspace. New tabs follow the currently selected chat agent.
 
 <Warning>
-The terminal is an unconfined host shell and inherits the Gateway process environment. Enable it only for trusted operator deployments. OpenClaw refuses terminal sessions for agents with `sandbox.mode: "all"`; changing an active agent to that mode closes its existing and in-flight terminal sessions.
+The terminal is an unconfined host shell and inherits the Gateway process environment. Enable it only for trusted operator deployments. Operator refuses terminal sessions for agents with `sandbox.mode: "all"`; changing an active agent to that mode closes its existing and in-flight terminal sessions.
 </Warning>
 
 Use **Ctrl + backtick** to toggle the dock. The layout supports bottom and right docking, resizes with the browser viewport, and keeps multiple shell tabs. See [Gateway configuration](/gateway/configuration-reference#gateway) for `gateway.terminal.enabled` and the optional `gateway.terminal.shell` override.
 
-Drag one or more files onto the active terminal, or use the paperclip button to choose files. OpenClaw stages each file on the machine that owns the PTY and pastes shell-quoted absolute paths at the cursor; it never presses Enter or executes the input. A compact batch indicator shows the current file and completed count. Cancel stops the remaining batch without pasting paths; a failed transfer stays visible so you can retry from that file without re-uploading completed files. Images, PDFs, archives, and other file types are accepted up to 16 MiB per file. Staged files use a private system-temporary directory on POSIX hosts (directory mode `0700`, file mode `0600`) or a directory under the user-profile ACL boundary on Windows, plus a 24-hour cleanup timer, so move or copy anything you need to keep.
+Drag one or more files onto the active terminal, or use the paperclip button to choose files. Operator stages each file on the machine that owns the PTY and pastes shell-quoted absolute paths at the cursor; it never presses Enter or executes the input. A compact batch indicator shows the current file and completed count. Cancel stops the remaining batch without pasting paths; a failed transfer stays visible so you can retry from that file without re-uploading completed files. Images, PDFs, archives, and other file types are accepted up to 16 MiB per file. Staged files use a private system-temporary directory on POSIX hosts (directory mode `0700`, file mode `0600`) or a directory under the user-profile ACL boundary on Windows, plus a 24-hour cleanup timer, so move or copy anything you need to keep.
 
 Path insertion supports PowerShell, `cmd.exe`, and recognized POSIX shells (`sh`, Bash, Dash, Ash, Ksh, Zsh, and Fish), including Git Bash on Windows. Other shell overrides are refused because their quoting rules cannot be inferred safely; run the Gateway inside WSL for a native WSL terminal and Linux upload paths. `cmd.exe` paths containing `%` or `!` are also refused because that shell expands those characters even inside double quotes.
 
-Codex and Claude Code sessions discovered in the sessions sidebar can open in their native CLI inside the same terminal panel. In **Settings › Chat**, set **Open Codex/Claude sessions in** to **Terminal** to make a normal row click open `codex resume` or `claude --resume`; the default remains the read-only OpenClaw viewer. A row's right-click or kebab menu always offers both choices, and the viewer header includes **Open in terminal** when that session is eligible.
+Codex and Claude Code sessions discovered in the sessions sidebar can open in their native CLI inside the same terminal panel. In **Settings › Chat**, set **Open Codex/Claude sessions in** to **Terminal** to make a normal row click open `codex resume` or `claude --resume`; the default remains the read-only Operator viewer. A row's right-click or kebab menu always offers both choices, and the viewer header includes **Open in terminal** when that session is eligible.
 
 Eligibility is per session and per host. Gateway-local sessions start the provider-owned resume command on the Gateway host. Paired-node sessions start an allowlisted provider command on the owning node and relay only that PTY's output, input, and resize events; this does not expose a general node shell or accept browser-supplied commands. File uploads use the separate, size-bounded `terminal.upload` node command and remain bound to the already-open terminal session. Approve the node pairing upgrade when that command first appears. Nodes that do not advertise the matching terminal-resume command, including embedded worker bridges without duplex streaming, keep the viewer available and show terminal opening as unavailable; older nodes can still run a terminal but cannot receive dragged files.
 
@@ -359,7 +359,7 @@ The macOS app keeps its native link-browser sidebar for links clicked in the das
     - The sidebar lists every loaded active session by agent section and pinned/channel/work/custom/Chats buckets with a single New Session action that opens the draft dialog. Opening a visible row moves only the highlight. Sessions can be dropped onto Pinned to pin them, or onto a custom group or Chats to move them; custom groups are collapsible and drag-reorderable, group names and order sync through the gateway, and collapsed state stays in the browser. A new dashboard session asynchronously gets a concise generated title from its first non-command message; explicit names are never replaced. Set `agents.defaults.utilityModel` (or `agents.list[].utilityModel`) to route this separate model call to a lower-cost model. Expanding another agent section browses that agent's sessions without leaving the open chat.
     - Session search lives in the command palette (⌘K, or the Search field at the top of the sidebar): typing a query follows a bounded number of matching pages across agents, filters internal child/cron rows, and lists visible matches next to navigation commands. The Sessions page keeps the exhaustive searchable list with filters.
     - Each sidebar row keeps direct pin access plus a full context menu for unread state, rename, fork, grouping, archive, and delete. Multi-selected rows (Cmd/Ctrl-click, Shift-click for ranges) get a batch menu covering unread state, grouping, archive, and delete; batch archive/delete stays disabled unless every selected session is archivable. An active run and an agent's main session cannot be archived. Archiving or deleting the currently selected session switches Chat back to that agent's main session.
-    - In the macOS app, the OpenClaw mark uses the otherwise-empty native titlebar strip next to the window controls instead of consuming a sidebar row.
+    - In the macOS app, the Operator mark uses the otherwise-empty native titlebar strip next to the window controls instead of consuming a sidebar row.
     - On desktop widths, chat controls stay on one compact row and collapse while scrolling down the transcript; scrolling up, returning to the top, or reaching the bottom restores the controls.
     - Consecutive duplicate text-only messages render as one bubble with a count badge. Messages that carry images, attachments, tool output, or canvas previews are left uncollapsed.
     - When a session's checkout sits on a non-default branch of a GitHub repository, the chat view pins pull request chips above the composer: PR number, repo, branch, diff counts, a CI pill, and draft/merged/closed state, each linking to the PR. The row shows at most two chips — live (open/draft) PRs first — and a "Show more" button reveals collapsed merged/closed history. The CI pill opens a small CI monitoring popover with passed/failed/running/skipped check counts and a link to the PR's checks page. Detection runs server-side through `controlUi.sessionPullRequests`, which reuses the Gateway's `GH_TOKEN`/`GITHUB_TOKEN` when set. When the GitHub API rate limit is hit, chips keep the last known status and show a warning that the status may be out of date; dismissing a chip hides it for that session in the current browser profile. Before any PR exists, the row shows the branch itself — repo, branch name, and the +/− size of the diff against the default-branch merge base (committed and uncommitted work). Once the pushed branch has commits to compare, the row adds a Create PR button that opens GitHub's new-pull-request page; before that, a session with changed files (committed, uncommitted, or untracked) still gets the row without the button. The row hides itself while an open or draft PR exists. The branch row comes from local git only, so it stays available while GitHub is rate limited and carries the same stale-status warning, since "no PR found" cannot be trusted until the limit resets.
@@ -384,7 +384,7 @@ The macOS app keeps its native link-browser sidebar for links clicked in the das
 
     Persistent provider, model, voice, transport, reasoning effort, exact VAD threshold, silence duration, and prefix padding defaults live in **Settings → Communications → Talk**; changing them requires `operator.admin` access. Configuring Gateway relay forces the backend relay path; configuring WebRTC keeps the session client-owned and fails instead of silently falling back to relay if the provider cannot create a browser session.
 
-    The Talk control itself is the microphone button in the composer toolbar. Its caret lists **System default** and every microphone exposed by the browser, including USB, Bluetooth, and virtual inputs. The selected device ID stays browser-local and is never sent to the Gateway; if that exact device disappears, Talk asks you to choose another input instead of silently recording from a different microphone. While Talk is live, the microphone button becomes a pill showing the live input-level meter; clicking it stops voice input, and hovering it reveals the stop glyph. Screen readers announce `Connecting voice input...`, `Listening...`, or `Asking OpenClaw...` while a realtime tool call is consulting the configured larger model through `talk.client.toolCall`. Stopping a running agent response stays a separate square **Stop** control next to the pill.
+    The Talk control itself is the microphone button in the composer toolbar. Its caret lists **System default** and every microphone exposed by the browser, including USB, Bluetooth, and virtual inputs. The selected device ID stays browser-local and is never sent to the Gateway; if that exact device disappears, Talk asks you to choose another input instead of silently recording from a different microphone. While Talk is live, the microphone button becomes a pill showing the live input-level meter; clicking it stops voice input, and hovering it reveals the stop glyph. Screen readers announce `Connecting voice input...`, `Listening...`, or `Asking Operator...` while a realtime tool call is consulting the configured larger model through `talk.client.toolCall`. Stopping a running agent response stays a separate square **Stop** control next to the pill.
 
     Maintainer live smoke: `OPENAI_API_KEY=... GEMINI_API_KEY=... node --import tsx scripts/dev/realtime-talk-live-smoke.ts` verifies the OpenAI backend WebSocket bridge, OpenAI browser WebRTC SDP exchange, Google Live constrained-token browser WebSocket setup, and the Gateway relay browser adapter with fake microphone media. The command prints provider status only and does not log secrets.
 
@@ -417,7 +417,7 @@ automatically when the Gateway returns. Live controls and slash commands remain 
 offline.
 
 When this browser already holds credentials (a configured token/password or an approved device
-token), first opens and reloads show a small animated OpenClaw mark while the connection is
+token), first opens and reloads show a small animated Operator mark while the connection is
 established instead of flashing the login gate. The login gate only appears when no credentials
 are stored yet or when the Gateway actively rejects them (bad token/password, revoked pairing) —
 states that need your input rather than waiting.
@@ -426,22 +426,22 @@ states that need your input rather than waiting.
 
 The Control UI ships a `manifest.webmanifest` and a service worker, so modern browsers can install it as a standalone PWA. Web Push lets the Gateway wake the installed PWA with notifications even when the tab or browser window is not open.
 
-If the page shows **Protocol mismatch** right after an OpenClaw update, first reopen the dashboard with `openclaw dashboard` and hard-refresh. If it still fails, clear site data for the dashboard origin or test in a private browser window; an old tab or browser service-worker cache can keep running a pre-update Control UI bundle against the newer Gateway.
+If the page shows **Protocol mismatch** right after an Operator update, first reopen the dashboard with `operator dashboard` and hard-refresh. If it still fails, clear site data for the dashboard origin or test in a private browser window; an old tab or browser service-worker cache can keep running a pre-update Control UI bundle against the newer Gateway.
 
 | Surface                                            | What it does                                                                 |
 | -------------------------------------------------- | ---------------------------------------------------------------------------- |
 | `ui/public/manifest.webmanifest`                   | PWA manifest. Browsers offer "Install app" once it is reachable.             |
 | `ui/public/sw.js`                                  | Service worker that handles `push` events and notification clicks.           |
-| `state/openclaw.sqlite` → `web_push_vapid_keys`    | Auto-generated VAPID keypair used to sign Web Push payloads.                 |
-| `state/openclaw.sqlite` → `web_push_subscriptions` | Persisted browser subscription endpoints, keys, and registration timestamps. |
+| `state/operator.sqlite` → `web_push_vapid_keys`    | Auto-generated VAPID keypair used to sign Web Push payloads.                 |
+| `state/operator.sqlite` → `web_push_subscriptions` | Persisted browser subscription endpoints, keys, and registration timestamps. |
 
-Upgrades from the retired `push/vapid-keys.json` and `push/web-push-subscriptions.json` stores are imported by `openclaw doctor --fix`. Stop the Gateway before running that repair so an older process cannot recreate retired state during import. Run the repair before using Web Push after an upgrade; registration, delivery, deletion, and key resolution refuse to proceed while either retired source or an interrupted Doctor claim remains. The Gateway runtime reads and writes SQLite only.
+Upgrades from the retired `push/vapid-keys.json` and `push/web-push-subscriptions.json` stores are imported by `operator doctor --fix`. Stop the Gateway before running that repair so an older process cannot recreate retired state during import. Run the repair before using Web Push after an upgrade; registration, delivery, deletion, and key resolution refuse to proceed while either retired source or an interrupted Doctor claim remains. The Gateway runtime reads and writes SQLite only.
 
 Override the VAPID keypair through env vars on the Gateway process when you want to pin keys (multi-host deployments, secrets rotation, or tests):
 
-- `OPENCLAW_VAPID_PUBLIC_KEY`
-- `OPENCLAW_VAPID_PRIVATE_KEY`
-- `OPENCLAW_VAPID_SUBJECT` (defaults to `https://openclaw.ai`)
+- `OPERATOR_VAPID_PUBLIC_KEY`
+- `OPERATOR_VAPID_PRIVATE_KEY`
+- `OPERATOR_VAPID_SUBJECT` (defaults to `https://operator.ai`)
 
 The Control UI uses these scope-gated Gateway methods to register and test browser subscriptions:
 
@@ -511,12 +511,12 @@ The value is validated before it reaches the browser. Supported forms include pl
     Keep the Gateway on loopback and let Tailscale Serve proxy it with HTTPS:
 
     ```bash
-    openclaw gateway --tailscale serve
+    operator gateway --tailscale serve
     ```
 
     Open `https://<magicdns>/` (or your configured `gateway.controlUi.basePath`).
 
-    By default, Control UI/WebSocket Serve requests can authenticate via Tailscale identity headers (`tailscale-user-login`) when `gateway.auth.allowTailscale` is `true`. OpenClaw verifies the identity by resolving the `x-forwarded-for` address with `tailscale whois` and matching it to the header, and only accepts these when the request hits loopback with Tailscale's `x-forwarded-*` headers. For Control UI operator sessions with browser device identity, this verified Serve path also skips the device-pairing round trip; device-less browsers and node-role connections still follow the normal device checks. Set `gateway.auth.allowTailscale: false` if you want to require explicit shared-secret credentials even for Serve traffic, then use `gateway.auth.mode: "token"` or `"password"`.
+    By default, Control UI/WebSocket Serve requests can authenticate via Tailscale identity headers (`tailscale-user-login`) when `gateway.auth.allowTailscale` is `true`. Operator verifies the identity by resolving the `x-forwarded-for` address with `tailscale whois` and matching it to the header, and only accepts these when the request hits loopback with Tailscale's `x-forwarded-*` headers. For Control UI operator sessions with browser device identity, this verified Serve path also skips the device-pairing round trip; device-less browsers and node-role connections still follow the normal device checks. Set `gateway.auth.allowTailscale: false` if you want to require explicit shared-secret credentials even for Serve traffic, then use `gateway.auth.mode: "token"` or `"password"`.
 
     For that async Serve identity path, failed auth attempts for the same client IP and auth scope are serialized before rate-limit writes. Concurrent bad retries from the same browser can therefore show `retry later` on the second request instead of two plain mismatches racing in parallel.
 
@@ -527,7 +527,7 @@ The value is validated before it reaches the browser. Supported forms include pl
   </Tab>
   <Tab title="Bind to tailnet + token">
     ```bash
-    openclaw gateway --bind tailnet --token "$(openssl rand -hex 32)"
+    operator gateway --bind tailnet --token "$(openssl rand -hex 32)"
     ```
 
     Open `http://<tailscale-ip>:18789/` (or your configured `gateway.controlUi.basePath`).
@@ -539,7 +539,7 @@ The value is validated before it reaches the browser. Supported forms include pl
 
 ## Insecure HTTP
 
-If you open the dashboard over plain HTTP (`http://<lan-ip>` or `http://<tailscale-ip>`), the browser runs in a **non-secure context** and blocks WebCrypto. By default, OpenClaw **blocks** Control UI connections without device identity.
+If you open the dashboard over plain HTTP (`http://<lan-ip>` or `http://<tailscale-ip>`), the browser runs in a **non-secure context** and blocks WebCrypto. By default, Operator **blocks** Control UI connections without device identity.
 
 Documented exceptions:
 
@@ -622,7 +622,7 @@ If you disable gateway auth (not recommended on shared hosts), the avatar route 
 
 When gateway auth is configured, assistant local-media previews use a two-step route:
 
-- `GET /__openclaw__/assistant-media?meta=1&source=<path>` requires the normal Control UI operator auth; the browser sends the gateway token as a bearer header when checking availability.
+- `GET /__operator__/assistant-media?meta=1&source=<path>` requires the normal Control UI operator auth; the browser sends the gateway token as a bearer header when checking availability.
 - Successful metadata responses include a short-lived `mediaTicket` scoped to that exact source path.
 - Browser-rendered image, audio, video, and document URLs use `mediaTicket=<ticket>` instead of the active gateway token or password. The ticket expires quickly and cannot authorize a different source.
 
@@ -646,7 +646,7 @@ pnpm ui:build
 Optional absolute base (fixed asset URLs):
 
 ```bash
-OPENCLAW_CONTROL_UI_BASE_PATH=/openclaw/ pnpm ui:build
+OPERATOR_CONTROL_UI_BASE_PATH=/openclaw/ pnpm ui:build
 ```
 
 Local development (separate dev server):
@@ -659,7 +659,7 @@ Then point the UI at your Gateway WS URL (e.g. `ws://127.0.0.1:18789`).
 
 ## Blank Control UI page
 
-If the browser loads a blank dashboard and DevTools shows no useful error, an extension or early content script may have prevented the JavaScript module app from evaluating. The static page includes a plain HTML recovery panel that appears when `<openclaw-app>` is not registered after startup.
+If the browser loads a blank dashboard and DevTools shows no useful error, an extension or early content script may have prevented the JavaScript module app from evaluating. The static page includes a plain HTML recovery panel that appears when `<operator-app>` is not registered after startup.
 
 Use the panel's **Try again** action after changing the browser environment, or reload manually after these checks:
 

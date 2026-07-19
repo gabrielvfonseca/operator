@@ -1,5 +1,5 @@
 // Shares provider registry normalization helpers across plugin paths.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 
 /** Normalizes provider ids used by capability-provider registries. */

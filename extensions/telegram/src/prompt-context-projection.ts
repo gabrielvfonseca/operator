@@ -1,9 +1,9 @@
-import type { Message } from "grammy/types";
 import {
   resolveSendableOutboundReplyParts,
   type ReplyPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import type { Message } from "grammy/types";
 
 export type TelegramPromptContextSource = { transcriptMessageId: string };
 export type TelegramPromptContextProjection = TelegramPromptContextSource & {

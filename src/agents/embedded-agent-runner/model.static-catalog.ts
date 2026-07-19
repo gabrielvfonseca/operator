@@ -1,8 +1,8 @@
 /**
  * Resolves bundled static catalog rows for embedded-agent model selection.
  */
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { ModelProviderConfig } from "../../config/types.models.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { planManifestModelCatalogRows } from "../../model-catalog/manifest-planner.js";

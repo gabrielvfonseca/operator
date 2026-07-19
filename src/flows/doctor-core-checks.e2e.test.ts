@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { CORE_HEALTH_CHECKS } from "./doctor-core-checks.js";
 import type { HealthCheck } from "./health-checks.js";
 
@@ -28,7 +28,7 @@ describe("doctor core skills readiness smoke", () => {
   });
 
   it("detects and repairs a real unavailable workspace skill", async () => {
-    tmp = await fs.mkdtemp(join(tmpdir(), "openclaw-health-skills-"));
+    tmp = await fs.mkdtemp(join(tmpdir(), "operator-health-skills-"));
     const skillDir = join(tmp, "skills", "missing-tool");
     await fs.mkdir(skillDir, { recursive: true });
     await fs.writeFile(
@@ -36,7 +36,7 @@ describe("doctor core skills readiness smoke", () => {
       `---
 name: missing-tool
 description: Missing tool
-metadata: '{"openclaw":{"requires":{"bins":["openclaw-test-missing-skill-bin"]}}}'
+metadata: '{"@gabrielvfonseca/operator":{"requires":{"bins":["operator-test-missing-skill-bin"]}}}'
 ---
 
 # Missing tool

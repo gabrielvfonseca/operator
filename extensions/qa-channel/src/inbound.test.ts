@@ -1,5 +1,5 @@
 // Qa Channel tests cover inbound plugin behavior.
-import { createPluginRuntimeMock } from "openclaw/plugin-sdk/channel-test-helpers";
+import { createPluginRuntimeMock } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { setQaChannelRuntime } from "../api.js";
 import { deleteQaBusMessage, editQaBusMessage, sendQaBusMessage } from "./bus-client.js";
@@ -31,7 +31,7 @@ function createQaInboundParams(
       enabled: true,
       configured: true,
       baseUrl: "http://127.0.0.1:43123",
-      botUserId: "openclaw",
+      botUserId: "@gabrielvfonseca/operator",
       botDisplayName: "Operator QA",
       pollTimeoutMs: 250,
       config: {

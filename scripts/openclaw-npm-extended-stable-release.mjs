@@ -174,7 +174,7 @@ export function validateExtendedStableRunIdentity({
 }) {
   const expectedWorkflowName =
     kind === "preflight"
-      ? "OpenClaw NPM Release"
+      ? "Operator NPM Release"
       : kind === "plugin"
         ? "Plugin NPM Release"
         : "Full Release Validation";
@@ -505,7 +505,9 @@ async function main() {
   if (command === "capture-selector") {
     const previous = capturePriorExtendedStableSelector({
       query: () =>
-        spawnSync("npm", ["view", "openclaw", "dist-tags", "--json"], { encoding: "utf8" }),
+        spawnSync("npm", ["view", "@gabrielvfonseca/operator", "dist-tags", "--json"], {
+          encoding: "utf8",
+        }),
     });
     appendOutput({ previous });
     return;
@@ -538,7 +540,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
     await main();
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error(`openclaw-npm-extended-stable-release: ${message}`);
+    console.error(`operator-npm-extended-stable-release: ${message}`);
     process.exit(1);
   }
 }

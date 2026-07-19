@@ -6,7 +6,7 @@ import {
   GATEWAY_CLIENT_IDS,
   GATEWAY_CLIENT_MODES,
 } from "../../packages/gateway-protocol/src/client-info.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import {
   pinActivePluginChannelRegistry,

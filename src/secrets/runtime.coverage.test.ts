@@ -236,7 +236,7 @@ vi.mock("../plugins/web-provider-public-artifacts.explicit.js", () => ({
 
 type SecretRegistryEntry = {
   id: string;
-  configFile: "openclaw.json" | "auth-profiles.json";
+  configFile: "operator.json" | "auth-profiles.json";
   pathPattern: string;
   refPathPattern?: string;
   secretShape: "secret_input" | "sibling_ref";
@@ -247,7 +247,7 @@ type SecretRegistryEntry = {
 type SecretRefCredentialMatrix = {
   entries: Array<{
     id: string;
-    configFile: "openclaw.json" | "auth-profiles.json";
+    configFile: "operator.json" | "auth-profiles.json";
     path: string;
     refPath?: string;
     secretShape: SecretRegistryEntry["secretShape"];
@@ -538,7 +538,7 @@ function collectOperatorCoverageEntries(options: {
 }): SecretRegistryEntry[] {
   return COVERAGE_REGISTRY_ENTRIES.filter(
     (entry) =>
-      entry.configFile === "openclaw.json" &&
+      entry.configFile === "operator.json" &&
       entry.id.startsWith("plugins.entries.") === options.includePluginEntries &&
       !PLUGIN_OWNED_OPERATOR_COVERAGE_EXCLUSIONS.has(entry.id),
   );
@@ -912,7 +912,7 @@ describe("secrets runtime target coverage", () => {
       batch.some((entry) => entry.id === "channels.googlechat.serviceAccount"),
     );
     if (googleChatBatch) {
-      await expectOperatorCoverageBatchResolved("openclaw.json core", googleChatBatch);
+      await expectOperatorCoverageBatchResolved("operator.json core", googleChatBatch);
     }
     const webProviderBatch = OPERATOR_PLUGIN_COVERAGE_BATCHES.find((batch) =>
       batch.some((entry) => entry.id.includes(".config.webSearch.")),
@@ -920,25 +920,25 @@ describe("secrets runtime target coverage", () => {
     if (webProviderBatch) {
       // Warm the shared plugin snapshot once; individual target assertions then
       // measure resolution work instead of one-time manifest discovery.
-      await expectOperatorCoverageBatchResolved("openclaw.json plugins", webProviderBatch);
+      await expectOperatorCoverageBatchResolved("operator.json plugins", webProviderBatch);
     }
   });
 
-  describe("openclaw.json core and channel registry targets", () => {
+  describe("operator.json core and channel registry targets", () => {
     test.each(OPERATOR_CORE_COVERAGE_BATCHES.map(toCoverageBatchCase))(
       "handles $name",
       async ({ batch }) => {
-        await expectOperatorCoverageBatchResolved("openclaw.json core", batch);
+        await expectOperatorCoverageBatchResolved("operator.json core", batch);
       },
       RUNTIME_COVERAGE_TEST_TIMEOUT_MS,
     );
   });
 
-  describe("openclaw.json plugin registry targets", () => {
+  describe("operator.json plugin registry targets", () => {
     test.each(OPERATOR_PLUGIN_COVERAGE_BATCHES.map(toCoverageBatchCase))(
       "handles $name",
       async ({ batch }) => {
-        await expectOperatorCoverageBatchResolved("openclaw.json plugins", batch);
+        await expectOperatorCoverageBatchResolved("operator.json plugins", batch);
       },
       RUNTIME_COVERAGE_TEST_TIMEOUT_MS,
     );
@@ -962,7 +962,7 @@ describe("secrets runtime target coverage", () => {
         const snapshot = await prepareAuthCoverageSnapshot({
           config: {} as OperatorConfig,
           env,
-          agentDirs: ["/tmp/openclaw-agent-main"],
+          agentDirs: ["/tmp/operator-agent-main"],
           loadAuthStore: () => authStore,
         });
         const resolvedStore = snapshot.authStores[0]?.store;

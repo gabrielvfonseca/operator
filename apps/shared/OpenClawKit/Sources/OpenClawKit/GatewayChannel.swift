@@ -1,10 +1,10 @@
 import CryptoKit
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import OSLog
 
 /// Avoid ambiguity with the app's own AnyCodable type.
-private typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
+private typealias ProtoAnyCodable = OperatorProtocol.AnyCodable
 
 private func gatewayErrorDetails(_ error: ErrorShape?) -> [String: ProtoAnyCodable] {
     var details: [String: ProtoAnyCodable] = [:]
@@ -47,7 +47,7 @@ public actor GatewayChannelActor {
         return GATEWAY_MIN_PROTOCOL_VERSION
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "gateway")
+    private let logger = Logger(subsystem: "ai.operator", category: "gateway")
     private var task: WebSocketTaskBox?
     private var activeConnectAttemptID: UUID?
     private var pending: [String: CheckedContinuation<GatewayFrame, Error>] = [:]
@@ -438,7 +438,7 @@ public actor GatewayChannelActor {
             caps: [],
             commands: [],
             permissions: [:],
-            clientId: "openclaw-macos",
+            clientId: "operator-macos",
             clientMode: "ui",
             clientDisplayName: InstanceIdentity.displayName)
         let clientDisplayName = options.clientDisplayName ?? InstanceIdentity.displayName

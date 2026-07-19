@@ -1,4 +1,4 @@
-import OpenClawKit
+import OperatorKit
 
 enum GatewayPushSubscription {
     @MainActor

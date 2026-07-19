@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
 public enum GatewayDeviceAuthPayload {
     public struct Client: Sendable {
@@ -110,7 +110,7 @@ public enum GatewayDeviceAuthPayload {
         payload: String,
         identity: DeviceIdentity,
         signedAtMs: Int64,
-        nonce: String) -> [String: OpenClawProtocol.AnyCodable]?
+        nonce: String) -> [String: OperatorProtocol.AnyCodable]?
     {
         guard let signature = DeviceIdentityStore.signPayload(payload, identity: identity),
               let publicKey = DeviceIdentityStore.publicKeyBase64Url(identity)
@@ -118,11 +118,11 @@ public enum GatewayDeviceAuthPayload {
             return nil
         }
         return [
-            "id": OpenClawProtocol.AnyCodable(identity.deviceId),
-            "publicKey": OpenClawProtocol.AnyCodable(publicKey),
-            "signature": OpenClawProtocol.AnyCodable(signature),
-            "signedAt": OpenClawProtocol.AnyCodable(signedAtMs),
-            "nonce": OpenClawProtocol.AnyCodable(nonce),
+            "id": OperatorProtocol.AnyCodable(identity.deviceId),
+            "publicKey": OperatorProtocol.AnyCodable(publicKey),
+            "signature": OperatorProtocol.AnyCodable(signature),
+            "signedAt": OperatorProtocol.AnyCodable(signedAtMs),
+            "nonce": OperatorProtocol.AnyCodable(nonce),
         ]
     }
 }

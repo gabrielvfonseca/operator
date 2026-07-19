@@ -1,7 +1,7 @@
 /**
  * Converts embedded run failures into provider failover signals.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isExecLikeToolName, type ToolErrorSummary } from "../tool-error-summary.js";
 import type { EmbeddedRunFailureSignal } from "./types.js";
 

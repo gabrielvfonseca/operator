@@ -76,11 +76,11 @@ describe("OpenAI provider policy artifact", () => {
 
   it.each([
     ["gpt-5.6-sol", "codex", "medium"],
-    ["gpt-5.6-sol", "openclaw", "medium"],
+    ["gpt-5.6-sol", "@gabrielvfonseca/operator", "medium"],
     ["gpt-5.6-terra", "codex", "medium"],
-    ["gpt-5.6-terra", "openclaw", "medium"],
+    ["gpt-5.6-terra", "@gabrielvfonseca/operator", "medium"],
     ["gpt-5.6-luna", "codex", "medium"],
-    ["gpt-5.6-luna", "openclaw", "medium"],
+    ["gpt-5.6-luna", "@gabrielvfonseca/operator", "medium"],
   ])("uses the model default for %s on %s", (modelId, agentRuntime, expected) => {
     const profile = resolveThinkingProfile({
       provider: "openai",
@@ -97,7 +97,7 @@ describe("OpenAI provider policy artifact", () => {
       const levels = resolveThinkingProfile({
         provider: "openai",
         modelId,
-        agentRuntime: "openclaw",
+        agentRuntime: "@gabrielvfonseca/operator",
       })?.levels.map((level) => level.id);
 
       expect(levels).toContain("ultra");
@@ -209,14 +209,14 @@ describe("OpenAI provider policy artifact", () => {
           baseUrl: "https://api.openai.com/v1",
           authRequirement: "api-key",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
         {
           api: "openai-chatgpt-responses",
           baseUrl: "https://chatgpt.com/backend-api/codex",
           authRequirement: "subscription",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
       ],
     } as const;
@@ -332,15 +332,15 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toMatchObject({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           requestTransportOverrides: "present",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
         {
           requestTransportOverrides: "present",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });
@@ -369,14 +369,14 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toEqual({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-responses",
           baseUrl: "https://model.example.test/v1",
           authRequirement: "api-key",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });
@@ -394,14 +394,14 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toEqual({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-chatgpt-responses",
           baseUrl: "https://proxy.example.test/v1",
           authRequirement: "subscription",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });
@@ -492,7 +492,7 @@ describe("OpenAI provider policy artifact", () => {
 
     expect(resolveModelRoutes({ provider: "openai", modelId: "gpt-5.5" })).toMatchObject({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-responses",
@@ -530,7 +530,7 @@ describe("OpenAI provider policy artifact", () => {
         }),
       ).toMatchObject({
         kind: "routes",
-        defaultRuntimeId: "openclaw",
+        defaultRuntimeId: "@gabrielvfonseca/operator",
         routes: [{ api: observedApi, authRequirement: "api-key" }],
       });
     }
@@ -641,7 +641,7 @@ describe("OpenAI provider policy artifact", () => {
           baseUrl: "https://chatgpt.com/backend-api/codex",
           authRequirement: "subscription",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
       ],
     });
@@ -720,14 +720,14 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toEqual({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-completions",
           baseUrl: "https://api.openai.com/v1",
           authRequirement: "api-key",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });
@@ -747,7 +747,7 @@ describe("OpenAI provider policy artifact", () => {
         }),
       ).toMatchObject({
         kind: "routes",
-        defaultRuntimeId: "openclaw",
+        defaultRuntimeId: "@gabrielvfonseca/operator",
         routes: [
           {
             api,
@@ -880,14 +880,14 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toEqual({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [
         {
           api: "openai-completions",
           baseUrl: "https://api.openai.com/v1",
           authRequirement: "api-key",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
         },
       ],
     });
@@ -982,7 +982,7 @@ describe("OpenAI provider policy artifact", () => {
         modelId: "gpt-5.5-unknown",
         requestTransportOverrides: "present",
       }),
-    ).toEqual({ kind: "indeterminate", defaultRuntimeId: "openclaw" });
+    ).toEqual({ kind: "indeterminate", defaultRuntimeId: "@gabrielvfonseca/operator" });
   });
 
   it("allows custom endpoints to expose Spark-like ids", () => {
@@ -997,7 +997,7 @@ describe("OpenAI provider policy artifact", () => {
       }),
     ).toMatchObject({
       kind: "routes",
-      defaultRuntimeId: "openclaw",
+      defaultRuntimeId: "@gabrielvfonseca/operator",
       routes: [{ authRequirement: "api-key" }],
     });
   });

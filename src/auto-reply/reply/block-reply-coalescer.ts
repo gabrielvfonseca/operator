@@ -1,5 +1,5 @@
 // Coalesces buffered block-streaming payloads into sendable reply parts.
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { copyReplyPayloadMetadata, isReplyPayloadStatusNotice } from "../reply-payload.js";
 import type { ReplyPayload } from "../types.js";
 import type { BlockStreamingCoalescing } from "./block-streaming.js";

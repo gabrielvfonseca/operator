@@ -14,7 +14,7 @@ import {
   resolveSessionTranscriptRuntimeTarget,
   upsertSessionEntry,
 } from "../../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { onSessionTranscriptUpdate } from "../../sessions/transcript-events.js";
 import {
   closeOperatorStateDatabaseForTest,
@@ -150,7 +150,7 @@ describe("worker transcript commit application", () => {
   let unsubscribe: (() => void) | undefined;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-turn-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-turn-"));
     sessionsDir = path.join(root, "agents", "main", "sessions");
     storePath = path.join(sessionsDir, "sessions.json");
     cfg = {

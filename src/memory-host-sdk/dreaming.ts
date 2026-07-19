@@ -1,17 +1,17 @@
 // Memory host dreaming helpers record and load memory dreaming artifacts.
 import path from "node:path";
-import { parseBoolean } from "@operator/normalization-core/boolean-coercion";
+import { parseBoolean } from "@gabrielvfonseca/normalization-core/boolean-coercion";
 import {
   parseStrictNonNegativeInteger,
   parseStrictPositiveInteger,
-} from "@operator/normalization-core/number-coercion";
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   lowercasePreservingWhitespace,
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeStringifiedOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 

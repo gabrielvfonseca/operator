@@ -55,7 +55,7 @@ function renderSecretRow(params: {
         @input=${(e: Event) => params.onInput((e.target as HTMLInputElement).value)}
         placeholder=${params.placeholder}
       />
-      <openclaw-tooltip .content=${params.visible ? params.hideLabel : params.showLabel}>
+      <operator-tooltip .content=${params.visible ? params.hideLabel : params.showLabel}>
         <button
           type="button"
           class="btn btn--icon ${params.visible ? "active" : ""}"
@@ -65,7 +65,7 @@ function renderSecretRow(params: {
         >
           ${params.visible ? icons.eye : icons.eyeOff}
         </button>
-      </openclaw-tooltip>
+      </operator-tooltip>
     `,
   });
 }
@@ -109,7 +109,7 @@ export function renderConnection(props: ConnectionProps) {
           ${renderSecretRow({
             label: t("connection.access.token"),
             value: props.settings.token,
-            placeholder: "OPENCLAW_GATEWAY_TOKEN",
+            placeholder: "OPERATOR_GATEWAY_TOKEN",
             visible: props.showGatewayToken,
             showLabel: t("connection.access.showToken"),
             hideLabel: t("connection.access.hideToken"),

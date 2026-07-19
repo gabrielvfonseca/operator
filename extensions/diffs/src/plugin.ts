@@ -1,7 +1,7 @@
 // Diffs plugin module implements plugin behavior.
 import fs from "node:fs";
 import path from "node:path";
-import { resolveLivePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
+import { resolveLivePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import {
   resolvePreferredOperatorTmpDir,
   type OperatorConfig,
@@ -21,7 +21,7 @@ const DIFFS_LANGUAGE_PACK_PLUGIN_ID = "diffs-language-pack";
 
 export function registerDiffsPlugin(api: OperatorPluginApi): void {
   const store = new DiffArtifactStore({
-    rootDir: path.join(resolvePreferredOperatorTmpDir(), "openclaw-diffs"),
+    rootDir: path.join(resolvePreferredOperatorTmpDir(), "operator-diffs"),
     logger: api.logger,
   });
   const resolveCurrentPluginConfig = () =>

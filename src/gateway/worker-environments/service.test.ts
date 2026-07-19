@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/types.js";
 import {
@@ -28,7 +28,7 @@ type WorkerEnvironmentServiceError = Error & { code: string };
 const SSH_ENDPOINT: WorkerSshEndpoint = {
   host: "worker.example.test",
   port: 22,
-  user: "openclaw",
+  user: "@gabrielvfonseca/operator",
   hostKey: HOST_KEY,
   keyRef: { source: "file", provider: "worker-keys", id: "/development-key" },
 };
@@ -78,7 +78,7 @@ describe("worker environment service", () => {
   let bootstrapWorker: WorkerEnvironmentServiceOptions["bootstrapWorker"];
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-service-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-service-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     nowMs = 1_000;
     providersEnabled = true;
@@ -99,7 +99,7 @@ describe("worker environment service", () => {
     );
     bootstrapWorker = vi.fn(async ({ installation }) => ({
       bundleHash: installation.bundleHash,
-      openclawVersion: installation.openclawVersion,
+      openclawVersion: installation.operatorVersion,
       protocolFeatures: [...installation.protocolFeatures],
     }));
   });
@@ -1415,7 +1415,7 @@ describe("worker environment service", () => {
       await resolveIdentity(SSH_ENDPOINT.keyRef);
       return {
         bundleHash: installation.bundleHash,
-        openclawVersion: installation.openclawVersion,
+        openclawVersion: installation.operatorVersion,
         protocolFeatures: [...installation.protocolFeatures],
       };
     });

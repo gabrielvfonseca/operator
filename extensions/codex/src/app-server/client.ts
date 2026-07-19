@@ -4,8 +4,11 @@
  */
 import { randomUUID } from "node:crypto";
 import { createInterface, type Interface as ReadlineInterface } from "node:readline";
-import { embeddedAgentLog, OPERATOR_VERSION } from "openclaw/plugin-sdk/agent-harness-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import {
+  embeddedAgentLog,
+  OPERATOR_VERSION,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { parse as parseSemver } from "semver";
 import { resolveCodexAppServerRuntimeOptions, type CodexAppServerStartOptions } from "./config.js";
 import {
@@ -320,7 +323,7 @@ export class CodexAppServerClient {
     // which matters when callers override the binary or app-server args.
     const response = await this.request("initialize", {
       clientInfo: {
-        name: "openclaw",
+        name: "@gabrielvfonseca/operator",
         title: "Operator",
         version: OPERATOR_VERSION,
       },

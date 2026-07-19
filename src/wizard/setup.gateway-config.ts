@@ -1,5 +1,5 @@
 // Setup gateway config helpers build gateway config from onboarding answers.
-import { validateDottedDecimalIPv4Input } from "@operator/net-policy/ipv4";
+import { validateDottedDecimalIPv4Input } from "@gabrielvfonseca/net-policy/ipv4";
 import { formatPortRangeHint } from "../cli/error-format.js";
 import { parsePort } from "../cli/shared/parse-port.js";
 import {

@@ -1,6 +1,6 @@
 // Discord plugin module implements setup account state behavior.
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { inspectDiscordConfiguredToken } from "./account-token-inspect.js";
 import { resolveDefaultDiscordAccountId } from "./accounts.js";
 import { mergeDiscordAccountConfig, resolveDiscordAccountConfig } from "./accounts.js";

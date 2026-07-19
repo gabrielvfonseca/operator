@@ -2,7 +2,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { gzipSync } from "node:zlib";
-import type { OperatorPluginNodeInvokePolicyContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginNodeInvokePolicyContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { appendFileTransferAudit } from "./audit.js";
 import { createFileTransferNodeInvokePolicy } from "./node-invoke-policy.js";

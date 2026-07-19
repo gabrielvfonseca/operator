@@ -1,14 +1,14 @@
 // Googlechat plugin module implements gateway behavior.
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import {
   createAccountStatusSink,
   runPassiveAccountLifecycle,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { ChannelAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import { isGoogleChatNativeApprovalClientEnabled } from "./approval-native.js";
 import type { GoogleChatRuntimeEnv } from "./monitor-types.js";

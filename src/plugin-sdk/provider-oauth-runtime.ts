@@ -1,5 +1,5 @@
 // Provider OAuth runtime helpers expose shared browser/OAuth flows for provider plugins.
-import { toErrorObject } from "@operator/normalization-core/error-coercion";
+import { toErrorObject } from "@gabrielvfonseca/normalization-core/error-coercion";
 import {
   positiveSecondsToSafeMilliseconds,
   resolveExpiresAtMsFromDurationMs,

@@ -1,7 +1,7 @@
-import { AGENT_MODEL_CONFIG_KEYS } from "@operator/model-catalog-core/configured-model-refs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import { AGENT_MODEL_CONFIG_KEYS } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asOptionalRecord as asMutableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveModelRuntimePolicy } from "../../../agents/model-runtime-policy.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { normalizeAgentId } from "../../../routing/session-key.js";

@@ -4,7 +4,7 @@ import Foundation
 // session defaults, and free-form user aliases all feed the picker; this
 // extension owns collapsing them into the canonical option list.
 
-extension OpenClawChatViewModel {
+extension OperatorChatViewModel {
     func applyAdvertisedThinkingLevel(_ level: String) {
         guard level != thinkingLevel else { return }
         thinkingLevel = level
@@ -26,7 +26,7 @@ extension OpenClawChatViewModel {
             acceptedThinkingLevelsByTarget[target] = acceptedBaseline
             acceptedPreferredThinkingLevelsByTarget[target] = preferredThinkingLevel
             let session = currentSessionEntry()
-            acceptedSettingsPatchResultsByTarget[target] = OpenClawChatModelPatchResult(
+            acceptedSettingsPatchResultsByTarget[target] = OperatorChatModelPatchResult(
                 key: session?.key ?? target.canonicalSessionKey,
                 modelProvider: session?.modelProvider,
                 model: session?.model,
@@ -49,14 +49,14 @@ extension OpenClawChatViewModel {
         enqueueSessionSettingsPatch(requestID: settingsRequestID, target: target) { [weak self] routeLease in
             guard let self else { return }
             do {
-                guard let routeLease else { throw OpenClawChatTransportSendError.notDispatched }
+                guard let routeLease else { throw OperatorChatTransportSendError.notDispatched }
                 let patchResult = try await routeLease.patchSessionSettings(
                     sessionKey: target.canonicalSessionKey,
                     agentID: target.agentID,
-                    patch: OpenClawChatSessionSettingsPatch(thinkingLevel: .some(next)))
+                    patch: OperatorChatSessionSettingsPatch(thinkingLevel: .some(next)))
                 let previousResult = self.acceptedSettingsPatchResultsByTarget[target]
                 let acceptedLevel = Self.normalizedThinkingLevel(patchResult?.thinkingLevel) ?? next
-                let acceptedResult = OpenClawChatModelPatchResult(
+                let acceptedResult = OperatorChatModelPatchResult(
                     key: patchResult?.key ?? previousResult?.key ?? target.canonicalSessionKey,
                     modelProvider: patchResult?.modelProvider ?? previousResult?.modelProvider,
                     model: patchResult?.model ?? previousResult?.model,
@@ -144,7 +144,7 @@ extension OpenClawChatViewModel {
     }
 
     func updateCurrentSessionThinkingLevels(
-        _ thinkingLevels: [OpenClawChatThinkingLevelOption],
+        _ thinkingLevels: [OperatorChatThinkingLevelOption],
         sessionKey: String,
         exactMatchOnly: Bool = false)
     {
@@ -160,7 +160,7 @@ extension OpenClawChatViewModel {
     /// contract changes. Bare aliases cannot safely identify an inactive row.
     private func inactiveSettingsStateKey(for target: ModelPatchTarget) -> String? {
         if target.agentID != nil || target.sessionRoutingContract != nil {
-            guard OpenClawChatSessionKey.agentID(from: target.canonicalSessionKey) != nil else { return nil }
+            guard OperatorChatSessionKey.agentID(from: target.canonicalSessionKey) != nil else { return nil }
         }
         return target.canonicalSessionKey
     }
@@ -186,7 +186,7 @@ extension OpenClawChatViewModel {
     {
         let usesCurrentSession = sessionKey == nil ||
             (sessionKey == self.sessionKey && canonicalSessionKey == nil && agentID == nil)
-        let session: OpenClawChatSessionEntry?
+        let session: OperatorChatSessionEntry?
         let showsPicker: Bool
         let target: ModelPatchTarget
         if !usesCurrentSession, let sessionKey {
@@ -265,7 +265,7 @@ extension OpenClawChatViewModel {
     private func thinkingLevelWithoutGatewayMetadata(
         _ level: String,
         target: ModelPatchTarget,
-        session: OpenClawChatSessionEntry?) -> String?
+        session: OperatorChatSessionEntry?) -> String?
     {
         let preferred = Self.normalizedThinkingLevel(level)
         guard preferred == "ultra" else { return preferred }
@@ -283,8 +283,8 @@ extension OpenClawChatViewModel {
     }
 
     private func thinkingPickerIsAvailable(
-        for session: OpenClawChatSessionEntry?,
-        modelChoice: OpenClawChatModelChoice?) -> Bool
+        for session: OperatorChatSessionEntry?,
+        modelChoice: OperatorChatModelChoice?) -> Bool
     {
         let resolved = self.resolvedThinkingLevelOptions(for: session)
         let gatewayAllowsOnlyOff = resolved.isGatewayMetadata &&
@@ -293,12 +293,12 @@ extension OpenClawChatViewModel {
     }
 
     private struct ThinkingLevelOptionsResolution {
-        let options: [OpenClawChatThinkingLevelOption]
+        let options: [OperatorChatThinkingLevelOption]
         let isGatewayMetadata: Bool
     }
 
     private func resolvedThinkingLevelOptions(
-        for currentSession: OpenClawChatSessionEntry?) -> ThinkingLevelOptionsResolution
+        for currentSession: OperatorChatSessionEntry?) -> ThinkingLevelOptionsResolution
     {
         if let levels = Self.normalizedThinkingLevelOptions(currentSession?.thinkingLevels), !levels.isEmpty {
             return ThinkingLevelOptionsResolution(options: levels, isGatewayMetadata: true)
@@ -330,7 +330,7 @@ extension OpenClawChatViewModel {
     }
 
     private func selectedModelChoice(
-        for currentSession: OpenClawChatSessionEntry?) -> OpenClawChatModelChoice?
+        for currentSession: OperatorChatSessionEntry?) -> OperatorChatModelChoice?
     {
         if modelSelectionID != Self.defaultModelSelectionID {
             return modelChoices.first(where: { $0.selectionID == self.modelSelectionID })
@@ -340,7 +340,7 @@ extension OpenClawChatViewModel {
     }
 
     private func sessionModelChoice(
-        for currentSession: OpenClawChatSessionEntry?) -> OpenClawChatModelChoice?
+        for currentSession: OperatorChatSessionEntry?) -> OperatorChatModelChoice?
     {
         if Self.normalizedModelID(currentSession?.model) != nil {
             return self.modelChoice(modelID: currentSession?.model, provider: currentSession?.modelProvider)
@@ -348,7 +348,7 @@ extension OpenClawChatViewModel {
         return self.modelChoice(modelID: sessionDefaults?.model, provider: sessionDefaults?.modelProvider)
     }
 
-    private func modelChoice(modelID: String?, provider: String?) -> OpenClawChatModelChoice? {
+    private func modelChoice(modelID: String?, provider: String?) -> OperatorChatModelChoice? {
         guard let modelID = Self.normalizedModelID(modelID) else { return nil }
         let provider = provider?.trimmingCharacters(in: .whitespacesAndNewlines)
         if let provider, !provider.isEmpty {
@@ -371,8 +371,8 @@ extension OpenClawChatViewModel {
     }
 
     private static func sessionModelMatchesDefaults(
-        _ session: OpenClawChatSessionEntry,
-        defaults: OpenClawChatSessionsDefaults?) -> Bool
+        _ session: OperatorChatSessionEntry,
+        defaults: OperatorChatSessionsDefaults?) -> Bool
     {
         let providerMatches = session.modelProvider == nil || session.modelProvider == defaults?.modelProvider
         let modelMatches = session.model == nil || session.model == defaults?.model
@@ -380,39 +380,39 @@ extension OpenClawChatViewModel {
     }
 
     private static func normalizedThinkingLevelOptions(
-        _ levels: [OpenClawChatThinkingLevelOption]?) -> [OpenClawChatThinkingLevelOption]?
+        _ levels: [OperatorChatThinkingLevelOption]?) -> [OperatorChatThinkingLevelOption]?
     {
         guard let levels else { return nil }
         return Self.dedupedThinkingOptions(
             levels.compactMap { level in
                 guard let id = Self.normalizedThinkingLevel(level.id) else { return nil }
                 let label = level.label.trimmingCharacters(in: .whitespacesAndNewlines)
-                return OpenClawChatThinkingLevelOption(id: id, label: label.isEmpty ? id : label)
+                return OperatorChatThinkingLevelOption(id: id, label: label.isEmpty ? id : label)
             })
     }
 
-    private static func thinkingOptions(from labels: [String]?) -> [OpenClawChatThinkingLevelOption]? {
+    private static func thinkingOptions(from labels: [String]?) -> [OperatorChatThinkingLevelOption]? {
         guard let labels else { return nil }
         return Self.dedupedThinkingOptions(
             labels.compactMap { label in
                 guard let id = Self.normalizedThinkingLevel(label) else { return nil }
                 let trimmed = label.trimmingCharacters(in: .whitespacesAndNewlines)
-                return OpenClawChatThinkingLevelOption(id: id, label: trimmed.isEmpty ? id : trimmed)
+                return OperatorChatThinkingLevelOption(id: id, label: trimmed.isEmpty ? id : trimmed)
             })
     }
 
     static func withCurrentThinkingOption(
-        _ options: [OpenClawChatThinkingLevelOption],
-        current: String) -> [OpenClawChatThinkingLevelOption]
+        _ options: [OperatorChatThinkingLevelOption],
+        current: String) -> [OperatorChatThinkingLevelOption]
     {
         guard !options.contains(where: { $0.id == current }) else { return options }
-        return options + [OpenClawChatThinkingLevelOption(id: current, label: current)]
+        return options + [OperatorChatThinkingLevelOption(id: current, label: current)]
     }
 
     private static func dedupedThinkingOptions(
-        _ options: [OpenClawChatThinkingLevelOption]) -> [OpenClawChatThinkingLevelOption]
+        _ options: [OperatorChatThinkingLevelOption]) -> [OperatorChatThinkingLevelOption]
     {
-        var result: [OpenClawChatThinkingLevelOption] = []
+        var result: [OperatorChatThinkingLevelOption] = []
         var seen = Set<String>()
         for option in options {
             guard !option.id.isEmpty, !seen.contains(option.id) else { continue }
@@ -459,7 +459,7 @@ extension OpenClawChatViewModel {
 
     static func normalizedThinkingLevel(
         _ level: String?,
-        options: [OpenClawChatThinkingLevelOption],
+        options: [OperatorChatThinkingLevelOption],
         fallback: String? = nil) -> String?
     {
         guard let normalized = normalizedThinkingLevel(level) else { return nil }

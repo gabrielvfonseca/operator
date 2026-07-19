@@ -1,5 +1,5 @@
 // Search setup flow configures web search providers and defaults.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveDefaultAgentDir } from "../agents/agent-scope-config.js";
 import { resolveAgentHarnessPolicy } from "../agents/harness/policy.js";
 import { resolveDefaultModelForAgent } from "../agents/model-selection.js";

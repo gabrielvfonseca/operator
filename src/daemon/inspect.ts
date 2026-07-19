@@ -1,7 +1,7 @@
 /** Inspects installed platform services for extra Operator or legacy gateway jobs. */
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   GATEWAY_SERVICE_KIND,
   GATEWAY_SERVICE_MARKER,
@@ -18,7 +18,7 @@ export type ExtraGatewayService = {
   label: string;
   detail: string;
   scope: "user" | "system";
-  marker?: "operator" | "clawdbot";
+  marker?: "@gabrielvfonseca/operator" | "clawdbot";
   legacy?: boolean;
 };
 
@@ -26,7 +26,7 @@ export type FindExtraGatewayServicesOptions = {
   deep?: boolean;
 };
 
-const EXTRA_MARKERS = ["operator", "clawdbot"] as const;
+const EXTRA_MARKERS = ["@gabrielvfonseca/operator", "clawdbot"] as const;
 const SYSTEMD_REFERENCE_ONLY_KEYS = new Set([
   "after",
   "before",
@@ -182,7 +182,7 @@ function isOperatorGatewayLaunchdService(label: string, contents: string): boole
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
-  if (detectLaunchdGatewayExecutionMarker(contents) !== "operator") {
+  if (detectLaunchdGatewayExecutionMarker(contents) !== "@gabrielvfonseca/operator") {
     return false;
   }
   return label.startsWith("ai.operator.");
@@ -209,7 +209,7 @@ function isOperatorGatewayTaskName(name: string): boolean {
   // gateway task is not misidentified as an extra gateway service.
   const stripped = normalized.replace(/^\\+/, "");
   const defaultName = normalizeLowercaseStringOrEmpty(resolveGatewayWindowsTaskName());
-  return stripped === defaultName || /^operator gateway \(.+\)$/.test(stripped);
+  return stripped === defaultName || /^openclaw gateway \(.+\)$/.test(stripped);
 }
 
 function tryExtractPlistLabel(contents: string): string | null {
@@ -297,8 +297,8 @@ async function scanLaunchdDir(params: {
     const legacyLabel = isLegacyLabel(labelFromName) || isLegacyLabel(label);
     const executionMarker = detectLaunchdGatewayExecutionMarker(contents);
     const marker =
-      hasGatewayServiceMarker(contents) || executionMarker === "operator"
-        ? "operator"
+      hasGatewayServiceMarker(contents) || executionMarker === "@gabrielvfonseca/operator"
+        ? "@gabrielvfonseca/operator"
         : executionMarker === "clawdbot" || legacyLabel
           ? "clawdbot"
           : null;
@@ -310,7 +310,10 @@ async function scanLaunchdDir(params: {
     if (isIgnoredLaunchdLabel(label)) {
       continue;
     }
-    if (marker === "operator" && isOperatorGatewayLaunchdService(label, contents)) {
+    if (
+      marker === "@gabrielvfonseca/operator" &&
+      isOperatorGatewayLaunchdService(label, contents)
+    ) {
       continue;
     }
     results.push({
@@ -319,7 +322,7 @@ async function scanLaunchdDir(params: {
       detail: `plist: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "operator" || isLegacyLabel(label),
+      legacy: marker !== "@gabrielvfonseca/operator" || isLegacyLabel(label),
     });
   }
 
@@ -340,14 +343,14 @@ async function scanSystemdDir(params: {
 
   for (const { entry, name, fullPath, contents } of candidates) {
     const marker = hasGatewayServiceMarker(contents)
-      ? "operator"
+      ? "@gabrielvfonseca/operator"
       : detectMarkerLineWithGateway(contents);
     if (!marker) {
       continue;
     }
     if (
       !params.includeManagedOperator &&
-      marker === "operator" &&
+      marker === "@gabrielvfonseca/operator" &&
       isOperatorGatewaySystemdService(name, contents)
     ) {
       continue;
@@ -358,7 +361,7 @@ async function scanSystemdDir(params: {
       detail: `unit: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "operator",
+      legacy: marker !== "@gabrielvfonseca/operator",
     });
   }
 
@@ -546,7 +549,7 @@ export async function findExtraGatewayServices(
         detail: task.taskToRun ? `task: ${name}, run: ${task.taskToRun}` : name,
         scope: "system",
         marker,
-        legacy: marker !== "operator",
+        legacy: marker !== "@gabrielvfonseca/operator",
       });
     }
     return results;

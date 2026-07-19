@@ -2,9 +2,9 @@
 import {
   resolveAllowlistMatchByCandidates,
   type AllowlistMatch,
-} from "openclaw/plugin-sdk/allow-from";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-normalization-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-normalization-runtime";
 
 function normalizeAllowList(list?: Array<string | number>) {
   return normalizeStringEntries(list);

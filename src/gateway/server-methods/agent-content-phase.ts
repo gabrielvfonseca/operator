@@ -1,5 +1,5 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { ErrorCodes, errorShape } from "../../../packages/gateway-protocol/src/index.js";
 import { readAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import { resolveDefaultAgentId } from "../../agents/agent-scope.js";

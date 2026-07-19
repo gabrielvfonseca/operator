@@ -1,20 +1,20 @@
-// Slack plugin module implements interactions.block actions behavior.
-import type { SlackActionMiddlewareArgs } from "@slack/bolt";
-import type { Block, KnownBlock } from "@slack/web-api";
-import { resolveApprovalOverGateway } from "openclaw/plugin-sdk/approval-gateway-runtime";
-import { parseExecApprovalCommandText } from "openclaw/plugin-sdk/approval-reply-runtime";
-import { resolveCommandAuthorization } from "openclaw/plugin-sdk/command-auth-native";
-import { isApprovalNotFoundError } from "openclaw/plugin-sdk/error-runtime";
-import { requestHeartbeat } from "openclaw/plugin-sdk/heartbeat-runtime";
+import { resolveApprovalOverGateway } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import { parseExecApprovalCommandText } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import { resolveCommandAuthorization } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import { isApprovalNotFoundError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { requestHeartbeat } from "@gabrielvfonseca/operator/plugin-sdk/heartbeat-runtime";
 import {
   parseStrictFiniteNumber,
   timestampMsToIsoString,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   normalizeOptionalString,
   normalizeUniqueTrimmedStringList,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
+// Slack plugin module implements interactions.block actions behavior.
+import type { SlackActionMiddlewareArgs } from "@slack/bolt";
+import type { Block, KnownBlock } from "@slack/web-api";
 import { decodeSlackApprovalAction, type SlackApprovalAction } from "../../approval-actions.js";
 import { isSlackApprovalAuthorizedSender } from "../../approval-auth.js";
 import { isSlackExecApprovalAuthorizedSender } from "../../exec-approvals.js";

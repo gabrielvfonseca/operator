@@ -1,6 +1,6 @@
 // Covers APNs relay request signing, config, and response handling.
 import { generateKeyPairSync } from "node:crypto";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   deriveDeviceIdFromPublicKey,
@@ -251,7 +251,7 @@ describe("push-apns.relay", () => {
         verifyDeviceSignature(
           relayGatewayIdentity.publicKey,
           [
-            "openclaw-relay-send-v1",
+            "operator-relay-send-v1",
             sent?.gatewayDeviceId,
             String(sent?.signedAtMs),
             sent?.bodyJson,

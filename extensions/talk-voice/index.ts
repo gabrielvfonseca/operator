@@ -1,13 +1,13 @@
 // Talk Voice plugin entrypoint registers its Operator integration.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import type { SpeechVoiceOption } from "openclaw/plugin-sdk/speech";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { SpeechVoiceOption } from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolveActiveTalkProviderConfig } from "openclaw/plugin-sdk/talk-config-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolveActiveTalkProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/talk-config-runtime";
 import { definePluginEntry, type OperatorPluginApi } from "./api.js";
 
 function mask(s: string, keep = 6): string {

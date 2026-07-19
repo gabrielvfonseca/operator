@@ -1,3 +1,3 @@
 // Open Prose API module exposes the plugin public contract.
-export { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-export type { OperatorPluginApi } from "openclaw/plugin-sdk/core";
+export { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+export type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/core";

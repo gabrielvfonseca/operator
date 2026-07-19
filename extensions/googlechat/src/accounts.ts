@@ -6,11 +6,14 @@ import {
   type OperatorConfig,
   resolveAccountEntry,
   resolveMergedAccountConfig,
-} from "openclaw/plugin-sdk/account-resolution";
-import { safeParseJsonWithSchema, safeParseWithSchema } from "openclaw/plugin-sdk/extension-shared";
-import { mergePairLoopGuardConfig } from "openclaw/plugin-sdk/pair-loop-guard-runtime";
-import { isSecretRef } from "openclaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import {
+  safeParseJsonWithSchema,
+  safeParseWithSchema,
+} from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { mergePairLoopGuardConfig } from "@gabrielvfonseca/operator/plugin-sdk/pair-loop-guard-runtime";
+import { isSecretRef } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { z } from "zod";
 import type { GoogleChatAccountConfig } from "./types.config.js";
 

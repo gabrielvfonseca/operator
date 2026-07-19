@@ -676,7 +676,7 @@ async function replaceNpmBinShims(params: {
     return;
   }
 
-  const names = new Set([params.packageName, "operator"]);
+  const names = new Set([params.packageName, "@gabrielvfonseca/operator"]);
   const shimEntries = entries.filter((entry) => {
     const parsed = path.parse(entry);
     return names.has(entry) || names.has(parsed.name);

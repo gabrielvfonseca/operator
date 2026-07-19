@@ -1,5 +1,5 @@
 ---
-summary: "Adds Google, Google Gemini CLI, Google Vertex model provider support to OpenClaw."
+summary: "Adds Google, Google Gemini CLI, Google Vertex model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the google plugin
 title: "Google plugin"
@@ -7,12 +7,12 @@ title: "Google plugin"
 
 # Google plugin
 
-Adds Google, Google Gemini CLI, Google Vertex model provider support to OpenClaw.
+Adds Google, Google Gemini CLI, Google Vertex model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/google-plugin`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/google-plugin`
+- Install route: included in Operator
 
 ## Surface
 

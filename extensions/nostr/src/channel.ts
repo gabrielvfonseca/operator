@@ -1,17 +1,17 @@
 // Nostr plugin module implements channel behavior.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
 import {
   createScopedDmSecurityResolver,
   createTopLevelChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   buildPassiveChannelStatusSummary,
   buildTrafficStatusSummary,
-} from "openclaw/plugin-sdk/extension-shared";
-import { createComputedAccountStatusAdapter } from "openclaw/plugin-sdk/status-helpers";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { createComputedAccountStatusAdapter } from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   buildChannelConfigSchema,
   collectStatusIssuesFromLastError,

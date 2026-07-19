@@ -1,5 +1,5 @@
 // Slack tests cover message handler.app mention race plugin behavior.
-import { resolveGlobalDedupeCache } from "openclaw/plugin-sdk/dedupe-runtime";
+import { resolveGlobalDedupeCache } from "@gabrielvfonseca/operator/plugin-sdk/dedupe-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { setSlackRuntime } from "../runtime.js";
 
@@ -22,7 +22,7 @@ const prepareSlackMessageMock = vi.fn<
 >();
 const dispatchPreparedSlackMessageMock = vi.fn<(prepared: unknown) => Promise<void>>();
 const inboundDeliveryTestCache = resolveGlobalDedupeCache(
-  Symbol.for("openclaw.slackInboundDeliveries"),
+  Symbol.for("operator.slackInboundDeliveries"),
   { ttlMs: 24 * 60 * 60 * 1000, maxSize: 20_000 },
 );
 

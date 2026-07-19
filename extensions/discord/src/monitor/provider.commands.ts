@@ -3,14 +3,14 @@ import {
   listNativeCommandSpecsForConfig,
   listSkillCommandsForAgents,
   type NativeCommandSpec,
-} from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import { danger, warn, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { danger, warn, type RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeStringEntriesLower,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 export type GetPluginCommandSpecs =
   typeof import("openclaw/plugin-sdk/plugin-runtime").getPluginCommandSpecs;

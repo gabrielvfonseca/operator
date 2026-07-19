@@ -1,8 +1,8 @@
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Slack plugin module implements home behavior.
 import type { SlackEventMiddlewareArgs } from "@slack/bolt";
 import type { HomeView } from "@slack/types";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { danger } from "openclaw/plugin-sdk/runtime-env";
 import type { SlackMonitorContext } from "../context.js";
 import type { SlackAppHomeOpenedEvent } from "../types.js";
 
@@ -12,7 +12,7 @@ function buildSlackHomeView(slashCommandName?: string): HomeView {
     : "Send a DM or mention Operator in a channel to start a session.";
   return {
     type: "home",
-    callback_id: "openclaw:home",
+    callback_id: "operator:home",
     blocks: [
       {
         type: "header",

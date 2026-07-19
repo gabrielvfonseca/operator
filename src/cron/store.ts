@@ -2,16 +2,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { expandHomePrefix } from "../infra/home-dir.js";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
 import { replaceFileAtomic } from "../infra/replace-file.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../state/operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+} from "../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { resolveConfigDir } from "../utils.js";
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { cronStoreKey } from "./store/key.js";

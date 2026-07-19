@@ -133,7 +133,7 @@ function resolveCodingToolConstructionPlanForAllowlist(
   }
   const includeBaseCodingTools = coreFamilies.has("base-coding");
   const includeShellTools = coreFamilies.has("shell");
-  const includeOperatorTools = coreFamilies.has("operator");
+  const includeOperatorTools = coreFamilies.has("@gabrielvfonseca/operator");
   // Channel delivery tools are constructed through plugin-capable runtime setup.
   const includeChannelTools = includePluginTools;
 

@@ -1,9 +1,12 @@
 import os from "node:os";
 import { basename, isAbsolute, resolve } from "node:path";
+import type {
+  HealthCheckContext,
+  HealthFinding,
+} from "@gabrielvfonseca/operator/plugin-sdk/health";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import JSON5 from "json5";
-import type { HealthCheckContext, HealthFinding } from "openclaw/plugin-sdk/health";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
 import type { PolicyAuthProfileEvidence } from "../policy-state.js";
 import { POLICY_TOOL_GROUPS } from "../tool-policy-conformance.js";
 import { CHECK_IDS } from "./check-ids.js";
@@ -382,7 +385,7 @@ export function normalizePolicyChannelId(value: string): string {
 }
 
 function canonicalExecApprovalsPath(): string {
-  return "~/.openclaw/exec-approvals.json";
+  return "~/.operator/exec-approvals.json";
 }
 
 function execApprovalsArtifactLocation(ctx: HealthCheckContext): {

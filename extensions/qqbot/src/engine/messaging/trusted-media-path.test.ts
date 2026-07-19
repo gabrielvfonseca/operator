@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/sandbox";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveOutboundMediaPath } from "./outbound-media-send.js";
 import { resolveTrustedOutboundMediaPath } from "./trusted-media-path.js";

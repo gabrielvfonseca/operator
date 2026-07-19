@@ -4,21 +4,24 @@ import {
   GATEWAY_CLIENT_NAMES,
   type GatewayClientMode,
   type GatewayClientName,
-} from "@operator/gateway-protocol/client-info";
+} from "@gabrielvfonseca/gateway-protocol/client-info";
 import {
   ConnectErrorDetailCodes,
   formatConnectErrorMessage,
   readConnectErrorDetailCode,
-} from "@operator/gateway-protocol/connect-error-details";
+} from "@gabrielvfonseca/gateway-protocol/connect-error-details";
 import type {
   ConnectParams,
   ErrorShape,
   EventFrame,
   HelloOk,
-} from "@operator/gateway-protocol/frame-guards";
-import { resolveGatewayStartupRetryAfterMs } from "@operator/gateway-protocol/startup-unavailable";
-import { MIN_CLIENT_PROTOCOL_VERSION, PROTOCOL_VERSION } from "@operator/gateway-protocol/version";
-import { isLoopbackIpAddress, type ParsedIpAddress } from "@operator/net-policy/ip";
+} from "@gabrielvfonseca/gateway-protocol/frame-guards";
+import { resolveGatewayStartupRetryAfterMs } from "@gabrielvfonseca/gateway-protocol/startup-unavailable";
+import {
+  MIN_CLIENT_PROTOCOL_VERSION,
+  PROTOCOL_VERSION,
+} from "@gabrielvfonseca/gateway-protocol/version";
+import { isLoopbackIpAddress, type ParsedIpAddress } from "@gabrielvfonseca/net-policy/ip";
 import { WebSocket, type ClientOptions, type CertMeta } from "ws";
 import {
   isSensitiveUrlQueryParamName,
@@ -62,7 +65,7 @@ export type DeviceAuthTokenRecord = {
   scopes?: string[];
 };
 
-// The package stays reusable by depending on host callbacks for Operator-owned
+// The package stays reusable by depending on host callbacks for OpenClaw-owned
 // state: device keys, token storage, proxy routing, logging, and TLS formatting.
 export type GatewayClientHostDeps = {
   loadOrCreateDeviceIdentity?: () => DeviceIdentity | undefined;
@@ -510,7 +513,7 @@ export class GatewayClient {
     }
 
     const allowPrivateWs =
-      (this.opts.env ?? process.env).OPERATOR_ALLOW_INSECURE_PRIVATE_WS === "1";
+      (this.opts.env ?? process.env).OPENCLAW_ALLOW_INSECURE_PRIVATE_WS === "1";
     // Block plaintext before device-token lookup. Credentials may be loaded from
     // host storage later in sendConnect(), and chat payloads are sensitive too.
     if (!isSecureWebSocketUrl(url, { allowPrivateWs })) {
@@ -528,7 +531,7 @@ export class GatewayClient {
           "(ssh -N -L 18789:127.0.0.1:18789 user@gateway-host), or use Tailscale Serve/Funnel. " +
           (allowPrivateWs
             ? ""
-            : "Break-glass (trusted private networks only): set OPERATOR_ALLOW_INSECURE_PRIVATE_WS=1. ") +
+            : "Break-glass (trusted private networks only): set OPENCLAW_ALLOW_INSECURE_PRIVATE_WS=1. ") +
           "Run `openclaw doctor --fix` for guidance.",
       );
     }

@@ -47,7 +47,7 @@ describe("browser download client actions", () => {
       path: "export.csv",
       targetId: "tab-1",
       timeoutMs: 30_000,
-      profile: "openclaw",
+      profile: "@gabrielvfonseca/operator",
     });
 
     const call = lastFetchCall();

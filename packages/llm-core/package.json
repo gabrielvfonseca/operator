@@ -1,5 +1,5 @@
 {
-  "name": "@operator/llm-core",
+  "name": "@gabrielvfonseca/llm-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [

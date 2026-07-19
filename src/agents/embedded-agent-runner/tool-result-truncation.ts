@@ -3,8 +3,8 @@
  */
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { loadTranscriptEvents } from "../../config/sessions/session-accessor.js";
 import { parseSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

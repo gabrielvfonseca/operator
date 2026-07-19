@@ -24,28 +24,28 @@ type PublishablePluginPackage = {
 
 const execFileAsync = promisify(execFile);
 const REQUIRED_REVIEWED_PUBLISHABLE_CRITICAL_FINDINGS = new Set([
-  "@operator/acpx:dangerous-exec:src/codex-auth-bridge.ts",
-  "@operator/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
-  "@operator/codex:dangerous-exec:src/app-server/sandbox-exec-server/http.ts",
-  "@operator/codex:dangerous-exec:src/app-server/sandbox-exec-server/processes.ts",
-  "@operator/codex:dangerous-exec:src/app-server/transport-stdio.ts",
-  "@operator/codex:dangerous-exec:src/node-cli-sessions.ts",
-  "@operator/discord:dangerous-exec:src/voice/audio.ts",
-  "@operator/google-meet:dangerous-exec:src/node-host.ts",
-  "@operator/google-meet:dangerous-exec:src/realtime.ts",
-  "@operator/mxc-sandbox:dangerous-exec:src/readiness.ts",
-  "@operator/raft:dangerous-exec:src/gateway.ts",
-  "@operator/signal:dangerous-exec:src/daemon.ts",
-  "@operator/voice-call:dangerous-exec:src/tunnel.ts",
+  "@gabrielvfonseca/acpx:dangerous-exec:src/codex-auth-bridge.ts",
+  "@gabrielvfonseca/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
+  "@gabrielvfonseca/codex:dangerous-exec:src/app-server/sandbox-exec-server/http.ts",
+  "@gabrielvfonseca/codex:dangerous-exec:src/app-server/sandbox-exec-server/processes.ts",
+  "@gabrielvfonseca/codex:dangerous-exec:src/app-server/transport-stdio.ts",
+  "@gabrielvfonseca/codex:dangerous-exec:src/node-cli-sessions.ts",
+  "@gabrielvfonseca/discord:dangerous-exec:src/voice/audio.ts",
+  "@gabrielvfonseca/google-meet:dangerous-exec:src/node-host.ts",
+  "@gabrielvfonseca/google-meet:dangerous-exec:src/realtime.ts",
+  "@gabrielvfonseca/mxc-sandbox:dangerous-exec:src/readiness.ts",
+  "@gabrielvfonseca/raft:dangerous-exec:src/gateway.ts",
+  "@gabrielvfonseca/signal:dangerous-exec:src/daemon.ts",
+  "@gabrielvfonseca/voice-call:dangerous-exec:src/tunnel.ts",
 ]);
 
 const OPTIONAL_REVIEWED_PUBLISHABLE_DIST_CRITICAL_FINDINGS = new Set([
-  "@operator/acpx:dangerous-exec:dist/mcp-proxy.mjs",
-  "@operator/acpx:dangerous-exec:dist/service-<hash>.js",
-  "@operator/codex:dangerous-exec:dist/client-<hash>.js",
-  "@operator/google-meet:dangerous-exec:dist/index.js",
-  "@operator/slack:dynamic-code-execution:dist/outbound-payload.test-harness-<hash>.js",
-  "@operator/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
+  "@gabrielvfonseca/acpx:dangerous-exec:dist/mcp-proxy.mjs",
+  "@gabrielvfonseca/acpx:dangerous-exec:dist/service-<hash>.js",
+  "@gabrielvfonseca/codex:dangerous-exec:dist/client-<hash>.js",
+  "@gabrielvfonseca/google-meet:dangerous-exec:dist/index.js",
+  "@gabrielvfonseca/slack:dynamic-code-execution:dist/outbound-payload.test-harness-<hash>.js",
+  "@gabrielvfonseca/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
 ]);
 
 function parseNpmPackFiles(raw: string, packageName: string): string[] {
@@ -110,7 +110,7 @@ function stageScannerRelevantPackedFiles(
   packageDir: string,
   packedFiles: readonly string[],
 ): string {
-  const stageDir = mkdtempSync(join(tmpdir(), "openclaw-plugin-npm-scan-"));
+  const stageDir = mkdtempSync(join(tmpdir(), "operator-plugin-npm-scan-"));
 
   for (const packedPath of packedFiles) {
     if (!isScannerWalkedPackedPath(packedPath)) {
@@ -190,7 +190,7 @@ function collectPublishablePluginPackages(): PublishablePluginPackage[] {
       } catch {
         return [];
       }
-      if (packageJson.openclaw?.release?.publishToNpm !== true) {
+      if (packageJson.operator?.release?.publishToNpm !== true) {
         return [];
       }
       if (typeof packageJson.name !== "string" || !packageJson.name.trim()) {

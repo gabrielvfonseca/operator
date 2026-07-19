@@ -20,7 +20,7 @@ describe("BrowserTabNotFoundError", () => {
 
 describe("no-display browser errors", () => {
   const details = {
-    profile: "openclaw",
+    profile: "@gabrielvfonseca/operator",
     requestedHeadless: false,
     headlessSource: "profile",
     displayPresent: false,

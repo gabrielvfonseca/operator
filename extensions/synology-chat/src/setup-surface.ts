@@ -12,11 +12,11 @@ import {
   type ChannelSetupAdapter,
   type ChannelSetupWizard,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import type { SynologyChatAccountRaw, SynologyChatChannelConfig } from "./types.js";
 

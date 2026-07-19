@@ -2,15 +2,15 @@
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   expectAugmentedCodexCatalog,
   expectedOpenaiPluginCodexCatalogEntriesWithGpt55,
   expectCodexMissingAuthHint,
   importProviderRuntimeCatalogModule,
   loadBundledPluginPublicSurface,
-} from "openclaw/plugin-sdk/provider-test-contracts";
-import type { ProviderPlugin } from "openclaw/plugin-sdk/provider-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
+import type { ProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import { beforeEach, describe, it, vi } from "vitest";
 
 const PROVIDER_CATALOG_CONTRACT_TIMEOUT_MS = 300_000;

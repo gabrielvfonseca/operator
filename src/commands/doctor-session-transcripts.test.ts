@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SessionManager } from "../agents/sessions/session-manager.js";
 
@@ -92,7 +92,7 @@ describe("doctor session transcript repair", () => {
     withDoctorSqliteMaintenanceLock
       .mockReset()
       .mockImplementation(async (params: { run: () => unknown }) => await params.run());
-    root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-transcripts-"));
+    root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-doctor-transcripts-"));
   });
 
   afterEach(async () => {

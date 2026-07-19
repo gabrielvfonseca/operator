@@ -23,14 +23,14 @@
  * vitest (which resolves bare specifiers via `resolve.alias`, not Node CJS).
  */
 
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   registerPlatformAdapter,
   registerPlatformAdapterFactory,

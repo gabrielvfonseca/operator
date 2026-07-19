@@ -1,8 +1,8 @@
 // Context engine tests cover context extraction and prompt context assembly.
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MemoryCitationsMode } from "../config/types.memory.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   clearMemoryPluginState,
   registerMemoryPromptSection,
@@ -118,7 +118,7 @@ function requireFactoryContext(
 
 function requireRegistryState() {
   const registryState = (globalThis as Record<symbol, unknown>)[
-    Symbol.for("openclaw.contextEngineRegistryState")
+    Symbol.for("operator.contextEngineRegistryState")
   ] as { engines: Map<string, unknown> } | undefined;
   if (!registryState) {
     throw new Error("expected context engine registry state");
@@ -594,7 +594,7 @@ describe("Engine contract tests", () => {
       agentId: "main",
       sessionId: "s2",
       sessionKey: "agent:main:s2",
-      storePath: "/tmp/openclaw-agent.sqlite",
+      storePath: "/tmp/operator-agent.sqlite",
     };
     const result = await delegateCompactionToRuntime({
       sessionId: "s2",
@@ -642,7 +642,7 @@ describe("Engine contract tests", () => {
         tokensAfter: 40,
         details: undefined,
         sessionId: "s3-successor",
-        sessionFile: "sqlite:main:s3-successor:/tmp/openclaw-agent.sqlite",
+        sessionFile: "sqlite:main:s3-successor:/tmp/operator-agent.sqlite",
       },
     });
 
@@ -661,7 +661,7 @@ describe("Engine contract tests", () => {
         agentId: "main",
         sessionId: "s3-successor",
         sessionKey: "agent:main:s3",
-        storePath: "/tmp/openclaw-agent.sqlite",
+        storePath: "/tmp/operator-agent.sqlite",
       },
     });
     expect(result.result).not.toHaveProperty("sessionFile");

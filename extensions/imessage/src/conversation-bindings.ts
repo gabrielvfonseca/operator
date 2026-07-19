@@ -1,11 +1,11 @@
 // Imessage plugin module implements conversation bindings behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createAccountScopedConversationBindingManager,
   resetAccountScopedConversationBindingsForTests,
   type AccountScopedConversationBindingManager,
   type BindingTargetKind,
-} from "openclaw/plugin-sdk/thread-bindings-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/thread-bindings-runtime";
 
 type IMessageBindingTargetKind = "subagent" | "acp";
 
@@ -13,7 +13,7 @@ type IMessageConversationBindingManager =
   AccountScopedConversationBindingManager<IMessageBindingTargetKind>;
 
 const IMESSAGE_CONVERSATION_BINDINGS_STATE_KEY = Symbol.for(
-  "openclaw.imessageConversationBindingsState",
+  "operator.imessageConversationBindingsState",
 );
 
 function toSessionBindingTargetKind(raw: IMessageBindingTargetKind): BindingTargetKind {

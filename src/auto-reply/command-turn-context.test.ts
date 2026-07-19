@@ -1,6 +1,6 @@
 /** Tests command-turn context normalization and source/kind conversions. */
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   createCommandTurnContext,
   isAuthorizedTextSlashCommandTurn,
@@ -133,7 +133,7 @@ describe("resolveCommandTurnContext", () => {
           Body: "/reset@openclaw",
           RawBody: "/reset@openclaw",
           CommandBody: "/reset@openclaw",
-          BotUsername: "openclaw",
+          BotUsername: "@gabrielvfonseca/operator",
         },
         emptyConfig,
       ),

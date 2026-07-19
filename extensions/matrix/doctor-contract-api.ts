@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   archiveLegacyStateSource,
   type PluginDoctorStateMigration,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import {
   hasMatrixSyncCacheStateInStore,
   openMatrixSyncCacheStoreOptions,

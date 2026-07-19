@@ -14,7 +14,7 @@ import {
   updatePairedNodeMetadata,
 } from "./node-pairing.js";
 
-const tempDirs = createSuiteTempRootTracker({ prefix: "openclaw-node-pairing-" });
+const tempDirs = createSuiteTempRootTracker({ prefix: "operator-node-pairing-" });
 
 async function withNodePairingDir<T>(run: (baseDir: string) => Promise<T>): Promise<T> {
   return await run(await tempDirs.make("case"));

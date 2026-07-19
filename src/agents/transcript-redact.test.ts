@@ -1,10 +1,10 @@
 // Transcript redaction tests cover structured and text transcript fields so
 // secrets do not persist in logs or replay artifacts.
 
-import { expectDefined } from "@operator/normalization-core";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import * as loggingConfigModule from "../logging/config.js";
 import { redactTranscriptMessage } from "./transcript-redact.js";
 
@@ -106,7 +106,7 @@ describe("redactTranscriptMessage", () => {
       encrypted_content: CIPHERTEXT_WITH_TOKEN_SHAPED_BYTES,
       summary: [{ type: "summary_text", text: "secret sk-abcdef1234567890xyz" }],
       content: [{ type: "reasoning_text", text: "secret sk-abcdef1234567890xyz" }],
-      __openclaw_replay: {
+      __operator_replay: {
         ...OPENAI_REASONING_REPLAY_METADATA,
         secret: "sk-abcdef1234567890xyz",
       },
@@ -157,10 +157,10 @@ describe("redactTranscriptMessage", () => {
       encrypted_content: string;
       summary: unknown[];
       content?: unknown[];
-      __openclaw_replay: Record<string, unknown>;
+      __operator_replay: Record<string, unknown>;
     };
     const blockMetadata = (block as unknown as { openclawReasoningReplay: Record<string, unknown> })
-      .openclawReasoningReplay;
+      .operatorReasoningReplay;
     const rejectedSignature = expectDefined(
       (msgContent(result) as Array<{ thinkingSignature: string }>)[1],
       "(msgContent(result) as Array<{ thinkingSignature: string }>)[1] test invariant",
@@ -171,7 +171,7 @@ describe("redactTranscriptMessage", () => {
     expect(replayItem.encrypted_content).toBe(CIPHERTEXT_WITH_TOKEN_SHAPED_BYTES);
     expect(replayItem.summary).toEqual([]);
     expect(replayItem.content).toBeUndefined();
-    expect(replayItem["__openclaw_replay"]).toEqual(OPENAI_REASONING_REPLAY_METADATA);
+    expect(replayItem["__operator_replay"]).toEqual(OPENAI_REASONING_REPLAY_METADATA);
     expect(blockMetadata).toEqual(OPENAI_REASONING_REPLAY_METADATA);
     expect(block.thinkingSignature).not.toContain("sk-abcdef1234567890xyz");
     expect(JSON.stringify(blockMetadata)).not.toContain("sk-abcdef1234567890xyz");
@@ -181,7 +181,7 @@ describe("redactTranscriptMessage", () => {
 
   it.each([
     {
-      api: "openclaw-openai-responses-transport",
+      api: "operator-openai-responses-transport",
       provider: "openai",
       block: {
         type: "thinking",
@@ -200,7 +200,7 @@ describe("redactTranscriptMessage", () => {
       }),
     },
     {
-      api: "openclaw-anthropic-messages-transport",
+      api: "operator-anthropic-messages-transport",
       provider: "anthropic",
       block: {
         type: "thinking",
@@ -211,7 +211,7 @@ describe("redactTranscriptMessage", () => {
       expectedSignature: CIPHERTEXT_WITH_TOKEN_SHAPED_BYTES,
     },
     {
-      api: "openclaw-google-generative-ai-transport",
+      api: "operator-google-generative-ai-transport",
       provider: "google",
       block: {
         type: "toolCall",
@@ -237,7 +237,7 @@ describe("redactTranscriptMessage", () => {
       expectedSignature: SHORT_GOOGLE_THOUGHT_SIGNATURE,
     },
     {
-      api: "openclaw-openai-completions-transport",
+      api: "operator-openai-completions-transport",
       provider: "google",
       block: {
         type: "toolCall",
@@ -439,7 +439,7 @@ describe("redactTranscriptMessage", () => {
     );
   });
 
-  it.each(["openai-responses", "openclaw-openai-responses-transport"])(
+  it.each(["openai-responses", "operator-openai-responses-transport"])(
     "preserves structured OpenAI text signatures for %s",
     (api) => {
       const textSignature = JSON.stringify({ v: 1, id: COPILOT_CONNECTION_BOUND_ID });
@@ -570,7 +570,7 @@ describe("redactTranscriptMessage", () => {
     } as unknown as AgentMessage;
     const googleOpenAICompletionsMsg = {
       role: "assistant",
-      api: "openclaw-openai-completions-transport",
+      api: "operator-openai-completions-transport",
       model: "gemini-3.1-pro",
       provider: "google-compatible-proxy",
       content: [

@@ -13,8 +13,8 @@ public struct ArtifactBuildInfo: Equatable, Sendable {
     {
         self.version = versionKeys.lazy.compactMap { Self.nonEmptyString(infoDictionary[$0]) }.first ?? "dev"
         self.build = Self.nonEmptyString(infoDictionary["CFBundleVersion"]) ?? ""
-        self.gitCommit = Self.validGitCommit(Self.nonEmptyString(infoDictionary["OpenClawGitCommit"]))
-        let buildTimestamp = Self.nonEmptyString(infoDictionary["OpenClawBuildTimestamp"])
+        self.gitCommit = Self.validGitCommit(Self.nonEmptyString(infoDictionary["OperatorGitCommit"]))
+        let buildTimestamp = Self.nonEmptyString(infoDictionary["OperatorBuildTimestamp"])
         self.builtAt = buildTimestamp.flatMap(Self.parseBuildTimestamp)
         self.buildTimestamp = self.builtAt == nil ? nil : buildTimestamp
     }

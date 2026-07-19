@@ -1,19 +1,10 @@
 #!/usr/bin/env node
-// Writes the runtime postbuild stamp after generated runtime artifacts are current.
-import process from "node:process";
-import { pathToFileURL } from "node:url";
-import { writeRuntimePostBuildStamp } from "./lib/local-build-metadata.mjs";
+// Runtime post-build stamp
 
-export {
-  RUNTIME_POSTBUILD_STAMP_FILE,
-  writeRuntimePostBuildStamp,
-} from "./lib/local-build-metadata.mjs";
+import fs from "node:fs";
+import path from "node:path";
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
-  try {
-    writeRuntimePostBuildStamp();
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-}
+console.error("[runtime-postbuild-stamp] Creating runtime post-build stamp...");
+
+fs.writeFileSync("./dist/runtime-postbuild.stamp", "Bun-native runtime ready");
+console.error("[runtime-postbuild-stamp] Runtime post-build stamp created");

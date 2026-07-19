@@ -185,7 +185,7 @@ describe("gateway startup log", () => {
     pluginRegistryMocks.loadPluginManifestRegistryForPluginRegistry.mockReturnValue({
       plugins: [
         {
-          id: "openclaw-modern-chat",
+          id: "operator-modern-chat",
           origin: "global",
           channels: ["legacy-chat"],
           enabledByDefault: false,
@@ -208,7 +208,7 @@ describe("gateway startup log", () => {
       activationSourceConfig: {
         plugins: {
           entries: {
-            "openclaw-modern-chat": {
+            "operator-modern-chat": {
               enabled: true,
             },
           },

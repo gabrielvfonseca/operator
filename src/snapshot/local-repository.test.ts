@@ -22,7 +22,7 @@ import {
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 async function createTempDir(): Promise<string> {
-  const tempDir = tempDirs.make("openclaw-snapshot-repository-");
+  const tempDir = tempDirs.make("operator-snapshot-repository-");
   if (process.platform === "win32") {
     const privateTempDir = path.join(tempDir, "private");
     await createPrivateSqliteDirectory(privateTempDir);
@@ -1044,7 +1044,7 @@ describe("local SQLite snapshot repository", () => {
 
   it("sanitizes transient global delivery rows and enforces the global owner", async () => {
     const tempDir = await createTempDir();
-    const sourcePath = path.join(tempDir, "openclaw.sqlite");
+    const sourcePath = path.join(tempDir, "operator.sqlite");
     const repositoryPath = path.join(tempDir, "snapshots");
     createGlobalDatabase(sourcePath);
     const provider = createLocalSqliteSnapshotProvider({ repositoryPath });
@@ -1076,7 +1076,7 @@ describe("local SQLite snapshot repository", () => {
 
   it("enforces the exact agent owner and canonical agent id", async () => {
     const tempDir = await createTempDir();
-    const sourcePath = path.join(tempDir, "openclaw-agent.sqlite");
+    const sourcePath = path.join(tempDir, "operator-agent.sqlite");
     const repositoryPath = path.join(tempDir, "snapshots");
     createAgentDatabase(sourcePath, "worker-1");
     const provider = createLocalSqliteSnapshotProvider({ repositoryPath });
@@ -1602,7 +1602,7 @@ describe("snapshot manifest parser", () => {
     database: {
       role: "agent",
       agentId: "worker-1",
-      basename: "openclaw-agent.sqlite",
+      basename: "operator-agent.sqlite",
       userVersion: OPERATOR_AGENT_SCHEMA_VERSION,
     },
     artifact: {

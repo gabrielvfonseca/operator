@@ -1,7 +1,6 @@
 // Policy plugin module implements cli behavior.
 import { isAbsolute, resolve } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { Command } from "commander";
 import {
   exitCodeFromFindings,
   healthFindingMeetsSeverity,
@@ -11,7 +10,8 @@ import {
   resolveDefaultAgentId,
   type HealthCheckContext,
   type HealthFinding,
-} from "openclaw/plugin-sdk/health";
+} from "@gabrielvfonseca/operator/plugin-sdk/health";
+import type { Command } from "commander";
 import { POLICY_FIX_METADATA_BY_CHECK_ID } from "./doctor/fix-metadata.js";
 import { POLICY_CHECK_IDS, evaluatePolicy } from "./doctor/register.js";
 import {

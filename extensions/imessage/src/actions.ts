@@ -1,5 +1,5 @@
 // Imessage plugin module implements actions behavior.
-import { readBooleanParam } from "openclaw/plugin-sdk/boolean-param";
+import { readBooleanParam } from "@gabrielvfonseca/operator/plugin-sdk/boolean-param";
 import {
   createActionGate,
   jsonResult,
@@ -8,16 +8,16 @@ import {
   readReactionParams,
   readStringArrayParam,
   readStringParam,
-} from "openclaw/plugin-sdk/channel-actions";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import { normalizePollInput } from "openclaw/plugin-sdk/poll-runtime";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { extractToolSend } from "openclaw/plugin-sdk/tool-send";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createLazyRuntimeNamedExport } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { normalizePollInput } from "@gabrielvfonseca/operator/plugin-sdk/poll-runtime";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { extractToolSend } from "@gabrielvfonseca/operator/plugin-sdk/tool-send";
 import { hasExclusiveIMessageLocalDatabase, resolveIMessageAccount } from "./accounts.js";
 import { IMESSAGE_ACTION_NAMES, IMESSAGE_ACTIONS } from "./actions-contract.js";
 import { chatContextFromIMessageTarget } from "./chat-context.js";

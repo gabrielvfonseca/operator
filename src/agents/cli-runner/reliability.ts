@@ -2,7 +2,7 @@
  * Watchdog and supervisor key helpers for CLI runner reliability.
  */
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { CliBackendConfig } from "../../config/types.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {

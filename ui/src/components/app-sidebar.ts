@@ -101,11 +101,11 @@ class AppSidebar extends AppSidebarSessionListElement {
             />
             ${this.renderLogoStandIn()}
           </span>
-          <span class="sidebar-brand__title">OpenClaw</span>
+          <span class="sidebar-brand__title">Operator</span>
         </a>
         <div class="sidebar-brand__actions">
           ${this.renderSearch()}
-          <openclaw-tooltip .content=${`${collapseLabel} (⌘B)`}>
+          <operator-tooltip .content=${`${collapseLabel} (⌘B)`}>
             <button
               class="sidebar-brand__icon sidebar-brand__collapse"
               type="button"
@@ -115,7 +115,7 @@ class AppSidebar extends AppSidebarSessionListElement {
             >
               ${icons.panelLeftClose}
             </button>
-          </openclaw-tooltip>
+          </operator-tooltip>
         </div>
       </div>
     `;
@@ -124,7 +124,7 @@ class AppSidebar extends AppSidebarSessionListElement {
   private renderSearch() {
     const tooltip = `${t("chat.openCommandPalette")} (${PALETTE_SHORTCUT})`;
     return html`
-      <openclaw-tooltip .content=${tooltip}>
+      <operator-tooltip .content=${tooltip}>
         <button
           type="button"
           class="sidebar-brand__icon sidebar-search"
@@ -134,7 +134,7 @@ class AppSidebar extends AppSidebarSessionListElement {
         >
           ${icons.search}
         </button>
-      </openclaw-tooltip>
+      </operator-tooltip>
     `;
   }
 
@@ -165,22 +165,22 @@ class AppSidebar extends AppSidebarSessionListElement {
             ${this.renderSessions()}
           </div>
           <div class="sidebar-shell__footer">
-            <openclaw-sidebar-attention
+            <operator-sidebar-attention
               .onNavigate=${(routeId: NavigationRouteId) => this.onNavigate?.(routeId)}
-            ></openclaw-sidebar-attention>
-            <openclaw-sidebar-update-card
+            ></operator-sidebar-attention>
+            <operator-sidebar-update-card
               .updateAvailable=${this.updateAvailable}
               .updateRunning=${this.updateRunning}
               .onUpdate=${this.onUpdate}
-            ></openclaw-sidebar-update-card>
-            <openclaw-lobster-pet
+            ></operator-sidebar-update-card>
+            <operator-lobster-pet
               .seed=${lobsterPetSeed(this.sessionKey)}
               .mode=${resolveLobsterPetMode(this.connected, this.sessionsResult?.sessions)}
               .runOutcome=${resolveLobsterRunOutcome(this.sessionsResult?.sessions)}
               .visitsEnabled=${this.lobsterPetVisits}
               .soundsEnabled=${this.lobsterPetSounds}
               .gatewayVersion=${this.gatewayVersion}
-            ></openclaw-lobster-pet>
+            ></operator-lobster-pet>
             ${this.devGitBranch
               ? html`<div class="sidebar-footer-branch" title=${this.devGitBranch}>
                   <span class="sidebar-footer-branch__icon" aria-hidden="true"
@@ -189,7 +189,7 @@ class AppSidebar extends AppSidebarSessionListElement {
                   <span class="sidebar-footer-branch__name">${this.devGitBranch}</span>
                 </div>`
               : nothing}
-            <openclaw-sidebar-agent-chip
+            <operator-sidebar-agent-chip
               .agentName=${chipName}
               .avatarUrl=${chipAgent ? resolveAgentAvatarUrl(chipAgent) : null}
               .avatarText=${chipAvatarText}
@@ -201,7 +201,7 @@ class AppSidebar extends AppSidebarSessionListElement {
               .newSessionDisabled=${!this.connected}
               .onNewSession=${() => this.onOpenNewSession?.(chipAgentId)}
               .onToggleMenu=${(trigger: HTMLElement) => this.toggleAgentMenu(trigger)}
-            ></openclaw-sidebar-agent-chip>
+            ></operator-sidebar-agent-chip>
           </div>
         </div>
         ${this.renderCustomizeMenu()} ${this.renderMoreMenu()} ${this.renderAgentMenu()}
@@ -212,6 +212,6 @@ class AppSidebar extends AppSidebarSessionListElement {
   }
 }
 
-if (!customElements.get("openclaw-app-sidebar")) {
-  customElements.define("openclaw-app-sidebar", AppSidebar);
+if (!customElements.get("operator-app-sidebar")) {
+  customElements.define("operator-app-sidebar", AppSidebar);
 }

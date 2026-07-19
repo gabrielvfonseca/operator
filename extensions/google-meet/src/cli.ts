@@ -2,15 +2,15 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createInterface } from "node:readline/promises";
 import { format } from "node:util";
-import type { Command } from "commander";
-import JSZip from "jszip";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { callGatewayFromCli } from "openclaw/plugin-sdk/gateway-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { callGatewayFromCli } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 import {
   clampTimerTimeoutMs,
   parseStrictNonNegativeInteger,
   parseStrictPositiveInteger,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { Command } from "commander";
+import JSZip from "jszip";
 import prettyMilliseconds from "pretty-ms";
 import {
   buildGoogleMeetCalendarDayWindow,
@@ -1370,7 +1370,7 @@ export function registerGoogleMeetCli(params: {
   const root = params.program
     .command("googlemeet")
     .description("Google Meet participant utilities")
-    .addHelpText("after", () => `\nDocs: https://docs.openclaw.ai/plugins/google-meet\n`);
+    .addHelpText("after", () => `\nDocs: https://docs.operator.ai/plugins/google-meet\n`);
 
   const auth = root.command("auth").description("Google Meet OAuth helpers");
 

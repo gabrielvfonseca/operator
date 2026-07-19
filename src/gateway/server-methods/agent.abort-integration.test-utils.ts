@@ -1,5 +1,5 @@
 // Imported by agent.test.ts to keep its mocked suite in one Vitest module graph.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerExecApprovalFollowupRuntimeHandoff } from "../../agents/bash-tools.exec-approval-followup-state.js";
 import { setGatewayDedupeEntry } from "./agent-job.js";

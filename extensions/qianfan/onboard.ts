@@ -3,7 +3,7 @@ import {
   createDefaultModelsPresetAppliers,
   type ModelApi,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildQianfanProvider,
   QIANFAN_BASE_URL,

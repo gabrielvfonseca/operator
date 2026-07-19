@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { redactToolPayloadText } from "../logging/redact.js";
 
 const MAX_PRESERVED_ACTION_LINES = 12;

@@ -1,9 +1,9 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayConnectErrorDetails
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.ui.cronWakeModeLabel
-import ai.openclaw.app.ui.cronWakeModeOptions
+import ai.operator.app.gateway.GatewayConnectErrorDetails
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.ui.cronWakeModeLabel
+import ai.operator.app.ui.cronWakeModeOptions
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject

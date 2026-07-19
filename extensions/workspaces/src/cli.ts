@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
+import {
+  addGatewayClientOptions,
+  callGatewayFromCli,
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type { Command } from "commander";
-import { addGatewayClientOptions, callGatewayFromCli } from "openclaw/plugin-sdk/gateway-runtime";
-import { parseStrictNonNegativeInteger } from "openclaw/plugin-sdk/number-runtime";
 import {
   validateWorkspaceDoc,
   type WorkspaceBinding,

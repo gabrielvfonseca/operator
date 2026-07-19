@@ -1,5 +1,5 @@
 // Zalouser tests cover accounts plugin behavior.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 import {

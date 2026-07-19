@@ -1,5 +1,5 @@
 // Telegram tests cover ingress worker runtime behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type {
   TelegramIngressWorkerCommand,
@@ -58,7 +58,7 @@ function createRuntime(responses: Response[]): {
       token: "TEST:TOKEN",
       accountId: "acct",
       initialUpdateId: null,
-      spoolDir: "/tmp/openclaw-telegram-ingress-worker-test",
+      spoolDir: "/tmp/operator-telegram-ingress-worker-test",
       apiRoot: "https://api.telegram.test",
       timeoutSeconds: 1,
     },

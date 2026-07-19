@@ -1,5 +1,5 @@
 // Tool result cap advice tests cover doctor guidance for capped tool output.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   buildToolResultCapDoctorAdvice,

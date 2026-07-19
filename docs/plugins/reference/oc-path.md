@@ -1,5 +1,5 @@
 ---
-summary: "Adds the openclaw path CLI for oc:// workspace file addressing."
+summary: "Adds the operator path CLI for oc:// workspace file addressing."
 read_when:
   - You are installing, configuring, or auditing the oc-path plugin
 title: "Oc Path plugin"
@@ -7,12 +7,12 @@ title: "Oc Path plugin"
 
 # Oc Path plugin
 
-Adds the openclaw path CLI for oc:// workspace file addressing.
+Adds the operator path CLI for oc:// workspace file addressing.
 
 ## Distribution
 
-- Package: `@operator/oc-path`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/oc-path`
+- Install route: included in Operator
 
 ## Surface
 

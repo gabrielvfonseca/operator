@@ -6,7 +6,7 @@ import {
   patchSessionEntry,
   upsertSessionEntry,
 } from "../../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { isAgentSessionModelPatchOrigin } from "../../gateway/session-model-patch-origin.js";
 import { GATEWAY_OWNER_ONLY_CORE_TOOLS } from "../../security/dangerous-tools.js";
 import { withTempDir } from "../../test-helpers/temp-dir.js";
@@ -24,7 +24,7 @@ describe("sessions tool", () => {
   });
 
   it("patches its session, then reverts a failed agent-selected model", async () => {
-    await withTempDir({ prefix: "openclaw-sessions-tool-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-sessions-tool-" }, async (dir) => {
       const storePath = path.join(dir, "sessions.json");
       const sessionKey = "agent:main:main";
       const cfg: OperatorConfig = {
@@ -149,7 +149,7 @@ describe("sessions tool", () => {
       expect(events).toContainEqual(
         expect.objectContaining({
           message: expect.objectContaining({
-            customType: "openclaw.system-note",
+            customType: "operator.system-note",
             content: "System note: model broken/bad failed; reverted to openai/good.",
           }),
         }),
@@ -158,7 +158,7 @@ describe("sessions tool", () => {
   });
 
   it("clears the model fallback marker after a successful run", async () => {
-    await withTempDir({ prefix: "openclaw-sessions-tool-success-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-sessions-tool-success-" }, async (dir) => {
       const storePath = path.join(dir, "sessions.json");
       const sessionKey = "agent:main:main";
       await upsertSessionEntry(
@@ -209,7 +209,7 @@ describe("sessions tool", () => {
   });
 
   it("reverts when the patched model fails but a fallback completes the run", async () => {
-    await withTempDir({ prefix: "openclaw-sessions-tool-fallback-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-sessions-tool-fallback-" }, async (dir) => {
       const storePath = path.join(dir, "sessions.json");
       const sessionKey = "agent:main:main";
       await upsertSessionEntry(
@@ -256,7 +256,7 @@ describe("sessions tool", () => {
   });
 
   it("promotes the newest validated model across overlapping patches", async () => {
-    await withTempDir({ prefix: "openclaw-sessions-tool-overlap-" }, async (dir) => {
+    await withTempDir({ prefix: "operator-sessions-tool-overlap-" }, async (dir) => {
       const storePath = path.join(dir, "sessions.json");
       const sessionKey = "agent:main:main";
       const cfg: OperatorConfig = {

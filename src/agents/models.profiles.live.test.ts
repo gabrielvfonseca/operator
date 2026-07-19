@@ -1,12 +1,12 @@
 // Live-sweeps discovered model profiles with optional provider/model filters and probes.
 import { writeSync } from "node:fs";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { expectDefined } from "@operator/normalization-core";
-import { type Api, completeSimple, type Model } from "openclaw/plugin-sdk/llm";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { type Api, completeSimple, type Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { Type } from "typebox";
 import { describe, expect, it, vi } from "vitest";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { coerceSecretRef, type SecretInput } from "../config/types.secrets.js";
 import { parseLiveCsvFilter } from "../media-generation/live-test-helpers.js";
 import { withBundledPluginEnablementCompat } from "../plugins/bundled-compat.js";

@@ -1,9 +1,9 @@
 // Line tests cover channel.sendPayload plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   verifyChannelMessageAdapterCapabilityProofs,
   verifyChannelMessageReceiveAckPolicyAdapterProofs,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../api.js";
 import { linePlugin } from "./channel.js";

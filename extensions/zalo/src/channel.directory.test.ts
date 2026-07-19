@@ -2,7 +2,7 @@
 import {
   createDirectoryTestRuntime,
   expectDirectorySurface,
-} from "openclaw/plugin-sdk/channel-test-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { describe, expect, it } from "vitest";
 import type { OperatorConfig, RuntimeEnv } from "../runtime-api.js";
 import { zaloPlugin } from "./channel.js";

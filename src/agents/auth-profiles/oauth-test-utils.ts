@@ -6,7 +6,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { closeOperatorAgentDatabasesForTest } from "../../state/operator-agent-db.js";
+import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { setTestEnvValue } from "../../test-utils/env.js";
 import type { resolveApiKeyForProfile } from "./oauth.js";
 import { loadPersistedAuthProfileStore } from "./persisted.js";

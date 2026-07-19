@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 // Zalo tests cover outbound media plugin behavior.
-import { createPluginStateKeyedStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { createPluginStateKeyedStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { PluginRuntime } from "../runtime-api.js";
 
@@ -25,7 +25,7 @@ import { setZaloRuntime } from "./runtime.js";
 const testStateEnv: NodeJS.ProcessEnv = {
   ...process.env,
   OPERATOR_STATE_DIR: fs.mkdtempSync(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-zalo-media-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-zalo-media-"),
   ),
 };
 

@@ -1,12 +1,12 @@
 ---
-name: openclaw-ci-limits
-description: Manage OpenClaw GitHub Actions and Blacksmith CI capacity, runner-registration budgets, fanout caps, main-push debounce, shard sizing, hosted-runner offload, queue health, and safe ramp-down/ramp-up changes. Use when tuning `.github/workflows/*`, `docs/ci.md`, CI runner labels, matrix `max-parallel`, ClawSweeper/Blacksmith burst protection, CodeQL runner placement, or investigating slow/queued OpenClaw CI.
+name: operator-ci-limits
+description: Manage Operator GitHub Actions and Blacksmith CI capacity, runner-registration budgets, fanout caps, main-push debounce, shard sizing, hosted-runner offload, queue health, and safe ramp-down/ramp-up changes. Use when tuning `.github/workflows/*`, `docs/ci.md`, CI runner labels, matrix `max-parallel`, ClawSweeper/Blacksmith burst protection, CodeQL runner placement, or investigating slow/queued Operator CI.
 ---
 
-# OpenClaw CI Limits
+# Operator CI Limits
 
 Use this skill for CI capacity changes, not ordinary test failure triage. The
-goal is to keep OpenClaw fast while staying below GitHub's self-hosted runner
+goal is to keep Operator fast while staying below GitHub's self-hosted runner
 registration edge limit.
 
 ## Core Facts
@@ -34,10 +34,10 @@ Before changing CI, collect current pressure:
 
 ```bash
 ghx api rate_limit --jq '{core:.resources.core,graphql:.resources.graphql,search:.resources.search,actions_runner_registration:.resources.actions_runner_registration}'
-ghx run list -R openclaw/openclaw --limit 20 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
+ghx run list -R openclaw/operator --limit 20 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
 ghx run list -R openclaw/clawsweeper --limit 20 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
-curl -fsS https://clawsweeper.openclaw.ai/api/status | jq '{generated_at,fleet,diagnostics:{errors:.diagnostics.errors}}'
-curl -fsS https://clawsweeper.openclaw.ai/api/exact-review-queue | jq '.'
+curl -fsS https://clawsweeper.operator.ai/api/status | jq '{generated_at,fleet,diagnostics:{errors:.diagnostics.errors}}'
+curl -fsS https://clawsweeper.operator.ai/api/exact-review-queue | jq '.'
 node scripts/ci-run-timings.mjs --latest-main
 node scripts/ci-run-timings.mjs --recent 10
 ```
@@ -62,12 +62,12 @@ Classify the issue before changing caps:
   Blacksmith job count.
 - **Blacksmith capacity:** Blacksmith dashboard shows actual concurrency caps or
   unavailable capacity. Do not solve this with GitHub workflow fanout alone.
-- **OpenClaw test runtime:** jobs start quickly but one lane dominates wall time.
-  Use `$openclaw-test-performance` instead of runner tuning.
+- **Operator test runtime:** jobs start quickly but one lane dominates wall time.
+  Use `$operator-test-performance` instead of runner tuning.
 - **Real failing CI:** one job fails after starting. Use `$github:gh-fix-ci` or
-  `$openclaw-testing`, not this skill.
+  `$operator-testing`, not this skill.
 - **ClawSweeper backlog:** exact-review queue grows while CI is healthy. Tune
-  ClawSweeper workers in `openclaw/clawsweeper`, not OpenClaw CI.
+  ClawSweeper workers in `openclaw/clawsweeper`, not Operator CI.
 
 ## Registration Budget Math
 
@@ -94,7 +94,7 @@ uncertain, count every sequential push in the window.
 Reject a change unless the org-level worst case stays below about 60% of the
 live bucket. With the current 10,000-registration bucket, keep planned
 Blacksmith burst load under 6,000 registrations per 5 minutes with headroom for
-ClawSweeper, ClawHub, Clownfish, OpenClaw RTT, and Clawbench.
+ClawSweeper, ClawHub, Clownfish, Operator RTT, and Clawbench.
 
 ## Safe Levers
 
@@ -103,14 +103,14 @@ Prefer these in order:
 1. Add or preserve concurrency groups that cancel superseded PR and canonical
    `main` runs before Blacksmith work starts.
 2. Keep the `runner-admission` hosted debounce for canonical `main` pushes.
-   Change `OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS` only with evidence.
+   Change `OPERATOR_MAIN_CI_DEBOUNCE_SECONDS` only with evidence.
 3. Move high-frequency, short, non-build jobs to `ubuntu-24.04`.
 4. Reduce matrix rows by bundling related tests inside one runner job when the
    combined job stays under timeout and keeps useful failure names.
 5. Lower `strategy.max-parallel` for bursty Blacksmith matrices.
 6. Right-size runners from timing evidence. Use fewer/larger jobs only when
    elapsed time improves enough to justify registration count.
-7. Split truly slow tests with `$openclaw-test-performance`; do not hide a slow
+7. Split truly slow tests with `$operator-test-performance`; do not hide a slow
    test problem by registering more runners.
 
 Do not:
@@ -123,14 +123,14 @@ Do not:
 - treat cancelled superseded runs as failures without checking the newest run
   for the same ref.
 
-## Current OpenClaw Knobs
+## Current Operator Knobs
 
 These are intentionally guarded by `test/scripts/ci-workflow-guards.test.ts`:
 
 - `CI` concurrency key version and `cancel-in-progress` for PRs and canonical
   `main` pushes.
 - `runner-admission` on `ubuntu-24.04` with
-  `OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS=90`.
+  `OPERATOR_MAIN_CI_DEBOUNCE_SECONDS=90`.
 - `preflight` and `security-fast` needing `runner-admission`.
 - CI matrix caps: fast/check lanes at 12, Node test shards at 28, Windows and
   Android at 2.
@@ -153,7 +153,7 @@ For workflow-only or docs/skill-only changes in a Codex worktree:
 node scripts/run-vitest.mjs test/scripts/ci-workflow-guards.test.ts
 node scripts/check-workflows.mjs
 node scripts/docs-list.js
-./node_modules/.bin/oxfmt --check .github/workflows/ci.yml .github/workflows/codeql-critical-quality.yml docs/ci.md test/scripts/ci-workflow-guards.test.ts .agents/skills/openclaw-ci-limits/SKILL.md .agents/skills/openclaw-ci-limits/agents/openai.yaml
+./node_modules/.bin/oxfmt --check .github/workflows/ci.yml .github/workflows/codeql-critical-quality.yml docs/ci.md test/scripts/ci-workflow-guards.test.ts .agents/skills/operator-ci-limits/SKILL.md .agents/skills/operator-ci-limits/agents/openai.yaml
 git diff --check
 ```
 
@@ -164,7 +164,7 @@ For a PR before requesting maintainer approval:
 
 ```bash
 .agents/skills/autoreview/scripts/autoreview --mode branch --base origin/main
-ghx pr checks <pr> -R openclaw/openclaw --watch --interval 15
+ghx pr checks <pr> -R openclaw/operator --watch --interval 15
 ```
 
 Use hosted exact-head gates for CI workflow tuning. Do not burn local
@@ -177,7 +177,7 @@ repo-native mutating wrapper:
 scripts/pr review-init <pr>
 scripts/pr review-artifacts-init <pr>
 scripts/pr review-validate-artifacts <pr>
-OPENCLAW_TESTBOX=1 scripts/pr prepare-run <pr>
+OPERATOR_TESTBOX=1 scripts/pr prepare-run <pr>
 ```
 
 `prepare-run` can push a prepared commit to the PR branch. Only run
@@ -189,11 +189,11 @@ land the PR. Both commands mutate GitHub state.
 After merge, watch at least one fresh main cycle and the adjacent repos:
 
 ```bash
-ghx run list -R openclaw/openclaw --limit 20 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
-for repo in openclaw/clawsweeper openclaw/clawhub openclaw/clownfish openclaw/openclaw-rtt openclaw/clawbench; do
+ghx run list -R openclaw/operator --limit 20 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
+for repo in openclaw/clawsweeper openclaw/clawhub openclaw/clownfish openclaw/operator-rtt openclaw/clawbench; do
   ghx run list -R "$repo" --limit 12 --json databaseId,status,conclusion,workflowName,event,headBranch,createdAt,updatedAt,url
 done
-curl -fsS https://clawsweeper.openclaw.ai/api/exact-review-queue | jq '.'
+curl -fsS https://clawsweeper.operator.ai/api/exact-review-queue | jq '.'
 ```
 
 Report:

@@ -3,8 +3,8 @@ import {
   definePluginEntry,
   type OperatorPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   SGLANG_DEFAULT_API_KEY_ENV_VAR,
   SGLANG_DEFAULT_BASE_URL,

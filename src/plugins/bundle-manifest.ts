@@ -3,8 +3,8 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import JSON5 from "json5";
 import { matchRootFileOpenFailure } from "../infra/boundary-file-read.js";
 import { readRootStructuredFileSync } from "../infra/json-files.js";

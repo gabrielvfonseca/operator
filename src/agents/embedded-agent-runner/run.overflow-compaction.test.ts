@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createReplyOperation } from "../../auto-reply/reply/reply-run-registry.js";
 import {
@@ -185,7 +185,7 @@ function makeForwardedRuntimePlan(overrides: RuntimePlanOverrides = {}): AgentRu
     resolvedRef: {
       provider: "anthropic",
       modelId: "test-model",
-      harnessId: "openclaw",
+      harnessId: "@gabrielvfonseca/operator",
     },
     tools: {
       normalize: vi.fn((tools) => tools),
@@ -389,7 +389,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
       provider: "openai",
       model: "gpt-5.6-sol",
       thinkLevel: "ultra",
-      agentHarnessRuntimeOverride: "openclaw",
+      agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
       runId: "run-before-model-resolve-thinking-revalidation",
     });
 
@@ -493,7 +493,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
       mockedEnsureAuthProfileStoreWithoutExternalProfiles,
     ) as [string | undefined, { allowKeychainPrompt?: boolean } | undefined];
     expect(typeof agentDir).toBe("string");
-    expect(String(agentDir).replaceAll("\\", "/").endsWith("/.openclaw/agents/main/agent")).toBe(
+    expect(String(agentDir).replaceAll("\\", "/").endsWith("/.operator/agents/main/agent")).toBe(
       true,
     );
     expect(authStoreOptions).toEqual({ allowKeychainPrompt: false });
@@ -1015,8 +1015,8 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
     const attemptParams = mockCallArg(mockedRunEmbeddedAttempt) as EmbeddedRunAttemptParams;
     expect(attemptParams?.runtimePlan).toBe(runtimePlan);
     expect(attemptParams?.internalEvents).toBe(internalEvents);
-    expect(attemptParams?.agentHarnessId).toBe("openclaw");
-    expect(attemptParams?.agentHarnessRuntimeOverride).toBe("openclaw");
+    expect(attemptParams?.agentHarnessId).toBe("@gabrielvfonseca/operator");
+    expect(attemptParams?.agentHarnessRuntimeOverride).toBe("@gabrielvfonseca/operator");
   });
 
   it("routes non-empty request stream params through Operator before auth preparation", async () => {
@@ -1042,9 +1042,9 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
       runId: "request-stream-params-use-openclaw",
     });
 
-    expectMockCallFields(mockedRunEmbeddedAttempt, { agentHarnessId: "openclaw" });
+    expectMockCallFields(mockedRunEmbeddedAttempt, { agentHarnessId: "@gabrielvfonseca/operator" });
     const runtimePlanInput = expectMockCallFields(mockedBuildAgentRuntimePlan, {
-      harnessId: "openclaw",
+      harnessId: "@gabrielvfonseca/operator",
     });
     const preparedAuthPlan = expectRecordFields(runtimePlanInput.preparedAuthPlan, {});
     expectRecordFields(preparedAuthPlan.modelRoute, {
@@ -1160,7 +1160,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
   });
 
   it("revalidates reserved harness ownership after the global queue wait", async () => {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-harness-admission-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-harness-admission-"));
     const storePath = path.join(dir, "sessions.json");
     const sessionId = "native-session";
     const sessionKey = "agent:main:harness:codex:supervision:native-thread";
@@ -3080,7 +3080,11 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
     mockedBuildAgentRuntimePlan
       .mockReturnValueOnce(
         makeForwardedRuntimePlan({
-          resolvedRef: { provider: "openai", modelId: "gpt-5.5", harnessId: "openclaw" },
+          resolvedRef: {
+            provider: "openai",
+            modelId: "gpt-5.5",
+            harnessId: "@gabrielvfonseca/operator",
+          },
           auth: {
             providerForAuth: "openai",
             authProfileProviderForAuth: "openai",
@@ -3093,7 +3097,11 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
       )
       .mockReturnValueOnce(
         makeForwardedRuntimePlan({
-          resolvedRef: { provider: "openai", modelId: "gpt-5.5", harnessId: "openclaw" },
+          resolvedRef: {
+            provider: "openai",
+            modelId: "gpt-5.5",
+            harnessId: "@gabrielvfonseca/operator",
+          },
           auth: {
             providerForAuth: "openai",
             authProfileProviderForAuth: "openai",
@@ -3144,14 +3152,14 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
     expect(pluginRunAttempt).not.toHaveBeenCalled();
     expect(mockedRunEmbeddedAttempt).toHaveBeenCalledTimes(2);
     expectMockCallFields(mockedRunEmbeddedAttempt, {
-      agentHarnessId: "openclaw",
+      agentHarnessId: "@gabrielvfonseca/operator",
       authProfileId: "openai:sub",
       resolvedApiKey: "profile-subscription-token",
     });
     expectMockCallFields(
       mockedRunEmbeddedAttempt,
       {
-        agentHarnessId: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
         authProfileId: undefined,
         resolvedApiKey: "direct-subscription-token",
       },
@@ -3357,7 +3365,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
       ...overflowBaseRunParams,
       provider: "openai",
       model: "gpt-5.5",
-      agentHarnessId: "openclaw",
+      agentHarnessId: "@gabrielvfonseca/operator",
       modelSelectionLocked: true,
       config: {
         agents: { defaults: { compaction: { model: "anthropic/claude-opus-4-6" } } },
@@ -3449,7 +3457,7 @@ describe("runEmbeddedAgent overflow compaction trigger routing", () => {
   });
 
   it("recovers preflight compaction when stale tokens point at an empty transcript", async () => {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-empty-preflight-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-empty-preflight-"));
     const storePath = path.join(dir, "sessions.json");
     await replaceSessionEntry(
       { sessionKey: "test-key", storePath },

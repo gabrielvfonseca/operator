@@ -1,4 +1,4 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement

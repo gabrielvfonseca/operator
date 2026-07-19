@@ -1,4 +1,4 @@
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/channel-plugin-common";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { registerDiscordActivities } from "./register.js";
 import { getDiscordActivitiesRuntime, setDiscordActivitiesRuntime } from "./runtime.js";

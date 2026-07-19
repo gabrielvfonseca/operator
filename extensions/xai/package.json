@@ -1,5 +1,5 @@
 {
-  "name": "@operator/xai-plugin",
+  "name": "@gabrielvfonseca/xai-plugin",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator xAI plugin",
@@ -9,9 +9,9 @@
     "ws": "8.21.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

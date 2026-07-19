@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -26,7 +26,7 @@ vi.mock("./plugin-payload-validation.js", () => ({
   runPluginPayloadSmokeCheck: mocks.runPluginPayloadSmokeCheck,
 }));
 
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { VERSION } from "../../version.js";
 import {
   convergenceWarningsToOutcomes,
@@ -63,7 +63,7 @@ describe("runPostCorePluginConvergence", () => {
   });
 
   function makeTempDir(): string {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-post-core-convergence-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-post-core-convergence-"));
     tempDirs.push(dir);
     return dir;
   }
@@ -73,7 +73,7 @@ describe("runPostCorePluginConvergence", () => {
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(path.join(pluginDir, "index.js"), "export default {};\n", "utf8");
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify({
         id: pluginId,
         name: pluginId,
@@ -85,7 +85,7 @@ describe("runPostCorePluginConvergence", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: `@operator/${pluginId}`,
+        name: `@gabrielvfonseca/${pluginId}`,
         version: "2026.5.20-beta.1",
       }),
       "utf8",
@@ -164,8 +164,8 @@ describe("runPostCorePluginConvergence", () => {
       records: { codex: { source: "npm", installPath: "/p/codex" } },
     });
     mocks.listManagedPluginNpmRoots.mockResolvedValue([
-      "/tmp/openclaw-state/npm",
-      "/tmp/openclaw-state/npm/projects/codex",
+      "/tmp/operator-state/npm",
+      "/tmp/operator-state/npm/projects/codex",
     ]);
     mocks.relinkOperatorPeerDependenciesInManagedNpmRoot
       .mockResolvedValueOnce({
@@ -183,15 +183,15 @@ describe("runPostCorePluginConvergence", () => {
 
     const result = await runPostCorePluginConvergence({
       cfg: { plugins: { entries: { codex: { enabled: true } } } } as unknown as OperatorConfig,
-      env: { OPERATOR_STATE_DIR: "/tmp/openclaw-state" },
+      env: { OPERATOR_STATE_DIR: "/tmp/operator-state" },
     });
 
     expect(mocks.relinkOperatorPeerDependenciesInManagedNpmRoot).toHaveBeenNthCalledWith(1, {
-      npmRoot: "/tmp/openclaw-state/npm",
+      npmRoot: "/tmp/operator-state/npm",
       logger: {},
     });
     expect(mocks.relinkOperatorPeerDependenciesInManagedNpmRoot).toHaveBeenNthCalledWith(2, {
-      npmRoot: "/tmp/openclaw-state/npm/projects/codex",
+      npmRoot: "/tmp/operator-state/npm/projects/codex",
       logger: {},
     });
     expect(result.changes).toEqual([
@@ -309,7 +309,7 @@ describe("runPostCorePluginConvergence", () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [
-        'Failed to install missing configured plugin "discord" from @operator/discord: ENETUNREACH.',
+        'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
       ],
       records: {},
     });
@@ -323,9 +323,9 @@ describe("runPostCorePluginConvergence", () => {
     expect(result.warnings).toStrictEqual([
       {
         reason:
-          'Failed to install missing configured plugin "discord" from @operator/discord: ENETUNREACH.',
+          'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
         message:
-          'Failed to install missing configured plugin "discord" from @operator/discord: ENETUNREACH.',
+          'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
         guidance: ["Run `openclaw update repair` to retry plugin repair."],
       },
     ]);
@@ -335,7 +335,7 @@ describe("runPostCorePluginConvergence", () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [
-        'Failed to install missing configured plugin "matrix" from clawhub:@operator/matrix@beta: ClawHub ClawPack download for @operator/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
+        'Failed to install missing configured plugin "matrix" from clawhub:@gabrielvfonseca/matrix@beta: ClawHub ClawPack download for @gabrielvfonseca/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
       ],
       failedPluginIds: ["matrix"],
       records: {},
@@ -350,9 +350,9 @@ describe("runPostCorePluginConvergence", () => {
     expect(result.warnings).toStrictEqual([
       {
         reason:
-          'Failed to install missing configured plugin "matrix" from clawhub:@operator/matrix@beta: ClawHub ClawPack download for @operator/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
+          'Failed to install missing configured plugin "matrix" from clawhub:@gabrielvfonseca/matrix@beta: ClawHub ClawPack download for @gabrielvfonseca/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
         message:
-          'Failed to install missing configured plugin "matrix" from clawhub:@operator/matrix@beta: ClawHub ClawPack download for @operator/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
+          'Failed to install missing configured plugin "matrix" from clawhub:@gabrielvfonseca/matrix@beta: ClawHub ClawPack download for @gabrielvfonseca/matrix@2026.6.1-beta.1 body stalled after 30000ms.',
         guidance: ["Run `openclaw update repair` to retry plugin repair."],
       },
     ]);
@@ -366,7 +366,7 @@ describe("runPostCorePluginConvergence", () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [
-        'Failed to install missing configured plugin "discord" from @operator/discord: ENETUNREACH.',
+        'Failed to install missing configured plugin "discord" from @gabrielvfonseca/discord: ENETUNREACH.',
       ],
       failedPluginIds: ["discord"],
       records: {
@@ -397,7 +397,7 @@ describe("runPostCorePluginConvergence", () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: ['Installed missing configured plugin "discord".'],
       notices: [
-        'ClawHub trust warning for "@operator/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
+        'ClawHub trust warning for "@gabrielvfonseca/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
       ],
       warnings: [],
       records: { discord: { source: "clawhub", installPath: "/p/discord" } },
@@ -413,9 +413,9 @@ describe("runPostCorePluginConvergence", () => {
     expect(result.notices).toStrictEqual([
       {
         reason:
-          'ClawHub trust warning for "@operator/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
+          'ClawHub trust warning for "@gabrielvfonseca/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
         message:
-          'ClawHub trust warning for "@operator/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
+          'ClawHub trust warning for "@gabrielvfonseca/discord@1.2.3": ClawHub has not completed a fresh clean security check for this release. Status: security scan is pending. Review the package before enabling it.',
         guidance: [],
       },
     ]);
@@ -625,7 +625,7 @@ describe("filterRecordsToActive", () => {
     const records = {
       codex: {
         source: "npm" as const,
-        spec: "@operator/codex",
+        spec: "@gabrielvfonseca/codex",
         installPath: "/p/codex",
         trustedSourceLinkedOfficial: true,
       },

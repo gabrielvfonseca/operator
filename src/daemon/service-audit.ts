@@ -4,11 +4,11 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   sortUniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeEnvVarKey } from "../infra/host-env-security.js";
 import { resolveInlineCommandMatch } from "../infra/shell-inline-command.js";
 import { POSIX_SHELL_WRAPPERS } from "../infra/shell-wrapper-resolution.js";
@@ -352,7 +352,7 @@ function auditGatewayToken(
   issues.push({
     code: SERVICE_AUDIT_CODES.gatewayTokenEmbedded,
     message: "Gateway service embeds OPERATOR_GATEWAY_TOKEN and should be reinstalled.",
-    detail: "Run `operator gateway install --force` to remove embedded service token.",
+    detail: "Run `openclaw gateway install --force` to remove embedded service token.",
     level: "recommended",
   });
   const expectedToken = normalizeOptionalString(expectedGatewayToken);
@@ -613,7 +613,7 @@ export function checkTokenDrift(params: {
       code: SERVICE_AUDIT_CODES.gatewayTokenDrift,
       message:
         "Config token differs from service token. The daemon will use the old token after restart.",
-      detail: "Run `operator gateway install --force` to sync the token.",
+      detail: "Run `openclaw gateway install --force` to sync the token.",
       level: "recommended",
     };
   }

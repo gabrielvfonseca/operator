@@ -1,9 +1,9 @@
-/** Row builders used by `operator models list` source orchestration. */
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
+/** Row builders used by `openclaw models list` source orchestration. */
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import {
   normalizeProviderId,
   normalizeProviderIdForAuth,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { DEFAULT_CONTEXT_TOKENS } from "../../agents/defaults.js";
 import {
   projectModelCatalogEntryForRoute,

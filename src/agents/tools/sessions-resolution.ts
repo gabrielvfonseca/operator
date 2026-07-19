@@ -3,7 +3,7 @@
  *
  * Normalizes display/internal/current-session aliases and resolves session-id inputs through Gateway.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   GATEWAY_CLIENT_IDS,
   normalizeGatewayClientId,

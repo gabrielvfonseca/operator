@@ -18,31 +18,31 @@ import {
 
 const command = process.argv[2];
 const allowBetaCompatDiagnostics =
-  process.env.OPENCLAW_CODEX_NPM_PLUGIN_ALLOW_BETA_COMPAT_DIAGNOSTICS === "1";
+  process.env.OPERATOR_CODEX_NPM_PLUGIN_ALLOW_BETA_COMPAT_DIAGNOSTICS === "1";
 const sessionStoreContract =
-  process.env.OPENCLAW_CODEX_NPM_PLUGIN_SESSION_STORE_CONTRACT || "sqlite";
+  process.env.OPERATOR_CODEX_NPM_PLUGIN_SESSION_STORE_CONTRACT || "sqlite";
 const MAX_TEXT_FILE_BYTES = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_ASSERT_MAX_TEXT_FILE_BYTES",
+  "OPERATOR_CODEX_NPM_PLUGIN_ASSERT_MAX_TEXT_FILE_BYTES",
   1024 * 1024,
 );
 const MAX_ERROR_TAIL_BYTES = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_ASSERT_MAX_ERROR_TAIL_BYTES",
+  "OPERATOR_CODEX_NPM_PLUGIN_ASSERT_MAX_ERROR_TAIL_BYTES",
   64 * 1024,
 );
 const MAX_TRANSCRIPT_FILES = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_FILES",
+  "OPERATOR_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_FILES",
   64,
 );
 const MAX_TRANSCRIPT_WALK_ENTRIES = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_WALK_ENTRIES",
+  "OPERATOR_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_WALK_ENTRIES",
   4096,
 );
 const MAX_TRANSCRIPT_SCAN_BYTES = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_SCAN_BYTES",
+  "OPERATOR_CODEX_NPM_PLUGIN_ASSERT_MAX_TRANSCRIPT_SCAN_BYTES",
   2 * 1024 * 1024,
 );
 const AGENT_TURN_TIMEOUT_SECONDS = readPositiveIntEnv(
-  "OPENCLAW_CODEX_NPM_PLUGIN_AGENT_TIMEOUT_SECONDS",
+  "OPERATOR_CODEX_NPM_PLUGIN_AGENT_TIMEOUT_SECONDS",
   420,
 );
 const CODEX_BINDING_NAMESPACE = "app-server-thread-bindings";
@@ -99,9 +99,9 @@ function readCodexBinding(sessionId, sessionKey, entry) {
     return binding;
   }
 
-  const dbPath = path.join(stateDir(), "state", "openclaw.sqlite");
+  const dbPath = path.join(stateDir(), "state", "operator.sqlite");
   if (!fs.existsSync(dbPath)) {
-    throw new Error(`missing OpenClaw state database: ${dbPath}`);
+    throw new Error(`missing Operator state database: ${dbPath}`);
   }
   const db = new DatabaseSync(dbPath, { readOnly: true });
   try {
@@ -146,11 +146,11 @@ function readLegacySessionEntry(sessionId) {
   }
   const [sessionKey, entry] = sessionMatch;
   if (typeof entry.sessionFile !== "string" || !fs.existsSync(entry.sessionFile)) {
-    throw new Error(`missing OpenClaw session file: ${entry.sessionFile}`);
+    throw new Error(`missing Operator session file: ${entry.sessionFile}`);
   }
   const transcriptEventCount = readTextFileBounded(
     entry.sessionFile,
-    "OpenClaw legacy session transcript",
+    "Operator legacy session transcript",
   )
     .split("\n")
     .filter((line) => line.trim()).length;
@@ -163,10 +163,10 @@ function readSessionEntry(sessionId) {
   }
   if (sessionStoreContract !== "sqlite") {
     throw new Error(
-      `OPENCLAW_CODEX_NPM_PLUGIN_SESSION_STORE_CONTRACT must be sqlite or legacy-json; got ${sessionStoreContract}`,
+      `OPERATOR_CODEX_NPM_PLUGIN_SESSION_STORE_CONTRACT must be sqlite or legacy-json; got ${sessionStoreContract}`,
     );
   }
-  const dbPath = path.join(stateDir(), "agents", "main", "agent", "openclaw-agent.sqlite");
+  const dbPath = path.join(stateDir(), "agents", "main", "agent", "operator-agent.sqlite");
   if (!fs.existsSync(dbPath)) {
     throw new Error(`missing agent session database: ${dbPath}`);
   }
@@ -287,9 +287,9 @@ function normalizePluginSpec(spec) {
 }
 
 function assertPlugin() {
-  const spec = process.argv[3] || "npm:@operator/codex";
-  const list = readJson("/tmp/openclaw-codex-plugins-list.json");
-  const inspect = readJson("/tmp/openclaw-codex-plugin-inspect.json");
+  const spec = process.argv[3] || "npm:@gabrielvfonseca/codex";
+  const list = readJson("/tmp/operator-codex-plugins-list.json");
+  const inspect = readJson("/tmp/operator-codex-plugin-inspect.json");
   const plugin = (list.plugins || []).find((entry) => entry.id === "codex");
   if (!plugin) {
     throw new Error("codex plugin not found in plugins list --json output");
@@ -369,7 +369,7 @@ function codexInstallPath() {
 }
 
 function codexNpmProjectRoot() {
-  return npmProjectRootForInstalledPackage(codexInstallPath(), "@operator/codex");
+  return npmProjectRootForInstalledPackage(codexInstallPath(), "@gabrielvfonseca/codex");
 }
 
 function findCodexPackageJson(packageName) {
@@ -382,19 +382,21 @@ function assertNpmDeps() {
   const installPath = codexInstallPath();
   const pluginPackageJson = path.join(installPath, "package.json");
   if (!fs.existsSync(pluginPackageJson)) {
-    throw new Error(`missing npm-installed @operator/codex package.json: ${pluginPackageJson}`);
+    throw new Error(
+      `missing npm-installed @gabrielvfonseca/codex package.json: ${pluginPackageJson}`,
+    );
   }
   assertPathInside(npmRoot, installPath, "codex plugin install path");
   assertPathInside(npmRoot, pluginPackageJson, "codex plugin package");
 
   const pluginPackage = readJson(pluginPackageJson);
-  if (pluginPackage.name !== "@operator/codex") {
+  if (pluginPackage.name !== "@gabrielvfonseca/codex") {
     throw new Error(`unexpected codex package name: ${pluginPackage.name}`);
   }
 
   const openAiCodexPackageJson = findCodexPackageJson("@openai/codex");
   if (!openAiCodexPackageJson) {
-    throw new Error("missing @openai/codex dependency under .openclaw/npm");
+    throw new Error("missing @openai/codex dependency under .operator/npm");
   }
   assertPathInside(npmRoot, openAiCodexPackageJson, "@openai/codex dependency");
 
@@ -441,7 +443,7 @@ function printCodexBin() {
 
 function assertPreflight() {
   const marker = process.argv[3];
-  const output = readTextFileBounded("/tmp/openclaw-codex-preflight.log", "Codex preflight log");
+  const output = readTextFileBounded("/tmp/operator-codex-preflight.log", "Codex preflight log");
   if (!output.includes(marker)) {
     throw new Error(`Codex CLI preflight did not contain ${marker}:\n${output}`);
   }
@@ -509,13 +511,13 @@ function assertAgentTurn() {
   const marker = process.argv[3];
   const sessionId = process.argv[4];
   const modelRef = process.argv[5];
-  const stdout = readTextFileBounded("/tmp/openclaw-codex-agent.json", "OpenClaw agent JSON");
-  const stderr = readTextFileTail("/tmp/openclaw-codex-agent.err", "OpenClaw agent stderr");
+  const stdout = readTextFileBounded("/tmp/operator-codex-agent.json", "Operator agent JSON");
+  const stderr = readTextFileTail("/tmp/operator-codex-agent.err", "Operator agent stderr");
   const response = JSON.parse(stdout);
   const text = extractAgentReplyTexts(JSON.stringify(response)).join("\n");
   if (!text.includes(marker)) {
     throw new Error(
-      `OpenClaw agent reply did not contain ${marker}:\nstdout=${stdout}\nstderr=${stderr}`,
+      `Operator agent reply did not contain ${marker}:\nstdout=${stdout}\nstderr=${stderr}`,
     );
   }
   const expectedProvider = modelRef.split("/")[0] || "codex";
@@ -534,7 +536,7 @@ function assertAgentTurn() {
     throw new Error(`unexpected session model override: ${entry.modelOverride}`);
   }
   if (!Number.isSafeInteger(transcriptEventCount) || transcriptEventCount < 1) {
-    throw new Error(`missing OpenClaw transcript events for ${sessionId}`);
+    throw new Error(`missing Operator transcript events for ${sessionId}`);
   }
 
   const binding = readCodexBinding(sessionId, sessionKey, entry);
@@ -575,7 +577,7 @@ function assertUninstalled() {
       `codex install record still exists after uninstall: ${JSON.stringify(records.codex)}`,
     );
   }
-  const list = readJson("/tmp/openclaw-codex-plugins-list-after-uninstall.json");
+  const list = readJson("/tmp/operator-codex-plugins-list-after-uninstall.json");
   const plugin = (list.plugins || []).find((entry) => entry.id === "codex");
   if (plugin?.status === "loaded" || plugin?.enabled === true) {
     throw new Error(`codex plugin still loaded/enabled after uninstall: ${JSON.stringify(plugin)}`);
@@ -593,18 +595,18 @@ function assertAgentError() {
   const status = Number(process.argv[3]);
   if (!Number.isInteger(status) || status === 0) {
     throw new Error(
-      `expected OpenClaw agent to fail after Codex uninstall, got status ${process.argv[3]}`,
+      `expected Operator agent to fail after Codex uninstall, got status ${process.argv[3]}`,
     );
   }
-  const stdout = fs.existsSync("/tmp/openclaw-codex-agent-after-uninstall.json")
+  const stdout = fs.existsSync("/tmp/operator-codex-agent-after-uninstall.json")
     ? readTextFileTail(
-        "/tmp/openclaw-codex-agent-after-uninstall.json",
+        "/tmp/operator-codex-agent-after-uninstall.json",
         "post-uninstall agent stdout",
       )
     : "";
-  const stderr = fs.existsSync("/tmp/openclaw-codex-agent-after-uninstall.err")
+  const stderr = fs.existsSync("/tmp/operator-codex-agent-after-uninstall.err")
     ? readTextFileTail(
-        "/tmp/openclaw-codex-agent-after-uninstall.err",
+        "/tmp/operator-codex-agent-after-uninstall.err",
         "post-uninstall agent stderr",
       )
     : "";

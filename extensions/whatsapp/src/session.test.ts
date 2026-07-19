@@ -3,7 +3,7 @@ import { EventEmitter } from "node:events";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resetLogger, setLoggerOverride } from "openclaw/plugin-sdk/runtime-env";
+import { resetLogger, setLoggerOverride } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { logWebSelfId } from "./auth-store.js";
 import { enqueueCredsSave } from "./creds-persistence.js";
@@ -70,7 +70,7 @@ function createTempAuthDir(prefix: string) {
 }
 
 function createTempCaFile(contents: string): string {
-  const dir = createTempAuthDir("openclaw-wa-proxy-ca");
+  const dir = createTempAuthDir("operator-wa-proxy-ca");
   const caFile = path.join(dir, "proxy-ca.pem");
   fsSync.writeFileSync(caFile, contents, "utf8");
   return caFile;
@@ -253,7 +253,7 @@ describe("web session", () => {
   });
 
   it("creates WA socket with QR handler", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-creds-test");
+    const authDir = createTempAuthDir("operator-wa-creds-test");
     const openMock = mockFsOpenForCredsWrites();
 
     await createWaSocket(true, false, { authDir });
@@ -279,7 +279,7 @@ describe("web session", () => {
   });
 
   it("prints compact terminal QR output when requested", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-terminal-qr");
+    const authDir = createTempAuthDir("operator-wa-terminal-qr");
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
 
@@ -302,7 +302,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "rejects symlinked creds before Baileys auth state reads",
     async () => {
-      const authDir = createTempAuthDir("openclaw-wa-creds-symlink-runtime");
+      const authDir = createTempAuthDir("operator-wa-creds-symlink-runtime");
       const targetPath = path.join(authDir, "target-creds.json");
       const credsPath = path.join(authDir, "creds.json");
       fsSync.writeFileSync(
@@ -325,7 +325,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "rejects symlinked auth directories before Baileys auth state reads",
     async () => {
-      const rootDir = createTempAuthDir("openclaw-wa-authdir-symlink-runtime");
+      const rootDir = createTempAuthDir("operator-wa-authdir-symlink-runtime");
       const targetAuthDir = path.join(rootDir, "target-auth");
       const authDir = path.join(rootDir, "linked-auth");
       fsSync.mkdirSync(targetAuthDir);
@@ -348,7 +348,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "rejects symlinked auth directory parents before creating the auth directory",
     async () => {
-      const rootDir = createTempAuthDir("openclaw-wa-auth-parent-symlink-runtime");
+      const rootDir = createTempAuthDir("operator-wa-auth-parent-symlink-runtime");
       const targetBaseDir = path.join(rootDir, "target-base");
       const linkedBaseDir = path.join(rootDir, "linked-base");
       const authDir = path.join(linkedBaseDir, "default");
@@ -367,7 +367,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "rejects symlinked creds before atomic credential saves",
     async () => {
-      const authDir = createTempAuthDir("openclaw-wa-creds-symlink-save");
+      const authDir = createTempAuthDir("operator-wa-creds-symlink-save");
       const targetPath = path.join(authDir, "target-creds.json");
       const credsPath = path.join(authDir, "creds.json");
       fsSync.writeFileSync(targetPath, "keep", "utf-8");
@@ -385,7 +385,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "rejects symlinked credential parents before atomic credential saves",
     async () => {
-      const rootDir = createTempAuthDir("openclaw-wa-creds-parent-symlink-save");
+      const rootDir = createTempAuthDir("operator-wa-creds-parent-symlink-save");
       const targetBaseDir = path.join(rootDir, "target-base");
       const linkedBaseDir = path.join(rootDir, "linked-base");
       const authDir = path.join(linkedBaseDir, "default");
@@ -643,7 +643,7 @@ describe("web session", () => {
   });
 
   it("logWebSelfId prints cached E.164 when creds exist", () => {
-    const authDir = createTempAuthDir("openclaw-wa-log-self");
+    const authDir = createTempAuthDir("operator-wa-log-self");
     fsSync.writeFileSync(
       path.join(authDir, "creds.json"),
       JSON.stringify({ me: { id: "12345@s.whatsapp.net" } }),
@@ -661,7 +661,7 @@ describe("web session", () => {
   });
 
   it("logWebSelfId prints cached lid details when creds include a lid", () => {
-    const authDir = createTempAuthDir("openclaw-wa-log-self-lid");
+    const authDir = createTempAuthDir("operator-wa-log-self-lid");
     fsSync.writeFileSync(
       path.join(authDir, "creds.json"),
       JSON.stringify({
@@ -718,7 +718,7 @@ describe("web session", () => {
   });
 
   it("does not clobber creds backup when creds.json is corrupted", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-corrupt-backup");
+    const authDir = createTempAuthDir("operator-wa-corrupt-backup");
     const backupPath = path.join(authDir, "creds.json.bak");
     fsSync.writeFileSync(path.join(authDir, "creds.json"), "{", "utf-8");
     const openMock = mockFsOpenForCredsWrites();
@@ -735,7 +735,7 @@ describe("web session", () => {
   });
 
   it("revalidates setup ownership immediately before a delayed creds.update write", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-guarded-creds");
+    const authDir = createTempAuthDir("operator-wa-guarded-creds");
     const guardError = new Error("verified inference route changed");
     let routeOwner = "original";
     const beforeCredentialPersistence = vi.fn(async () => {
@@ -764,7 +764,7 @@ describe("web session", () => {
   });
 
   it("revalidates setup ownership before Baileys persists signal keys", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-guarded-keys");
+    const authDir = createTempAuthDir("operator-wa-guarded-keys");
     const guardError = new Error("verified inference route changed");
     let routeOwner = "original";
     const beforeCredentialPersistence = vi.fn(async () => {
@@ -805,7 +805,7 @@ describe("web session", () => {
       release = resolve;
     });
 
-    const authDir = createTempAuthDir("openclaw-wa-queue");
+    const authDir = createTempAuthDir("operator-wa-queue");
     const openMock = mockFsOpenForCredsWrites({
       onTempWrite: async (filePath) => {
         if (filePath.startsWith(authDir)) {
@@ -851,8 +851,8 @@ describe("web session", () => {
       releaseB = resolve;
     });
 
-    const authDirA = createTempAuthDir("openclaw-wa-a");
-    const authDirB = createTempAuthDir("openclaw-wa-b");
+    const authDirA = createTempAuthDir("operator-wa-a");
+    const authDirB = createTempAuthDir("operator-wa-b");
     const onError = vi.fn();
 
     enqueueCredsSave(
@@ -892,7 +892,7 @@ describe("web session", () => {
   });
 
   it("rotates creds backup when creds.json is valid JSON", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-rotate-backup");
+    const authDir = createTempAuthDir("operator-wa-rotate-backup");
     const credsPath = path.join(authDir, "creds.json");
     const backupPath = path.join(authDir, "creds.json.bak");
     fsSync.writeFileSync(credsPath, "{}", "utf-8");
@@ -912,7 +912,7 @@ describe("web session", () => {
   it.runIf(process.platform !== "win32")(
     "does not rotate creds backup through a symlinked backup path",
     async () => {
-      const authDir = createTempAuthDir("openclaw-wa-rotate-backup-symlink");
+      const authDir = createTempAuthDir("operator-wa-rotate-backup-symlink");
       const credsPath = path.join(authDir, "creds.json");
       const backupPath = path.join(authDir, "creds.json.bak");
       const targetPath = path.join(authDir, "backup-target.json");
@@ -935,13 +935,13 @@ describe("web session", () => {
     const chmodSpy = vi.spyOn(fs, "chmod").mockResolvedValue(undefined);
 
     try {
-      await writeCredsJsonAtomically("/tmp/openclaw-oauth/whatsapp/default", {
+      await writeCredsJsonAtomically("/tmp/operator-oauth/whatsapp/default", {
         me: { id: "123@s.whatsapp.net" },
       });
 
       const write = firstWriteFileCall(openMock.writeFileSpy);
       expect(write.path).toContain(
-        path.join("/tmp", "openclaw-oauth", "whatsapp", "default", ".creds."),
+        path.join("/tmp", "operator-oauth", "whatsapp", "default", ".creds."),
       );
       expect(typeof write.data).toBe("string");
       expect(write.options.mode).toBe(0o600);
@@ -952,7 +952,7 @@ describe("web session", () => {
       expect(renameSpy).toHaveBeenCalledTimes(1);
       expect(rmSpy).not.toHaveBeenCalled();
       expect(chmodSpy).toHaveBeenCalledWith(
-        path.join("/tmp", "openclaw-oauth", "whatsapp", "default", "creds.json"),
+        path.join("/tmp", "operator-oauth", "whatsapp", "default", "creds.json"),
         0o600,
       );
       expect(openMock.dirHandles).toHaveLength(1);
@@ -962,7 +962,7 @@ describe("web session", () => {
       expect(typeof writePath).toBe("string");
       expect(writePath).toContain(".creds.");
       expect(requireString(renameTarget, "creds rename target path")).toContain(
-        path.join("/tmp", "openclaw-oauth", "whatsapp", "default", "creds.json"),
+        path.join("/tmp", "operator-oauth", "whatsapp", "default", "creds.json"),
       );
     } finally {
       openMock.restore();
@@ -973,7 +973,7 @@ describe("web session", () => {
   });
 
   it("keeps the previous creds.json valid if the atomic rename fails", async () => {
-    const authDir = createTempAuthDir("openclaw-wa-creds-atomic");
+    const authDir = createTempAuthDir("operator-wa-creds-atomic");
     const credsPath = path.join(authDir, "creds.json");
     const originalCreds = { me: { id: "old@s.whatsapp.net" } };
     const nextCreds = { me: { id: "new@s.whatsapp.net" } };

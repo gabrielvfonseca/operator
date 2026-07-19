@@ -1,5 +1,5 @@
 // Control UI module implements user identity behavior.
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { isRenderableControlUiAvatarUrl, resolveChatAvatarRenderUrl } from "../lib/avatar.ts";
 import { normalizeOptionalString } from "../lib/string-coerce.ts";
 

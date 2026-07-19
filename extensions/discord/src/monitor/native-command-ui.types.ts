@@ -1,5 +1,5 @@
 // Discord type declarations define plugin contracts.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { ThreadBindingManager } from "./thread-bindings.js";
 
 type DiscordConfig = NonNullable<OperatorConfig["channels"]>["discord"];

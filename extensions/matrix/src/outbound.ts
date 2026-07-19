@@ -1,11 +1,11 @@
 // Matrix plugin module implements outbound behavior.
-import { createReplyToFanout } from "openclaw/plugin-sdk/channel-outbound";
+import { createReplyToFanout } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   renderMessagePresentationFallbackText,
   type MessagePresentation,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { resolvePayloadMediaUrls } from "openclaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { resolvePayloadMediaUrls } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { sendMessageMatrix, sendPollMatrix } from "./matrix/send.js";
 import type { MatrixExtraContentFields } from "./matrix/send/types.js";
 import {
@@ -14,7 +14,7 @@ import {
   type ChannelOutboundAdapter,
 } from "./runtime-api.js";
 
-const MATRIX_OPERATOR_PRESENTATION_KEY = "com.openclaw.presentation" as const;
+const MATRIX_OPERATOR_PRESENTATION_KEY = "com.operator.presentation" as const;
 const MATRIX_OPERATOR_PRESENTATION_TYPE = "message.presentation" as const;
 const MATRIX_EMPTY_PRESENTATION_FALLBACK_TEXT = "---";
 

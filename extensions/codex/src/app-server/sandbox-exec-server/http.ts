@@ -3,9 +3,12 @@
  * access through the active Operator sandbox backend.
  */
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
-import { embeddedAgentLog } from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { SandboxContext } from "openclaw/plugin-sdk/sandbox";
-import { SsrFBlockedError, isBlockedHostnameOrIp } from "openclaw/plugin-sdk/ssrf-runtime";
+import { embeddedAgentLog } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { SandboxContext } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import {
+  SsrFBlockedError,
+  isBlockedHostnameOrIp,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import type { WebSocket } from "ws";
 import type { JsonObject, JsonValue } from "../protocol.js";
 import { readHttpHeaders, requireNumber, requireObject, requireString } from "./json-rpc.js";
@@ -278,7 +281,7 @@ function readStreamingSandboxHttpResponse(params: {
 }
 
 const SANDBOX_HTTP_REQUEST_SCRIPT = String.raw`
-tmp=$(mktemp "$TMPDIR/openclaw-http.XXXXXX.py" 2>/dev/null || mktemp "/tmp/openclaw-http.XXXXXX.py") || exit 1
+tmp=$(mktemp "$TMPDIR/operator-http.XXXXXX.py" 2>/dev/null || mktemp "/tmp/operator-http.XXXXXX.py") || exit 1
 trap 'rm -f "$tmp"' EXIT
 cat > "$tmp" <<'PY'
 import base64

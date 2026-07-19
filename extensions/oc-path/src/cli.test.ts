@@ -98,7 +98,7 @@ async function invokePathCli(args: string[], runtime: TestRuntime): Promise<void
   });
   registerPathCli(program);
   try {
-    await program.parseAsync(["node", "openclaw", "path", ...args]);
+    await program.parseAsync(["node", "@gabrielvfonseca/operator", "path", ...args]);
     runtime.exitCode = process.exitCode ?? 0;
   } catch (error) {
     if (!(error instanceof CommanderError)) {
@@ -389,7 +389,7 @@ describe("openclaw path CLI", () => {
     });
 
     it("CLI-S08 sets slash-deep JSONC paths and parsed JSON values", async () => {
-      const filePath = join(workspaceDir, "openclaw.json");
+      const filePath = join(workspaceDir, "operator.json");
       writeFileSync(
         filePath,
         '{ "agents": { "list": [{ "tools": { "exec": { "security": "deny" } } }] }, "gateway": { "auth": { "token": "${TOKEN}" } } }\n',
@@ -398,7 +398,7 @@ describe("openclaw path CLI", () => {
       const rt = createTestRuntime();
 
       await pathSetCommand(
-        "oc://openclaw.json/gateway/auth/token",
+        "oc://operator.json/gateway/auth/token",
         '{"source":"file","provider":"secrets","id":"/test"}',
         { cwd: workspaceDir, json: true, valueJson: true },
         rt,
@@ -413,7 +413,7 @@ describe("openclaw path CLI", () => {
 
       const rt2 = createTestRuntime();
       await pathSetCommand(
-        "oc://openclaw.json/agents/list/0/tools/exec/security",
+        "oc://operator.json/agents/list/0/tools/exec/security",
         "allowlist",
         { cwd: workspaceDir, json: true },
         rt2,

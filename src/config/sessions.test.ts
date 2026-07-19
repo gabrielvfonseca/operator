@@ -30,7 +30,7 @@ describe("sessions", () => {
   };
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sessions-suite-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-sessions-suite-"));
   });
 
   afterAll(async () => {

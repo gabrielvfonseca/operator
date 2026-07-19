@@ -1,7 +1,7 @@
 // Covers TUI slash command handlers and backend call wiring.
 
 import type { OverlayHandle } from "@earendil-works/pi-tui";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { createCommandHandlers } from "./tui-command-handlers.js";
 import {
@@ -1153,11 +1153,11 @@ describe("tui command handlers", () => {
       sessionInfo: {
         modelProvider: "openai",
         model: "gpt-5.6-luna",
-        agentRuntime: { id: "openclaw", source: "session-key" },
+        agentRuntime: { id: "@gabrielvfonseca/operator", source: "session-key" },
       },
     });
-    await openclaw.handleCommand("/think");
-    expect(openclaw.addSystem).toHaveBeenCalledWith(expect.stringContaining("ultra"));
+    await operator.handleCommand("/think");
+    expect(operator.addSystem).toHaveBeenCalledWith(expect.stringContaining("ultra"));
   });
 
   it("hides tools locally for /verbose off without reloading history", async () => {
@@ -1625,7 +1625,7 @@ describe("tui command handlers", () => {
     expect(closeOverlay).toHaveBeenCalledTimes(1);
   });
 
-  it.each(["codex", "openclaw"])(
+  it.each(["codex", "@gabrielvfonseca/operator"])(
     "forwards model/runtime transactions through the server directive path for %s",
     async (runtime) => {
       const sendChat = vi.fn().mockResolvedValue({ status: "ok" });

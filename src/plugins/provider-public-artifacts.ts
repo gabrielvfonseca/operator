@@ -1,5 +1,5 @@
 // Extracts provider public artifacts from plugin metadata.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import { loadPluginManifestRegistry, type PluginManifestRegistry } from "./manifest-registry.js";
 import {

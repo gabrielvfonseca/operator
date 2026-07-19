@@ -54,7 +54,7 @@ function expectRuntimeArg(value: unknown) {
 const mockConfig = vi.hoisted(() => {
   const initial = {};
   const state = {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     exists: true,
     config: initial as TestConfig,
     hash: "mock-hash-0" as string | undefined,
@@ -80,7 +80,7 @@ const mockConfig = vi.hoisted(() => {
   };
   return {
     reset() {
-      state.path = "/tmp/openclaw.json";
+      state.path = "/tmp/operator.json";
       state.exists = true;
       state.config = {};
       state.hash = "mock-hash-0";
@@ -145,7 +145,7 @@ vi.mock("./overview.js", () => ({
       { id: "main", isDefault: true },
       { id: "work", isDefault: false, model: "openai/gpt-5.2" },
     ],
-    config: { path: "/tmp/openclaw.json", exists: true, valid: true, issues: [], hash: null },
+    config: { path: "/tmp/operator.json", exists: true, valid: true, issues: [], hash: null },
     tools: {
       codex: { command: "codex", found: false, error: "not found" },
       claude: { command: "claude", found: false, error: "not found" },
@@ -159,7 +159,7 @@ vi.mock("./overview.js", () => ({
       error: "offline",
     },
     references: {
-      docsUrl: "https://docs.openclaw.ai",
+      docsUrl: "https://docs.operator.ai",
       sourceUrl: "https://github.com/openclaw/openclaw",
     },
   })),
@@ -258,17 +258,17 @@ describe("parseSystemAgentOperation", () => {
       kind: "plugin-search",
       query: "calendar sync",
     });
-    expect(parseSystemAgentOperation("install npm plugin @operator/discord")).toEqual({
+    expect(parseSystemAgentOperation("install npm plugin @gabrielvfonseca/discord")).toEqual({
       kind: "plugin-install",
-      spec: "npm:@operator/discord",
+      spec: "npm:@gabrielvfonseca/discord",
     });
-    expect(parseSystemAgentOperation("plugin install clawhub:openclaw-demo")).toEqual({
+    expect(parseSystemAgentOperation("plugin install clawhub:operator-demo")).toEqual({
       kind: "plugin-install",
-      spec: "clawhub:openclaw-demo",
+      spec: "clawhub:operator-demo",
     });
-    expect(parseSystemAgentOperation("plugin uninstall openclaw-demo")).toEqual({
+    expect(parseSystemAgentOperation("plugin uninstall operator-demo")).toEqual({
       kind: "plugin-uninstall",
-      pluginId: "openclaw-demo",
+      pluginId: "operator-demo",
     });
     expect(parseSystemAgentOperation("plugin install npm:@example/plugin")).toEqual({
       kind: "none",
@@ -448,7 +448,7 @@ describe("parseSystemAgentOperation", () => {
     expect(knownOutput).toContain("Slack app messaging.");
     expect(knownOutput).toContain("Configured: yes");
     expect(knownOutput).toContain("Installed: yes");
-    expect(knownOutput).toContain("https://docs.openclaw.ai/channels/slack");
+    expect(knownOutput).toContain("https://docs.operator.ai/channels/slack");
     expect(knownOutput).toContain("open channel wizard for slack");
 
     lines.length = 0;
@@ -483,7 +483,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("rejects an explicit new-agent model before any config write or audit", async () => {
-    const tempDir = opTempDirs.make("openclaw-agent-model-rejected-");
+    const tempDir = opTempDirs.make("operator-agent-model-rejected-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runAgentsAdd = vi.fn(async () => {});
@@ -515,7 +515,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("reserves the normalized Operator agent identity before any write or audit", async () => {
-    const tempDir = opTempDirs.make("openclaw-agent-id-reserved-");
+    const tempDir = opTempDirs.make("operator-agent-id-reserved-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runAgentsAdd = vi.fn(async () => {});
@@ -531,7 +531,7 @@ describe("parseSystemAgentOperation", () => {
         approved: true,
         deps: { runAgentsAdd },
       }),
-    ).rejects.toThrow('Agent id "openclaw" is reserved');
+    ).rejects.toThrow('Agent id "@gabrielvfonseca/operator" is reserved');
 
     expect(runAgentsAdd).not.toHaveBeenCalled();
     expect(lines.join("\n")).not.toContain("[openclaw] running: agents.create");
@@ -574,7 +574,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("does not report or audit a gateway restart that returned false", async () => {
-    const tempDir = opTempDirs.make("openclaw-restart-failed-");
+    const tempDir = opTempDirs.make("operator-restart-failed-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runGatewayRestart = vi.fn(async () => false);
@@ -592,7 +592,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("validates missing config without exiting the process", async () => {
-    mockConfig.missing("/tmp/openclaw.json");
+    mockConfig.missing("/tmp/operator.json");
     const { runtime, lines } = createSystemAgentTestRuntime();
 
     const result = await executeSystemAgentOperation({ kind: "config-validate" }, runtime);
@@ -602,7 +602,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("applies config set through typed deps and writes an audit entry", async () => {
-    const tempDir = opTempDirs.make("openclaw-config-set-");
+    const tempDir = opTempDirs.make("operator-config-set-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runConfigSet = vi.fn(async () => {});
@@ -638,7 +638,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("reports an audit failure without claiming the committed operation failed", async () => {
-    const tempDir = opTempDirs.make("openclaw-audit-warning-");
+    const tempDir = opTempDirs.make("operator-audit-warning-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const redirectedAuditDir = path.join(tempDir, "redirected-audit");
     await fs.mkdir(redirectedAuditDir);
@@ -661,7 +661,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("applies SecretRef config set through typed deps and writes an audit entry", async () => {
-    const tempDir = opTempDirs.make("openclaw-config-ref-");
+    const tempDir = opTempDirs.make("operator-config-ref-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runConfigSet = vi.fn(async () => {});
@@ -794,7 +794,7 @@ describe("parseSystemAgentOperation", () => {
       id: "OPENAI_API_KEY",
     },
   ])("rejects unverified inference-route write $path", async (operation) => {
-    const tempDir = opTempDirs.make("openclaw-route-write-refused-");
+    const tempDir = opTempDirs.make("operator-route-write-refused-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runConfigSet = vi.fn(async () => {});
@@ -840,7 +840,7 @@ describe("parseSystemAgentOperation", () => {
   });
 
   it("installs plugins only after approval and audits the write", async () => {
-    const tempDir = opTempDirs.make("openclaw-plugin-install-");
+    const tempDir = opTempDirs.make("operator-plugin-install-");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
     const { runtime, lines } = createSystemAgentTestRuntime();
     const runPluginInstall = vi.fn(async (spec: string, pluginRuntime: RuntimeEnv) => {
@@ -848,18 +848,18 @@ describe("parseSystemAgentOperation", () => {
     });
 
     const plan = await executeSystemAgentOperation(
-      { kind: "plugin-install", spec: "clawhub:openclaw-demo" },
+      { kind: "plugin-install", spec: "clawhub:operator-demo" },
       runtime,
       { deps: { runPluginInstall } },
     );
     expectRecordFields(plan as unknown as Record<string, unknown>, {
       applied: false,
-      message: "Plan: install plugin clawhub:openclaw-demo. Say yes to apply.",
+      message: "Plan: install plugin clawhub:operator-demo. Say yes to apply.",
     });
     expect(runPluginInstall).not.toHaveBeenCalled();
 
     const result = await executeSystemAgentOperation(
-      { kind: "plugin-install", spec: "clawhub:openclaw-demo" },
+      { kind: "plugin-install", spec: "clawhub:operator-demo" },
       runtime,
       {
         approved: true,
@@ -870,7 +870,7 @@ describe("parseSystemAgentOperation", () => {
     expect(result.applied).toBe(true);
 
     const installCall = requireFirstMockCall(runPluginInstall, "runPluginInstall");
-    expect(installCall[0]).toBe("clawhub:openclaw-demo");
+    expect(installCall[0]).toBe("clawhub:operator-demo");
     expectRuntimeArg(installCall[1]);
     expect(lines.join("\n")).toContain("[openclaw] done: plugin.install");
     const auditPath = path.join(tempDir, "audit", "system-agent.jsonl");
@@ -879,9 +879,9 @@ describe("parseSystemAgentOperation", () => {
       audit,
       {
         operation: "plugin.install",
-        summary: "Installed plugin clawhub:openclaw-demo",
+        summary: "Installed plugin clawhub:operator-demo",
       },
-      { rescue: true, spec: "clawhub:openclaw-demo" },
+      { rescue: true, spec: "clawhub:operator-demo" },
     );
   });
 
@@ -929,7 +929,7 @@ describe("parseSystemAgentOperation", () => {
     const runPluginUninstall = vi.fn();
 
     const result = await executeSystemAgentOperation(
-      { kind: "plugin-uninstall", pluginId: "openclaw-demo" },
+      { kind: "plugin-uninstall", pluginId: "operator-demo" },
       runtime,
       { approved: true, deps: { runPluginUninstall } },
     );
@@ -938,6 +938,6 @@ describe("parseSystemAgentOperation", () => {
     });
     expect(runPluginUninstall).not.toHaveBeenCalled();
     expect(lines.join("\n")).toContain("cannot prove that uninstalling a plugin");
-    expect(lines.join("\n")).toContain("openclaw plugins uninstall openclaw-demo");
+    expect(lines.join("\n")).toContain("openclaw plugins uninstall operator-demo");
   });
 });

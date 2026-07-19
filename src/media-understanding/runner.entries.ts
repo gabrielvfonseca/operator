@@ -2,13 +2,13 @@
 // rotation, output extraction, and decision summaries.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeNullableString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { MediaUnderstandingSkipError } from "../../packages/media-understanding-common/src/errors.js";
 import { extractGeminiResponse } from "../../packages/media-understanding-common/src/output-extract.js";
 import {
@@ -777,7 +777,7 @@ function formatMissingProviderHint(providerId: string): string {
   if (!catalogHint) {
     return "";
   }
-  return ` Install the official external plugin with: ${formatCliCommand(catalogHint.installCommand)}, then run ${formatCliCommand("operator plugins registry --refresh")} and stop and start the gateway service, or run ${formatCliCommand(catalogHint.doctorFixCommand)} to repair automatically.`;
+  return ` Install the official external plugin with: ${formatCliCommand(catalogHint.installCommand)}, then run ${formatCliCommand("openclaw plugins registry --refresh")} and stop and start the gateway service, or run ${formatCliCommand(catalogHint.doctorFixCommand)} to repair automatically.`;
 }
 
 /** Executes one provider-backed media-understanding entry for one attachment. */

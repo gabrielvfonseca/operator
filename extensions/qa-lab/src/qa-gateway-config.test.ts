@@ -15,7 +15,7 @@ function createQaChannelTransportParams(baseUrl = "http://127.0.0.1:43124") {
         "qa-channel": {
           enabled: true,
           baseUrl,
-          botUserId: "openclaw",
+          botUserId: "@gabrielvfonseca/operator",
           botDisplayName: "Operator QA",
           allowFrom: ["*"],
           pollTimeoutMs: 250,

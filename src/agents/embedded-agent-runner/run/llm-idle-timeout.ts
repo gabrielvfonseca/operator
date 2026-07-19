@@ -1,4 +1,4 @@
-import { onLlmRequestActivity } from "@operator/ai/internal/runtime";
+import { onLlmRequestActivity } from "@gabrielvfonseca/ai/internal/runtime";
 /**
  * Wraps LLM streams with idle-timeout detection and diagnostics.
  */
@@ -6,7 +6,7 @@ import {
   finiteSecondsToTimerSafeMilliseconds,
   clampTimerTimeoutMs,
   MAX_TIMER_TIMEOUT_MS,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { toErrorObject } from "../../../infra/errors.js";
 import type { StreamFn } from "../../runtime/index.js";

@@ -93,7 +93,7 @@ const current = JSON.parse(runGh(["api", "-H", "X-GitHub-Api-Version: 2022-11-28
 const restoredCvss = args.cvss || current?.cvss?.vector_string || null;
 
 const ecosystem = args.ecosystem || "npm";
-const packageName = args.package || "openclaw";
+const packageName = args.package || "@gabrielvfonseca/operator";
 const vulnerableRange = args["vulnerable-version-range"];
 const patchedVersionsRaw = args["patched-versions"];
 

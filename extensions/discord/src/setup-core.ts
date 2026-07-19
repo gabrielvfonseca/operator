@@ -1,13 +1,19 @@
 // Discord plugin module implements setup core behavior.
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { DiscordGuildEntry, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ChannelSetupDmPolicy, ChannelSetupWizard } from "openclaw/plugin-sdk/setup-runtime";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type {
+  DiscordGuildEntry,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type {
+  ChannelSetupDmPolicy,
+  ChannelSetupWizard,
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
 import {
   createSetupTranslator,
   createStandardChannelSetupStatus,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   inspectDiscordSetupAccount,
   resolveDiscordSetupAccountConfig,

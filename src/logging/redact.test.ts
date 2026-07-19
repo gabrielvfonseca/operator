@@ -22,9 +22,9 @@ const defaults = getDefaultRedactPatterns();
 let tempDirs: string[] = [];
 
 function writeConfig(source: string): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-redact-config-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-redact-config-"));
   tempDirs.push(dir);
-  const configPath = path.join(dir, "openclaw.json");
+  const configPath = path.join(dir, "operator.json");
   fs.writeFileSync(configPath, source);
   return configPath;
 }
@@ -931,7 +931,7 @@ describe("redactSensitiveText", () => {
 
   it("does not redact ordinary identifiers containing short token-prefix substrings", () => {
     const input = [
-      "npm_telegram_package_spec ask_openclaw_query_patterns team_management risk_assessment glpat-docs dapi-example sbp_short nfp_site CCIPAT_docs ATATT-example fw-tooshort fw_tooshort fpk_tooshort",
+      "npm_telegram_package_spec ask_operator_query_patterns team_management risk_assessment glpat-docs dapi-example sbp_short nfp_site CCIPAT_docs ATATT-example fw-tooshort fw_tooshort fpk_tooshort",
       `fixturefw-${"C".repeat(40)}`,
       `fixture_fw_${"A".repeat(40)}`,
       `fixture_fpk_${"B".repeat(40)}`,

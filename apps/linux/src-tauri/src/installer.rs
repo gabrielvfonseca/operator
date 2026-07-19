@@ -1,5 +1,5 @@
 #[cfg(not(target_os = "windows"))]
-use crate::cli::openclaw_home;
+use crate::cli::operator_home;
 use serde::Deserialize;
 #[cfg(not(target_os = "windows"))]
 use serde::Serialize;
@@ -62,7 +62,7 @@ pub fn install(app: &AppHandle, channel: InstallChannel) -> Result<(), String> {
         .path()
         .resolve("install-cli.sh", BaseDirectory::Resource)
         .map_err(|error| format!("Bundled installer is unavailable: {error}"))?;
-    let prefix = openclaw_home().map_err(|error| error.to_string())?;
+    let prefix = operator_home().map_err(|error| error.to_string())?;
 
     let mut command = Command::new("bash");
     command

@@ -244,7 +244,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor session SQLite options require --session-sqlite. Use `openclaw doctor --session-sqlite dry-run ...`.",
+      "doctor session SQLite options ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -284,7 +284,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options require --lint. Use `openclaw doctor --lint ...`.",
+      "doctor lint options ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -295,7 +295,7 @@ describe("registerMaintenanceCommands doctor action", () => {
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runDoctorLintCli).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options require --lint. Use `openclaw doctor --lint ...`.",
+      "doctor lint options ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -315,7 +315,7 @@ describe("registerMaintenanceCommands doctor action", () => {
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runDoctorLintCli).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options require --lint. Use `openclaw doctor --lint ...`.",
+      "doctor lint options ...
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });

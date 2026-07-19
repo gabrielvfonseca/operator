@@ -1,16 +1,19 @@
 // Google Meet plugin module implements realtime behavior.
 import { spawn } from "node:child_process";
 import type { Writable } from "node:stream";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type {
+  PluginRuntime,
+  RuntimeLogger,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import {
   getRealtimeTranscriptionProvider,
   listRealtimeTranscriptionProviders,
   type RealtimeTranscriptionProviderConfig,
   type RealtimeTranscriptionProviderPlugin,
   type RealtimeTranscriptionSession,
-} from "openclaw/plugin-sdk/realtime-transcription";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-transcription";
 import {
   createRealtimeVoiceAgentTalkbackQueue,
   createRealtimeVoiceBridgeSession,
@@ -39,8 +42,8 @@ import {
   type TalkEvent,
   type TalkEventInput,
   type TalkSessionController,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   consultOperatorAgentForGoogleMeet,
   handleGoogleMeetRealtimeConsultToolCall,

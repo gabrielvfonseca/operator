@@ -1,3 +1,8 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  parseStrictPositiveInteger,
+  resolveTimerTimeoutMs,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 // Whatsapp plugin module implements socket timing behavior.
 import type {
   AnyMessageContent,
@@ -5,11 +10,6 @@ import type {
   WAMessage,
   WAPresence,
 } from "baileys";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import {
-  parseStrictPositiveInteger,
-  resolveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
 
 export type WhatsAppSocketTimingOptions = {
   keepAliveIntervalMs?: number;

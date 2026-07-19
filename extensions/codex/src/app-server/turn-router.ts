@@ -1,5 +1,5 @@
 /** Keyed routing for all turn traffic on one shared Codex app-server client. */
-import { embeddedAgentLog } from "openclaw/plugin-sdk/agent-harness-runtime";
+import { embeddedAgentLog } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import type { CodexAppServerClient } from "./client.js";
 import {
   readCodexNotificationThreadId,

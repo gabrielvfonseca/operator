@@ -1,11 +1,11 @@
-// Telegram sender authorization shared by message, reaction, and callback handlers.
-import type { Message } from "grammy/types";
 import type {
   DmPolicy,
   OperatorConfig,
   TelegramAccountConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Telegram sender authorization shared by message, reaction, and callback handlers.
+import type { Message } from "grammy/types";
 import { expandTelegramAllowFromWithAccessGroups } from "./access-groups.js";
 import { resolveTelegramAccount } from "./accounts.js";
 import {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 const mocks = vi.hoisted(() => ({
   loadInstalledPluginIndexInstallRecords: vi.fn(),
@@ -137,7 +137,7 @@ describe("Codex runtime plugin install repair", () => {
       installed: false,
       pluginId: "codex",
       status: "failed",
-      error: "npm registry returned EAI_AGAIN while fetching @operator/codex",
+      error: "npm registry returned EAI_AGAIN while fetching @gabrielvfonseca/codex",
     });
     const { ensureCodexRuntimePluginForModelSelection } =
       await import("./codex-runtime-plugin-install.js");
@@ -153,7 +153,7 @@ describe("Codex runtime plugin install repair", () => {
       required: true,
       installed: false,
       status: "failed",
-      reason: "npm registry returned EAI_AGAIN while fetching @operator/codex",
+      reason: "npm registry returned EAI_AGAIN while fetching @gabrielvfonseca/codex",
     });
   });
 
@@ -173,7 +173,7 @@ describe("Codex runtime plugin install repair", () => {
         entry: {
           pluginId: "codex",
           label: "Codex",
-          install: { npmSpec: "@operator/codex", defaultChoice: "npm" },
+          install: { npmSpec: "@gabrielvfonseca/codex", defaultChoice: "npm" },
           trustedSourceLinkedOfficialInstall: true,
         },
       }),

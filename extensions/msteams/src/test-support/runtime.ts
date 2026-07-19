@@ -1,8 +1,8 @@
 // Msteams plugin module implements runtime behavior.
 import os from "node:os";
 import path from "node:path";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { createPluginStateKeyedStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { createPluginStateKeyedStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import type { PluginRuntime } from "../../runtime-api.js";
 
 export const msteamsRuntimeStub = {
@@ -15,7 +15,7 @@ export const msteamsRuntimeStub = {
         return override;
       }
       const resolvedHome = homedir ? homedir() : os.homedir();
-      return path.join(resolvedHome, ".openclaw");
+      return path.join(resolvedHome, ".operator");
     },
   },
 } as unknown as PluginRuntime;

@@ -1,5 +1,5 @@
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import SwiftUI
 
 extension AgentProTab {
@@ -23,7 +23,7 @@ extension AgentProTab {
     }
 
     func agentTint(for agent: AgentSummary, state: AgentRosterState) -> Color {
-        if agent.id == self.activeAgentID { return OpenClawBrand.accent }
+        if agent.id == self.activeAgentID { return OperatorBrand.accent }
         return state.color.opacity(0.62)
     }
 

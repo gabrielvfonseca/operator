@@ -3,12 +3,12 @@ import {
   resolveNonNegativeIntegerOption,
   resolveOptionalIntegerOption,
   timestampMsToIsoString,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveSessionAgentId } from "../../agents/agent-scope.js";
 import { formatFastModeCurrentStatus, resolveFastModeState } from "../../agents/fast-mode.js";
 import {

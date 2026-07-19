@@ -1,6 +1,6 @@
 // Zalo tests cover monitor.image.polling plugin behavior.
-import { createRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { withServer } from "openclaw/plugin-sdk/test-env";
+import { createRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { withServer } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createImageLifecycleCore,

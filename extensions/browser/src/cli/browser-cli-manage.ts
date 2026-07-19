@@ -119,7 +119,7 @@ async function runBrowserToggle(
   if (printJsonResult(parent, status)) {
     return;
   }
-  const name = status.profile ?? "openclaw";
+  const name = status.profile ?? "@gabrielvfonseca/operator";
   const headlessLabel = params.path === "/start" && status.headless ? " (headless)" : "";
   defaultRuntime.log(info(`🦞 browser [${name}] running: ${status.running}${headlessLabel}`));
 }
@@ -209,7 +209,7 @@ async function runBrowserDoctor(parent: BrowserParentOpts, profile?: string, dee
   checks.push({
     name: "profile",
     ok: true,
-    detail: `${status.profile ?? "openclaw"} (${usesChromeMcpTransport(status) ? "chrome-mcp" : (status.transport ?? "cdp")})`,
+    detail: `${status.profile ?? "@gabrielvfonseca/operator"} (${usesChromeMcpTransport(status) ? "chrome-mcp" : (status.transport ?? "cdp")})`,
   });
   checks.push({
     name: "browser",
@@ -311,7 +311,7 @@ async function runBrowserDoctor(parent: BrowserParentOpts, profile?: string, dee
   return { ok: checks.every((check) => check.ok), checks, status };
 }
 
-type BrowserProfileDriver = "openclaw" | "existing-session" | "extension";
+type BrowserProfileDriver = "@gabrielvfonseca/operator" | "existing-session" | "extension";
 
 function usesChromeMcpTransport(params: {
   transport?: BrowserTransport;
@@ -372,7 +372,7 @@ export function registerBrowserManageCommands(
         const detectedDisplay = detectedPath ? shortenHomePath(detectedPath) : "auto";
         defaultRuntime.log(
           [
-            `profile: ${status.profile ?? "openclaw"}`,
+            `profile: ${status.profile ?? "@gabrielvfonseca/operator"}`,
             `enabled: ${status.enabled}`,
             `running: ${status.running}`,
             `transport: ${
@@ -731,7 +731,7 @@ export function registerBrowserManageCommands(
               const def = p.isDefault ? " [default]" : "";
               const loc = formatBrowserConnectionSummary(p);
               const remote = p.isRemote ? " [remote]" : "";
-              const driver = p.driver !== "openclaw" ? ` [${p.driver}]` : "";
+              const driver = p.driver !== "@gabrielvfonseca/operator" ? ` [${p.driver}]` : "";
               return `${p.name}: ${status}${tabs}${def}${remote}${driver}\n  ${loc}, color: ${p.color}`;
             })
             .join("\n"),

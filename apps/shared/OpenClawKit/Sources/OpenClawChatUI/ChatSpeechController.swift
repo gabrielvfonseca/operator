@@ -4,7 +4,7 @@ import Observation
 import UniformTypeIdentifiers
 
 /// Gateway-rendered audio for one transcript message.
-public struct OpenClawChatSpeechClip: Equatable, Sendable {
+public struct OperatorChatSpeechClip: Equatable, Sendable {
     public let data: Data
     public let outputFormat: String?
     public let mimeType: String?
@@ -66,13 +66,13 @@ public struct OpenClawChatSpeechClip: Equatable, Sendable {
 
 /// Renders message text to a playable clip; host apps back this with the
 /// gateway `tts.speak` method. Any failure falls back to on-device speech.
-public typealias OpenClawChatSpeechSynthesis =
-    @Sendable (_ text: String) async throws -> OpenClawChatSpeechClip
+public typealias OperatorChatSpeechSynthesis =
+    @Sendable (_ text: String) async throws -> OperatorChatSpeechClip
 
 @MainActor
 protocol ChatSpeechClipPlaying: AnyObject {
     /// Resolves when playback ends; false when stopped early or undecodable.
-    func play(clip: OpenClawChatSpeechClip) async -> Bool
+    func play(clip: OperatorChatSpeechClip) async -> Bool
     func stop()
 }
 
@@ -87,7 +87,7 @@ protocol ChatSpeechLocalSpeaking: AnyObject {
 /// gateway audio first, on-device synthesis as the fallback voice.
 @MainActor
 @Observable
-public final class OpenClawChatSpeechController {
+public final class OperatorChatSpeechController {
     public enum Phase: Equatable {
         case idle
         case preparing(UUID)
@@ -96,7 +96,7 @@ public final class OpenClawChatSpeechController {
 
     public private(set) var phase: Phase = .idle
 
-    private let synthesize: OpenClawChatSpeechSynthesis
+    private let synthesize: OperatorChatSpeechSynthesis
     private let clipPlayer: any ChatSpeechClipPlaying
     private let localSpeech: any ChatSpeechLocalSpeaking
     @ObservationIgnored private var playbackTask: Task<Void, Never>?
@@ -104,7 +104,7 @@ public final class OpenClawChatSpeechController {
     /// clear the phase owned by a newer one.
     @ObservationIgnored private var generation: UInt64 = 0
 
-    public convenience init(synthesize: @escaping OpenClawChatSpeechSynthesis) {
+    public convenience init(synthesize: @escaping OperatorChatSpeechSynthesis) {
         self.init(
             synthesize: synthesize,
             clipPlayer: ChatSpeechClipPlayer(),
@@ -112,7 +112,7 @@ public final class OpenClawChatSpeechController {
     }
 
     init(
-        synthesize: @escaping OpenClawChatSpeechSynthesis,
+        synthesize: @escaping OperatorChatSpeechSynthesis,
         clipPlayer: any ChatSpeechClipPlaying,
         localSpeech: any ChatSpeechLocalSpeaking)
     {
@@ -169,7 +169,7 @@ public final class OpenClawChatSpeechController {
     }
 
     private func run(messageID: UUID, text: String, generation: UInt64) async {
-        let clip: OpenClawChatSpeechClip? = await {
+        let clip: OperatorChatSpeechClip? = await {
             do {
                 return try await self.synthesize(text)
             } catch {
@@ -231,7 +231,7 @@ final class ChatSpeechClipPlayer: NSObject, ChatSpeechClipPlaying {
     private var player: AVAudioPlayer?
     private var continuation: CheckedContinuation<Bool, Never>?
 
-    func play(clip: OpenClawChatSpeechClip) async -> Bool {
+    func play(clip: OperatorChatSpeechClip) async -> Bool {
         self.stop()
         guard !clip.isHeaderlessAudio else { return false }
         return await withCheckedContinuation { continuation in

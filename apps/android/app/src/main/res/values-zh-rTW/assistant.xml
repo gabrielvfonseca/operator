@@ -1,7 +1,7 @@
 <resources>
-    <string-array name="ask_openclaw_query_patterns">
-        <item>"詢問 OpenClaw %1$s"</item>
-        <item>"告訴 OpenClaw %1$s"</item>
-        <item>"開啟 OpenClaw 並詢問 %1$s"</item>
+    <string-array name="ask_operator_query_patterns">
+        <item>"詢問 Operator %1$s"</item>
+        <item>"告訴 Operator %1$s"</item>
+        <item>"開啟 Operator 並詢問 %1$s"</item>
     </string-array>
 </resources>

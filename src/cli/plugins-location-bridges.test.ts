@@ -63,8 +63,8 @@ function makeRegistry(pluginId: string): PluginManifestRegistry {
         activation: {},
         startup: {},
         packageInstall: {
-          clawhubSpec: `clawhub:@operator/${pluginId}`,
-          npmSpec: `@operator/${pluginId}`,
+          clawhubSpec: `clawhub:@gabrielvfonseca/${pluginId}`,
+          npmSpec: `@gabrielvfonseca/${pluginId}`,
           defaultChoice: "clawhub",
         },
       },
@@ -83,7 +83,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "/app/dist/extensions/diagnostics-otel/openclaw.plugin.json",
+        manifestPath: "/app/dist/extensions/diagnostics-otel/operator.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/diagnostics-otel/index.js",
         rootDir: "/app/dist/extensions/diagnostics-otel",
@@ -94,13 +94,13 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         packageInstall: {
           defaultChoice: "clawhub",
           clawhub: {
-            spec: "clawhub:@operator/diagnostics-otel",
-            packageName: "@operator/diagnostics-otel",
+            spec: "clawhub:@gabrielvfonseca/diagnostics-otel",
+            packageName: "@gabrielvfonseca/diagnostics-otel",
             exactVersion: false,
           },
           npm: {
-            spec: "@operator/diagnostics-otel",
-            packageName: "@operator/diagnostics-otel",
+            spec: "@gabrielvfonseca/diagnostics-otel",
+            packageName: "@gabrielvfonseca/diagnostics-otel",
             selectorKind: "none",
             exactVersion: false,
             pinState: "floating-without-integrity",
@@ -118,8 +118,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         bundledPluginId: "diagnostics-otel",
         pluginId: "diagnostics-otel",
         preferredSource: "npm",
-        npmSpec: "@operator/diagnostics-otel",
-        clawhubSpec: "clawhub:@operator/diagnostics-otel",
+        npmSpec: "@gabrielvfonseca/diagnostics-otel",
+        clawhubSpec: "clawhub:@gabrielvfonseca/diagnostics-otel",
         channelIds: ["diagnostics-otel"],
       },
     ]);
@@ -129,7 +129,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "/app/dist/extensions/diagnostics-otel/openclaw.plugin.json",
+        manifestPath: "/app/dist/extensions/diagnostics-otel/operator.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/diagnostics-otel/index.js",
         rootDir: "/app/dist/extensions/diagnostics-otel",
@@ -140,8 +140,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         packageInstall: {
           defaultChoice: "clawhub",
           clawhub: {
-            spec: "clawhub:@operator/diagnostics-otel",
-            packageName: "@operator/diagnostics-otel",
+            spec: "clawhub:@gabrielvfonseca/diagnostics-otel",
+            packageName: "@gabrielvfonseca/diagnostics-otel",
             exactVersion: false,
           },
           warnings: [],
@@ -157,8 +157,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         bundledPluginId: "diagnostics-otel",
         pluginId: "diagnostics-otel",
         preferredSource: "npm",
-        npmSpec: "@operator/diagnostics-otel",
-        clawhubSpec: "clawhub:@operator/diagnostics-otel",
+        npmSpec: "@gabrielvfonseca/diagnostics-otel",
+        clawhubSpec: "clawhub:@gabrielvfonseca/diagnostics-otel",
         channelIds: ["diagnostics-otel"],
       },
     ]);
@@ -168,7 +168,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "local-only",
-        manifestPath: "/app/dist/extensions/local-only/openclaw.plugin.json",
+        manifestPath: "/app/dist/extensions/local-only/operator.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/local-only/index.js",
         rootDir: "/app/dist/extensions/local-only",
@@ -197,7 +197,7 @@ describe("listPersistedBundledPluginRecoveryLocations", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "/app/dist/extensions/diagnostics-otel/openclaw.plugin.json",
+        manifestPath: "/app/dist/extensions/diagnostics-otel/operator.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/diagnostics-otel/index.js",
         rootDir: "/app/dist/extensions/diagnostics-otel",
@@ -220,7 +220,7 @@ describe("listPersistedBundledPluginRecoveryLocations", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "extensions/diagnostics-otel/openclaw.plugin.json",
+        manifestPath: "extensions/diagnostics-otel/operator.plugin.json",
         manifestHash: "hash",
         source: "extensions/diagnostics-otel/index.js",
         rootDir: "extensions/diagnostics-otel",

@@ -1,6 +1,6 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewaySession
 import android.content.Context
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json

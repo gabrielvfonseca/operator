@@ -1,7 +1,7 @@
 // Read-model helpers that merge gateway channel status with local config snapshots.
-import { asRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import { hasConfiguredUnavailableCredentialStatus } from "../account-snapshot-fields.js";
 import type { ChannelAccountSnapshot } from "../plugins/types.public.js";

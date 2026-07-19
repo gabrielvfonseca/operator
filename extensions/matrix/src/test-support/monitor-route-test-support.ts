@@ -2,10 +2,10 @@
 export {
   registerSessionBindingAdapter,
   testing,
-} from "openclaw/plugin-sdk/session-binding-runtime";
-export { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-binding-runtime";
+export { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 export {
   createTestRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+export type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";

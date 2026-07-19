@@ -2,11 +2,11 @@
  * Anthropic config defaulting helpers. They seed default Anthropic/Claude CLI
  * model refs and cache-retention params based on configured auth mode.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveClaudeCliAnthropicModelRefs,
   resolveKnownAnthropicModelRef,

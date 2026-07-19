@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { resolveRequestClientIp } from "openclaw/plugin-sdk/webhook-ingress";
+import { resolveRequestClientIp } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { parseDiscordActivityCustomId } from "../component-custom-id.js";
 import { resolveActivityUserAuthorized } from "./allowlist.js";
 import {

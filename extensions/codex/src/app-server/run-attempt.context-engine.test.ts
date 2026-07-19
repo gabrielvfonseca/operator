@@ -2,21 +2,21 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
-import type { EmbeddedRunAttemptParams } from "openclaw/plugin-sdk/agent-harness";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { EmbeddedRunAttemptParams } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness";
 import {
   embeddedAgentLog,
   type HarnessContextEngine as ContextEngine,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import {
   initializeGlobalHookRunner,
   resetGlobalHookRunner,
-} from "openclaw/plugin-sdk/hook-runtime";
-import { MESSAGE_TOOL_DELIVERY_HINTS } from "openclaw/plugin-sdk/message-tool-delivery-hints";
-import { createMockPluginRegistry } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { registerSandboxBackend } from "openclaw/plugin-sdk/sandbox";
-import { formatSqliteSessionFileMarker } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import { MESSAGE_TOOL_DELIVERY_HINTS } from "@gabrielvfonseca/operator/plugin-sdk/message-tool-delivery-hints";
+import { createMockPluginRegistry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { registerSandboxBackend } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import { formatSqliteSessionFileMarker } from "@gabrielvfonseca/operator/plugin-sdk/sqlite-runtime-testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CodexServerNotification } from "./protocol.js";
 import { runCodexAppServerAttempt as runCodexAppServerAttemptImpl } from "./run-attempt.js";
@@ -188,7 +188,7 @@ function threadStartResult(threadId = "thread-1") {
       updatedAt: 1,
       status: { type: "idle" },
       path: null,
-      cwd: tempDir || "/tmp/openclaw-codex-test",
+      cwd: tempDir || "/tmp/operator-codex-test",
       cliVersion: "0.125.0",
       source: "unknown",
       agentNickname: null,
@@ -200,7 +200,7 @@ function threadStartResult(threadId = "thread-1") {
     model: "gpt-5.4-codex",
     modelProvider: "openai",
     serviceTier: null,
-    cwd: tempDir || "/tmp/openclaw-codex-test",
+    cwd: tempDir || "/tmp/operator-codex-test",
     instructionSources: [],
     approvalPolicy: "never",
     approvalsReviewer: "user",
@@ -400,7 +400,7 @@ function getRequestInputTextAt(
 describe("runCodexAppServerAttempt context-engine lifecycle", () => {
   beforeEach(async () => {
     resetCodexTestBindingStore();
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-context-engine-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-context-engine-"));
   });
 
   afterEach(async () => {

@@ -148,7 +148,7 @@ vi.mock("./runtime.js", async () => {
       "openclaw/plugin-sdk/plugin-state-test-runtime",
     ),
   );
-  const stateDir = `/tmp/openclaw-whatsapp-inbound-media-${Date.now()}-${Math.random()}`;
+  const stateDir = `/tmp/operator-whatsapp-inbound-media-${Date.now()}-${Math.random()}`;
   return {
     getOptionalWhatsAppRuntime: () => undefined,
     getWhatsAppRuntime: () => ({
@@ -164,7 +164,7 @@ vi.mock("./runtime.js", async () => {
   };
 });
 
-const HOME = path.join(os.tmpdir(), `openclaw-inbound-media-${crypto.randomUUID()}`);
+const HOME = path.join(os.tmpdir(), `operator-inbound-media-${crypto.randomUUID()}`);
 const ORIGINAL_HOME = process.env.HOME;
 process.env.HOME = HOME;
 

@@ -28,7 +28,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
 
   it("merges user-configured mcp.servers from Operator config", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-",
+      "operator-cli-bundle-mcp-user-servers-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -65,7 +65,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
 
   it("translates Operator transport field on user mcp.servers into Claude type", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-transport-",
+      "operator-cli-bundle-mcp-user-servers-transport-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -111,7 +111,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
 
   it("preserves explicit type and still strips transport on user mcp.servers", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-transport-explicit-",
+      "operator-cli-bundle-mcp-user-servers-transport-explicit-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -153,7 +153,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
     );
     const warn = vi.fn();
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-oauth-",
+      "operator-cli-bundle-mcp-user-servers-oauth-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -201,7 +201,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
     // The Operator loopback server is generated runtime state and must win over
     // user config with the same server name.
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-loopback-",
+      "operator-cli-bundle-mcp-user-servers-loopback-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -216,7 +216,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
         plugins: { enabled: false },
         mcp: {
           servers: {
-            openclaw: {
+            operator: {
               type: "http",
               url: "https://example.com/malicious",
             },
@@ -225,7 +225,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
       },
       additionalConfig: {
         mcpServers: {
-          openclaw: {
+          operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: { Authorization: "Bearer ${OPERATOR_MCP_TOKEN}" },
@@ -238,14 +238,14 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
     const raw = JSON.parse(await fs.readFile(generatedConfigPath, "utf-8")) as {
       mcpServers?: Record<string, { url?: string }>;
     };
-    expect(raw.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:23119/mcp");
+    expect(raw.mcpServers?.operator?.url).toBe("http://127.0.0.1:23119/mcp");
 
     await prepared.cleanup?.();
   });
 
   it("replaces overlapping bundle server entries with user-configured mcp.servers", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "openclaw-cli-bundle-mcp-user-servers-replace-",
+      "operator-cli-bundle-mcp-user-servers-replace-",
     );
     await writeClaudeBundleManifest({
       homeDir: cliBundleMcpHarness.bundleProbeHomeDir,
@@ -254,7 +254,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
     });
     const pluginDir = path.join(
       cliBundleMcpHarness.bundleProbeHomeDir,
-      ".openclaw",
+      ".operator",
       "extensions",
       "omi",
     );

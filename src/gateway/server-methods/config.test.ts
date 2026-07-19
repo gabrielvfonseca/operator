@@ -2,7 +2,7 @@
  * Tests for config gateway methods, writes, validation, and auth transitions.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withEnvAsync } from "../../test-utils/env.js";
 import {
@@ -49,16 +49,16 @@ afterEach(() => {
 
 describe("resolveConfigOpenCommand", () => {
   it("uses open on macOS", () => {
-    expect(resolveConfigOpenCommand("/tmp/openclaw.json", "darwin")).toEqual({
+    expect(resolveConfigOpenCommand("/tmp/operator.json", "darwin")).toEqual({
       command: "open",
-      args: ["/tmp/openclaw.json"],
+      args: ["/tmp/operator.json"],
     });
   });
 
   it("uses xdg-open on Linux", () => {
-    expect(resolveConfigOpenCommand("/tmp/openclaw.json", "linux")).toEqual({
+    expect(resolveConfigOpenCommand("/tmp/operator.json", "linux")).toEqual({
       command: "xdg-open",
-      args: ["/tmp/openclaw.json"],
+      args: ["/tmp/operator.json"],
     });
   });
 

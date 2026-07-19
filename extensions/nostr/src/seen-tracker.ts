@@ -6,7 +6,7 @@
 import {
   resolveIntegerOption,
   resolvePositiveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 
 interface SeenTrackerOptions {
   /** Maximum number of entries to track (default: 100,000) */

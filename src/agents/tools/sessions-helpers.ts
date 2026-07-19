@@ -20,7 +20,10 @@ export {
   resolveVisibleSessionReference,
   shouldResolveSessionIdInput,
 } from "./sessions-resolution.js";
-import { normalizeOptionalString, type FastMode } from "@operator/normalization-core/string-coerce";
+import {
+  normalizeOptionalString,
+  type FastMode,
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { getRuntimeConfig } from "../../config/config.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { parseRawSessionConversationRef } from "../../sessions/session-key-utils.js";

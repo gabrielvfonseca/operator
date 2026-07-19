@@ -1,8 +1,11 @@
 // Qqbot helper module supports config behavior.
 import fs from "node:fs";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveDefaultSecretProviderAlias } from "openclaw/plugin-sdk/provider-auth";
-import { coerceSecretRef, normalizeSecretInputString } from "openclaw/plugin-sdk/secret-input";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveDefaultSecretProviderAlias } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import {
+  coerceSecretRef,
+  normalizeSecretInputString,
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import { getPlatformAdapter } from "../engine/adapter/index.js";
 import {
   DEFAULT_ACCOUNT_ID as ENGINE_DEFAULT_ACCOUNT_ID,

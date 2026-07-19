@@ -23,49 +23,49 @@ const OPENAI_PROFILE = "openai:secretref-proof";
 const OPENAI_LIVE_PROOF_MODEL = "openai/gpt-5.6-luna";
 const MAX_SECRET_PROOF_TIMER_TIMEOUT_MS = 2_147_000_000;
 const COMMAND_TIMEOUT_MS = readPositiveTimerMs(
-  process.env.OPENCLAW_SECRET_PROOF_COMMAND_MS,
+  process.env.OPERATOR_SECRET_PROOF_COMMAND_MS,
   120000,
-  "OPENCLAW_SECRET_PROOF_COMMAND_MS",
+  "OPERATOR_SECRET_PROOF_COMMAND_MS",
 );
 const COMMAND_TIMEOUT_KILL_GRACE_MS = 1000;
 const READY_TIMEOUT_MS = readPositiveTimerMs(
-  process.env.OPENCLAW_SECRET_PROOF_READY_MS,
+  process.env.OPERATOR_SECRET_PROOF_READY_MS,
   120000,
-  "OPENCLAW_SECRET_PROOF_READY_MS",
+  "OPERATOR_SECRET_PROOF_READY_MS",
 );
 const RPC_TIMEOUT_MS = readPositiveTimerMs(
-  process.env.OPENCLAW_SECRET_PROOF_RPC_MS,
+  process.env.OPERATOR_SECRET_PROOF_RPC_MS,
   15000,
-  "OPENCLAW_SECRET_PROOF_RPC_MS",
+  "OPERATOR_SECRET_PROOF_RPC_MS",
 );
 const TEARDOWN_GRACE_MS = readPositiveTimerMs(
-  process.env.OPENCLAW_SECRET_PROOF_TEARDOWN_GRACE_MS,
+  process.env.OPERATOR_SECRET_PROOF_TEARDOWN_GRACE_MS,
   5000,
-  "OPENCLAW_SECRET_PROOF_TEARDOWN_GRACE_MS",
+  "OPERATOR_SECRET_PROOF_TEARDOWN_GRACE_MS",
 );
 const OUTPUT_CAPTURE_LIMIT_BYTES = readPositiveInt(
-  process.env.OPENCLAW_SECRET_PROOF_OUTPUT_BYTES,
+  process.env.OPERATOR_SECRET_PROOF_OUTPUT_BYTES,
   4 * 1024 * 1024,
-  "OPENCLAW_SECRET_PROOF_OUTPUT_BYTES",
+  "OPERATOR_SECRET_PROOF_OUTPUT_BYTES",
 );
 const RESOLVER_STDIN_LIMIT_BYTES = readPositiveInt(
-  process.env.OPENCLAW_SECRET_PROOF_RESOLVER_STDIN_BYTES,
+  process.env.OPERATOR_SECRET_PROOF_RESOLVER_STDIN_BYTES,
   1024 * 1024,
-  "OPENCLAW_SECRET_PROOF_RESOLVER_STDIN_BYTES",
+  "OPERATOR_SECRET_PROOF_RESOLVER_STDIN_BYTES",
 );
 const RESULTS_PATH =
-  process.env.OPENCLAW_SECRET_PROOF_RESULTS_PATH?.trim() ||
-  path.join(os.tmpdir(), `openclaw-secret-provider-e2e-results-${process.pid}.json`);
+  process.env.OPERATOR_SECRET_PROOF_RESULTS_PATH?.trim() ||
+  path.join(os.tmpdir(), `operator-secret-provider-e2e-results-${process.pid}.json`);
 
 const results = [];
 let gatewayClientStateCounter = 0;
 
 function requireFullMatrix() {
-  return process.env.OPENCLAW_SECRET_PROOF_FULL === "1";
+  return process.env.OPERATOR_SECRET_PROOF_FULL === "1";
 }
 
 function allowProofSkips() {
-  return process.env.OPENCLAW_SECRET_PROOF_ALLOW_SKIPS === "1";
+  return process.env.OPERATOR_SECRET_PROOF_ALLOW_SKIPS === "1";
 }
 
 function skipProof(evidence) {
@@ -273,15 +273,15 @@ function parseJsonObjectsFromMixedOutput(text) {
   return objects;
 }
 
-function resolveOpenClawRunner() {
-  if (process.env.OPENCLAW_ENTRY) {
+function resolveOperatorRunner() {
+  if (process.env.OPERATOR_ENTRY) {
     return {
       command: "node",
-      baseArgs: [process.env.OPENCLAW_ENTRY],
-      label: process.env.OPENCLAW_ENTRY,
+      baseArgs: [process.env.OPERATOR_ENTRY],
+      label: process.env.OPERATOR_ENTRY,
     };
   }
-  if (process.env.OPENCLAW_SECRET_PROOF_USE_DIST === "1") {
+  if (process.env.OPERATOR_SECRET_PROOF_USE_DIST === "1") {
     for (const candidate of ["dist/index.mjs", "dist/index.js"]) {
       const resolved = path.join(process.cwd(), candidate);
       if (fs.existsSync(resolved)) {
@@ -289,13 +289,13 @@ function resolveOpenClawRunner() {
       }
     }
   }
-  return { pnpm: true, baseArgs: ["openclaw"], label: "pnpm openclaw" };
+  return { pnpm: true, baseArgs: ["@gabrielvfonseca/operator"], label: "pnpm openclaw" };
 }
 
 function makeEnv(name) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), `openclaw-secret-proof-${name}-`));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), `operator-secret-proof-${name}-`));
   const home = path.join(root, "home");
-  const stateDir = path.join(home, ".openclaw");
+  const stateDir = path.join(home, ".operator");
   const agentDir = path.join(stateDir, "agents", "main", "agent");
   const hostHome = os.homedir();
   const serviceProfile = `secret-proof-${process.pid}-${name.replace(/[^a-z0-9-]/giu, "-")}`;
@@ -304,18 +304,18 @@ function makeEnv(name) {
     ...process.env,
     HOME: home,
     USERPROFILE: home,
-    OPENCLAW_HOME: home,
-    OPENCLAW_STATE_DIR: stateDir,
-    OPENCLAW_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
-    OPENCLAW_AGENT_DIR: agentDir,
+    OPERATOR_HOME: home,
+    OPERATOR_STATE_DIR: stateDir,
+    OPERATOR_CONFIG_PATH: path.join(stateDir, "operator.json"),
+    OPERATOR_AGENT_DIR: agentDir,
     PI_CODING_AGENT_DIR: "",
-    OPENCLAW_NO_ONBOARD: "1",
-    OPENCLAW_SKIP_PROVIDERS: "0",
-    OPENCLAW_LOG_COLOR: "0",
-    OPENCLAW_PROFILE: serviceProfile,
-    OPENCLAW_LAUNCHD_LABEL: `ai.openclaw.${serviceProfile}`,
-    OPENCLAW_SYSTEMD_UNIT: `openclaw-gateway-${serviceProfile}.service`,
-    OPENCLAW_WINDOWS_TASK_NAME: `OpenClaw Gateway (${serviceProfile})`,
+    OPERATOR_NO_ONBOARD: "1",
+    OPERATOR_SKIP_PROVIDERS: "0",
+    OPERATOR_LOG_COLOR: "0",
+    OPERATOR_PROFILE: serviceProfile,
+    OPERATOR_LAUNCHD_LABEL: `ai.operator.${serviceProfile}`,
+    OPERATOR_SYSTEMD_UNIT: `operator-gateway-${serviceProfile}.service`,
+    OPERATOR_WINDOWS_TASK_NAME: `Operator Gateway (${serviceProfile})`,
     NO_COLOR: "1",
     PNPM_HOME:
       process.env.PNPM_HOME ??
@@ -329,13 +329,13 @@ function makeEnv(name) {
         : path.join(hostHome, ".cache", "node", "corepack")),
     XDG_CACHE_HOME: process.env.XDG_CACHE_HOME ?? path.join(hostHome, ".cache"),
   };
-  delete env.OPENCLAW_GATEWAY_TOKEN;
-  delete env.OPENCLAW_GATEWAY_PASSWORD;
+  delete env.OPERATOR_GATEWAY_TOKEN;
+  delete env.OPERATOR_GATEWAY_PASSWORD;
   return { root, home, stateDir, env };
 }
 
 async function cleanupEnv(root, options = {}) {
-  if (process.env.OPENCLAW_SECRET_PROOF_KEEP_TMP === "1") {
+  if (process.env.OPERATOR_SECRET_PROOF_KEEP_TMP === "1") {
     console.log(`[keep] ${root}`);
     return;
   }
@@ -513,16 +513,16 @@ function runCommand(command, args, options = {}) {
   });
 }
 
-async function runOpenClaw(args, env, options = {}) {
-  const command = await resolveOpenClawCommand(args, env, options);
+async function runOperator(args, env, options = {}) {
+  const command = await resolveOperatorCommand(args, env, options);
   return await runCommand(command.command, command.args, {
     ...options,
     ...command.options,
   });
 }
 
-export async function resolveOpenClawCommand(args, env, options = {}) {
-  const runner = options.runner ?? resolveOpenClawRunner();
+export async function resolveOperatorCommand(args, env, options = {}) {
+  const runner = options.runner ?? resolveOperatorRunner();
   const stdio = options.stdio ?? ["pipe", "pipe", "pipe"];
   if (runner.pnpm) {
     const { createPnpmRunnerSpawnSpec } = await import("../pnpm-runner.mjs");
@@ -619,7 +619,7 @@ function baseConfig(port, overrides = {}) {
 function writeProofPlugin(envCtx, options = {}) {
   const pluginRoot = path.join(envCtx.stateDir, "extensions", PLUGIN_ID);
   fs.mkdirSync(pluginRoot, { recursive: true, mode: 0o755 });
-  writeJson(path.join(pluginRoot, "openclaw.plugin.json"), {
+  writeJson(path.join(pluginRoot, "operator.plugin.json"), {
     id: PLUGIN_ID,
     name: "Secret Provider Proof",
     enabledByDefault: true,
@@ -661,11 +661,11 @@ const EXPECTED_VALUE = ${JSON.stringify(PLUGIN_EXEC_TOKEN)};
 const REPO_ROOT = ${JSON.stringify(process.cwd())};
 
 function resolveAuthProfilesPath() {
-  const agentDir = process.env.OPENCLAW_AGENT_DIR;
+  const agentDir = process.env.OPERATOR_AGENT_DIR;
   if (agentDir) {
     return path.join(agentDir, "auth-profiles.json");
   }
-  const stateDir = process.env.OPENCLAW_STATE_DIR;
+  const stateDir = process.env.OPERATOR_STATE_DIR;
   if (stateDir) {
     return path.join(stateDir, "agents", "main", "agent", "auth-profiles.json");
   }
@@ -673,9 +673,9 @@ function resolveAuthProfilesPath() {
 }
 
 function readConfig() {
-  const configPath = process.env.OPENCLAW_CONFIG_PATH;
+  const configPath = process.env.OPERATOR_CONFIG_PATH;
   if (!configPath) {
-    throw new Error("missing OPENCLAW_CONFIG_PATH");
+    throw new Error("missing OPERATOR_CONFIG_PATH");
   }
   return JSON.parse(fs.readFileSync(configPath, "utf8"));
 }
@@ -859,14 +859,14 @@ function serviceManagerEnv(source) {
   return {
     ...source,
     // systemd/launchd discover user service definitions from the real account
-    // home, while OpenClaw state/config below remain pinned to the proof root.
+    // home, while Operator state/config below remain pinned to the proof root.
     HOME: hostHome,
     USERPROFILE: hostHome,
   };
 }
 
 async function startGateway(envCtx, port, token = TOKEN_V1) {
-  const command = await resolveOpenClawCommand(
+  const command = await resolveOperatorCommand(
     ["gateway", "run", "--port", String(port), "--bind", "loopback", "--allow-unconfigured"],
     envCtx.env,
     {
@@ -1085,12 +1085,12 @@ function terminateProcessTree(child, signal, options = {}) {
 
 async function gatewayCall(env, port, token, method, params = {}, options = {}) {
   const clientStateDir = path.join(
-    path.dirname(env.OPENCLAW_CONFIG_PATH),
+    path.dirname(env.OPERATOR_CONFIG_PATH),
     "gateway-call-clients",
     `${Date.now()}-${gatewayClientStateCounter++}`,
   );
   fs.mkdirSync(clientStateDir, { recursive: true });
-  return await runOpenClaw(
+  return await runOperator(
     [
       "gateway",
       "call",
@@ -1107,8 +1107,8 @@ async function gatewayCall(env, port, token, method, params = {}, options = {}) 
     ],
     {
       ...env,
-      OPENCLAW_STATE_DIR: clientStateDir,
-      OPENCLAW_HOME: clientStateDir,
+      OPERATOR_STATE_DIR: clientStateDir,
+      OPERATOR_HOME: clientStateDir,
     },
     {
       timeoutMs: options.timeoutMs ?? RPC_TIMEOUT_MS + 10000,
@@ -1144,7 +1144,7 @@ async function expectReloadMayCloseForAuthChange(env, port, token) {
 }
 
 async function expectGatewayStartupFails(envCtx, port, reason) {
-  const command = await resolveOpenClawCommand(
+  const command = await resolveOperatorCommand(
     ["gateway", "run", "--port", String(port), "--bind", "loopback", "--allow-unconfigured"],
     envCtx.env,
     {
@@ -1213,7 +1213,7 @@ async function expectGatewayStartupFails(envCtx, port, reason) {
 async function uninstallManagedGateway(env) {
   let lastResult;
   for (let attempt = 1; attempt <= 2; attempt += 1) {
-    lastResult = await runOpenClaw(["gateway", "uninstall", "--json"], env, {
+    lastResult = await runOperator(["gateway", "uninstall", "--json"], env, {
       timeoutMs: 60000,
       allowFailure: true,
     });
@@ -1239,7 +1239,7 @@ async function waitForManagedGatewayStatus(env, token) {
   let lastError;
   while (Date.now() - started < READY_TIMEOUT_MS) {
     try {
-      lastResult = await runOpenClaw(
+      lastResult = await runOperator(
         [
           "gateway",
           "status",
@@ -1318,7 +1318,7 @@ async function withProofEnv(name, fn, values, pluginOptions) {
 async function p1StartupSucceeds() {
   await withProofEnv("p1", async (envCtx, _plugin, storePath) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port));
     const authPath = path.join(envCtx.stateDir, "agents", "main", "agent", "auth-profiles.json");
     writeJson(authPath, {
       version: 1,
@@ -1357,7 +1357,7 @@ async function p1StartupSucceeds() {
 async function p2StartupFailsClosed() {
   return await withProofEnv("p2", async (envCtx, _plugin, storePath) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port));
     mutateStore(storePath, (store) => ({ ...store, mode: "fail" }));
     const output = await expectGatewayStartupFails(envCtx, port, "unresolved plugin integration");
     if (!/secret|ref|resolve|provider/iu.test(output)) {
@@ -1370,7 +1370,7 @@ async function p2StartupFailsClosed() {
 async function p3ThroughP6StaticReloadAndCommandSnapshot() {
   await withProofEnv("p3-p6", async (envCtx, _plugin, storePath) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port));
     const gateway = await startGateway(envCtx, port, TOKEN_V1);
     try {
       const before = readJson(storePath).calls;
@@ -1430,7 +1430,7 @@ async function p7AuthProfileSecretRefPersistsAndResolves() {
   await withProofEnv("p7", async (envCtx, _plugin, storePath) => {
     const port = await allocatePort();
     writeJson(
-      envCtx.env.OPENCLAW_CONFIG_PATH,
+      envCtx.env.OPERATOR_CONFIG_PATH,
       baseConfig(port, {
         root: {
           models: {
@@ -1453,7 +1453,7 @@ async function p7AuthProfileSecretRefPersistsAndResolves() {
       },
     });
     const callsBefore = readJson(storePath).calls;
-    const result = await runOpenClaw(
+    const result = await runOperator(
       [
         "models",
         "status",
@@ -1494,18 +1494,18 @@ async function p7AuthProfileSecretRefPersistsAndResolves() {
 }
 
 async function p8ManagedServiceEnvProof() {
-  if (process.env.OPENCLAW_SECRET_PROOF_SERVICE !== "1") {
+  if (process.env.OPERATOR_SECRET_PROOF_SERVICE !== "1") {
     if (requireFullMatrix()) {
-      throw new Error("OPENCLAW_SECRET_PROOF_SERVICE=1 is required for full matrix service proof");
+      throw new Error("OPERATOR_SECRET_PROOF_SERVICE=1 is required for full matrix service proof");
     }
     return skipProof(
-      "not run in local rehearsal; final matrix must set OPENCLAW_SECRET_PROOF_SERVICE=1 on a service-capable host",
+      "not run in local rehearsal; final matrix must set OPERATOR_SECRET_PROOF_SERVICE=1 on a service-capable host",
     );
   }
   await withProofEnv("p8", async (envCtx) => {
     const port = await allocatePort();
     writeJson(
-      envCtx.env.OPENCLAW_CONFIG_PATH,
+      envCtx.env.OPERATOR_CONFIG_PATH,
       baseConfig(port, {
         gateway: { auth: { mode: "token", token: TOKEN_V1 } },
       }),
@@ -1528,7 +1528,7 @@ async function p8ManagedServiceEnvProof() {
     try {
       const callsBeforeInstall = readJson(envCtx.env.PROOF_SECRET_STORE_PATH).calls;
       installAttempted = true;
-      const install = await runOpenClaw(
+      const install = await runOperator(
         ["gateway", "install", "--force", "--port", String(port), "--json"],
         managerEnv,
         { timeoutMs: 120000 },
@@ -1670,7 +1670,7 @@ async function p9ProviderVariants() {
     for (const scenario of scenarios) {
       const port = await allocatePort();
       const ctx = scenario.before?.() ?? {};
-      writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, scenario.config(port, ctx));
+      writeJson(envCtx.env.OPERATOR_CONFIG_PATH, scenario.config(port, ctx));
       const childEnv = { ...envCtx.env, ...scenario.env };
       const scenarioCtx = { ...envCtx, env: childEnv };
       const gateway = await startGateway(scenarioCtx, port, scenario.token);
@@ -1688,7 +1688,7 @@ async function p10UntrustedPluginFailsClosed() {
   return await withProofEnv("p10", async (envCtx) => {
     const port = await allocatePort();
     writeJson(
-      envCtx.env.OPENCLAW_CONFIG_PATH,
+      envCtx.env.OPERATOR_CONFIG_PATH,
       baseConfig(port, {
         plugins: {
           entries: {
@@ -1705,13 +1705,13 @@ async function p10UntrustedPluginFailsClosed() {
 async function p11TimeoutFailClosedAndLkg() {
   await withProofEnv("p11", async (envCtx, _plugin, storePath) => {
     const failPort = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(failPort));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(failPort));
     mutateStore(storePath, (store) => ({ ...store, sleepMs: 3000 }));
     await expectGatewayStartupFails(envCtx, failPort, "resolver timeout");
 
     mutateStore(storePath, (store) => ({ ...store, sleepMs: 0 }));
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port));
     const gateway = await startGateway(envCtx, port, TOKEN_V1);
     try {
       mutateStore(storePath, (store) => ({ ...store, sleepMs: 3000 }));
@@ -1739,7 +1739,7 @@ async function p12OpenAiLiveProof() {
     async (envCtx, _plugin, storePath) => {
       const port = await allocatePort();
       writeJson(
-        envCtx.env.OPENCLAW_CONFIG_PATH,
+        envCtx.env.OPERATOR_CONFIG_PATH,
         baseConfig(port, { agents: { defaults: { model: OPENAI_LIVE_PROOF_MODEL } } }),
       );
       const authPath = path.join(envCtx.stateDir, "agents", "main", "agent", "auth-profiles.json");
@@ -1754,7 +1754,7 @@ async function p12OpenAiLiveProof() {
         },
       });
       const callsBefore = readJson(storePath).calls;
-      const result = await runOpenClaw(
+      const result = await runOperator(
         [
           "models",
           "status",
@@ -1802,7 +1802,7 @@ async function p12OpenAiLiveProof() {
 
 async function runPtySecretsConfigurePreset(envCtx, options = {}) {
   const { spawn } = await import("@lydell/node-pty");
-  const command = await resolveOpenClawCommand(
+  const command = await resolveOperatorCommand(
     ["secrets", "configure", "--providers-only", "--apply", "--yes", "--allow-exec", "--json"],
     envCtx.env,
   );
@@ -1958,9 +1958,9 @@ function signalPtyProcessTree(child, signal, options = {}) {
 async function p13SecretsConfigurePreset() {
   await withProofEnv("p13", async (envCtx) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port, { secrets: { providers: {} } }));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port, { secrets: { providers: {} } }));
     await runPtySecretsConfigurePreset(envCtx);
-    const config = readJson(envCtx.env.OPENCLAW_CONFIG_PATH);
+    const config = readJson(envCtx.env.OPERATOR_CONFIG_PATH);
     const provider = config.secrets?.providers?.[PROVIDER_ALIAS];
     if (JSON.stringify(provider) !== JSON.stringify(proofProviderConfig())) {
       throw new Error(
@@ -1974,7 +1974,7 @@ async function p13SecretsConfigurePreset() {
 async function p14ConfigPatchValidation() {
   await withProofEnv("p14", async (envCtx) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port, { secrets: { providers: {} } }));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port, { secrets: { providers: {} } }));
     const validPatch = {
       secrets: {
         providers: {
@@ -1982,7 +1982,7 @@ async function p14ConfigPatchValidation() {
         },
       },
     };
-    const valid = await runOpenClaw(
+    const valid = await runOperator(
       ["config", "patch", "--stdin", "--dry-run", "--allow-exec", "--json"],
       envCtx.env,
       { input: JSON.stringify(validPatch), timeoutMs: 60000 },
@@ -2003,7 +2003,7 @@ async function p14ConfigPatchValidation() {
         },
       },
     };
-    const invalid = await runOpenClaw(
+    const invalid = await runOperator(
       ["config", "patch", "--stdin", "--dry-run", "--allow-exec", "--json"],
       envCtx.env,
       { input: JSON.stringify(invalidPatch), timeoutMs: 60000, allowFailure: true },
@@ -2022,7 +2022,7 @@ async function p14ConfigPatchValidation() {
 async function p15ModelsAuthCliScope() {
   const envCtx = makeEnv("p15");
   try {
-    const help = await runOpenClaw(["models", "auth", "paste-api-key", "--help"], envCtx.env, {
+    const help = await runOperator(["models", "auth", "paste-api-key", "--help"], envCtx.env, {
       timeoutMs: 30000,
     });
     const text = help.stdout;
@@ -2040,7 +2040,7 @@ async function p15ModelsAuthCliScope() {
 async function p16DiagnosticsNoLeak() {
   await withProofEnv("p16", async (envCtx, _plugin, storePath) => {
     const port = await allocatePort();
-    writeJson(envCtx.env.OPENCLAW_CONFIG_PATH, baseConfig(port));
+    writeJson(envCtx.env.OPERATOR_CONFIG_PATH, baseConfig(port));
     mutateStore(storePath, (store) => ({ ...store, mode: "fail" }));
     const output = await expectGatewayStartupFails(envCtx, port, "diagnostic redaction");
     if (
@@ -2060,12 +2060,12 @@ async function p16DiagnosticsNoLeak() {
 async function p17StaticMetadataAlignment() {
   const envCtx = makeEnv("p17");
   try {
-    const schema = await runOpenClaw(["config", "schema"], envCtx.env, { timeoutMs: 60000 });
+    const schema = await runOperator(["config", "schema"], envCtx.env, { timeoutMs: 60000 });
     const schemaText = schema.stdout;
     if (!schemaText.includes("pluginIntegration") || !schemaText.includes("integrationId")) {
       throw new Error("config schema does not expose pluginIntegration metadata");
     }
-    const secretsHelp = await runOpenClaw(["secrets", "configure", "--help"], envCtx.env, {
+    const secretsHelp = await runOperator(["secrets", "configure", "--help"], envCtx.env, {
       timeoutMs: 30000,
     });
     if (
@@ -2086,7 +2086,7 @@ async function p17StaticMetadataAlignment() {
 }
 
 async function main() {
-  console.log(`[info] runner=${resolveOpenClawRunner().label}`);
+  console.log(`[info] runner=${resolveOperatorRunner().label}`);
   console.log(`[info] results=${RESULTS_PATH}`);
   let runError;
   try {
@@ -2149,7 +2149,7 @@ async function main() {
   } finally {
     writeJson(RESULTS_PATH, {
       generatedAt: new Date().toISOString(),
-      runner: resolveOpenClawRunner().label,
+      runner: resolveOperatorRunner().label,
       results,
     });
   }

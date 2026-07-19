@@ -1,4 +1,4 @@
-# @operator/acpx
+# @gabrielvfonseca/acpx
 
 Official ACP runtime backend for Operator.
 
@@ -7,7 +7,7 @@ ACPx lets Operator run external coding harnesses through the Agent Client Protoc
 ## Install
 
 ```bash
-openclaw plugins install @operator/acpx
+operator plugins install @gabrielvfonseca/acpx
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -23,11 +23,11 @@ Restart the Gateway after installing or updating the plugin.
 
 Use the ACP docs for harness-specific setup, permission modes, and model/runtime selection:
 
-- https://docs.openclaw.ai/tools/acp-agents-setup
-- https://docs.openclaw.ai/tools/acp-agents
+- https://docs.operator.ai/tools/acp-agents-setup
+- https://docs.operator.ai/tools/acp-agents
 
 ## Package
 
 - Plugin id: `acpx`
-- Package: `@operator/acpx`
+- Package: `@gabrielvfonseca/acpx`
 - Minimum Operator host: `2026.4.25`

@@ -1,7 +1,7 @@
 // Ollama plugin entrypoint registers its Operator integration.
-import { collectConfiguredModelRefValues } from "@operator/model-catalog-core/configured-model-refs";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
+import { collectConfiguredModelRefValues } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
   type OperatorPluginApi,
@@ -13,22 +13,22 @@ import {
   type ProviderCatalogContext,
   type ProviderReplayPolicy,
   type ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   buildApiKeyCredential,
   coerceSecretRef,
   isNonSecretApiKeyMarker,
-} from "openclaw/plugin-sdk/provider-auth";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
 import type {
   ModelDefinitionConfig,
   ModelProviderConfig,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   buildOpenAICompatibleReplayPolicy,
   buildProviderReplayFamilyHooks,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { resolveConfiguredSecretInputString } from "openclaw/plugin-sdk/secret-input-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { resolveConfiguredSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
 import {
   buildOllamaModelDefinition,
   buildOllamaProvider,
@@ -630,7 +630,7 @@ export default definePluginEntry({
       buildUnknownModelHint: () =>
         "Ollama Cloud requires an API key. " +
         'Set OLLAMA_API_KEY or run "openclaw onboard --auth-choice ollama-cloud". ' +
-        "See: https://docs.openclaw.ai/providers/ollama",
+        "See: https://docs.operator.ai/providers/ollama",
     });
     api.registerProvider({
       id: OLLAMA_PROVIDER_ID,
@@ -875,7 +875,7 @@ export default definePluginEntry({
       buildUnknownModelHint: () =>
         "Ollama requires authentication to be registered as a provider. " +
         'Set OLLAMA_API_KEY="ollama-local" (any value works) or run "openclaw configure". ' +
-        "See: https://docs.openclaw.ai/providers/ollama",
+        "See: https://docs.operator.ai/providers/ollama",
     });
   },
 });

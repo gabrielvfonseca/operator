@@ -82,7 +82,7 @@ describe("worker inference SQLite store", () => {
   let store: WorkerInferenceStore;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-inference-store-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-inference-store-"));
     nowMs = 1_000;
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     createWorkerEnvironmentStore({ database, now: () => nowMs }).createIntent({

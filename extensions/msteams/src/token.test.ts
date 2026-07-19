@@ -301,7 +301,7 @@ describe("resolveDelegatedAccessToken", () => {
 
   beforeEach(() => {
     saveAndClearEnv();
-    stateDir = mkdtempSync(path.join(os.tmpdir(), "openclaw-msteams-token-"));
+    stateDir = mkdtempSync(path.join(os.tmpdir(), "operator-msteams-token-"));
     process.env.OPERATOR_STATE_DIR = stateDir;
     oauthTokenMocks.refreshMSTeamsDelegatedTokens.mockReset();
   });

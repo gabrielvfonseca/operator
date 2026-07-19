@@ -32,7 +32,7 @@ function expectCatalogEntry(id: string): OfficialExternalPluginCatalogEntry {
   return entry;
 }
 
-const HOSTED_CATALOG_PAYLOAD_TYPE = "openclaw.official-external-plugin-catalog-feed.v1";
+const HOSTED_CATALOG_PAYLOAD_TYPE = "operator.official-external-plugin-catalog-feed.v1";
 
 type HostedCatalogConfig = NonNullable<
   NonNullable<
@@ -80,14 +80,14 @@ function hostedCatalogFeed(params: {
   const pluginId = params.pluginName.replace(/^@[^/]+\//u, "");
   return {
     schemaVersion: 1,
-    id: "openclaw-official-external-plugins",
+    id: "operator-official-external-plugins",
     generatedAt: `2026-06-22T00:00:${String(params.sequence).padStart(2, "0")}.000Z`,
     sequence: params.sequence,
     entries: [
       {
         name: params.pluginName,
         kind: "plugin",
-        openclaw: {
+        operator: {
           plugin: { id: pluginId },
           install: { sourceRef: "acme-npm", npmSpec: params.pluginName },
         },
@@ -174,7 +174,7 @@ describe("official external plugin catalog", () => {
     expect(isOfficialExternalPluginCatalogFeed(officialExternalPluginCatalog)).toBe(true);
     expect(officialExternalPluginCatalog).toMatchObject({
       schemaVersion: 1,
-      id: "openclaw-official-external-plugins",
+      id: "operator-official-external-plugins",
       sequence: 1,
     });
     expect(officialExternalPluginCatalog.entries.length).toBeGreaterThan(0);
@@ -182,10 +182,10 @@ describe("official external plugin catalog", () => {
 
   it("curates featured external plugins with ClawHub install alternatives", () => {
     const featured = [
-      ["diffs", "@operator/diffs", 40],
-      ["lobster", "@operator/lobster", 50],
-      ["tokenjuice", "@operator/tokenjuice", 60],
-      ["memory-lancedb", "@operator/memory-lancedb", 70],
+      ["diffs", "@gabrielvfonseca/diffs", 40],
+      ["lobster", "@gabrielvfonseca/lobster", 50],
+      ["tokenjuice", "@gabrielvfonseca/tokenjuice", 60],
+      ["memory-lancedb", "@gabrielvfonseca/memory-lancedb", 70],
     ] as const;
 
     for (const [id, npmSpec, order] of featured) {
@@ -215,7 +215,7 @@ describe("official external plugin catalog", () => {
     expect(
       isOfficialExternalPluginCatalogFeed({
         schemaVersion: 2,
-        id: "openclaw-official-external-plugins",
+        id: "operator-official-external-plugins",
         generatedAt: "2026-06-22T00:00:00.000Z",
         sequence: 1,
         entries: [],
@@ -224,7 +224,7 @@ describe("official external plugin catalog", () => {
     expect(
       isOfficialExternalPluginCatalogFeed({
         schemaVersion: 3,
-        id: "openclaw-official-external-plugins",
+        id: "operator-official-external-plugins",
         generatedAt: "2026-06-22T00:00:00.000Z",
         sequence: 1,
         entries: [],
@@ -329,7 +329,7 @@ describe("official external plugin catalog", () => {
   });
 
   it("reads and updates hosted catalog snapshots in the SQLite store", async () => {
-    const stateDir = mkdtempSync(path.join(os.tmpdir(), "openclaw-hosted-store-"));
+    const stateDir = mkdtempSync(path.join(os.tmpdir(), "operator-hosted-store-"));
     try {
       const store = createSqliteHostedOfficialExternalPluginCatalogSnapshotStore({ stateDir });
       const url = "https://clawhub.ai/v1/feeds/plugins";
@@ -390,13 +390,13 @@ describe("official external plugin catalog", () => {
   });
 
   it("keeps signed SQLite snapshot writes monotonic when writes compete", async () => {
-    const stateDir = mkdtempSync(path.join(os.tmpdir(), "openclaw-signed-snapshot-race-"));
+    const stateDir = mkdtempSync(path.join(os.tmpdir(), "operator-signed-snapshot-race-"));
     const url = "https://packages.acme.example/openclaw/feed";
     const newer = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 10, pluginName: "@operator/signed-v10" }),
+      feed: hostedCatalogFeed({ sequence: 10, pluginName: "@gabrielvfonseca/signed-v10" }),
     });
     const older = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 9, pluginName: "@operator/signed-v9" }),
+      feed: hostedCatalogFeed({ sequence: 9, pluginName: "@gabrielvfonseca/signed-v9" }),
       privateKeyPem: newer.privateKeyPem,
     });
     const snapshotStore = createSqliteHostedOfficialExternalPluginCatalogSnapshotStore({
@@ -444,10 +444,10 @@ describe("official external plugin catalog", () => {
 
   it("verifies signed hosted feeds and rejects rollback before replacing snapshots", async () => {
     const newer = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 10, pluginName: "@operator/signed-v10" }),
+      feed: hostedCatalogFeed({ sequence: 10, pluginName: "@gabrielvfonseca/signed-v10" }),
     });
     const older = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 9, pluginName: "@operator/signed-v9" }),
+      feed: hostedCatalogFeed({ sequence: 9, pluginName: "@gabrielvfonseca/signed-v9" }),
       privateKeyPem: newer.privateKeyPem,
     });
     const snapshotStore = createInMemoryHostedCatalogSnapshotStore();
@@ -462,7 +462,7 @@ describe("official external plugin catalog", () => {
     });
 
     expect(accepted.source).toBe("hosted");
-    expect(accepted.entries.map((entry) => entry.name)).toEqual(["@operator/signed-v10"]);
+    expect(accepted.entries.map((entry) => entry.name)).toEqual(["@gabrielvfonseca/signed-v10"]);
     if (accepted.source === "hosted") {
       expect(accepted.trust).toMatchObject({
         mode: "signed",
@@ -482,7 +482,7 @@ describe("official external plugin catalog", () => {
     });
 
     expect(rolledBack.source).toBe("hosted-snapshot");
-    expect(rolledBack.entries.map((entry) => entry.name)).toEqual(["@operator/signed-v10"]);
+    expect(rolledBack.entries.map((entry) => entry.name)).toEqual(["@gabrielvfonseca/signed-v10"]);
     if (rolledBack.source === "hosted-snapshot") {
       expect(rolledBack.error).toContain("signed feed sequence is older");
     }
@@ -491,11 +491,11 @@ describe("official external plugin catalog", () => {
 
   it("fails closed for unsigned signed-profile responses and re-verifies offline snapshots", async () => {
     const signed = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 8, pluginName: "@operator/signed-offline" }),
+      feed: hostedCatalogFeed({ sequence: 8, pluginName: "@gabrielvfonseca/signed-offline" }),
     });
     const catalogConfig = signedCatalogConfig(signed.publicKeyPem);
     const unsignedBody = JSON.stringify(
-      hostedCatalogFeed({ sequence: 8, pluginName: "@operator/unsigned" }),
+      hostedCatalogFeed({ sequence: 8, pluginName: "@gabrielvfonseca/unsigned" }),
     );
 
     const unsigned = await loadHostedCatalog({
@@ -537,7 +537,7 @@ describe("official external plugin catalog", () => {
     });
 
     expect(offline.source).toBe("hosted-snapshot");
-    expect(offline.entries.map((entry) => entry.name)).toEqual(["@operator/signed-offline"]);
+    expect(offline.entries.map((entry) => entry.name)).toEqual(["@gabrielvfonseca/signed-offline"]);
 
     const unsignedSnapshot = createInMemoryHostedCatalogSnapshotStore([
       {
@@ -597,10 +597,10 @@ describe("official external plugin catalog", () => {
 
   it("preserves signed profile verification for direct feed URL overrides", async () => {
     const signed = signedHostedCatalogFeed({
-      feed: hostedCatalogFeed({ sequence: 8, pluginName: "@operator/signed-override" }),
+      feed: hostedCatalogFeed({ sequence: 8, pluginName: "@gabrielvfonseca/signed-override" }),
     });
     const unsignedBody = JSON.stringify(
-      hostedCatalogFeed({ sequence: 8, pluginName: "@operator/unsigned-override" }),
+      hostedCatalogFeed({ sequence: 8, pluginName: "@gabrielvfonseca/unsigned-override" }),
     );
     const result = await loadHostedCatalog({
       feedProfile: "acme",
@@ -619,14 +619,14 @@ describe("official external plugin catalog", () => {
   it("filters hosted entries that reference unknown source profiles", async () => {
     const body = JSON.stringify({
       schemaVersion: 1,
-      id: "openclaw-official-external-plugins",
+      id: "operator-official-external-plugins",
       generatedAt: "2026-06-22T00:00:10.000Z",
       sequence: 10,
       entries: [
         {
           name: "@acme/known-source",
           kind: "plugin",
-          openclaw: {
+          operator: {
             plugin: { id: "known-source" },
             install: { sourceRef: "acme-npm", npmSpec: "@acme/known-source" },
           },
@@ -634,7 +634,7 @@ describe("official external plugin catalog", () => {
         {
           name: "@acme/unknown-source",
           kind: "plugin",
-          openclaw: {
+          operator: {
             plugin: { id: "unknown-source" },
             install: { sourceRef: "attacker-npm", npmSpec: "@acme/unknown-source" },
           },
@@ -660,7 +660,7 @@ describe("official external plugin catalog", () => {
   it("enforces hosted checksum and response-size limits", async () => {
     const validBody = JSON.stringify({
       schemaVersion: 1,
-      id: "openclaw-official-external-plugins",
+      id: "operator-official-external-plugins",
       generatedAt: "2026-06-22T00:00:01.000Z",
       sequence: 1,
       entries: [],
@@ -711,7 +711,7 @@ describe("official external plugin catalog", () => {
     const snapshotStore = createInMemoryHostedCatalogSnapshotStore();
     const body = JSON.stringify({
       schemaVersion: 1,
-      id: "openclaw-official-external-plugins",
+      id: "operator-official-external-plugins",
       generatedAt: "2026-06-22T00:00:01.000Z",
       sequence: 1,
       entries: [],
@@ -748,18 +748,18 @@ describe("official external plugin catalog", () => {
         name: "@legacy/plain-package",
         kind: "plugin",
         state: "available",
-        publisher: { id: "openclaw", trust: "official" },
+        publisher: { id: "@gabrielvfonseca/operator", trust: "official" },
         install: {
           candidates: [
             {
               sourceRef: "public-clawhub",
-              package: "@operator/candidate-package",
+              package: "@gabrielvfonseca/candidate-package",
               version: "1.2.3",
               integrity: "sha256:b355dda04403becaab8bbab069fd1e7b0578262e7459e598cc5b19615b5bdab9",
             },
           ],
         },
-        openclaw: {
+        operator: {
           plugin: { id: "candidate-package" },
           install: {
             npmSpec: "@legacy/plain-package",
@@ -770,7 +770,7 @@ describe("official external plugin catalog", () => {
         },
       }),
     ).toEqual({
-      clawhubSpec: "clawhub:@operator/candidate-package@1.2.3",
+      clawhubSpec: "clawhub:@gabrielvfonseca/candidate-package@1.2.3",
       defaultChoice: "clawhub",
       expectedIntegrity: "sha256-s1XdoEQDvsqri7qwaf0eewV4Ji50WeWYzFsZYVtb2rk=",
       minHostVersion: ">=2026.6.1",
@@ -866,43 +866,43 @@ describe("official external plugin catalog", () => {
 
   it("lists the externalized provider and capability plugins with install metadata", () => {
     const providers = [
-      ["arcee", "@operator/arcee-provider"],
-      ["cerebras", "@operator/cerebras-provider"],
-      ["chutes", "@operator/chutes-provider"],
-      ["cloudflare-ai-gateway", "@operator/cloudflare-ai-gateway-provider"],
-      ["deepinfra", "@operator/deepinfra-provider"],
-      ["deepseek", "@operator/deepseek-provider"],
-      ["groq", "@operator/groq-provider"],
-      ["longcat", "@operator/longcat-provider"],
-      ["kilocode", "@operator/kilocode-provider"],
-      ["kimi", "@operator/kimi-provider"],
-      ["qianfan", "@operator/qianfan-provider"],
-      ["qwen", "@operator/qwen-provider"],
+      ["arcee", "@gabrielvfonseca/arcee-provider"],
+      ["cerebras", "@gabrielvfonseca/cerebras-provider"],
+      ["chutes", "@gabrielvfonseca/chutes-provider"],
+      ["cloudflare-ai-gateway", "@gabrielvfonseca/cloudflare-ai-gateway-provider"],
+      ["deepinfra", "@gabrielvfonseca/deepinfra-provider"],
+      ["deepseek", "@gabrielvfonseca/deepseek-provider"],
+      ["groq", "@gabrielvfonseca/groq-provider"],
+      ["longcat", "@gabrielvfonseca/longcat-provider"],
+      ["kilocode", "@gabrielvfonseca/kilocode-provider"],
+      ["kimi", "@gabrielvfonseca/kimi-provider"],
+      ["qianfan", "@gabrielvfonseca/qianfan-provider"],
+      ["qwen", "@gabrielvfonseca/qwen-provider"],
     ] as const;
     const plugins = [
-      ["exa", "@operator/exa-plugin"],
-      ["firecrawl", "@operator/firecrawl-plugin"],
-      ["gradium", "@operator/gradium-speech"],
-      ["inworld", "@operator/inworld-speech"],
-      ["parallel", "@operator/parallel-plugin"],
-      ["perplexity", "@operator/perplexity-plugin"],
+      ["exa", "@gabrielvfonseca/exa-plugin"],
+      ["firecrawl", "@gabrielvfonseca/firecrawl-plugin"],
+      ["gradium", "@gabrielvfonseca/gradium-speech"],
+      ["inworld", "@gabrielvfonseca/inworld-speech"],
+      ["parallel", "@gabrielvfonseca/parallel-plugin"],
+      ["perplexity", "@gabrielvfonseca/perplexity-plugin"],
     ] as const;
     const newlyExternalized = [
-      ["clickclack", "@operator/clickclack"],
-      ["fireworks", "@operator/fireworks-provider"],
-      ["irc", "@operator/irc"],
-      ["mattermost", "@operator/mattermost"],
-      ["moonshot", "@operator/moonshot-provider"],
-      ["searxng", "@operator/searxng-plugin"],
-      ["signal", "@operator/signal"],
-      ["sms", "@operator/sms"],
-      ["tavily", "@operator/tavily-plugin"],
-      ["tencent", "@operator/tencent-provider"],
-      ["venice", "@operator/venice-provider"],
-      ["vercel-ai-gateway", "@operator/vercel-ai-gateway-provider"],
-      ["zai", "@operator/zai-provider"],
+      ["clickclack", "@gabrielvfonseca/clickclack"],
+      ["fireworks", "@gabrielvfonseca/fireworks-provider"],
+      ["irc", "@gabrielvfonseca/irc"],
+      ["mattermost", "@gabrielvfonseca/mattermost"],
+      ["moonshot", "@gabrielvfonseca/moonshot-provider"],
+      ["searxng", "@gabrielvfonseca/searxng-plugin"],
+      ["signal", "@gabrielvfonseca/signal"],
+      ["sms", "@gabrielvfonseca/sms"],
+      ["tavily", "@gabrielvfonseca/tavily-plugin"],
+      ["tencent", "@gabrielvfonseca/tencent-provider"],
+      ["venice", "@gabrielvfonseca/venice-provider"],
+      ["vercel-ai-gateway", "@gabrielvfonseca/vercel-ai-gateway-provider"],
+      ["zai", "@gabrielvfonseca/zai-provider"],
     ] as const;
-    const currentExternalized = [["featherless", "@operator/featherless-provider"]] as const;
+    const currentExternalized = [["featherless", "@gabrielvfonseca/featherless-provider"]] as const;
 
     for (const [id, npmSpec] of [...providers, ...plugins]) {
       expect(resolveOfficialExternalPluginInstall(expectCatalogEntry(id))).toEqual({
@@ -932,8 +932,8 @@ describe("official external plugin catalog", () => {
 
   it("advertises StepFun with its ClawHub package and plugin API floor", () => {
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("stepfun"))).toEqual({
-      clawhubSpec: "clawhub:@operator/stepfun-provider",
-      npmSpec: "@operator/stepfun-provider",
+      clawhubSpec: "clawhub:@gabrielvfonseca/stepfun-provider",
+      npmSpec: "@gabrielvfonseca/stepfun-provider",
       defaultChoice: "npm",
       minHostVersion: ">=2026.6.9",
     });
@@ -941,40 +941,40 @@ describe("official external plugin catalog", () => {
 
   it("resolves third-party channel lookup aliases to published plugin ids", () => {
     const wecomByChannel = expectCatalogEntry("wecom");
-    const wecomByPlugin = expectCatalogEntry("wecom-openclaw-plugin");
+    const wecomByPlugin = expectCatalogEntry("wecom-operator-plugin");
     const yuanbaoByChannel = expectCatalogEntry("yuanbao");
 
-    expect(resolveOfficialExternalPluginId(wecomByChannel)).toBe("wecom-openclaw-plugin");
-    expect(resolveOfficialExternalPluginId(wecomByPlugin)).toBe("wecom-openclaw-plugin");
+    expect(resolveOfficialExternalPluginId(wecomByChannel)).toBe("wecom-operator-plugin");
+    expect(resolveOfficialExternalPluginId(wecomByPlugin)).toBe("wecom-operator-plugin");
     expect(resolveOfficialExternalPluginInstall(wecomByChannel)?.npmSpec).toBe(
-      "@wecom/wecom-openclaw-plugin@2026.5.7",
+      "@wecom/wecom-operator-plugin@2026.5.7",
     );
-    expect(resolveOfficialExternalPluginId(yuanbaoByChannel)).toBe("openclaw-plugin-yuanbao");
+    expect(resolveOfficialExternalPluginId(yuanbaoByChannel)).toBe("operator-plugin-yuanbao");
     expect(resolveOfficialExternalPluginInstall(yuanbaoByChannel)?.npmSpec).toBe(
-      "openclaw-plugin-yuanbao@2.15.0",
+      "operator-plugin-yuanbao@2.15.0",
     );
   });
 
   it("keeps official launch package specs on the production package names", () => {
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("acpx"))?.npmSpec).toBe(
-      "@operator/acpx",
+      "@gabrielvfonseca/acpx",
     );
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("googlechat"))?.npmSpec).toBe(
-      "@operator/googlechat",
+      "@gabrielvfonseca/googlechat",
     );
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("line"))?.npmSpec).toBe(
-      "@operator/line",
+      "@gabrielvfonseca/line",
     );
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("diffs-language-pack"))).toEqual(
       {
-        npmSpec: "@operator/diffs-language-pack",
-        clawhubSpec: "clawhub:@operator/diffs-language-pack",
+        npmSpec: "@gabrielvfonseca/diffs-language-pack",
+        clawhubSpec: "clawhub:@gabrielvfonseca/diffs-language-pack",
         defaultChoice: "npm",
         minHostVersion: ">=2026.5.27",
       },
     );
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("llama-cpp"))?.npmSpec).toBe(
-      "@operator/llama-cpp-provider",
+      "@gabrielvfonseca/llama-cpp-provider",
     );
   });
 
@@ -984,8 +984,8 @@ describe("official external plugin catalog", () => {
     expect(resolveOfficialExternalPluginId(gmi)).toBe("gmi");
     expect(getOfficialExternalPluginCatalogEntry("gmi-cloud")).toBe(gmi);
     expect(resolveOfficialExternalPluginInstall(gmi)).toEqual({
-      clawhubSpec: "clawhub:@operator/gmi-provider",
-      npmSpec: "@operator/gmi-provider",
+      clawhubSpec: "clawhub:@gabrielvfonseca/gmi-provider",
+      npmSpec: "@gabrielvfonseca/gmi-provider",
       defaultChoice: "npm",
       minHostVersion: ">=2026.6.8",
     });
@@ -996,8 +996,8 @@ describe("official external plugin catalog", () => {
 
     expect(resolveOfficialExternalPluginId(cohere)).toBe("cohere");
     expect(resolveOfficialExternalPluginInstall(cohere)).toEqual({
-      clawhubSpec: "clawhub:@operator/cohere-provider",
-      npmSpec: "@operator/cohere-provider",
+      clawhubSpec: "clawhub:@gabrielvfonseca/cohere-provider",
+      npmSpec: "@gabrielvfonseca/cohere-provider",
       defaultChoice: "npm",
       minHostVersion: ">=2026.6.8",
     });
@@ -1009,8 +1009,8 @@ describe("official external plugin catalog", () => {
     expect(resolveOfficialExternalPluginId(longcat)).toBe("longcat");
     expect(getOfficialExternalPluginCatalogEntry("meituan-longcat")).toBe(longcat);
     expect(resolveOfficialExternalPluginInstall(longcat)).toEqual({
-      clawhubSpec: "clawhub:@operator/longcat-provider",
-      npmSpec: "@operator/longcat-provider",
+      clawhubSpec: "clawhub:@gabrielvfonseca/longcat-provider",
+      npmSpec: "@gabrielvfonseca/longcat-provider",
       defaultChoice: "npm",
       minHostVersion: ">=2026.6.8",
     });
@@ -1124,10 +1124,10 @@ describe("official external plugin catalog", () => {
 
   it("keeps Tencent auth choices available through the cold-install auth catalog", () => {
     const tencent = expectCatalogEntry("tencent");
-    const tokenHub = tencent.openclaw?.providers?.find(
+    const tokenHub = tencent.operator?.providers?.find(
       (provider) => provider.id === "tencent-tokenhub",
     );
-    const tokenPlan = tencent.openclaw?.providers?.find(
+    const tokenPlan = tencent.operator?.providers?.find(
       (provider) => provider.id === "tencent-tokenplan",
     );
 
@@ -1149,7 +1149,7 @@ describe("official external plugin catalog", () => {
 
   it("keeps Groq available through the cold-install auth catalog", () => {
     const groq = expectCatalogEntry("groq");
-    const authChoice = groq.openclaw?.providers?.find((provider) => provider.id === "groq")
+    const authChoice = groq.operator?.providers?.find((provider) => provider.id === "groq")
       ?.authChoices?.[0];
 
     expect(authChoice).toMatchObject({
@@ -1162,23 +1162,23 @@ describe("official external plugin catalog", () => {
 
   it("allows invalid-config recovery for externalized stock plugins", () => {
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("brave"))).toMatchObject({
-      npmSpec: "@operator/brave-plugin",
+      npmSpec: "@gabrielvfonseca/brave-plugin",
       allowInvalidConfigRecovery: true,
     });
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("slack"))).toMatchObject({
-      npmSpec: "@operator/slack",
+      npmSpec: "@gabrielvfonseca/slack",
       allowInvalidConfigRecovery: true,
     });
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("discord"))).toMatchObject({
-      npmSpec: "@operator/discord",
+      npmSpec: "@gabrielvfonseca/discord",
       allowInvalidConfigRecovery: true,
     });
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("mattermost"))).toMatchObject({
-      npmSpec: "@operator/mattermost",
+      npmSpec: "@gabrielvfonseca/mattermost",
       allowInvalidConfigRecovery: true,
     });
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("tavily"))).toMatchObject({
-      npmSpec: "@operator/tavily-plugin",
+      npmSpec: "@gabrielvfonseca/tavily-plugin",
       allowInvalidConfigRecovery: true,
     });
   });
@@ -1195,8 +1195,8 @@ describe("official external plugin catalog", () => {
     expect(ids.has("matrix")).toBe(true);
     expect(ids.has("mattermost")).toBe(true);
     expect(resolveOfficialExternalPluginInstall(expectCatalogEntry("matrix"))).toEqual({
-      clawhubSpec: "clawhub:@operator/matrix",
-      npmSpec: "@operator/matrix",
+      clawhubSpec: "clawhub:@gabrielvfonseca/matrix",
+      npmSpec: "@gabrielvfonseca/matrix",
       defaultChoice: "clawhub",
       minHostVersion: ">=2026.4.10",
       allowInvalidConfigRecovery: true,

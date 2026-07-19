@@ -1,4 +1,4 @@
-# @operator/openshell-sandbox
+# @gabrielvfonseca/openshell-sandbox
 
 Official NVIDIA OpenShell sandbox backend for Operator.
 
@@ -7,7 +7,7 @@ This plugin lets Operator use OpenShell-managed sandboxes with mirrored local wo
 ## Install
 
 ```bash
-openclaw plugins install @operator/openshell-sandbox
+operator plugins install @gabrielvfonseca/openshell-sandbox
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -16,10 +16,10 @@ Restart the Gateway after installing or updating the plugin.
 
 Use the OpenShell docs for credentials, workspace mirroring, runtime selection, and troubleshooting:
 
-- https://docs.openclaw.ai/gateway/openshell
+- https://docs.operator.ai/gateway/openshell
 
 ## Package
 
 - Plugin id: `openshell`
-- Package: `@operator/openshell-sandbox`
+- Package: `@gabrielvfonseca/openshell-sandbox`
 - Minimum Operator host: `2026.5.12-beta.1`

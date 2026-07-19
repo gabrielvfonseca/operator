@@ -6,7 +6,7 @@ import path from "node:path";
 import * as tar from "tar";
 import { resolveStateDir } from "../../config/paths.js";
 import { isExactSemverVersion } from "../../infra/npm-registry-spec.js";
-import { resolveOperatorPackageRootSync } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../infra/openclaw-root.js";
 import { runCommandWithTimeout } from "../../process/exec.js";
 import { VERSION } from "../../version.js";
 import {
@@ -21,7 +21,7 @@ const NPM_RELEASE_PROOF_TIMEOUT_MS = 60_000;
 const NPM_SHA512_INTEGRITY_PATTERN = /^sha512-[A-Za-z0-9+/]{86}==$/u;
 type WorkerInstallationArtifactBase = {
   bundleHash: string;
-  operatorVersion: string;
+  openclawVersion: string;
   protocolFeatures: readonly string[];
 };
 
@@ -46,7 +46,7 @@ export type WorkerBundleProducer = {
 type WorkerBundleProducerOptions = {
   packageRoot?: string;
   cacheDir?: string;
-  operatorVersion?: string;
+  openclawVersion?: string;
   protocolFeatures?: readonly string[];
 };
 
@@ -65,7 +65,7 @@ function normalizeProtocolFeatures(features: readonly string[]): string[] {
   return [...new Set(normalized)].toSorted(comparePaths);
 }
 
-function resolveOperatorPackageRoot(packageRoot: string | undefined): string {
+function resolvePackageRoot(packageRoot: string | undefined): string {
   if (packageRoot) {
     return path.resolve(packageRoot);
   }
@@ -179,7 +179,7 @@ async function verifyPublishedNpmRelease(params: {
         argv: [
           "npm",
           "view",
-          `operator@${params.version}`,
+          `openclaw@${params.version}`,
           "name",
           "version",
           "dist.integrity",
@@ -192,19 +192,19 @@ async function verifyPublishedNpmRelease(params: {
       }),
     );
     if (
-      published?.name !== "operator" ||
+      published?.name !== "@gabrielvfonseca/operator" ||
       published.version !== params.version ||
       !NPM_SHA512_INTEGRITY_PATTERN.test(published.integrity)
     ) {
       throw new Error(
-        `Cannot verify exact public npm release operator@${params.version}; use the worker bundle install`,
+        `Cannot verify exact public npm release openclaw@${params.version}; use the worker bundle install`,
       );
     }
     const packedValue = await runNpmProofCommand({
       argv: [
         "npm",
         "pack",
-        `operator@${params.version}`,
+        `openclaw@${params.version}`,
         "--pack-destination",
         temporaryRoot,
         "--ignore-scripts",
@@ -251,7 +251,7 @@ async function verifyPublishedNpmRelease(params: {
     const packedBundle = await prepareWorkerBundle({
       packageRoot: extractedRoot,
       cacheDir: path.join(temporaryRoot, "bundle-cache"),
-      operatorVersion: params.version,
+      openclawVersion: params.version,
     });
     if (packedBundle.bundleHash !== params.bundleHash) {
       throw new Error(
@@ -428,12 +428,12 @@ async function writeTarball(params: {
 async function prepareWorkerBundle(
   options: WorkerBundleProducerOptions,
 ): Promise<WorkerBundleArtifact> {
-  const packageRoot = resolveOperatorPackageRoot(options.packageRoot);
+  const packageRoot = resolvePackageRoot(options.packageRoot);
   const cacheDir = options.cacheDir
     ? path.resolve(options.cacheDir)
     : path.join(resolveStateDir(), "cache", "worker-bundles");
-  const operatorVersion = (options.operatorVersion ?? VERSION).trim();
-  if (!operatorVersion) {
+  const openclawVersion = (options.operatorVersion ?? VERSION).trim();
+  if (!openclawVersion) {
     throw new Error("Worker bundle requires a non-empty Operator version");
   }
   const protocolFeatures = normalizeProtocolFeatures(options.protocolFeatures ?? []);
@@ -451,7 +451,7 @@ async function prepareWorkerBundle(
     return {
       install: "bundle",
       bundleHash,
-      operatorVersion,
+      openclawVersion,
       protocolFeatures,
       tarballSha256: await hashWorkerBundleTarball(tarballPath),
       tarballPath,
@@ -498,7 +498,7 @@ export async function resolveWorkerNpmInstallationArtifact(params: {
       `Worker npm install requires the exact published gateway version; expected ${version}`,
     );
   }
-  const packageRoot = resolveOperatorPackageRoot(params.packageRoot);
+  const packageRoot = resolvePackageRoot(params.packageRoot);
   const packageInstall = params.isPackageInstall
     ? await params.isPackageInstall(packageRoot)
     : await isReleasedPackageInstall(packageRoot);
@@ -514,9 +514,9 @@ export async function resolveWorkerNpmInstallationArtifact(params: {
   return {
     install: "npm",
     bundleHash: params.bundle.bundleHash,
-    operatorVersion: version,
+    openclawVersion: version,
     packageIntegrity,
     protocolFeatures: params.bundle.protocolFeatures,
-    packageSpec: `operator@${version}`,
+    packageSpec: `openclaw@${version}`,
   };
 }

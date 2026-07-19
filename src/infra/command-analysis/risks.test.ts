@@ -242,9 +242,9 @@ describe("command-analysis risks", () => {
     expect(buildCommandPayloadCandidates(["env", "-P", "/usr/bin", "/approve", "abc"])).toEqual([
       "/approve abc",
     ]);
-    expect(buildCommandPayloadCandidates(["exec", "-a", "openclaw", "/approve", "abc"])).toEqual([
-      "/approve abc",
-    ]);
+    expect(
+      buildCommandPayloadCandidates(["exec", "-a", "@gabrielvfonseca/operator", "/approve", "abc"]),
+    ).toEqual(["/approve abc"]);
     expect(buildCommandPayloadCandidates(["command", "-v", "/approve"])).toEqual([
       "command -v /approve",
     ]);
@@ -256,7 +256,7 @@ describe("command-analysis risks", () => {
         "env",
         "env",
         "env",
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "channels",
         "login",
         "--channel",

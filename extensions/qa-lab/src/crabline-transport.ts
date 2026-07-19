@@ -2,20 +2,20 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import {
+  isRecord,
+  normalizeStringifiedOptionalString,
+  readStringValue,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   startOperatorCrablineAdapter,
   type OperatorCrablineChannelDriverSelection,
   type OperatorCrablineInbound,
   type StartedOperatorCrablineAdapter,
-} from "@operator/crabline";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
-import {
-  isRecord,
-  normalizeStringifiedOptionalString,
-  readStringValue,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@openclaw/crabline";
 import { createQaBusState, type QaBusState } from "./bus-state.js";
 import {
   createCrablineProviderDelivery,
@@ -109,7 +109,7 @@ function readTelegramLifecycleEvent(params: {
       id: chatId,
       kind: chatId.startsWith("-") ? "group" : "direct",
     },
-    senderId: "openclaw",
+    senderId: "@gabrielvfonseca/operator",
     senderName: "Operator QA",
     text,
     timestamp: Date.now(),

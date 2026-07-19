@@ -1,5 +1,5 @@
 {
-  "name": "@operator/web-readability-plugin",
+  "name": "@gabrielvfonseca/web-readability-plugin",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator local Readability web extraction plugin",
@@ -9,9 +9,9 @@
     "linkedom": "0.18.12"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

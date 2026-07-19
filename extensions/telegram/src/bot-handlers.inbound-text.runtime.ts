@@ -1,7 +1,7 @@
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
+import { danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Telegram long-text fragment buffering and ordered flush.
 import type { Message } from "grammy/types";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
-import { danger } from "openclaw/plugin-sdk/runtime-env";
 import type { TelegramHandlerMessageRuntime } from "./bot-handlers.message.runtime.js";
 import type { TelegramAmbientTranscriptWatermark } from "./bot-message-context.types.js";
 import type { RegisterTelegramHandlerParams } from "./bot-native-commands.js";

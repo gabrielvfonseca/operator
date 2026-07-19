@@ -15,7 +15,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "..");
 const workspaceSourceAliases = [
   {
-    find: "@operator/gateway-client/browser",
+    find: "@gabrielvfonseca/gateway-client/browser",
     replacement: path.resolve(repoRoot, "packages/gateway-client/src/browser.ts"),
   },
   {
@@ -39,7 +39,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/model-catalog-core/src/$1.ts"),
   },
   {
-    find: "@operator/model-catalog-core",
+    find: "@gabrielvfonseca/model-catalog-core",
     replacement: path.resolve(repoRoot, "packages/model-catalog-core/src/index.ts"),
   },
   {
@@ -47,7 +47,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/normalization-core/src/$1"),
   },
   {
-    find: "@operator/normalization-core",
+    find: "@gabrielvfonseca/normalization-core",
     replacement: path.resolve(repoRoot, "packages/normalization-core/src/index.ts"),
   },
   {
@@ -55,11 +55,11 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/media-core/src/$1"),
   },
   {
-    find: "@operator/media-core",
+    find: "@gabrielvfonseca/media-core",
     replacement: path.resolve(repoRoot, "packages/media-core/src/index.ts"),
   },
   {
-    find: "@operator/workboard-contract",
+    find: "@gabrielvfonseca/workboard-contract",
     replacement: path.resolve(repoRoot, "packages/workboard-contract/src/index.ts"),
   },
   {
@@ -67,7 +67,7 @@ const workspaceSourceAliases = [
     replacement: path.resolve(repoRoot, "packages/net-policy/src/$1"),
   },
   {
-    find: "@operator/net-policy",
+    find: "@gabrielvfonseca/net-policy",
     replacement: path.resolve(repoRoot, "packages/net-policy/src/index.ts"),
   },
 ];
@@ -80,10 +80,10 @@ const sharedUiTestConfig = {
   hookTimeout: 60_000,
 } as const;
 const nodeDrivenBrowserLayoutTests = [
-  "src/ui/chat/sidebar-session-picker.browser.test.ts",
-  "src/pages/chat/chat-responsive.browser.test.ts",
-  "src/components/form-controls.browser.test.ts",
-  "src/pages/sessions/view.browser.test.ts",
+  "tests/ui/chat/sidebar-session-picker.browser.test.ts",
+  "tests/pages/chat/chat-responsive.browser.test.ts",
+  "tests/components/form-controls.browser.test.ts",
+  "tests/pages/sessions/view.browser.test.ts",
 ] as const;
 const chromiumExecutableOverrideEnvKey = "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH";
 const systemChromiumExecutableCandidates = [
@@ -133,10 +133,10 @@ export default defineConfig({
           ...sharedUiTestConfig,
           deps: jsdomOptimizedDeps,
           name: "unit",
-          include: ["src/**/*.test.ts"],
-          exclude: ["src/**/*.browser.test.ts", "src/**/*.e2e.test.ts", "src/**/*.node.test.ts"],
+          include: ["tests/**/*.test.ts"],
+          exclude: ["tests/**/*.browser.test.ts", "tests/**/*.e2e.test.ts", "tests/**/*.node.test.ts"],
           environment: "jsdom",
-          setupFiles: ["./src/test-helpers/lit-warnings.setup.ts"],
+          setupFiles: ["./tests/helpers/lit-warnings.setup.ts"],
         },
       }),
       defineProject({
@@ -147,9 +147,9 @@ export default defineConfig({
           ...sharedUiTestConfig,
           deps: jsdomOptimizedDeps,
           name: "unit-node",
-          include: ["src/**/*.node.test.ts", ...nodeDrivenBrowserLayoutTests],
+          include: ["tests/**/*.node.test.ts", ...nodeDrivenBrowserLayoutTests],
           environment: "jsdom",
-          setupFiles: ["./src/test-helpers/lit-warnings.setup.ts"],
+          setupFiles: ["./tests/helpers/lit-warnings.setup.ts"],
         },
       }),
       defineProject({
@@ -159,9 +159,9 @@ export default defineConfig({
         test: {
           ...sharedUiTestConfig,
           name: "browser",
-          include: ["src/**/*.browser.test.ts"],
+          include: ["tests/**/*.browser.test.ts"],
           exclude: [...nodeDrivenBrowserLayoutTests],
-          setupFiles: ["./src/test-helpers/lit-warnings.setup.ts"],
+          setupFiles: ["./tests/helpers/lit-warnings.setup.ts"],
           browser: {
             enabled: true,
             provider: playwright(

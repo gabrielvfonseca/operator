@@ -1,6 +1,6 @@
 // Novita plugin module implements models behavior.
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import manifest from "./operator.plugin.json" with { type: "json" };
 
 const NOVITA_MANIFEST_PROVIDER = buildManifestModelProviderConfig({

@@ -1,5 +1,5 @@
 /** Tracks the current plugin metadata snapshot for control-plane lookups. */
-import { setCurrentManifestModelIdNormalizationRecords } from "@operator/model-catalog-core/provider-model-id-normalization";
+import { setCurrentManifestModelIdNormalizationRecords } from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   clearCurrentPluginMetadataSnapshotState,

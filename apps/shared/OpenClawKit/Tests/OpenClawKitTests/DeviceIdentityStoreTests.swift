@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 @Suite(.serialized)
 struct DeviceIdentityStoreTests {
@@ -48,7 +48,7 @@ struct DeviceIdentityStoreTests {
         try Data().write(to: blocker)
         // Repoint the pinned state dir at a plain file to force write failures;
         // the isolation trait restores the env var after the test.
-        setenv("OPENCLAW_STATE_DIR", blocker.path, 1)
+        setenv("OPERATOR_STATE_DIR", blocker.path, 1)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         let compatibleEntry: DeviceAuthEntry = DeviceAuthStore.storeToken(
@@ -180,7 +180,7 @@ struct DeviceIdentityStoreTests {
             role: "node",
             gatewayID: nextLineOwner)?.token == "next-line-token")
 
-        let stateDirPath = try #require(getenv("OPENCLAW_STATE_DIR").map { String(cString: $0) })
+        let stateDirPath = try #require(getenv("OPERATOR_STATE_DIR").map { String(cString: $0) })
         let authURL = URL(fileURLWithPath: stateDirPath, isDirectory: true)
             .appendingPathComponent("identity", isDirectory: true)
             .appendingPathComponent("device-auth.json", isDirectory: false)
@@ -204,7 +204,7 @@ struct DeviceIdentityStoreTests {
         let deviceID = "legacy-exact-owner-device"
         let composedOwner = "gateway-\u{00E9}"
         let decomposedOwner = "gateway-e\u{0301}"
-        let stateDirPath = try #require(getenv("OPENCLAW_STATE_DIR").map { String(cString: $0) })
+        let stateDirPath = try #require(getenv("OPERATOR_STATE_DIR").map { String(cString: $0) })
         let identityURL = URL(fileURLWithPath: stateDirPath, isDirectory: true)
             .appendingPathComponent("identity", isDirectory: true)
         let authURL = identityURL.appendingPathComponent("device-auth.json", isDirectory: false)
@@ -373,9 +373,9 @@ struct DeviceIdentityStoreTests {
             token: "share-token",
             profile: .shareExtension)
 
-        // getenv, not ProcessInfo: the trait pins OPENCLAW_STATE_DIR via setenv and
+        // getenv, not ProcessInfo: the trait pins OPERATOR_STATE_DIR via setenv and
         // ProcessInfo.environment can serve a stale snapshot on Darwin.
-        let stateDirPath = try #require(getenv("OPENCLAW_STATE_DIR").map { String(cString: $0) })
+        let stateDirPath = try #require(getenv("OPERATOR_STATE_DIR").map { String(cString: $0) })
         let identityDir = URL(fileURLWithPath: stateDirPath, isDirectory: true)
             .appendingPathComponent("identity", isDirectory: true)
         #expect(primaryIdentity.deviceId != nodeIdentity.deviceId)
@@ -487,7 +487,7 @@ struct DeviceIdentityStoreTests {
             withIntermediateDirectories: true)
         let stored = """
         {
-          "schema": "future-openclaw-device-identity",
+          "schema": "future-operator-device-identity",
           "stableDeviceId": "app-group-device-id"
         }
         """
@@ -646,7 +646,7 @@ struct DeviceIdentityStoreTests {
             profile: .primary) == nil)
     }
 
-    // Regression: an explicit OPENCLAW_STATE_DIR override must never import the
+    // Regression: an explicit OPERATOR_STATE_DIR override must never import the
     // machine's app-group identity/tokens; developer-Mac pairing state leaked
     // into isolated test state dirs through this migration path.
     @Test

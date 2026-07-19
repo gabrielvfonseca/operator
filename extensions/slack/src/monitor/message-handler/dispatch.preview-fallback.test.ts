@@ -950,7 +950,7 @@ vi.mock("../allow-list.js", () => ({
 }));
 
 vi.mock("../config.runtime.js", () => ({
-  resolveStorePath: () => "/tmp/openclaw-store.json",
+  resolveStorePath: () => "/tmp/operator-store.json",
   updateLastRoute: updateLastRouteMock,
 }));
 
@@ -1618,7 +1618,7 @@ describe("dispatchPreparedSlackMessage preview fallback", () => {
     );
 
     expect(updateLastRouteMock).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-store.json",
+      storePath: "/tmp/operator-store.json",
       sessionKey: "agent:main:slack:direct:u1",
       deliveryContext: {
         channel: "slack",
@@ -1659,7 +1659,7 @@ describe("dispatchPreparedSlackMessage preview fallback", () => {
     );
 
     expect(updateLastRouteMock).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-store.json",
+      storePath: "/tmp/operator-store.json",
       sessionKey: "agent:main:main",
       deliveryContext: {
         channel: "slack",
@@ -1699,7 +1699,7 @@ describe("dispatchPreparedSlackMessage preview fallback", () => {
     );
 
     expect(updateLastRouteMock).toHaveBeenCalledWith({
-      storePath: "/tmp/openclaw-store.json",
+      storePath: "/tmp/operator-store.json",
       sessionKey: "agent:main:main",
       deliveryContext: {
         channel: "slack",

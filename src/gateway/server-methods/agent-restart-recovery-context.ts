@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionEntry } from "../../config/sessions.js";
 import { resolveRestartRecoveryChannelAuthority } from "../../config/sessions/restart-recovery-state.js";
 

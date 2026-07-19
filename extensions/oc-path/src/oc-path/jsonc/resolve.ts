@@ -3,7 +3,7 @@
  * dotted; segments are bracket/quote-aware-split so quoted keys
  * containing `/` or `.` round-trip cleanly.
  *
- * @module @operator/oc-path/jsonc/resolve
+ * @module @gabrielvfonseca/oc-path/jsonc/resolve
  */
 
 import type { OcPath } from "../oc-path.js";

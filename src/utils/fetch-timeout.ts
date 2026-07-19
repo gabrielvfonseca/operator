@@ -1,6 +1,6 @@
 // Fetch timeout helpers wrap fetch calls with timeout and abort behavior.
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveSafeTimeoutDelayMs } from "./timer-delay.js";
 

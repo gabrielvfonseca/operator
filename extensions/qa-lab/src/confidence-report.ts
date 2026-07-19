@@ -1,8 +1,8 @@
 // Qa Lab plugin module implements confidence report behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   formatGatewayLogSentinelSummary,
   type GatewayLogSentinelFinding,
@@ -1012,7 +1012,7 @@ function syntheticRuntimeCell(
 
 function syntheticToolCall(overrides: Partial<RuntimeParityToolCall> = {}): RuntimeParityToolCall {
   return {
-    tool: "openclaw.synthetic",
+    tool: "operator.synthetic",
     argsHash: "args-a",
     resultHash: "result-a",
     ...overrides,
@@ -1021,7 +1021,7 @@ function syntheticToolCall(overrides: Partial<RuntimeParityToolCall> = {}): Runt
 
 async function detectRuntimeDrift(params: {
   scenarioId: string;
-  openclaw: RuntimeParityCell;
+  operator: RuntimeParityCell;
   codex: RuntimeParityCell;
   expectedDrift: RuntimeParityDrift;
 }): Promise<boolean> {
@@ -1029,7 +1029,7 @@ async function detectRuntimeDrift(params: {
     scenarioId: params.scenarioId,
     runCell: async (runtime) => ({
       scenarioStatus: "pass",
-      cell: runtime === "openclaw" ? params.openclaw : params.codex,
+      cell: runtime === "@gabrielvfonseca/operator" ? params.operator : params.codex,
     }),
   });
   return result.drift === params.expectedDrift;
@@ -1054,7 +1054,7 @@ function syntheticPromptReport(
       schemaChars: 40,
       entries: [
         {
-          name: "openclaw.synthetic",
+          name: "operator.synthetic",
           summaryChars: 12,
           summaryHash: "summary-a",
           schemaChars: 18,
@@ -1074,7 +1074,9 @@ function detectHarnessDrift(params: {
 }): boolean {
   const left = buildHarnessParityCell({
     variant: { id: "left", label: "Left" },
-    cell: syntheticRuntimeCell("openclaw", { systemPromptReport: params.leftReport }),
+    cell: syntheticRuntimeCell("@gabrielvfonseca/operator", {
+      systemPromptReport: params.leftReport,
+    }),
     tokenUsageSource: "mock-estimate",
   });
   const right = buildHarnessParityCell({
@@ -1092,7 +1094,7 @@ function detectHarnessDrift(params: {
 }
 
 function detectTokenEfficiencyRegression(): boolean {
-  const openclaw = syntheticRuntimeCell("openclaw", {
+  const openclaw = syntheticRuntimeCell("@gabrielvfonseca/operator", {
     usage: { inputTokens: 100, outputTokens: 20, totalTokens: 120 },
   });
   const codex = syntheticRuntimeCell("codex", {
@@ -1107,7 +1109,7 @@ function detectTokenEfficiencyRegression(): boolean {
     summary: {
       run: {
         providerMode: "live-frontier",
-        runtimePair: ["openclaw", "codex"],
+        runtimePair: ["@gabrielvfonseca/operator", "codex"],
       },
       scenarios: [
         {
@@ -1159,7 +1161,7 @@ async function buildQaConfidenceSelfTestSummary(
         schemaChars: 40,
         entries: [
           {
-            name: "openclaw.synthetic",
+            name: "operator.synthetic",
             summaryChars: 12,
             summaryHash: "summary-b",
             schemaChars: 18,
@@ -1179,7 +1181,7 @@ async function buildQaConfidenceSelfTestSummary(
         schemaChars: 40,
         entries: [
           {
-            name: "openclaw.synthetic",
+            name: "operator.synthetic",
             summaryChars: 12,
             summaryHash: "summary-a",
             schemaChars: 18,
@@ -1193,13 +1195,17 @@ async function buildQaConfidenceSelfTestSummary(
   });
   const runtimeToolCallDropDetected = await detectRuntimeDrift({
     scenarioId: "runtime-tool-call-drop",
-    openclaw: syntheticRuntimeCell("openclaw", { toolCalls: [syntheticToolCall()] }),
+    operator: syntheticRuntimeCell("@gabrielvfonseca/operator", {
+      toolCalls: [syntheticToolCall()],
+    }),
     codex: syntheticRuntimeCell("codex", { toolCalls: [] }),
     expectedDrift: "tool-call-shape",
   });
   const toolResultMismatchDetected = await detectRuntimeDrift({
     scenarioId: "tool-result-mismatch",
-    openclaw: syntheticRuntimeCell("openclaw", { toolCalls: [syntheticToolCall()] }),
+    operator: syntheticRuntimeCell("@gabrielvfonseca/operator", {
+      toolCalls: [syntheticToolCall()],
+    }),
     codex: syntheticRuntimeCell("codex", {
       toolCalls: [syntheticToolCall({ resultHash: "result-b" })],
     }),
@@ -1207,7 +1213,7 @@ async function buildQaConfidenceSelfTestSummary(
   });
   const failureModeDriftDetected = await detectRuntimeDrift({
     scenarioId: "failure-mode-drift",
-    openclaw: syntheticRuntimeCell("openclaw"),
+    operator: syntheticRuntimeCell("@gabrielvfonseca/operator"),
     codex: syntheticRuntimeCell("codex", { transportErrorClass: "synthetic-transport" }),
     expectedDrift: "failure-mode",
   });

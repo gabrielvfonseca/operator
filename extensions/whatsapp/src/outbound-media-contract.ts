@@ -1,11 +1,17 @@
 // Whatsapp plugin module implements outbound media contract behavior.
 import path from "node:path";
-import { sanitizeForPlainText } from "openclaw/plugin-sdk/channel-outbound";
-import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS, runFfmpeg } from "openclaw/plugin-sdk/media-runtime";
-import { resolveOutboundMediaUrls } from "openclaw/plugin-sdk/reply-payload";
-import { writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeUniqueStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+import { sanitizeForPlainText } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import {
+  MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS,
+  runFfmpeg,
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { resolveOutboundMediaUrls } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { writeExternalFileWithinRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import {
+  resolvePreferredOperatorTmpDir,
+  withTempWorkspace,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { resolveWhatsAppDocumentFileName } from "./document-filename.js";
 import {
   sanitizeAssistantVisibleText,

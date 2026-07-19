@@ -1,6 +1,6 @@
 /** Resolves provider environment variable candidates and auth evidence from core/plugin metadata. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveProviderAuthAliasMap } from "../agents/provider-auth-aliases.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";

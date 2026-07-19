@@ -9,15 +9,21 @@ import {
   callGatewayTool,
   listNodes,
   resolveNodeIdFromList,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   imageResultFromFile,
   jsonResult,
   readStringParam,
-} from "openclaw/plugin-sdk/channel-actions";
-import { readFiniteNumberParam, readPositiveIntegerParam } from "openclaw/plugin-sdk/param-readers";
-import type { AnyAgentTool, OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import {
+  readFiniteNumberParam,
+  readPositiveIntegerParam,
+} from "@gabrielvfonseca/operator/plugin-sdk/param-readers";
+import type {
+  AnyAgentTool,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { validateSupportedA2UIJsonl } from "./a2ui-jsonl.js";
 import { normalizeCanvasSnapshotFileExtension, parseCanvasSnapshotPayload } from "./cli-helpers.js";
 import { CanvasToolSchema } from "./tool-schema.js";
@@ -52,7 +58,7 @@ async function writeBase64ToTempFile(params: { base64: string; ext: string }): P
   const dir = resolvePreferredOperatorTmpDir();
   await fs.mkdir(dir, { recursive: true, mode: 0o700 });
   const ext = `.${normalizeCanvasSnapshotFileExtension(params.ext)}`;
-  const filePath = path.join(dir, `openclaw-canvas-snapshot-${randomUUID()}${ext}`);
+  const filePath = path.join(dir, `operator-canvas-snapshot-${randomUUID()}${ext}`);
   await fs.writeFile(filePath, Buffer.from(params.base64, "base64"));
   return filePath;
 }

@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `openclaw transcripts` (list, show, and locate stored transcripts)"
+summary: "CLI reference for `operator transcripts` (list, show, and locate stored transcripts)"
 read_when:
   - You want to read stored transcript summaries from the terminal
   - You need the path to a transcripts markdown summary
@@ -7,7 +7,7 @@ read_when:
 title: "Transcripts CLI"
 ---
 
-# `openclaw transcripts`
+# `operator transcripts`
 
 Read-only inspector for transcripts written by the `transcripts` agent tool.
 Capture, import, and summarization run through that tool, not this CLI.
@@ -15,31 +15,31 @@ Capture, import, and summarization run through that tool, not this CLI.
 Artifacts live under the state directory:
 
 ```text
-$OPENCLAW_STATE_DIR/transcripts/YYYY-MM-DD/<session>/
+$OPERATOR_STATE_DIR/transcripts/YYYY-MM-DD/<session>/
   metadata.json
   transcript.jsonl
   summary.json
   summary.md
 ```
 
-Default state directory is `~/.openclaw`; override with `OPENCLAW_STATE_DIR`.
+Default state directory is `~/.operator`; override with `OPERATOR_STATE_DIR`.
 The date directory comes from the session start time; the session directory is
 a filesystem-safe slug derived from the session id.
 
 ## Commands
 
 ```bash
-openclaw transcripts list
-openclaw transcripts show <session>
-openclaw transcripts show YYYY-MM-DD/<session>
-openclaw transcripts path <session>
-openclaw transcripts path YYYY-MM-DD/<session>
-openclaw transcripts path <session> --dir
-openclaw transcripts path <session> --metadata
-openclaw transcripts path <session> --transcript
-openclaw transcripts list --json
-openclaw transcripts show <session> --json
-openclaw transcripts path <session> --json
+operator transcripts list
+operator transcripts show <session>
+operator transcripts show YYYY-MM-DD/<session>
+operator transcripts path <session>
+operator transcripts path YYYY-MM-DD/<session>
+operator transcripts path <session> --dir
+operator transcripts path <session> --metadata
+operator transcripts path <session> --transcript
+operator transcripts list --json
+operator transcripts show <session> --json
+operator transcripts path <session> --json
 ```
 
 | Command                       | Description                                     |
@@ -54,7 +54,7 @@ openclaw transcripts path <session> --json
 
 `<session>` accepts either a bare session id or a date-qualified selector
 (`YYYY-MM-DD/<session>`). Use the qualified form when the same session id
-occurs on more than one day, for example `openclaw transcripts show
+occurs on more than one day, for example `operator transcripts show
 2026-05-22/standup`. Default session ids include a timestamp and random
 suffix; give a session a fixed id only when that id is unique within the day.
 
@@ -64,7 +64,7 @@ suffix; give a session a fixed id only when that id is unique within the day.
 summary path.
 
 ```text
-2026-05-22/standup  2026-05-22T09:00:00.000Z  Weekly standup  /Users/user/.openclaw/transcripts/2026-05-22/standup/summary.md
+2026-05-22/standup  2026-05-22T09:00:00.000Z  Weekly standup  /Users/user/.operator/transcripts/2026-05-22/standup/summary.md
 ```
 
 The selector is the safest value to pass back to `show` or `path`.
@@ -83,7 +83,7 @@ Sessions group by date, then by session id. Ten meetings on one day become
 ten sibling folders:
 
 ```text
-~/.openclaw/transcripts/2026-05-22/
+~/.operator/transcripts/2026-05-22/
   transcript-2026-05-22T09-00-00-000Z-a1b2c3d4/
   transcript-2026-05-22T10-30-00-000Z-b2c3d4e5/
   standup/

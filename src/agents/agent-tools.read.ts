@@ -5,8 +5,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { URL } from "node:url";
-import { detectMime } from "@operator/media-core/mime";
-import { formatByteSize } from "@operator/normalization-core";
+import { detectMime } from "@gabrielvfonseca/media-core/mime";
+import { formatByteSize } from "@gabrielvfonseca/normalization-core";
 import { isWindowsDrivePath } from "../infra/archive-path.js";
 import { toErrorObject } from "../infra/errors.js";
 import {

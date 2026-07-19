@@ -1,7 +1,7 @@
 /**
  * Runs model and image fallback chains across provider/model candidates.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { TRANSCRIPT_NOT_CONTINUABLE_ERROR_CODE } from "../../packages/agent-core/src/errors.js";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import {
@@ -595,7 +595,7 @@ async function resolveModelFallbackCandidateHarnessAuthPrecheck(
   });
   const agentRuntime = explicitAgentRuntime ?? harnessPolicy.runtime;
   const agentRuntimeSource = explicitAgentRuntime ? "model" : harnessPolicy.runtimeSource;
-  if (agentRuntime === "operator") {
+  if (agentRuntime === "@gabrielvfonseca/operator") {
     return result(false);
   }
   if (agentRuntime === "auto" || (agentRuntime === "codex" && agentRuntimeSource === "implicit")) {

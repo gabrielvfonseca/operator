@@ -1,4 +1,4 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -27,7 +27,7 @@ class AudioLevelsTest {
 
   @Test
   fun midScaleFollowsTheSharedDecibelCurve() {
-    // Same 50 dB window as OpenClawKit's TalkAudioLevel: half amplitude is
+    // Same 50 dB window as OperatorKit's TalkAudioLevel: half amplitude is
     // -6.02 dBFS, so the normalized level is (50 - 6.02) / 50 = 0.8796.
     val frame = pcm16Frame(samples = 160, sample = (Short.MAX_VALUE / 2).toShort())
     assertEquals(0.5, TalkAudioLevel.pcm16Rms(frame, frame.size), 1e-3)

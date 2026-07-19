@@ -1,14 +1,14 @@
 // Lmstudio plugin module implements stream behavior.
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import { streamSimple } from "openclaw/plugin-sdk/llm";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/logging-core";
-import type { ProviderWrapStreamFnContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import { streamSimple } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import type { ProviderWrapStreamFnContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   createOpenAICompatibleCompletionsThinkingOffWrapper,
   createPlainTextToolCallCompatWrapper,
-} from "openclaw/plugin-sdk/provider-stream-shared";
-import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from "openclaw/plugin-sdk/ssrf-runtime";
-import { asPositiveSafeInteger } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
+import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { asPositiveSafeInteger } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { LMSTUDIO_PROVIDER_ID } from "./defaults.js";
 import { ensureLmstudioModelLoaded } from "./models.fetch.js";
 import { resolveLmstudioInferenceBase } from "./models.js";

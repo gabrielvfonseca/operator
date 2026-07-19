@@ -150,7 +150,7 @@ function normalizeBuildTimestamp(value: string | undefined, now: () => Date): st
     const timestamp = normalizeControlUiBuildInfo({ builtAt: explicit }).builtAt;
     if (!timestamp) {
       throw new Error(
-        "OPENCLAW_BUILD_TIMESTAMP must be a valid UTC ISO-8601 timestamp ending in Z",
+        "OPERATOR_BUILD_TIMESTAMP must be a valid UTC ISO-8601 timestamp ending in Z",
       );
     }
     return timestamp;
@@ -188,7 +188,7 @@ export function resolveControlUiBuildInfo(
   }
   const commit = envCommit ?? normalizedGitCommit ?? normalizedGithubCommit;
   const builtAt = normalizeBuildTimestamp(
-    env.OPENCLAW_BUILD_TIMESTAMP,
+    env.OPERATOR_BUILD_TIMESTAMP,
     sources.now ?? (() => new Date()),
   );
   // Branch/dirty identity is advisory: the readers return null instead of
@@ -201,7 +201,7 @@ export function resolveControlUiBuildInfo(
     normalizeControlUiBuildInfo({ branch: (sources.readGitBranch ?? readGitBranch)() }).branch;
   const dirty = (sources.readGitDirty ?? readGitDirty)();
   const metadata = { version, commit, builtAt };
-  const explicitBuildId = env.OPENCLAW_CONTROL_UI_BUILD_ID?.trim();
+  const explicitBuildId = env.OPERATOR_CONTROL_UI_BUILD_ID?.trim();
   return {
     ...metadata,
     branch,
@@ -360,7 +360,7 @@ function controlUiServiceWorkerBuildIdPlugin(buildId: string): Plugin {
       const swPath = path.join(outDir, "sw.js");
       const publicSwPath = path.join(here, "public/sw.js");
       const source = fs.readFileSync(publicSwPath, "utf8");
-      const placeholder = '"__OPENCLAW_CONTROL_UI_BUILD_ID__"';
+      const placeholder = '"__OPERATOR_CONTROL_UI_BUILD_ID__"';
       const updated = source.replace(placeholder, JSON.stringify(buildId));
       if (updated === source) {
         throw new Error(`Control UI service worker build id placeholder missing in ${swPath}`);
@@ -390,7 +390,7 @@ function controlUiPrecompressedAssetsPlugin(): Plugin {
 }
 
 export default function controlUiViteConfig(): UserConfig {
-  const envBase = process.env.OPENCLAW_CONTROL_UI_BASE_PATH?.trim();
+  const envBase = process.env.OPERATOR_CONTROL_UI_BASE_PATH?.trim();
   const base = envBase ? normalizeBase(envBase) : "./";
   const bootstrapConfigPath =
     base === "./" ? "/control-ui-config.json" : `${base}control-ui-config.json`;
@@ -398,7 +398,7 @@ export default function controlUiViteConfig(): UserConfig {
   return {
     base,
     define: {
-      "globalThis.OPENCLAW_CONTROL_UI_BUILD_INFO": JSON.stringify(buildInfo),
+      "globalThis.OPERATOR_CONTROL_UI_BUILD_INFO": JSON.stringify(buildInfo),
     },
     publicDir: path.resolve(here, "public"),
     optimizeDeps: {

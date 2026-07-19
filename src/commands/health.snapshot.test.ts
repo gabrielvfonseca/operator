@@ -556,7 +556,7 @@ describe("getHealthSnapshot", () => {
     testConfig = { session: { store: "/tmp/x" } };
     testStore = {};
     setActivePluginRegistry(createTestRegistry([]));
-    const tmpStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-health-dq-"));
+    const tmpStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-health-dq-"));
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
     process.env.OPERATOR_STATE_DIR = tmpStateDir;
     try {
@@ -642,7 +642,7 @@ describe("getHealthSnapshot", () => {
     expect(calls.join("\n")).toContain("/getMe");
     expect(calls.join("\n")).toContain("/getWebhookInfo");
 
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-health-"));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-health-"));
     const tokenFile = path.join(tmpDir, "telegram-token");
     try {
       fs.writeFileSync(tokenFile, "t-file\n", "utf-8");

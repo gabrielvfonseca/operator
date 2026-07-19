@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 import java.util.Locale
 
 private val visibleChatMessageRoles = setOf("user", "assistant", "system", "custom")

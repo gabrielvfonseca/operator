@@ -5,8 +5,8 @@ import {
   asDateTimestampMs,
   parseStrictInteger,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { normalizeDirectChatIdentifier } from "./chat-context.js";
 import { runIMessageCliJsonCommand } from "./cli-output.js";
 import { createIMessageRpcClient } from "./client.js";
@@ -187,7 +187,7 @@ function resolveMessageId(result: Record<string, unknown>): string {
 }
 
 async function withTempFile<T>(input: TempFileInput, fn: (path: string) => Promise<T>): Promise<T> {
-  const dir = await mkdtemp(join(resolvePreferredOperatorTmpDir(), "openclaw-imessage-"));
+  const dir = await mkdtemp(join(resolvePreferredOperatorTmpDir(), "operator-imessage-"));
   const safeExt = extname(input.filename).slice(0, 16) || ".bin";
   const filePath = join(dir, `upload${safeExt}`);
   try {

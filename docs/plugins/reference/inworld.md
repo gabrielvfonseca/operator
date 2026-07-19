@@ -11,8 +11,8 @@ Inworld streaming text-to-speech (MP3, OGG_OPUS, PCM telephony).
 
 ## Distribution
 
-- Package: `@operator/inworld-speech`
-- Install route: npm; ClawHub: `clawhub:@operator/inworld-speech`
+- Package: `@gabrielvfonseca/inworld-speech`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/inworld-speech`
 
 ## Surface
 

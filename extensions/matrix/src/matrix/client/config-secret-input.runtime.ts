@@ -1,2 +1,2 @@
 // Matrix helper module supports config secret input behavior.
-export { resolveConfiguredSecretInputString } from "openclaw/plugin-sdk/secret-input-runtime";
+export { resolveConfiguredSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";

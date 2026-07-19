@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveTrustedGroupId } from "../../agents/agent-tools.policy.js";
 import { clearAllCliSessions } from "../../agents/cli-session.js";
 import {

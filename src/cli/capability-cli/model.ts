@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { detectMime, normalizeMimeType } from "@operator/media-core/mime";
+import { detectMime, normalizeMimeType } from "@gabrielvfonseca/media-core/mime";
 import {
   normalizeOptionalString,
   normalizeStringifiedOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import {
   GATEWAY_CLIENT_MODES,

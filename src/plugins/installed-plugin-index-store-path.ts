@@ -1,8 +1,8 @@
 // Resolves filesystem paths for installed plugin index storage.
 import path from "node:path";
 import { resolveStateDir } from "../config/paths.js";
-import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 
 const LEGACY_INSTALLED_PLUGIN_INDEX_STORE_PATH = path.join("plugins", "installs.json");
 

@@ -1,6 +1,6 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.ChatSendAck
+import ai.operator.app.gateway.ChatSendAck
 import android.Manifest
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred

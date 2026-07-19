@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { buildPluginSdkPackageExports } from "../../plugin-sdk/entrypoints.js";
 import type { ClawdbotConfig, OperatorConfig, OperatorSchemaType } from "../../plugin-sdk/index.js";

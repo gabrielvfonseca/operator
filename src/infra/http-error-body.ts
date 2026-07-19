@@ -1,5 +1,5 @@
-import { decodeTextPrefix } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { decodeTextPrefix } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { formatErrorMessage } from "./errors.js";
 import { readResponseTextPrefix } from "./http-body.js";

@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
 enum ConfigStore {
     struct Overrides {
@@ -49,7 +49,7 @@ enum ConfigStore {
         if let gateway = await self.loadFromGateway() {
             return gateway
         }
-        return OpenClawConfigFile.loadDict()
+        return OperatorConfigFile.loadDict()
     }
 
     @MainActor
@@ -75,7 +75,7 @@ enum ConfigStore {
                         self.lastHash = nil
                         throw error
                     }
-                    guard OpenClawConfigFile.saveDict(
+                    guard OperatorConfigFile.saveDict(
                         root,
                         preserveExistingKeys: true,
                         allowGatewayAuthMutation: allowGatewayAuthMutation)
@@ -92,7 +92,7 @@ enum ConfigStore {
         #else
         let notificationCenter = NotificationCenter.default
         #endif
-        notificationCenter.post(name: .openclawConfigDidChange, object: nil)
+        notificationCenter.post(name: .operatorConfigDidChange, object: nil)
     }
 
     @MainActor
@@ -165,5 +165,5 @@ enum ConfigStore {
 }
 
 extension Notification.Name {
-    static let openclawConfigDidChange = Notification.Name("openclaw.config.did-change")
+    static let openclawConfigDidChange = Notification.Name("operator.config.did-change")
 }

@@ -1,6 +1,6 @@
 // Stale subagent allowlist tests cover doctor warnings for obsolete subagent allowlists.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import {
   collectStaleSubagentAllowlistWarnings,
   maybeRepairStaleSubagentAllowlists,

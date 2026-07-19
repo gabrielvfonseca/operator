@@ -1,5 +1,5 @@
 // Slack plugin entrypoint registers its Operator integration.
-import { defineBundledChannelEntry } from "openclaw/plugin-sdk/channel-entry-contract";
+import { defineBundledChannelEntry } from "@gabrielvfonseca/operator/plugin-sdk/channel-entry-contract";
 import { registerSlackPluginHttpRoutes } from "./http-routes-api.js";
 
 export default defineBundledChannelEntry({

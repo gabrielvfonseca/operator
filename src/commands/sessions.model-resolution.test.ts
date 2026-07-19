@@ -172,7 +172,7 @@ describe("sessionsCommand model resolution", () => {
         defaults: {
           model: { primary: "openai/gpt-5.5" },
           models: {
-            "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
           contextTokens: 200_000,
         },
@@ -187,7 +187,7 @@ describe("sessionsCommand model resolution", () => {
           modelProvider: "openai",
           model: "gpt-5.5",
           agentHarnessId: "codex",
-          agentRuntimeOverride: "openclaw",
+          agentRuntimeOverride: "@gabrielvfonseca/operator",
           modelSelectionLocked: true,
         },
       },

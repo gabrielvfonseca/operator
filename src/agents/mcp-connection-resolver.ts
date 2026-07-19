@@ -3,7 +3,7 @@
  * Resolved url/headers are credentials — never log, fingerprint, or persist them.
  */
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveOperatorMcpTransportAlias } from "../config/mcp-config-normalize.js";
 import { logWarn } from "../logger.js";
 import { registerSecretValueForRedaction } from "../logging/secret-redaction-registry.js";

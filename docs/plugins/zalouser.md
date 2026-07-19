@@ -1,12 +1,12 @@
 ---
 summary: "Zalo Personal plugin: QR login + messaging via native zca-js (plugin install + channel config + tool)"
 read_when:
-  - You want Zalo Personal (unofficial) support in OpenClaw
+  - You want Zalo Personal (unofficial) support in Operator
   - You are configuring or developing the zalouser plugin
 title: "Zalo personal plugin"
 ---
 
-Zalo Personal support for OpenClaw via a plugin that uses native `zca-js` to
+Zalo Personal support for Operator via a plugin that uses native `zca-js` to
 automate a normal Zalo user account. No external `zca`/`openzca` CLI binary is
 required.
 
@@ -30,7 +30,7 @@ install/configure it on that host, then restart the Gateway.
 ### From npm
 
 ```bash
-openclaw plugins install @operator/zalouser
+operator plugins install @gabrielvfonseca/zalouser
 ```
 
 Use the bare package to follow the current official release tag; pin an exact
@@ -41,7 +41,7 @@ afterwards.
 
 ```bash
 PLUGIN_SRC=./path/to/local/zalouser-plugin
-openclaw plugins install "$PLUGIN_SRC"
+operator plugins install "$PLUGIN_SRC"
 cd "$PLUGIN_SRC" && pnpm install
 ```
 
@@ -68,15 +68,15 @@ control, multi-account setup, environment variables, and troubleshooting.
 ## CLI
 
 ```bash
-openclaw channels login --channel zalouser
-openclaw channels login --channel zalouser --account <name>
-openclaw channels logout --channel zalouser
-openclaw channels status --probe
-openclaw message send --channel zalouser --target <threadId> --message "Hello from OpenClaw"
-openclaw directory self --channel zalouser
-openclaw directory peers list --channel zalouser --query "name"
-openclaw directory groups list --channel zalouser --query "name"
-openclaw directory groups members --channel zalouser --group-id <id>
+operator channels login --channel zalouser
+operator channels login --channel zalouser --account <name>
+operator channels logout --channel zalouser
+operator channels status --probe
+operator message send --channel zalouser --target <threadId> --message "Hello from Operator"
+operator directory self --channel zalouser
+operator directory peers list --channel zalouser --query "name"
+operator directory groups list --channel zalouser --query "name"
+operator directory groups members --channel zalouser --group-id <id>
 ```
 
 ## Agent tool

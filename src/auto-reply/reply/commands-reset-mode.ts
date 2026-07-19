@@ -1,5 +1,5 @@
 // Resolves reset command modes from user text into typed reset behavior.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type SoftResetParseResult = { matched: false } | { matched: true; tail: string };
 

@@ -1,5 +1,5 @@
 // Normalizes gateway discovery targets for local and remote lookups.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   resolveGatewayDiscoveryEndpoint,
   type GatewayBonjourBeacon,

@@ -22,7 +22,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { describe, expect, it } from "vitest";
 import {
   getWorkspaceState,
@@ -72,7 +72,7 @@ const SEED_DOC: WorkspaceDoc = {
 };
 
 async function withTempStateDir<T>(run: (stateDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-integ-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-integ-"));
   try {
     return await run(stateDir);
   } finally {

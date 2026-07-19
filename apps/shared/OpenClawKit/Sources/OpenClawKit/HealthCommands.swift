@@ -1,23 +1,23 @@
 import Foundation
 
-public enum OpenClawHealthCommand: String, Codable, Sendable {
+public enum OperatorHealthCommand: String, Codable, Sendable {
     case summary = "health.summary"
 }
 
-public enum OpenClawHealthSummaryPeriod: String, Codable, Sendable, CaseIterable {
+public enum OperatorHealthSummaryPeriod: String, Codable, Sendable, CaseIterable {
     case today
 }
 
-public struct OpenClawHealthSummaryParams: Codable, Sendable, Equatable {
-    public var period: OpenClawHealthSummaryPeriod
+public struct OperatorHealthSummaryParams: Codable, Sendable, Equatable {
+    public var period: OperatorHealthSummaryPeriod
 
-    public init(period: OpenClawHealthSummaryPeriod) {
+    public init(period: OperatorHealthSummaryPeriod) {
         self.period = period
     }
 }
 
-public struct OpenClawHealthSummaryPayload: Codable, Sendable, Equatable {
-    public var period: OpenClawHealthSummaryPeriod
+public struct OperatorHealthSummaryPayload: Codable, Sendable, Equatable {
+    public var period: OperatorHealthSummaryPeriod
     public var startISO: String
     public var endISO: String
     public var timeZoneIdentifier: String
@@ -28,7 +28,7 @@ public struct OpenClawHealthSummaryPayload: Codable, Sendable, Equatable {
     public var workoutDurationMinutes: Int?
 
     public init(
-        period: OpenClawHealthSummaryPeriod,
+        period: OperatorHealthSummaryPeriod,
         startISO: String,
         endISO: String,
         timeZoneIdentifier: String,

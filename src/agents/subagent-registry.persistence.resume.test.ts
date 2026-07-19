@@ -72,7 +72,7 @@ describe("subagent registry persistence resume", () => {
   });
 
   it("resumes a persisted run from canonical SQLite state", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-subagent-"));
     const stateDir = tempStateDir;
     await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
       const run: SubagentRunRecord = {

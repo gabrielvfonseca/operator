@@ -1,20 +1,20 @@
 // Telegram plugin module implements token behavior.
-import { resolveNormalizedAccountEntry } from "openclaw/plugin-sdk/account-core";
-import type { BaseTokenResolution } from "openclaw/plugin-sdk/channel-contract";
-import { tryReadSecretFileSync } from "openclaw/plugin-sdk/channel-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { resolveDefaultSecretProviderAlias } from "openclaw/plugin-sdk/provider-auth";
+import { resolveNormalizedAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import type { BaseTokenResolution } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { tryReadSecretFileSync } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { TelegramAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { resolveDefaultSecretProviderAlias } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   normalizeSecretInputString,
   resolveSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import { resolveDefaultTelegramAccountId } from "./account-selection.js";
 
 type TelegramTokenSource = "env" | "tokenFile" | "config" | "none";

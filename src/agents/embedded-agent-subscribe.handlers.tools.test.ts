@@ -1,6 +1,6 @@
 // Tool handler tests cover tool lifecycle events, read-path diagnostics,
 // messaging tool capture, approvals, and emitted summaries.
-import type { AgentEvent } from "openclaw/plugin-sdk/agent-core";
+import type { AgentEvent } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   onAgentEvent as registerAgentEventListener,
@@ -182,7 +182,7 @@ describe("update_plan progress events", () => {
         data: {
           phase: "update",
           title: "Plan updated",
-          source: "openclaw",
+          source: "@gabrielvfonseca/operator",
           explanation: "Implementation underway",
           steps: [
             { step: "Inspect", status: "completed" },
@@ -3496,7 +3496,7 @@ describe("control UI credential redaction (issue #72283)", () => {
         type: "tool_execution_start",
         toolName: "exec",
         toolCallId: "tool-exec-secret",
-        args: { command: "cat ~/.openclaw/openclaw.json" },
+        args: { command: "cat ~/.operator/operator.json" },
       } as never,
     );
 

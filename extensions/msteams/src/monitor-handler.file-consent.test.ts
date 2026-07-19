@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { createPluginStateKeyedStoreForTests } from "openclaw/plugin-sdk/plugin-state-test-runtime";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { createPluginStateKeyedStoreForTests } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { PluginRuntime } from "../runtime-api.js";
 import { runMSTeamsFileConsentInvokeHandler } from "./file-consent-invoke.js";
@@ -55,7 +55,7 @@ function createRuntimeStub(stateDir?: string): PluginRuntime {
         if (override) {
           return override;
         }
-        return stateDir ?? path.join(os.homedir(), ".openclaw");
+        return stateDir ?? path.join(os.homedir(), ".operator");
       },
     },
   } as unknown as PluginRuntime;
@@ -336,7 +336,7 @@ describe("msteams file consent invoke FS fallback", () => {
 
   beforeEach(async () => {
     originalStateDir = process.env.OPERATOR_STATE_DIR;
-    tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "openclaw-msteams-invoke-"));
+    tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "operator-msteams-invoke-"));
     process.env.OPERATOR_STATE_DIR = tmpDir;
     setMSTeamsRuntime(createRuntimeStub(tmpDir));
     vi.clearAllMocks();

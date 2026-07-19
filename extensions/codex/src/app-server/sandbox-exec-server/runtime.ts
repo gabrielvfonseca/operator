@@ -2,7 +2,7 @@
  * Runtime guards for sandbox exec-server handlers that need backend-specific
  * execution and filesystem bridges.
  */
-import type { SandboxContext } from "openclaw/plugin-sdk/sandbox";
+import type { SandboxContext } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import type { OperatorExecServer } from "./types.js";
 
 /** Returns the configured sandbox backend or fails the current JSON-RPC request. */

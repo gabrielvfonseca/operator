@@ -1,6 +1,6 @@
 // Whatsapp plugin module implements ack emoji behavior.
-import { resolveAgentIdentity } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { resolveAgentIdentity } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 const DEFAULT_WHATSAPP_ACK_REACTION = "👀";
 

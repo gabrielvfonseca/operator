@@ -1,5 +1,5 @@
 // Slack tests cover channel plugin behavior.
-import { createRuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
+import { createRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { slackPlugin } from "./channel.js";
 import { slackOutbound } from "./outbound-adapter.js";
@@ -476,7 +476,7 @@ describe("slackPlugin status", () => {
     const probeSpy = vi.spyOn(probeModule, "probeSlack").mockResolvedValueOnce({
       ok: true,
       status: 200,
-      bot: { id: "B1", name: "openclaw-bot" },
+      bot: { id: "B1", name: "operator-bot" },
       team: { id: "T1", name: "Operator" },
     });
     const cfg = {
@@ -503,7 +503,7 @@ describe("slackPlugin status", () => {
     expect(result).toEqual({
       ok: true,
       status: 200,
-      bot: { id: "B1", name: "openclaw-bot" },
+      bot: { id: "B1", name: "operator-bot" },
       team: { id: "T1", name: "Operator" },
     });
   });

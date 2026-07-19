@@ -2,21 +2,21 @@
 import fsp from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import type { CopilotClient, Tool as SdkTool } from "@github/copilot-sdk";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   abortAgentHarnessRun,
   attachModelProviderRequestTransport,
   queueAgentHarnessMessage,
   type AgentHarnessAttemptParams,
   type AgentHarnessAttemptResult,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { SandboxContext } from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { SandboxContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   initializeGlobalHookRunner,
   resetGlobalHookRunner,
-} from "openclaw/plugin-sdk/hook-runtime";
-import { createMockPluginRegistry } from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import { createMockPluginRegistry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { CopilotClient, Tool as SdkTool } from "@github/copilot-sdk";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { runCopilotAttempt } from "./attempt.js";
 import type { CopilotClientPool } from "./runtime.js";
@@ -38,7 +38,7 @@ const dualWriteMock = vi.hoisted(() => ({
     const record = message as unknown as Record<string, unknown>;
     return {
       ...record,
-      __openclaw: { ...(record["__openclaw"] as object | undefined), mirrorIdentity: identity },
+      __operator: { ...(record["__openclaw"] as object | undefined), mirrorIdentity: identity },
     } as unknown as T;
   },
 }));
@@ -290,7 +290,7 @@ function makeParams(
     sessionTarget: {
       sessionId: "session-1",
       sessionKey: "agent:main:session-1",
-      storePath: "openclaw-agent.sqlite",
+      storePath: "operator-agent.sqlite",
     },
     timeoutMs: 5000,
     workspaceDir: "C:\\workspace",
@@ -3502,16 +3502,18 @@ describe("runCopilotAttempt", () => {
     it("keeps a host-scoped Operator create-session surface ring-zero", async () => {
       const sdk = makeFakeSdk();
       const pool = makeFakePool(sdk);
-      const sdkTools = [makeFakeSdkTool("openclaw")];
+      const sdkTools = [makeFakeSdkTool("@gabrielvfonseca/operator")];
       const createToolBridge = vi.fn(async () => ({ sdkTools, sourceTools: [] }));
 
-      await runCopilotAttempt(makeParams({ toolsAllow: ["openclaw"] }), {
+      await runCopilotAttempt(makeParams({ toolsAllow: ["@gabrielvfonseca/operator"] }), {
         createToolBridge,
-        isHostScopedToolActive: (toolName) => toolName === "openclaw",
+        isHostScopedToolActive: (toolName) => toolName === "@gabrielvfonseca/operator",
         pool,
       });
 
-      expect(readAvailableTools(sdk.createSession.mock.calls[0])).toEqual(["openclaw"]);
+      expect(readAvailableTools(sdk.createSession.mock.calls[0])).toEqual([
+        "@gabrielvfonseca/operator",
+      ]);
     });
 
     it("forwards `[]` to the SDK when the bridge returns no tools (disable / raw / fully filtered)", async () => {
@@ -3589,24 +3591,24 @@ describe("runCopilotAttempt", () => {
         },
       });
       const pool = makeFakePool(sdk);
-      const sdkTools = [makeFakeSdkTool("openclaw")];
+      const sdkTools = [makeFakeSdkTool("@gabrielvfonseca/operator")];
       const createToolBridge = vi.fn(async () => ({ sdkTools, sourceTools: [] }));
 
       await runCopilotAttempt(
         makeParams({
           initialReplayState: { sdkSessionId: "sess-openclaw" },
-          toolsAllow: ["openclaw"],
+          toolsAllow: ["@gabrielvfonseca/operator"],
         } as never),
         {
           createToolBridge,
-          isHostScopedToolActive: (toolName) => toolName === "openclaw",
+          isHostScopedToolActive: (toolName) => toolName === "@gabrielvfonseca/operator",
           pool,
         },
       );
 
       const resumeCall = sdk.resumeSession.mock.calls[0] as unknown[] | undefined;
       const resumeCfg = resumeCall?.[1] as { availableTools?: string[] };
-      expect(resumeCfg?.availableTools).toEqual(["openclaw"]);
+      expect(resumeCfg?.availableTools).toEqual(["@gabrielvfonseca/operator"]);
     });
 
     it("forwards `[]` to resumeSession when the bridge returns no tools", async () => {

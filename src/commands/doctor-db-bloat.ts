@@ -5,8 +5,8 @@ import fs from "node:fs";
 import { note } from "../../packages/terminal-core/src/note.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
-import { listOperatorRegisteredAgentDatabases } from "../state/operator-agent-db.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { listOperatorRegisteredAgentDatabases } from "../state/openclaw-agent-db.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { formatBytes } from "./doctor-disk-space.js";
 
 // Bloat is only worth an operator's attention when the file is meaningfully

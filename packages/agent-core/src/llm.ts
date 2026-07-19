@@ -1,2 +1,2 @@
 // AI contract compatibility barrel for agent-core consumers.
-export * from "@operator/ai";
+export * from "@gabrielvfonseca/ai";

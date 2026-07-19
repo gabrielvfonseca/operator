@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayEndpoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
@@ -26,7 +26,7 @@ class CronRuntimeGuardTest {
   fun clearPlainPrefs() {
     RuntimeEnvironment
       .getApplication()
-      .getSharedPreferences("openclaw.node", android.content.Context.MODE_PRIVATE)
+      .getSharedPreferences("operator.node", android.content.Context.MODE_PRIVATE)
       .edit()
       .clear()
       .commit()
@@ -300,7 +300,7 @@ class CronRuntimeGuardTest {
     val app = RuntimeEnvironment.getApplication()
     val securePrefs =
       app.getSharedPreferences(
-        "openclaw.node.cron.guard.test.${UUID.randomUUID()}",
+        "operator.node.cron.guard.test.${UUID.randomUUID()}",
         android.content.Context.MODE_PRIVATE,
       )
     return NodeRuntime(app, SecurePrefs(app, securePrefsOverride = securePrefs))

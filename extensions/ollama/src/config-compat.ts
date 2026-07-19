@@ -1,5 +1,5 @@
 // Ollama helper module supports config compat behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { OLLAMA_CLOUD_BASE_URL, OLLAMA_CLOUD_PROVIDER_ID } from "./defaults.js";
 
 type LegacyConfigRule = {

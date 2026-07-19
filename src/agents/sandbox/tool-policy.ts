@@ -3,8 +3,8 @@
  *
  * Merges global, agent, and default allow/deny lists into normalized policy plus source diagnostics.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveAgentConfig } from "../agent-scope.js";
 import { compileGlobPatterns, matchesAnyGlobPattern } from "../glob-pattern.js";

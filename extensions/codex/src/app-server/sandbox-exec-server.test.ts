@@ -126,7 +126,7 @@ describe("Operator Codex sandbox exec-server", () => {
     const addRequest = requests[0];
     expect(addRequest?.method).toBe("environment/add");
     expect(environment).toEqual({
-      environmentId: expect.stringMatching(/^openclaw-sandbox-/),
+      environmentId: expect.stringMatching(/^operator-sandbox-/),
       cwd: "/workspace",
     });
     const execServerUrl =
@@ -511,7 +511,7 @@ describe("Operator Codex sandbox exec-server", () => {
       sandbox,
     });
     const unauthorizedUrl = execServerUrlFromClient(client).replace(
-      /\/openclaw-[^/?#]+/u,
+      /\/operator-[^/?#]+/u,
       "/wrong",
     );
     const socket = await openSocket(unauthorizedUrl);
@@ -527,7 +527,7 @@ describe("Operator Codex sandbox exec-server", () => {
       sandbox,
     });
     const unauthorizedUrl = execServerUrlFromClient(client).replace(
-      /\/openclaw-[^/?#]+/u,
+      /\/operator-[^/?#]+/u,
       "/wrong",
     );
     const socket = await openSocket(unauthorizedUrl);

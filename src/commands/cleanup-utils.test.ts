@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, test, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -18,8 +18,8 @@ import {
 describe("buildCleanupPlan", () => {
   test("resolves inside-state flags and workspace dirs", () => {
     const tmpRoot = path.join(path.parse(process.cwd()).root, "tmp");
-    const defaultWorkspace = path.join(tmpRoot, "openclaw-workspace-default");
-    const opsWorkspace = path.join(tmpRoot, "openclaw-workspace-ops");
+    const defaultWorkspace = path.join(tmpRoot, "operator-workspace-default");
+    const opsWorkspace = path.join(tmpRoot, "operator-workspace-ops");
     const cfg = {
       agents: {
         defaults: { workspace: defaultWorkspace },
@@ -28,9 +28,9 @@ describe("buildCleanupPlan", () => {
     };
     const plan = buildCleanupPlan({
       cfg: cfg as unknown as OperatorConfig,
-      stateDir: path.join(tmpRoot, "openclaw-state"),
-      configPath: path.join(tmpRoot, "openclaw-state", "openclaw.json"),
-      oauthDir: path.join(tmpRoot, "openclaw-oauth"),
+      stateDir: path.join(tmpRoot, "operator-state"),
+      configPath: path.join(tmpRoot, "operator-state", "operator.json"),
+      oauthDir: path.join(tmpRoot, "operator-oauth"),
     });
 
     expect(plan.configInsideState).toBe(true);
@@ -39,9 +39,9 @@ describe("buildCleanupPlan", () => {
   });
 
   test("includes implicit per-agent workspaces under the state dir", () => {
-    const tmpRoot = path.join(path.parse(process.cwd()).root, "tmp", "openclaw-cleanup-plan");
+    const tmpRoot = path.join(path.parse(process.cwd()).root, "tmp", "operator-cleanup-plan");
     const home = path.join(tmpRoot, "home");
-    const stateDir = path.join(home, ".openclaw");
+    const stateDir = path.join(home, ".operator");
     const cfg = {
       agents: {
         list: [{ id: "main" }, { id: "work" }],
@@ -58,7 +58,7 @@ describe("buildCleanupPlan", () => {
         const plan = buildCleanupPlan({
           cfg: cfg as unknown as OperatorConfig,
           stateDir,
-          configPath: path.join(stateDir, "openclaw.json"),
+          configPath: path.join(stateDir, "operator.json"),
           oauthDir: path.join(stateDir, "credentials"),
         });
 
@@ -83,11 +83,11 @@ describe("cleanup path removals", () => {
 
   it("removes state and only linked paths outside state", async () => {
     const runtime = createRuntimeMock();
-    const tmpRoot = path.join(path.parse(process.cwd()).root, "tmp", "openclaw-cleanup");
+    const tmpRoot = path.join(path.parse(process.cwd()).root, "tmp", "operator-cleanup");
     await removeStateAndLinkedPaths(
       {
         stateDir: path.join(tmpRoot, "state"),
-        configPath: path.join(tmpRoot, "state", "openclaw.json"),
+        configPath: path.join(tmpRoot, "state", "operator.json"),
         oauthDir: path.join(tmpRoot, "oauth"),
         configInsideState: true,
         oauthInsideState: false,
@@ -97,18 +97,18 @@ describe("cleanup path removals", () => {
     );
 
     expect(runtime.log.mock.calls.map(([line]) => line.replaceAll("\\", "/"))).toEqual([
-      "[dry-run] remove /tmp/openclaw-cleanup/state",
-      "[dry-run] remove /tmp/openclaw-cleanup/oauth",
+      "[dry-run] remove /tmp/operator-cleanup/state",
+      "[dry-run] remove /tmp/operator-cleanup/oauth",
     ]);
   });
 
   it("preserves nested workspace paths during state-only removal", async () => {
     const runtime = createRuntimeMock();
-    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cleanup-"));
-    const stateDir = path.join(tmpRoot, ".openclaw");
+    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cleanup-"));
+    const stateDir = path.join(tmpRoot, ".operator");
     const workspaceDir = path.join(stateDir, "workspace");
     const workspaceFile = path.join(workspaceDir, "project.txt");
-    const configPath = path.join(stateDir, "openclaw.json");
+    const configPath = path.join(stateDir, "operator.json");
     const cacheFile = path.join(stateDir, "cache.json");
 
     try {
@@ -139,20 +139,20 @@ describe("cleanup path removals", () => {
 
   it("removes every workspace directory", async () => {
     const runtime = createRuntimeMock();
-    const workspaces = ["/tmp/openclaw-workspace-1", "/tmp/openclaw-workspace-2"];
+    const workspaces = ["/tmp/operator-workspace-1", "/tmp/operator-workspace-2"];
 
     await removeWorkspaceDirs(workspaces, runtime, { dryRun: true });
 
     const logs = runtime.log.mock.calls.map(([line]) => line);
     expect(logs).toEqual([
-      "[dry-run] remove /tmp/openclaw-workspace-1",
-      "[dry-run] remove /tmp/openclaw-workspace-2",
+      "[dry-run] remove /tmp/operator-workspace-1",
+      "[dry-run] remove /tmp/operator-workspace-2",
     ]);
   });
 
   it("removes owned legacy workspace attestations", async () => {
     const runtime = createRuntimeMock();
-    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cleanup-attest-"));
+    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cleanup-attest-"));
     const workspaceDir = path.join(tmpRoot, "workspace");
     const legacyAttestationPath = `${workspaceDir}.attested`;
 
@@ -160,7 +160,7 @@ describe("cleanup path removals", () => {
       await fs.mkdir(workspaceDir, { recursive: true });
       await fs.writeFile(
         legacyAttestationPath,
-        `openclaw-workspace-attestation:v1\n${new Date().toISOString()}\n`,
+        `operator-workspace-attestation:v1\n${new Date().toISOString()}\n`,
       );
 
       await removeWorkspaceAttestationPaths([workspaceDir], runtime);
@@ -186,7 +186,7 @@ describe("cleanup path removals", () => {
 
   it("refuses to remove a directory containing the current working directory", async () => {
     const runtime = createRuntimeMock();
-    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cleanup-cwd-"));
+    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cleanup-cwd-"));
     const nestedCwd = path.join(tmpRoot, "nested");
     const cwdSpy = vi.spyOn(process, "cwd");
 

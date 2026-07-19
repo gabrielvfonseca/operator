@@ -1,4 +1,4 @@
-import type { GatewayConnectAuthSelection } from "@operator/gateway-client/browser";
+import type { GatewayConnectAuthSelection } from "@gabrielvfonseca/gateway-client/browser";
 import { loadDeviceAuthToken, peekStoredDeviceIdentityId } from "../lib/nodes/index.ts";
 
 const CONTROL_UI_OPERATOR_ROLE = "operator";

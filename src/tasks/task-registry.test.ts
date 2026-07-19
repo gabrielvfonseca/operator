@@ -281,7 +281,7 @@ function createAcpSessionStoreEntry(params: {
   } as const;
   return {
     cfg: {} as never,
-    storePath: "/tmp/openclaw-test-sessions.json",
+    storePath: "/tmp/operator-test-sessions.json",
     sessionKey: params.sessionKey,
     storeSessionKey: params.sessionKey,
     entry: {
@@ -446,7 +446,7 @@ async function withTaskRegistryTempDir<T>(
   run: (root: string) => Promise<T>,
   options?: { durableStore?: boolean },
 ): Promise<T> {
-  return await withTempDir({ prefix: "openclaw-task-registry-" }, async (root) => {
+  return await withTempDir({ prefix: "operator-task-registry-" }, async (root) => {
     return await withEnvAsync({ OPERATOR_STATE_DIR: root }, async () => {
       resetTaskRegistryForTests({ persist: false });
       resetTaskFlowRegistryForTests({ persist: false });

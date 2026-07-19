@@ -1,9 +1,9 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
-import ai.openclaw.app.GatewayAgentSummary
-import ai.openclaw.app.ui.image.RemoteImageResult
-import ai.openclaw.app.ui.image.decodeRemoteImageBitmap
-import ai.openclaw.app.ui.image.safeRemoteImageStore
+import ai.operator.app.GatewayAgentSummary
+import ai.operator.app.ui.image.RemoteImageResult
+import ai.operator.app.ui.image.decodeRemoteImageBitmap
+import ai.operator.app.ui.image.safeRemoteImageStore
 import android.graphics.Bitmap
 import android.util.Base64
 import androidx.compose.foundation.Image

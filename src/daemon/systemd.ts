@@ -3,8 +3,8 @@ import * as fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveStateDir } from "../config/paths.js";
 import {
   isUnresolvedShellReference,
@@ -126,7 +126,7 @@ async function findMarkerOwnedSystemSystemdUnit(): Promise<{
     if (
       svc.platform !== "linux" ||
       svc.scope !== "system" ||
-      svc.marker !== "operator" ||
+      svc.marker !== "@gabrielvfonseca/operator" ||
       !svc.label?.endsWith(".service")
     ) {
       continue;

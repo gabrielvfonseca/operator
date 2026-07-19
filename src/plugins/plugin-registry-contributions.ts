@@ -1,6 +1,6 @@
 /** Loads manifest and installed-index contributions used to build plugin registry snapshots. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeSortedUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeSortedUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   normalizePluginsConfigWithResolver,

@@ -5,8 +5,8 @@ export type {
   OperatorConfig,
   OperatorPluginApi,
   PluginRuntime,
-} from "openclaw/plugin-sdk/core";
-export type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+export type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 export type { ResolvedLineAccount } from "./runtime-api.js";
 export { linePlugin } from "./src/channel.js";
 export { lineSetupPlugin } from "./src/channel.setup.js";

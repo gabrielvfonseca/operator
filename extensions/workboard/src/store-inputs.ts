@@ -4,9 +4,9 @@ import type {
   WorkboardDiagnostic,
   WorkboardWorkspace,
   WorkboardWorkspaceAccess,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";
 
-export type { WorkboardBoardSummary } from "@operator/workboard-contract";
+export type { WorkboardBoardSummary } from "@gabrielvfonseca/workboard-contract";
 
 type WorkboardCardInput = {
   title?: unknown;

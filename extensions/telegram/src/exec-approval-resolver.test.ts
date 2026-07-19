@@ -1,5 +1,5 @@
 // Telegram tests cover the unified operator approval resolver.
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-reply-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const approvalGatewayRuntimeHoisted = vi.hoisted(() => ({

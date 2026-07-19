@@ -1,4 +1,4 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Matrix plugin module implements startup behavior.
 import type { RuntimeLogger } from "../../runtime-api.js";
 import type { CoreConfig, MatrixConfig } from "../../types.js";

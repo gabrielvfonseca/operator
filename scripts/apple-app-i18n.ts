@@ -42,8 +42,8 @@ const NATIVE_SOURCE_PATH = "apps/.i18n/native-source.json";
 const NATIVE_TRANSLATIONS_DIR = "apps/.i18n/native";
 const IOS_SOURCE_PREFIXES = [
   "apps/ios/",
-  "apps/shared/OpenClawKit/Sources/OpenClawChatUI/",
-  "apps/shared/OpenClawKit/Sources/OpenClawKit/",
+  "apps/shared/OperatorKit/Sources/OperatorChatUI/",
+  "apps/shared/OperatorKit/Sources/OperatorKit/",
 ] as const;
 const IOS_CATALOG_KINDS = new Set([
   "conditional-branch",
@@ -57,7 +57,7 @@ const IOS_CATALOG_KINDS = new Set([
 ]);
 const IOS_CATALOG_EXCLUSIONS = new Set([
   // Product names and preview-only single-character fixtures are intentionally verbatim.
-  "OpenClaw",
+  "Operator",
   "z",
 ]);
 const IOS_INFO_PLIST_TARGETS = [
@@ -143,21 +143,21 @@ const APPLE_LOCALE_DIRECTORIES: Record<string, string> = {
   "zh-TW": "zh-Hant",
 };
 const LOCALIZED_WRAPPER_CONTRACTS: Record<string, readonly string[]> = {
-  "apps/ios/Sources/Design/OpenClawProComponents.swift": [
-    "enum OpenClawTextValue: ExpressibleByStringLiteral",
-    "struct ProSectionHeader: View {\n    let title: OpenClawTextValue",
-    "struct OpenClawNoticeBanner: View {\n    let icon: String\n    let title: OpenClawTextValue\n    let message: OpenClawTextValue",
-    "struct OpenClawAdaptiveHeaderRow<Leading: View, Accessory: View>: View {\n    let title: OpenClawTextValue\n    let subtitle: OpenClawTextValue?",
-    "struct OpenClawStatusBadge: View {\n    @Environment(\\.colorScheme) private var colorScheme\n    let label: OpenClawTextValue",
-    "struct ProMetricTile: View {\n    @Environment(\\.colorScheme) private var colorScheme\n    let title: OpenClawTextValue",
-    "struct ProPanelHeader: View {\n    let title: OpenClawTextValue",
-    "struct ProStatusRow: View {\n    let icon: String\n    let title: OpenClawTextValue\n    let detail: OpenClawTextValue",
+  "apps/ios/Sources/Design/OperatorProComponents.swift": [
+    "enum OperatorTextValue: ExpressibleByStringLiteral",
+    "struct ProSectionHeader: View {\n    let title: OperatorTextValue",
+    "struct OperatorNoticeBanner: View {\n    let icon: String\n    let title: OperatorTextValue\n    let message: OperatorTextValue",
+    "struct OperatorAdaptiveHeaderRow<Leading: View, Accessory: View>: View {\n    let title: OperatorTextValue\n    let subtitle: OperatorTextValue?",
+    "struct OperatorStatusBadge: View {\n    @Environment(\\.colorScheme) private var colorScheme\n    let label: OperatorTextValue",
+    "struct ProMetricTile: View {\n    @Environment(\\.colorScheme) private var colorScheme\n    let title: OperatorTextValue",
+    "struct ProPanelHeader: View {\n    let title: OperatorTextValue",
+    "struct ProStatusRow: View {\n    let icon: String\n    let title: OperatorTextValue\n    let detail: OperatorTextValue",
   ],
   "apps/ios/Sources/Design/SettingsProTabSupport.swift": [
-    "struct SettingsDetailRow: View {\n    let label: LocalizedStringKey\n    let value: OpenClawTextValue",
-    "init(_ label: LocalizedStringKey, value: OpenClawTextValue)",
+    "struct SettingsDetailRow: View {\n    let label: LocalizedStringKey\n    let value: OperatorTextValue",
+    "init(_ label: LocalizedStringKey, value: OperatorTextValue)",
     "self.value.text",
-    "struct SettingsApprovalItem: Identifiable {\n    let id: String\n    let icon: String\n    let title: OpenClawTextValue\n    let detail: OpenClawTextValue\n    let priority: OpenClawTextValue",
+    "struct SettingsApprovalItem: Identifiable {\n    let id: String\n    let icon: String\n    let title: OperatorTextValue\n    let detail: OperatorTextValue\n    let priority: OperatorTextValue",
     "self.item.title.text",
     "self.item.detail.text",
     "self.item.priority.text",
@@ -170,9 +170,9 @@ const LOCALIZED_WRAPPER_CONTRACTS: Record<string, readonly string[]> = {
     "Text(verbatim: account.detailText)",
   ],
   "apps/ios/Sources/Design/SettingsProTabActions.swift": [
-    "func detailStatusCard(\n        icon: String,\n        title: OpenClawTextValue,\n        detail: OpenClawTextValue,\n        value: OpenClawTextValue",
-    "func diagnosticCheckRow(\n        icon: String,\n        title: OpenClawTextValue,\n        detail: OpenClawTextValue,\n        value: OpenClawTextValue",
-    "pendingApproval.commandPreview.map(OpenClawTextValue.verbatim)",
+    "func detailStatusCard(\n        icon: String,\n        title: OperatorTextValue,\n        detail: OperatorTextValue,\n        value: OperatorTextValue",
+    "func diagnosticCheckRow(\n        icon: String,\n        title: OperatorTextValue,\n        detail: OperatorTextValue,\n        value: OperatorTextValue",
+    "pendingApproval.commandPreview.map(OperatorTextValue.verbatim)",
     'format: String(localized: "Agent: %@")',
   ],
   "apps/ios/Sources/Design/SettingsProTabSections.swift": [
@@ -209,21 +209,21 @@ const LOCALIZED_WRAPPER_CONTRACTS: Record<string, readonly string[]> = {
   "apps/ios/Sources/Design/AgentProTab+Overview.swift": [
     "subtitle: .verbatim(self.agentTotalText)",
     'AttributedString(localized: "^[\\(count) agent](inflect: true) total")',
-    "func agentMenuRow(\n        icon: String,\n        title: OpenClawTextValue,\n        detail: OpenClawTextValue",
-    "func metricTile(\n        icon: String,\n        title: OpenClawTextValue,\n        value: String,\n        detail: OpenClawTextValue",
+    "func agentMenuRow(\n        icon: String,\n        title: OperatorTextValue,\n        detail: OperatorTextValue",
+    "func metricTile(\n        icon: String,\n        title: OperatorTextValue,\n        value: String,\n        detail: OperatorTextValue",
   ],
   "apps/ios/Sources/Design/AgentProNodesDestination.swift": [
-    "private func nodeDetailRow(\n        _ title: OpenClawTextValue,\n        copyLabel: LocalizedStringKey",
-    "private func nodeListCard(title: OpenClawTextValue, values: [String])",
-    "private func detailMetric(label: OpenClawTextValue, value: String)",
-    "title: OpenClawTextValue,\n        detail: OpenClawTextValue",
+    "private func nodeDetailRow(\n        _ title: OperatorTextValue,\n        copyLabel: LocalizedStringKey",
+    "private func nodeListCard(title: OperatorTextValue, values: [String])",
+    "private func detailMetric(label: OperatorTextValue, value: String)",
+    "title: OperatorTextValue,\n        detail: OperatorTextValue",
   ],
   "apps/ios/Sources/Design/CommandCenterSupport.swift": [
     "Text(verbatim: self.item.title)",
     "Text(verbatim: self.item.trailing)",
     "Text(verbatim: self.item.detail)",
-    "struct CommandEmptyStateRow: View {\n    let icon: String\n    let title: OpenClawTextValue\n    let detail: OpenClawTextValue",
-    "private func actionButton(\n        _ title: OpenClawTextValue",
+    "struct CommandEmptyStateRow: View {\n    let icon: String\n    let title: OperatorTextValue\n    let detail: OperatorTextValue",
+    "private func actionButton(\n        _ title: OperatorTextValue",
     "self.actionButton(.verbatim(category)",
   ],
   "apps/ios/Sources/Design/IPadSkillWorkshopScreen.swift": [
@@ -373,14 +373,14 @@ const RAW_LOCALIZATION_BYPASSES: Record<string, readonly string[]> = {
 };
 
 const MACOS_CATALOG = {
-  path: "apps/macos/Sources/OpenClaw/Resources/Localizable.xcstrings",
+  path: "apps/macos/Sources/Operator/Resources/Localizable.xcstrings",
   coverage: {
-    "apps/macos/Sources/OpenClaw/ChannelsSettings+ChannelSections.swift": [
+    "apps/macos/Sources/Operator/ChannelsSettings+ChannelSections.swift": [
       "Logout",
       "Refresh",
       "Save",
     ],
-    "apps/macos/Sources/OpenClaw/CronSettings+Rows.swift": ["Run now"],
+    "apps/macos/Sources/Operator/CronSettings+Rows.swift": ["Run now"],
   },
 } as const;
 
@@ -478,7 +478,7 @@ type InfoPlistTranslation = {
 function parseStringsFile(source: string): Map<string, InfoPlistTranslation> {
   const values = new Map<string, InfoPlistTranslation>();
   for (const match of source.matchAll(
-    /(?:^\/\* OpenClaw source: ("(?:\\.|[^"\\])*") \*\/\n)?^\s*("(?:\\.|[^"\\])*")\s*=\s*("(?:\\.|[^"\\])*");/gmu,
+    /(?:^\/\* Operator source: ("(?:\\.|[^"\\])*") \*\/\n)?^\s*("(?:\\.|[^"\\])*")\s*=\s*("(?:\\.|[^"\\])*");/gmu,
   )) {
     values.set(JSON.parse(match[2] ?? '""') as string, {
       source: match[1] ? (JSON.parse(match[1]) as string) : undefined,
@@ -811,7 +811,7 @@ async function syncIosInfoPlist(write: boolean): Promise<number> {
         const candidates = infoPlistTranslationCandidates(artifact, sourceId, source);
         const value = selectInfoPlistTranslation(source, candidates, existing.get(key));
         return [
-          `/* OpenClaw source: ${stringsLiteral(source)} */`,
+          `/* Operator source: ${stringsLiteral(source)} */`,
           `${stringsLiteral(key)} = ${stringsLiteral(value)};`,
         ].join("\n");
       });

@@ -9,21 +9,21 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { setTimeout as sleepTimeout } from "node:timers/promises";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
-import { createAsyncLock } from "openclaw/plugin-sdk/async-lock-runtime";
+import { createAsyncLock } from "@gabrielvfonseca/operator/plugin-sdk/async-lock-runtime";
 import {
   addTimerTimeoutGraceMs,
   resolveNonNegativeIntegerOption,
-} from "openclaw/plugin-sdk/number-runtime";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
 import {
   normalizeOptionalString,
   readStringValue,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { redactToolPayloadText } from "../logging/redact.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { asRecord } from "../record-shared.js";
@@ -1136,7 +1136,7 @@ async function createRealSession(
   });
   const client = new Client(
     {
-      name: "openclaw-browser",
+      name: "operator-browser",
       version: "0.0.0",
     },
     {},
@@ -1914,7 +1914,7 @@ async function withChromeMcpTarget<T>(
 }
 
 async function withTempFile<T>(fn: (filePath: string) => Promise<T>): Promise<T> {
-  const dir = await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), "openclaw-chrome-mcp-"));
+  const dir = await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), "operator-chrome-mcp-"));
   const filePath = path.join(dir, randomUUID());
   try {
     return await fn(filePath);

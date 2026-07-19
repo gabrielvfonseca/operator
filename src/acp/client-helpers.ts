@@ -4,7 +4,7 @@ import type { RequestPermissionRequest, RequestPermissionResponse } from "@agent
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeTerminalText } from "../../packages/terminal-core/src/safe-text.js";
 import {
   materializeWindowsSpawnProgram,
@@ -227,7 +227,7 @@ export function resolveAcpClientSpawnInvocation(
     platform: runtime.platform,
     env: runtime.env,
     execPath: runtime.execPath,
-    packageName: "operator",
+    packageName: "@gabrielvfonseca/operator",
   });
   const resolved = materializeWindowsSpawnProgram(program, params.serverArgs);
   return {

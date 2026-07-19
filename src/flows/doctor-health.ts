@@ -24,7 +24,7 @@ export async function doctorCommand(runtime?: RuntimeEnv, options: DoctorOptions
   const prompter = createDoctorPrompter({ runtime: effectiveRuntime, options });
   intro("Operator doctor");
 
-  const { resolveOperatorPackageRoot } = await import("../infra/operator-root.js");
+  const { resolveOperatorPackageRoot } = await import("../infra/openclaw-root.js");
   const root = await resolveOperatorPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],

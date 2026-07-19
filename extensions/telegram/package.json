@@ -1,5 +1,5 @@
 {
-  "name": "@operator/telegram",
+  "name": "@gabrielvfonseca/telegram",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator Telegram channel plugin",
@@ -12,9 +12,9 @@
     "undici": "8.5.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -35,7 +35,7 @@
       "selectionDocsPrefix": "",
       "selectionDocsOmitLabel": true,
       "selectionExtras": [
-        "https://openclaw.ai"
+        "https://operator.ai"
       ],
       "markdownCapable": true,
       "commands": {

@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { DEFAULT_GATEWAY_PORT } from "../../config/paths.js";
 import { quoteCmdScriptArg } from "../../daemon/cmd-argv.js";
 import {
@@ -88,26 +88,26 @@ export async function prepareRestartScript(
 sleep 1
 exec 3>&2
 ${logSetup}
-printf '[%s] operator restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
+printf '[%s] openclaw restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
 if systemctl --user is-active --quiet '${escaped}' || systemctl --user is-enabled --quiet '${escaped}'; then
   if systemctl --user restart '${escaped}'; then
     status=0
-    printf '[%s] operator restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+    printf '[%s] openclaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
   else
     status=$?
-    printf '[%s] operator restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+    printf '[%s] openclaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
   fi
 elif systemctl is-active --quiet '${escaped}' || systemctl is-enabled --quiet '${escaped}'; then
   status=78
-  printf '[%s] system-scoped operator gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
-  printf '[%s] system-scoped operator gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&3 2>/dev/null || true
+  printf '[%s] system-scoped openclaw gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
+  printf '[%s] system-scoped openclaw gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&3 2>/dev/null || true
 else
   if systemctl --user restart '${escaped}'; then
     status=0
-    printf '[%s] operator restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+    printf '[%s] openclaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
   else
     status=$?
-    printf '[%s] operator restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+    printf '[%s] openclaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
   fi
 fi
 # Self-cleanup
@@ -137,7 +137,7 @@ sleep 1
 # audit trail. Log setup is best-effort: restart must still run if the log path
 # is temporarily unavailable.
 ${logSetup}
-printf '[%s] operator restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${shellEscapeRestartLogValue(label)}' >&2
+printf '[%s] openclaw restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${shellEscapeRestartLogValue(label)}' >&2
 # Try kickstart first (works when the service is still registered).
 # If it fails (e.g. after bootout), clear any persisted disabled state,
 # then re-register via bootstrap. Bootstrap loads RunAtLoad agents, so the
@@ -155,9 +155,9 @@ if ! launchctl kickstart -k 'gui/${uid}/${escaped}'; then
   fi
 fi
 if [ "$status" -eq 0 ]; then
-  printf '[%s] operator restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+  printf '[%s] openclaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
 else
-  printf '[%s] operator restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+  printf '[%s] openclaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
 fi
 # Self-cleanup (log is retained under the Operator state logs directory).
 script_dir=$(dirname "$0")
@@ -197,7 +197,7 @@ $logPath = ${quotedLogPath}
 try {
   $logDir = Split-Path -Parent $logPath
   New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-  Add-Content -LiteralPath $logPath -Value "[$(Get-Date -Format o)] operator restart log initialized"
+  Add-Content -LiteralPath $logPath -Value "[$(Get-Date -Format o)] openclaw restart log initialized"
 } catch {
   # Restart should still run if log setup is unavailable.
 }
@@ -240,7 +240,7 @@ function Invoke-OperatorSchtasksWithTimeout {
         $process.Kill()
       } catch {
       }
-      Write-RestartLog "operator restart schtasks timeout source=update args=$($Arguments -join ' ')"
+      Write-RestartLog "openclaw restart schtasks timeout source=update args=$($Arguments -join ' ')"
       return 124
     }
     $stdout = $process.StandardOutput.ReadToEnd()
@@ -253,7 +253,7 @@ function Invoke-OperatorSchtasksWithTimeout {
     }
     return $process.ExitCode
   } catch {
-    Write-RestartLog "operator restart schtasks failed source=update args=$($Arguments -join ' ') error=$($_.Exception.Message)"
+    Write-RestartLog "openclaw restart schtasks failed source=update args=$($Arguments -join ' ') error=$($_.Exception.Message)"
     return 1
   }
 }
@@ -312,32 +312,32 @@ function Get-OperatorListenerPids {
 function Invoke-OperatorStartupLauncher {
   $launcherPath = Join-Path $env:USERPROFILE ".operator\\gateway.cmd"
   if (-not (Test-Path -LiteralPath $launcherPath)) {
-    Write-RestartLog "operator restart startup launcher missing source=update path=$launcherPath"
+    Write-RestartLog "openclaw restart startup launcher missing source=update path=$launcherPath"
     return 1
   }
 
   try {
     Start-Process -FilePath $launcherPath -WindowStyle Hidden | Out-Null
-    Write-RestartLog "operator restart launched startup fallback source=update path=$launcherPath"
+    Write-RestartLog "openclaw restart launched startup fallback source=update path=$launcherPath"
     return 0
   } catch {
-    Write-RestartLog "operator restart startup fallback failed source=update error=$($_.Exception.Message)"
+    Write-RestartLog "openclaw restart startup fallback failed source=update error=$($_.Exception.Message)"
     return 1
   }
 }
 
 $taskName = ${quotedTaskName}
 $port = ${port}
-Write-RestartLog "operator restart attempt source=update target=$taskName"
+Write-RestartLog "openclaw restart attempt source=update target=$taskName"
 
 $taskState = Get-OperatorScheduledTaskState -TaskName $taskName
 if ($taskState -eq "Running") {
   $endStatus = Invoke-OperatorSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10
   if ($endStatus -ne 0) {
-    Write-RestartLog "operator restart schtasks end did not complete cleanly source=update status=$endStatus"
+    Write-RestartLog "openclaw restart schtasks end did not complete cleanly source=update status=$endStatus"
   }
 } else {
-  Write-RestartLog "operator restart skipped schtasks end source=update state=$taskState"
+  Write-RestartLog "openclaw restart skipped schtasks end source=update state=$taskState"
 }
 
 for ($attempt = 1; $attempt -le 10; $attempt++) {
@@ -350,9 +350,9 @@ for ($attempt = 1; $attempt -le 10; $attempt++) {
     foreach ($listenerPid in $listeners) {
       try {
         Stop-Process -Id $listenerPid -Force -ErrorAction Stop
-        Write-RestartLog "operator restart killed stale listener source=update pid=$listenerPid"
+        Write-RestartLog "openclaw restart killed stale listener source=update pid=$listenerPid"
       } catch {
-        Write-RestartLog "operator restart failed to kill stale listener source=update pid=$listenerPid error=$($_.Exception.Message)"
+        Write-RestartLog "openclaw restart failed to kill stale listener source=update pid=$listenerPid error=$($_.Exception.Message)"
       }
     }
     break
@@ -366,9 +366,9 @@ if ($status -ne 0) {
   $status = Invoke-OperatorStartupLauncher
 }
 if ($status -eq 0) {
-  Write-RestartLog "operator restart done source=update"
+  Write-RestartLog "openclaw restart done source=update"
 } else {
-  Write-RestartLog "operator restart failed source=update status=$status"
+  Write-RestartLog "openclaw restart failed source=update status=$status"
 }
 
 exit $status

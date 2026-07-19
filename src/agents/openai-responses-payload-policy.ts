@@ -1,10 +1,10 @@
-import { supportsOpenAIReasoningEffort } from "@operator/ai/internal/openai";
+import { supportsOpenAIReasoningEffort } from "@gabrielvfonseca/ai/internal/openai";
 /**
  * OpenAI Responses payload policy.
  * Classifies endpoint capabilities and applies store, prompt-cache,
  * server-compaction, service-tier, and reasoning payload rules.
  */
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { parseStrictPositiveInteger } from "../infra/parse-finite-number.js";
 import { asBoolean } from "../utils/boolean.js";
 

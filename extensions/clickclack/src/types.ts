@@ -1,7 +1,7 @@
 /**
  * Shared ClickClack config, runtime account, API object, and target types.
  */
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 /** User-configurable settings for one ClickClack account. */
 export type ClickClackAccountConfig = {

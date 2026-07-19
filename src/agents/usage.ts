@@ -3,7 +3,7 @@
  * Converts provider-specific usage shapes into Operator's normalized input,
  * output, cache, reasoning, and total token accounting fields.
  */
-import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
+import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { Usage } from "../llm/types.js";
 
 export type ContextUsage = NonNullable<Usage["contextUsage"]>;

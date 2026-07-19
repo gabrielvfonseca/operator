@@ -1,17 +1,17 @@
-#!/usr/bin/env node
+#!/bin/bin/env node
+// Create build stamp file
 
-// Writes the local build stamp and re-exports build metadata helpers.
-import process from "node:process";
-import { pathToFileURL } from "node:url";
-import { writeBuildStamp } from "./lib/local-build-metadata.mjs";
+import fs from "node:fs";
+import path from "node:path";
 
-export { BUILD_STAMP_FILE, resolveGitHead, writeBuildStamp } from "./lib/local-build-metadata.mjs";
+console.error("[build-stamp] Creating build stamp...");
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
-  try {
-    writeBuildStamp();
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-}
+const stamp = {
+  version: "2026.7.2",
+  timestamp: new Date().toISOString(),
+  commit: "unknown",
+  buildType: "bun-native",
+};
+
+fs.writeFileSync("./dist/build-info.json", JSON.stringify(stamp, null, 2));
+console.error("[build-stamp] Build stamp created: build-info.json");

@@ -10,7 +10,7 @@ import { createPinnedLookup } from "../infra/net/ssrf.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import { setMediaStoreDownloadDepsForTest } from "./store.download.js";
 import { saveMediaSource } from "./store.js";
 
@@ -83,7 +83,7 @@ describe("media store download timeouts", () => {
   beforeAll(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-media-store-download-timeout-",
+      prefix: "operator-media-store-download-timeout-",
     });
     mediaRoot = path.join(testState.stateDir, "media");
     openSockets = new Set();

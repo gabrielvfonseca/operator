@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawIPC
+import OperatorIPC
 
 enum ShellExecutor {
     struct ShellResult: Sendable {
@@ -21,7 +21,7 @@ enum ShellExecutor {
 
         init() throws {
             let directory = FileManager.default.temporaryDirectory
-                .appendingPathComponent("openclaw-shell-\(UUID().uuidString)", isDirectory: true)
+                .appendingPathComponent("operator-shell-\(UUID().uuidString)", isDirectory: true)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             self.stdoutURL = directory.appendingPathComponent("stdout")
             self.stderrURL = directory.appendingPathComponent("stderr")

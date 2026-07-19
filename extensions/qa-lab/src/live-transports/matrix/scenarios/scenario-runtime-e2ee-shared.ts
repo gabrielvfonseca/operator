@@ -1,7 +1,7 @@
 // Qa Matrix plugin module implements shared scenario runtime E2EE behavior.
 import { randomUUID } from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { MatrixVerificationSummary } from "@operator/matrix/test-api.js";
+import type { MatrixVerificationSummary } from "@gabrielvfonseca/matrix/test-api.js";
 import { createMatrixQaClient } from "../substrate/client.js";
 import {
   createMatrixQaE2eeScenarioClient,

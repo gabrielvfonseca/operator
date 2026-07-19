@@ -1,4 +1,4 @@
-import type { WorkboardChange } from "@operator/workboard-contract";
+import type { WorkboardChange } from "@gabrielvfonseca/workboard-contract";
 import type { OperatorPluginService } from "../api.js";
 import type { WorkboardStore } from "./store.js";
 

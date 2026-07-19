@@ -1,22 +1,22 @@
 {
-  "name": "@operator/cloudflare-ai-gateway-provider",
+  "name": "@gabrielvfonseca/cloudflare-ai-gateway-provider",
   "version": "2026.7.2",
   "description": "Operator Cloudflare AI Gateway provider plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/cloudflare-ai-gateway-provider",
-      "npmSpec": "@operator/cloudflare-ai-gateway-provider",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/cloudflare-ai-gateway-provider",
+      "npmSpec": "@gabrielvfonseca/cloudflare-ai-gateway-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

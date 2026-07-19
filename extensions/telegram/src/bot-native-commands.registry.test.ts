@@ -1,6 +1,9 @@
 // Telegram tests cover bot native commands.registry plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { clearPluginCommands, registerPluginCommand } from "openclaw/plugin-sdk/plugin-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  clearPluginCommands,
+  registerPluginCommand,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 let registerTelegramNativeCommands: typeof import("./bot-native-commands.js").registerTelegramNativeCommands;

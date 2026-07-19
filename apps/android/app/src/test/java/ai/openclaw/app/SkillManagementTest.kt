@@ -1,7 +1,7 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayConnectErrorDetails
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewayConnectErrorDetails
+import ai.operator.app.gateway.GatewaySession
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
@@ -175,7 +175,7 @@ class SkillManagementTest {
         skillKey = "custom-frontmatter-key",
         name = "Custom display name",
         description = null,
-        source = "openclaw-managed",
+        source = "operator-managed",
         emoji = null,
         disabled = false,
         eligible = true,

@@ -74,7 +74,7 @@ export async function buildOnboardingWelcome(params: {
   }
   if (!defaultModel) {
     throw new Error(
-      "Operator onboarding requires working inference first. Run `operator onboard` to configure and verify a default model.",
+      "Operator onboarding requires working inference first. Run `openclaw onboard` to configure and verify a default model.",
     );
   }
 

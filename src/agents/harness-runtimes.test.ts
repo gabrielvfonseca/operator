@@ -1,6 +1,6 @@
 // Covers config scanning for agent harness runtime requirements.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { collectConfiguredAgentHarnessRuntimes } from "./harness-runtimes.js";
 
 describe("collectConfiguredAgentHarnessRuntimes", () => {
@@ -67,7 +67,7 @@ describe("collectConfiguredAgentHarnessRuntimes", () => {
         defaults: {
           model: { primary: "anthropic/claude-sonnet-4-6" },
           models: {
-            "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+            "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
           },
         },
       },

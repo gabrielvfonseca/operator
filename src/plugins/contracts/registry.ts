@@ -1,6 +1,6 @@
 // Plugin contract registry assembles bundled plugin fixtures for shared contract tests.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { loadBundledCapabilityRuntimeRegistry } from "../bundled-capability-runtime.js";
 import { discoverOperatorPlugins } from "../discovery.js";
 import { loadPluginManifestRegistry } from "../manifest-registry.js";

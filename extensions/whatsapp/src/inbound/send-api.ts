@@ -1,3 +1,4 @@
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
 // Whatsapp API module exposes the plugin public contract.
 import type {
   AnyMessageContent,
@@ -5,7 +6,6 @@ import type {
   WAMessage,
   WAPresence,
 } from "baileys";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
 import { resolveWhatsAppDocumentFileName } from "../document-filename.js";
 import { addWhatsAppImagePreviewFields } from "../image-preview.js";
 import { isWhatsAppNewsletterJid } from "../normalize.js";

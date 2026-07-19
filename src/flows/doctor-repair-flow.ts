@@ -1,5 +1,5 @@
 // Doctor repair flow builds and runs repair actions for doctor findings.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { scrubDoctorErrorMessage } from "./doctor-error-message.js";
 import { normalizeHealthCheck } from "./health-check-adapter.js";

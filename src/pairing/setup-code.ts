@@ -7,11 +7,11 @@ import {
   isLoopbackIpAddress,
   isRfc1918Ipv4Address,
   parseCanonicalIpAddress,
-} from "@operator/net-policy/ip";
+} from "@gabrielvfonseca/net-policy/ip";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveGatewayPort } from "../config/paths.js";
 import type { OperatorConfig } from "../config/types.js";
 import { normalizeSecretInputString, resolveSecretInputRef } from "../config/types.secrets.js";

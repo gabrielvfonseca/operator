@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { Command } from "commander";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerWorkspaceCli } from "./cli.js";
 import { registerWorkspaceGatewayMethods } from "./gateway.js";
@@ -27,7 +27,7 @@ type RegisteredMethod = {
 };
 
 async function withTempStateDir<T>(run: (stateDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-cli-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-cli-"));
   try {
     return await run(stateDir);
   } finally {

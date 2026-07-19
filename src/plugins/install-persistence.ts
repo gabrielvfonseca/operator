@@ -1,7 +1,7 @@
 // Persistence helpers for plugin installs plus related config mutation.
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { theme } from "../../packages/terminal-core/src/theme.js";
 import {
   hashConfigIncludeRaw,
@@ -345,7 +345,7 @@ function logShadowedNpmInstallWarning(params: {
         `Warning: installed plugin "${params.pluginId}" is not the active source because a config-selected plugin with the same id is currently selected:`,
         `  active config source: ${shortenHomePath(active.source)}`,
         `  installed npm source: ${shortenHomePath(installedSource)}`,
-        "Run `operator plugins doctor` for repair options.",
+        "Run `openclaw plugins doctor` for repair options.",
       ].join("\n"),
     ),
   );

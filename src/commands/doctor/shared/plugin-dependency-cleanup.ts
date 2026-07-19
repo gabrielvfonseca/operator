@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { resolveStateDir } from "../../../config/paths.js";
 import type { HealthFinding } from "../../../flows/health-checks.js";
-import { resolveOperatorPackageRootSync } from "../../../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../../../infra/openclaw-root.js";
 import { resolveConfigDir, resolveUserPath } from "../../../utils.js";
 import { removeStalePluginRuntimeSymlinks } from "./plugin-runtime-symlinks.js";
 
@@ -431,7 +431,7 @@ export function legacyPluginDependencyStateIssueToHealthFinding(
     target: issue.path,
     path: issue.path,
     requirement: "legacy-plugin-dependency-state-removed",
-    fixHint: "Run `operator doctor --fix` to remove legacy plugin dependency state.",
+    fixHint: "Run `openclaw doctor --fix` to remove legacy plugin dependency state.",
   };
 }
 

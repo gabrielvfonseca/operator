@@ -117,8 +117,8 @@ function resolveUpdateStatusBanner(params: {
       "no-upstream": "Set an upstream branch, then retry.",
       "not-git-install":
         "Not a git checkout. Run `openclaw update` from the CLI for a global reinstall.",
-      "not-openclaw-root":
-        "Run the update from an OpenClaw checkout or use the CLI global reinstall path.",
+      "not-operator-root":
+        "Run the update from an Operator checkout or use the CLI global reinstall path.",
       "deps-install-failed": "Dependency install failed. Fix the install error and retry.",
       "build-failed": "Build failed. Fix the build error and retry.",
       "ui-build-failed": "The control UI rebuild failed. Fix the UI build error and retry.",
@@ -517,7 +517,7 @@ export function createApplicationOverlays(
     if (
       event.event === "exec.approval.resolved" ||
       event.event === "plugin.approval.resolved" ||
-      event.event === "openclaw.approval.resolved"
+      event.event === "operator.approval.resolved"
     ) {
       const resolved = parseExecApprovalResolved(event.payload);
       if (resolved) {

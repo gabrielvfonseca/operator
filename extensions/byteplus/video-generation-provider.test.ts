@@ -1,5 +1,5 @@
 // Byteplus tests cover video generation provider plugin behavior.
-import { expectExplicitVideoGenerationCapabilities } from "openclaw/plugin-sdk/provider-test-contracts";
+import { expectExplicitVideoGenerationCapabilities } from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 // Submit/poll transport is mocked locally so each test can inject the BytePlus task JSON

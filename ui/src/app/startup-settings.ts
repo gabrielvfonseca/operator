@@ -27,7 +27,7 @@ type ApplicationStartupSettings = {
 
 declare global {
   interface Window {
-    __OPENCLAW_NATIVE_CONTROL_AUTH__?: NativeControlAuth;
+    __OPERATOR_NATIVE_CONTROL_AUTH__?: NativeControlAuth;
   }
 }
 
@@ -55,12 +55,12 @@ export function resolveApplicationStartupSettings(
   };
 
   const nativeAuth =
-    typeof window === "undefined" ? undefined : window["__OPENCLAW_NATIVE_CONTROL_AUTH__"];
+    typeof window === "undefined" ? undefined : window["__OPERATOR_NATIVE_CONTROL_AUTH__"];
   if (nativeAuth) {
     try {
-      delete window["__OPENCLAW_NATIVE_CONTROL_AUTH__"];
+      delete window["__OPERATOR_NATIVE_CONTROL_AUTH__"];
     } catch {
-      window["__OPENCLAW_NATIVE_CONTROL_AUTH__"] = undefined;
+      window["__OPERATOR_NATIVE_CONTROL_AUTH__"] = undefined;
     }
 
     const gatewayUrl = normalizeOptionalString(nativeAuth.gatewayUrl);
@@ -90,7 +90,7 @@ export function resolveApplicationStartupSettings(
 
   const url = new URL(
     `${location.pathname}${location.search}${location.hash}`,
-    "http://openclaw.local",
+    "http://operator.local",
   );
   const params = new URLSearchParams(url.search);
   const hashParams = new URLSearchParams(url.hash.startsWith("#") ? url.hash.slice(1) : url.hash);

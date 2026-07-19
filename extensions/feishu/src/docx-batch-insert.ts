@@ -6,8 +6,8 @@
  * preserving parent-child relationships between blocks.
  */
 
+import { readStringValue } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { readStringValue } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { cleanBlocksForDescendant } from "./docx-table-ops.js";
 import type { FeishuDocxBlock, FeishuDocxBlockChild } from "./docx-types.js";
 

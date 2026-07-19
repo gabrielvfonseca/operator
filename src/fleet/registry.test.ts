@@ -17,7 +17,7 @@ describe("fleet cell registry", () => {
   let root: string | undefined;
   let env: NodeJS.ProcessEnv;
 
-  const tempRoot = createSuiteTempRootTracker({ prefix: "openclaw-fleet-registry-" });
+  const tempRoot = createSuiteTempRootTracker({ prefix: "operator-fleet-registry-" });
 
   beforeEach(async () => {
     root = await tempRoot.setup();
@@ -37,9 +37,9 @@ describe("fleet cell registry", () => {
     return {
       tenantId,
       createdAtMs: 1,
-      image: "ghcr.io/openclaw/openclaw:latest",
+      image: "ghcr.io/openclaw/operator:latest",
       runtime: "docker",
-      containerName: `openclaw-cell-${tenantId}`,
+      containerName: `operator-cell-${tenantId}`,
       dataDir: path.join(root, "fleet", "cells", tenantId),
       ...(requestedPort === undefined ? {} : { requestedPort }),
     };
@@ -61,8 +61,8 @@ describe("fleet cell registry", () => {
     expect(listFleetCells(env).map((cell) => cell.tenantId)).toEqual(["alpha", "zulu"]);
     expect(getFleetCell(env, "zulu")).toEqual(zulu);
 
-    updateFleetCellImage(env, "zulu", "ghcr.io/openclaw/openclaw:v2");
-    expect(getFleetCell(env, "zulu")?.image).toBe("ghcr.io/openclaw/openclaw:v2");
+    updateFleetCellImage(env, "zulu", "ghcr.io/openclaw/operator:v2");
+    expect(getFleetCell(env, "zulu")?.image).toBe("ghcr.io/openclaw/operator:v2");
 
     deleteFleetCell(env, "alpha");
     expect(getFleetCell(env, "alpha")).toBeUndefined();
@@ -74,7 +74,7 @@ describe("fleet cell registry", () => {
     expect(() =>
       reserveFleetCell(env, {
         ...params("alpha", 19_301),
-        image: "ghcr.io/openclaw/openclaw:other",
+        image: "ghcr.io/openclaw/operator:other",
       }),
     ).toThrow("Fleet cell already exists: alpha");
     expect(getFleetCell(env, "alpha")).toEqual(original);

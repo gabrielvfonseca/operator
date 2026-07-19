@@ -60,7 +60,9 @@ describe("openclaw-tools update_plan gating", () => {
     });
 
     expect(
-      emittedNames.filter((name) => resolveCoreToolFactoryFamily(name) !== "openclaw"),
+      emittedNames.filter(
+        (name) => resolveCoreToolFactoryFamily(name) !== "@gabrielvfonseca/operator",
+      ),
     ).toEqual([]);
   });
 
@@ -126,7 +128,7 @@ describe("openclaw-tools update_plan gating", () => {
     });
     const system = createFastToolNames({
       config: {} as OperatorConfig,
-      agentSessionKey: "agent:openclaw:main",
+      agentSessionKey: "agent:operator:main",
     });
     setEmbeddedMode(true);
     const embedded = createFastToolNames({
@@ -134,10 +136,10 @@ describe("openclaw-tools update_plan gating", () => {
       agentSessionKey: "agent:main:main",
     });
 
-    expect(regular).toContain("openclaw");
-    expect(sandboxed).not.toContain("openclaw");
-    expect(system).not.toContain("openclaw");
-    expect(embedded).not.toContain("openclaw");
+    expect(regular).toContain("@gabrielvfonseca/operator");
+    expect(sandboxed).not.toContain("@gabrielvfonseca/operator");
+    expect(system).not.toContain("@gabrielvfonseca/operator");
+    expect(embedded).not.toContain("@gabrielvfonseca/operator");
   });
 
   it("requires explicit transcripts enablement before registering the transcripts tool", () => {

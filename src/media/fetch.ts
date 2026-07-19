@@ -1,9 +1,9 @@
 // Media fetch helpers download and validate remote media payloads.
-import { MAX_DOCUMENT_BYTES } from "@operator/media-core/constants";
-import { parseMediaContentLength } from "@operator/media-core/content-length";
-import { basenameFromAnyPath, extnameFromAnyPath } from "@operator/media-core/file-name";
-import { detectMime, extensionForMime } from "@operator/media-core/mime";
-import { expectDefined } from "@operator/normalization-core";
+import { MAX_DOCUMENT_BYTES } from "@gabrielvfonseca/media-core/constants";
+import { parseMediaContentLength } from "@gabrielvfonseca/media-core/content-length";
+import { basenameFromAnyPath, extnameFromAnyPath } from "@gabrielvfonseca/media-core/file-name";
+import { detectMime, extensionForMime } from "@gabrielvfonseca/media-core/mime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isAbortError } from "../infra/abort-signal.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {

@@ -35,10 +35,10 @@ export function createModelRecorders(runtime: DiagnosticsRecorderRuntime) {
   } = runtime;
 
   const modelCallMetricAttrs = (evt: ModelCallLifecycleDiagnosticEvent) => ({
-    "openclaw.provider": evt.provider,
-    "openclaw.model": evt.model,
-    "openclaw.api": lowCardinalityAttr(evt.api),
-    "openclaw.transport": lowCardinalityAttr(evt.transport),
+    "operator.provider": evt.provider,
+    "operator.model": evt.model,
+    "operator.api": lowCardinalityAttr(evt.api),
+    "operator.transport": lowCardinalityAttr(evt.transport),
   });
   const genAiModelCallMetricAttrs = (
     evt: ModelCallLifecycleDiagnosticEvent,
@@ -75,15 +75,15 @@ export function createModelRecorders(runtime: DiagnosticsRecorderRuntime) {
       return;
     }
     const spanAttrs: Record<string, string | number | boolean> = {
-      "openclaw.provider": evt.provider,
-      "openclaw.model": evt.model,
+      "operator.provider": evt.provider,
+      "operator.model": evt.model,
     };
     assignGenAiModelCallAttrs(spanAttrs, evt);
     if (evt.api) {
-      spanAttrs["openclaw.api"] = evt.api;
+      spanAttrs["operator.api"] = evt.api;
     }
     if (evt.transport) {
-      spanAttrs["openclaw.transport"] = evt.transport;
+      spanAttrs["operator.transport"] = evt.transport;
     }
     assignModelCallPromptStatsAttrs(spanAttrs, evt);
     trackTrustedSpan(
@@ -110,15 +110,15 @@ export function createModelRecorders(runtime: DiagnosticsRecorderRuntime) {
       return;
     }
     const spanAttrs: Record<string, string | number | boolean> = {
-      "openclaw.provider": evt.provider,
-      "openclaw.model": evt.model,
+      "operator.provider": evt.provider,
+      "operator.model": evt.model,
     };
     assignGenAiModelCallAttrs(spanAttrs, evt);
     if (evt.api) {
-      spanAttrs["openclaw.api"] = evt.api;
+      spanAttrs["operator.api"] = evt.api;
     }
     if (evt.transport) {
-      spanAttrs["openclaw.transport"] = evt.transport;
+      spanAttrs["operator.transport"] = evt.transport;
     }
     assignModelCallSizeTimingAttrs(spanAttrs, evt);
     assignModelCallPromptStatsAttrs(spanAttrs, evt);
@@ -144,9 +144,9 @@ export function createModelRecorders(runtime: DiagnosticsRecorderRuntime) {
     const errorType = lowCardinalityAttr(evt.errorCategory, "other");
     const metricAttrs = {
       ...modelCallMetricAttrs(evt),
-      "openclaw.errorCategory": errorType,
+      "operator.errorCategory": errorType,
       ...(evt.failureKind
-        ? { "openclaw.failureKind": lowCardinalityAttr(evt.failureKind, "other") }
+        ? { "operator.failureKind": lowCardinalityAttr(evt.failureKind, "other") }
         : {}),
     };
     modelCallDurationHistogram.record(evt.durationMs, metricAttrs);
@@ -159,20 +159,20 @@ export function createModelRecorders(runtime: DiagnosticsRecorderRuntime) {
       return;
     }
     const spanAttrs: Record<string, string | number | boolean> = {
-      "openclaw.provider": evt.provider,
-      "openclaw.model": evt.model,
-      "openclaw.errorCategory": errorType,
+      "operator.provider": evt.provider,
+      "operator.model": evt.model,
+      "operator.errorCategory": errorType,
       "error.type": errorType,
     };
     if (evt.failureKind) {
-      spanAttrs["openclaw.failureKind"] = lowCardinalityAttr(evt.failureKind, "other");
+      spanAttrs["operator.failureKind"] = lowCardinalityAttr(evt.failureKind, "other");
     }
     assignGenAiModelCallAttrs(spanAttrs, evt);
     if (evt.api) {
-      spanAttrs["openclaw.api"] = evt.api;
+      spanAttrs["operator.api"] = evt.api;
     }
     if (evt.transport) {
-      spanAttrs["openclaw.transport"] = evt.transport;
+      spanAttrs["operator.transport"] = evt.transport;
     }
     assignModelCallSizeTimingAttrs(spanAttrs, evt);
     assignModelCallPromptStatsAttrs(spanAttrs, evt);

@@ -15,7 +15,7 @@ import {
   type ExecSessionDefaults,
 } from "../agents/exec-defaults.js";
 import { createLazyExecTool, resolveExecToolConfig } from "../agents/lazy-exec-tool.js";
-import { createOperatorTools } from "../agents/operator-tools.js";
+import { createOperatorTools } from "../agents/openclaw-tools.js";
 import { resolveSandboxRuntimeStatus } from "../agents/sandbox/runtime-status.js";
 import { resolveSenderToolPolicy } from "../agents/sender-tool-policy.js";
 import {

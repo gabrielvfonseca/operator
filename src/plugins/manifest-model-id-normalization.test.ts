@@ -24,7 +24,7 @@ function restoreEnv(): void {
 }
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-model-id-normalization-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-model-id-normalization-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -42,7 +42,7 @@ function writeInstallIndex(params: { stateDir: string; pluginDir: string }): voi
       plugins: [
         {
           pluginId: "normalizer",
-          manifestPath: path.join(params.pluginDir, "openclaw.plugin.json"),
+          manifestPath: path.join(params.pluginDir, "operator.plugin.json"),
           manifestHash: "normalizer-manifest",
           rootDir: params.pluginDir,
           origin: "global",
@@ -70,7 +70,7 @@ function writeNormalizerManifest(params: { pluginDir: string; prefix: string }):
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(params.pluginDir, "openclaw.plugin.json"),
+    path.join(params.pluginDir, "operator.plugin.json"),
     JSON.stringify({
       id: "normalizer",
       configSchema: { type: "object" },
@@ -139,7 +139,7 @@ describe("manifest model id normalization", () => {
   it("reuses manifest metadata while file fingerprints are unchanged", () => {
     const stateDir = makeTempDir();
     const pluginDir = path.join(stateDir, "extensions", "normalizer");
-    const manifestPath = path.join(pluginDir, "openclaw.plugin.json");
+    const manifestPath = path.join(pluginDir, "operator.plugin.json");
     writeInstallIndex({ stateDir, pluginDir });
     writeNormalizerManifest({ pluginDir, prefix: "alpha" });
 

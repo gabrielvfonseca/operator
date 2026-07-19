@@ -5,27 +5,27 @@ import { isCurrentProcessLaunchdServiceLabel } from "./launchd-current-service.j
 describe("isCurrentProcessLaunchdServiceLabel", () => {
   it("matches launchd-provided service labels", () => {
     expect(
-      isCurrentProcessLaunchdServiceLabel("ai.openclaw.gateway", {
-        LAUNCH_JOB_LABEL: "ai.openclaw.gateway",
+      isCurrentProcessLaunchdServiceLabel("ai.operator.gateway", {
+        LAUNCH_JOB_LABEL: "ai.operator.gateway",
       }),
     ).toBe(true);
   });
 
   it("falls back to Operator service markers when XPC_SERVICE_NAME is inherited", () => {
     expect(
-      isCurrentProcessLaunchdServiceLabel("ai.openclaw.gateway", {
+      isCurrentProcessLaunchdServiceLabel("ai.operator.gateway", {
         XPC_SERVICE_NAME: "0",
-        OPERATOR_SERVICE_MARKER: "openclaw",
+        OPERATOR_SERVICE_MARKER: "@gabrielvfonseca/operator",
         OPERATOR_SERVICE_KIND: "gateway",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
       }),
     ).toBe(true);
   });
 
   it("preserves label-only fallback when launchd exposes no label variables", () => {
     expect(
-      isCurrentProcessLaunchdServiceLabel("ai.openclaw.gateway", {
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+      isCurrentProcessLaunchdServiceLabel("ai.operator.gateway", {
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
       }),
     ).toBe(true);
   });
@@ -33,9 +33,9 @@ describe("isCurrentProcessLaunchdServiceLabel", () => {
   it("can require service markers for label-only fallback", () => {
     expect(
       isCurrentProcessLaunchdServiceLabel(
-        "ai.openclaw.gateway",
+        "ai.operator.gateway",
         {
-          OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+          OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
         },
         { allowConfiguredLabelFallback: false },
       ),
@@ -44,9 +44,9 @@ describe("isCurrentProcessLaunchdServiceLabel", () => {
 
   it("does not treat unrelated inherited launchd labels as current services", () => {
     expect(
-      isCurrentProcessLaunchdServiceLabel("ai.openclaw.gateway", {
+      isCurrentProcessLaunchdServiceLabel("ai.operator.gateway", {
         XPC_SERVICE_NAME: "0",
-        OPERATOR_LAUNCHD_LABEL: "ai.openclaw.gateway",
+        OPERATOR_LAUNCHD_LABEL: "ai.operator.gateway",
       }),
     ).toBe(false);
   });

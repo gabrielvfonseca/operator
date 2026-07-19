@@ -1,24 +1,24 @@
 {
-  "name": "@operator/anthropic-vertex-provider",
+  "name": "@gabrielvfonseca/anthropic-vertex-provider",
   "version": "2026.7.2",
   "description": "Operator Anthropic Vertex provider plugin for Claude models on Google Vertex AI.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
     "@anthropic-ai/vertex-sdk": "0.19.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/anthropic-vertex-provider",
+      "npmSpec": "@gabrielvfonseca/anthropic-vertex-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.12-beta.1"
     },

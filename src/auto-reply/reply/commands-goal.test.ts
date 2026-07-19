@@ -5,7 +5,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadSessionEntry, replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { takeCommandSessionMetadataChanges } from "./command-session-metadata.js";
 import {
   formatGoalContinuationPrompt,
@@ -24,7 +24,7 @@ afterEach(async () => {
 });
 
 async function createStorePath(): Promise<string> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-goal-command-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-goal-command-"));
   tempRoots.push(root);
   return path.join(root, "sessions.json");
 }

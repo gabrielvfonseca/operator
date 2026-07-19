@@ -1,12 +1,19 @@
-import { normalizeToolParameterSchema } from "@operator/ai/internal/openai";
-import { expectDefined } from "@operator/normalization-core";
+import { normalizeToolParameterSchema } from "@gabrielvfonseca/ai/internal/openai";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /**
  * Tests provider-compatible tool schema normalization.
  * Protects caching, ref inlining, OpenAPI keyword cleanup, and no-parameter
  * tool behavior used by model providers.
  */
-import { runAgentLoop, type AgentEvent, type StreamFn } from "openclaw/plugin-sdk/agent-core";
-import { createAssistantMessageEventStream, validateToolArguments } from "openclaw/plugin-sdk/llm";
+import {
+  runAgentLoop,
+  type AgentEvent,
+  type StreamFn,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import {
+  createAssistantMessageEventStream,
+  validateToolArguments,
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { Type, type TSchema } from "typebox";
 import { describe, expect, it, vi } from "vitest";
 import {

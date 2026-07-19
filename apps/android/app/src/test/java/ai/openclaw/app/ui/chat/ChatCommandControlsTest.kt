@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.ChatCommandEntry
+import ai.operator.app.chat.ChatCommandEntry
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

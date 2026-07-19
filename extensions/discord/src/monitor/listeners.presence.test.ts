@@ -1,11 +1,11 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   type APIUnavailableGuild,
   type GatewayGuildCreateDispatchData,
   type GatewayPresenceUpdate,
   PresenceUpdateStatus,
 } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Client } from "../internal/discord.js";
 import { clearPresences } from "./presence-cache.js";

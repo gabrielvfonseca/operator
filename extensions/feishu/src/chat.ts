@@ -1,8 +1,8 @@
+import { readPositiveIntegerParam } from "@gabrielvfonseca/operator/plugin-sdk/param-readers";
+import type { OperatorPluginToolContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { jsonResult as json } from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 // Feishu plugin module implements chat behavior.
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { readPositiveIntegerParam } from "openclaw/plugin-sdk/param-readers";
-import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
-import { jsonResult as json } from "openclaw/plugin-sdk/tool-results";
 import type { OperatorPluginApi } from "../runtime-api.js";
 import { listEnabledFeishuAccounts } from "./accounts.js";
 import { FeishuChatSchema, type FeishuChatParams } from "./chat-schema.js";

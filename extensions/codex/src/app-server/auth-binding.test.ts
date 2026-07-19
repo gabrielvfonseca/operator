@@ -1,4 +1,4 @@
-import type { AuthProfileStore } from "openclaw/plugin-sdk/agent-runtime";
+import type { AuthProfileStore } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   fingerprintCodexAppServerAuthBinding,
@@ -23,7 +23,7 @@ describe("Codex app-server auth binding", () => {
     const params = {
       authProfileId: profileId,
       authProfileStore: store,
-      agentDir: "/tmp/openclaw-codex-auth-binding",
+      agentDir: "/tmp/operator-codex-auth-binding",
       config: {
         auth: { profiles: { [profileId]: { provider: "openai", mode: "api_key" as const } } },
       },

@@ -5,12 +5,12 @@ import {
   type AssistantMessage,
   type Context,
   type Model,
-} from "openclaw/plugin-sdk/llm";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import {
   createSingleUserPromptMessage,
   extractNonEmptyAssistantText,
   isLiveTestEnabled,
-} from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { buildDeepSeekProvider } from "./provider-catalog.js";

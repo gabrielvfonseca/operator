@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
  * Runs `/btw` side questions against the active conversation without resuming
  * or continuing the main task.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { GetReplyOptions } from "../auto-reply/get-reply-options.types.js";
 import type { ReplyPayload } from "../auto-reply/reply-payload.js";
 import type { ReasoningLevel, ThinkLevel } from "../auto-reply/thinking.js";
@@ -785,13 +785,13 @@ export async function runBtwSideQuestion(
   type BtwHarnessSideQuestionDispatch =
     | { kind: "handled"; payload: ReplyPayload }
     | {
-        kind: "operator";
+        kind: "@gabrielvfonseca/operator";
         harness: AgentHarness;
         runtime: Awaited<ReturnType<typeof resolveRuntimeModel>>;
         resolvedAttempt: Awaited<ReturnType<typeof resolveBtwPreparedRuntimeAuth>>;
       };
   let preparedOperatorFallback:
-    | Extract<BtwHarnessSideQuestionDispatch, { kind: "operator" }>
+    | Extract<BtwHarnessSideQuestionDispatch, { kind: "@gabrielvfonseca/operator" }>
     | undefined;
   const runHarnessSideQuestion = async (
     selectedHarness: AgentHarness,
@@ -899,13 +899,13 @@ export async function runBtwSideQuestion(
       );
     }
     if (!selectedHarness.runSideQuestion) {
-      if (selectedHarness.id !== "operator" || !("auth" in resolvedAttempt)) {
+      if (selectedHarness.id !== "@gabrielvfonseca/operator" || !("auth" in resolvedAttempt)) {
         throw new Error(
           `Selected agent harness "${selectedHarness.id}" does not support /btw side questions.`,
         );
       }
       return {
-        kind: "operator",
+        kind: "@gabrielvfonseca/operator",
         harness: selectedHarness,
         runtime: {
           ...runtime,

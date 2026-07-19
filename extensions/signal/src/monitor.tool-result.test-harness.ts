@@ -1,5 +1,5 @@
 // Signal plugin module implements monitor.tool result harness behavior.
-import type { MockFn } from "openclaw/plugin-sdk/plugin-test-runtime";
+import type { MockFn } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { beforeEach, vi } from "vitest";
 import type { SignalDaemonHandle } from "./daemon.js";
 
@@ -31,7 +31,7 @@ const signalCheckMock = vi.hoisted(() => vi.fn()) as unknown as MockFn;
 const signalRpcRequestMock = vi.hoisted(() => vi.fn()) as unknown as MockFn;
 const spawnSignalDaemonMock = vi.hoisted(() => vi.fn()) as unknown as MockFn;
 const signalToolResultSessionStorePath = vi.hoisted(
-  () => `/tmp/openclaw-signal-tool-result-sessions-${process.pid}.json`,
+  () => `/tmp/operator-signal-tool-result-sessions-${process.pid}.json`,
 );
 
 export function getSignalToolResultTestMocks(): SignalToolResultTestMocks {

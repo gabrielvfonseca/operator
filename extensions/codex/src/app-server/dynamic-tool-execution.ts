@@ -7,16 +7,16 @@ import {
   formatToolExecutionErrorMessage,
   resolveToolExecutionErrorKind,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   hasPendingInternalDiagnosticEvent,
   type DiagnosticEventPayload,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import {
   addTimerTimeoutGraceMs,
   parseStrictNonNegativeInteger,
-} from "openclaw/plugin-sdk/number-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   createFailedDynamicToolResponse,
   type CodexDynamicToolRuntimeResponse,

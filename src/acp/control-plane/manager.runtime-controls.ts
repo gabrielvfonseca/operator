@@ -4,9 +4,9 @@ import type {
   AcpRuntimeCapabilities,
   AcpRuntimeHandle,
   AcpRuntimeStatus,
-} from "@operator/acp-core/runtime/types";
-import { asNullableRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/acp-core/runtime/types";
+import { asNullableRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { AcpRuntimeError, withAcpRuntimeErrorBoundary } from "../runtime/errors.js";
 import type { SessionAcpMeta } from "./manager.types.js";
 import { createUnsupportedControlError } from "./manager.utils.js";

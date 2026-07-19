@@ -47,7 +47,7 @@ export function resolveCompatibleAgentRuntimeForProvider(params: {
   if (!runtime || isDefaultAgentRuntimeId(runtime)) {
     return undefined;
   }
-  if (runtime === "operator") {
+  if (runtime === "@gabrielvfonseca/operator") {
     return runtime;
   }
   const provider = params.provider?.trim().toLowerCase() ?? "";

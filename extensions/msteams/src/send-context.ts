@@ -1,5 +1,5 @@
 // Msteams plugin module implements send context behavior.
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   resolveChannelMediaMaxBytes,
   type MSTeamsConfig,

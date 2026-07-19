@@ -1,6 +1,6 @@
 // Top-level migrate command tests cover provider planning, interactive selection, apply flow, and JSON output.
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MigrationApplyResult, MigrationPlan } from "../plugins/types.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -38,7 +38,7 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("../config/paths.js", () => ({
-  resolveStateDir: () => "/tmp/openclaw-migrate-command-test",
+  resolveStateDir: () => "/tmp/operator-migrate-command-test",
 }));
 
 vi.mock("../cli/prompt.js", () => ({
@@ -290,7 +290,7 @@ describe("migrateApplyCommand", () => {
   const originalIsTty = process.stdin.isTTY;
 
   beforeEach(async () => {
-    await fs.rm("/tmp/openclaw-migrate-command-test", { force: true, recursive: true });
+    await fs.rm("/tmp/operator-migrate-command-test", { force: true, recursive: true });
     Object.defineProperty(process.stdin, "isTTY", {
       configurable: true,
       value: false,
@@ -309,7 +309,7 @@ describe("migrateApplyCommand", () => {
     mocks.clackLogMessage.mockReset();
     mocks.promptYesNo.mockReset();
     mocks.backupCreateCommand.mockReset();
-    mocks.backupCreateCommand.mockResolvedValue({ archivePath: "/tmp/openclaw-backup.tgz" });
+    mocks.backupCreateCommand.mockResolvedValue({ archivePath: "/tmp/operator-backup.tgz" });
   });
 
   afterEach(async () => {
@@ -317,7 +317,7 @@ describe("migrateApplyCommand", () => {
       configurable: true,
       value: originalIsTty,
     });
-    await fs.rm("/tmp/openclaw-migrate-command-test", { force: true, recursive: true });
+    await fs.rm("/tmp/operator-migrate-command-test", { force: true, recursive: true });
     vi.clearAllMocks();
   });
 
@@ -1287,10 +1287,10 @@ describe("migrateApplyCommand", () => {
     expect(typeof (backupCall?.[0] as { log?: unknown } | undefined)?.log).toBe("function");
     expect(backupCall?.[1]).toStrictEqual({ output: undefined, verify: true });
     const applyContext = firstApplyContext();
-    expect(applyContext.backupPath).toBe("/tmp/openclaw-backup.tgz");
+    expect(applyContext.backupPath).toBe("/tmp/operator-backup.tgz");
     expect(String(applyContext.reportDir)).toContain("/migration/hermes/");
     expect(firstAppliedPlan()).toBe(planned);
-    expect(result.backupPath).toBe("/tmp/openclaw-backup.tgz");
+    expect(result.backupPath).toBe("/tmp/operator-backup.tgz");
   });
 
   it("prints only the final result for root apply in JSON mode", async () => {
@@ -1346,7 +1346,7 @@ describe("migrateApplyCommand", () => {
       providerId?: unknown;
     };
     expect(logPayload.providerId).toBe("hermes");
-    expect(logPayload.backupPath).toBe("/tmp/openclaw-backup.tgz");
+    expect(logPayload.backupPath).toBe("/tmp/operator-backup.tgz");
     expect(logPayload.items?.[0]?.details?.value?.time?.env?.OPENAI_API_KEY).toBe("[redacted]");
     expect(logPayload.items?.[0]?.details?.value?.time?.headers?.["x-api-key"]).toBe("[redacted]");
     expect(logs[0]).not.toContain("short-dev-key");

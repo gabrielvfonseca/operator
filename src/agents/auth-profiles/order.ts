@@ -6,7 +6,7 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@operator/model-catalog-core/provider-id";
+} from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   type ProviderAuthAliasLookupParams,

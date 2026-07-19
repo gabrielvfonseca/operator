@@ -1,5 +1,5 @@
 ---
-summary: "Adds ClawRouter model provider support to OpenClaw."
+summary: "Adds ClawRouter model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the clawrouter plugin
 title: "ClawRouter plugin"
@@ -7,12 +7,12 @@ title: "ClawRouter plugin"
 
 # ClawRouter plugin
 
-Adds ClawRouter model provider support to OpenClaw.
+Adds ClawRouter model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/clawrouter`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/clawrouter`
+- Install route: included in Operator
 
 ## Surface
 

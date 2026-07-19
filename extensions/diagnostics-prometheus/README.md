@@ -1,4 +1,4 @@
-# @operator/diagnostics-prometheus
+# @gabrielvfonseca/diagnostics-prometheus
 
 Official Prometheus diagnostics exporter for Operator.
 
@@ -7,7 +7,7 @@ This plugin exposes Operator Gateway runtime metrics in Prometheus text format f
 ## Install
 
 ```bash
-openclaw plugins install @operator/diagnostics-prometheus
+operator plugins install @gabrielvfonseca/diagnostics-prometheus
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -18,10 +18,10 @@ Enable the plugin and set the scrape endpoint options in `plugins.entries.diagno
 
 The full config surface, metric names, and scrape examples live in the docs:
 
-- https://docs.openclaw.ai/gateway/prometheus
+- https://docs.operator.ai/gateway/prometheus
 
 ## Package
 
 - Plugin id: `diagnostics-prometheus`
-- Package: `@operator/diagnostics-prometheus`
+- Package: `@gabrielvfonseca/diagnostics-prometheus`
 - Minimum Operator host: `2026.4.25`

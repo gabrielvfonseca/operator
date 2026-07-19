@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatReaderScrollStateTests {
     @Test func `optimistic turn removal keeps the older user as the baseline`() {

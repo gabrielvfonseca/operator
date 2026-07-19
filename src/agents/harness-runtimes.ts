@@ -1,7 +1,7 @@
 /**
  * Collects configured native harness runtime ids from model provider config.
  */
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
 import { OPERATOR_AGENT_RUNTIME_ID, isDefaultAgentRuntimeId } from "./agent-runtime-id.js";

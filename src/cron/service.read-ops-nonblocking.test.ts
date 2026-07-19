@@ -21,7 +21,7 @@ type IsolatedRunResult = {
 };
 
 async function makeStorePath() {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cron-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-cron-"));
   return {
     storePath: path.join(dir, "cron", "jobs.json"),
     cleanup: async () => {
@@ -69,7 +69,7 @@ function expectCronStatus(
   expect(status.enabled).toBe(true);
   expect(status.storePath).toBe(params.storePath);
   expect(status.storage).toBe("sqlite");
-  expect(status.sqlitePath).toContain("openclaw.sqlite");
+  expect(status.sqlitePath).toContain("operator.sqlite");
   expect(status.jobs).toBe(params.jobs);
   if (status.nextWakeAtMs !== null) {
     expect(status.nextWakeAtMs).toBeTypeOf("number");

@@ -3,9 +3,9 @@ import { Readable } from "node:stream";
 import { finished } from "node:stream/promises";
 import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 import { setTimeout as delay } from "node:timers/promises";
-import { saveMediaStream } from "openclaw/plugin-sdk/media-store";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithRuntimeDispatcherOrMockedGlobal } from "openclaw/plugin-sdk/runtime-fetch";
+import { saveMediaStream } from "@gabrielvfonseca/operator/plugin-sdk/media-store";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { fetchWithRuntimeDispatcherOrMockedGlobal } from "@gabrielvfonseca/operator/plugin-sdk/runtime-fetch";
 
 interface DownloadResult {
   path: string;

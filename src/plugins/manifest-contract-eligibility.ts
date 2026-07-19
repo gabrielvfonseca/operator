@@ -1,5 +1,5 @@
 // Determines which manifest contracts are eligible for plugin activation.
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isInstalledPluginEnabled } from "./installed-plugin-index.js";
 import type { PluginManifestContractListKey, PluginManifestRecord } from "./manifest-registry.js";

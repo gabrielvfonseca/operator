@@ -1,5 +1,5 @@
 // Builds provider-aware auth-choice options and grouped onboarding menus.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveProviderSetupFlowContributions } from "../flows/provider-flow.js";

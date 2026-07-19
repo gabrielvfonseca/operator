@@ -39,7 +39,7 @@ enum VoiceWakeChimeCatalog {
 
 @MainActor
 enum VoiceWakeChimePlayer {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "voicewake.chime")
+    private static let logger = Logger(subsystem: "ai.operator", category: "voicewake.chime")
 
     static func play(_ chime: VoiceWakeChime, reason: String? = nil) {
         guard let sound = self.sound(for: chime) else { return }

@@ -1,5 +1,9 @@
 // Matrix plugin module implements rooms behavior.
-import type { ScopeNode, ScopePath, ScopeTree } from "openclaw/plugin-sdk/channel-policy";
+import type {
+  ScopeNode,
+  ScopePath,
+  ScopeTree,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import type { MatrixRoomConfig } from "../../types.js";
 import { buildChannelKeyCandidates } from "./runtime-api.js";
 

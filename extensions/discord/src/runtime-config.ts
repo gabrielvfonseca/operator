@@ -3,7 +3,7 @@ import {
   getRuntimeConfigSnapshot,
   getRuntimeConfigSourceSnapshot,
   selectApplicableRuntimeConfig,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 import type { OperatorConfig } from "./runtime-api.js";
 
 export function selectDiscordRuntimeConfig(inputConfig: OperatorConfig): OperatorConfig {

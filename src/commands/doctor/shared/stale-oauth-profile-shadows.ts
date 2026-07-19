@@ -1,8 +1,8 @@
 // Doctor cleanup for per-agent OAuth profiles shadowing fresher main-agent credentials.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   resolveAgentDir,
   resolveDefaultAgentDir,

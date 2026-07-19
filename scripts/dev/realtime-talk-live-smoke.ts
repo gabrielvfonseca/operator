@@ -1,4 +1,4 @@
-// Realtime Talk Live Smoke script supports OpenClaw repository automation.
+// Realtime Talk Live Smoke script supports Operator repository automation.
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -11,13 +11,13 @@ import {
 } from "../lib/dev-tooling-safety.ts";
 
 const OPENAI_REALTIME_MODEL =
-  process.env.OPENCLAW_REALTIME_OPENAI_MODEL?.trim() || "gpt-realtime-2.1";
-const OPENAI_REALTIME_VOICE = process.env.OPENCLAW_REALTIME_OPENAI_VOICE?.trim() || "alloy";
+  process.env.OPERATOR_REALTIME_OPENAI_MODEL?.trim() || "gpt-realtime-2.1";
+const OPENAI_REALTIME_VOICE = process.env.OPERATOR_REALTIME_OPENAI_VOICE?.trim() || "alloy";
 const DEFAULT_OPENAI_HTTP_TIMEOUT_MS = 30_000;
 const OPENAI_HTTP_RESPONSE_MAX_BYTES = 256 * 1024;
 const GOOGLE_REALTIME_MODEL =
-  process.env.OPENCLAW_REALTIME_GOOGLE_MODEL?.trim() || "gemini-3.1-flash-live-preview";
-const GOOGLE_REALTIME_VOICE = process.env.OPENCLAW_REALTIME_GOOGLE_VOICE?.trim() || "Kore";
+  process.env.OPERATOR_REALTIME_GOOGLE_MODEL?.trim() || "gemini-3.1-flash-live-preview";
+const GOOGLE_REALTIME_VOICE = process.env.OPERATOR_REALTIME_GOOGLE_VOICE?.trim() || "Kore";
 const GOOGLE_LIVE_WS_URL =
   "wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContentConstrained";
 
@@ -119,11 +119,11 @@ async function readBoundedJsonResponse(
 }
 
 function resolveOpenAIHttpTimeoutMs(
-  raw = process.env.OPENCLAW_REALTIME_OPENAI_HTTP_TIMEOUT_MS,
+  raw = process.env.OPERATOR_REALTIME_OPENAI_HTTP_TIMEOUT_MS,
 ): number {
   return parseStrictIntegerOption({
     fallback: DEFAULT_OPENAI_HTTP_TIMEOUT_MS,
-    label: "OPENCLAW_REALTIME_OPENAI_HTTP_TIMEOUT_MS",
+    label: "OPERATOR_REALTIME_OPENAI_HTTP_TIMEOUT_MS",
     min: 1,
     raw,
   });
@@ -213,7 +213,7 @@ async function readOpenAIRealtimeBrowserResponseText(
 }
 
 function openAIRealtimeBrowserResponseReaderInitScript(): string {
-  return `globalThis.openclawReadBoundedRealtimeResponseText = ${readOpenAIRealtimeBrowserResponseText.toString()};`;
+  return `globalThis.operatorReadBoundedRealtimeResponseText = ${readOpenAIRealtimeBrowserResponseText.toString()};`;
 }
 
 async function createOpenAIClientSecret(
@@ -283,7 +283,7 @@ async function smokeOpenAIBackendBridge(apiKey: string): Promise<SmokeResult> {
       model: OPENAI_REALTIME_MODEL,
       voice: OPENAI_REALTIME_VOICE,
     },
-    instructions: "OpenClaw backend realtime live smoke. Do not speak yet.",
+    instructions: "Operator backend realtime live smoke. Do not speak yet.",
     onAudio: () => {},
     onClearAudio: () => {},
     onEvent: (event) => {
@@ -327,7 +327,7 @@ async function smokeOpenAIWebRtc(browser: Browser, apiKey: string): Promise<Smok
       const result = await page.evaluate(
         async ({ clientSecret: secret, sdpAnswerMaxBytes, timeoutMs }) => {
           const readBoundedTextLocal = (globalThis as OpenAIWebRtcSmokeGlobal)
-            .openclawReadBoundedRealtimeResponseText;
+            .operatorReadBoundedRealtimeResponseText;
           if (!readBoundedTextLocal) {
             throw new Error("OpenAI Realtime bounded response reader was not installed");
           }
@@ -471,7 +471,7 @@ async function createGoogleLiveToken(apiKey: string): Promise<string> {
               prebuiltVoiceConfig: { voiceName: GOOGLE_REALTIME_VOICE },
             },
           },
-          systemInstruction: "OpenClaw browser Talk live smoke.",
+          systemInstruction: "Operator browser Talk live smoke.",
           inputAudioTranscription: {},
           outputAudioTranscription: {},
         },
@@ -582,7 +582,7 @@ async function smokeGoogleLiveBrowserWs(browser: Browser, apiKey: string): Promi
 
 async function smokeGatewayRelayBrowser(browser: Browser): Promise<SmokeResult> {
   let server: ViteDevServer | undefined;
-  const dir = await mkdtemp(path.join(tmpdir(), "openclaw-realtime-talk-"));
+  const dir = await mkdtemp(path.join(tmpdir(), "operator-realtime-talk-"));
   try {
     const { createServer } = await import("vite");
     const repoRoot = process.cwd().replaceAll("\\", "/");
@@ -683,7 +683,7 @@ try {
       relaySessionId: "relay-live-smoke",
       type: "toolCall",
       callId: "call-smoke",
-      name: "openclaw_agent_consult",
+      name: "operator_agent_consult",
       args: { question: "confirm relay consult path" },
     },
   });

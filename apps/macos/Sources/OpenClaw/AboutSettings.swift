@@ -1,6 +1,6 @@
 import AppKit
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 import SwiftUI
 
 struct AboutSettings: View {
@@ -12,13 +12,13 @@ struct AboutSettings: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            // Hero treatment from openclaw.ai: coral silhouette glow at 10% of
+            // Hero treatment from operator.ai: coral silhouette glow at 10% of
             // size, teal glow at 15% plus scale 1.1 on hover. Clicks go to the
             // mascot's Easter eggs; the GitHub link lives in the row set below.
-            OpenClawMascotView(interactive: true)
+            OperatorMascotView(interactive: true)
                 .frame(width: 160, height: 160)
                 .shadow(
-                    color: OpenClawMascotView.heroGlowColor(
+                    color: OperatorMascotView.heroGlowColor(
                         for: self.colorScheme,
                         hovering: self.iconHover),
                     radius: self.iconHover ? 24 : 16)
@@ -29,7 +29,7 @@ struct AboutSettings: View {
                 }
 
             VStack(spacing: 3) {
-                Text("OpenClaw")
+                Text("Operator")
                     .font(.title3.bold())
                 AboutBuildMetadataStrip(metadata: self.buildMetadata)
                     .padding(.top, 3)
@@ -42,12 +42,12 @@ struct AboutSettings: View {
 
             // Unified first-party link set shared with the iOS and Android About screens.
             VStack(alignment: .center, spacing: 6) {
-                AboutLinkRow(icon: "globe", title: "Website", url: "https://openclaw.ai")
-                AboutLinkRow(icon: "book", title: "Docs", url: "https://docs.openclaw.ai")
+                AboutLinkRow(icon: "globe", title: "Website", url: "https://operator.ai")
+                AboutLinkRow(icon: "book", title: "Docs", url: "https://docs.operator.ai")
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
                     title: "GitHub",
-                    url: "https://github.com/openclaw/openclaw")
+                    url: "https://github.com/gabrielvfonseca/operator")
                 AboutLinkRow(
                     icon: "bubble.left.and.bubble.right",
                     title: "Discord",
@@ -76,7 +76,7 @@ struct AboutSettings: View {
                 }
             }
 
-            Text("© 2026 OpenClaw Foundation — MIT License.")
+            Text("© 2026 Operator Foundation — MIT License.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)

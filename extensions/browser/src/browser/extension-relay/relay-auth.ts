@@ -10,7 +10,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { resolveOAuthDir } from "openclaw/plugin-sdk/state-paths";
+import { resolveOAuthDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 
 const RELAY_SECRET_FILE = "browser-extension-relay.secret";
 

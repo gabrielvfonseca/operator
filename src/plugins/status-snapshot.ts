@@ -11,7 +11,7 @@ import { createEmptyPluginRegistry, type PluginRecord, type PluginRegistry } fro
 import { buildPluginDependencyStatus } from "./status-dependencies-core.js";
 import type { PluginLogger } from "./types.js";
 
-/** Control-plane plugin status shape used by `operator plugins status` style surfaces. */
+/** Control-plane plugin status shape used by `openclaw plugins status` style surfaces. */
 export type PluginRegistryStatusReport = PluginRegistry & {
   workspaceDir?: string;
   registrySource: PluginRegistrySnapshotSource;
@@ -70,7 +70,7 @@ function buildPluginRecordFromInstalledIndex(
   plugin: import("./installed-plugin-index.js").InstalledPluginIndexRecord,
   manifest?: import("./manifest-registry.js").PluginManifestRecord,
 ): PluginRecord {
-  const format = plugin.format ?? manifest?.format ?? "operator";
+  const format = plugin.format ?? manifest?.format ?? "@gabrielvfonseca/operator";
   const bundleFormat = plugin.bundleFormat ?? manifest?.bundleFormat;
   return {
     id: plugin.pluginId,

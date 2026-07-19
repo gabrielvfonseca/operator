@@ -1,6 +1,6 @@
 // Thread-binding policy resolution for channel/account session spawning.
-import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { MAX_DATE_TIMESTAMP_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAccountId } from "../routing/session-key.js";
 import {

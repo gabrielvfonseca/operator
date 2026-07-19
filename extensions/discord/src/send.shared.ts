@@ -1,22 +1,22 @@
-import { PollLayoutType } from "discord-api-types/payloads/v10";
-import type { RESTAPIPoll } from "discord-api-types/rest/v10";
-import type { APIChannel } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Discord plugin module implements send.shared behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { buildOutboundMediaLoadOptions } from "openclaw/plugin-sdk/media-runtime";
-import { extensionForMime } from "openclaw/plugin-sdk/media-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { buildOutboundMediaLoadOptions } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   normalizePollDurationHours,
   normalizePollInput,
   type OutboundMediaAccess,
   type PollInput,
-} from "openclaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import type { ChunkMode } from "openclaw/plugin-sdk/reply-chunking";
-import { resolveTextChunksWithFallback } from "openclaw/plugin-sdk/reply-payload";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import type { ChunkMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { resolveTextChunksWithFallback } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { loadWebMedia } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
+import { PollLayoutType } from "discord-api-types/payloads/v10";
+import type { RESTAPIPoll } from "discord-api-types/rest/v10";
+import type { APIChannel } from "discord-api-types/v10";
 import { chunkDiscordTextWithMode } from "./chunk.js";
 import { createDiscordClient, resolveDiscordRest, type DiscordClientOpts } from "./client.js";
 import {

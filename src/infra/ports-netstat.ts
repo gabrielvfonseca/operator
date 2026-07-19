@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { parseStrictPositiveInteger } from "./parse-finite-number.js";
 import type { PortListener } from "./ports-types.js";
 

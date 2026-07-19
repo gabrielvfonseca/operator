@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV } from "../commands/doctor-invocation.js";
 import { resolveGatewayInstallEntrypoint } from "../daemon/gateway-entrypoint.js";
 import { type CommandOptions, runCommandWithTimeout } from "../process/exec.js";
@@ -208,7 +208,7 @@ function mapManagerResolutionFailure(
 const DEFAULT_TIMEOUT_MS = 20 * 60_000;
 const MAX_LOG_CHARS = 8000;
 const PREFLIGHT_MAX_COMMITS = 10;
-const DEFAULT_PACKAGE_NAME = "operator";
+const DEFAULT_PACKAGE_NAME = "@gabrielvfonseca/operator";
 const CORE_PACKAGE_NAMES = new Set([DEFAULT_PACKAGE_NAME]);
 const UPDATE_DEFER_CONFIGURED_PLUGIN_INSTALL_REPAIR_ENV =
   "OPERATOR_UPDATE_DEFER_CONFIGURED_PLUGIN_INSTALL_REPAIR";
@@ -502,7 +502,9 @@ async function runStep(opts: RunStepOptions): Promise<UpdateStepResult> {
 }
 
 function normalizeTag(tag?: string) {
-  return normalizePackageTagInput(tag, ["operator", DEFAULT_PACKAGE_NAME]) ?? "latest";
+  return (
+    normalizePackageTagInput(tag, ["@gabrielvfonseca/operator", DEFAULT_PACKAGE_NAME]) ?? "latest"
+  );
 }
 
 function normalizeDevTargetRef(value?: string | null): string | null {
@@ -723,7 +725,7 @@ function normalizeFallbackFailureReason(stepName: string): NonNullable<UpdateRun
     case "global install verify":
     case "global install swap":
       return "global-install-failed";
-    case "operator doctor":
+    case "openclaw doctor":
       return "doctor-failed";
     case "ui:build (post-doctor repair)":
       return "ui-build-failed";
@@ -865,7 +867,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       status: "error",
       mode: "unknown",
       root: gitRoot,
-      reason: "not-operator-root",
+      reason: "not-openclaw-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1608,7 +1610,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         .catch(() => false);
       if (!doctorEntryExists) {
         steps.push({
-          name: "operator doctor entry",
+          name: "openclaw doctor entry",
           command: `verify ${doctorEntry}`,
           cwd: gitRoot,
           durationMs: 0,
@@ -1632,7 +1634,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         ...(doctorPolicy.fix ? ["--fix"] : []),
       ];
       const doctorStep = await runStep(
-        step("operator doctor", doctorArgv, gitRoot, {
+        step("openclaw doctor", doctorArgv, gitRoot, {
           OPERATOR_UPDATE_IN_PROGRESS: "1",
           [DOCTOR_DISABLE_CROSS_STATE_DIR_IMPORTS_ENV]: "1",
           ...(opts.deferConfiguredPluginInstallRepair
@@ -1721,7 +1723,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
     return {
       status: "error",
       mode: "unknown",
-      reason: "not-operator-root",
+      reason: "not-openclaw-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1818,7 +1820,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         });
         return await runStep({
           runCommand,
-          name: "operator doctor",
+          name: "openclaw doctor",
           argv: [
             doctorNodePath,
             doctorEntry,

@@ -1,6 +1,6 @@
 // Fetches and normalizes MiniMax provider usage records.
-import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { asDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { readProviderJsonResponse } from "../agents/provider-http-errors.js";
 import { isRecord } from "../utils.js";
 import { readTrimmedStringAlias } from "../utils/string-readers.js";

@@ -15,7 +15,7 @@ import { deleteFleetCell, reserveFleetCell, type FleetCellRecord } from "./regis
 let root: string;
 let env: NodeJS.ProcessEnv;
 let record: FleetCellRecord;
-const tempRoot = createSuiteTempRootTracker({ prefix: "openclaw-fleet-doctor-" });
+const tempRoot = createSuiteTempRootTracker({ prefix: "operator-fleet-doctor-" });
 
 function healthyInspection(): Extract<FleetContainerInspectResult, { kind: "ok" }> {
   return {
@@ -24,8 +24,8 @@ function healthyInspection(): Extract<FleetContainerInspectResult, { kind: "ok" 
     state: "running",
     running: true,
     labels: {
-      "openclaw.fleet.tenant": "acme",
-      "openclaw.fleet.owner": cellOwnerId(record.dataDir),
+      "operator.fleet.tenant": "acme",
+      "operator.fleet.owner": cellOwnerId(record.dataDir),
     },
     environment: { OPERATOR_GATEWAY_TOKEN: "secret" },
     imageId: "sha256:image",
@@ -46,10 +46,10 @@ function healthyNetwork(): Extract<FleetNetworkInspectResult, { kind: "ok" }> {
   return {
     kind: "ok",
     labels: {
-      "openclaw.fleet.tenant": "acme",
-      "openclaw.fleet.owner": cellOwnerId(record.dataDir),
+      "operator.fleet.tenant": "acme",
+      "operator.fleet.owner": cellOwnerId(record.dataDir),
     },
-    attachedContainers: [{ id: "cell", name: "openclaw-cell-acme" }],
+    attachedContainers: [{ id: "cell", name: "operator-cell-acme" }],
     internal: false,
   };
 }
@@ -83,7 +83,7 @@ beforeEach(async () => {
     createdAtMs: 0,
     image: "image",
     runtime: "docker",
-    containerName: "openclaw-cell-acme",
+    containerName: "operator-cell-acme",
     dataDir: path.join(root, "fleet", "cells", "acme"),
   });
   await fs.mkdir(record.dataDir, { recursive: true, mode: 0o700 });
@@ -106,7 +106,7 @@ describe("fleet doctor", () => {
           createdAtMs: 0,
           image: "image",
           runtime,
-          containerName: "openclaw-cell-acme",
+          containerName: "operator-cell-acme",
           dataDir: path.join(root, "fleet", "cells", "acme"),
         });
       }
@@ -137,7 +137,7 @@ describe("fleet doctor", () => {
       createdAtMs: 0,
       image: "image",
       runtime: "podman",
-      containerName: "openclaw-cell-acme",
+      containerName: "operator-cell-acme",
       dataDir: path.join(root, "fleet", "cells", "acme"),
     });
     const inspection = healthyInspection();
@@ -201,7 +201,7 @@ describe("fleet doctor", () => {
       "container-owned",
       "fail",
       (inspection: ReturnType<typeof healthyInspection>) => {
-        inspection.labels["openclaw.fleet.owner"] = "foreign";
+        inspection.labels["operator.fleet.owner"] = "foreign";
       },
     ],
     [
@@ -217,7 +217,7 @@ describe("fleet doctor", () => {
       (inspection: ReturnType<typeof healthyInspection>) => {
         // Docker cell whose disk-limit label survives but whose applied
         // storage option was dropped out-of-band.
-        inspection.labels["openclaw.fleet.disk-limit"] = "10g";
+        inspection.labels["operator.fleet.disk-limit"] = "10g";
         inspection.storageOpt = {};
       },
     ],
@@ -226,7 +226,7 @@ describe("fleet doctor", () => {
       "fail",
       (inspection: ReturnType<typeof healthyInspection>) => {
         // Malformed label would break upgrade/restore replay on any runtime.
-        inspection.labels["openclaw.fleet.disk-limit"] = "not-a-size";
+        inspection.labels["operator.fleet.disk-limit"] = "not-a-size";
         inspection.storageOpt = { size: "not-a-size" };
       },
     ],

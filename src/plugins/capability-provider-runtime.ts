@@ -1,5 +1,5 @@
 /** Resolves plugin capability providers through manifest contracts, bundled compat, and runtime registries. */
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveVoiceModelRefs } from "../../packages/speech-core/voice-models.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getLoadedRuntimePluginRegistry } from "./active-runtime-registry.js";

@@ -1,9 +1,9 @@
 /**
  * Cohere model catalog helpers derived from the plugin manifest.
  */
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
-import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { buildManifestModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
+import type { ModelDefinitionConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import manifest from "./operator.plugin.json" with { type: "json" };
 
 const COHERE_MANIFEST_CATALOG = manifest.modelCatalog.providers.cohere;

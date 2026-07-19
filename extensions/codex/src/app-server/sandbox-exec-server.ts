@@ -6,8 +6,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { once } from "node:events";
 import type { IncomingMessage } from "node:http";
 import { isIP, type AddressInfo } from "node:net";
-import { embeddedAgentLog } from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { SandboxContext } from "openclaw/plugin-sdk/sandbox";
+import { embeddedAgentLog } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { SandboxContext } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import { WebSocketServer, type RawData, type WebSocket } from "ws";
 import type { CodexAppServerClient } from "./client.js";
 import type { CodexAppServerStartOptions } from "./config.js";
@@ -176,7 +176,7 @@ async function startOperatorExecServer(sandbox: SandboxContext): Promise<Operato
     throw new Error("Operator Codex exec-server did not bind to a TCP port.");
   }
   const environmentId = buildEnvironmentId(sandbox);
-  const authPath = `/openclaw-${randomUUID()}`;
+  const authPath = `/operator-${randomUUID()}`;
   const url = `ws://127.0.0.1:${(address as AddressInfo).port}${authPath}`;
   const execServer: OperatorExecServer = {
     authPath,
@@ -239,7 +239,7 @@ async function closeOperatorExecServer(execServer: OperatorExecServer): Promise<
 
 function buildEnvironmentId(sandbox: SandboxContext): string {
   const hash = createHash("sha256").update(sandbox.runtimeId).digest("hex").slice(0, 16);
-  return `openclaw-sandbox-${hash}`;
+  return `operator-sandbox-${hash}`;
 }
 
 function isAuthorizedExecServerRequest(

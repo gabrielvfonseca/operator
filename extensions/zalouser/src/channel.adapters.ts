@@ -1,23 +1,23 @@
 // Zalouser plugin module implements channel.adapters behavior.
-import { createScopedDmSecurityResolver } from "openclaw/plugin-sdk/channel-config-helpers";
+import { createScopedDmSecurityResolver } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 import {
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createPairingPrefixStripper } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
 import {
   resolveScopeRequireMention,
   resolveScopeToolsPolicy,
-} from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import {
   createEmptyChannelResult,
   type ChannelOutboundAdapter,
   type OutboundDeliveryResult,
-} from "openclaw/plugin-sdk/channel-send-result";
-import { createStaticReplyToModeResolver } from "openclaw/plugin-sdk/conversation-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import { createStaticReplyToModeResolver } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   checkZcaAuthenticated,
   listZalouserAccountIds,

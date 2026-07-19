@@ -1,6 +1,6 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Discord tests cover native command.status direct plugin behavior.
 import { ChannelType } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { nativeCommandRuntime } from "./native-command.runtime.js";
 import { createMockCommandInteraction as createInteraction } from "./native-command.test-helpers.js";

@@ -1,4 +1,4 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 /**
  * Shared Browser control-server test harness with mocked Chrome, CDP,
  * Playwright, Chrome MCP, config, and media dependencies.
@@ -25,7 +25,7 @@ type HarnessState = {
       cdpPort?: number;
       cdpUrl?: string;
       color: string;
-      driver?: "openclaw" | "existing-session";
+      driver?: "@gabrielvfonseca/operator" | "existing-session";
       attachOnly?: boolean;
     }
   >;
@@ -43,7 +43,7 @@ const state: HarnessState = {
   cfgEvaluateEnabled: true,
   cfgExtraArgs: [],
   cfgSsrfPolicy: undefined,
-  cfgDefaultProfile: "openclaw",
+  cfgDefaultProfile: "@gabrielvfonseca/operator",
   cfgProfiles: {},
   tabUrl: "https://example.com",
   prevGatewayPort: undefined,
@@ -97,7 +97,7 @@ export function setBrowserControlServerTabUrl(url: string): void {
 /** Sets mocked Browser profiles and default profile for config reload tests. */
 export function setBrowserControlServerProfiles(
   profiles: HarnessState["cfgProfiles"],
-  defaultProfile = Object.keys(profiles)[0] ?? "openclaw",
+  defaultProfile = Object.keys(profiles)[0] ?? "@gabrielvfonseca/operator",
 ): void {
   state.cfgProfiles = profiles;
   state.cfgDefaultProfile = defaultProfile;
@@ -445,7 +445,7 @@ function defaultBrowserCdpPortForState(testPort: number): number {
 
 function defaultProfilesForState(testPort: number): HarnessState["cfgProfiles"] {
   return {
-    openclaw: { cdpPort: defaultBrowserCdpPortForState(testPort), color: "#FF4500" },
+    operator: { cdpPort: defaultBrowserCdpPortForState(testPort), color: "#FF4500" },
   };
 }
 
@@ -478,13 +478,13 @@ vi.mock("../config/config.js", async () => {
       ) => unknown;
     }) => {
       const draft = structuredClone(loadConfig());
-      const result = await params.mutate(draft, { snapshot: { path: "/tmp/openclaw.json" } });
+      const result = await params.mutate(draft, { snapshot: { path: "/tmp/operator.json" } });
       await writeConfigFile(draft);
       return {
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: "test-hash",
         persistedHash: "test-hash",
-        snapshot: { path: "/tmp/openclaw.json" },
+        snapshot: { path: "/tmp/operator.json" },
         nextConfig: draft,
         result,
         attempts: 1,
@@ -601,7 +601,7 @@ export async function resetBrowserControlServerTestContext(): Promise<void> {
   state.cfgEvaluateEnabled = true;
   state.cfgExtraArgs = [];
   state.cfgSsrfPolicy = undefined;
-  state.cfgDefaultProfile = "openclaw";
+  state.cfgDefaultProfile = "@gabrielvfonseca/operator";
   state.cfgProfiles = defaultProfilesForState(state.testPort);
   state.tabUrl = "https://example.com";
 

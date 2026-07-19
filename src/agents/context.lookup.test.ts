@@ -1,7 +1,7 @@
 // Covers context-token lookup caches, catalog warmup, and provider-qualified
 // model resolution.
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { CONTEXT_WINDOW_RUNTIME_STATE } from "./context-runtime-state.js";
 
 type DiscoveredModel = {

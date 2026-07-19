@@ -13,7 +13,7 @@ import { t } from "../i18n/index.ts";
 import { isCronJobActiveFailure } from "../lib/cron-status.ts";
 import { createInitialCronState, loadCronJobsPage } from "../lib/cron/index.ts";
 import { isMonitoredAuthProvider, loadModelAuthStatus } from "../lib/model-auth.ts";
-import { OpenClawLightDomContentsElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomContentsElement } from "../lit/operator-element.ts";
 import { SubscriptionsController } from "../lit/subscriptions-controller.ts";
 import { icons, type IconName } from "./icons.ts";
 import {
@@ -127,7 +127,7 @@ function buildSidebarAttentionItems(params: {
   return items;
 }
 
-class SidebarAttention extends OpenClawLightDomContentsElement {
+class SidebarAttention extends OperatorLightDomContentsElement {
   @consume({ context: applicationContext, subscribe: true })
   private context?: ApplicationContext;
 
@@ -313,6 +313,6 @@ class SidebarAttention extends OpenClawLightDomContentsElement {
   }
 }
 
-if (!customElements.get("openclaw-sidebar-attention")) {
-  customElements.define("openclaw-sidebar-attention", SidebarAttention);
+if (!customElements.get("operator-sidebar-attention")) {
+  customElements.define("operator-sidebar-attention", SidebarAttention);
 }

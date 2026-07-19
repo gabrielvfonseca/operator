@@ -1,14 +1,14 @@
 ---
-name: openclaw-changelog-update
-description: Regenerate OpenClaw release changelog sections from git history before beta or stable releases.
+name: operator-changelog-update
+description: Regenerate Operator release changelog sections from git history before beta or stable releases.
 ---
 
-# OpenClaw Changelog Update
+# Operator Changelog Update
 
 Use this for release changelog rewrites and GitHub release-note source text.
 Run it once after the final Code SHA has green Full Release Validation. Do not
 rerun it for same-candidate tooling retries, resumed publication, or promotion.
-Use it with `release-openclaw-maintainer`; this skill owns changelog content,
+Use it with `release-operator-maintainer`; this skill owns changelog content,
 ordering, grouping, and attribution discipline.
 
 ## Goal
@@ -49,12 +49,12 @@ every human `Thanks @...` attribution.
    writing grouped prose:
 
    ```bash
-   node .agents/skills/openclaw-changelog-update/scripts/verify-release-notes.mjs \
+   node .agents/skills/operator-changelog-update/scripts/verify-release-notes.mjs \
      --base <base-tag> \
      --target <target-ref> \
      --main-ref origin/main \
      --version <YYYY.M.PATCH> \
-     --manifest /tmp/openclaw-release-<YYYY.M.PATCH>.json \
+     --manifest /tmp/operator-release-<YYYY.M.PATCH>.json \
      --write-ledger
    ```
 
@@ -186,12 +186,12 @@ every human `Thanks @...` attribution.
 - after the manifest-driven rewrite, regenerate and verify the complete
   contribution record before committing:
   ```bash
-  node .agents/skills/openclaw-changelog-update/scripts/verify-release-notes.mjs \
+  node .agents/skills/operator-changelog-update/scripts/verify-release-notes.mjs \
     --base <base-tag> \
     --target <target-ref> \
     --main-ref origin/main \
     --version <YYYY.M.PATCH> \
-    --manifest /tmp/openclaw-release-<YYYY.M.PATCH>.json \
+    --manifest /tmp/operator-release-<YYYY.M.PATCH>.json \
     --write-ledger
   ```
 - the command fails when any `#NNN` reference in release history or the
@@ -214,7 +214,7 @@ every human `Thanks @...` attribution.
 - after the GitHub release or prerelease is published, verify every matching
   release page against the same source section:
   ```bash
-  node .agents/skills/openclaw-changelog-update/scripts/verify-release-notes.mjs \
+  node .agents/skills/operator-changelog-update/scripts/verify-release-notes.mjs \
     --base <base-tag> \
     --target <target-ref> \
     --version <YYYY.M.PATCH> \

@@ -1,6 +1,6 @@
 // Browser tests cover server.agent contract core plugin behavior.
 import fs from "node:fs";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_AI_SNAPSHOT_MAX_CHARS } from "./constants.js";
 import { ACT_ERROR_CODES } from "./routes/agent.act.errors.js";
@@ -170,7 +170,7 @@ describe("browser control server", () => {
     "returns ACT_EXISTING_SESSION_UNSUPPORTED for unsupported existing-session actions",
     async () => {
       setBrowserControlServerProfiles({
-        openclaw: {
+        operator: {
           color: "#FF4500",
           driver: "existing-session",
         },
@@ -841,7 +841,7 @@ describe("profile CRUD endpoints", () => {
     const createDuplicate = await realFetch(`${base}/profiles/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "openclaw" }),
+      body: JSON.stringify({ name: "@gabrielvfonseca/operator" }),
     });
     expect(createDuplicate.status).toBe(409);
     const createDuplicateBody = (await createDuplicate.json()) as { error: string };
@@ -888,7 +888,7 @@ describe("profile CRUD endpoints", () => {
     expect(createClawdBody.cdpPort).toBeTypeOf("number");
     expect(createClawdBody.userDataDir).toBeNull();
 
-    const explicitUserDataDir = "/tmp/openclaw-brave-profile";
+    const explicitUserDataDir = "/tmp/operator-brave-profile";
     await fs.promises.mkdir(explicitUserDataDir, { recursive: true });
     const createExistingSession = await realFetch(`${base}/profiles/create`, {
       method: "POST",

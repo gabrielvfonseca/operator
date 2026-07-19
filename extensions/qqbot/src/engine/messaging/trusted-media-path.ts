@@ -1,5 +1,5 @@
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/sandbox";
-import { resolveLocalPathFromRootsSync } from "openclaw/plugin-sdk/security-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import { resolveLocalPathFromRootsSync } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { resolveQQBotPayloadLocalFilePath } from "../utils/platform.js";
 
 // The temp root is process-stable, so resolve it once. Only the success value is

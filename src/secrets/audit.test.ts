@@ -136,9 +136,9 @@ async function expectPathMissing(filePath: string): Promise<void> {
 }
 
 async function createAuditFixture(): Promise<AuditFixture> {
-  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-secrets-audit-"));
-  const stateDir = path.join(rootDir, ".openclaw");
-  const configPath = path.join(stateDir, "openclaw.json");
+  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-secrets-audit-"));
+  const stateDir = path.join(rootDir, ".operator");
+  const configPath = path.join(stateDir, "operator.json");
   const agentDir = path.join(stateDir, "agents", "main", "agent");
   const authStorePath = resolveAuthProfileDatabasePath(agentDir);
   const authJsonPath = path.join(agentDir, "auth.json");
@@ -746,7 +746,7 @@ describe("secrets audit", () => {
     ).toBe(true);
   });
 
-  it("does not flag openclaw.json model provider apiKey marker values as plaintext", async () => {
+  it("does not flag operator.json model provider apiKey marker values as plaintext", async () => {
     await writeJsonFile(fixture.configPath, {
       models: {
         providers: {

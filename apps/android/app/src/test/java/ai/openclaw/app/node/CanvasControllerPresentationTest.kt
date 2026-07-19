@@ -1,4 +1,4 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

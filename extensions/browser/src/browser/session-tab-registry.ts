@@ -5,7 +5,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { browserCloseTabByRawTargetId } from "./client.js";
 
 type TrackedSessionBrowserTab = {

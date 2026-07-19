@@ -1,9 +1,9 @@
-// Slack data_table Block Kit contract, projection, and text fallback.
-import type { Block } from "@slack/web-api";
 import {
   renderMessagePresentationTableFallbackText,
   type MessagePresentationTableBlock,
-} from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+// Slack data_table Block Kit contract, projection, and text fallback.
+import type { Block } from "@slack/web-api";
 import { escapeSlackMrkdwn } from "./monitor/mrkdwn.js";
 import { renderSlackMessagePresentationTableFallbackText } from "./presentation-fallback.js";
 

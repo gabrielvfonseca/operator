@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { deleteTestEnvValue, setTestEnvValue } from "../../test-utils/env.js";
 import { cleanupSessionStateForTest } from "../../test-utils/session-state-cleanup.js";
 
@@ -13,7 +13,7 @@ type EnvSnapshot = {
   userProfile: string | undefined;
   homeDrive: string | undefined;
   homePath: string | undefined;
-  operatorHome: string | undefined;
+  openclawHome: string | undefined;
   stateDir: string | undefined;
 };
 
@@ -30,7 +30,7 @@ function snapshotEnv(): EnvSnapshot {
     userProfile: process.env.USERPROFILE,
     homeDrive: process.env.HOMEDRIVE,
     homePath: process.env.HOMEPATH,
-    operatorHome: process.env.OPERATOR_HOME,
+    openclawHome: process.env.OPERATOR_HOME,
     stateDir: process.env.OPERATOR_STATE_DIR,
   };
 }

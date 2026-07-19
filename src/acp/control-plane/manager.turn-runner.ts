@@ -1,6 +1,6 @@
 /** Runs ACP turns, failover, timeout cleanup, and detached-task progress mirroring. */
-import type { AcpRuntime, AcpRuntimeHandle } from "@operator/acp-core/runtime/types";
-import { expectDefined } from "@operator/normalization-core";
+import type { AcpRuntime, AcpRuntimeHandle } from "@gabrielvfonseca/acp-core/runtime/types";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { logVerbose } from "../../globals.js";
 import {
   recordSessionHumanDirectMessage,

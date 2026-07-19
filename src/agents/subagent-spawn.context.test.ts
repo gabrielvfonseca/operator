@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   loadSubagentSpawnModuleForTest,

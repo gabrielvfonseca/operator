@@ -1,4 +1,7 @@
-import { embeddedAgentLog, formatErrorMessage } from "openclaw/plugin-sdk/agent-harness-runtime";
+import {
+  embeddedAgentLog,
+  formatErrorMessage,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   CODEX_APP_SERVER_INTERRUPT_TIMEOUT_MS,
   interruptCodexTurnBestEffort,

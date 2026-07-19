@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /** Normalizes provider auth input metadata collected from plugin setup flows. */
 import {
   normalizeOptionalLowercaseString,
   normalizeStringifiedOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isMalformedApiKeyInput } from "../agents/auth-profiles/credential-state.js";
 import { resolveEnvApiKey } from "../agents/model-auth-env.js";
 import type { OperatorConfig } from "../config/types.js";

@@ -3,17 +3,17 @@ import {
   assertOkOrThrowProviderError,
   assertProviderBinaryResponseContent,
   readProviderBinaryResponse,
-} from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import {
   normalizeApplyTextNormalization,
   normalizeLanguageCode,
   normalizeSeed,
   requireInRange,
-} from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { isValidElevenLabsVoiceId, normalizeElevenLabsBaseUrl } from "./shared.js";
 
 function assertElevenLabsVoiceSettings(settings: {

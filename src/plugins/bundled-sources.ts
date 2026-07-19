@@ -1,7 +1,7 @@
 // Resolves bundled plugin source metadata from package manifests.
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { discoverOperatorPlugins, type PluginDiscoveryResult } from "./discovery.js";
 import { loadPluginManifest } from "./manifest.js";
 
@@ -137,5 +137,5 @@ export function resolveBundledPluginInstallCommandHint(params: {
   if (!bundledSource?.localPath) {
     return null;
   }
-  return `operator plugins install ${bundledSource.localPath}`;
+  return `openclaw plugins install ${bundledSource.localPath}`;
 }

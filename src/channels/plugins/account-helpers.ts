@@ -3,8 +3,8 @@
  *
  * Lists configured accounts and resolves default-account behavior for plugin configs.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   resolveAccountEntry,

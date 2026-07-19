@@ -1,6 +1,6 @@
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { splitShellArgs } from "../utils/shell-argv.js";
 import { buildCommandPayloadCandidates } from "./command-analysis/risks.js";
 import { explainShellCommand } from "./command-explainer/extract.js";
@@ -39,19 +39,19 @@ function normalizeCommandBaseName(token: string | undefined): string {
 
 function stripOperatorPackageRunner(argv: string[]): string[] {
   const commandName = normalizeCommandBaseName(argv[0]);
-  if (commandName === "operator") {
+  if (commandName === "@gabrielvfonseca/operator") {
     return argv;
   }
   if (
     (commandName === "pnpm" || commandName === "npm" || commandName === "yarn") &&
-    normalizeCommandBaseName(argv[1]) === "operator"
+    normalizeCommandBaseName(argv[1]) === "@gabrielvfonseca/operator"
   ) {
     return argv.slice(1);
   }
   if (
     (commandName === "pnpm" || commandName === "npm" || commandName === "yarn") &&
     (argv[1] === "exec" || argv[1] === "dlx" || argv[1] === "run") &&
-    normalizeCommandBaseName(argv[2]) === "operator"
+    normalizeCommandBaseName(argv[2]) === "@gabrielvfonseca/operator"
   ) {
     return argv.slice(2);
   }
@@ -71,7 +71,7 @@ function stripOperatorPackageRunner(argv: string[]): string[] {
         idx += 1;
       }
     }
-    if (normalizeCommandBaseName(argv[idx]) === "operator") {
+    if (normalizeCommandBaseName(argv[idx]) === "@gabrielvfonseca/operator") {
       return argv.slice(idx);
     }
   }
@@ -83,11 +83,11 @@ function parseOperatorChannelsLoginShellCommand(raw: string): boolean {
   if (!argv) {
     return false;
   }
-  const operatorArgv = stripOperatorPackageRunner(argv);
+  const openclawArgv = stripOperatorPackageRunner(argv);
   return (
-    normalizeCommandBaseName(operatorArgv[0]) === "operator" &&
-    (operatorArgv[1] === "channels" || operatorArgv[1] === "channel") &&
-    operatorArgv[2] === "login"
+    normalizeCommandBaseName(openclawArgv[0]) === "@gabrielvfonseca/operator" &&
+    (openclawArgv[1] === "channels" || openclawArgv[1] === "channel") &&
+    openclawArgv[2] === "login"
   );
 }
 
@@ -135,7 +135,7 @@ export async function rejectUnsafeExecControlShellCommand(command: string): Prom
     throw new Error(
       [
         "exec cannot run interactive Operator channel login commands.",
-        "Run `operator channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
+        "Run `openclaw channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
       ].join(" "),
     );
   }

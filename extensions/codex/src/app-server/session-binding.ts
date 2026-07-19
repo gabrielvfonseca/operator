@@ -1,17 +1,20 @@
 /** SQLite-backed Codex app-server thread bindings. */
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createHash, randomUUID } from "node:crypto";
-import { embeddedAgentLog } from "openclaw/plugin-sdk/agent-harness-runtime";
+import { embeddedAgentLog } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   ensureAuthProfileStore,
   resolveDefaultAgentDir,
   resolveProviderIdForAuth,
   resolveSessionAgentIds,
   type AuthProfileStore,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { getSessionEntry, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import {
+  getSessionEntry,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { z } from "zod";
 import {
   CODEX_PLUGINS_MARKETPLACE_NAME,

@@ -1,6 +1,6 @@
 import AppKit
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
 struct MacNodeGatewayTLSSessionCache {
@@ -91,7 +91,7 @@ final class MacNodeModeCoordinator: NSObject {
         return selected
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "mac-node")
+    private let logger = Logger(subsystem: "ai.operator", category: "mac-node")
     private var task: Task<Void, Never>?
     private var endpointRefreshTask: Task<Void, Never>?
     private var reconnectProbeTask: Task<Void, Never>?
@@ -116,7 +116,7 @@ final class MacNodeModeCoordinator: NSObject {
     override private convenience init() {
         let session = GatewayNodeSession()
         let nodeHostWorker = MacNodeHostWorker(session: session) {
-            NotificationCenter.default.post(name: .openclawNodeHostWorkerFailed, object: nil)
+            NotificationCenter.default.post(name: .operatorNodeHostWorkerFailed, object: nil)
         }
         self.init(
             session: session,
@@ -171,22 +171,22 @@ final class MacNodeModeCoordinator: NSObject {
         self.notificationCenter.addObserver(
             self,
             selector: #selector(self.refreshNodeConfiguration),
-            name: .openclawPermissionsChanged,
+            name: .operatorPermissionsChanged,
             object: nil)
         self.notificationCenter.addObserver(
             self,
             selector: #selector(self.nodeHostWorkerFailed),
-            name: .openclawNodeHostWorkerFailed,
+            name: .operatorNodeHostWorkerFailed,
             object: nil)
         self.notificationCenter.addObserver(
             self,
             selector: #selector(self.nodeHostConfigurationChanged),
-            name: .openclawConfigDidChange,
+            name: .operatorConfigDidChange,
             object: nil)
         self.notificationCenter.addObserver(
             self,
             selector: #selector(self.nodeHostConfigurationChanged),
-            name: .openclawCLIInstalled,
+            name: .operatorCLIInstalled,
             object: nil)
     }
 
@@ -463,7 +463,7 @@ final class MacNodeModeCoordinator: NSObject {
             }
 
             let cameraEnabled = defaults.object(forKey: cameraEnabledKey) as? Bool ?? false
-            let browserControlEnabled = OpenClawConfigFile.browserControlEnabled()
+            let browserControlEnabled = OperatorConfigFile.browserControlEnabled()
             let codexThreadCatalogEnabled = MacNodeCodexThreadCatalog.shouldAdvertise()
             let claudeSessionCatalogEnabled = MacNodeClaudeSessionCatalog.shouldAdvertise()
 
@@ -531,7 +531,7 @@ final class MacNodeModeCoordinator: NSObject {
         // computer.act service is still holding rather than waiting for
         // the idle watchdog. This refresh loop re-runs on the settings
         // change that drops the cap.
-        if !nativeCaps.contains(OpenClawCapability.computer.rawValue) {
+        if !nativeCaps.contains(OperatorCapability.computer.rawValue) {
             await self.runtime.releaseHeldComputerInput()
         }
         let caps = Self.mergingUnique(nativeCaps, workerManifest?.caps ?? [])
@@ -557,7 +557,7 @@ final class MacNodeModeCoordinator: NSObject {
             commands: commands,
             pathEnv: workerManifest?.pathEnv,
             permissions: permissions,
-            clientId: "openclaw-macos",
+            clientId: "operator-macos",
             clientMode: "node",
             clientDisplayName: InstanceIdentity.displayName,
             deviceIdentityProfile: Self.nodeIdentityProfile)
@@ -646,13 +646,13 @@ final class MacNodeModeCoordinator: NSObject {
                     return BridgeInvokeResponse(
                         id: req.id,
                         ok: false,
-                        error: OpenClawNodeError(code: .unavailable, message: "UNAVAILABLE: node not ready"))
+                        error: OperatorNodeError(code: .unavailable, message: "UNAVAILABLE: node not ready"))
                 }
                 guard await self.routeAuthorityAllowsInvoke(attempt.routeAuthorityGeneration) else {
                     return BridgeInvokeResponse(
                         id: req.id,
                         ok: false,
-                        error: OpenClawNodeError(
+                        error: OperatorNodeError(
                             code: .unavailable,
                             message: "UNAVAILABLE: node route changed before dispatch"))
                 }
@@ -666,7 +666,7 @@ final class MacNodeModeCoordinator: NSObject {
                     return BridgeInvokeResponse(
                         id: req.id,
                         ok: false,
-                        error: OpenClawNodeError(
+                        error: OperatorNodeError(
                             code: .unavailable,
                             message: "UNAVAILABLE: Codex session catalog was not advertised for this route"))
                 }
@@ -677,7 +677,7 @@ final class MacNodeModeCoordinator: NSObject {
                     return BridgeInvokeResponse(
                         id: req.id,
                         ok: false,
-                        error: OpenClawNodeError(
+                        error: OperatorNodeError(
                             code: .unavailable,
                             message: "UNAVAILABLE: Claude session catalog was not advertised for this route"))
                 }
@@ -819,7 +819,7 @@ final class MacNodeModeCoordinator: NSObject {
             browserControlEnabled: browserControlEnabled,
             cameraEnabled: cameraEnabled,
             computerControlEnabled: computerControlEnabled,
-            locationMode: OpenClawLocationMode(rawValue: rawLocationMode) ?? .off,
+            locationMode: OperatorLocationMode(rawValue: rawLocationMode) ?? .off,
             connectionMode: AppStateStore.shared.connectionMode,
             codexThreadCatalogEnabled: codexThreadCatalogEnabled,
             claudeSessionCatalogEnabled: claudeSessionCatalogEnabled)
@@ -837,7 +837,7 @@ final class MacNodeModeCoordinator: NSObject {
     private func startNodeHostWorkerIfConfigured() async throws -> MacNodeHostManifest? {
         guard let nodeHostWorker else { return nil }
         let executable: String
-        if let projectExecutable = CommandResolver.projectOpenClawExecutable() {
+        if let projectExecutable = CommandResolver.projectOperatorExecutable() {
             executable = projectExecutable
         } else {
             switch await CLIInstaller.status() {
@@ -918,7 +918,7 @@ final class MacNodeModeCoordinator: NSObject {
         guard let params = Self.tlsParams(
             for: url,
             connectionMode: connectionMode,
-            root: OpenClawConfigFile.loadDict(),
+            root: OperatorConfigFile.loadDict(),
             storedFingerprint: stored)
         else {
             self.tlsSessionCache.invalidate()
@@ -933,23 +933,23 @@ extension MacNodeModeCoordinator {
         browserControlEnabled: Bool,
         cameraEnabled: Bool,
         computerControlEnabled: Bool,
-        locationMode: OpenClawLocationMode,
+        locationMode: OperatorLocationMode,
         connectionMode: AppState.ConnectionMode,
         codexThreadCatalogEnabled: Bool = false,
         claudeSessionCatalogEnabled: Bool = false) -> [String]
     {
         var caps: [String] = [
-            OpenClawCapability.canvas.rawValue,
-            OpenClawCapability.screen.rawValue,
+            OperatorCapability.canvas.rawValue,
+            OperatorCapability.screen.rawValue,
         ]
         _ = browserControlEnabled
-        if cameraEnabled { caps.append(OpenClawCapability.camera.rawValue) }
+        if cameraEnabled { caps.append(OperatorCapability.camera.rawValue) }
         // Advertised only when the operator has enabled Computer Control; the
         // command is dangerous and stays disarmed until allowlisted on the gateway.
         if computerControlEnabled {
-            caps.append(OpenClawCapability.computer.rawValue)
+            caps.append(OperatorCapability.computer.rawValue)
         }
-        if locationMode != .off { caps.append(OpenClawCapability.location.rawValue) }
+        if locationMode != .off { caps.append(OperatorCapability.location.rawValue) }
         // A local Gateway already catalogs this user's Codex home. Advertise the
         // node-owned catalog only when this Mac supplies it to a remote Gateway.
         if codexThreadCatalogEnabled, connectionMode == .remote {
@@ -963,27 +963,27 @@ extension MacNodeModeCoordinator {
 
     nonisolated static func resolvedCommands(caps: [String]) -> [String] {
         var commands: [String] = [
-            OpenClawCanvasCommand.present.rawValue,
-            OpenClawCanvasCommand.hide.rawValue,
-            OpenClawCanvasCommand.navigate.rawValue,
-            OpenClawCanvasCommand.evalJS.rawValue,
-            OpenClawCanvasCommand.snapshot.rawValue,
-            OpenClawCanvasA2UICommand.push.rawValue,
-            OpenClawCanvasA2UICommand.pushJSONL.rawValue,
-            OpenClawCanvasA2UICommand.reset.rawValue,
+            OperatorCanvasCommand.present.rawValue,
+            OperatorCanvasCommand.hide.rawValue,
+            OperatorCanvasCommand.navigate.rawValue,
+            OperatorCanvasCommand.evalJS.rawValue,
+            OperatorCanvasCommand.snapshot.rawValue,
+            OperatorCanvasA2UICommand.push.rawValue,
+            OperatorCanvasA2UICommand.pushJSONL.rawValue,
+            OperatorCanvasA2UICommand.reset.rawValue,
             MacNodeScreenCommand.snapshot.rawValue,
             MacNodeScreenCommand.record.rawValue,
-            OpenClawSystemCommand.notify.rawValue,
+            OperatorSystemCommand.notify.rawValue,
         ]
 
         let capsSet = Set(caps)
-        if capsSet.contains(OpenClawCapability.camera.rawValue) {
-            commands.append(OpenClawCameraCommand.list.rawValue)
-            commands.append(OpenClawCameraCommand.snap.rawValue)
-            commands.append(OpenClawCameraCommand.clip.rawValue)
+        if capsSet.contains(OperatorCapability.camera.rawValue) {
+            commands.append(OperatorCameraCommand.list.rawValue)
+            commands.append(OperatorCameraCommand.snap.rawValue)
+            commands.append(OperatorCameraCommand.clip.rawValue)
         }
-        if capsSet.contains(OpenClawCapability.location.rawValue) {
-            commands.append(OpenClawLocationCommand.get.rawValue)
+        if capsSet.contains(OperatorCapability.location.rawValue) {
+            commands.append(OperatorLocationCommand.get.rawValue)
         }
         if capsSet.contains(MacNodeCodexThreadCatalogContract.capability) {
             commands.append(contentsOf: MacNodeCodexThreadCatalogContract.commands)
@@ -991,8 +991,8 @@ extension MacNodeModeCoordinator {
         if capsSet.contains(MacNodeClaudeSessionCatalogContract.capability) {
             commands.append(contentsOf: MacNodeClaudeSessionCatalogContract.commands)
         }
-        if capsSet.contains(OpenClawCapability.computer.rawValue) {
-            commands.append(OpenClawComputerCommand.act.rawValue)
+        if capsSet.contains(OperatorCapability.computer.rawValue) {
+            commands.append(OperatorComputerCommand.act.rawValue)
         }
 
         return commands

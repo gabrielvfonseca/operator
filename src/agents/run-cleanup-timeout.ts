@@ -3,8 +3,8 @@
  *
  * Bounds cleanup steps so run completion cannot hang forever while preserving late-failure diagnostics.
  */
-import { resolveOptionalIntegerOption } from "@operator/normalization-core/number-coercion";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveOptionalIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { formatErrorMessage } from "../infra/errors.js";
 import { parseStrictPositiveInteger } from "../infra/parse-finite-number.js";
 

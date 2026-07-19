@@ -7,12 +7,12 @@ import {
   getNodeSqliteKysely,
 } from "../../../infra/kysely-sync.js";
 import { requireNodeSqlite } from "../../../infra/node-sqlite.js";
-import type { DB as OperatorStateDatabase } from "../../../state/operator-state-db.generated.js";
+import type { DB as OperatorStateDatabase } from "../../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
-} from "../../../state/operator-state-db.js";
-import { resolveOperatorStateSqlitePath } from "../../../state/operator-state-db.paths.js";
+} from "../../../state/openclaw-state-db.js";
+import { resolveOperatorStateSqlitePath } from "../../../state/openclaw-state-db.paths.js";
 import type { LegacyCronMigrationSource } from "./legacy-store-migration.js";
 
 type CronMigrationDatabase = Pick<OperatorStateDatabase, "migration_runs" | "migration_sources">;

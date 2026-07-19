@@ -11,8 +11,8 @@ Adds video generation provider support.
 
 ## Distribution
 
-- Package: `@operator/runway-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/runway-provider`
+- Install route: included in Operator
 
 ## Surface
 

@@ -337,7 +337,7 @@ export function renderBackgroundTasksToggle(
   const label = expanded ? t("chat.backgroundTasks.collapse") : t("chat.backgroundTasks.show");
   const activeCount = backgroundTasksActiveCount(backgroundTasks);
   return html`
-    <openclaw-tooltip .content=${label}>
+    <operator-tooltip .content=${label}>
       <button
         class="btn btn--ghost btn--icon chat-icon-btn chat-tasks-toggle"
         type="button"
@@ -350,7 +350,7 @@ export function renderBackgroundTasksToggle(
           ? html`<span class="chat-tasks-toggle__badge" aria-hidden="true">${activeCount}</span>`
           : nothing}
       </button>
-    </openclaw-tooltip>
+    </operator-tooltip>
   `;
 }
 
@@ -387,12 +387,12 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
         ${task.status === "running"
           ? html`<span class="chat-tasks-rail__task-pulse" aria-hidden="true"></span>`
           : nothing}
-        <openclaw-tooltip .content=${title}>
+        <operator-tooltip .content=${title}>
           <span class="chat-tasks-rail__task-title">${title}</span>
-        </openclaw-tooltip>
+        </operator-tooltip>
         ${active && props.canCancel
           ? html`
-              <openclaw-tooltip .content=${t("chat.backgroundTasks.stopTask", { title })}>
+              <operator-tooltip .content=${t("chat.backgroundTasks.stopTask", { title })}>
                 <button
                   class="chat-tasks-rail__task-stop"
                   type="button"
@@ -402,7 +402,7 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
                 >
                   ${cancelling ? icons.loader : icons.stop}
                 </button>
-              </openclaw-tooltip>
+              </operator-tooltip>
             `
           : nothing}
       </div>
@@ -414,7 +414,7 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
         <span>${taskRuntimeLabel(task)}</span>
         ${active && startedMs > 0
           ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
-              <span><openclaw-elapsed-time .startMs=${startedMs}></openclaw-elapsed-time></span>`
+              <span><operator-elapsed-time .startMs=${startedMs}></operator-elapsed-time></span>`
           : nothing}
         ${finishedDuration
           ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
@@ -487,7 +487,7 @@ export function renderBackgroundTasksRail(
           <strong>${t("chat.backgroundTasks.title")}</strong>
         </div>
         <div class="chat-tasks-rail__actions">
-          <openclaw-tooltip .content=${t("chat.backgroundTasks.refresh")}>
+          <operator-tooltip .content=${t("chat.backgroundTasks.refresh")}>
             <button
               class="btn btn--ghost btn--sm chat-tasks-rail__refresh"
               type="button"
@@ -497,8 +497,8 @@ export function renderBackgroundTasksRail(
             >
               ${icons.refresh}
             </button>
-          </openclaw-tooltip>
-          <openclaw-tooltip .content=${t("chat.backgroundTasks.collapse")}>
+          </operator-tooltip>
+          <operator-tooltip .content=${t("chat.backgroundTasks.collapse")}>
             <button
               type="button"
               class="nav-collapse-toggle chat-tasks-rail__collapse-toggle"
@@ -512,7 +512,7 @@ export function renderBackgroundTasksRail(
                   : icons.panelRightClose}</span
               >
             </button>
-          </openclaw-tooltip>
+          </operator-tooltip>
         </div>
       </div>
       ${!backgroundTasks.connected

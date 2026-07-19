@@ -1,6 +1,6 @@
 // Imessage tests cover reaction system event plugin behavior.
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { enqueueIMessageReactionSystemEvent } from "./reaction-system-event.js";
 

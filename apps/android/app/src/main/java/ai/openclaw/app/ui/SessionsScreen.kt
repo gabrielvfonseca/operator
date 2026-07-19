@@ -1,14 +1,14 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.chat.ChatSessionEntry
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.design.ClawEmptyState
-import ai.openclaw.app.ui.design.ClawLoadingState
-import ai.openclaw.app.ui.design.ClawPlainIconButton
-import ai.openclaw.app.ui.design.ClawPrimaryButton
-import ai.openclaw.app.ui.design.ClawScaffold
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.MainViewModel
+import ai.operator.app.chat.ChatSessionEntry
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.design.ClawEmptyState
+import ai.operator.app.ui.design.ClawLoadingState
+import ai.operator.app.ui.design.ClawPlainIconButton
+import ai.operator.app.ui.design.ClawPrimaryButton
+import ai.operator.app.ui.design.ClawScaffold
+import ai.operator.app.ui.design.ClawTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -328,7 +328,7 @@ internal fun SessionsScreen(
             SessionRow(
               session = session,
               title = displaySessionTitle(session),
-              subtitle = if (active) nativeString("Current session") else nativeString("OpenClaw session"),
+              subtitle = if (active) nativeString("Current session") else nativeString("Operator session"),
               metadata = (session.lastActivityAt ?: session.updatedAtMs)?.let(::relativeSessionTime) ?: nativeString("now"),
               active = active,
               compact = compactLayout,
@@ -616,7 +616,7 @@ private fun SessionRow(
               Text(text = subtitle, style = ClawTheme.type.caption.copy(fontSize = 12.5.sp, lineHeight = 16.sp), color = ClawTheme.colors.textMuted, maxLines = 1)
               Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 SessionMiniTag(text = nativeString("Workspace"))
-                SessionMiniTag(text = if (active) nativeString("Current") else nativeString("OpenClaw"))
+                SessionMiniTag(text = if (active) nativeString("Current") else nativeString("Operator"))
               }
             }
           }

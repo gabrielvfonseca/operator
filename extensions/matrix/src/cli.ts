@@ -1,9 +1,12 @@
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  parseStrictInteger,
+  timestampMsToIsoString,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { ChannelSetupInput } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 // Matrix plugin module implements cli behavior.
 import type { Command } from "commander";
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { parseStrictInteger, timestampMsToIsoString } from "openclaw/plugin-sdk/number-runtime";
-import type { ChannelSetupInput } from "openclaw/plugin-sdk/setup";
 import { resolveMatrixAccount, resolveMatrixAccountConfig } from "./matrix/accounts.js";
 import { listMatrixOwnDevices, pruneMatrixStaleGatewayDevices } from "./matrix/actions/devices.js";
 import { updateMatrixOwnProfile } from "./matrix/actions/profile.js";
@@ -164,7 +167,7 @@ function formatMatrixCliRecoveryKeyStdinCommand(command: string, accountId?: str
 
 function formatMatrixCliCommandParts(parts: string[], accountId?: string): string {
   const normalizedAccountId = normalizeAccountId(accountId);
-  const command = ["openclaw", "matrix", ...parts];
+  const command = ["@gabrielvfonseca/operator", "matrix", ...parts];
   if (normalizedAccountId !== "default") {
     const optionTerminatorIndex = command.indexOf("--");
     if (optionTerminatorIndex >= 0) {
@@ -1393,7 +1396,7 @@ export function registerMatrixCli(params: { program: Command }): void {
   const root = params.program
     .command("matrix")
     .description("Matrix channel utilities")
-    .addHelpText("after", () => "\nDocs: https://docs.openclaw.ai/channels/matrix\n");
+    .addHelpText("after", () => "\nDocs: https://docs.operator.ai/channels/matrix\n");
 
   const account = root.command("account").description("Manage matrix channel accounts");
 

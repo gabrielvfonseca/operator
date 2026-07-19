@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { withTempHome } from "openclaw/plugin-sdk/test-env";
+import { withTempHome } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { normalizeTestText } from "../../../test/helpers/normalize-text.js";
 import { saveAuthProfileStore } from "../../agents/auth-profiles/store.js";
@@ -74,7 +74,7 @@ vi.mock("../../status/status-plugin-health.runtime.js", () => pluginHealthRuntim
 
 vi.mock("../../agents/harness/builtin-openclaw.js", () => ({
   createOperatorAgentHarness: () => ({
-    id: "openclaw",
+    id: "@gabrielvfonseca/operator",
     label: "Operator Default",
     supports: () => ({ supported: true, priority: 0 }),
     runAttempt: async () => {
@@ -160,7 +160,7 @@ function saveStatusTestAuthProfiles(params: {
   dir: string;
   profiles: Array<{ profileId: string; provider: "openai" | "openai-codex" | "anthropic" }>;
 }): void {
-  const agentDir = path.join(params.dir, ".openclaw", "agents", "main", "agent");
+  const agentDir = path.join(params.dir, ".operator", "agents", "main", "agent");
   fs.mkdirSync(agentDir, { recursive: true });
   saveAuthProfileStore(
     {
@@ -229,7 +229,7 @@ function writeTranscriptUsageLog(params: {
 }) {
   const logPath = path.join(
     params.dir,
-    ".openclaw",
+    ".operator",
     "agents",
     params.agentId,
     "sessions",
@@ -855,7 +855,7 @@ describe("buildStatusReply subagent summary", () => {
 
     await withTempHome(
       async (dir) => {
-        const agentDir = path.join(dir, ".openclaw", "agents", "main", "agent");
+        const agentDir = path.join(dir, ".operator", "agents", "main", "agent");
         fs.mkdirSync(agentDir, { recursive: true });
         saveAuthProfileStore(
           {
@@ -968,7 +968,7 @@ describe("buildStatusReply subagent summary", () => {
 
     await withTempHome(
       async (dir) => {
-        const agentDir = path.join(dir, ".openclaw", "agents", "main", "agent");
+        const agentDir = path.join(dir, ".operator", "agents", "main", "agent");
         const codexHome = path.join(agentDir, "codex-home");
         fs.mkdirSync(codexHome, { recursive: true });
         fs.writeFileSync(
@@ -1031,7 +1031,7 @@ describe("buildStatusReply subagent summary", () => {
 
     await withTempHome(
       async (dir) => {
-        const agentDir = path.join(dir, ".openclaw", "agents", "main", "agent");
+        const agentDir = path.join(dir, ".operator", "agents", "main", "agent");
         fs.mkdirSync(agentDir, { recursive: true });
         saveAuthProfileStore(
           {
@@ -1849,7 +1849,7 @@ describe("buildStatusReply subagent summary", () => {
   it("uses Codex OAuth auth labels for explicit OpenAI Operator auth order", async () => {
     await withTempHome(
       async (dir) => {
-        const agentDir = path.join(dir, ".openclaw", "agents", "main", "agent");
+        const agentDir = path.join(dir, ".operator", "agents", "main", "agent");
         fs.mkdirSync(agentDir, { recursive: true });
         saveAuthProfileStore(
           {
@@ -1880,7 +1880,7 @@ describe("buildStatusReply subagent summary", () => {
               defaults: {
                 models: {
                   "openai/gpt-5.5": {
-                    agentRuntime: { id: "openclaw" },
+                    agentRuntime: { id: "@gabrielvfonseca/operator" },
                   },
                 },
               },
@@ -1902,7 +1902,7 @@ describe("buildStatusReply subagent summary", () => {
           provider: "openai",
           model: "gpt-5.5",
           contextTokens: 32_000,
-          resolvedHarness: "openclaw",
+          resolvedHarness: "@gabrielvfonseca/operator",
           resolvedFastMode: false,
           resolvedVerboseLevel: "off",
           resolvedReasoningLevel: "off",
@@ -2117,9 +2117,9 @@ describe("buildStatusReply subagent summary", () => {
   });
 
   it("uses workspace-scoped auth evidence in /status auth labels", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-status-auth-label-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-status-auth-label-"));
     const workspaceDir = path.join(tempRoot, "workspace");
-    const pluginDir = path.join(workspaceDir, ".openclaw", "extensions", "workspace-auth-label");
+    const pluginDir = path.join(workspaceDir, ".operator", "extensions", "workspace-auth-label");
     const bundledDir = path.join(tempRoot, "bundled");
     const stateDir = path.join(tempRoot, "state");
     const credentialPath = path.join(tempRoot, "credentials.json");
@@ -2129,7 +2129,7 @@ describe("buildStatusReply subagent summary", () => {
     fs.writeFileSync(path.join(pluginDir, "index.ts"), "export default {}\n", "utf8");
     fs.writeFileSync(credentialPath, "{}", "utf8");
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify({
         id: "workspace-auth-label",
         configSchema: { type: "object" },
@@ -2211,7 +2211,7 @@ describe("buildStatusReply subagent summary", () => {
         sessionId: "sess-status-pinned-agent",
         updatedAt: 0,
         fastMode: true,
-        agentRuntimeOverride: "openclaw",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
         agentHarnessId: "codex",
       },
       sessionKey: "agent:main:main",
@@ -2285,7 +2285,7 @@ describe("buildStatusReply subagent summary", () => {
       sessionEntry: {
         sessionId: "sess-status-observed-agent",
         updatedAt: 0,
-        agentHarnessId: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
       },
       sessionKey: "agent:main:main",
       parentSessionKey: "agent:main:main",

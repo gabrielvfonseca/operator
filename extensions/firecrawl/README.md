@@ -5,8 +5,8 @@ Official Operator plugin for Firecrawl.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/firecrawl-plugin
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/firecrawl-plugin
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/tools/firecrawl> for setup and configuration.
+See <https://docs.operator.ai/tools/firecrawl> for setup and configuration.

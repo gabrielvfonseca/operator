@@ -3,12 +3,12 @@ import type { SessionConfigOption, SessionModeState } from "@agentclientprotocol
 import {
   toAcpSessionLineageMeta,
   type AcpSessionLineageMeta,
-} from "@operator/acp-core/session-lineage-meta";
-import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/acp-core/session-lineage-meta";
+import { timestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeFastMode,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { BASE_THINKING_LEVELS } from "../auto-reply/thinking.shared.js";
 import type { GatewaySessionRow } from "../gateway/session-utils.js";
 

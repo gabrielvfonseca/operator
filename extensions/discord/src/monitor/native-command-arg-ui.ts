@@ -1,5 +1,3 @@
-// Discord plugin module implements native command arg ui behavior.
-import { ButtonStyle } from "discord-api-types/v10";
 import {
   buildCommandTextFromArgs,
   findCommandByNativeName,
@@ -10,8 +8,10 @@ import {
   type CommandArgDefinition,
   type CommandArgValues,
   type CommandArgs,
-} from "openclaw/plugin-sdk/command-auth-native";
-import { chunkItems } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import { chunkItems } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+// Discord plugin module implements native command arg ui behavior.
+import { ButtonStyle } from "discord-api-types/v10";
 import { decodeCustomIdComponent, encodeCustomIdComponent } from "../custom-id-codec.js";
 import {
   Button,

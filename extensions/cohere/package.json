@@ -1,22 +1,22 @@
 {
-  "name": "@operator/cohere-provider",
+  "name": "@gabrielvfonseca/cohere-provider",
   "version": "2026.7.2",
   "description": "Operator Cohere provider plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/cohere-provider",
-      "npmSpec": "@operator/cohere-provider",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/cohere-provider",
+      "npmSpec": "@gabrielvfonseca/cohere-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

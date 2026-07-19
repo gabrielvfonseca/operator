@@ -4,9 +4,9 @@
  * Sends messages to visible sessions, starts embedded runs, and optionally announces replies.
  */
 import crypto from "node:crypto";
-import { isRequesterParentOfBackgroundAcpSession } from "@operator/acp-core/session-interaction-mode";
-import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isRequesterParentOfBackgroundAcpSession } from "@gabrielvfonseca/acp-core/session-interaction-mode";
+import { finiteSecondsToTimerSafeMilliseconds } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { Type } from "typebox";
 import { readAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import { parseSessionThreadInfo } from "../../config/sessions/thread-info.js";

@@ -2,8 +2,8 @@
 import {
   resolveAcpSessionCwd,
   resolveAcpThreadSessionDetailLines,
-} from "@operator/acp-core/runtime/session-identifiers";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/acp-core/runtime/session-identifiers";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { readAcpSessionEntry } from "../../../acp/runtime/session-meta.js";
 import { normalizeChatType } from "../../../channels/chat-type.js";
 import {

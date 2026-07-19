@@ -1,25 +1,25 @@
 // Whatsapp plugin module implements approval native behavior.
-import { createChannelApprovalCapability } from "openclaw/plugin-sdk/approval-delivery-runtime";
-import { createLazyChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
+import { createChannelApprovalCapability } from "@gabrielvfonseca/operator/plugin-sdk/approval-delivery-runtime";
+import { createLazyChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
 import {
   createChannelApproverDmTargetResolver,
   createChannelNativeOriginTargetResolver,
   createNativeApprovalChannelRouteGates,
   createNativeApprovalForwardingFallbackSuppressor,
-} from "openclaw/plugin-sdk/approval-native-runtime";
-import { buildApprovalReactionPromptPayloadForRequest } from "openclaw/plugin-sdk/approval-reaction-runtime";
-import { buildTypedApprovalPresentation } from "openclaw/plugin-sdk/approval-reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-native-runtime";
+import { buildApprovalReactionPromptPayloadForRequest } from "@gabrielvfonseca/operator/plugin-sdk/approval-reaction-runtime";
+import { buildTypedApprovalPresentation } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "openclaw/plugin-sdk/approval-runtime";
-import type { ChannelApprovalCapability } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import type { ChannelApprovalCapability } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   listWhatsAppAccountIds,
   resolveDefaultWhatsAppAccountId,

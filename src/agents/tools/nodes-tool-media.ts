@@ -4,8 +4,8 @@
  * Captures camera/photos/screen media from paired nodes and formats media-safe tool results.
  */
 import crypto from "node:crypto";
-import { imageMimeFromFormat } from "@operator/media-core/mime";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { imageMimeFromFormat } from "@gabrielvfonseca/media-core/mime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   cameraTempPath,
   parseCameraClipPayload,

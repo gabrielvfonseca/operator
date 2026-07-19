@@ -1,10 +1,10 @@
 import Darwin
 import Foundation
-import OpenClawMLXTTSProtocol
-import OpenClawMLXTTSRuntime
+import OperatorMLXTTSProtocol
+import OperatorMLXTTSRuntime
 
 @main
-enum OpenClawMLXTTSHelper {
+enum OperatorMLXTTSHelper {
     static func main() async {
         do {
             let protocolOutput = try Self.makeProtocolOutput()
@@ -78,7 +78,7 @@ enum OpenClawMLXTTSHelper {
     }
 
     private static func log(_ message: String) {
-        FileHandle.standardError.write(Data("openclaw-mlx-tts: \(message)\n".utf8))
+        FileHandle.standardError.write(Data("operator-mlx-tts: \(message)\n".utf8))
     }
 }
 

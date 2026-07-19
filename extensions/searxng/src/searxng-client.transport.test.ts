@@ -42,7 +42,7 @@ describe("searxng real transport", () => {
           results: [
             {
               title: "Operator",
-              url: "https://docs.openclaw.ai/",
+              url: "https://docs.operator.ai/",
               content: "Operator documentation",
             },
           ],
@@ -54,13 +54,13 @@ describe("searxng real transport", () => {
     await expect(
       runSearxngSearch({
         baseUrl,
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
         categories: "general",
       }),
     ).resolves.toMatchObject({
       provider: "searxng",
       count: 1,
-      results: [{ url: "https://docs.openclaw.ai/" }],
+      results: [{ url: "https://docs.operator.ai/" }],
     });
   });
 

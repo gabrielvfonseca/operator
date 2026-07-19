@@ -15,12 +15,12 @@ type EnvSnapshot = {
 
 function snapshotCurrentStateDirVars(): EnvSnapshot {
   return {
-    openclaw: process.env.OPERATOR_STATE_DIR,
+    operator: process.env.OPERATOR_STATE_DIR,
   };
 }
 
 function expectStateDirVars(snapshot: EnvSnapshot) {
-  expect(process.env.OPERATOR_STATE_DIR).toBe(snapshot.openclaw);
+  expect(process.env.OPERATOR_STATE_DIR).toBe(snapshot.operator);
 }
 
 async function expectPathMissing(filePath: string) {
@@ -47,8 +47,8 @@ describe("state-dir-env helpers", () => {
     const prev = snapshotCurrentStateDirVars();
     const snapshot = snapshotStateDirEnv();
 
-    setStateDirEnv("/tmp/openclaw-state-dir-test");
-    expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-state-dir-test");
+    setStateDirEnv("/tmp/operator-state-dir-test");
+    expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/operator-state-dir-test");
 
     restoreStateDirEnv(snapshot);
     expectStateDirVars(prev);
@@ -59,7 +59,7 @@ describe("state-dir-env helpers", () => {
 
     let capturedTempRoot = "";
     let capturedStateDir = "";
-    await withStateDirEnv("openclaw-state-dir-env-", async ({ tempRoot, stateDir }) => {
+    await withStateDirEnv("operator-state-dir-env-", async ({ tempRoot, stateDir }) => {
       capturedTempRoot = tempRoot;
       capturedStateDir = stateDir;
       expect(process.env.OPERATOR_STATE_DIR).toBe(stateDir);
@@ -75,7 +75,7 @@ describe("state-dir-env helpers", () => {
     let capturedTempRoot = "";
     let capturedStateDir = "";
     await expect(
-      withStateDirEnv("openclaw-state-dir-env-", async ({ tempRoot, stateDir }) => {
+      withStateDirEnv("operator-state-dir-env-", async ({ tempRoot, stateDir }) => {
         capturedTempRoot = tempRoot;
         capturedStateDir = stateDir;
         throw new Error("boom");

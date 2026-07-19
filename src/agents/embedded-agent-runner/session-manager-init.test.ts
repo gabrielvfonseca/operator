@@ -12,7 +12,7 @@ const tempPaths: string[] = [];
 async function makeTempFile(): Promise<string> {
   // Each case gets its own transcript file so destructive rewrite checks stay
   // isolated from recovery-path assertions.
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-manager-init-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-manager-init-"));
   tempPaths.push(dir);
   return path.join(dir, "session.jsonl");
 }

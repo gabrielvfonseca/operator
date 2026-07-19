@@ -2,7 +2,7 @@
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
   deviceBootstrapProfilesEqual,

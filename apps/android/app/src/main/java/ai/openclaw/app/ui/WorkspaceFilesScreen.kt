@@ -1,15 +1,15 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayWorkspaceEntry
-import ai.openclaw.app.GatewayWorkspaceFile
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.chat.ChatCodeBlock
-import ai.openclaw.app.ui.chat.rememberBase64ImageState
-import ai.openclaw.app.ui.design.ClawEmptyState
-import ai.openclaw.app.ui.design.ClawPlainIconButton
-import ai.openclaw.app.ui.design.ClawScaffold
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.GatewayWorkspaceEntry
+import ai.operator.app.GatewayWorkspaceFile
+import ai.operator.app.MainViewModel
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.chat.ChatCodeBlock
+import ai.operator.app.ui.chat.rememberBase64ImageState
+import ai.operator.app.ui.design.ClawEmptyState
+import ai.operator.app.ui.design.ClawPlainIconButton
+import ai.operator.app.ui.design.ClawScaffold
+import ai.operator.app.ui.design.ClawTheme
 import android.content.Context
 import android.content.Intent
 import android.text.format.Formatter

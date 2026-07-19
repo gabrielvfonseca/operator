@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.content.Intent
 import org.junit.Assert.assertEquals
@@ -159,7 +159,7 @@ class MainActivityLifecycleTest {
 
     try {
       NodeForegroundService.stop(app)
-      assertEquals("ai.openclaw.app.action.STOP", appShadow.nextStartedService.action)
+      assertEquals("ai.operator.app.action.STOP", appShadow.nextStartedService.action)
 
       repeat(2) {
         MainActivityRuntimeUiStarter().onRuntimeInitialized(
@@ -173,7 +173,7 @@ class MainActivityLifecycleTest {
       assertNull(appShadow.nextStartedService)
 
       NodeForegroundService.resume(app, startNow = true)
-      assertEquals("ai.openclaw.app.action.RESUME", appShadow.nextStartedService.action)
+      assertEquals("ai.operator.app.action.RESUME", appShadow.nextStartedService.action)
     } finally {
       NodeForegroundService.resume(app, startNow = false)
     }

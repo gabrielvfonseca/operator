@@ -1,6 +1,6 @@
 // Gateway maintenance timers.
 // Starts periodic health, dedupe, abort, and media cleanup loops.
-import { isFutureDateTimestampMs } from "@operator/normalization-core/number-coercion";
+import { isFutureDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { createManagedWorktreeOwnerProtection } from "../agents/worktrees/owner-protection.js";
 import {
   managedWorktrees,

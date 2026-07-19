@@ -21,11 +21,11 @@ on:
         default: ""
         type: string
       release_publish_run_id:
-        description: Approved OpenClaw Release Publish workflow run id
+        description: Approved Operator Release Publish workflow run id
         required: false
         type: string
       release_publish_branch:
-        description: Branch name of the approving OpenClaw Release Publish workflow run
+        description: Branch name of the approving Operator Release Publish workflow run
         required: false
         type: string
       dry_run:
@@ -232,7 +232,7 @@ jobs:
         if: steps.plan.outputs.missing_trusted_publisher_count != '0'
         run: |
           echo "::error::One or more ClawHub packages exist but do not have trusted publishing configured. Configure trusted publishing before running the normal OIDC publish workflow."
-          jq -r '.missingTrustedPublisher[]? | "::error::Missing trusted publisher: \(.packageName)@\(.version). Configure trusted publishing for openclaw/openclaw, workflow plugin-clawhub-release.yml."' .local/plugin-clawhub-release-plan.json
+          jq -r '.missingTrustedPublisher[]? | "::error::Missing trusted publisher: \(.packageName)@\(.version). Configure trusted publishing for gabrielvfonseca/operator, workflow plugin-clawhub-release.yml."' .local/plugin-clawhub-release-plan.json
           exit 1
 
       - name: Fail normal publish when bootstrap is required
@@ -360,7 +360,7 @@ jobs:
           SOURCE_REF: ${{ github.ref }}
           PACKAGE_TAG: ${{ matrix.plugin.publishTag }}
           PACKAGE_DIR: ${{ matrix.plugin.packageDir }}
-          OPENCLAW_CLAWHUB_PACK_OUTPUT_DIR: ${{ runner.temp }}/clawhub-package-artifact
+          OPERATOR_CLAWHUB_PACK_OUTPUT_DIR: ${{ runner.temp }}/clawhub-package-artifact
         run: bash scripts/plugin-clawhub-publish.sh --pack "${PACKAGE_DIR}"
 
       - name: Upload ClawHub package artifact
@@ -381,7 +381,7 @@ jobs:
     steps:
       - name: Approve Plugin ClawHub release publish
         run: |
-          echo "Approved CLAW-277 03 - Split OpenClaw plugin ClawHub publishing into OIDC release and token bootstrap workflows release publish gate."
+          echo "Approved CLAW-277 03 - Split Operator plugin ClawHub publishing into OIDC release and token bootstrap workflows release publish gate."
 
   publish_plugins_clawhub:
     needs:
@@ -402,7 +402,7 @@ jobs:
       dry_run: ${{ inputs.dry_run }}
       registry: https://clawhub.ai
       site: https://clawhub.ai
-      family: ${{ contains(fromJson('["@openclaw/acpx","@openclaw/diffs","@openclaw/feishu","@openclaw/qqbot"]'), matrix.plugin.packageName) && 'bundle-plugin' || '' }}
+      family: ${{ contains(fromJson('["@gabrielvfonseca/acpx","@gabrielvfonseca/diffs","@gabrielvfonseca/feishu","@gabrielvfonseca/qqbot"]'), matrix.plugin.packageName) && 'bundle-plugin' || '' }}
       tags: ${{ matrix.plugin.publishTag }}
       source_repo: ${{ github.repository }}
       source_commit: ${{ needs.preview_plugins_clawhub.outputs.ref_revision }}

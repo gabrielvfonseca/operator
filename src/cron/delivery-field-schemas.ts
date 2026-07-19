@@ -1,5 +1,5 @@
 /** Parses user-provided cron delivery fields into narrow runtime values. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { z, type ZodType } from "zod";
 
 const trimStringPreprocess = (value: unknown) => (typeof value === "string" ? value.trim() : value);

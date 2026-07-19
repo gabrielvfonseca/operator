@@ -1,6 +1,6 @@
 // Nextcloud Talk API module exposes the plugin public contract.
-export type { ChannelPlugin } from "openclaw/plugin-sdk/channel-plugin-common";
-export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-export { clearAccountEntryFields } from "openclaw/plugin-sdk/channel-plugin-common";
-export { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-export { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+export type { ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
+export type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+export { clearAccountEntryFields } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
+export { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+export { buildChannelConfigSchema } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";

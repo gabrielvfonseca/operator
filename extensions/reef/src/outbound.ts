@@ -1,11 +1,11 @@
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import type {
   ChannelOutboundAdapter,
   OutboundDeliveryResult,
-} from "openclaw/plugin-sdk/channel-send-result";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
 import { normalizeReefTarget } from "./config-schema.js";
 import { getActiveReef } from "./runtime.js";
 

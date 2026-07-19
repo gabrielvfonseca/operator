@@ -1,4 +1,4 @@
-// `operator plugins list`: builds registry reports and defers terminal-only formatting modules.
+// `openclaw plugins list`: builds registry reports and defers terminal-only formatting modules.
 import { getRuntimeConfig } from "../config/config.js";
 import { defaultRuntime, writeRuntimeJson, type RuntimeEnv } from "../runtime.js";
 import { quietPluginJsonLogger } from "./plugins-json-logger.js";
@@ -70,7 +70,7 @@ export async function runPluginsListCommand(
   if (list.length === 0) {
     runtime.log(
       theme.muted(
-        `No plugins found. Run ${formatCliCommand("operator plugins install <plugin>")} to add one, or ${formatCliCommand("operator plugins list --json")} to inspect raw discovery state.`,
+        `No plugins found. Run ${formatCliCommand("openclaw plugins install <plugin>")} to add one, or ${formatCliCommand("openclaw plugins list --json")} to inspect raw discovery state.`,
       ),
     );
     return;
@@ -95,7 +95,7 @@ export async function runPluginsListCommand(
       return {
         Name: plugin.name || plugin.id,
         ID: plugin.name && plugin.name !== plugin.id ? plugin.id : "",
-        Format: plugin.format ?? "operator",
+        Format: plugin.format ?? "@gabrielvfonseca/operator",
         Status:
           plugin.status === "error"
             ? theme.error("error")

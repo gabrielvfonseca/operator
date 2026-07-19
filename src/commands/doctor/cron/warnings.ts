@@ -118,7 +118,7 @@ export function noteCronModelOverrides(params: {
     lines.push(`- Examples: ${mismatchExamples.join(", ")}`);
   }
   lines.push(
-    `Review with ${formatCliCommand("operator cron list")} and ${formatCliCommand("operator cron show <job-id>")}; remove \`payload.model\` from jobs that should inherit the default.`,
+    `Review with ${formatCliCommand("openclaw cron list")} and ${formatCliCommand("openclaw cron show <job-id>")}; remove \`payload.model\` from jobs that should inherit the default.`,
   );
 
   note(lines.join("\n"), "Cron");
@@ -209,7 +209,7 @@ function collectCronDeliveryTargetAdvisory(params: {
     `- ${pluralize(unavailableCount, "job")} ${unavailableCount === 1 ? "announces" : "announce"} to a channel whose plugin is not active; the next scheduled run will fail to deliver`,
     `- Channels: ${formatSortedCounts(channelCounts)}`,
     `- Examples: ${examples.join(", ")}`,
-    `Reactivate the channel plugin or update the job's \`delivery.channel\` after reviewing with ${formatCliCommand("operator cron list")} and ${formatCliCommand("operator cron show <job-id>")}.`,
+    `Reactivate the channel plugin or update the job's \`delivery.channel\` after reviewing with ${formatCliCommand("openclaw cron list")} and ${formatCliCommand("openclaw cron show <job-id>")}.`,
   ].join("\n");
 }
 
@@ -296,7 +296,7 @@ export async function collectLegacyWhatsAppCrontabHealthWarning(
   return [
     "Legacy WhatsApp crontab health check detected.",
     "`~/.operator/bin/ensure-whatsapp.sh` is not maintained by current Operator and can misreport `Gateway inactive` from cron when the systemd user bus environment is missing.",
-    `Remove the stale crontab entry with ${formatCliCommand("crontab -e")}; use ${formatCliCommand("operator channels status --probe")}, ${formatCliCommand("operator doctor")}, and ${formatCliCommand("operator gateway status")} for current health checks.`,
+    `Remove the stale crontab entry with ${formatCliCommand("crontab -e")}; use ${formatCliCommand("openclaw channels status --probe")}, ${formatCliCommand("openclaw doctor")}, and ${formatCliCommand("openclaw gateway status")} for current health checks.`,
     `Matched ${pluralize(legacyLines.length, "entry")}.`,
   ].join("\n");
 }

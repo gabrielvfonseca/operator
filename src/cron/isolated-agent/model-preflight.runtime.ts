@@ -1,7 +1,7 @@
 /** Preflights local model-provider endpoints before scheduled cron runner startup. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ModelProviderConfig } from "../../config/types.models.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { fetchWithSsrFGuard } from "../../infra/net/fetch-guard.js";

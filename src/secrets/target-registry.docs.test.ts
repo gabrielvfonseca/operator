@@ -1,7 +1,7 @@
 /** Verifies docs stay aligned with the secret target registry. */
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   buildSecretRefCredentialMatrix,

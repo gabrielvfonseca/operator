@@ -1,6 +1,6 @@
 /** Process-wide registry for ACP runtime backends contributed by plugins. */
-import type { AcpRuntime } from "@operator/acp-core/runtime/types";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import type { AcpRuntime } from "@gabrielvfonseca/acp-core/runtime/types";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveGlobalSingleton } from "../../shared/global-singleton.js";
 import { AcpRuntimeError } from "./errors.js";
 

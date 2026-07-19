@@ -6,7 +6,7 @@
  * `DeliverDeps.mediaSender`.
  */
 
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { GatewayAccount } from "../types.js";
 import { formatErrorMessage } from "../utils/format.js";
 import { getImageSize, formatQQBotMarkdownImage, hasQQBotImageSize } from "../utils/image-size.js";

@@ -1,15 +1,15 @@
 // Imessage tests cover test plugin plugin behavior.
-import { buildTypedExecApprovalPendingReplyPayload } from "openclaw/plugin-sdk/approval-reply-runtime";
+import { buildTypedExecApprovalPendingReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 import {
   createMessageReceiptFromOutboundResults,
   verifyChannelMessageAdapterCapabilityProofs,
   verifyDurableFinalCapabilityProofs,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   listImportedBundledPluginFacadeIds,
   resetFacadeRuntimeStateForTest,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   clearIMessageApprovalReactionTargetsForTest,

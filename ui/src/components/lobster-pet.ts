@@ -1,10 +1,10 @@
 // Decorative lobster pet that perches on the sidebar footer and mirrors
 // gateway status: it idles (naps, waves, wanders) when nothing is running,
 // scurries while runs are active, and paces worriedly while disconnected.
-// Drawn in the smooth OpenClaw lobster style (see the dreams scene and
+// Drawn in the smooth Operator lobster style (see the dreams scene and
 // icons.lobster). Look and personality are seeded per session + page load so
 // every new session hatches a slightly different lobster.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { html, LitElement, nothing, svg, type TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
 import { isLobsterDay } from "../../../src/shared/lobster-day.js";
@@ -193,7 +193,7 @@ const PALETTES: Array<[LobsterPetPalette, number]> = [
   [{ id: "abyss", shell: "#2c3b68", claw: "#465b96" }, 2],
   [{ id: "ghost", shell: "#dce8f2", claw: "#ecf3fa" }, 1],
   [{ id: "split", shell: "#ff4f40", claw: "#ff775f" }, 1],
-  // The grail: homage to the classic OpenClaw logo (big raised claw, smirk,
+  // The grail: homage to the classic Operator logo (big raised claw, smirk,
   // angry brows, white sticker outline). ~0.5% of sessions.
   [{ id: "retro", shell: "#e8262c", claw: "#f04a3e" }, 0.5],
 ];
@@ -228,7 +228,7 @@ const ACCESSORIES: Array<[LobsterPetAccessory, number]> = [
   ["crown", 10],
 ];
 
-// OpenClaw's repository was born 2025-11-24 (GitHub created_at); on the
+// Operator's repository was born 2025-11-24 (GitHub created_at); on the
 // anniversary every visitor dresses as the classic logo and parties.
 const ANNIVERSARY = { month: 10, day: 24 } as const;
 
@@ -389,7 +389,7 @@ export type LobsterLogoVisitDetail = {
 
 // Fired on the pet host whenever the logo stand-in phase changes; the
 // sidebar owns the brand slot, so the swap renders there, not here.
-export const LOBSTER_LOGO_VISIT_EVENT = "openclaw-lobster-logo-visit";
+export const LOBSTER_LOGO_VISIT_EVENT = "operator-lobster-logo-visit";
 
 type LobsterPasserKind = "stranger" | "crab";
 
@@ -428,7 +428,7 @@ function strangerLookFor(seed: number, own: LobsterPetPaletteId): LobsterPetLook
 // The pet notices gateway upgrades: the first page load on a new version, it
 // shows up carrying a bindle (moving day). The very first version sighting
 // only records a baseline - no bindle without a previous home.
-const MOVING_DAY_KEY = "openclaw.control.lobsterpet.gatewayVersion.v1";
+const MOVING_DAY_KEY = "operator.control.lobsterpet.gatewayVersion.v1";
 
 function detectLobsterMovingDay(version: string): boolean {
   try {
@@ -666,7 +666,7 @@ const SPLIT_HALF = svg`
   />
 `;
 
-// Retro homage parts (classic OpenClaw logo): one oversized raised claw with
+// Retro homage parts (classic Operator logo): one oversized raised claw with
 // a pincer notch, tall V antennae, angry brows, and a smirk. The mega claw
 // lives inside the .lob-claw--r group so wave/snip acts swing it.
 const RETRO_MEGA_CLAW = svg`
@@ -1783,7 +1783,7 @@ class LobsterPet extends LitElement {
   }
 }
 
-if (!customElements.get("openclaw-lobster-pet")) {
-  customElements.define("openclaw-lobster-pet", LobsterPet);
+if (!customElements.get("operator-lobster-pet")) {
+  customElements.define("operator-lobster-pet", LobsterPet);
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

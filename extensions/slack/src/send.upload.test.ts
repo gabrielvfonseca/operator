@@ -1,11 +1,11 @@
-// Slack tests cover send.upload plugin behavior.
-import type { WebClient } from "@slack/web-api";
 import {
   formatErrorMessage,
   PlatformMessageNotDispatchedError,
-} from "openclaw/plugin-sdk/error-runtime";
-import type { LookupFn } from "openclaw/plugin-sdk/ssrf-runtime";
-import { withServer } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { LookupFn } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { withServer } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+// Slack tests cover send.upload plugin behavior.
+import type { WebClient } from "@slack/web-api";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "./blocks.test-helpers.js";
 import {

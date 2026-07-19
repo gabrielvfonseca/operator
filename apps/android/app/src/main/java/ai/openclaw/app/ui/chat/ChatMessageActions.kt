@@ -1,7 +1,7 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.ChatMessageContent
-import ai.openclaw.app.i18n.nativeString
+import ai.operator.app.chat.ChatMessageContent
+import ai.operator.app.i18n.nativeString
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -142,7 +142,7 @@ private fun copyChatMessage(
   text: String,
 ) {
   val clipboard = context.getSystemService(ClipboardManager::class.java)
-  clipboard.setPrimaryClip(ClipData.newPlainText("OpenClaw chat message", text))
+  clipboard.setPrimaryClip(ClipData.newPlainText("Operator chat message", text))
   Toast.makeText(context, nativeString("Message copied"), Toast.LENGTH_SHORT).show()
 }
 

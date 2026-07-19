@@ -1,8 +1,8 @@
 // Google tests cover image generation provider plugin behavior.
-import * as providerAuth from "openclaw/plugin-sdk/provider-auth";
-import * as providerAuthRuntime from "openclaw/plugin-sdk/provider-auth-runtime";
-import * as providerHttp from "openclaw/plugin-sdk/provider-http";
-import { mockPinnedHostnameResolution } from "openclaw/plugin-sdk/test-env";
+import * as providerAuth from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import * as providerAuthRuntime from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import * as providerHttp from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { mockPinnedHostnameResolution } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildGoogleImageGenerationProvider } from "./image-generation-provider.js";
 

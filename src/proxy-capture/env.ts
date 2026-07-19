@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import type { Agent } from "node:http";
 import process from "node:process";
-import { createAmbientNodeProxyAgent } from "@operator/proxyline";
+import { createAmbientNodeProxyAgent } from "@openclaw/proxyline";
 import {
   resolveDebugProxyBlobDir,
   resolveDebugProxyCertDir,
@@ -56,7 +56,7 @@ export function resolveDebugProxySettings(
     blobDir: env[OPERATOR_DEBUG_PROXY_BLOB_DIR]?.trim() || resolveDebugProxyBlobDir(env),
     certDir: env[OPERATOR_DEBUG_PROXY_CERT_DIR]?.trim() || resolveDebugProxyCertDir(env),
     sessionId,
-    sourceProcess: "operator",
+    sourceProcess: "@gabrielvfonseca/operator",
   };
 }
 

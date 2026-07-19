@@ -1,6 +1,6 @@
 // Inbound event classification tests cover message type and routing classification.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   classifyChannelInboundEvent,
   resolveUnmentionedGroupInboundPolicy,

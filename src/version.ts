@@ -1,10 +1,10 @@
 // Resolves package version metadata for CLI and library callers.
 import { createRequire } from "node:module";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 // oxlint-disable-next-line eslint/no-underscore-dangle -- Bundled builds replace this compile-time define identifier.
 declare const __OPERATOR_VERSION__: string | undefined;
-const CORE_PACKAGE_NAME = "operator";
+const CORE_PACKAGE_NAME = "@gabrielvfonseca/operator";
 
 const PACKAGE_JSON_CANDIDATES = [
   "../package.json",

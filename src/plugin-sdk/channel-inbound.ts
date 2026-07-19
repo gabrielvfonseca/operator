@@ -212,4 +212,4 @@ export {
   isTextSlashCommandTurn,
 } from "../auto-reply/command-turn-context.js";
 export type { CommandTurnContext } from "../auto-reply/command-turn-context.js";
-export { mergeInboundPathRoots } from "@operator/media-core/inbound-path-policy";
+export { mergeInboundPathRoots } from "@gabrielvfonseca/media-core/inbound-path-policy";

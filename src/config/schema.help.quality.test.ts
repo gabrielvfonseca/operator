@@ -1,6 +1,6 @@
 // Checks config help text quality and coverage.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import { MEDIA_AUDIO_FIELD_HELP } from "./media-audio-field-metadata.js";
 import { FIELD_HELP } from "./schema.help.js";
@@ -459,7 +459,7 @@ const ENUM_EXPECTATIONS: Record<string, string[]> = {
   "gateway.bind": ['"auto"', '"lan"', '"loopback"', '"custom"', '"tailnet"'],
   "gateway.auth.mode": ['"none"', '"token"', '"password"', '"trusted-proxy"'],
   "gateway.tailscale.mode": ['"off"', '"serve"', '"funnel"'],
-  "browser.profiles.*.driver": ['"openclaw"', '"clawd"', '"existing-session"'],
+  "browser.profiles.*.driver": ['"@gabrielvfonseca/operator"', '"clawd"', '"existing-session"'],
   "discovery.mdns.mode": ['"off"', '"minimal"', '"full"'],
   "wizard.lastRunMode": ['"local"', '"remote"'],
   "diagnostics.otel.protocol": ['"http/protobuf"', '"grpc"'],

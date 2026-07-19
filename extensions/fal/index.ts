@@ -1,5 +1,5 @@
 // Fal plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { buildFalImageGenerationProvider } from "./image-generation-provider.js";
 import { buildFalMusicGenerationProvider } from "./music-generation-provider.js";
 import { createFalProvider } from "./provider-registration.js";

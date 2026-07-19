@@ -1,5 +1,5 @@
 // Mattermost tests cover send plugin behavior.
-import { expectProvidedCfgSkipsRuntimeLoad } from "openclaw/plugin-sdk/channel-test-helpers";
+import { expectProvidedCfgSkipsRuntimeLoad } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 let sendMessageMattermost: typeof import("./send.js").sendMessageMattermost;

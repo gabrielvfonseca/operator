@@ -1,9 +1,9 @@
 // Gateway RPC call helper.
 // Builds a GatewayClient, resolves auth/scopes, and performs one request.
 import { randomUUID } from "node:crypto";
-import { isLoopbackIpAddress } from "@operator/net-policy/ip";
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isLoopbackIpAddress } from "@gabrielvfonseca/net-policy/ip";
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   GATEWAY_CLIENT_MODES,
   GATEWAY_CLIENT_NAMES,
@@ -825,7 +825,7 @@ function formatGatewayCloseError(
       "\n- Gateway not yet ready to accept connections (retry after a moment)" +
       "\n- TLS mismatch (connecting with ws:// to a wss:// gateway, or vice versa)" +
       "\n- Gateway process stopped or became unreachable (confirm it is still running)" +
-      "\nRun `operator doctor` for diagnostics.";
+      "\nRun `openclaw doctor` for diagnostics.";
   }
   return message;
 }

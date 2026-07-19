@@ -1,6 +1,6 @@
+import { getImageMetadata, resizeToJpeg } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 // Whatsapp plugin module implements image preview behavior.
 import type { AnyMessageContent } from "baileys";
-import { getImageMetadata, resizeToJpeg } from "openclaw/plugin-sdk/media-runtime";
 
 const WHATSAPP_IMAGE_THUMBNAIL_SIDE = 32;
 const WHATSAPP_IMAGE_THUMBNAIL_QUALITY = 50;

@@ -1,7 +1,7 @@
 import {
   inferToolMetaFromArgs,
   type ToolProgressDetailMode,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   itemName,
   itemStatus,

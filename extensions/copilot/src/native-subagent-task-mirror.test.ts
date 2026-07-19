@@ -1,9 +1,9 @@
-import type { SessionEvent } from "@github/copilot-sdk";
 import type {
   AgentHarnessTaskRecord,
   AgentHarnessTaskRuntime,
   AgentHarnessTaskRuntimeScope,
-} from "openclaw/plugin-sdk/agent-harness-task-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-task-runtime";
+import type { SessionEvent } from "@github/copilot-sdk";
 import { describe, expect, it, vi } from "vitest";
 import { createCopilotNativeSubagentTaskMirror } from "./native-subagent-task-mirror.js";
 

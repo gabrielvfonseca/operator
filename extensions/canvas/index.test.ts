@@ -3,8 +3,8 @@ import type {
   AnyAgentTool,
   OperatorPluginApi,
   OperatorPluginNodeInvokePolicyContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import canvasPlugin from "./index.js";
 import { SHOW_WIDGET_REQUIRED_CLIENT_CAPS } from "./src/tool-schema.js";
@@ -149,7 +149,7 @@ describe("Canvas plugin entry", () => {
     await services[0]?.stop?.({} as never);
     expect(mocks.createCanvasHttpRouteHandler).not.toHaveBeenCalled();
 
-    await routes[0]?.handler({ url: "/__openclaw__/canvas" } as never, {} as never);
+    await routes[0]?.handler({ url: "/__operator__/canvas" } as never, {} as never);
     expect(mocks.createCanvasHttpRouteHandler).toHaveBeenCalledTimes(1);
     expect(mocks.httpHandler.handleHttpRequest).toHaveBeenCalledTimes(1);
 
@@ -169,7 +169,7 @@ describe("Canvas plugin entry", () => {
     expect(mocks.createCanvasTool).not.toHaveBeenCalled();
     expect(mocks.createShowWidgetTool).not.toHaveBeenCalled();
 
-    await expect(resolvers[0]?.("/__openclaw__/canvas/documents/id/index.html")).resolves.toBe(
+    await expect(resolvers[0]?.("/__operator__/canvas/documents/id/index.html")).resolves.toBe(
       "/tmp/canvas-asset",
     );
     expect(mocks.resolveCanvasHttpPathToLocalPath).toHaveBeenCalledTimes(1);

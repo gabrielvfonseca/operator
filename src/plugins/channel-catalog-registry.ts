@@ -1,5 +1,5 @@
 // Maintains channel catalog entries advertised by plugins.
-import { normalizeOptionalString as resolveOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString as resolveOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { discoverOperatorPlugins, type PluginDiscoveryResult } from "./discovery.js";
 import { loadInstalledPluginIndexInstallRecordsSync } from "./installed-plugin-index-record-reader.js";

@@ -1,11 +1,17 @@
 // Google Meet plugin module implements runtime behavior.
 import { randomUUID } from "node:crypto";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
-import { normalizeAgentId } from "openclaw/plugin-sdk/routing";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type {
+  PluginRuntime,
+  RuntimeLogger,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { normalizeAgentId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  normalizeOptionalString,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type {
   GoogleMeetConfig,
   GoogleMeetMode,

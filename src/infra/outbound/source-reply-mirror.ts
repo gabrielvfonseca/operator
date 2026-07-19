@@ -3,8 +3,8 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeOptionalTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeOptionalTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { ReplyPayload } from "../../auto-reply/types.js";
 import { getChannelPlugin } from "../../channels/plugins/index.js";
 import type { ChannelId } from "../../channels/plugins/types.public.js";

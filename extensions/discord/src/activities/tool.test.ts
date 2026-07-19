@@ -1,4 +1,4 @@
-import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginToolContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { describe, expect, it, vi } from "vitest";
 import { buildDiscordActivityCustomId } from "../component-custom-id.js";
 import type { sendMessageDiscord } from "../send.js";

@@ -1,14 +1,14 @@
 // Matrix helper module supports config behavior.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { resolveOptionalIntegerOption } from "openclaw/plugin-sdk/number-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { retryAsync } from "openclaw/plugin-sdk/retry-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { resolveOptionalIntegerOption } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { retryAsync } from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
 import {
   coerceSecretRef,
   normalizeResolvedSecretInputString,
-} from "openclaw/plugin-sdk/secret-input-runtime";
-import type { PinnedDispatcherPolicy } from "openclaw/plugin-sdk/ssrf-dispatcher";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
+import type { PinnedDispatcherPolicy } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-dispatcher";
 import {
   requiresExplicitMatrixDefaultAccount,
   resolveMatrixDefaultOrOnlyAccountId,

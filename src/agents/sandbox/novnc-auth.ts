@@ -7,8 +7,8 @@ import crypto from "node:crypto";
 import {
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 export const NOVNC_PASSWORD_ENV_KEY = "OPERATOR_BROWSER_NOVNC_PASSWORD"; // pragma: allowlist secret
 const NOVNC_TOKEN_TTL_MS = 60 * 1000;

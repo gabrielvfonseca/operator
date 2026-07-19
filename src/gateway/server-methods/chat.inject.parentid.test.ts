@@ -85,7 +85,7 @@ async function readLastTranscriptRecord(
 describe("gateway chat.inject transcript writes", () => {
   it("appends a agent session entry that includes parentId", async () => {
     const fixture = await createSqliteTranscriptFixture({
-      prefix: "openclaw-chat-inject-",
+      prefix: "operator-chat-inject-",
       sessionId: "sess-1",
     });
 
@@ -106,7 +106,7 @@ describe("gateway chat.inject transcript writes", () => {
 
   it("preserves parent links after an oversized transcript row", async () => {
     const fixture = await createSqliteTranscriptFixture({
-      prefix: "openclaw-chat-inject-large-",
+      prefix: "operator-chat-inject-large-",
       sessionId: "sess-1",
     });
 
@@ -141,7 +141,7 @@ describe("gateway chat.inject transcript writes", () => {
 
   it("emits and returns the redacted injected assistant message", async () => {
     const fixture = await createSqliteTranscriptFixture({
-      prefix: "openclaw-chat-inject-redact-",
+      prefix: "operator-chat-inject-redact-",
       sessionId: "sess-redact",
     });
     const fakeApiKey = "sk-proj-FAKEKEYFORTESTINGONLY1234567890";

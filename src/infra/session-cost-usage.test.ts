@@ -37,7 +37,7 @@ function clearGatewayModelPricingState(): void {
 }
 
 describe("session cost usage", () => {
-  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-session-cost-" });
+  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "operator-session-cost-" });
   const withStateDir = async <T>(stateDir: string, fn: () => Promise<T>): Promise<T> =>
     await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, fn);
   const makeSessionCostRoot = async (prefix: string): Promise<string> =>

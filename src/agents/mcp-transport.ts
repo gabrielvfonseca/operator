@@ -1,3 +1,4 @@
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 /**
  * MCP client transport factory.
  *
@@ -10,7 +11,6 @@ import {
 } from "@modelcontextprotocol/sdk/client/sse.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import type { FetchLike, Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { logDebug } from "../logger.js";
 import { resolveMcpAuthProfileId, withMcpAuthProfileBearer } from "./mcp-auth-profile.js";

@@ -1,8 +1,8 @@
 // Pixverse provider module implements model/runtime integration.
 import { randomUUID } from "node:crypto";
-import { extensionForMime } from "openclaw/plugin-sdk/media-mime";
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -14,18 +14,18 @@ import {
   resolveProviderHttpRequestConfig,
   sanitizeConfiguredModelProviderRequest,
   type ProviderOperationDeadline,
-} from "openclaw/plugin-sdk/provider-http";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import {
   asFiniteNumber,
   asSafeIntegerInRange,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
   VideoGenerationSourceAsset,
-} from "openclaw/plugin-sdk/video-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/video-generation";
 import {
   DEFAULT_PIXVERSE_MODEL_ID,
   DEFAULT_PIXVERSE_REGION,

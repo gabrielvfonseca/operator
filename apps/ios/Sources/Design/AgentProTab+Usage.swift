@@ -1,5 +1,5 @@
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import SwiftUI
 
 extension AgentProTab {
@@ -8,11 +8,11 @@ extension AgentProTab {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("Totals")
-                        .font(OpenClawType.headline)
+                        .font(OperatorType.headline)
                     Spacer()
                     ProValuePill(
                         value: "\(self.overview?.usage?.days ?? 31)d",
-                        color: OpenClawBrand.accentForeground)
+                        color: OperatorBrand.accentForeground)
                 }
                 HStack(spacing: 10) {
                     self.detailMetric(label: "Cost", value: self.usageValue)
@@ -21,7 +21,7 @@ extension AgentProTab {
                 }
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     var usageTokenValue: String {
@@ -58,24 +58,24 @@ extension AgentProTab {
                     }
                 }
             }
-            .padding(.horizontal, OpenClawProMetric.pagePadding)
+            .padding(.horizontal, OperatorProMetric.pagePadding)
         }
     }
 
     func usageDayRow(_ day: CostUsageDailyEntryLite) -> some View {
         HStack(spacing: 12) {
-            ProIconBadge(systemName: "calendar", color: OpenClawBrand.accent)
+            ProIconBadge(systemName: "calendar", color: OperatorBrand.accent)
             VStack(alignment: .leading, spacing: 3) {
                 Text(day.date)
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                 Text(verbatim: Self.tokenCountText(day.totalTokens ?? 0))
-                    .font(OpenClawType.caption)
+                    .font(OperatorType.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer(minLength: 8)
             Text(Self.currency(day.totalCost ?? 0))
-                .font(OpenClawType.caption2SemiBold)
-                .foregroundStyle(OpenClawBrand.accent)
+                .font(OperatorType.caption2SemiBold)
+                .foregroundStyle(OperatorBrand.accent)
         }
         .padding(.vertical, 10)
         .padding(.horizontal, 14)

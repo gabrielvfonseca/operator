@@ -99,7 +99,7 @@ function agentHarnessRunOutcome(result: AgentHarnessAttemptResult): DiagnosticHa
 }
 
 function shouldEmitAgentRunDiagnostics(harness: AgentHarness): boolean {
-  return harness.id !== "operator";
+  return harness.id !== "@gabrielvfonseca/operator";
 }
 
 function diagnosticChannel(params: AgentHarnessAttemptParams): string | undefined {

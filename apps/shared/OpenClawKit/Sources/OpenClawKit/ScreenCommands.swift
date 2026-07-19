@@ -1,16 +1,16 @@
 import Foundation
 
-public enum OpenClawScreenCommand: String, Codable, Sendable {
+public enum OperatorScreenCommand: String, Codable, Sendable {
     case snapshot = "screen.snapshot"
     case record = "screen.record"
 }
 
-public enum OpenClawScreenSnapshotFormat: String, Codable, Sendable {
+public enum OperatorScreenSnapshotFormat: String, Codable, Sendable {
     case jpeg
     case png
 }
 
-public struct OpenClawScreenRecordParams: Codable, Sendable, Equatable {
+public struct OperatorScreenRecordParams: Codable, Sendable, Equatable {
     public var screenIndex: Int?
     public var durationMs: Int?
     public var fps: Double?

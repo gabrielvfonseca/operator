@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type BytesParseOptions = {
   defaultUnit?: "b" | "kb" | "mb" | "gb" | "tb";

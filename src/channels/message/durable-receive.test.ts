@@ -12,7 +12,7 @@ type TestMetadata = { source: string };
 type TestCompletedMetadata = { delivered: boolean };
 
 async function withTempState<T>(fn: (stateDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-durable-receive-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-durable-receive-"));
   try {
     return await fn(stateDir);
   } finally {

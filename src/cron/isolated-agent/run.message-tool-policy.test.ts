@@ -1341,7 +1341,7 @@ describe("runCronIsolatedAgentTurn message tool policy", () => {
       makeMessageToolRunResult([
         {
           tool: "message",
-          provider: "openclaw-weixin",
+          provider: "operator-weixin",
           to: "user-123",
           text: "386502",
         },
@@ -1366,7 +1366,7 @@ describe("runCronIsolatedAgentTurn message tool policy", () => {
             verifiedTarget: false,
             target: {
               tool: "message",
-              provider: "openclaw-weixin",
+              provider: "operator-weixin",
               to: "user-123",
               text: "386502",
             },

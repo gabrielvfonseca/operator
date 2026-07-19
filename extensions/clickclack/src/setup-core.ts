@@ -1,14 +1,17 @@
 // ClickClack plugin module implements non-interactive setup behavior.
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import type { ChannelSetupAdapter } from "openclaw/plugin-sdk/channel-setup";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { ChannelSetupAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-setup";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
   migrateBaseNameToDefaultAccount,
   moveSingleAccountChannelSectionToDefaultAccount,
-} from "openclaw/plugin-sdk/setup";
-import { createSetupInputPresenceValidator } from "openclaw/plugin-sdk/setup-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
+import { createSetupInputPresenceValidator } from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
 import { resolveClickClackAccountConfig } from "./accounts.js";
 import type { CoreConfig } from "./types.js";
 

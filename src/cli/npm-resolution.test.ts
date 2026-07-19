@@ -1,5 +1,5 @@
 // npm resolution tests cover CLI plugin package resolution from installed roots.
-import { installedPluginRoot } from "openclaw/plugin-sdk/test-fixtures";
+import { installedPluginRoot } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
 import {
   buildNpmInstallRecordFields,
@@ -13,24 +13,24 @@ describe("npm-resolution helpers", () => {
   it("builds common npm install record fields", () => {
     expect(
       buildNpmInstallRecordFields({
-        spec: "@operator/plugin-alpha@latest",
+        spec: "@gabrielvfonseca/plugin-alpha@latest",
         installPath: ALPHA_INSTALL_PATH,
         version: "1.2.3",
         resolution: {
-          name: "@operator/plugin-alpha",
+          name: "@gabrielvfonseca/plugin-alpha",
           version: "1.2.3",
-          resolvedSpec: "@operator/plugin-alpha@1.2.3",
+          resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
           integrity: "sha512-abc",
         },
       }),
     ).toEqual({
       source: "npm",
-      spec: "@operator/plugin-alpha@latest",
+      spec: "@gabrielvfonseca/plugin-alpha@latest",
       installPath: ALPHA_INSTALL_PATH,
       version: "1.2.3",
-      resolvedName: "@operator/plugin-alpha",
+      resolvedName: "@gabrielvfonseca/plugin-alpha",
       resolvedVersion: "1.2.3",
-      resolvedSpec: "@operator/plugin-alpha@1.2.3",
+      resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       integrity: "sha512-abc",
       shasum: undefined,
       resolvedAt: undefined,
@@ -40,14 +40,14 @@ describe("npm-resolution helpers", () => {
   it("pins the install record to the resolved spec and logs a notice", () => {
     const logs: string[] = [];
     const record = resolvePinnedNpmInstallRecordForCli(
-      "@operator/plugin-alpha@latest",
+      "@gabrielvfonseca/plugin-alpha@latest",
       true,
       ALPHA_INSTALL_PATH,
       "1.2.3",
       {
-        name: "@operator/plugin-alpha",
+        name: "@gabrielvfonseca/plugin-alpha",
         version: "1.2.3",
-        resolvedSpec: "@operator/plugin-alpha@1.2.3",
+        resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       },
       (message) => logs.push(message),
       (message) => `[warn] ${message}`,
@@ -55,23 +55,23 @@ describe("npm-resolution helpers", () => {
 
     expect(record).toEqual({
       source: "npm",
-      spec: "@operator/plugin-alpha@1.2.3",
+      spec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       installPath: ALPHA_INSTALL_PATH,
       version: "1.2.3",
-      resolvedName: "@operator/plugin-alpha",
+      resolvedName: "@gabrielvfonseca/plugin-alpha",
       resolvedVersion: "1.2.3",
-      resolvedSpec: "@operator/plugin-alpha@1.2.3",
+      resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       integrity: undefined,
       shasum: undefined,
       resolvedAt: undefined,
     });
-    expect(logs).toEqual(["Pinned npm install record to @operator/plugin-alpha@1.2.3."]);
+    expect(logs).toEqual(["Pinned npm install record to @gabrielvfonseca/plugin-alpha@1.2.3."]);
   });
 
   it("keeps the requested spec and formats a warning when pin resolution is missing", () => {
     const logs: string[] = [];
     const record = resolvePinnedNpmInstallRecordForCli(
-      "@operator/plugin-alpha@latest",
+      "@gabrielvfonseca/plugin-alpha@latest",
       true,
       ALPHA_INSTALL_PATH,
       "1.2.3",
@@ -82,7 +82,7 @@ describe("npm-resolution helpers", () => {
 
     expect(record).toEqual({
       source: "npm",
-      spec: "@operator/plugin-alpha@latest",
+      spec: "@gabrielvfonseca/plugin-alpha@latest",
       installPath: ALPHA_INSTALL_PATH,
       version: "1.2.3",
       resolvedName: undefined,
@@ -100,14 +100,14 @@ describe("npm-resolution helpers", () => {
   it("keeps the requested selector and resolution metadata when pin is disabled", () => {
     const logs: string[] = [];
     const record = resolvePinnedNpmInstallRecordForCli(
-      "@operator/plugin-alpha",
+      "@gabrielvfonseca/plugin-alpha",
       false,
       ALPHA_INSTALL_PATH,
       "1.2.3",
       {
-        name: "@operator/plugin-alpha",
+        name: "@gabrielvfonseca/plugin-alpha",
         version: "1.2.3",
-        resolvedSpec: "@operator/plugin-alpha@1.2.3",
+        resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       },
       (message) => logs.push(message),
       (message) => `[warn] ${message}`,
@@ -115,12 +115,12 @@ describe("npm-resolution helpers", () => {
 
     expect(record).toEqual({
       source: "npm",
-      spec: "@operator/plugin-alpha",
+      spec: "@gabrielvfonseca/plugin-alpha",
       installPath: ALPHA_INSTALL_PATH,
       version: "1.2.3",
-      resolvedName: "@operator/plugin-alpha",
+      resolvedName: "@gabrielvfonseca/plugin-alpha",
       resolvedVersion: "1.2.3",
-      resolvedSpec: "@operator/plugin-alpha@1.2.3",
+      resolvedSpec: "@gabrielvfonseca/plugin-alpha@1.2.3",
       integrity: undefined,
       shasum: undefined,
       resolvedAt: undefined,

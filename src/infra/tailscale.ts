@@ -3,12 +3,12 @@ import { existsSync } from "node:fs";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { asNullableObjectRecord as readRecord } from "@operator/normalization-core/record-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { asNullableObjectRecord as readRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { logVerbose } from "../globals.js";
 import { runExec } from "../process/exec.js";
 import { toErrorObject } from "./errors.js";

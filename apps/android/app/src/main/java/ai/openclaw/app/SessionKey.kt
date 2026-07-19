@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 /** Normalizes blank gateway session keys to the legacy main session alias. */
 internal fun normalizeMainKey(raw: String?): String {
@@ -33,5 +33,5 @@ internal fun buildAndroidAppSessionLabel(
 ): String {
   val deviceSuffix = deviceId.take(12)
   val displaySuffix = displayName?.trim()?.takeUtf16Safe(96)?.takeIf { it.isNotEmpty() }
-  return listOfNotNull("OpenClaw App", displaySuffix, deviceSuffix).joinToString(" · ")
+  return listOfNotNull("Operator App", displaySuffix, deviceSuffix).joinToString(" · ")
 }

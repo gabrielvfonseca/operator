@@ -1,9 +1,9 @@
 // Process supervisor manages long-running child and PTY process lifecycles.
 import crypto from "node:crypto";
 import { performance } from "node:perf_hooks";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { getShellConfig } from "../../agents/shell-utils.js";
 import { createLazyRuntimeModule } from "../../shared/lazy-runtime.js";
 import { createChildAdapter } from "./adapters/child.js";

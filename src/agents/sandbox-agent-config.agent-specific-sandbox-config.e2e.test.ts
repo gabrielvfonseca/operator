@@ -93,7 +93,7 @@ function createWorkSetupCommandConfig(scope: "agent" | "shared"): OperatorConfig
       list: [
         {
           id: "work",
-          workspace: "~/openclaw-work",
+          workspace: "~/operator-work",
           sandbox: {
             mode: "all",
             scope,
@@ -128,13 +128,13 @@ describe("Agent-specific sandbox config", () => {
           sandbox: {
             mode: "all",
             scope: "agent",
-            workspaceRoot: "~/.openclaw/sandboxes",
+            workspaceRoot: "~/.operator/sandboxes",
           },
         },
         list: [
           {
             id: "isolated",
-            workspace: "~/openclaw-isolated",
+            workspace: "~/operator-isolated",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -172,7 +172,7 @@ describe("Agent-specific sandbox config", () => {
           },
           {
             id: "family",
-            workspace: "~/openclaw-family",
+            workspace: "~/operator-family",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -284,7 +284,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "work",
-            workspace: "~/openclaw-work",
+            workspace: "~/operator-work",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -342,7 +342,7 @@ describe("Agent-specific sandbox config", () => {
             list: [
               {
                 id: "family",
-                workspace: "~/openclaw-family",
+                workspace: "~/operator-family",
                 sandbox: {
                   mode: "all",
                   scope: "agent",
@@ -378,7 +378,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "work",
-            workspace: "~/openclaw-work",
+            workspace: "~/operator-work",
             sandbox: {
               mode: "all",
               scope: "agent",

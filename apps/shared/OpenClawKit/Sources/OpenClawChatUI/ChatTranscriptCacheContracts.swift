@@ -6,31 +6,31 @@ import Foundation
 /// reads always come from the gateway and replace cached content wholesale.
 /// Implementations must scope all rows to a single gateway identity so
 /// transcripts never leak across paired gateways.
-public protocol OpenClawChatTranscriptCache: Sendable {
-    func loadSessions() async -> [OpenClawChatSessionEntry]
-    func loadTranscript(sessionKey: String) async -> [OpenClawChatMessage]
-    func loadTranscript(sessionKey: String, agentID: String?) async -> [OpenClawChatMessage]
-    func storeSessions(_ sessions: [OpenClawChatSessionEntry]) async
-    func storeTranscript(sessionKey: String, messages: [OpenClawChatMessage]) async
-    func storeTranscript(sessionKey: String, agentID: String?, messages: [OpenClawChatMessage]) async
+public protocol OperatorChatTranscriptCache: Sendable {
+    func loadSessions() async -> [OperatorChatSessionEntry]
+    func loadTranscript(sessionKey: String) async -> [OperatorChatMessage]
+    func loadTranscript(sessionKey: String, agentID: String?) async -> [OperatorChatMessage]
+    func storeSessions(_ sessions: [OperatorChatSessionEntry]) async
+    func storeTranscript(sessionKey: String, messages: [OperatorChatMessage]) async
+    func storeTranscript(sessionKey: String, agentID: String?, messages: [OperatorChatMessage]) async
     /// Canonical gateway rows can prove that an ambiguously delivered local
     /// command landed after cancellation and must override local suppression.
     func storeCanonicalTranscript(
         sessionKey: String,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>) async
     func storeCanonicalTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>) async
     /// Synchronous observation closes the session.message -> cancellation
     /// race before asynchronous SQLite confirmation starts.
     func observeCanonicalMessageIdempotencyKeys(_ keys: Set<String>)
 }
 
-extension OpenClawChatTranscriptCache {
-    public func loadTranscript(sessionKey: String, agentID: String?) async -> [OpenClawChatMessage] {
+extension OperatorChatTranscriptCache {
+    public func loadTranscript(sessionKey: String, agentID: String?) async -> [OperatorChatMessage] {
         guard agentID == nil else { return [] }
         return await self.loadTranscript(sessionKey: sessionKey)
     }
@@ -38,7 +38,7 @@ extension OpenClawChatTranscriptCache {
     public func storeTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage]) async
+        messages: [OperatorChatMessage]) async
     {
         guard agentID == nil else { return }
         await self.storeTranscript(sessionKey: sessionKey, messages: messages)
@@ -46,7 +46,7 @@ extension OpenClawChatTranscriptCache {
 
     public func storeCanonicalTranscript(
         sessionKey: String,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys _: Set<String>) async
     {
         await self.storeTranscript(sessionKey: sessionKey, messages: messages)
@@ -55,7 +55,7 @@ extension OpenClawChatTranscriptCache {
     public func storeCanonicalTranscript(
         sessionKey: String,
         agentID: String?,
-        messages: [OpenClawChatMessage],
+        messages: [OperatorChatMessage],
         canonicalMessageIdempotencyKeys: Set<String>) async
     {
         guard agentID == nil else { return }
@@ -71,16 +71,16 @@ extension OpenClawChatTranscriptCache {
 /// Optional atomic merge seam for cache owners that also provide a durable
 /// outbox. Keeping this separate preserves source compatibility for read-only
 /// transcript-cache conformers.
-protocol OpenClawChatCanonicalTranscriptMerging: OpenClawChatTranscriptCache {
+protocol OperatorChatCanonicalTranscriptMerging: OperatorChatTranscriptCache {
     func mergeCanonicalTranscriptMessage(
         sessionKey: String,
         agentID: String?,
-        message: OpenClawChatMessage,
+        message: OperatorChatMessage,
         canonicalMessageIdempotencyKey: String) async
 }
 
 /// One attachment captured with a durable chat command.
-public struct OpenClawChatOutboxAttachment: Codable, Hashable, Sendable {
+public struct OperatorChatOutboxAttachment: Codable, Hashable, Sendable {
     public let type: String
     public let mimeType: String
     public let fileName: String
@@ -108,7 +108,7 @@ public struct OpenClawChatOutboxAttachment: Codable, Hashable, Sendable {
 ///
 /// Naming mirrors the watch-side `QueuedCommand` shape (WatchChatCoordinator)
 /// so the two queues can merge into one owner later.
-public struct OpenClawChatOutboxCommand: Hashable, Sendable, Identifiable {
+public struct OperatorChatOutboxCommand: Hashable, Sendable, Identifiable {
     static let legacyUnboundRoutingContract = "legacy-unbound"
 
     public enum Status: String, Sendable {
@@ -133,7 +133,7 @@ public struct OpenClawChatOutboxCommand: Hashable, Sendable, Identifiable {
     public let text: String
     /// Attachment bytes remain owned by SQLite until canonical history proves
     /// delivery or the user explicitly deletes the command.
-    public let attachments: [OpenClawChatOutboxAttachment]
+    public let attachments: [OperatorChatOutboxAttachment]
     /// Thinking level captured when the command was queued, so a later flush
     /// never borrows the setting of whichever session is visible then.
     public let thinking: String
@@ -150,7 +150,7 @@ public struct OpenClawChatOutboxCommand: Hashable, Sendable, Identifiable {
         routingContract: String? = nil,
         agentID: String? = nil,
         text: String,
-        attachments: [OpenClawChatOutboxAttachment] = [],
+        attachments: [OperatorChatOutboxAttachment] = [],
         thinking: String,
         createdAt: Double,
         status: Status,
@@ -178,14 +178,14 @@ public struct OpenClawChatOutboxCommand: Hashable, Sendable, Identifiable {
     }
 }
 
-public enum OpenClawChatOutboxUpdateResult: Equatable, Sendable {
+public enum OperatorChatOutboxUpdateResult: Equatable, Sendable {
     case updated
     case confirmed
     case missing
     case unavailable
 }
 
-public enum OpenClawChatOutboxChange: Equatable, Sendable {
+public enum OperatorChatOutboxChange: Equatable, Sendable {
     case canceled(id: String)
     case confirmed(id: String)
 }
@@ -193,17 +193,17 @@ public enum OpenClawChatOutboxChange: Equatable, Sendable {
 /// Durable offline outbox for chat commands, scoped to one gateway identity
 /// exactly like the transcript cache. Implementations persist queued sends so
 /// they survive app restarts and flush on reconnect.
-public protocol OpenClawChatCommandOutbox: Sendable {
+public protocol OperatorChatCommandOutbox: Sendable {
     /// Returns false when the row or attachment-byte budget is full, or
     /// storage is unavailable; callers surface that instead of dropping text.
-    func enqueueCommand(_ command: OpenClawChatOutboxCommand) async -> Bool
+    func enqueueCommand(_ command: OperatorChatOutboxCommand) async -> Bool
     /// Gateway-scoped rows in `createdAt` order. Applies the staleness gate:
     /// old queued or unconfirmed rows become failed so reconnect never sends
     /// stale or ambiguously delivered commands silently.
-    func loadCommands() async -> [OpenClawChatOutboxCommand]
+    func loadCommands() async -> [OperatorChatOutboxCommand]
     /// Availability-aware read used by the FIFO restoration gate. Nil means
     /// storage was not readable, not that the queue was empty.
-    func loadCommandsIfAvailable() async -> [OpenClawChatOutboxCommand]?
+    func loadCommandsIfAvailable() async -> [OperatorChatOutboxCommand]?
     /// Crash safety: rows stuck in 'sending' from a previous process become
     /// failed once per store lifetime. Delivery is ambiguous after a crash,
     /// so only explicit user retry may replay them; acknowledged rows stay
@@ -213,40 +213,40 @@ public protocol OpenClawChatCommandOutbox: Sendable {
     func recoverInterruptedSends() async -> Bool
     /// Atomically claims the oldest queued row when no other row is sending.
     /// Nil means another flusher owns the queue or no deliverable row remains.
-    func claimNextCommand() async -> OpenClawChatOutboxCommand?
+    func claimNextCommand() async -> OperatorChatOutboxCommand?
     func markCommandQueued(id: String, retryCount: Int, lastError: String?) async
-    func markCommandAwaitingConfirmation(id: String) async -> OpenClawChatOutboxUpdateResult
+    func markCommandAwaitingConfirmation(id: String) async -> OperatorChatOutboxUpdateResult
     /// Result-bearing terminal transition for callers that must stop their
     /// FIFO when durable storage is unavailable.
     func markCommandFailedIfPresent(
         id: String,
         retryCount: Int,
-        lastError: String?) async -> OpenClawChatOutboxUpdateResult
+        lastError: String?) async -> OperatorChatOutboxUpdateResult
     /// Result-bearing retry used to adopt an unowned legacy alias into the
     /// canonical target explicitly selected by the user.
     func markCommandRetriedIfPresent(
         id: String,
         agentID: String?,
         deliverySessionKey: String,
-        routingContract: String) async -> OpenClawChatOutboxUpdateResult
+        routingContract: String) async -> OperatorChatOutboxUpdateResult
     /// User cancellation succeeds only before a sender claims the row. The
     /// status predicate is the cross-view-model cancellation boundary.
-    func cancelCommand(id: String) async -> OpenClawChatOutboxUpdateResult
+    func cancelCommand(id: String) async -> OperatorChatOutboxUpdateResult
     /// Canonical gateway history may complete any row, including a sending
     /// row whose request ACK was lost.
-    func confirmCommand(id: String) async -> OpenClawChatOutboxUpdateResult
+    func confirmCommand(id: String) async -> OperatorChatOutboxUpdateResult
     /// Cross-view-model invalidation.
-    func changes() -> AsyncStream<OpenClawChatOutboxChange>
+    func changes() -> AsyncStream<OperatorChatOutboxChange>
 }
 
-public struct OpenClawChatSessionRoutingIdentity: Equatable, Sendable {
+public struct OperatorChatSessionRoutingIdentity: Equatable, Sendable {
     public let scope: String
     public let mainSessionKey: String
     public let defaultAgentID: String
     public let contract: String
 
     public init?(contract: String?) {
-        guard let components = OpenClawChatSessionRoutingContract.parse(contract) else { return nil }
+        guard let components = OperatorChatSessionRoutingContract.parse(contract) else { return nil }
         self.scope = components.scope
         self.mainSessionKey = components.mainKey
         self.defaultAgentID = components.defaultAgentID
@@ -254,7 +254,7 @@ public struct OpenClawChatSessionRoutingIdentity: Equatable, Sendable {
     }
 
     public init?(scope: String?, mainSessionKey: String?, defaultAgentID: String?) {
-        guard let contract = OpenClawChatSessionRoutingContract.make(
+        guard let contract = OperatorChatSessionRoutingContract.make(
             scope: scope,
             mainKey: mainSessionKey,
             defaultAgentID: defaultAgentID)

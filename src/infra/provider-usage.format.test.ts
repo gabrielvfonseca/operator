@@ -1,6 +1,6 @@
 // Covers provider usage report formatting.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   formatUsageReportLines,

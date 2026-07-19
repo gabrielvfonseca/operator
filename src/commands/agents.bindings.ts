@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Pure helpers for parsing, adding, removing, and generating agent route bindings.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeSortedUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeSortedUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getBundledChannelSetupPlugin } from "../channels/plugins/bundled.js";
 import { resolveChannelDefaultAccountId } from "../channels/plugins/helpers.js";
 import { getLoadedChannelPlugin } from "../channels/plugins/index.js";

@@ -1,6 +1,6 @@
 // Control UI MCP Settings page presentation.
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { asNullableRecord as asRecord } from "@operator/normalization-core/record-coerce";
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { asNullableRecord as asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { html, type TemplateResult } from "lit";
 import {
   renderSettingsEmpty,

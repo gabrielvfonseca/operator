@@ -621,7 +621,7 @@ describe("applyPluginNodeInvokePolicy", () => {
   });
 
   it("fails closed before routing an unrenderable persistent policy approval", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-policy-approval-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-node-policy-approval-"));
     tempDirs.push(stateDir);
     const databaseOptions = { path: path.join(stateDir, "state.sqlite") };
     const manager = new ExecApprovalManager<PluginApprovalRequestPayload>({

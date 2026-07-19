@@ -67,7 +67,7 @@ function useBundledPluginsDir(extensionsRoot: string | undefined): void {
 
 function seedRoot(prefix: string): string {
   const root = makeTempRepoRoot(tempDirs, prefix);
-  writeJsonFile(path.join(root, "package.json"), { name: "openclaw" });
+  writeJsonFile(path.join(root, "package.json"), { name: "@gabrielvfonseca/operator" });
   vi.spyOn(process, "cwd").mockReturnValue(root);
   return root;
 }
@@ -78,8 +78,8 @@ function seedChannelPkg(
 ): void {
   const pluginDir = path.dirname(pkgJsonPath);
   writeJsonFile(pkgJsonPath, {
-    name: `@operator/${opts.id}`,
-    openclaw: {
+    name: `@gabrielvfonseca/${opts.id}`,
+    operator: {
       channel: {
         id: opts.id,
         label: opts.label ?? opts.id,
@@ -89,7 +89,7 @@ function seedChannelPkg(
       },
     },
   });
-  writeJsonFile(path.join(pluginDir, "openclaw.plugin.json"), {
+  writeJsonFile(path.join(pluginDir, "operator.plugin.json"), {
     id: opts.id,
     configSchema: { type: "object" },
     channels: [opts.id],
@@ -137,8 +137,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@operator/qqbot",
-          openclaw: {
+          name: "@gabrielvfonseca/qqbot",
+          operator: {
             channel: {
               id: "qqbot",
               label: "QQ Bot",
@@ -169,8 +169,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@operator/matrix",
-          openclaw: {
+          name: "@gabrielvfonseca/matrix",
+          operator: {
             channel: {
               id: "matrix",
               label: "Matrix",
@@ -196,8 +196,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@operator/fallback",
-          openclaw: {
+          name: "@gabrielvfonseca/fallback",
+          operator: {
             channel: {
               id: "fallback-channel",
               label: "Fallback",
@@ -225,8 +225,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@operator/fallback",
-          openclaw: {
+          name: "@gabrielvfonseca/fallback",
+          operator: {
             channel: {
               id: "fallback-channel",
               label: "Fallback",

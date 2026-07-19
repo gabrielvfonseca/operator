@@ -148,7 +148,7 @@ describe("shared/tailscale-status", () => {
           "svc:openclaw": {
             TCP: { "443": { HTTPS: true } },
             Web: {
-              "openclaw.tail.ts.net:443": {
+              "operator.tail.ts.net:443": {
                 Handlers: { "/": { Proxy: "127.0.0.1:18789" } },
               },
             },

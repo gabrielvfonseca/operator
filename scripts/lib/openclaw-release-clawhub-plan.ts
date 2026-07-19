@@ -1,4 +1,4 @@
-// OpenClaw release ClawHub plan script supports release workflow routing.
+// Operator release ClawHub plan script supports release workflow routing.
 import { resolve } from "node:path";
 import {
   collectPluginClawHubReleasePlan,
@@ -22,7 +22,7 @@ type ClawHubDispatchTarget = {
   inputs: ClawHubDispatchInputs;
 };
 
-type OpenClawReleaseClawHubPlanArgs = {
+type OperatorReleaseClawHubPlanArgs = {
   bootstrapWorkflowRef: string;
   bootstrapWorkflowSha: string;
   releaseTag: string;
@@ -34,7 +34,7 @@ type OpenClawReleaseClawHubPlanArgs = {
   plugins: string[];
 };
 
-type OpenClawReleaseClawHubPlan = {
+type OperatorReleaseClawHubPlan = {
   bootstrapWorkflowSha: string;
   clawHubWorkflowRef: string;
   releasePublishBranch: string;
@@ -53,7 +53,7 @@ type OpenClawReleaseClawHubPlan = {
   };
 };
 
-type OpenClawReleaseClawHubRuntimeStateArgs = {
+type OperatorReleaseClawHubRuntimeStateArgs = {
   repository: string;
   waitForClawHub: boolean;
   forceSkipClawHub: boolean;
@@ -62,7 +62,7 @@ type OpenClawReleaseClawHubRuntimeStateArgs = {
   bootstrapCompleted: boolean;
 };
 
-type OpenClawReleaseClawHubRuntimeState = {
+type OperatorReleaseClawHubRuntimeState = {
   verifierArgs: string[];
   proofLines: {
     normal: string;
@@ -177,9 +177,9 @@ function createDispatchTarget(params: {
   };
 }
 
-export function buildOpenClawReleaseClawHubRuntimeState(
-  args: OpenClawReleaseClawHubRuntimeStateArgs,
-): OpenClawReleaseClawHubRuntimeState {
+export function buildOperatorReleaseClawHubRuntimeState(
+  args: OperatorReleaseClawHubRuntimeStateArgs,
+): OperatorReleaseClawHubRuntimeState {
   const repository = requireArg(args.repository, "repository");
   const normalRunId = optionalArg(args.normalRunId);
   const bootstrapRunId = optionalArg(args.bootstrapRunId);
@@ -226,9 +226,9 @@ export function buildOpenClawReleaseClawHubRuntimeState(
   };
 }
 
-export function parseOpenClawReleaseClawHubPlanArgs(
+export function parseOperatorReleaseClawHubPlanArgs(
   argv: string[],
-): OpenClawReleaseClawHubPlanArgs {
+): OperatorReleaseClawHubPlanArgs {
   const values = [...argv];
   if (values[0] === "--") {
     values.shift();
@@ -317,14 +317,14 @@ export function parseOpenClawReleaseClawHubPlanArgs(
   };
 }
 
-export async function buildOpenClawReleaseClawHubPlan(
-  args: OpenClawReleaseClawHubPlanArgs,
+export async function buildOperatorReleaseClawHubPlan(
+  args: OperatorReleaseClawHubPlanArgs,
   options: {
     rootDir?: string;
     fetchImpl?: typeof fetch;
     registryBaseUrl?: string;
   } = {},
-): Promise<OpenClawReleaseClawHubPlan> {
+): Promise<OperatorReleaseClawHubPlan> {
   const bootstrapWorkflowRef = requireBootstrapWorkflowRef(args.bootstrapWorkflowRef);
   const bootstrapWorkflowSha = requireCommitSha(args.bootstrapWorkflowSha, "bootstrapWorkflowSha");
   const releaseTag = requireArg(args.releaseTag, "releaseTag");

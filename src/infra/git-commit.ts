@@ -3,9 +3,9 @@ import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveGitHeadPath } from "./git-root.js";
-import { resolveOperatorPackageRootSync } from "./operator-root.js";
+import { resolveOperatorPackageRootSync } from "./openclaw-root.js";
 
 const formatCommit = (value?: string | null) => {
   if (!value) {

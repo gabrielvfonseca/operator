@@ -1,5 +1,5 @@
 // Reply payload tests cover reply target parsing, media payloads, and approval metadata.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildTtsSupplementMediaPayload,

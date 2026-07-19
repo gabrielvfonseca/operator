@@ -1,5 +1,5 @@
 // Performs lightweight safe-regex checks for user-supplied patterns.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 type QuantifierRead = {
   consumed: number;
   minRepeat: number;

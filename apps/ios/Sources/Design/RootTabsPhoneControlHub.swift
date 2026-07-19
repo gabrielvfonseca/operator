@@ -1,4 +1,4 @@
-import OpenClawProtocol
+import OperatorProtocol
 import SwiftUI
 
 struct RootTabsPhoneControlHub: View {
@@ -58,7 +58,7 @@ struct RootTabsPhoneControlHub: View {
             self.openGatewayDetail()
         } label: {
             HStack(spacing: 12) {
-                OpenClawProMark(size: 44, shadowRadius: 5)
+                OperatorProMark(size: 44, shadowRadius: 5)
                 VStack(alignment: .leading, spacing: 3) {
                     self.gatewayIdentityTitle
                         .foregroundStyle(.primary)
@@ -71,7 +71,7 @@ struct RootTabsPhoneControlHub: View {
                         Text(self.gatewayStateText)
                             .foregroundStyle(self.gatewayStateColor)
                     }
-                    .font(OpenClawType.captionMedium)
+                    .font(OperatorType.captionMedium)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                 }
@@ -111,7 +111,7 @@ struct RootTabsPhoneControlHub: View {
         Button {
             self.openPhoneRootDestination(destination)
         } label: {
-            ProCard(padding: 16, radius: OpenClawProMetric.cardRadius) {
+            ProCard(padding: 16, radius: OperatorProMetric.cardRadius) {
                 VStack(alignment: .leading, spacing: 12) {
                     ControlCircleIcon(
                         systemName: destination.systemImage,
@@ -120,16 +120,16 @@ struct RootTabsPhoneControlHub: View {
                     HStack(alignment: .top, spacing: 6) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(destination.title)
-                                .font(OpenClawType.headline)
+                                .font(OperatorType.headline)
                                 .foregroundStyle(.primary)
                             Text(subtitle)
-                                .font(OpenClawType.caption2)
+                                .font(OperatorType.caption2)
                                 .foregroundStyle(.secondary)
                                 .lineLimit(2)
                         }
                         Spacer(minLength: 4)
                         Image(systemName: "chevron.right")
-                            .font(OpenClawType.caption2Bold)
+                            .font(OperatorType.caption2Bold)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -149,7 +149,7 @@ struct RootTabsPhoneControlHub: View {
     private func rowLabel(_ destination: RootTabs.SidebarDestination) -> some View {
         Label {
             Text(destination.title)
-                .font(OpenClawType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .foregroundStyle(.primary)
         } icon: {
             ControlCircleIcon(
@@ -223,7 +223,7 @@ struct RootTabsPhoneControlHub: View {
                 usesNativeNavigationChrome: true,
                 gatewayAction: { self.openGatewayDetail() })
         case .docs:
-            OpenClawDocsScreen(
+            OperatorDocsScreen(
                 usesNativeNavigationChrome: true,
                 gatewayAction: { self.openGatewayDetail() })
         case .settings:
@@ -294,10 +294,10 @@ struct RootTabsPhoneControlHub: View {
         // Gateway names are server data; only the product fallback is localizable.
         if let gatewayDisplayLabel {
             Text(verbatim: gatewayDisplayLabel)
-                .font(OpenClawType.headlineBold)
+                .font(OperatorType.headlineBold)
         } else {
             Text("Gateway")
-                .font(OpenClawType.headlineBold)
+                .font(OperatorType.headlineBold)
         }
     }
 
@@ -308,13 +308,13 @@ struct RootTabsPhoneControlHub: View {
                 self.gatewayStateText,
                 gatewayDisplayLabel,
                 self.sidebarActiveAgentTitle))
-                .font(OpenClawType.captionMedium)
+                .font(OperatorType.captionMedium)
         } else {
             Text(verbatim: String(
                 format: String(localized: "Gateway %1$@, %2$@"),
                 self.gatewayStateText,
                 self.sidebarActiveAgentTitle))
-                .font(OpenClawType.captionMedium)
+                .font(OperatorType.captionMedium)
         }
     }
 
@@ -330,11 +330,11 @@ struct RootTabsPhoneControlHub: View {
     private var gatewayStateColor: Color {
         switch GatewayStatusBuilder.build(appModel: self.appModel) {
         case .connected:
-            OpenClawBrand.ok
+            OperatorBrand.ok
         case .connecting:
-            OpenClawBrand.accent
+            OperatorBrand.accent
         case .error:
-            OpenClawBrand.warn
+            OperatorBrand.warn
         case .disconnected:
             .secondary
         }
@@ -343,21 +343,21 @@ struct RootTabsPhoneControlHub: View {
     private func color(for destination: RootTabs.SidebarDestination) -> Color {
         switch destination {
         case .chat:
-            OpenClawBrand.ok
+            OperatorBrand.ok
         case .talk, .skillWorkshop, .files:
-            OpenClawBrand.info
+            OperatorBrand.info
         case .overview:
-            OpenClawBrand.warn
+            OperatorBrand.warn
         case .activity:
-            OpenClawBrand.accent
+            OperatorBrand.accent
         case .workboard:
             .purple
         case .instances, .sessions, .dreaming, .terminal:
             .secondary
         case .usage, .docs:
-            OpenClawBrand.accentHot
+            OperatorBrand.accentHot
         case .agents, .cron, .settings, .gateway:
-            OpenClawBrand.ok
+            OperatorBrand.ok
         }
     }
 

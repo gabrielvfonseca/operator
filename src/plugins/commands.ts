@@ -5,8 +5,8 @@
  * These commands are processed before built-in commands and before agent invocation.
  */
 
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { resolveBoundAgentIdForSession } from "../agents/session-agent-binding.js";
 import { resolveConversationBindingContext } from "../channels/conversation-binding-context.js";
 import type { OperatorConfig } from "../config/types.operator.js";

@@ -1,7 +1,7 @@
 // Covers limiting persisted history by recent user turns.
 
-import { expectDefined } from "@operator/normalization-core";
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it } from "vitest";
 import { limitHistoryTurns } from "./embedded-agent-runner/history.js";
 

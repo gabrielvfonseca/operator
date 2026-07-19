@@ -1,6 +1,6 @@
 /** Dispatches isolated cron output to direct delivery, mirrors, and follow-up queues. */
-import { isAudioFileName } from "@operator/media-core/mime";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isAudioFileName } from "@gabrielvfonseca/media-core/mime";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import {
   isSilentReplyText,
@@ -1236,7 +1236,7 @@ export async function dispatchCronDelivery(
           // Keep all attempts out of the write-ahead delivery queue so a
           // late-successful first send cannot leave behind a failed queue
           // entry that replays on the next restart.
-          // See: https://github.com/operator/operator/issues/40545
+          // See: https://github.com/openclaw/openclaw/issues/40545
           skipQueue: true,
         });
         // No durable id is still ambiguous: the adapter was already invoked.

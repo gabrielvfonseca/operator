@@ -23,20 +23,20 @@ function resolveInstallerVersionCases(params: { stdinCwd: string }): string[] {
     [
       "-c",
       `${versionHelperSource}
-fake_openclaw_decorated() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
-fake_openclaw_raw() { printf '%s\\n' "Operator dev's build"; }
-OPERATOR_BIN=fake_openclaw_decorated resolve_openclaw_version
-OPERATOR_BIN=fake_openclaw_raw resolve_openclaw_version
+fake_operator_decorated() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
+fake_operator_raw() { printf '%s\\n' "Operator dev's build"; }
+OPERATOR_BIN=fake_operator_decorated resolve_operator_version
+OPERATOR_BIN=fake_operator_raw resolve_operator_version
 (
   cd "$1"
   source /dev/stdin <<'OPERATOR_STDIN_INSTALLER'
 ${versionHelperSource}
-fake_openclaw_stdin() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
-OPERATOR_BIN=fake_openclaw_stdin
-resolve_openclaw_version
+fake_operator_stdin() { printf '%s\\n' 'Operator 2026.3.10 (abcdef0)'; }
+OPERATOR_BIN=fake_operator_stdin
+resolve_operator_version
 OPERATOR_STDIN_INSTALLER
 )`,
-      "openclaw-version-test",
+      "operator-version-test",
       params.stdinCwd,
     ],
     {
@@ -59,7 +59,7 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "parses CLI versions and keeps stdin helpers isolated from cwd",
     () => {
-      const hostileCwd = makeTempDir(tempRoots, "openclaw-install-stdin-");
+      const hostileCwd = makeTempDir(tempRoots, "operator-install-stdin-");
       const hostileHelper = path.join(
         hostileCwd,
         "docker",
@@ -70,7 +70,7 @@ describe("install.sh version resolution", () => {
       fs.writeFileSync(
         hostileHelper,
         `#!/usr/bin/env bash
-extract_openclaw_semver() {
+extract_operator_semver() {
   printf '%s' 'poisoned'
 }
 `,

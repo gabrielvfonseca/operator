@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatEventTextTests {
     @Test func `decodes v3 and v4 chat delta payloads`() throws {
@@ -11,16 +11,16 @@ struct ChatEventTextTests {
         ]
 
         let decoded = try payloads.map { payload in
-            try JSONDecoder().decode(OpenClawChatEventPayload.self, from: Data(payload.utf8))
+            try JSONDecoder().decode(OperatorChatEventPayload.self, from: Data(payload.utf8))
         }
 
         #expect(
-            decoded.map { OpenClawChatEventText.assistantText(from: $0) } ==
+            decoded.map { OperatorChatEventText.assistantText(from: $0) } ==
                 ["v3 reply", "v4 reply"])
     }
 
     @Test func `extracts assistant text from final chat event message`() {
-        let event = OpenClawChatEventPayload(
+        let event = OperatorChatEventPayload(
             runId: "run-1",
             sessionKey: "main",
             state: "final",
@@ -33,11 +33,11 @@ struct ChatEventTextTests {
             ]),
             errorMessage: nil)
 
-        #expect(OpenClawChatEventText.assistantText(from: event) == "hello\nworld")
+        #expect(OperatorChatEventText.assistantText(from: event) == "hello\nworld")
     }
 
     @Test func `ignores user messages`() {
-        let event = OpenClawChatEventPayload(
+        let event = OperatorChatEventPayload(
             runId: "run-1",
             sessionKey: "main",
             state: "delta",
@@ -47,11 +47,11 @@ struct ChatEventTextTests {
             ]),
             errorMessage: nil)
 
-        #expect(OpenClawChatEventText.assistantText(from: event) == nil)
+        #expect(OperatorChatEventText.assistantText(from: event) == nil)
     }
 
     @Test func `extracts plain string content`() {
-        let event = OpenClawChatEventPayload(
+        let event = OperatorChatEventPayload(
             runId: "run-1",
             sessionKey: "main",
             state: "final",
@@ -61,6 +61,6 @@ struct ChatEventTextTests {
             ]),
             errorMessage: nil)
 
-        #expect(OpenClawChatEventText.assistantText(from: event) == "plain reply")
+        #expect(OperatorChatEventText.assistantText(from: event) == "plain reply")
     }
 }

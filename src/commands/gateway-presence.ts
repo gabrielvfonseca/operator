@@ -1,5 +1,5 @@
 /** Extracts the gateway's self presence entry from status/presence payloads. */
-import { readStringValue } from "@operator/normalization-core/string-coerce";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type GatewaySelfPresence = {
   host?: string;

@@ -1,11 +1,11 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayConnectErrorDetails
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.gateway.GatewayRequestOutcomeUnknown
-import ai.openclaw.app.gateway.GatewayRequestRejected
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.i18n.verbatimText
+import ai.operator.app.gateway.GatewayConnectErrorDetails
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayRequestOutcomeUnknown
+import ai.operator.app.gateway.GatewayRequestRejected
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.i18n.verbatimText
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +37,7 @@ class GatewayExecApprovalRuntimeTest {
   fun clearPlainPrefs() {
     RuntimeEnvironment
       .getApplication()
-      .getSharedPreferences("openclaw.node", android.content.Context.MODE_PRIVATE)
+      .getSharedPreferences("operator.node", android.content.Context.MODE_PRIVATE)
       .edit()
       .clear()
       .commit()
@@ -1134,7 +1134,7 @@ class GatewayExecApprovalRuntimeTest {
     val app = RuntimeEnvironment.getApplication()
     val securePrefs =
       app.getSharedPreferences(
-        "openclaw.node.approval.runtime.test.${UUID.randomUUID()}",
+        "operator.node.approval.runtime.test.${UUID.randomUUID()}",
         android.content.Context.MODE_PRIVATE,
       )
     return NodeRuntime(app, SecurePrefs(app, securePrefsOverride = securePrefs))

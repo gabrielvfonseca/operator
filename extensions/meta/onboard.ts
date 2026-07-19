@@ -4,7 +4,7 @@
 import {
   createModelCatalogPresetAppliers,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import { buildMetaModelDefinition, META_BASE_URL, META_MODEL_CATALOG } from "./models.js";
 
 /** Default Meta model reference used after onboarding. */

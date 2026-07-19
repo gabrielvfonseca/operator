@@ -2,9 +2,9 @@
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { Command } from "commander";
 import JSZip from "jszip";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { registerGoogleMeetCli, testing } from "./cli.js";
 import { resolveGoogleMeetConfig } from "./config.js";
@@ -530,7 +530,7 @@ describe("google-meet CLI", () => {
 
   it("prints markdown artifact and attendance output", async () => {
     stubMeetArtifactsApi();
-    const tempDir = mkdtempSync(path.join(tmpdir(), "openclaw-google-meet-artifacts-"));
+    const tempDir = mkdtempSync(path.join(tmpdir(), "operator-google-meet-artifacts-"));
     const outputPath = path.join(tempDir, "artifacts.md");
     const artifactsStdout = captureStdout();
 
@@ -620,7 +620,7 @@ describe("google-meet CLI", () => {
   it("writes an export bundle", async () => {
     stubMeetArtifactsApi();
     const stdout = captureStdout();
-    const tempDir = mkdtempSync(path.join(tmpdir(), "openclaw-google-meet-export-"));
+    const tempDir = mkdtempSync(path.join(tmpdir(), "operator-google-meet-export-"));
 
     try {
       await setupCli({}).parseAsync(
@@ -687,7 +687,7 @@ describe("google-meet CLI", () => {
   it("includes artifact warnings in export summaries and manifests", async () => {
     stubMeetArtifactsApi({ failSmartNoteDocumentBody: true });
     const stdout = captureStdout();
-    const tempDir = mkdtempSync(path.join(tmpdir(), "openclaw-google-meet-export-warning-"));
+    const tempDir = mkdtempSync(path.join(tmpdir(), "operator-google-meet-export-warning-"));
 
     try {
       await setupCli({}).parseAsync(
@@ -1110,7 +1110,7 @@ describe("google-meet CLI", () => {
   it("prints a dry-run export manifest without writing files", async () => {
     stubMeetArtifactsApi();
     const stdout = captureStdout();
-    const parentDir = mkdtempSync(path.join(tmpdir(), "openclaw-google-meet-export-dry-run-"));
+    const parentDir = mkdtempSync(path.join(tmpdir(), "operator-google-meet-export-dry-run-"));
     const outputDir = path.join(parentDir, "bundle");
 
     try {

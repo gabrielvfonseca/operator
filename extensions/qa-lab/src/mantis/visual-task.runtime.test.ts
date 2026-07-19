@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { runMantisVisualDriver, runMantisVisualTask } from "./visual-task.runtime.js";
 
@@ -123,7 +123,7 @@ describe("mantis visual task runtime", () => {
       "pnpm",
       "--dir",
       repoRoot,
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "qa",
       "mantis",
       "visual-driver",
@@ -359,7 +359,7 @@ describe("mantis visual task runtime", () => {
     expect(launchArgs[launchShellIndex + 3]).toContain("--no-first-run");
     const visionArgs = commands.find((entry) => entry.command === "pnpm")?.args ?? [];
     expectArgsContainSequence(visionArgs, [
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "infer",
       "image",
       "describe",

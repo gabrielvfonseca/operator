@@ -1,9 +1,9 @@
 // Lmstudio tests cover models plugin behavior.
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   SELF_HOSTED_DEFAULT_CONTEXT_WINDOW,
   SELF_HOSTED_DEFAULT_MAX_TOKENS,
-} from "openclaw/plugin-sdk/provider-setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-setup";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { LMSTUDIO_DEFAULT_LOAD_CONTEXT_LENGTH } from "./defaults.js";
 import {

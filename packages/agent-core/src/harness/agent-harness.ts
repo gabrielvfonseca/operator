@@ -1,5 +1,5 @@
 // Agent Core module implements agent harness behavior.
-import { toErrorObject } from "@operator/normalization-core/error-coercion";
+import { toErrorObject } from "@gabrielvfonseca/normalization-core/error-coercion";
 import type {
   AssistantMessage,
   ImageContent,

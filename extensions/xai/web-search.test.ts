@@ -1,8 +1,12 @@
 // Xai tests cover web search plugin behavior.
-import { createTestWizardPrompter } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { NON_ENV_SECRETREF_MARKER } from "openclaw/plugin-sdk/provider-auth-runtime";
-import { createNonExitingRuntime } from "openclaw/plugin-sdk/runtime-env";
-import { withEnv, withEnvAsync, withFetchPreconnect } from "openclaw/plugin-sdk/test-env";
+import { createTestWizardPrompter } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { NON_ENV_SECRETREF_MARKER } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import { createNonExitingRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  withEnv,
+  withEnvAsync,
+  withFetchPreconnect,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildXaiCatalogModels, resolveXaiCatalogEntry } from "./model-definitions.js";
 import { isModernXaiModel, resolveXaiForwardCompatModel } from "./provider-models.js";
@@ -298,7 +302,7 @@ describe("xai web search config resolution", () => {
     const tool = provider.createTool({
       config: {
         agents: {
-          list: [{ id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" }],
+          list: [{ id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" }],
         },
         plugins: {
           entries: {
@@ -322,7 +326,7 @@ describe("xai web search config resolution", () => {
     expect(providerAuthRuntimeMocks.resolveApiKeyForProvider).toHaveBeenCalledWith(
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-main-agent",
+        agentDir: "/tmp/operator-xai-main-agent",
       }),
     );
     expect(fetchCallHeader(mockFetch, 0, "Authorization")).toBe("Bearer oauth-web-search-token");
@@ -338,12 +342,12 @@ describe("xai web search config resolution", () => {
     const mockFetch = installXaiWebSearchFetch();
     const provider = createXaiWebSearchProvider();
     const tool = provider.createTool({
-      agentDir: "/tmp/openclaw-xai-active-agent",
+      agentDir: "/tmp/operator-xai-active-agent",
       config: {
         agents: {
           list: [
-            { id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" },
-            { id: "side", agentDir: "/tmp/openclaw-xai-active-agent" },
+            { id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" },
+            { id: "side", agentDir: "/tmp/operator-xai-active-agent" },
           ],
         },
       },
@@ -357,7 +361,7 @@ describe("xai web search config resolution", () => {
     expect(providerAuthRuntimeMocks.resolveApiKeyForProvider).toHaveBeenCalledWith(
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-active-agent",
+        agentDir: "/tmp/operator-xai-active-agent",
       }),
     );
     expect(fetchCallHeader(mockFetch, 0, "Authorization")).toBe("Bearer active-agent-oauth-token");
@@ -395,7 +399,7 @@ describe("xai web search config resolution", () => {
     const tool = provider.createTool({
       config: {
         agents: {
-          list: [{ id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" }],
+          list: [{ id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" }],
         },
         tools: {
           web: {
@@ -417,7 +421,7 @@ describe("xai web search config resolution", () => {
       2,
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-main-agent",
+        agentDir: "/tmp/operator-xai-main-agent",
         profileId: "xai:default",
         lockedProfile: true,
         forceRefresh: true,
@@ -464,7 +468,7 @@ describe("xai web search config resolution", () => {
     const tool = provider.createTool({
       config: {
         agents: {
-          list: [{ id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" }],
+          list: [{ id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" }],
         },
         tools: {
           web: {
@@ -486,7 +490,7 @@ describe("xai web search config resolution", () => {
       3,
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-main-agent",
+        agentDir: "/tmp/operator-xai-main-agent",
         credentialPrecedence: "env-first",
       }),
     );
@@ -520,7 +524,7 @@ describe("xai web search config resolution", () => {
         profileId: "xai:key",
       });
     providerAuthMocks.listUsableProviderAuthProfileIds.mockReturnValue({
-      agentDir: "/tmp/openclaw-xai-main-agent",
+      agentDir: "/tmp/operator-xai-main-agent",
       profileIds: ["xai:default", "xai:key"],
     });
     providerAuthMocks.ensureAuthProfileStore.mockReturnValue({
@@ -559,7 +563,7 @@ describe("xai web search config resolution", () => {
     const tool = provider.createTool({
       config: {
         agents: {
-          list: [{ id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" }],
+          list: [{ id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" }],
         },
         tools: {
           web: {
@@ -581,7 +585,7 @@ describe("xai web search config resolution", () => {
       4,
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-main-agent",
+        agentDir: "/tmp/operator-xai-main-agent",
         profileId: "xai:key",
         lockedProfile: true,
       }),
@@ -622,7 +626,7 @@ describe("xai web search config resolution", () => {
     const tool = provider.createTool({
       config: {
         agents: {
-          list: [{ id: "main", default: true, agentDir: "/tmp/openclaw-xai-main-agent" }],
+          list: [{ id: "main", default: true, agentDir: "/tmp/operator-xai-main-agent" }],
         },
         tools: {
           web: {
@@ -644,7 +648,7 @@ describe("xai web search config resolution", () => {
       2,
       expect.objectContaining({
         provider: "xai",
-        agentDir: "/tmp/openclaw-xai-main-agent",
+        agentDir: "/tmp/operator-xai-main-agent",
         credentialPrecedence: "env-first",
       }),
     );

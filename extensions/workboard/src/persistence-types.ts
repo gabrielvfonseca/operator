@@ -4,7 +4,7 @@ import type {
   WorkboardBoardMetadata,
   WorkboardCard,
   WorkboardNotificationSubscription,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";
 
 export type PersistedWorkboardCard = {
   version: 1;

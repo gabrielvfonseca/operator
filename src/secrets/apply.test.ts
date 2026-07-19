@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerResolvedAgentDir } from "../agents/agent-dir-registry.js";
 import { getRuntimeAuthProfileStoreCredentialMutationToken } from "../agents/auth-profiles/runtime-snapshots.js";
@@ -79,7 +79,7 @@ function stripVolatileConfigMeta(input: string): Record<string, unknown> {
 }
 
 async function writeJsonFile(filePath: string, value: unknown): Promise<void> {
-  if (path.basename(filePath) === "openclaw-agent.sqlite") {
+  if (path.basename(filePath) === "operator-agent.sqlite") {
     saveAuthProfileStore(value as AuthProfileStore, path.dirname(filePath), {
       filterExternalAuthProfiles: false,
       syncExternalCli: false,
@@ -104,12 +104,12 @@ function createOpenAiProviderConfig(apiKey: unknown = "sk-openai-plaintext") {
 }
 
 function buildFixturePaths(rootDir: string) {
-  const stateDir = path.join(rootDir, ".openclaw");
+  const stateDir = path.join(rootDir, ".operator");
   const agentDir = path.join(stateDir, "agents", "main", "agent");
   return {
     rootDir,
     stateDir,
-    configPath: path.join(stateDir, "openclaw.json"),
+    configPath: path.join(stateDir, "operator.json"),
     agentDir,
     authStorePath: resolveAuthProfileDatabasePath(agentDir),
     authJsonPath: path.join(agentDir, "auth.json"),
@@ -119,7 +119,7 @@ function buildFixturePaths(rootDir: string) {
 
 async function createApplyFixture(): Promise<ApplyFixture> {
   const paths = buildFixturePaths(
-    await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-secrets-apply-")),
+    await fs.mkdtemp(path.join(os.tmpdir(), "operator-secrets-apply-")),
   );
   await fs.mkdir(path.dirname(paths.configPath), { recursive: true });
   await fs.mkdir(paths.agentDir, { recursive: true });

@@ -18,7 +18,7 @@ import type { PluginRegistry } from "./registry.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 const tempDirs: string[] = [];
-const tempRoot = makeTrackedTempDir("openclaw-plugin-binding", tempDirs);
+const tempRoot = makeTrackedTempDir("operator-plugin-binding", tempDirs);
 const previousStateDir = process.env.OPERATOR_STATE_DIR;
 
 type PluginBindingApprovalsDatabase = Pick<OperatorStateKyselyDatabase, "plugin_binding_approvals">;
@@ -1122,7 +1122,7 @@ describe("plugin conversation binding approvals", () => {
       name: "migrates a legacy codex thread binding session key through the new approval flow",
       existingRecord: {
         bindingId: "binding-legacy-codex-thread",
-        targetSessionKey: "openclaw-app-server:thread:019ce411-6322-7db2-a821-1a61c530e7d9",
+        targetSessionKey: "operator-app-server:thread:019ce411-6322-7db2-a821-1a61c530e7d9",
         targetKind: "session" as const,
         conversation: {
           channel: "telegram",
@@ -1139,10 +1139,10 @@ describe("plugin conversation binding approvals", () => {
         accountId: "default",
         conversationId: "8460800771",
         summary: "Bind this conversation to Codex thread 019ce411-6322-7db2-a821-1a61c530e7d9.",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
       }),
       expectedBinding: {
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/plugins/codex-a",
         conversationId: "8460800771",
       },

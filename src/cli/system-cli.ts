@@ -1,5 +1,5 @@
 // System CLI commands that call Gateway RPC methods for events, heartbeats, and presence.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import { formatDocsLink } from "../../packages/terminal-core/src/links.js";
 import { theme } from "../../packages/terminal-core/src/theme.js";
@@ -75,7 +75,7 @@ export function registerSystemCli(program: Command) {
         const text = normalizeOptionalString(opts.text) ?? "";
         if (!text) {
           throw new Error(
-            `--text is required. Example: ${formatCliCommand('operator system event --text "deploy finished"')}.`,
+            `--text is ...
           );
         }
         const mode = normalizeWakeMode(opts.mode);

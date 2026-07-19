@@ -64,16 +64,16 @@ const LEGACY_MEMORY_EMBEDDING_PROVIDER_API_FILES = new Set([
   "extensions/voyage/index.ts",
 ]);
 const LEGACY_MEMORY_EMBEDDING_PROVIDER_MANIFEST_FILES = new Set([
-  "extensions/amazon-bedrock/openclaw.plugin.json",
-  "extensions/deepinfra/openclaw.plugin.json",
-  "extensions/github-copilot/openclaw.plugin.json",
-  "extensions/google/openclaw.plugin.json",
-  "extensions/lmstudio/openclaw.plugin.json",
-  "extensions/memory-core/openclaw.plugin.json",
-  "extensions/mistral/openclaw.plugin.json",
-  "extensions/ollama/openclaw.plugin.json",
-  "extensions/openai/openclaw.plugin.json",
-  "extensions/voyage/openclaw.plugin.json",
+  "extensions/amazon-bedrock/operator.plugin.json",
+  "extensions/deepinfra/operator.plugin.json",
+  "extensions/github-copilot/operator.plugin.json",
+  "extensions/google/operator.plugin.json",
+  "extensions/lmstudio/operator.plugin.json",
+  "extensions/memory-core/operator.plugin.json",
+  "extensions/mistral/operator.plugin.json",
+  "extensions/ollama/operator.plugin.json",
+  "extensions/openai/operator.plugin.json",
+  "extensions/voyage/operator.plugin.json",
 ]);
 const MATRIX_RUNTIME_DEPS = [
   "@matrix-org/matrix-sdk-crypto-wasm",
@@ -440,7 +440,7 @@ function collectNewDeprecatedMemoryEmbeddingProviderManifestFiles(): string[] {
   const manifestFiles =
     listGitTrackedFiles({
       repoRoot: REPO_ROOT,
-      pathspecs: "extensions/**/openclaw.plugin.json",
+      pathspecs: "extensions/**/operator.plugin.json",
     }) ?? [];
   for (const repoRelativePath of manifestFiles) {
     const source = fs.readFileSync(resolve(REPO_ROOT, repoRelativePath), "utf8");
@@ -912,7 +912,7 @@ describe("plugin-sdk package contract guardrails", () => {
       expect(matrixRuntimeDeps.get(dep)).not.toBe("");
       expect(rootRuntimeDeps.has(dep)).toBe(false);
     }
-    expect(rootRuntimeDeps.has("@operator/plugin-package-contract")).toBe(false);
+    expect(rootRuntimeDeps.has("@gabrielvfonseca/plugin-package-contract")).toBe(false);
   });
 
   it("keeps extension sources on public sdk or local package seams", () => {

@@ -4,4 +4,4 @@ export {
   type OperatorPluginApi,
   type PluginLogger,
   type PluginRuntime,
-} from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";

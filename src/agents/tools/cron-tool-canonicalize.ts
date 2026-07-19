@@ -3,7 +3,7 @@
  *
  * Recovers flat or partial model/tool inputs into the structured cron job/patch shape.
  */
-import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+import { timestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { isRecord } from "../../utils.js";
 import { isStringOption } from "../../utils/string-readers.js";
 

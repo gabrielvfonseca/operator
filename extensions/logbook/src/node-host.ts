@@ -4,8 +4,8 @@
 import { randomUUID } from "node:crypto";
 import { chmod, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 
 type LogbookSnapshotParams = {
   screenIndex?: number;

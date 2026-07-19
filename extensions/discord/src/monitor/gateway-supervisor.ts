@@ -1,8 +1,8 @@
 // Discord plugin module implements gateway supervisor behavior.
 import type { EventEmitter } from "node:events";
-import { createSubsystemLogger, danger } from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
+import { createSubsystemLogger, danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 
 type DiscordGatewayEventType = "disallowed-intents" | "fatal" | "other" | "reconnect-exhausted";
 

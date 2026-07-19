@@ -3,12 +3,12 @@
  * This state tracks order, last-good profile, and cooldown/failure metadata
  * separately from secret-bearing credentials.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
-import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { asFiniteNumber } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
+import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import { AUTH_STORE_VERSION } from "./constants.js";
 import { readPersistedAuthProfileStateRaw } from "./sqlite.js";
 import type {

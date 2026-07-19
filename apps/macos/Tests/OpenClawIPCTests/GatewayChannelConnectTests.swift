@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
-@testable import OpenClawKit
+@testable import Operator
+@testable import OperatorKit
 
 @Suite(.serialized)
 struct GatewayChannelConnectTests {
@@ -261,7 +261,7 @@ struct GatewayChannelConnectTests {
             commands: ["system.run"],
             pathEnv: "/opt/homebrew/bin:/usr/bin:/bin",
             permissions: [:],
-            clientId: "openclaw-macos",
+            clientId: "operator-macos",
             clientMode: "node",
             clientDisplayName: "macOS Test",
             includeDeviceIdentity: false)
@@ -310,7 +310,7 @@ struct GatewayChannelConnectTests {
             caps: [],
             commands: [],
             permissions: [:],
-            clientId: "openclaw-apple-test",
+            clientId: "operator-apple-test",
             clientMode: "node",
             clientDisplayName: "Apple Test",
             includeDeviceIdentity: false)
@@ -466,9 +466,9 @@ struct GatewayChannelConnectTests {
                     caps: [],
                     commands: [],
                     permissions: [:],
-                    clientId: "openclaw-macos",
+                    clientId: "operator-macos",
                     clientMode: "ui",
-                    clientDisplayName: "OpenClaw macOS Debug CLI"))
+                    clientDisplayName: "Operator macOS Debug CLI"))
 
             try await channel.connect()
 

@@ -1,8 +1,8 @@
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 /**
  * Browser CLI cookie and Web Storage commands.
  */
 import type { Command } from "commander";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import {
   BROWSER_TAB_REFERENCE_HELP,
   callBrowserRequest,

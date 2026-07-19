@@ -493,7 +493,7 @@ function makeSnapshot(partial: Partial<ConfigFileSnapshot> = {}): ConfigFileSnap
     {}) as ConfigFileSnapshot["sourceConfig"];
   const runtimeConfig = partial.runtimeConfig ?? partial.config ?? {};
   return {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     exists: true,
     raw: "{}",
     parsed: {},
@@ -529,7 +529,7 @@ function makeZeroDebounceHookSnapshot(hash: string): ConfigFileSnapshot {
 
 function makeZeroDebounceHookWrite(persistedHash: string): ConfigWriteNotification {
   return {
-    configPath: "/tmp/openclaw.json",
+    configPath: "/tmp/operator.json",
     sourceConfig: { gateway: { reload: { debounceMs: 0 } }, hooks: { enabled: true } },
     runtimeConfig: {
       gateway: { reload: { debounceMs: 0 } },
@@ -673,7 +673,7 @@ function createReloaderHarness(
     onRestart,
     ...(options.runTransaction ? { runTransaction: options.runTransaction } : {}),
     log,
-    watchPath: "/tmp/openclaw.json",
+    watchPath: "/tmp/operator.json",
   });
   return {
     watcher,
@@ -845,7 +845,7 @@ describe("startGatewayConfigReloader", () => {
     });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: initialConfig,
       runtimeConfig: initialConfig,
       persistedHash: "unchanged-root-hash",
@@ -889,7 +889,7 @@ describe("startGatewayConfigReloader", () => {
       terminalPolicy.prepareConfig(nextConfig, { restartPending: false });
       ownership.markRuntimeCommitted(nextConfig, plan);
       harness.emitWrite({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         sourceConfig: initialConfig,
         runtimeConfig: initialConfig,
         persistedHash: "baseline-only-b",
@@ -916,7 +916,7 @@ describe("startGatewayConfigReloader", () => {
     });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: appliedConfig,
       runtimeConfig: appliedConfig,
       persistedHash: "runtime-a",
@@ -971,7 +971,7 @@ describe("startGatewayConfigReloader", () => {
       );
 
       harness.emitWrite({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         sourceConfig: appliedConfig,
         runtimeConfig: appliedConfig,
         persistedHash: "runtime-a-before-rejected-b",
@@ -1015,7 +1015,7 @@ describe("startGatewayConfigReloader", () => {
       terminalPolicy.prepareConfig(nextConfig, { restartPending: false });
       ownership.markRuntimeCommitted(nextConfig, plan);
       harness.emitWrite({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         sourceConfig: restartConfig,
         runtimeConfig: restartConfig,
         persistedHash: "restart-b",
@@ -1044,7 +1044,7 @@ describe("startGatewayConfigReloader", () => {
     });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: appliedConfig,
       runtimeConfig: appliedConfig,
       persistedHash: "runtime-a-before-restart",
@@ -1277,7 +1277,7 @@ describe("startGatewayConfigReloader", () => {
     });
     const emitWrite = (config: OperatorConfig, hash: string, revision: number) => {
       harness.emitWrite({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         sourceConfig: config,
         runtimeConfig: config,
         persistedHash: hash,
@@ -1317,7 +1317,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(readSnapshot, { initialConfig });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: queuedConfig,
       runtimeConfig: queuedConfig,
       persistedHash: "queued-in-process",
@@ -1688,7 +1688,7 @@ describe("startGatewayConfigReloader", () => {
       config: OperatorConfig,
       persistedHash: string,
     ): ConfigWriteNotification => ({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: config,
       runtimeConfig: config,
       persistedHash,
@@ -1739,7 +1739,7 @@ describe("startGatewayConfigReloader", () => {
       logging: { level: "info" },
     };
     const makeWrite = (config: OperatorConfig, persistedHash: string): ConfigWriteNotification => ({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: config,
       runtimeConfig: config,
       persistedHash,
@@ -2379,7 +2379,7 @@ describe("startGatewayConfigReloader", () => {
       const harness = createReloaderHarness(vi.fn(), { initialConfig });
 
       harness.emitWrite({
-        configPath: "/tmp/openclaw.json",
+        configPath: "/tmp/operator.json",
         sourceConfig: nextConfig,
         runtimeConfig: nextConfig,
         preparedCandidate: { runtimeConfig: nextConfig, compareConfig: nextConfig, runtimeEnv },
@@ -2437,7 +2437,7 @@ describe("startGatewayConfigReloader", () => {
     });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: nextConfig,
       runtimeConfig: nextConfig,
       preparedCandidate: { runtimeConfig: nextConfig, compareConfig, runtimeEnv },
@@ -2484,7 +2484,7 @@ describe("startGatewayConfigReloader", () => {
     );
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: nextConfig,
       runtimeConfig: nextConfig,
       preparedCandidate: { runtimeConfig: nextConfig, compareConfig: nextConfig, runtimeEnv },
@@ -2550,7 +2550,7 @@ describe("startGatewayConfigReloader", () => {
     expect(targetEnv[envKey]).toBe("c");
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: configB,
       runtimeConfig: configB,
       preparedCandidate: {
@@ -2767,7 +2767,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(readSnapshot);
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig,
       persistedHash: "secret-ref-write",
@@ -2807,7 +2807,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(vi.fn(), { initialConfig });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig: sourceConfig,
       preparedCandidate: {
@@ -2850,7 +2850,7 @@ describe("startGatewayConfigReloader", () => {
     });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig: sourceConfig,
       preparedCandidate: {
@@ -2903,7 +2903,7 @@ describe("startGatewayConfigReloader", () => {
     };
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig: sourceConfig,
       preparedCandidate: {
@@ -3015,7 +3015,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(vi.fn());
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig,
       persistedHash: "direct-secret-restart",
@@ -3076,7 +3076,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(readSnapshot, { readPluginInstallRecords });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig,
       runtimeConfig,
       persistedHash: "replay-secret-restart",
@@ -3271,7 +3271,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(readSnapshot, { initialCompareConfig: sourceConfig });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: {
         ...sourceConfig,
         plugins: {
@@ -3359,7 +3359,7 @@ describe("startGatewayConfigReloader", () => {
     const harness = createReloaderHarness(readSnapshot, { initialCompareConfig: sourceConfig });
 
     harness.emitWrite({
-      configPath: "/tmp/openclaw.json",
+      configPath: "/tmp/operator.json",
       sourceConfig: nextSourceConfig,
       runtimeConfig: nextSourceConfig,
       persistedHash: "plugin-collision-1",
@@ -3451,7 +3451,7 @@ describe("startGatewayConfigReloader", () => {
     const installRecords = {
       telegram: {
         source: "npm",
-        spec: "@operator/telegram",
+        spec: "@gabrielvfonseca/telegram",
         installPath: "/tmp/openclaw/plugins/telegram",
       },
     } satisfies Record<string, PluginInstallRecord>;
@@ -3735,7 +3735,7 @@ describe("startGatewayConfigReloader watcher error recovery", () => {
       onHotReload: vi.fn(async () => {}),
       onRestart: vi.fn(),
       log,
-      watchPath: "/tmp/openclaw.json",
+      watchPath: "/tmp/operator.json",
     });
     return { watchSpy, log, reloader };
   }

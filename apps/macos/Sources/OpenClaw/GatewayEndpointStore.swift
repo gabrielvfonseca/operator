@@ -28,7 +28,7 @@ actor GatewayEndpointStore {
         "custom",
     ]
     private static let remoteConnectingDetail = "Connecting to remote gateway…"
-    private static let staticLogger = Logger(subsystem: "ai.openclaw", category: "gateway-endpoint")
+    private static let staticLogger = Logger(subsystem: "ai.operator", category: "gateway-endpoint")
     private enum EnvOverrideWarningKind {
         case token
         case password
@@ -94,7 +94,7 @@ actor GatewayEndpointStore {
 
         static let live = Deps(
             token: {
-                let root = OpenClawConfigFile.loadDict()
+                let root = OperatorConfigFile.loadDict()
                 let isRemote = ConnectionModeResolver.resolve(root: root).mode == .remote
                 return GatewayEndpointStore.resolveGatewayToken(
                     isRemote: isRemote,
@@ -103,7 +103,7 @@ actor GatewayEndpointStore {
                     launchdSnapshot: GatewayLaunchAgentManager.launchdConfigSnapshot())
             },
             password: {
-                let root = OpenClawConfigFile.loadDict()
+                let root = OperatorConfigFile.loadDict()
                 let isRemote = ConnectionModeResolver.resolve(root: root).mode == .remote
                 return GatewayEndpointStore.resolveGatewayPassword(
                     isRemote: isRemote,
@@ -137,7 +137,7 @@ actor GatewayEndpointStore {
         launchdSnapshot: LaunchAgentPlistSnapshot?) -> String?
     {
         let serviceEnv = launchdSnapshot?.environment ?? [:]
-        let raw = env["OPENCLAW_GATEWAY_PASSWORD"] ?? ""
+        let raw = env["OPERATOR_GATEWAY_PASSWORD"] ?? ""
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if !trimmed.isEmpty {
             if let configPassword = resolveConfigPassword(
@@ -149,7 +149,7 @@ actor GatewayEndpointStore {
             {
                 self.warnEnvOverrideOnce(
                     kind: .password,
-                    envVar: "OPENCLAW_GATEWAY_PASSWORD",
+                    envVar: "OPERATOR_GATEWAY_PASSWORD",
                     configKey: isRemote ? "gateway.remote.password" : "gateway.auth.password")
             }
             return trimmed
@@ -218,7 +218,7 @@ actor GatewayEndpointStore {
         launchdSnapshot: LaunchAgentPlistSnapshot?) -> String?
     {
         let serviceEnv = launchdSnapshot?.environment ?? [:]
-        let raw = env["OPENCLAW_GATEWAY_TOKEN"] ?? ""
+        let raw = env["OPERATOR_GATEWAY_TOKEN"] ?? ""
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if !trimmed.isEmpty {
             if let configToken = resolveConfigToken(
@@ -231,7 +231,7 @@ actor GatewayEndpointStore {
             {
                 self.warnEnvOverrideOnce(
                     kind: .token,
-                    envVar: "OPENCLAW_GATEWAY_TOKEN",
+                    envVar: "OPERATOR_GATEWAY_TOKEN",
                     configKey: isRemote ? "gateway.remote.token" : "gateway.auth.token")
             }
             return trimmed
@@ -344,7 +344,7 @@ actor GatewayEndpointStore {
     }
 
     private let deps: Deps
-    private let logger = Logger(subsystem: "ai.openclaw", category: "gateway-endpoint")
+    private let logger = Logger(subsystem: "ai.operator", category: "gateway-endpoint")
 
     private var state: GatewayEndpointState
     private var subscribers: [UUID: AsyncStream<GatewayEndpointState>.Continuation] = [:]
@@ -361,17 +361,17 @@ actor GatewayEndpointStore {
         if let modeRaw {
             initialMode = AppState.ConnectionMode(rawValue: modeRaw) ?? .local
         } else {
-            let seen = UserDefaults.standard.bool(forKey: "openclaw.onboardingSeen")
+            let seen = UserDefaults.standard.bool(forKey: "operator.onboardingSeen")
             initialMode = seen ? .local : .unconfigured
         }
 
         let port = deps.localPort()
         let bind = GatewayEndpointStore.resolveGatewayBindMode(
-            root: OpenClawConfigFile.loadDict(),
+            root: OperatorConfigFile.loadDict(),
             env: ProcessInfo.processInfo.environment)
-        let customBindHost = GatewayEndpointStore.resolveGatewayCustomBindHost(root: OpenClawConfigFile.loadDict())
+        let customBindHost = GatewayEndpointStore.resolveGatewayCustomBindHost(root: OperatorConfigFile.loadDict())
         let scheme = GatewayEndpointStore.resolveGatewayScheme(
-            root: OpenClawConfigFile.loadDict(),
+            root: OperatorConfigFile.loadDict(),
             env: ProcessInfo.processInfo.environment)
         let host = GatewayEndpointStore.resolveLocalGatewayHost(
             bindMode: bind,
@@ -916,7 +916,7 @@ extension GatewayEndpointStore {
         // post-build generation check rejects any interleaving route edit.
         let app = await appSnapshot()
         await beforeConfigRead()
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let env = ProcessInfo.processInfo.environment
         let configMode = ConnectionModeResolver.resolve(root: root).mode
         // App selection is persisted asynchronously. Refuse to resolve either
@@ -1016,7 +1016,7 @@ extension GatewayEndpointStore {
         env: [String: String],
         defaults: UserDefaults = .standard) -> Int
     {
-        if let raw = env["OPENCLAW_GATEWAY_PORT"],
+        if let raw = env["OPERATOR_GATEWAY_PORT"],
            let port = Int(raw.trimmingCharacters(in: .whitespacesAndNewlines)),
            port > 0
         {
@@ -1045,7 +1045,7 @@ extension GatewayEndpointStore {
         root: [String: Any],
         env: [String: String]) -> String?
     {
-        if let envBind = env["OPENCLAW_GATEWAY_BIND"] {
+        if let envBind = env["OPERATOR_GATEWAY_BIND"] {
             let trimmed = envBind.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             if self.supportedBindModes.contains(trimmed) {
                 return trimmed
@@ -1076,7 +1076,7 @@ extension GatewayEndpointStore {
         root: [String: Any],
         env: [String: String]) -> String
     {
-        if let envValue = env["OPENCLAW_GATEWAY_TLS"]?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if let envValue = env["OPERATOR_GATEWAY_TLS"]?.trimmingCharacters(in: .whitespacesAndNewlines),
            !envValue.isEmpty
         {
             return (envValue == "1" || envValue.lowercased() == "true") ? "wss" : "ws"
@@ -1111,7 +1111,7 @@ extension GatewayEndpointStore {
 extension GatewayEndpointStore {
     static func localConfig() -> GatewayConnection.Config {
         self.localConfig(
-            root: OpenClawConfigFile.loadDict(),
+            root: OperatorConfigFile.loadDict(),
             env: ProcessInfo.processInfo.environment,
             launchdSnapshot: GatewayLaunchAgentManager.launchdConfigSnapshot(),
             tailscaleIP: TailscaleService.fallbackTailnetIPv4())
@@ -1156,7 +1156,7 @@ extension GatewayEndpointStore {
     }
 
     private static func localControlUiBasePath() -> String {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         guard let gateway = root["gateway"] as? [String: Any],
               let controlUi = gateway["controlUi"] as? [String: Any]
         else {

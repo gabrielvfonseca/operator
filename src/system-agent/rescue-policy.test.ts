@@ -1,6 +1,6 @@
 // Operator rescue policy tests cover eligibility and safety decisions.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveSystemAgentRescuePolicy } from "./rescue-policy.js";
 
 function decide(cfg: OperatorConfig, overrides = {}) {

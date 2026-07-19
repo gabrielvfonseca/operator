@@ -49,7 +49,7 @@ vi.mock("../runtime.js", () => ({
 
 vi.mock("../utils.js", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../utils.js")>()),
-  CONFIG_DIR: "/tmp/openclaw-config",
+  CONFIG_DIR: "/tmp/operator-config",
 }));
 
 vi.mock("../config/config.js", () => ({
@@ -79,7 +79,7 @@ describe("skills verify CLI", () => {
   let workspaceDir: string;
 
   beforeEach(async () => {
-    workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-skill-verify-cli-"));
+    workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-skill-verify-cli-"));
     mocks.runtimeStdout.length = 0;
     mocks.runtimeErrors.length = 0;
     mocks.resolveAgentWorkspaceDirMock.mockReset();
@@ -164,7 +164,7 @@ describe("skills verify CLI", () => {
       decision: "pass",
       reasons: [],
       skill: { slug: "agentreceipt" },
-      publisher: { handle: "openclaw" },
+      publisher: { handle: "@gabrielvfonseca/operator" },
       version: { version: "1.2.3" },
       card: { available: true },
       artifact: {
@@ -222,7 +222,7 @@ describe("skills verify CLI", () => {
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
       openclaw?: { resolution?: { source?: string; selector?: string } };
     };
-    expect(payload.openclaw?.resolution).toMatchObject({
+    expect(payload.operator?.resolution).toMatchObject({
       source: "registry",
       selector: "version",
     });
@@ -278,7 +278,7 @@ describe("skills verify CLI", () => {
       decision: "pass",
       reasons: [],
       skill: { slug: "agentreceipt" },
-      publisher: { handle: "openclaw" },
+      publisher: { handle: "@gabrielvfonseca/operator" },
       version: { version: "1.0.0" },
       card: { available: true },
       artifact: { sourceFingerprint: "source-fp" },
@@ -300,7 +300,7 @@ describe("skills verify CLI", () => {
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
       openclaw?: { verifiedSourceUrl?: string };
     };
-    expect(payload.openclaw?.verifiedSourceUrl).toBe(verifiedSourceUrl);
+    expect(payload.operator?.verifiedSourceUrl).toBe(verifiedSourceUrl);
     expect(mocks.defaultRuntime.exit).not.toHaveBeenCalled();
     expect(mocks.runtimeErrors).toStrictEqual([]);
   });
@@ -312,7 +312,7 @@ describe("skills verify CLI", () => {
       decision: "pass",
       reasons: [],
       skill: { slug: "agentreceipt" },
-      publisher: { handle: "openclaw" },
+      publisher: { handle: "@gabrielvfonseca/operator" },
       version: { version: "1.0.0" },
       card: { available: true },
       artifact: { sourceFingerprint: "source-fp" },
@@ -329,7 +329,7 @@ describe("skills verify CLI", () => {
     const payload = JSON.parse(mocks.runtimeStdout.at(-1) ?? "{}") as {
       openclaw?: { verifiedSourceUrl?: string };
     };
-    expect(payload.openclaw?.verifiedSourceUrl).toBeUndefined();
+    expect(payload.operator?.verifiedSourceUrl).toBeUndefined();
     expect(mocks.defaultRuntime.exit).not.toHaveBeenCalled();
     expect(mocks.runtimeErrors).toStrictEqual([]);
   });

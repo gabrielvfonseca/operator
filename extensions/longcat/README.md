@@ -6,8 +6,8 @@ OpenAI-compatible API.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/longcat-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/longcat-provider
+operator gateway restart
 ```
 
 Configure `LONGCAT_API_KEY`, then select `longcat/LongCat-2.0`.

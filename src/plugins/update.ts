@@ -1,6 +1,6 @@
 /** Updates installed plugins across npm, ClawHub, marketplace, Git, and bundled bridge sources. */
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import type { ClawHubTrustErrorCode } from "../infra/clawhub-install-trust.js";
@@ -492,7 +492,7 @@ async function resolveTrustedOfficialPrereleaseFallbackMetadataForUpdate(params:
   const parsedSpec = parseRegistryNpmSpec(params.spec);
   if (
     !parsedSpec ||
-    !parsedSpec.name.startsWith("@operator/") ||
+    !parsedSpec.name.startsWith("@gabrielvfonseca/") ||
     !params.metadata.version ||
     isPrereleaseResolutionAllowed({
       spec: parsedSpec,
@@ -1320,7 +1320,7 @@ async function repairOperatorPeerLinksForNpmInstalls(params: {
       );
     } catch (err) {
       params.logger.warn?.(
-        `Could not repair operator peer link for "${pluginId}" due to invalid install path: ${String(err)}`,
+        `Could not repair openclaw peer link for "${pluginId}" due to invalid install path: ${String(err)}`,
       );
       continue;
     }
@@ -1330,7 +1330,7 @@ async function repairOperatorPeerLinksForNpmInstalls(params: {
     }
 
     const peerDependencies = readInstalledPackagePeerDependencies(installPath);
-    if (!Object.hasOwn(peerDependencies, "operator")) {
+    if (!Object.hasOwn(peerDependencies, "@gabrielvfonseca/operator")) {
       continue;
     }
 
@@ -1346,14 +1346,14 @@ async function repairOperatorPeerLinksForNpmInstalls(params: {
       });
       if (peerLinkRepair.skipped > 0) {
         params.logger.warn?.(
-          `Could not repair operator peer link for "${pluginId}" at ${installPath}: ${warnings.join("; ") || "peer link repair was skipped"}`,
+          `Could not repair openclaw peer link for "${pluginId}" at ${installPath}: ${warnings.join("; ") || "peer link repair was skipped"}`,
         );
         continue;
       }
       repaired = !installedPackageNeedsOperatorPeerLinkRepair(installPath) || repaired;
     } catch (err) {
       params.logger.warn?.(
-        `Could not repair operator peer link for "${pluginId}" at ${installPath}: ${String(err)}`,
+        `Could not repair openclaw peer link for "${pluginId}" at ${installPath}: ${String(err)}`,
       );
     }
   }
@@ -2067,7 +2067,7 @@ export async function updateNpmInstalledPlugins(params: {
           newerExactPinnedDefaultLine && effectiveSpec
             ? `${pluginId} is pinned to ${effectiveSpec} (installed ${currentLabel}); ` +
               `registry default resolves to ${newerExactPinnedDefaultLine.version}. ` +
-              `Pass \`operator plugins update ${newerExactPinnedDefaultLine.packageName}@latest\` to follow the registry default line.` +
+              `Pass \`openclaw plugins update ${newerExactPinnedDefaultLine.packageName}@latest\` to follow the registry default line.` +
               channelFallbackSuffix
             : `${pluginId} is up to date (${currentLabel}).${channelFallbackSuffix}`;
         outcomes.push({

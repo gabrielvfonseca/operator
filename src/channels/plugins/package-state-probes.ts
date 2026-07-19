@@ -5,8 +5,8 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";

@@ -1,11 +1,14 @@
 import { createHash } from "node:crypto";
-import { listAgentIds, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import { parseAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import {
+  listAgentIds,
+  resolveDefaultAgentId,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { parseAgentSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { CodexThread } from "./app-server/protocol.js";
 import { importCodexThreadHistoryToTranscript } from "./app-server/transcript-mirror.js";
 import {

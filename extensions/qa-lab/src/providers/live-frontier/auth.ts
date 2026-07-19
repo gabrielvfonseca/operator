@@ -1,5 +1,5 @@
 // Qa Lab plugin module implements auth behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   applyAuthProfileConfig,
   coerceSecretRef,
@@ -9,8 +9,11 @@ import {
   readCodexCliCredentialsCached,
   resolveEnvApiKey,
   validateAnthropicSetupToken,
-} from "openclaw/plugin-sdk/provider-auth";
-import { normalizeStringEntries, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import {
+  normalizeStringEntries,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveQaAgentAuthDir, writeQaAuthProfiles } from "../shared/auth-store.js";
 
 export const QA_LIVE_ANTHROPIC_SETUP_TOKEN_ENV = "OPERATOR_QA_LIVE_ANTHROPIC_SETUP_TOKEN";
@@ -159,7 +162,7 @@ function qaLiveRequiresCodexAuth(params: {
     return false;
   }
   const forcedRuntime = params.env.OPERATOR_QA_FORCE_RUNTIME?.trim().toLowerCase();
-  if (forcedRuntime === "openclaw") {
+  if (forcedRuntime === "@gabrielvfonseca/operator") {
     return false;
   }
   if (forcedRuntime === "codex") {

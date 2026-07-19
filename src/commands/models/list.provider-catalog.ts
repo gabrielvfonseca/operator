@@ -1,8 +1,8 @@
 /** Provider plugin catalog loading for model-list output. */
 import { createHash } from "node:crypto";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { expectDefined } from "@operator/normalization-core";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { loadAuthProfileStoreWithoutExternalProfiles } from "../../agents/auth-profiles/store.js";
 import {
   buildAgentModelCatalogCacheKey,

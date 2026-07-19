@@ -3,23 +3,26 @@ import type {
   GeneratedImageAsset,
   ImageGenerationProvider,
   ImageGenerationRequest,
-} from "openclaw/plugin-sdk/image-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
 import {
   generatedImageAssetFromBase64,
   generatedImageAssetFromDataUrl,
   resolveInlineImageJsonResponseMaxBytes,
   toImageDataUrl,
-} from "openclaw/plugin-sdk/image-generation";
-import { MAX_IMAGE_BYTES } from "openclaw/plugin-sdk/media-runtime";
-import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { isProviderApiKeyConfigured } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   readProviderJsonResponse,
   resolveProviderHttpRequestConfig,
-} from "openclaw/plugin-sdk/provider-http";
-import { isRecord, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import {
+  isRecord,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { OPENROUTER_BASE_URL } from "./provider-catalog.js";
 
 const DEFAULT_MODEL = "google/gemini-3.1-flash-image-preview";
@@ -313,7 +316,7 @@ export function buildOpenRouterImageGenerationProvider(): ImageGenerationProvide
           allowPrivateNetwork: false,
           defaultHeaders: {
             Authorization: `Bearer ${auth.apiKey}`,
-            "HTTP-Referer": "https://openclaw.ai",
+            "HTTP-Referer": "https://operator.ai",
             "X-OpenRouter-Title": "Operator",
           },
           provider: "openrouter",

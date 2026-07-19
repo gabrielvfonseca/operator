@@ -1,18 +1,18 @@
 ---
 name: clawdtributor
-description: "Use for OpenClaw clawtributors PR/issue triage: Discrawl discovery, live-open rechecks, deep review, topic grouping, and compact @handle/LOC/type/blast/verification summaries."
+description: "Use for Operator clawtributors PR/issue triage: Discrawl discovery, live-open rechecks, deep review, topic grouping, and compact @handle/LOC/type/blast/verification summaries."
 ---
 
 # Clawdtributor
 
-Use for the `#clawtributors` queue: Discord-discovered OpenClaw PRs/issues that need live GitHub status plus maintainer-quality review.
+Use for the `#clawtributors` queue: Discord-discovered Operator PRs/issues that need live GitHub status plus maintainer-quality review.
 
 ## Compose with other skills
 
 - `$discrawl`: local Discord archive sync/search.
-- `$openclaw-pr-maintainer`: live GitHub PR/issue review, duplicate search, close/land rules.
+- `$operator-pr-maintainer`: live GitHub PR/issue review, duplicate search, close/land rules.
 - `$gitcrawl`: related issue/PR and current-main/stale-proof search.
-- `$openclaw-testing` / `$crabbox`: proof choice when a candidate needs real validation.
+- `$operator-testing` / `$crabbox`: proof choice when a candidate needs real validation.
 
 ## Archive flow
 
@@ -54,7 +54,7 @@ select m.created_at,
 from messages m
 left join members mm on mm.guild_id=m.guild_id and mm.user_id=m.author_id
 where m.channel_id='1458141495701012561'
-  and m.content like '%github.com/openclaw/openclaw/<pull-or-issues>/<number>%'
+  and m.content like '%github.com/gabrielvfonseca/operator/<pull-or-issues>/<number>%'
 order by m.created_at desc
 limit 1;"
 ```
@@ -142,8 +142,8 @@ No Markdown tables. Compact bullets. Use color/risk markers:
 Required line shape:
 
 ```markdown
-- **PR #81244** `@whatsskill.` `+118/-1` `bug` 🟢 https://github.com/openclaw/openclaw/pull/81244 - Prevents chat action buttons from overlapping short assistant replies. Verifiable: yes. Blast: web chat rendering, low.
-- **Issue #81245** `@alice` `LOC n/a` `bug` 🟡 https://github.com/openclaw/openclaw/issues/81245 - Reports duplicate Telegram replies when reconnecting after gateway restart. Verifiable: partial. Blast: Telegram channel runtime, medium.
+- **PR #81244** `@whatsskill.` `+118/-1` `bug` 🟢 https://github.com/gabrielvfonseca/operator/pull/81244 - Prevents chat action buttons from overlapping short assistant replies. Verifiable: yes. Blast: web chat rendering, low.
+- **Issue #81245** `@alice` `LOC n/a` `bug` 🟡 https://github.com/gabrielvfonseca/operator/issues/81245 - Reports duplicate Telegram replies when reconnecting after gateway restart. Verifiable: partial. Blast: Telegram channel runtime, medium.
 ```
 
 Rules:

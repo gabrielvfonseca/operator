@@ -1,6 +1,6 @@
 // Reads provider ids selected by auth, model, channel, and media configuration.
-import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
-import { normalizeNullableString as normalizeId } from "@operator/normalization-core/string-coerce";
+import { collectConfiguredModelRefs } from "@gabrielvfonseca/model-catalog-core/configured-model-refs";
+import { normalizeNullableString as normalizeId } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { asObjectRecord } from "./object.js";
 

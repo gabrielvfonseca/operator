@@ -1,6 +1,6 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.LocationMode
+import ai.operator.app.LocationMode
 import android.content.Context
 import android.location.LocationManager
 import kotlinx.coroutines.CancellationException

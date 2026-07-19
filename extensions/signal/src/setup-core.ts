@@ -18,13 +18,13 @@ import {
   type OperatorConfig,
   createSetupTranslator,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/setup-runtime";
-import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup-runtime";
+import { formatCliCommand, formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { normalizeE164 } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { normalizeE164 } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { resolveDefaultSignalAccountId, resolveSignalAccount } from "./accounts.js";
 
 const t = createSetupTranslator();

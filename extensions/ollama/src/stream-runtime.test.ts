@@ -1,5 +1,5 @@
 // Ollama tests cover stream runtime plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const { fetchWithSsrFGuardMock, ollamaStreamWarnMock } = vi.hoisted(() => ({

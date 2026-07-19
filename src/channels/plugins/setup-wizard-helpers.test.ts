@@ -1,9 +1,9 @@
 // Setup wizard helper tests cover channel setup step formatting and config writes.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   resolveSetupWizardAllowFromEntries,
   resolveSetupWizardGroupAllowlist,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createWizardPrompter } from "../../../test/helpers/wizard-prompter.js";
 import type { OperatorConfig } from "../../config/config.js";

@@ -1,11 +1,11 @@
 ---
-summary: "CLI reference for `openclaw health` (gateway health snapshot via RPC)"
+summary: "CLI reference for `operator health` (gateway health snapshot via RPC)"
 read_when:
   - You want to quickly check the running Gateway's health
 title: "Health"
 ---
 
-# `openclaw health`
+# `operator health`
 
 Fetch a health snapshot from the running Gateway over WebSocket RPC (no direct channel sockets from the CLI).
 
@@ -21,11 +21,11 @@ Fetch a health snapshot from the running Gateway over WebSocket RPC (no direct c
 Examples:
 
 ```bash
-openclaw health
-openclaw health --json
-openclaw health --timeout 2500
-openclaw health --verbose
-openclaw health --debug
+operator health
+operator health --json
+operator health --timeout 2500
+operator health --verbose
+operator health --debug
 ```
 
 ## Behavior
@@ -37,5 +37,5 @@ openclaw health --debug
 ## Related
 
 - [CLI reference](/cli)
-- [`openclaw status`](/cli/status) — local diagnosis and channel probes without a full health snapshot
+- [`operator status`](/cli/status) — local diagnosis and channel probes without a full health snapshot
 - [Gateway health](/gateway/health)

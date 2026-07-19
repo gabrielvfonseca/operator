@@ -1,14 +1,17 @@
 import path from "node:path";
-import { redactSensitiveText } from "openclaw/plugin-sdk/logging-core";
+import { redactSensitiveText } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
 import {
   WorkerProviderError,
   type WorkerLease,
   type WorkerLeaseStatus,
   type WorkerProfile,
   type WorkerProvider,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { runCommandWithTimeout, type SpawnResult } from "openclaw/plugin-sdk/process-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  runCommandWithTimeout,
+  type SpawnResult,
+} from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { parseInspectJson, type ParsedInspect } from "./crabbox-worker-inspect.js";
 import {
   identityRefId,
@@ -510,7 +513,7 @@ export function createCrabboxWorkerProvider(
       new Promise((resolve) => {
         setTimeout(resolve, milliseconds);
       }));
-  const openclawRoot = dependencies.openclawRoot ?? process.cwd();
+  const openclawRoot = dependencies.operatorRoot ?? process.cwd();
   let defaultBinary: string | undefined;
   const resolveBinary = (explicit?: string) => {
     if (explicit) {

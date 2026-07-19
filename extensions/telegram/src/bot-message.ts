@@ -1,15 +1,18 @@
 // Telegram plugin module implements bot message behavior.
-import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import { DEFAULT_GROUP_HISTORY_LIMIT } from "openclaw/plugin-sdk/reply-history";
+import type {
+  OperatorConfig,
+  TelegramAccountConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveTextChunkLimit } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { DEFAULT_GROUP_HISTORY_LIMIT } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
 import {
   createSubsystemLogger,
   danger,
   logVerbose,
   shouldLogVerbose,
   sleepWithAbort,
-} from "openclaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import {
   buildTelegramMessageContext,

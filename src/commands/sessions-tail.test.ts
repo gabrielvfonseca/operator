@@ -40,7 +40,7 @@ function makeEvent(
   params: Partial<TrajectoryEvent> & { type: string; ts: string },
 ): TrajectoryEvent {
   return {
-    traceSchema: "openclaw-trajectory",
+    traceSchema: "operator-trajectory",
     schemaVersion: 1,
     traceId: "trace-1",
     source: "runtime",
@@ -92,7 +92,7 @@ describe("sessionsTailCommand", () => {
   beforeEach(() => {
     setSessionsTailFollowIntervalMsForTests(2);
     previousStateDir = process.env.OPERATOR_STATE_DIR;
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sessions-tail-"));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-sessions-tail-"));
     process.env.OPERATOR_STATE_DIR = path.join(tmpDir, "state");
     mocks.getRuntimeConfig.mockReturnValue({
       agents: {
@@ -233,7 +233,7 @@ describe("sessionsTailCommand", () => {
     fs.writeFileSync(
       resolveTrajectoryPointerFilePath(sessionFile),
       `${JSON.stringify({
-        traceSchema: "openclaw-trajectory-pointer",
+        traceSchema: "operator-trajectory-pointer",
         schemaVersion: 1,
         sessionId: "session-one",
         runtimeFile: relocatedTrajectoryPath,
@@ -289,7 +289,7 @@ describe("sessionsTailCommand", () => {
     fs.writeFileSync(
       resolveTrajectoryPointerFilePath(sessionFile),
       `${JSON.stringify({
-        traceSchema: "openclaw-trajectory-pointer",
+        traceSchema: "operator-trajectory-pointer",
         schemaVersion: 1,
         sessionId: "old-session",
         runtimeFile: staleRuntimePath,

@@ -1,5 +1,5 @@
 // Imessage helper module supports config accessors behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { resolveIMessageAccount } from "./accounts.js";
 
 export function resolveIMessageConfigAllowFrom(params: {

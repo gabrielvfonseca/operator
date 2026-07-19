@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { matchPluginCommand } from "../../plugins/commands.js";
 import { isNativeCommandTurn, resolveCommandTurnContext } from "../command-turn-context.js";

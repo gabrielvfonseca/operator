@@ -1,6 +1,6 @@
 // Whatsapp plugin module implements dedupe behavior.
-import { createDedupeCache } from "openclaw/plugin-sdk/dedupe-runtime";
-import { createClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
+import { createDedupeCache } from "@gabrielvfonseca/operator/plugin-sdk/dedupe-runtime";
+import { createClaimableDedupe } from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
 
 export const WHATSAPP_INBOUND_DEDUPE_TTL_MS = 20 * 60_000;
 const RECENT_WEB_MESSAGE_MAX = 5000;

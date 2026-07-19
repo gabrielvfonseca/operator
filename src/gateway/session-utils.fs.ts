@@ -2,12 +2,12 @@
 // Parses transcript JSONL files for messages, previews, counts, and usage metadata.
 import fs from "node:fs";
 import { StringDecoder } from "node:string_decoder";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   resolveIntegerOption,
   resolveNonNegativeIntegerOption,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   deriveSessionTotalTokens,
   hasNonzeroUsage,
@@ -153,10 +153,10 @@ export function attachOperatorTranscriptMeta(
   }
   const record = message as Record<string, unknown>;
   const existing =
-    record["__operator"] &&
-    typeof record["__operator"] === "object" &&
-    !Array.isArray(record["__operator"])
-      ? (record["__operator"] as Record<string, unknown>)
+    record["__openclaw"] &&
+    typeof record["__openclaw"] === "object" &&
+    !Array.isArray(record["__openclaw"])
+      ? (record["__openclaw"] as Record<string, unknown>)
       : {};
   return {
     ...record,
@@ -1290,7 +1290,9 @@ function extractTranscriptTokenEstimateFromLine(line: string): {
           ? parsed.model.trim()
           : undefined;
     const isDeliveryMirror =
-      role === "assistant" && modelProvider === "operator" && model === "delivery-mirror";
+      role === "assistant" &&
+      modelProvider === "@gabrielvfonseca/operator" &&
+      model === "delivery-mirror";
     if (isDeliveryMirror) {
       return null;
     }
@@ -1347,7 +1349,8 @@ function extractUsageSnapshotFromTranscriptLine(
         : typeof parsed.model === "string"
           ? parsed.model.trim()
           : undefined;
-    const isDeliveryMirror = modelProvider === "operator" && model === "delivery-mirror";
+    const isDeliveryMirror =
+      modelProvider === "@gabrielvfonseca/operator" && model === "delivery-mirror";
     const hasMeaningfulUsage =
       hasNonzeroUsage(usage) ||
       typeof totalTokens === "number" ||

@@ -2,27 +2,27 @@
 import {
   isChannelExecApprovalClientEnabledFromConfig,
   matchesApprovalRequestFilters,
-} from "openclaw/plugin-sdk/approval-client-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-client-runtime";
 import {
   createNativeApprovalChannelRouteGates,
   doesApprovalRequestMatchChannelAccount,
   resolveApprovalRequestSessionConversation,
-} from "openclaw/plugin-sdk/approval-native-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-native-runtime";
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "openclaw/plugin-sdk/approval-runtime";
-import type { ChannelApprovalCapability } from "openclaw/plugin-sdk/channel-contract";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import type { ChannelApprovalCapability } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import {
   channelRouteTargetsMatchExact,
   stringifyRouteThreadId,
-} from "openclaw/plugin-sdk/channel-route";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeMessageChannel } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-route";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeMessageChannel } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { isSlackPluginAccountConfigured } from "./account-configured.js";
 import {
   listSlackAccountIds,

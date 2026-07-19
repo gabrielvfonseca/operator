@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClawDiscovery
+@testable import OperatorDiscovery
 
 @MainActor
 struct GatewayDiscoveryModelTests {
@@ -34,7 +34,7 @@ struct GatewayDiscoveryModelTests {
         #expect(GatewayDiscoveryModel.isLocalGateway(
             lanHost: nil,
             tailnetDns: nil,
-            displayName: "Peter's Mac Studio (OpenClaw)",
+            displayName: "Peter's Mac Studio (Operator)",
             serviceName: nil,
             local: local))
     }
@@ -71,13 +71,13 @@ struct GatewayDiscoveryModelTests {
             lanHost: nil,
             tailnetDns: nil,
             displayName: nil,
-            serviceName: "steipetacstudio (OpenClaw)",
+            serviceName: "steipetacstudio (Operator)",
             local: local))
         #expect(GatewayDiscoveryModel.isLocalGateway(
             lanHost: nil,
             tailnetDns: nil,
             displayName: nil,
-            serviceName: "steipete (OpenClaw)",
+            serviceName: "steipete (Operator)",
             local: local))
     }
 
@@ -89,7 +89,7 @@ struct GatewayDiscoveryModelTests {
             "gatewayPort": " 18799 ",
             "gatewayTls": " yes ",
             "gatewayDirectReachable": " true ",
-            "cliPath": " /opt/openclaw ",
+            "cliPath": " /opt/operator ",
         ])
         #expect(parsed.lanHost == "studio.local")
         #expect(parsed.tailnetDns == "peters-mac-studio-1.ts.net")
@@ -187,7 +187,7 @@ struct GatewayDiscoveryModelTests {
             sshPort: 22,
             gatewayPort: 443,
             cliPath: nil,
-            stableID: "wide-area|openclaw.internal.|gateway-host",
+            stableID: "wide-area|operator.internal.|gateway-host",
             debugID: "wide-area",
             isLocal: false)
         let serve = GatewayDiscoveryModel.DiscoveredGateway(

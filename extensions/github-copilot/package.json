@@ -1,5 +1,5 @@
 {
-  "name": "@operator/github-copilot-provider",
+  "name": "@gabrielvfonseca/github-copilot-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator GitHub Copilot provider plugin",
@@ -8,9 +8,9 @@
     "@clack/prompts": "1.6.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

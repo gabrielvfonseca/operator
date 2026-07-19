@@ -3,26 +3,26 @@ import {
   buildLegacyDmAccountAllowlistAdapter,
   createAccountScopedAllowlistNameResolver,
   createNestedAllowlistOverrideResolver,
-} from "openclaw/plugin-sdk/allowlist-config-edit";
+} from "@gabrielvfonseca/operator/plugin-sdk/allowlist-config-edit";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageToolDiscovery,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "openclaw/plugin-sdk/channel-outbound";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createPairingPrefixStripper } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
-} from "openclaw/plugin-sdk/directory-runtime";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolveTargetsWithOptionalToken } from "openclaw/plugin-sdk/target-resolver-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolveTargetsWithOptionalToken } from "@gabrielvfonseca/operator/plugin-sdk/target-resolver-runtime";
 import {
   listEnabledDiscordAccounts,
   resolveDefaultDiscordAccountId,

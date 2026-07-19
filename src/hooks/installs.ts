@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Hook install record helpers read and write installed hook metadata.
 import type { HookInstallRecord } from "../config/types.hooks.js";
 import type { OperatorConfig } from "../config/types.operator.js";

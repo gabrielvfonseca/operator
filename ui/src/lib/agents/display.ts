@@ -1,5 +1,5 @@
 // Control UI view renders agents utils screen content.
-import { formatByteSize } from "@operator/normalization-core";
+import { formatByteSize } from "@gabrielvfonseca/normalization-core";
 import { html, nothing } from "lit";
 import {
   expandToolGroups,

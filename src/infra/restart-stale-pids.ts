@@ -2,8 +2,8 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { uniqueValues } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueValues } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveGatewayPort } from "../config/paths.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { isGatewayArgv, parseProcCmdline } from "./gateway-process-argv.js";
@@ -281,7 +281,10 @@ function parsePidsFromLsofOutput(
     if (excluded.has(entry.pid)) {
       continue;
     }
-    if (entry.cmd && normalizeLowercaseStringOrEmpty(entry.cmd).includes("operator")) {
+    if (
+      entry.cmd &&
+      normalizeLowercaseStringOrEmpty(entry.cmd).includes("@gabrielvfonseca/operator")
+    ) {
       pids.push(entry.pid);
       continue;
     }
@@ -293,7 +296,7 @@ function parsePidsFromLsofOutput(
 }
 
 /**
- * Windows: find listening PIDs on the port, then verify each is an operator
+ * Windows: find listening PIDs on the port, then verify each is an openclaw
  * gateway process via command-line inspection. Excludes the current process
  * and its ancestors (same invariant as the lsof path — see
  * `getSelfAndAncestorPidsSync`).
@@ -356,7 +359,7 @@ function findGatewayPidsOnPortWithProtectedPidSync(
 ): number[] {
   if (process.platform === "win32") {
     // Use the shared Windows port inspection (PowerShell / netstat) with
-    // command-line verification to find only operator gateway processes.
+    // command-line verification to find only openclaw gateway processes.
     return findVerifiedWindowsGatewayPidsOnPortSync(port, protectedPid);
   }
   const lsof = resolveLsofCommandSync();
@@ -394,7 +397,7 @@ function findGatewayPidsOnPortWithProtectedPidSync(
 
 /**
  * Find PIDs of gateway processes listening on the given port using synchronous lsof.
- * Returns only PIDs that belong to operator gateway processes (not the current process).
+ * Returns only PIDs that belong to openclaw gateway processes (not the current process).
  */
 export function findGatewayPidsOnPortSync(
   port: number,

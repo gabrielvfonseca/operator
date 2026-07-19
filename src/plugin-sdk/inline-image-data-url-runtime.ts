@@ -5,4 +5,4 @@ export {
   INLINE_IMAGE_DATA_URL_PREFIX,
   sanitizeInlineImageDataUrl,
   sniffInlineImageMime,
-} from "@operator/media-core/inline-image-data-url";
+} from "@gabrielvfonseca/media-core/inline-image-data-url";

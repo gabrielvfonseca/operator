@@ -6,27 +6,27 @@ import {
   mergeAllowlist,
   patchAllowlistUsersInConfigEntries,
   summarizeMapping,
-} from "openclaw/plugin-sdk/allow-from";
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-adapter-runtime";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import type { SessionScope } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import { DEFAULT_GROUP_HISTORY_LIMIT } from "openclaw/plugin-sdk/reply-history";
-import { normalizeMainKey } from "openclaw/plugin-sdk/routing";
-import { warn } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-adapter-runtime";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import type { SessionScope } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { resolveTextChunkLimit } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { DEFAULT_GROUP_HISTORY_LIMIT } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { normalizeMainKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { warn } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   computeBackoff,
   createNonExitingRuntime,
   sleepWithAbort,
   type RuntimeEnv,
-} from "openclaw/plugin-sdk/runtime-env";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { installRequestBodyLimitGuard } from "openclaw/plugin-sdk/webhook-request-guards";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { installRequestBodyLimitGuard } from "@gabrielvfonseca/operator/plugin-sdk/webhook-request-guards";
 import {
   resolveSlackAccount,
   resolveSlackAccountAllowFrom,

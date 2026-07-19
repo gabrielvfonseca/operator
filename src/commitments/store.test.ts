@@ -33,7 +33,7 @@ describe("commitment SQLite store", () => {
   });
 
   async function useTempStateDir(): Promise<string> {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-commitments-store-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-commitments-store-"));
     tmpDirs.push(tmpDir);
     stateDirEnvSnapshot ??= captureEnv(["OPERATOR_STATE_DIR"]);
     setTestEnvValue("OPERATOR_STATE_DIR", tmpDir);

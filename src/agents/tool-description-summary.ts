@@ -3,9 +3,9 @@
  *
  * Produces compact one-line summaries for verbose tool descriptions in inventory/list views.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 function normalizeSummaryWhitespace(value: string): string {
   return value.replace(/\s+/g, " ").trim();

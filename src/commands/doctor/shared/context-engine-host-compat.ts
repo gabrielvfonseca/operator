@@ -1,6 +1,6 @@
 // Doctor checks for context engine host requirements against configured agent runtimes.
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeEmbeddedAgentRuntime } from "../../../agents/agent-runtime-id.js";
 import { resolveDefaultAgentDir } from "../../../agents/agent-scope-config.js";
 import { resolveCliBackendConfig } from "../../../agents/cli-backends.js";
@@ -159,7 +159,7 @@ function runtimeHostCandidate(params: {
   paths: string[];
 }): HostCandidate {
   const runtimeId = normalizeRuntimeId(params.runtimeId) ?? params.runtimeId;
-  if (runtimeId === "operator" || runtimeId === "auto") {
+  if (runtimeId === "@gabrielvfonseca/operator" || runtimeId === "auto") {
     return { runtimeId, host: OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST, paths: params.paths };
   }
   if (runtimeId === "codex") {

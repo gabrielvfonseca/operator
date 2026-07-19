@@ -1,11 +1,9 @@
-// Discord plugin module implements native command behavior.
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { loadModelCatalog } from "openclaw/plugin-sdk/agent-runtime";
-import { resolveNativeCommandSessionTargets } from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { buildPairingReply } from "openclaw/plugin-sdk/conversation-runtime";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { getAgentScopedMediaLocalRoots } from "openclaw/plugin-sdk/media-runtime";
+import { loadModelCatalog } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { resolveNativeCommandSessionTargets } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { buildPairingReply } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { getAgentScopedMediaLocalRoots } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   buildCommandTextFromArgs,
   findCommandByNativeName,
@@ -14,11 +12,19 @@ import {
   serializeCommandArgs,
   type ChatCommandDefinition,
   type NativeCommandSpec,
-} from "openclaw/plugin-sdk/native-command-registry";
-import { resolveChunkMode, resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import { getRuntimeConfigSnapshot } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { createSubsystemLogger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { resolveOpenProviderRuntimeGroupPolicy } from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-registry";
+import {
+  resolveChunkMode,
+  resolveTextChunkLimit,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { getRuntimeConfigSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import {
+  createSubsystemLogger,
+  logVerbose,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolveOpenProviderRuntimeGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+// Discord plugin module implements native command behavior.
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import {
   resolveDiscordAccountAllowFrom,
   resolveDiscordAccountDmPolicy,

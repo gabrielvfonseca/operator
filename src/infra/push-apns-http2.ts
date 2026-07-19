@@ -2,8 +2,8 @@
 import { once } from "node:events";
 import http2 from "node:http2";
 import tls from "node:tls";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { openProxyConnectTunnel } from "@operator/proxyline";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { openProxyConnectTunnel } from "@openclaw/proxyline";
 import { toErrorObject } from "./errors.js";
 import {
   getActiveManagedProxyUrl,

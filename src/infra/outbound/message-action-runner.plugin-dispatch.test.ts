@@ -536,7 +536,7 @@ describe("runMessageAction plugin dispatch", () => {
     });
 
     it("routes execution context ids into plugin handleAction", async () => {
-      const stateDir = path.join("/tmp", "openclaw-plugin-dispatch-media-roots");
+      const stateDir = path.join("/tmp", "operator-plugin-dispatch-media-roots");
       const expectedWorkspaceRoot = path.resolve(stateDir, "workspace-alpha");
 
       await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, async () => {
@@ -2236,7 +2236,7 @@ describe("runMessageAction plugin dispatch", () => {
         messageId: "gw-send-tts",
       });
       mocks.maybeApplyTtsToPayload.mockResolvedValueOnce({
-        mediaUrl: "file:///tmp/openclaw-voice.ogg",
+        mediaUrl: "file:///tmp/operator-voice.ogg",
         audioAsVoice: true,
         spokenText: "hello there",
       });
@@ -2276,8 +2276,8 @@ describe("runMessageAction plugin dispatch", () => {
         readRecordField(gatewayParams, "params", "gateway message params"),
         {
           message: "",
-          media: "file:///tmp/openclaw-voice.ogg",
-          mediaUrl: "file:///tmp/openclaw-voice.ogg",
+          media: "file:///tmp/operator-voice.ogg",
+          mediaUrl: "file:///tmp/operator-voice.ogg",
           asVoice: true,
           audioAsVoice: true,
         },
@@ -2313,7 +2313,7 @@ describe("runMessageAction plugin dispatch", () => {
         ]),
       );
       mocks.maybeApplyTtsToPayload.mockResolvedValueOnce({
-        mediaUrl: "file:///tmp/openclaw-voice.ogg",
+        mediaUrl: "file:///tmp/operator-voice.ogg",
         audioAsVoice: true,
         spokenText: "hello there",
       });
@@ -2345,8 +2345,8 @@ describe("runMessageAction plugin dispatch", () => {
         readRecordField(call, "params", "local plugin params"),
         {
           message: "",
-          media: "file:///tmp/openclaw-voice.ogg",
-          mediaUrl: "file:///tmp/openclaw-voice.ogg",
+          media: "file:///tmp/operator-voice.ogg",
+          mediaUrl: "file:///tmp/operator-voice.ogg",
           asVoice: true,
           audioAsVoice: true,
         },

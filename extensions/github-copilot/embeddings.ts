@@ -5,14 +5,17 @@ import {
   withRemoteHttpResponse,
   type MemoryEmbeddingProvider,
   type MemoryEmbeddingProviderAdapter,
-} from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
-import { buildCopilotIdeHeaders } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/memory-core-host-engine-embeddings";
+import { buildCopilotIdeHeaders } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { resolveConfiguredSecretInputString } from "openclaw/plugin-sdk/secret-input-runtime";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { resolveConfiguredSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { resolveFirstGithubToken } from "./auth.js";
 import { resolveGithubCopilotDomain } from "./domain.js";
 import { DEFAULT_COPILOT_API_BASE_URL, resolveCopilotApiToken } from "./token.js";

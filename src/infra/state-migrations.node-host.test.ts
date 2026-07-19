@@ -33,7 +33,7 @@ describe("legacy node-host Doctor migration", () => {
   });
 
   function useStateDir(): { env: NodeJS.ProcessEnv; stateDir: string } {
-    const stateDir = tempDirs.make("openclaw-node-host-migration-");
+    const stateDir = tempDirs.make("operator-node-host-migration-");
     return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir }, stateDir };
   }
 
@@ -48,7 +48,7 @@ describe("legacy node-host Doctor migration", () => {
         port: 18443,
         tls: false,
         tlsFingerprint: fixtureDigest,
-        contextPath: "/openclaw-gw",
+        contextPath: "/operator-gw",
       },
       ...overrides,
     };
@@ -86,7 +86,7 @@ describe("legacy node-host Doctor migration", () => {
           gateway_port: 18443,
           gateway_tls: 0,
           gateway_tls_fingerprint: fixtureDigest,
-          gateway_context_path: "/openclaw-gw",
+          gateway_context_path: "/operator-gw",
           updated_at_ms: params.updatedAtMs,
         }),
     );
@@ -137,7 +137,7 @@ describe("legacy node-host Doctor migration", () => {
         port: 18443,
         tls: false,
         tlsFingerprint: fixtureDigest,
-        contextPath: "/openclaw-gw",
+        contextPath: "/operator-gw",
       },
     });
     expect(readCanonicalRow(env)?.token).toBeNull();

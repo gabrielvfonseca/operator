@@ -1,6 +1,6 @@
 // Covers MCP OAuth token persistence, isolation, and noninteractive behavior.
 import fs from "node:fs/promises";
-import { withTempHome } from "openclaw/plugin-sdk/test-env";
+import { withTempHome } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeEach, describe, expect, it } from "vitest";
 import { vi } from "vitest";
 import {
@@ -44,7 +44,7 @@ describe("MCP OAuth provider", () => {
         expect(authMock).not.toHaveBeenCalled();
       },
       {
-        prefix: "openclaw-mcp-oauth-fresh-token-",
+        prefix: "operator-mcp-oauth-fresh-token-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -91,7 +91,7 @@ describe("MCP OAuth provider", () => {
         });
       },
       {
-        prefix: "openclaw-mcp-oauth-expired-token-",
+        prefix: "operator-mcp-oauth-expired-token-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -153,7 +153,7 @@ describe("MCP OAuth provider", () => {
         expect(authMock).toHaveBeenCalledOnce();
       },
       {
-        prefix: "openclaw-mcp-oauth-concurrent-refresh-",
+        prefix: "operator-mcp-oauth-concurrent-refresh-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -176,7 +176,7 @@ describe("MCP OAuth provider", () => {
           token_type: "Bearer",
           expires_in: 3600,
         });
-        const tokenDir = `${home}/.openclaw/mcp-oauth`;
+        const tokenDir = `${home}/.operator/mcp-oauth`;
         const [entry] = await fs.readdir(tokenDir);
         const tokenPath = `${tokenDir}/${entry}`;
         const legacyStore = JSON.parse(await fs.readFile(tokenPath, "utf-8")) as Record<
@@ -204,7 +204,7 @@ describe("MCP OAuth provider", () => {
         expect(authMock).toHaveBeenCalledOnce();
       },
       {
-        prefix: "openclaw-mcp-oauth-legacy-token-",
+        prefix: "operator-mcp-oauth-legacy-token-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -226,7 +226,7 @@ describe("MCP OAuth provider", () => {
         expect(authMock).not.toHaveBeenCalled();
       },
       {
-        prefix: "openclaw-mcp-oauth-missing-token-",
+        prefix: "operator-mcp-oauth-missing-token-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -252,7 +252,7 @@ describe("MCP OAuth provider", () => {
 
         // Token files live under state, not workspace config, and are mode
         // 0600 because they contain bearer credentials.
-        const tokenDir = `${home}/.openclaw/mcp-oauth`;
+        const tokenDir = `${home}/.operator/mcp-oauth`;
         const entries = await fs.readdir(tokenDir);
         expect(entries).toHaveLength(1);
         expect(entries[0]).toMatch(/^Remote-Docs-[a-f0-9]{16}\.json$/);
@@ -261,7 +261,7 @@ describe("MCP OAuth provider", () => {
         expect(stat.mode & 0o777).toBe(0o600);
       },
       {
-        prefix: "openclaw-mcp-oauth-",
+        prefix: "operator-mcp-oauth-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -287,7 +287,7 @@ describe("MCP OAuth provider", () => {
         await expect(second.tokens()).resolves.toBeUndefined();
       },
       {
-        prefix: "openclaw-mcp-oauth-url-",
+        prefix: "operator-mcp-oauth-url-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -356,10 +356,10 @@ describe("MCP OAuth provider", () => {
           }),
         ).rejects.toThrow("localhost redirect also rejected");
 
-        await expect(fs.readdir(`${home}/.openclaw/mcp-oauth`)).resolves.toEqual([]);
+        await expect(fs.readdir(`${home}/.operator/mcp-oauth`)).resolves.toEqual([]);
       },
       {
-        prefix: "openclaw-mcp-oauth-localhost-failure-",
+        prefix: "operator-mcp-oauth-localhost-failure-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -388,7 +388,7 @@ describe("MCP OAuth provider", () => {
           }),
         ).resolves.toBe("redirect");
 
-        const tokenDir = `${home}/.openclaw/mcp-oauth`;
+        const tokenDir = `${home}/.operator/mcp-oauth`;
         const entries = await fs.readdir(tokenDir);
         const store = JSON.parse(await fs.readFile(`${tokenDir}/${entries[0]}`, "utf-8")) as {
           codeVerifier?: string;
@@ -409,7 +409,7 @@ describe("MCP OAuth provider", () => {
         ]);
       },
       {
-        prefix: "openclaw-mcp-oauth-localhost-persist-",
+        prefix: "operator-mcp-oauth-localhost-persist-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -438,7 +438,7 @@ describe("MCP OAuth provider", () => {
         ).rejects.toThrow("Run openclaw mcp login Remote Docs.");
       },
       {
-        prefix: "openclaw-mcp-oauth-noninteractive-",
+        prefix: "operator-mcp-oauth-noninteractive-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,
@@ -465,7 +465,7 @@ describe("MCP OAuth provider", () => {
         await expect(provider.tokens()).resolves.toBeUndefined();
       },
       {
-        prefix: "openclaw-mcp-oauth-clear-",
+        prefix: "operator-mcp-oauth-clear-",
         skipSessionCleanup: true,
         env: {
           OPERATOR_CONFIG_PATH: undefined,

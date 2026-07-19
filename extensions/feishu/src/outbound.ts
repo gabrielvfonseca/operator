@@ -1,32 +1,35 @@
 // Feishu plugin module implements outbound behavior.
 import path from "node:path";
-import { createReplyToFanout } from "openclaw/plugin-sdk/channel-outbound";
+import { createReplyToFanout } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   attachChannelToResult,
   createAttachedChannelResultAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
-import type { MessagePresentationBlock } from "openclaw/plugin-sdk/interactive-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { MessagePresentationBlock } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import {
   interactiveReplyToPresentation,
   normalizeInteractiveReply,
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
   resolveInteractiveTextFallback,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-import { resolveChunkMode, resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import {
+  resolveChunkMode,
+  resolveTextChunkLimit,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
 import {
   resolvePayloadMediaUrls,
   sendPayloadMediaSequenceAndFinalize,
   sendTextMediaPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import { statRegularFileSync } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { statRegularFileSync } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { convertMarkdownTables } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { convertMarkdownTables } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { cleanupAmbientCommentTypingReaction } from "./comment-reaction.js";
@@ -61,7 +64,7 @@ import {
   sendStructuredCardFeishu,
 } from "./send.js";
 
-const RENDERED_FEISHU_CARD = Symbol("openclaw.renderedFeishuCard");
+const RENDERED_FEISHU_CARD = Symbol("operator.renderedFeishuCard");
 const FEISHU_PRESENTATION_FALLBACK_MARKER = "__openclawPresentationFallback";
 const FEISHU_TEXT_CHUNK_LIMIT = 4000;
 

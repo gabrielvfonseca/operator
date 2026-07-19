@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   type ErrorShape,

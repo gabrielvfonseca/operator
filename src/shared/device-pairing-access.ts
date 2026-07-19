@@ -1,5 +1,5 @@
 // Device pairing access helpers evaluate pairing scopes and role permissions.
-import { normalizeUniqueSingleOrTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueSingleOrTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeDeviceAuthScopes } from "./device-auth.js";
 
 export type DevicePairingAccessSummary = {

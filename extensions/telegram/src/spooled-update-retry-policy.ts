@@ -3,9 +3,9 @@ import {
   collectErrorGraphCandidates,
   formatErrorMessage,
   readErrorName,
-} from "openclaw/plugin-sdk/error-runtime";
-import type { BackoffPolicy } from "openclaw/plugin-sdk/runtime-env";
-import { computeBackoff } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import type { BackoffPolicy } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { computeBackoff } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { isTelegramMessageDispatchReplayForgetError } from "./message-dispatch-dedupe.js";
 import type { TelegramSpooledUpdate } from "./telegram-ingress-spool.types.js";
 

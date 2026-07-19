@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
 import android.provider.Settings
 import androidx.compose.animation.core.CubicBezierEasing
@@ -67,12 +67,12 @@ private class MascotPose(
 )
 
 /**
- * Animated OpenClaw mascot mirroring the openclaw.ai hero mark: body float,
+ * Animated Operator mascot mirroring the operator.ai hero mark: body float,
  * antenna wiggle, eye blink, and staggered claw snaps. With [tint] the mascot
  * renders as a single-color silhouette (replacement for tinted [Icon] usage).
  */
 @Composable
-fun OpenClawMascot(
+fun OperatorMascot(
   modifier: Modifier = Modifier,
   tint: Color? = null,
   contentDescription: String? = null,

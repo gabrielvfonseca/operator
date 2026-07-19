@@ -1,11 +1,11 @@
 {
-  "name": "@operator/signal",
+  "name": "@gabrielvfonseca/signal",
   "version": "2026.7.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/signal",
+      "name": "@gabrielvfonseca/signal",
       "version": "2026.7.2",
       "dependencies": {
         "ws": "8.21.0"

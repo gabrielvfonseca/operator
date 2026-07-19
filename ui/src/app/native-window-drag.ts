@@ -11,7 +11,7 @@ function getNativeWindowDragPoster(): WebKitMessageHandler["postMessage"] | unde
     window as unknown as {
       webkit?: { messageHandlers?: { openclawWindowDrag?: WebKitMessageHandler } };
     }
-  ).webkit?.messageHandlers?.openclawWindowDrag;
+  ).webkit?.messageHandlers?.operatorWindowDrag;
   return handler?.postMessage.bind(handler);
 }
 

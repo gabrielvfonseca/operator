@@ -1,22 +1,22 @@
 {
-  "name": "@operator/diffs-language-pack",
+  "name": "@gabrielvfonseca/diffs-language-pack",
   "version": "2026.7.2",
   "description": "Operator diffs viewer syntax highlighting language pack",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/diffs-language-pack",
-      "clawhubSpec": "clawhub:@operator/diffs-language-pack",
+      "npmSpec": "@gabrielvfonseca/diffs-language-pack",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/diffs-language-pack",
       "localPath": "extensions/diffs-language-pack",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.27"

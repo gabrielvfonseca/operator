@@ -1,5 +1,8 @@
 // Firecrawl plugin entrypoint registers its Operator integration.
-import { definePluginEntry, type AnyAgentTool } from "openclaw/plugin-sdk/plugin-entry";
+import {
+  definePluginEntry,
+  type AnyAgentTool,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { createFirecrawlWebFetchProvider } from "./src/firecrawl-fetch-provider.js";
 import { createFirecrawlFreeWebSearchProvider } from "./src/firecrawl-free-search-provider.js";
 import { createFirecrawlScrapeTool } from "./src/firecrawl-scrape-tool.js";

@@ -2,7 +2,7 @@
 import {
   collectManifestModelIdNormalizationPolicies,
   normalizeProviderModelIdWithPolicies,
-} from "@operator/model-catalog-core/provider-model-id-normalization";
+} from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getCurrentPluginMetadataSnapshot } from "./current-plugin-metadata-snapshot.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";

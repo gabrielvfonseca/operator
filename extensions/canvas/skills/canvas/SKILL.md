@@ -1,7 +1,7 @@
 ---
 name: canvas
 description: "Present HTML on connected Operator node canvases, navigate/eval/snapshot, and debug canvas host URLs."
-metadata: { "openclaw": { "emoji": "🖼️" } }
+metadata: { "@gabrielvfonseca/operator": { "emoji": "🖼️" } }
 ---
 
 # Canvas
@@ -20,7 +20,7 @@ Use canvas to show HTML on connected Mac/iOS/Android nodes.
 
 ## Config
 
-Active config: `$OPERATOR_CONFIG_PATH` or `~/.openclaw/openclaw.json`.
+Active config: `$OPERATOR_CONFIG_PATH` or `~/.operator/operator.json`.
 
 ```json
 {
@@ -30,7 +30,7 @@ Active config: `$OPERATOR_CONFIG_PATH` or `~/.openclaw/openclaw.json`.
         "config": {
           "host": {
             "enabled": true,
-            "root": "~/.openclaw/canvas",
+            "root": "~/.operator/canvas",
             "liveReload": true
           }
         }
@@ -54,20 +54,20 @@ Active config: `$OPERATOR_CONFIG_PATH` or `~/.openclaw/openclaw.json`.
 1. Ensure Canvas plugin host is enabled.
 2. Put HTML/CSS/JS under `plugins.entries.canvas.config.host.root` or the default state canvas dir.
 3. Use a route reachable by the target node.
-4. Present the hosted URL: `/__openclaw__/canvas/<file>.html`.
+4. Present the hosted URL: `/__operator__/canvas/<file>.html`.
 5. Use `snapshot` when the user needs proof.
 
 ## URL shape
 
 ```text
-http://<gateway-host>:<gateway.port>/__openclaw__/canvas/index.html
-http://<gateway-host>:<gateway.port>/__openclaw__/canvas/games/snake.html
+http://<gateway-host>:<gateway.port>/__operator__/canvas/index.html
+http://<gateway-host>:<gateway.port>/__operator__/canvas/games/snake.html
 ```
 
 Path mapping:
 
-- `/__openclaw__/canvas/index.html` -> `<canvas host root>/index.html`
-- `/__openclaw__/canvas/games/snake.html` -> `<canvas host root>/games/snake.html`
+- `/__operator__/canvas/index.html` -> `<canvas host root>/index.html`
+- `/__operator__/canvas/games/snake.html` -> `<canvas host root>/games/snake.html`
 
 ## Troubleshooting
 

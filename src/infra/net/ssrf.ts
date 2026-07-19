@@ -16,9 +16,9 @@ import {
   isLegacyIpv4Literal,
   parseCanonicalIpAddress,
   parseLooseIpAddress,
-} from "@operator/net-policy/ip";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/net-policy/ip";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { Dispatcher } from "undici";
 import { normalizeHostname } from "./hostname.js";
 import {

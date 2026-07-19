@@ -11,7 +11,10 @@
  * single-responsibility helpers in this directory.
  */
 
-import type { OperatorPluginApi, PluginCommandContext } from "openclaw/plugin-sdk/plugin-entry";
+import type {
+  OperatorPluginApi,
+  PluginCommandContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { PRIVATE_CHAT_ONLY_TEXT } from "../../engine/commands/command-visibility.js";
 import { getFrameworkCommands } from "../../engine/commands/slash-commands-impl.js";
 import { resolveGroupCommandLevelFromAccountConfig } from "../../engine/config/group.js";

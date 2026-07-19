@@ -11,7 +11,7 @@ import {
 } from "../../packages/gateway-protocol/src/index.js";
 import { clearConfigCache, clearRuntimeConfigSnapshot } from "../config/config.js";
 import { clearSessionStoreCacheForTest } from "../config/sessions/store.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { loadOrCreateDeviceIdentity } from "../infra/device-identity.js";
 import { captureEnv, deleteTestEnvValue, setTestEnvValue } from "../test-utils/env.js";
 import { ADMIN_SCOPE, APPROVALS_SCOPE, READ_SCOPE } from "./method-scopes.js";
@@ -78,10 +78,10 @@ describe("operator approval gateway client e2e", () => {
     deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
     deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-approval-client-e2e-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-approval-client-e2e-"));
     cleanup.push(() => fs.rm(tempHome, { recursive: true, force: true, maxRetries: 5 }));
 
-    const stateDir = path.join(tempHome, ".openclaw");
+    const stateDir = path.join(tempHome, ".operator");
     await fs.mkdir(stateDir, { recursive: true });
     setTestEnvValue("HOME", tempHome);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
@@ -182,10 +182,10 @@ describe("operator approval gateway client e2e", () => {
     deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
     deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
-    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-approval-surfaces-e2e-"));
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-approval-surfaces-e2e-"));
     cleanup.push(() => fs.rm(tempHome, { recursive: true, force: true, maxRetries: 5 }));
 
-    const stateDir = path.join(tempHome, ".openclaw");
+    const stateDir = path.join(tempHome, ".operator");
     await fs.mkdir(stateDir, { recursive: true });
     setTestEnvValue("HOME", tempHome);
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);

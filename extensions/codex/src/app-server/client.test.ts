@@ -1,5 +1,8 @@
 // Codex tests cover client plugin behavior.
-import { embeddedAgentLog, OPERATOR_VERSION } from "openclaw/plugin-sdk/agent-harness-runtime";
+import {
+  embeddedAgentLog,
+  OPERATOR_VERSION,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   CodexAppServerClient,
@@ -268,7 +271,7 @@ describe("CodexAppServerClient", () => {
       method: "initialize",
       params: {
         clientInfo: {
-          name: "openclaw",
+          name: "@gabrielvfonseca/operator",
           title: "Operator",
           version: OPERATOR_VERSION,
         },

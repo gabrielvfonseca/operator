@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { normalizeLowercaseStringOrEmpty } from "../../packages/normalization-core/src/string-coerce.js";
 import type { ResolvedConfiguredAcpBinding } from "../acp/persistent-bindings.types.js";
 import { buildChatChannelMetaById } from "../channels/chat-meta-shared.js";
@@ -136,7 +136,7 @@ export type {
   UnifiedModelCatalogEntry,
   UnifiedModelCatalogKind,
   UnifiedModelCatalogSource,
-} from "@operator/model-catalog-core/model-catalog-types";
+} from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 export type { ProviderRuntimeModel } from "../plugins/provider-runtime-model.types.js";
 export type {
   OperatorPluginActiveModelContext,

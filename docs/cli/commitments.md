@@ -1,10 +1,10 @@
 ---
-summary: "CLI reference for `openclaw commitments` (inspect and dismiss inferred follow-ups)"
+summary: "CLI reference for `operator commitments` (inspect and dismiss inferred follow-ups)"
 read_when:
   - You want to inspect inferred follow-up commitments
   - You want to dismiss pending check-ins
   - You are auditing what heartbeat may deliver
-title: "`openclaw commitments`"
+title: "`operator commitments`"
 ---
 
 List and manage inferred follow-up commitments.
@@ -13,14 +13,14 @@ Commitments are opt-in (`commitments.enabled`), short-lived follow-up memories
 created from conversation context and delivered by heartbeat. See
 [Inferred commitments](/concepts/commitments) for the conceptual guide and config.
 
-With no subcommand, `openclaw commitments` lists pending commitments.
+With no subcommand, `operator commitments` lists pending commitments.
 
 ## Usage
 
 ```bash
-openclaw commitments [--all] [--agent <id>] [--status <status>] [--json]
-openclaw commitments list [--all] [--agent <id>] [--status <status>] [--json]
-openclaw commitments dismiss <id...> [--json]
+operator commitments [--all] [--agent <id>] [--status <status>] [--json]
+operator commitments list [--all] [--agent <id>] [--status <status>] [--json]
+operator commitments dismiss <id...> [--json]
 ```
 
 ## Options
@@ -39,37 +39,37 @@ deliver them.
 List pending commitments:
 
 ```bash
-openclaw commitments
+operator commitments
 ```
 
 List every stored commitment:
 
 ```bash
-openclaw commitments --all
+operator commitments --all
 ```
 
 Filter to one agent:
 
 ```bash
-openclaw commitments --agent main
+operator commitments --agent main
 ```
 
 Find snoozed commitments:
 
 ```bash
-openclaw commitments --status snoozed
+operator commitments --status snoozed
 ```
 
 Dismiss one or more commitments:
 
 ```bash
-openclaw commitments dismiss cm_abc123 cm_def456
+operator commitments dismiss cm_abc123 cm_def456
 ```
 
 Export as JSON:
 
 ```bash
-openclaw commitments --all --json
+operator commitments --all --json
 ```
 
 ## Output

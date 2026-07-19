@@ -1,24 +1,33 @@
 // Zalo plugin module implements monitor behavior.
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
-import { formatInboundMediaUnavailableText } from "openclaw/plugin-sdk/channel-inbound";
-import { resolveStableChannelMessageIngress } from "openclaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
-import type { MarkdownTableMode, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "openclaw/plugin-sdk/inbound-envelope";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { resolveSendableOutboundReplyParts } from "openclaw/plugin-sdk/reply-payload";
+import { logTypingFailure } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import { formatInboundMediaUnavailableText } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { resolveStableChannelMessageIngress } from "@gabrielvfonseca/operator/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import type {
+  MarkdownTableMode,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "@gabrielvfonseca/operator/plugin-sdk/inbound-envelope";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import {
   deliverTextOrMediaReply,
   type OutboundReplyPayload,
-} from "openclaw/plugin-sdk/reply-payload";
-import { sleepWithAbort, waitForAbortSignal } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import {
+  sleepWithAbort,
+  waitForAbortSignal,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { registerPluginHttpRoute, resolveWebhookPath } from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import {
+  registerPluginHttpRoute,
+  resolveWebhookPath,
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import type { ResolvedZaloAccount } from "./accounts.js";
 import {
   ZaloApiError,

@@ -6,7 +6,7 @@ import type {
   WorkboardLink,
   WorkboardMetadata,
   WorkboardStatus,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";
 import type {
   PersistedWorkboardAttachment,
   PersistedWorkboardBoard,

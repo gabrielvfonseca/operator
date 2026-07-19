@@ -1,11 +1,11 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 /**
  * Shared queue overflow, debounce, and collection helpers.
  *
  * Queue owners use these helpers to cap pending work, summarize dropped items,
  * debounce drains, and force individual collection when cross-channel ordering matters.
  */
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 /** Mutable summary state for a capped queue. */
 type QueueSummaryState = {

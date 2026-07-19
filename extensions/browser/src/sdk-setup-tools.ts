@@ -6,30 +6,36 @@ export {
   listNodes,
   resolveNodeIdFromList,
   selectDefaultNodeFromList,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-export type { AnyAgentTool, NodeListNode } from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+export type {
+  AnyAgentTool,
+  NodeListNode,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 export {
   imageResultFromFile,
   jsonResult,
   readPositiveIntegerParam,
   readStringParam,
-} from "openclaw/plugin-sdk/channel-actions";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
 export {
   formatCliCommand,
   formatHelpExamples,
   inheritOptionFromParent,
   note,
   theme,
-} from "openclaw/plugin-sdk/cli-runtime";
-export { danger, info } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+export { danger, info } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 export {
   IMAGE_REDUCE_QUALITY_STEPS,
   buildImageResizeSideGrid,
   getImageMetadata,
   isImageProcessorUnavailableError,
   resizeToJpeg,
-} from "openclaw/plugin-sdk/media-runtime";
-export { detectMime } from "openclaw/plugin-sdk/media-mime";
-export { ensureMediaDir, saveMediaBuffer } from "openclaw/plugin-sdk/media-runtime";
-export { describeImageFile } from "openclaw/plugin-sdk/media-understanding-runtime";
-export { formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+export { detectMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+export {
+  ensureMediaDir,
+  saveMediaBuffer,
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+export { describeImageFile } from "@gabrielvfonseca/operator/plugin-sdk/media-understanding-runtime";
+export { formatDocsLink } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";

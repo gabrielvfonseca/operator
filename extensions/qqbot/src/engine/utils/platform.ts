@@ -77,16 +77,16 @@ function resolveOperatorHome(): string {
 }
 
 /**
- * Return a legacy path under `~/.openclaw/qqbot` without creating it.
+ * Return a legacy path under `~/.operator/qqbot` without creating it.
  *
  * Current QQ Bot runtime state lives in plugin SQLite KV. This path remains for
  * legacy imports and media-path remaps from older releases.
  */
 function getQQBotDataPath(...subPaths: string[]): string {
-  return path.join(getHomeDir(), ".openclaw", "qqbot", ...subPaths);
+  return path.join(getHomeDir(), ".operator", "qqbot", ...subPaths);
 }
 
-/** Return a path under `~/.openclaw/qqbot`, creating it on demand. */
+/** Return a path under `~/.operator/qqbot`, creating it on demand. */
 export function getQQBotDataDir(...subPaths: string[]): string {
   const dir = getQQBotDataPath(...subPaths);
   if (!fs.existsSync(dir)) {
@@ -96,7 +96,7 @@ export function getQQBotDataDir(...subPaths: string[]): string {
 }
 
 /**
- * Return a path under `<openclaw-home>/.openclaw/media/qqbot` without creating it.
+ * Return a path under `<operator-home>/.operator/media/qqbot` without creating it.
  *
  * Unlike `getQQBotDataPath`, this lives under Operator's core media allowlist
  * so downloaded images and audio can be accessed by framework media tooling.
@@ -105,10 +105,10 @@ export function getQQBotDataDir(...subPaths: string[]): string {
  * `HOME` and `OPERATOR_HOME` differ (Docker, multi-user hosts). Fixes #83562.
  */
 export function getQQBotMediaPath(...subPaths: string[]): string {
-  return path.join(resolveOperatorHome(), ".openclaw", "media", "qqbot", ...subPaths);
+  return path.join(resolveOperatorHome(), ".operator", "media", "qqbot", ...subPaths);
 }
 
-/** Return a path under `<openclaw-home>/.openclaw/media/qqbot`, creating it on demand. */
+/** Return a path under `<operator-home>/.operator/media/qqbot`, creating it on demand. */
 export function getQQBotMediaDir(...subPaths: string[]): string {
   const dir = getQQBotMediaPath(...subPaths);
   if (!fs.existsSync(dir)) {
@@ -118,7 +118,7 @@ export function getQQBotMediaDir(...subPaths: string[]): string {
 }
 
 /**
- * Return `<openclaw-home>/.openclaw/media`, Operator's shared media root.
+ * Return `<operator-home>/.operator/media`, Operator's shared media root.
  *
  * This mirrors the directory that core's `buildMediaLocalRoots` exposes as an
  * allowlisted location (see `openclaw/src/media/local-roots.ts`). Using it as a
@@ -129,7 +129,7 @@ export function getQQBotMediaDir(...subPaths: string[]): string {
  * {@link getQQBotMediaPath}, the base honors `OPERATOR_HOME`.
  */
 function getOperatorMediaDir(): string {
-  return path.join(resolveOperatorHome(), ".openclaw", "media");
+  return path.join(resolveOperatorHome(), ".operator", "media");
 }
 
 export function isWindows(): boolean {
@@ -246,8 +246,8 @@ function resolveQQBotLocalMediaPath(p: string): string {
   // or with the Operator-managed home tree. Deduplicate when they match.
   const workspaceRoots = Array.from(
     new Set([
-      path.join(osHomeDir, ".openclaw", "workspace", "qqbot"),
-      path.join(openclawHomeDir, ".openclaw", "workspace", "qqbot"),
+      path.join(osHomeDir, ".operator", "workspace", "qqbot"),
+      path.join(openclawHomeDir, ".operator", "workspace", "qqbot"),
     ]),
   );
   const candidateRoots = [
@@ -287,7 +287,7 @@ export function resolveQQBotPayloadLocalFilePath(p: string): string | null {
   }
 
   const canonicalCandidate = fs.realpathSync(resolvedCandidate);
-  // Trust both the QQ Bot-owned subdirectory and Operator's shared `~/.openclaw/media`
+  // Trust both the QQ Bot-owned subdirectory and Operator's shared `~/.operator/media`
   // root. Core helpers like `saveMediaBuffer(..., "outbound", ...)` place framework
   // attachments under sibling directories (e.g. `media/outbound/`) that are already
   // part of the core media allowlist; we mirror that so auto-routed sends work

@@ -1,13 +1,13 @@
 {
-  "name": "@operator/microsoft-foundry",
+  "name": "@gabrielvfonseca/microsoft-foundry",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator Microsoft Foundry provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

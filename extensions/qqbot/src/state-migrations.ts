@@ -3,7 +3,7 @@ import path from "node:path";
 import type {
   PluginDoctorStateMigration,
   PluginStateKeyedStore,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import { buildQQBotStateKey } from "./engine/utils/state-keys.js";
 
 type CredentialBackup = {

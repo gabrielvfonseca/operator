@@ -7,7 +7,7 @@ import type { SessionStoreTarget } from "../config/sessions/targets.js";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
 import { resolveSqliteDatabaseFilePaths } from "../infra/sqlite-files.js";
 import { assertSqliteIntegrity } from "../infra/sqlite-integrity.js";
-import { OPERATOR_SQLITE_BUSY_TIMEOUT_MS } from "../state/operator-state-db.js";
+import { OPERATOR_SQLITE_BUSY_TIMEOUT_MS } from "../state/openclaw-state-db.js";
 import {
   createSessionSqliteMigrationFailureIssue,
   findLatestFailedSessionSqliteMigrationManifest,

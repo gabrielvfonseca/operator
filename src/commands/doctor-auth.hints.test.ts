@@ -1,6 +1,6 @@
 // Doctor auth hint tests cover OAuth refresh failure formatting and auth repair guidance.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   collectAuthProfileHealthFindings,
   noteLegacyCodexProviderOverride,

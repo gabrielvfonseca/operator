@@ -1,6 +1,6 @@
 // Discord plugin module implements message handler.preflight behavior.
-import { formatAllowlistMatchMeta } from "openclaw/plugin-sdk/allow-from";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
+import { formatAllowlistMatchMeta } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
 import {
   buildMentionRegexes,
   classifyChannelInboundEvent,
@@ -10,16 +10,16 @@ import {
   resolveUnmentionedGroupInboundPolicy,
   recordDroppedChannelInboundHistory,
   toInboundMediaFacts,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-detection";
-import { isAbortRequestText } from "openclaw/plugin-sdk/command-primitives-runtime";
-import { shouldHandleTextCommands } from "openclaw/plugin-sdk/command-surface";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { logDebug } from "openclaw/plugin-sdk/logging-core";
-import { mimeTypeFromFilePath } from "openclaw/plugin-sdk/media-mime";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import { getChildLogger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { hasControlCommand } from "@gabrielvfonseca/operator/plugin-sdk/command-detection";
+import { isAbortRequestText } from "@gabrielvfonseca/operator/plugin-sdk/command-primitives-runtime";
+import { shouldHandleTextCommands } from "@gabrielvfonseca/operator/plugin-sdk/command-surface";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { logDebug } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { mimeTypeFromFilePath } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { getChildLogger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
 import { resolveDefaultDiscordAccountId } from "../accounts.js";
 import { ChannelType, MessageType, type User } from "../internal/discord.js";
 import {

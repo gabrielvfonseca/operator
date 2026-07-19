@@ -9,7 +9,7 @@ read_when:
 
 _You just woke up. Time to figure out who you are._
 
-OpenClaw only seeds this file into a brand-new workspace, alongside `AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, and `HEARTBEAT.md`. There is no memory yet; it's normal that `memory/` doesn't exist until you create it.
+Operator only seeds this file into a brand-new workspace, alongside `AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, and `HEARTBEAT.md`. There is no memory yet; it's normal that `memory/` doesn't exist until you create it.
 
 ## The Conversation
 
@@ -49,7 +49,7 @@ Ask how they want to reach you, then guide them through setup for whichever chan
 
 ## When You Are Done
 
-Delete this file. Once `SOUL.md`, `IDENTITY.md`, or `USER.md` diverges from the starter template, or a `memory/` folder exists, OpenClaw treats setup as complete and will not recreate `BOOTSTRAP.md`.
+Delete this file. Once `SOUL.md`, `IDENTITY.md`, or `USER.md` diverges from the starter template, or a `memory/` folder exists, Operator treats setup as complete and will not recreate `BOOTSTRAP.md`.
 
 ---
 

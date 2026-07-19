@@ -1,7 +1,7 @@
 import Foundation
 
-extension OpenClawChatViewModel {
-    nonisolated static func chatContextUsageFraction(for session: OpenClawChatSessionEntry?) -> Double? {
+extension OperatorChatViewModel {
+    nonisolated static func chatContextUsageFraction(for session: OperatorChatSessionEntry?) -> Double? {
         guard session?.totalTokensFresh != false,
               let totalTokens = session?.totalTokens,
               totalTokens >= 0,
@@ -27,7 +27,7 @@ extension OpenClawChatViewModel {
 
     /// Session lists publish canonical agent keys even when the UI presents `main`.
     /// Keep visible model metadata on the same exact-then-alias read path.
-    func currentSessionEntry() -> OpenClawChatSessionEntry? {
+    func currentSessionEntry() -> OperatorChatSessionEntry? {
         self.sessions.first(where: { $0.key == self.sessionKey }) ??
             self.sessions.first(where: {
                 self.matchesCurrentSessionKey(incoming: $0.key, current: self.sessionKey)
@@ -64,7 +64,7 @@ extension OpenClawChatViewModel {
         let normalizedCandidate = candidate.lowercased()
         let targetKey: String
         let targetAgentID: String?
-        if OpenClawChatSessionKey.agentID(from: candidate) != nil || normalizedCandidate == "unknown" {
+        if OperatorChatSessionKey.agentID(from: candidate) != nil || normalizedCandidate == "unknown" {
             targetKey = candidate
             targetAgentID = nil
         } else if normalizedCandidate == "global" {
@@ -96,7 +96,7 @@ extension OpenClawChatViewModel {
     func sessionEntryForThinking(
         sessionKey: String,
         canonicalSessionKey: String?,
-        agentID: String?) -> OpenClawChatSessionEntry?
+        agentID: String?) -> OperatorChatSessionEntry?
     {
         if let canonicalSessionKey,
            let exact = self.sessions.first(where: { $0.key == canonicalSessionKey })
@@ -117,7 +117,7 @@ extension OpenClawChatViewModel {
 
     func successfulModelPatchResult(
         for target: ModelPatchTarget,
-        session: OpenClawChatSessionEntry?) -> OpenClawChatModelPatchResult?
+        session: OperatorChatSessionEntry?) -> OperatorChatModelPatchResult?
     {
         guard let session,
               let result = self.lastSuccessfulSettingsPatchResultsByTarget[target]
@@ -191,13 +191,13 @@ extension OpenClawChatViewModel {
         return "\(provider)/\(modelID)"
     }
 
-    public var sessionChoices: [OpenClawChatSessionEntry] {
+    public var sessionChoices: [OperatorChatSessionEntry] {
         let now = Date().timeIntervalSince1970 * 1000
         let cutoff = now - (24 * 60 * 60 * 1000)
-        let sorted = OpenClawChatSessionListOrganizer.organize(sessions)
+        let sorted = OperatorChatSessionListOrganizer.organize(sessions)
         let mainSessionKey = resolvedMainSessionKey
 
-        var result: [OpenClawChatSessionEntry] = []
+        var result: [OperatorChatSessionEntry] = []
         var included = Set<String>()
 
         // Always show the resolved main session first, even if it hasn't been updated recently.

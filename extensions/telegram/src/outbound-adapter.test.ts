@@ -1,7 +1,7 @@
 // Telegram tests cover outbound adapter plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import { verifyDurableFinalCapabilityProofs } from "openclaw/plugin-sdk/channel-outbound";
-import { adaptMessagePresentationForChannel } from "openclaw/plugin-sdk/interactive-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { verifyDurableFinalCapabilityProofs } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { adaptMessagePresentationForChannel } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const sendMessageTelegramMock = vi.fn();

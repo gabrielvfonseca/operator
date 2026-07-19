@@ -1,34 +1,34 @@
 {
-  "name": "@operator/tokenjuice",
+  "name": "@gabrielvfonseca/tokenjuice",
   "version": "2026.7.2",
   "description": "Operator tokenjuice exec output compaction plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
     "tokenjuice": "0.8.1"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.7.2"
+    "@gabrielvfonseca/operator": ">=2026.7.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "@gabrielvfonseca/operator": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*",
-    "openclaw": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*",
+    "@gabrielvfonseca/operator": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/tokenjuice",
-      "npmSpec": "@operator/tokenjuice",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/tokenjuice",
+      "npmSpec": "@gabrielvfonseca/tokenjuice",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.28"
     },

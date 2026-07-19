@@ -75,14 +75,14 @@ describe("OpenAI Codex OAuth flow", () => {
   it("waits for Node OAuth runtime before creating an authorization flow", async () => {
     const callbackHost = resolveOpenAICallbackHost();
     const flow = await createOpenAIAuthorizationFlow(
-      "openclaw-test",
+      "operator-test",
       resolveOpenAIRedirectUri(callbackHost),
     );
     const url = new URL(flow.url);
 
     expect(flow.state).toMatch(/^[a-f0-9]{32}$/u);
     expect(url.searchParams.get("state")).toBe(flow.state);
-    expect(url.searchParams.get("originator")).toBe("openclaw-test");
+    expect(url.searchParams.get("originator")).toBe("operator-test");
     const redirectUri = url.searchParams.get("redirect_uri");
     expect(redirectUri).toBeTruthy();
     expect(flow.redirectUri).toBe(redirectUri);

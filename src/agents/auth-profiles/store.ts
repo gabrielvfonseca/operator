@@ -10,7 +10,7 @@ import { asDateTimestampMs } from "../../shared/number-coercion.js";
 import {
   deferOperatorAgentPostCommitPublication,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import { isRecord } from "../../utils.js";
 import { cloneAuthProfileStore } from "./clone.js";
 import { AUTH_STORE_VERSION, log } from "./constants.js";

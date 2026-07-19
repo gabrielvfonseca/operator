@@ -2,9 +2,9 @@
 import {
   createCapturedPluginRegistration,
   registerSingleProviderPlugin,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
-import type { ProviderCatalogContext } from "openclaw/plugin-sdk/provider-catalog-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
+import type { ProviderCatalogContext } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import { describe, expect, it, vi } from "vitest";
 import deepinfraPlugin from "./index.js";
 import { DEEPINFRA_MODEL_CATALOG } from "./provider-models.js";
@@ -24,7 +24,7 @@ function buildDeepInfraCatalogContext(): ProviderCatalogContext {
   return {
     config: {},
     env: {},
-    agentDir: "/tmp/openclaw-agent",
+    agentDir: "/tmp/operator-agent",
     resolveProviderApiKey: () => ({ apiKey: "profile-key" }),
     resolveProviderAuth: () => ({
       apiKey: "profile-key",

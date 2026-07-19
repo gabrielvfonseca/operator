@@ -188,13 +188,13 @@ describe("codex plugin lifecycle: doctor migration safety matrix", () => {
     {
       name: "mixed profile with defaults Operator pin",
       profileShape: "mixed" as const,
-      config: { agents: { defaults: { agentRuntime: { id: "openclaw" } } } },
+      config: { agents: { defaults: { agentRuntime: { id: "@gabrielvfonseca/operator" } } } },
       expectedRemovedRuntimePins: ["agentRuntime.id=openclaw"],
     },
     {
       name: "mixed profile with main-agent Operator pin",
       profileShape: "mixed" as const,
-      config: { agents: { list: { main: { agentRuntime: { id: "openclaw" } } } } },
+      config: { agents: { list: { main: { agentRuntime: { id: "@gabrielvfonseca/operator" } } } } },
       expectedRemovedRuntimePins: ["agentRuntime.id=openclaw"],
     },
   ])(

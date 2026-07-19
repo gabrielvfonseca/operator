@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -8,12 +8,12 @@ struct CLIInstallerTests {
     @Test func `installed location finds executable`() throws {
         let fm = FileManager()
         let root = fm.temporaryDirectory.appendingPathComponent(
-            "openclaw-cli-installer-\(UUID().uuidString)")
+            "operator-cli-installer-\(UUID().uuidString)")
         defer { try? fm.removeItem(at: root) }
 
         let binDir = root.appendingPathComponent("bin")
         try fm.createDirectory(at: binDir, withIntermediateDirectories: true)
-        let cli = binDir.appendingPathComponent("openclaw")
+        let cli = binDir.appendingPathComponent("@gabrielvfonseca/operator")
         fm.createFile(atPath: cli.path, contents: Data())
         try fm.setAttributes([.posixPermissions: 0o755], ofItemAtPath: cli.path)
 
@@ -35,16 +35,16 @@ struct CLIInstallerTests {
     @Test func `installer command runs the signed bundled script without a shell pipeline`() {
         let command = CLIInstaller.installScriptCommand(
             target: .exact("2026.7.3-beta.1"),
-            prefix: "/Users/Test User/.openclaw",
-            scriptPath: "/Applications/OpenClaw.app/Contents/Resources/install-cli.sh")
+            prefix: "/Users/Test User/.operator",
+            scriptPath: "/Applications/Operator.app/Contents/Resources/install-cli.sh")
 
         #expect(command == [
             "/bin/bash",
-            "/Applications/OpenClaw.app/Contents/Resources/install-cli.sh",
+            "/Applications/Operator.app/Contents/Resources/install-cli.sh",
             "--json",
             "--no-onboard",
             "--prefix",
-            "/Users/Test User/.openclaw",
+            "/Users/Test User/.operator",
             "--version",
             "2026.7.3-beta.1",
         ])
@@ -54,8 +54,8 @@ struct CLIInstallerTests {
     @Test func `dev installer uses a managed git main checkout`() {
         let command = CLIInstaller.installScriptCommand(
             target: .channel(.dev),
-            prefix: "/Users/Test User/.openclaw",
-            scriptPath: "/Applications/OpenClaw.app/Contents/Resources/install-cli.sh")
+            prefix: "/Users/Test User/.operator",
+            scriptPath: "/Applications/Operator.app/Contents/Resources/install-cli.sh")
 
         #expect(command.suffix(6) == [
             "--version",
@@ -63,17 +63,17 @@ struct CLIInstallerTests {
             "--install-method",
             "git",
             "--git-dir",
-            "/Users/Test User/.openclaw/dev/openclaw",
+            "/Users/Test User/.operator/dev/openclaw",
         ])
     }
 
     @Test func `managed update uses the canonical updater without accepting downgrades`() {
         let command = CLIInstaller.managedUpdateCommand(
-            executable: "/Users/Test User/.openclaw/bin/openclaw",
+            executable: "/Users/Test User/.operator/bin/openclaw",
             targetVersion: "2026.7.4")
 
         #expect(command == [
-            "/Users/Test User/.openclaw/bin/openclaw",
+            "/Users/Test User/.operator/bin/openclaw",
             "update",
             "--tag",
             "2026.7.4",
@@ -84,18 +84,18 @@ struct CLIInstallerTests {
         #expect(!command.contains("--yes"))
 
         let withoutRestart = CLIInstaller.managedUpdateCommand(
-            executable: "/Users/Test User/.openclaw/bin/openclaw",
+            executable: "/Users/Test User/.operator/bin/openclaw",
             targetVersion: "2026.7.4",
             restartGateway: false)
         #expect(withoutRestart == command + ["--no-restart"])
 
         let repair = CLIInstaller.managedUpdateCommand(
-            executable: "/Users/Test User/.openclaw/bin/openclaw",
+            executable: "/Users/Test User/.operator/bin/openclaw",
             targetVersion: "2026.7.4",
             restartGateway: false,
             repair: true)
         #expect(repair == [
-            "/Users/Test User/.openclaw/bin/openclaw",
+            "/Users/Test User/.operator/bin/openclaw",
             "update",
             "repair",
             "--json",
@@ -176,15 +176,15 @@ struct CLIInstallerTests {
     }
 
     @Test func `managed setup requires a parseable compatible version`() {
-        let location = "/Users/test/.openclaw/bin/openclaw"
+        let location = "/Users/test/.operator/bin/openclaw"
 
         #expect(CLIInstaller.classifyVersion(
             location: location,
-            output: "OpenClaw 2026.7.3\n",
+            output: "Operator 2026.7.3\n",
             expectedVersion: "2026.7.3") == .ready(location: location, version: "2026.7.3"))
         #expect(CLIInstaller.classifyVersion(
             location: location,
-            output: "OpenClaw\n",
+            output: "Operator\n",
             expectedVersion: "2026.7.3") == .unusable(location: location))
         #expect(CLIInstaller.classifyVersion(
             location: location,
@@ -225,11 +225,11 @@ struct CLIInstallerTests {
 
     @Test func `compatible external CLI satisfies setup`() async throws {
         let root = FileManager().temporaryDirectory.appendingPathComponent(
-            "openclaw-compatible-cli-\(UUID().uuidString)")
+            "operator-compatible-cli-\(UUID().uuidString)")
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
-        let executable = root.appendingPathComponent("openclaw")
-        try "#!/bin/sh\necho 'OpenClaw 2026.7.3'\n".write(
+        let executable = root.appendingPathComponent("@gabrielvfonseca/operator")
+        try "#!/bin/sh\necho 'Operator 2026.7.3'\n".write(
             to: executable,
             atomically: true,
             encoding: .utf8)
@@ -242,12 +242,12 @@ struct CLIInstallerTests {
 
     @Test func `matching external CLI with unsupported Node is unusable`() async throws {
         let root = FileManager().temporaryDirectory.appendingPathComponent(
-            "openclaw-old-node-cli-\(UUID().uuidString)")
+            "operator-old-node-cli-\(UUID().uuidString)")
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
-        let executable = root.appendingPathComponent("openclaw")
+        let executable = root.appendingPathComponent("@gabrielvfonseca/operator")
         let node = root.appendingPathComponent("node")
-        try "#!/bin/sh\necho 'OpenClaw 2026.7.3'\n".write(
+        try "#!/bin/sh\necho 'Operator 2026.7.3'\n".write(
             to: executable,
             atomically: true,
             encoding: .utf8)
@@ -275,17 +275,17 @@ struct CLIInstallerTests {
     }
 
     @Test func `managed CLI probe prefers its private runtime`() {
-        let executable = "/Users/test/.openclaw/bin/openclaw"
+        let executable = "/Users/test/.operator/bin/openclaw"
         let environment = CLIInstaller.probeEnvironment(
             location: executable,
             processEnvironment: [:],
             preferredPaths: ["/Users/test/.nvm/versions/node/v20/bin", "/usr/bin"],
             managedExecutable: executable,
-            managedRuntimeDirectory: "/Users/test/.openclaw/tools/node/bin")
+            managedRuntimeDirectory: "/Users/test/.operator/tools/node/bin")
 
         #expect(environment["PATH"] == [
-            "/Users/test/.openclaw/bin",
-            "/Users/test/.openclaw/tools/node/bin",
+            "/Users/test/.operator/bin",
+            "/Users/test/.operator/tools/node/bin",
             "/Users/test/.nvm/versions/node/v20/bin",
             "/usr/bin",
         ].joined(separator: ":"))

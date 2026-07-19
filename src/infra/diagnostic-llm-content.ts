@@ -1,4 +1,4 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 /** Per-field policy for diagnostic traces that may include model-visible content. */
 export type DiagnosticModelContentCapturePolicy = {

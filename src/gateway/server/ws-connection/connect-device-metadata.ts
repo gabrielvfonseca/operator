@@ -1,4 +1,4 @@
-import { normalizeSortedUniqueTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeSortedUniqueTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   GATEWAY_CLIENT_IDS,
   GATEWAY_CLIENT_MODES,

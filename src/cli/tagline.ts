@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // CLI tagline selection helpers, including deterministic random/default/holiday modes.
 import { parseStrictNonNegativeInteger } from "../infra/parse-finite-number.js";
 
@@ -92,7 +92,7 @@ const TAGLINES: string[] = [
   "The lobster in your shell. 🦞",
   "Alexa, but with taste.",
   "I'm not AI-powered, I'm AI-possessed. Big difference.",
-  "You had me at 'operator gateway start.'",
+  "You had me at 'openclaw gateway start.'",
   "Fresh shell, same claws—molting is just semver for crustaceans.",
   "Frequently forked, never molted.",
   "Sideways is a perfectly valid direction of progress—trust me, I'm a crustacean.",

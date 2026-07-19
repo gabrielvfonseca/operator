@@ -1,7 +1,7 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
-@testable import OpenClawMacCLI
+@testable import OperatorKit
+@testable import OperatorMacCLI
 
 private final class CLIConnectAuthRecorder: @unchecked Sendable {
     private let lock = NSLock()

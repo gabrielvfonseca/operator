@@ -1,13 +1,13 @@
 {
-  "name": "@operator/fal-provider",
+  "name": "@gabrielvfonseca/fal-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator fal provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

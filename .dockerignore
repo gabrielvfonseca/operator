@@ -1,7 +1,7 @@
 .git
 .worktrees
 
-# Sensitive files – scripts/docker/setup.sh writes .env with OPENCLAW_GATEWAY_TOKEN
+# Sensitive files – scripts/docker/setup.sh writes .env with OPERATOR_GATEWAY_TOKEN
 # into the project root; keep it out of the build context.
 .env
 .env.*
@@ -14,8 +14,8 @@
 **/.local
 .pi
 **/.pi
-__openclaw_vitest__
-**/__openclaw_vitest__
+__operator_vitest__
+**/__operator_vitest__
 .tmp
 **/.tmp
 .DS_Store
@@ -48,7 +48,7 @@ tmp
 **/tmp
 dist-runtime
 **/dist-runtime
-openclaw-path-alias-*
+operator-path-alias-*
 
 # build artifacts
 dist

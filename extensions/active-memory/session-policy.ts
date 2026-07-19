@@ -1,9 +1,12 @@
 import crypto from "node:crypto";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { parseAgentSessionKey, parseThreadSessionSuffix } from "openclaw/plugin-sdk/routing";
-import { asOptionalRecord as asRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  parseAgentSessionKey,
+  parseThreadSessionSuffix,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { asOptionalRecord as asRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveCanonicalSessionKeyFromSessionId } from "./session.js";
 import {
   DEFAULT_AGENT_ID,

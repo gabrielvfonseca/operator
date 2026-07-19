@@ -1,7 +1,7 @@
 /** Runs queued follow-up agent turns and routes their delivery payloads. */
 import crypto from "node:crypto";
-import { readStringValue } from "@operator/normalization-core/string-coerce";
-import { hasOutboundReplyContent } from "operator/plugin-sdk/reply-payload";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { hasOutboundReplyContent } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { normalizeOptionalAgentRuntimeId } from "../../agents/agent-runtime-id.js";
 import {
   clearAutoFallbackPrimaryProbeSelection,

@@ -1,8 +1,8 @@
 // Usage gateway methods aggregate provider and session cost/token metrics from
 // caches, logs, session stores, and discovered transcript files.
 import fs from "node:fs";
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

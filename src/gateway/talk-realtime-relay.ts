@@ -1,7 +1,7 @@
 // Gateway Talk realtime relay.
 // Bridges browser Talk audio sessions with realtime voice provider plugins.
 import { randomUUID } from "node:crypto";
-import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../config/types.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { RealtimeVoiceProviderPlugin } from "../plugins/types.js";

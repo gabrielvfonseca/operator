@@ -2,18 +2,21 @@
  * Chutes OAuth PKCE login flow.
  */
 import { randomBytes } from "node:crypto";
-import { resolveExpiresAtMsFromDurationSeconds } from "openclaw/plugin-sdk/number-runtime";
-import { generatePkceVerifierChallenge, toFormUrlEncoded } from "openclaw/plugin-sdk/provider-auth";
+import { resolveExpiresAtMsFromDurationSeconds } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  generatePkceVerifierChallenge,
+  toFormUrlEncoded,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   parseOAuthCallbackInput,
   waitForLocalOAuthCallback,
-} from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowProviderError,
   readProviderJsonResponse,
-} from "openclaw/plugin-sdk/provider-http";
-import { buildOAuthRequestSignal } from "openclaw/plugin-sdk/provider-oauth-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { buildOAuthRequestSignal } from "@gabrielvfonseca/operator/plugin-sdk/provider-oauth-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const CHUTES_AUTHORIZE_ENDPOINT = "https://api.chutes.ai/idp/authorize";
 const CHUTES_TOKEN_ENDPOINT = "https://api.chutes.ai/idp/token";

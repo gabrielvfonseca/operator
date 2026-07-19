@@ -1,7 +1,7 @@
 // Provides config test helpers for temporary homes and fixture writes.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempHome as withTempHomeBase } from "operator/plugin-sdk/test-env";
+import { withTempHome as withTempHomeBase } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { resetPluginLoaderTestStateForTest } from "../plugins/loader.test-fixtures.js";
 import { clearPluginMetadataLifecycleCaches } from "../plugins/plugin-metadata-lifecycle.js";
 import { resetConfigRuntimeState, type OperatorConfig } from "./config.js";

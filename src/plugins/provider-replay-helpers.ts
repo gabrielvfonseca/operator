@@ -1,5 +1,5 @@
 // Provides shared replay-policy helpers for provider plugins.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { AgentMessage } from "../agents/runtime/index.js";
 import { sanitizeGoogleAssistantFirstOrdering } from "../shared/google-turn-ordering.js";
 import type {

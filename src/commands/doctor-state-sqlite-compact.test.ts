@@ -26,7 +26,7 @@ type CompletedStateSqliteCompactReport = Extract<
 >;
 
 function createStateEnv(): NodeJS.ProcessEnv {
-  const stateDir = tempDirs.make("openclaw-state-compact-");
+  const stateDir = tempDirs.make("operator-state-compact-");
   return { ...process.env, OPERATOR_STATE_DIR: stateDir };
 }
 

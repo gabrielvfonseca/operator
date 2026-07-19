@@ -1,35 +1,41 @@
-// Slack plugin module implements slash behavior.
-import type { SlackActionMiddlewareArgs, SlackCommandMiddlewareArgs } from "@slack/bolt";
-import type { Block, KnownBlock } from "@slack/web-api";
-import { loadModelCatalog, resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
-import { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
+import {
+  loadModelCatalog,
+  resolveDefaultModelForAgent,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   formatCommandArgMenuTitle,
   resolveEffectiveAgentRuntime,
   resolveStoredModelOverride,
   type ChatCommandDefinition,
-} from "openclaw/plugin-sdk/command-auth-native";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 import {
   type CommandArgs,
   resolveNativeCommandSessionTargets,
-} from "openclaw/plugin-sdk/command-auth-native";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "openclaw/plugin-sdk/native-command-config-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
-import { getRuntimeConfigSnapshot } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { danger, logVerbose, warn } from "openclaw/plugin-sdk/runtime-env";
-import { getSessionEntry, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/native-command-config-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import type { ResolvedAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { getRuntimeConfigSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { danger, logVerbose, warn } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  getSessionEntry,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeStringEntriesLower,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { chunkItems } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { chunkItems } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+// Slack plugin module implements slash behavior.
+import type { SlackActionMiddlewareArgs, SlackCommandMiddlewareArgs } from "@slack/bolt";
+import type { Block, KnownBlock } from "@slack/web-api";
 import type { ResolvedSlackAccount } from "../accounts.js";
 import { SLACK_MAX_BLOCKS } from "../blocks-input.js";
 import { formatSlackError } from "../errors.js";
@@ -57,8 +63,8 @@ import {
 } from "./response-url-budget.js";
 import { resolveSlackRoomContextHints } from "./room-context.js";
 
-const SLACK_COMMAND_ARG_ACTION_ID = "openclaw_cmdarg";
-const SLACK_COMMAND_ARG_ACTION_LISTENER = /^openclaw_cmdarg/;
+const SLACK_COMMAND_ARG_ACTION_ID = "operator_cmdarg";
+const SLACK_COMMAND_ARG_ACTION_LISTENER = /^operator_cmdarg/;
 const SLACK_COMMAND_ARG_VALUE_PREFIX = "cmdarg";
 const SLACK_COMMAND_ARG_BUTTON_ROW_SIZE = 5;
 const SLACK_COMMAND_ARG_OVERFLOW_MIN = 3;

@@ -135,7 +135,7 @@ export function describeChannelPluginCatalogEntriesContract() {
           writeCatalogFile(
             catalogPath,
             createCatalogEntry({
-              packageName: "@operator/demo-channel",
+              packageName: "@gabrielvfonseca/demo-channel",
               channelId: "demo-channel",
               label: "Demo Channel",
               blurb: "Demo entry",
@@ -226,7 +226,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
               entries: [
                 {
                   name: "@wecom/wecom-operator-plugin",
@@ -302,7 +302,7 @@ export function describeChannelPluginCatalogEntriesContract() {
           const catalogPath = path.join(dir, "catalog.json");
           writeCatalogFile(catalogPath, {
             ...createCatalogEntry({
-              packageName: "@operator/prerelease-demo-channel",
+              packageName: "@gabrielvfonseca/prerelease-demo-channel",
               channelId: "prerelease-demo",
               label: "Prerelease Demo",
               blurb: "Prerelease package pinning fixture",
@@ -313,11 +313,11 @@ export function describeChannelPluginCatalogEntriesContract() {
             channelId: "prerelease-demo",
             catalogPaths: [catalogPath],
             expected: {
-              install: { npmSpec: "@operator/prerelease-demo-channel@2026.5.3-beta.1" },
+              install: { npmSpec: "@gabrielvfonseca/prerelease-demo-channel@2026.5.3-beta.1" },
               installSource: {
                 npm: {
-                  spec: "@operator/prerelease-demo-channel@2026.5.3-beta.1",
-                  packageName: "@operator/prerelease-demo-channel",
+                  spec: "@gabrielvfonseca/prerelease-demo-channel@2026.5.3-beta.1",
+                  packageName: "@gabrielvfonseca/prerelease-demo-channel",
                   selector: "2026.5.3-beta.1",
                   selectorKind: "exact-version",
                   exactVersion: true,
@@ -340,7 +340,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
               entries: [
                 {
                   source: "external",
@@ -358,7 +358,7 @@ export function describeChannelPluginCatalogEntriesContract() {
                       order: 47,
                     },
                     install: {
-                      clawhubSpec: "clawhub:operator/clawhub-chat@2026.5.2",
+                      clawhubSpec: "clawhub:openclaw/clawhub-chat@2026.5.2",
                       defaultChoice: "clawhub",
                       minHostVersion: ">=2026.5.1",
                     },
@@ -381,15 +381,15 @@ export function describeChannelPluginCatalogEntriesContract() {
                 blurb: "ClawHub-backed chat channel.",
               },
               install: {
-                clawhubSpec: "clawhub:operator/clawhub-chat@2026.5.2",
+                clawhubSpec: "clawhub:openclaw/clawhub-chat@2026.5.2",
                 defaultChoice: "clawhub",
                 minHostVersion: ">=2026.5.1",
               },
               installSource: {
                 defaultChoice: "clawhub",
                 clawhub: {
-                  spec: "clawhub:operator/clawhub-chat@2026.5.2",
-                  packageName: "operator/clawhub-chat",
+                  spec: "clawhub:openclaw/clawhub-chat@2026.5.2",
+                  packageName: "openclaw/clawhub-chat",
                   version: "2026.5.2",
                   exactVersion: true,
                 },
@@ -412,7 +412,7 @@ export function describeChannelPluginCatalogEntriesContract() {
               $schema: "./manifest.schema.json",
               schemaVersion: 1,
               description:
-                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `operator plugins install`.",
+                "Extension manifest. Declares plugin packages that Operator can discover during onboarding and install on demand via `openclaw plugins install`.",
               entries: [
                 {
                   name: "operator-plugin-yuanbao",
@@ -493,7 +493,7 @@ export function describeChannelPluginCatalogPathResolutionContract() {
           writeCatalogFile(
             catalogPath,
             createCatalogEntry({
-              packageName: "@operator/env-demo-channel",
+              packageName: "@gabrielvfonseca/env-demo-channel",
               channelId: "env-demo-channel",
               label: "Env Demo Channel",
               blurb: "Env demo entry",
@@ -522,7 +522,7 @@ export function describeChannelPluginCatalogPathResolutionContract() {
           writeCatalogFile(
             catalogPath,
             createCatalogEntry({
-              packageName: "@operator/default-env-demo",
+              packageName: "@gabrielvfonseca/default-env-demo",
               channelId: "default-env-demo",
               label: "Default Env Demo",
               blurb: "Default env demo entry",

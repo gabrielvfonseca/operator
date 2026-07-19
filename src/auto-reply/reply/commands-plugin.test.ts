@@ -1,5 +1,5 @@
 // Tests plugin command dispatch and plugin-scoped command aliases.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 import { handlePluginCommand } from "./commands-plugin.js";

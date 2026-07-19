@@ -1,5 +1,5 @@
 {
-  "name": "@operator/gateway-protocol",
+  "name": "@gabrielvfonseca/gateway-protocol",
   "version": "0.0.0-private",
   "private": true,
   "files": [

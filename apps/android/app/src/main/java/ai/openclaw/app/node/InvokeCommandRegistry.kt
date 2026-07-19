@@ -1,20 +1,20 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.protocol.OpenClawCalendarCommand
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawCanvasA2UICommand
-import ai.openclaw.app.protocol.OpenClawCanvasCommand
-import ai.openclaw.app.protocol.OpenClawCapability
-import ai.openclaw.app.protocol.OpenClawContactsCommand
-import ai.openclaw.app.protocol.OpenClawDeviceCommand
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawNotificationsCommand
-import ai.openclaw.app.protocol.OpenClawPhotosCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
-import ai.openclaw.app.protocol.OpenClawSystemCommand
-import ai.openclaw.app.protocol.OpenClawTalkCommand
+import ai.operator.app.protocol.OperatorCalendarCommand
+import ai.operator.app.protocol.OperatorCallLogCommand
+import ai.operator.app.protocol.OperatorCameraCommand
+import ai.operator.app.protocol.OperatorCanvasA2UICommand
+import ai.operator.app.protocol.OperatorCanvasCommand
+import ai.operator.app.protocol.OperatorCapability
+import ai.operator.app.protocol.OperatorContactsCommand
+import ai.operator.app.protocol.OperatorDeviceCommand
+import ai.operator.app.protocol.OperatorLocationCommand
+import ai.operator.app.protocol.OperatorMotionCommand
+import ai.operator.app.protocol.OperatorNotificationsCommand
+import ai.operator.app.protocol.OperatorPhotosCommand
+import ai.operator.app.protocol.OperatorSmsCommand
+import ai.operator.app.protocol.OperatorSystemCommand
+import ai.operator.app.protocol.OperatorTalkCommand
 
 /** Runtime feature flags used to decide which node tools are advertised. */
 data class NodeRuntimeFlags(
@@ -77,39 +77,39 @@ object InvokeCommandRegistry {
   /** Capabilities mirror gateway protocol ids and are filtered by device state. */
   val capabilityManifest: List<NodeCapabilitySpec> =
     listOf(
-      NodeCapabilitySpec(name = OpenClawCapability.Canvas.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Device.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Notifications.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.System.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Canvas.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Device.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Notifications.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.System.rawValue),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Camera.rawValue,
+        name = OperatorCapability.Camera.rawValue,
         availability = NodeCapabilityAvailability.CameraEnabled,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Sms.rawValue,
+        name = OperatorCapability.Sms.rawValue,
         availability = NodeCapabilityAvailability.SmsAvailable,
       ),
-      NodeCapabilitySpec(name = OpenClawCapability.Talk.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Talk.rawValue),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Location.rawValue,
+        name = OperatorCapability.Location.rawValue,
         availability = NodeCapabilityAvailability.LocationEnabled,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Photos.rawValue,
+        name = OperatorCapability.Photos.rawValue,
         availability = NodeCapabilityAvailability.PhotosAvailable,
       ),
-      NodeCapabilitySpec(name = OpenClawCapability.Contacts.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Calendar.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Contacts.rawValue),
+      NodeCapabilitySpec(name = OperatorCapability.Calendar.rawValue),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Motion.rawValue,
+        name = OperatorCapability.Motion.rawValue,
         availability = NodeCapabilityAvailability.MotionAvailable,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.CallLog.rawValue,
+        name = OperatorCapability.CallLog.rawValue,
         availability = NodeCapabilityAvailability.CallLogAvailable,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.VoiceWake.rawValue,
+        name = OperatorCapability.VoiceWake.rawValue,
         availability = NodeCapabilityAvailability.VoiceWakeEnabled,
       ),
     )
@@ -118,128 +118,128 @@ object InvokeCommandRegistry {
   val all: List<InvokeCommandSpec> =
     listOf(
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Present.rawValue,
+        name = OperatorCanvasCommand.Present.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Hide.rawValue,
+        name = OperatorCanvasCommand.Hide.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Navigate.rawValue,
+        name = OperatorCanvasCommand.Navigate.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Eval.rawValue,
+        name = OperatorCanvasCommand.Eval.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Snapshot.rawValue,
+        name = OperatorCanvasCommand.Snapshot.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.Push.rawValue,
+        name = OperatorCanvasA2UICommand.Push.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.PushJSONL.rawValue,
+        name = OperatorCanvasA2UICommand.PushJSONL.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.Reset.rawValue,
+        name = OperatorCanvasA2UICommand.Reset.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawSystemCommand.Notify.rawValue,
+        name = OperatorSystemCommand.Notify.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawTalkCommand.PttStart.rawValue,
+        name = OperatorTalkCommand.PttStart.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawTalkCommand.PttStop.rawValue,
+        name = OperatorTalkCommand.PttStop.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawTalkCommand.PttCancel.rawValue,
+        name = OperatorTalkCommand.PttCancel.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawTalkCommand.PttOnce.rawValue,
+        name = OperatorTalkCommand.PttOnce.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCameraCommand.List.rawValue,
-        requiresForeground = true,
-        availability = InvokeCommandAvailability.CameraEnabled,
-      ),
-      InvokeCommandSpec(
-        name = OpenClawCameraCommand.Snap.rawValue,
+        name = OperatorCameraCommand.List.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawCameraCommand.Clip.rawValue,
+        name = OperatorCameraCommand.Snap.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawLocationCommand.Get.rawValue,
+        name = OperatorCameraCommand.Clip.rawValue,
+        requiresForeground = true,
+        availability = InvokeCommandAvailability.CameraEnabled,
+      ),
+      InvokeCommandSpec(
+        name = OperatorLocationCommand.Get.rawValue,
         availability = InvokeCommandAvailability.LocationEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Status.rawValue,
+        name = OperatorDeviceCommand.Status.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Info.rawValue,
+        name = OperatorDeviceCommand.Info.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Permissions.rawValue,
+        name = OperatorDeviceCommand.Permissions.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Health.rawValue,
+        name = OperatorDeviceCommand.Health.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Apps.rawValue,
+        name = OperatorDeviceCommand.Apps.rawValue,
         availability = InvokeCommandAvailability.InstalledAppsSharingEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawNotificationsCommand.List.rawValue,
+        name = OperatorNotificationsCommand.List.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawNotificationsCommand.Actions.rawValue,
+        name = OperatorNotificationsCommand.Actions.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawPhotosCommand.Latest.rawValue,
+        name = OperatorPhotosCommand.Latest.rawValue,
         availability = InvokeCommandAvailability.PhotosAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawContactsCommand.Search.rawValue,
+        name = OperatorContactsCommand.Search.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawContactsCommand.Add.rawValue,
+        name = OperatorContactsCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawCalendarCommand.Events.rawValue,
+        name = OperatorCalendarCommand.Events.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawCalendarCommand.Add.rawValue,
+        name = OperatorCalendarCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawMotionCommand.Activity.rawValue,
+        name = OperatorMotionCommand.Activity.rawValue,
         availability = InvokeCommandAvailability.MotionActivityAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawMotionCommand.Pedometer.rawValue,
+        name = OperatorMotionCommand.Pedometer.rawValue,
         availability = InvokeCommandAvailability.MotionPedometerAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawSmsCommand.Send.rawValue,
+        name = OperatorSmsCommand.Send.rawValue,
         availability = InvokeCommandAvailability.SendSmsAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawSmsCommand.Search.rawValue,
+        name = OperatorSmsCommand.Search.rawValue,
         availability = InvokeCommandAvailability.RequestableSmsSearchAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawCallLogCommand.Search.rawValue,
+        name = OperatorCallLogCommand.Search.rawValue,
         availability = InvokeCommandAvailability.CallLogAvailable,
       ),
       InvokeCommandSpec(

@@ -3,8 +3,8 @@
  *
  * Keeps aliases, groups, profile expansion, and prefix matching consistent across allow/deny paths.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   CORE_TOOL_GROUPS,
   resolveCoreToolProfilePolicy,

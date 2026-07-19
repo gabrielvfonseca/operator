@@ -1,7 +1,7 @@
 // Qa Lab tests cover suite plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { CRABLINE_SERVER_CHANNELS } from "@operator/crabline";
+import { CRABLINE_SERVER_CHANNELS } from "@openclaw/crabline";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { QA_EVIDENCE_FILENAME, QA_EVIDENCE_SUMMARY_KIND } from "./evidence-summary.js";
 import type { QaLabServerHandle } from "./lab-server.types.js";
@@ -760,12 +760,12 @@ describe("qa suite", () => {
     expect(
       qaSuiteProgressTesting.buildQaRuntimeEnvPatch({
         providerMode: "mock-openai",
-        forcedRuntime: "openclaw",
+        forcedRuntime: "@gabrielvfonseca/operator",
         mockBaseUrl: "http://127.0.0.1:44080",
       }),
     ).toEqual({
       OPERATOR_BUILD_PRIVATE_QA: "1",
-      OPERATOR_QA_FORCE_RUNTIME: "openclaw",
+      OPERATOR_QA_FORCE_RUNTIME: "@gabrielvfonseca/operator",
     });
   });
 
@@ -787,7 +787,7 @@ describe("qa suite", () => {
       },
     });
     const sutOperatorCommand = {
-      executablePath: "/usr/local/bin/openclaw-telegram-sut-launcher",
+      executablePath: "/usr/local/bin/operator-telegram-sut-launcher",
       usePackagedPlugins: true,
     };
 
@@ -902,7 +902,7 @@ describe("qa suite", () => {
       qaSuiteProgressTesting.remapModelRefForForcedRuntime({
         modelRef: "mock-openai/gpt-5.6-luna",
         providerMode: "mock-openai",
-        forcedRuntime: "openclaw",
+        forcedRuntime: "@gabrielvfonseca/operator",
       }),
     ).toBe("mock-openai/gpt-5.6-luna");
   });

@@ -1,17 +1,20 @@
 // Telegram plugin module implements account inspect behavior.
-import { resolveAccountWithDefaultFallback } from "openclaw/plugin-sdk/account-core";
-import { tryReadSecretFileSync } from "openclaw/plugin-sdk/channel-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveDefaultSecretProviderAlias } from "openclaw/plugin-sdk/provider-auth";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/routing";
+import { resolveAccountWithDefaultFallback } from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import { tryReadSecretFileSync } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { TelegramAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveDefaultSecretProviderAlias } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   hasConfiguredSecretInput,
   normalizeSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
-import { coerceSecretRef } from "openclaw/plugin-sdk/secret-input-runtime";
-import { FsSafeError } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { coerceSecretRef } from "@gabrielvfonseca/operator/plugin-sdk/secret-input-runtime";
+import { FsSafeError } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   mergeTelegramAccountConfig,
   resolveDefaultTelegramAccountId,

@@ -1,9 +1,9 @@
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
-import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import type {
   MaterializedSqliteSessionStateDeletePlan,
   SqliteSessionStateDeletePlan,

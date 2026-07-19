@@ -1,5 +1,5 @@
 // Msteams tests cover message handler.authz plugin behavior.
-import { createInboundDebouncer } from "openclaw/plugin-sdk/channel-inbound-debounce";
+import { createInboundDebouncer } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound-debounce";
 import { describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../../runtime-api.js";
 import type { GraphThreadMessage } from "../graph-thread.js";

@@ -22,7 +22,7 @@ function setButtonLabel(button: HTMLButtonElement, label: string) {
 function createCopyButton(options: CopyButtonOptions): TemplateResult {
   const idleLabel = options.label ?? COPY_LABEL;
   return html`
-    <openclaw-tooltip .content=${idleLabel}>
+    <operator-tooltip .content=${idleLabel}>
       <button
         class="btn btn--xs chat-copy-btn"
         type="button"
@@ -78,7 +78,7 @@ function createCopyButton(options: CopyButtonOptions): TemplateResult {
           <span class="chat-copy-btn__icon-check">${icons.check}</span>
         </span>
       </button>
-    </openclaw-tooltip>
+    </operator-tooltip>
   `;
 }
 

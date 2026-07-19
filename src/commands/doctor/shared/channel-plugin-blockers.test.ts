@@ -1,8 +1,8 @@
 // Channel plugin blocker tests cover doctor diagnostics for blocked channel plugin setup.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 import * as manifestRegistry from "../../../plugins/manifest-registry.js";
 import {
   channelPluginBlockerHitToHealthFinding,
@@ -1168,7 +1168,7 @@ describe("channel plugin blockers", () => {
           enabledByDefault: true,
         },
         {
-          id: "openclaw-lark",
+          id: "operator-lark",
           origin: "config",
           channels: ["feishu"],
           enabledByDefault: false,
@@ -1190,7 +1190,7 @@ describe("channel plugin blockers", () => {
           feishu: {
             enabled: false,
           },
-          "openclaw-lark": {
+          "operator-lark": {
             enabled: true,
           },
         },
@@ -1217,7 +1217,7 @@ describe("channel plugin blockers", () => {
           enabledByDefault: true,
         },
         {
-          id: "openclaw-lark",
+          id: "operator-lark",
           origin: "config",
           channels: ["feishu"],
           enabledByDefault: false,
@@ -1258,7 +1258,7 @@ describe("channel plugin blockers", () => {
       },
       {
         channelId: "feishu",
-        pluginId: "openclaw-lark",
+        pluginId: "operator-lark",
         reason: "missing explicit enablement",
       },
     ]);

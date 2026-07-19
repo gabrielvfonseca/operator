@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import { loggingState } from "../logging/state.js";
@@ -77,7 +77,7 @@ async function withTempStore(
   fn: (ctx: { dir: string; store: string }) => Promise<void>,
   overrides?: Partial<OperatorConfig>,
 ) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-agent-cli-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-agent-cli-"));
   const store = path.join(dir, "sessions.json");
   mockConfig(store, overrides);
   try {
@@ -457,7 +457,7 @@ describe("agentCliCommand", () => {
 
   it("uses an agent-scoped --to value as the gateway session selector", async () => {
     await withTempStore(async () => {
-      const sessionKey = "agent:main:openclaw-weixin:direct:o9cq802hhmfc@im.wechat";
+      const sessionKey = "agent:main:operator-weixin:direct:o9cq802hhmfc@im.wechat";
       mockGatewaySuccessReply();
 
       await agentCliCommand({ message: "hi", to: sessionKey }, runtime);

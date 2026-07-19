@@ -1,12 +1,12 @@
-import { ToolAuthorizationError } from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionContext } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
-import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
+import { ToolAuthorizationError } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelMessageActionContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import type { OperatorPluginToolContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   resolveDefaultGroupPolicy,
   resolveOpenProviderRuntimeGroupPolicy,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { normalizeFeishuChatType } from "./chat-type.js";
 import {
   hasExplicitFeishuGroupConfig,

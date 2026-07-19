@@ -1,5 +1,5 @@
 {
-  "signingRepo": "git@github.com:openclaw/apps-signing.git",
+  "signingRepo": "git@github.com:operator/apps-signing.git",
   "signingBranch": "main",
   "assetPath": "android/openclaw",
   "uploadKeystoreEncryptedFile": "upload-keystore.jks.enc",
@@ -7,9 +7,9 @@
   "apkCertificateSha256": "80dbc62315ea216dd6e8a7060735a866ddc464a48ed50fef29ff0550468b9a63",
   "materializedRoot": "apps/android/build/release-signing",
   "gradlePropertyNames": [
-    "OPENCLAW_ANDROID_STORE_FILE",
-    "OPENCLAW_ANDROID_STORE_PASSWORD",
-    "OPENCLAW_ANDROID_KEY_ALIAS",
-    "OPENCLAW_ANDROID_KEY_PASSWORD"
+    "OPERATOR_ANDROID_STORE_FILE",
+    "OPERATOR_ANDROID_STORE_PASSWORD",
+    "OPERATOR_ANDROID_KEY_ALIAS",
+    "OPERATOR_ANDROID_KEY_PASSWORD"
   ]
 }

@@ -1,6 +1,6 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
-import ai.openclaw.app.voice.TalkAudioLevel
+import ai.operator.app.voice.TalkAudioLevel
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.SystemClock

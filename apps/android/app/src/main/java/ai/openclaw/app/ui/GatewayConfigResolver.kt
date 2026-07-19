@@ -1,10 +1,10 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.gateway.isLocalCleartextGatewayHost
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
+import ai.operator.app.gateway.isLocalCleartextGatewayHost
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -406,7 +406,7 @@ internal fun composeGatewayManualUrl(
     }
   if (port !in 1..65535) return null
   val scheme = if (tls) "https" else "http"
-  return "$scheme://${ai.openclaw.app.gateway.formatGatewayAuthority(bareHost, port)}"
+  return "$scheme://${ai.operator.app.gateway.formatGatewayAuthority(bareHost, port)}"
 }
 
 /** Keeps manual transport controls aligned with the runtime's remote-host TLS policy. */

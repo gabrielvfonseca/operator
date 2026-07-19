@@ -1,7 +1,7 @@
 /**
  * Resolves strict agentic execution contracts for provider/model pairs.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveAgentExecutionContract, resolveSessionAgentIds } from "./agent-scope.js";
 

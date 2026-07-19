@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 /** Camera HUD state categories shown over the Android UI during capture. */
 enum class CameraHudKind {

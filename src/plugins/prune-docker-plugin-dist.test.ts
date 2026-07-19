@@ -17,14 +17,14 @@ function makeRepoRoot(prefix: string): string {
 function writeDistPluginFile(repoRoot: string, root: "dist" | "dist-runtime", pluginId: string) {
   const pluginDir = path.join(repoRoot, root, "extensions", pluginId);
   fs.mkdirSync(pluginDir, { recursive: true });
-  fs.writeFileSync(path.join(pluginDir, "openclaw.plugin.json"), "{}\n", "utf8");
+  fs.writeFileSync(path.join(pluginDir, "operator.plugin.json"), "{}\n", "utf8");
 }
 
 function writePluginSourcePackage(repoRoot: string, pluginId: string) {
   const pluginDir = path.join(repoRoot, "extensions", pluginId);
   fs.mkdirSync(pluginDir, { recursive: true });
   writeJsonFile(path.join(pluginDir, "package.json"), {
-    name: `@operator/${pluginId}`,
+    name: `@gabrielvfonseca/${pluginId}`,
     version: "0.0.0",
   });
 }
@@ -57,7 +57,7 @@ describe("pruneDockerPluginDist", () => {
   });
 
   it("removes package-excluded plugin runtime artifacts unless Docker explicitly opts it in", () => {
-    const repoRoot = makeRepoRoot("openclaw-docker-plugin-dist-");
+    const repoRoot = makeRepoRoot("operator-docker-plugin-dist-");
     writeJsonFile(path.join(repoRoot, "package.json"), {
       files: ["dist/**", "!dist/extensions/diagnostics-otel/**", "!dist/extensions/feishu/**"],
     });
@@ -89,14 +89,14 @@ describe("pruneDockerPluginDist", () => {
   });
 
   it("honors custom bundled plugin source roots when pruning Docker runtime importers", () => {
-    const repoRoot = makeRepoRoot("openclaw-docker-plugin-source-");
+    const repoRoot = makeRepoRoot("operator-docker-plugin-source-");
     writeJsonFile(path.join(repoRoot, "package.json"), {
       files: ["dist/**", "!dist/extensions/acpx/**"],
     });
     const pluginDir = path.join(repoRoot, "plugins", "acpx");
     fs.mkdirSync(pluginDir, { recursive: true });
     writeJsonFile(path.join(pluginDir, "package.json"), {
-      name: "@operator/acpx",
+      name: "@gabrielvfonseca/acpx",
       version: "0.0.0",
     });
 
@@ -112,7 +112,7 @@ describe("pruneDockerPluginDist", () => {
   });
 
   it("removes node_modules dependency closure that only omitted Docker plugins need", () => {
-    const repoRoot = makeRepoRoot("openclaw-docker-plugin-node-modules-");
+    const repoRoot = makeRepoRoot("operator-docker-plugin-node-modules-");
     writeJsonFile(path.join(repoRoot, "package.json"), {
       files: ["dist/**", "!dist/extensions/acpx/**", "!dist/extensions/codex/**"],
       dependencies: {
@@ -120,7 +120,7 @@ describe("pruneDockerPluginDist", () => {
       },
     });
     writeJsonFile(path.join(repoRoot, "extensions", "acpx", "package.json"), {
-      name: "@operator/acpx",
+      name: "@gabrielvfonseca/acpx",
       version: "0.0.0",
       dependencies: {
         "@zed-industries/codex-acp": "0.0.0",
@@ -128,15 +128,15 @@ describe("pruneDockerPluginDist", () => {
       },
     });
     writeJsonFile(path.join(repoRoot, "extensions", "codex", "package.json"), {
-      name: "@operator/codex",
+      name: "@gabrielvfonseca/codex",
       version: "0.0.0",
       dependencies: {
         "@openai/codex": "0.0.0",
         zod: "0.0.0",
       },
     });
-    writeNodePackage(repoRoot, "@operator/acpx");
-    writeNodePackage(repoRoot, "@operator/codex");
+    writeNodePackage(repoRoot, "@gabrielvfonseca/acpx");
+    writeNodePackage(repoRoot, "@gabrielvfonseca/codex");
     writeNodePackage(repoRoot, "zod");
     writeNodePackage(repoRoot, "@openai/codex", {
       optionalDependencies: {
@@ -157,7 +157,7 @@ describe("pruneDockerPluginDist", () => {
     });
 
     expect(removed).toEqual([
-      "node_modules/@operator/acpx",
+      "node_modules/@gabrielvfonseca/acpx",
       "node_modules/@zed-industries/codex-acp",
       "node_modules/@zed-industries/codex-acp-linux-x64",
       "extensions/acpx",

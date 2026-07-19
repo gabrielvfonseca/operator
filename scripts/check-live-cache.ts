@@ -1,9 +1,9 @@
-// Check Live Cache script supports OpenClaw repository automation.
+// Check Live Cache script supports Operator repository automation.
 import { runLiveCacheRegression } from "../src/agents/live-cache-regression-runner.js";
 import { LIVE_CACHE_TEST_ENABLED, logLiveCache } from "../src/agents/live-cache-test-support.js";
 
 if (!LIVE_CACHE_TEST_ENABLED) {
-  logLiveCache("skipped; set OPENCLAW_LIVE_TEST=1 and OPENCLAW_LIVE_CACHE_TEST=1");
+  logLiveCache("skipped; set OPERATOR_LIVE_TEST=1 and OPERATOR_LIVE_CACHE_TEST=1");
   process.exit(0);
 }
 

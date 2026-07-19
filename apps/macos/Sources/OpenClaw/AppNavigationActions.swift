@@ -43,7 +43,7 @@ enum AppNavigationActions {
         SettingsTabRouter.request(tab)
         SettingsWindowOpener.shared.open()
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .openclawSelectSettingsTab, object: tab)
+            NotificationCenter.default.post(name: .operatorSelectSettingsTab, object: tab)
         }
     }
 }

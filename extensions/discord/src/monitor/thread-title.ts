@@ -1,12 +1,12 @@
 // Discord plugin module implements thread title behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   completeWithPreparedSimpleCompletionModel,
   extractAssistantText,
   prepareSimpleCompletionModelForAgent,
-} from "openclaw/plugin-sdk/simple-completion-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/simple-completion-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { withAbortTimeout } from "./timeouts.js";
 
 const DEFAULT_THREAD_TITLE_TIMEOUT_MS = 60_000;

@@ -1,7 +1,7 @@
 // Qa Lab plugin module implements qa channel transport behavior.
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import type { QaBusState } from "./bus-state.js";
 import { QaSuiteInfraError } from "./errors.js";
 import { getQaProvider } from "./providers/index.js";
@@ -91,7 +91,7 @@ export function createQaChannelGatewayConfig(params: {
       [QA_CHANNEL_ID]: {
         enabled: true,
         baseUrl: params.baseUrl,
-        botUserId: "openclaw",
+        botUserId: "@gabrielvfonseca/operator",
         botDisplayName: "Operator QA",
         allowFrom: senderAllowlist ? [...senderAllowlist] : ["*"],
         ...(senderAllowlist

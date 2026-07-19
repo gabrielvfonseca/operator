@@ -7,7 +7,7 @@ describe("formatCliFailureLines", () => {
     const lines = formatCliFailureLines({
       title: "Could not start the CLI.",
       error: new Error("config file is invalid"),
-      argv: ["node", "openclaw", "status"],
+      argv: ["node", "@gabrielvfonseca/operator", "status"],
       env: {},
     });
 

@@ -5,7 +5,7 @@ import OSLog
 @MainActor
 final class CLIInstallPrompter {
     static let shared = CLIInstallPrompter()
-    private let logger = Logger(subsystem: "ai.openclaw", category: "cli.prompt")
+    private let logger = Logger(subsystem: "ai.operator", category: "cli.prompt")
     private var isPrompting = false
 
     func checkAndPromptIfNeeded(reason: String) {
@@ -29,7 +29,7 @@ final class CLIInstallPrompter {
             status: managedStatus,
             launchAgentUsesManagedCLI: Self.launchAgentUsesManagedCLI(
                 programArguments: GatewayLaunchAgentManager.launchdConfigSnapshot()?.programArguments ?? []),
-            gatewayUpdateChannel: OpenClawConfigFile.gatewayUpdateChannel(),
+            gatewayUpdateChannel: OperatorConfigFile.gatewayUpdateChannel(),
             installPolicy: CLIInstallPolicy.storedPolicy(),
             launchAgentWriteDisabled: GatewayLaunchAgentManager.isLaunchAgentWriteDisabled())
         if await self.completePendingManagedRestartIfNeeded(managedStatus: managedStatus) {
@@ -75,7 +75,7 @@ final class CLIInstallPrompter {
         {
             guard confirmStable else { return target }
             let alert = NSAlert()
-            alert.messageText = "Install OpenClaw CLI?"
+            alert.messageText = "Install Operator CLI?"
             alert.informativeText = "The Mac node needs the matching CLI runtime."
             alert.addButton(withTitle: "Install CLI")
             alert.addButton(withTitle: "Not Now")
@@ -101,9 +101,9 @@ final class CLIInstallPrompter {
     private func chooseChannel(suggested: CLIInstaller.Channel) -> CLIInstaller.Channel? {
         let channels = [suggested] + CLIInstaller.Channel.allCases.filter { $0 != suggested }
         let alert = NSAlert()
-        alert.messageText = "Choose OpenClaw CLI channel"
+        alert.messageText = "Choose Operator CLI channel"
         alert.informativeText =
-            "This is an unreleased OpenClaw build. " +
+            "This is an unreleased Operator build. " +
             "Local mode can use Stable, Beta, or Dev from Git main."
         for channel in channels {
             alert.addButton(withTitle: channel.label)
@@ -151,9 +151,9 @@ final class CLIInstallPrompter {
             }
             let activation: CLIInstaller.LocalGatewayActivation?
             if usesLocalGateway {
-                await status.set("Starting OpenClaw Gateway…")
+                await status.set("Starting Operator Gateway…")
                 if !showCompletionAlert {
-                    self.logger.info("managed CLI repair: Starting OpenClaw Gateway…")
+                    self.logger.info("managed CLI repair: Starting Operator Gateway…")
                 }
                 activation = await CLIInstaller.activateLocalGateway()
             } else {
@@ -172,13 +172,13 @@ final class CLIInstallPrompter {
             }
             let message = switch activation {
             case .ready:
-                "OpenClaw Gateway is ready."
+                "Operator Gateway is ready."
             case .deferred:
-                "OpenClaw is installed. The Gateway will start when This Mac is active and resumed."
+                "Operator is installed. The Gateway will start when This Mac is active and resumed."
             case .failed:
-                "OpenClaw was installed, but the Gateway did not start. Open Settings to retry."
+                "Operator was installed, but the Gateway did not start. Open Settings to retry."
             case nil:
-                "OpenClaw CLI is ready for the Mac node."
+                "Operator CLI is ready for the Mac node."
             }
             await status.set(message)
             if !showCompletionAlert {
@@ -284,7 +284,7 @@ final class CLIInstallPrompter {
         SettingsTabRouter.request(tab)
         SettingsWindowOpener.shared.open()
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .openclawSelectSettingsTab, object: tab)
+            NotificationCenter.default.post(name: .operatorSelectSettingsTab, object: tab)
         }
     }
 

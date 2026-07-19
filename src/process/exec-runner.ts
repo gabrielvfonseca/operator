@@ -1,6 +1,6 @@
 import process from "node:process";
-import { expectDefined } from "@operator/normalization-core";
-import { toErrorObject } from "@operator/normalization-core/error-coercion";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { toErrorObject } from "@gabrielvfonseca/normalization-core/error-coercion";
 import {
   decodeWindowsOutputBuffer,
   resolveWindowsConsoleEncoding,

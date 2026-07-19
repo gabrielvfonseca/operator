@@ -1,8 +1,8 @@
 // Coordinates task registry creation, updates, delivery state, and snapshots.
 import crypto from "node:crypto";
 import { createRequire } from "node:module";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   buildAgentRunTerminalOutcome,
   type AgentRunTerminalOutcome,

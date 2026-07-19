@@ -1,8 +1,8 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.R
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.R
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawTheme
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

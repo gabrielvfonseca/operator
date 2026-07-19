@@ -1,11 +1,11 @@
 ---
-name: release-openclaw-announcement
-description: "Draft or post OpenClaw beta/stable Discord release announcements from changelog, GitHub release, registry, and validation evidence. Use when announcing a beta, stable release, release candidate, or asking what users should test after an OpenClaw release."
+name: release-operator-announcement
+description: "Draft or post Operator beta/stable Discord release announcements from changelog, GitHub release, registry, and validation evidence. Use when announcing a beta, stable release, release candidate, or asking what users should test after an Operator release."
 ---
 
-# OpenClaw Release Announcement
+# Operator Release Announcement
 
-Use with `release-openclaw-maintainer` after a beta or stable release is live.
+Use with `release-operator-maintainer` after a beta or stable release is live.
 Use with `$discord-user-post` when actually posting to Discord as the logged-in
 user.
 
@@ -43,16 +43,16 @@ fixes in their natural category.
 
 Every beta announcement must make beta status explicit and include:
 
-- exact version, e.g. `OpenClaw 2026.5.25-beta.1`
+- exact version, e.g. `Operator 2026.5.25-beta.1`
 - one-sentence risk framing: beta, useful for testing, not stable promotion
 - focused test areas derived from evidence, not guesswork
 - update command promoted near the top:
   ```sh
-  openclaw update --channel beta --yes
-  openclaw --version
+  operator update --channel beta --yes
+  operator --version
   ```
 - fresh install path:
-  `Install from https://openclaw.ai`
+  `Install from https://operator.ai`
 - GitHub release link
 - concise validation note, without making CI the headline
 
@@ -63,11 +63,11 @@ registry metadata as evidence; do not turn that into public install guidance.
 For stable announcements, use the stable channel wording:
 
 ```sh
-openclaw update --channel stable --yes
-openclaw --version
+operator update --channel stable --yes
+operator --version
 ```
 
-Fresh installs still point to `https://openclaw.ai`.
+Fresh installs still point to `https://operator.ai`.
 
 ## Style
 
@@ -84,4 +84,4 @@ Fresh installs still point to `https://openclaw.ai`.
 When asked to post, use `$discord-user-post` to operate the logged-in Discord
 desktop app as the user. Resolve and visibly verify the exact server/channel,
 inspect the final body, and request action-time confirmation before entering or
-sending it. Never use OpenClaw channel sends, bots, webhooks, relays, or tokens.
+sending it. Never use Operator channel sends, bots, webhooks, relays, or tokens.

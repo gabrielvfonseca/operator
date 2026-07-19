@@ -141,7 +141,7 @@ class MockReq extends EventEmitter {
       host: "localhost",
       accept: "text/event-stream",
       authorization: "Bearer token",
-      "x-openclaw-scopes": "operator.read",
+      "x-operator-scopes": "operator.read",
     };
   }
 }
@@ -254,7 +254,7 @@ async function withRealNodeSessionHistoryStream(
         headers: {
           accept: "text/event-stream",
           authorization: "Bearer token",
-          "x-openclaw-scopes": "operator.read",
+          "x-operator-scopes": "operator.read",
         },
       },
       resolve,

@@ -2,7 +2,7 @@
  * Resolves public avatar sources for configured agent identities.
  */
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import {

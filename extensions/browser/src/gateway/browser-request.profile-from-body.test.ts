@@ -1,5 +1,5 @@
 // Browser tests cover browser request.profile from body plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
@@ -338,7 +338,7 @@ describe("browser.request profile selection", () => {
       error: "headed mode needs a display",
       reason: "no_display_for_headed_profile",
       details: {
-        profile: "openclaw",
+        profile: "@gabrielvfonseca/operator",
         requestedHeadless: false,
         headlessSource: "config",
         displayPresent: false,

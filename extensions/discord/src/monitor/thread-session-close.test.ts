@@ -1,11 +1,11 @@
 // Discord tests cover thread session close plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => {
   const listSessionEntries = vi.fn();
   const patchSessionEntry = vi.fn();
-  const resolveStorePath = vi.fn(() => "/tmp/openclaw-sessions.json");
+  const resolveStorePath = vi.fn(() => "/tmp/operator-sessions.json");
   return { listSessionEntries, patchSessionEntry, resolveStorePath };
 });
 
@@ -64,7 +64,7 @@ describe("closeDiscordThreadSessions", () => {
     hoisted.listSessionEntries.mockReset();
     hoisted.patchSessionEntry.mockReset();
     hoisted.resolveStorePath.mockClear();
-    hoisted.resolveStorePath.mockReturnValue("/tmp/openclaw-sessions.json");
+    hoisted.resolveStorePath.mockReturnValue("/tmp/operator-sessions.json");
   });
 
   it("resets updatedAt to 0 for sessions whose key contains the threadId", async () => {

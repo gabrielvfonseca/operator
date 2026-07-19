@@ -3,7 +3,7 @@
  * Verifies snapshots are cloned and isolated across agent-specific stores.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   clearRuntimeAuthProfileStoreSnapshot,
@@ -76,7 +76,7 @@ describe("runtime auth profile snapshots", () => {
 
   it("isolates set/get/replace snapshot mutations without structuredClone", () => {
     const structuredCloneSpy = vi.spyOn(globalThis, "structuredClone");
-    const agentDir = "/tmp/openclaw-auth-runtime-snapshot-agent";
+    const agentDir = "/tmp/operator-auth-runtime-snapshot-agent";
     try {
       const stored = createStore("access-1");
       setRuntimeAuthProfileStoreSnapshot(stored, agentDir);
@@ -123,8 +123,8 @@ describe("runtime auth profile snapshots", () => {
   });
 
   it("clears one agent snapshot without disturbing other stores", () => {
-    const firstAgentDir = "/tmp/openclaw-auth-runtime-snapshot-first";
-    const secondAgentDir = "/tmp/openclaw-auth-runtime-snapshot-second";
+    const firstAgentDir = "/tmp/operator-auth-runtime-snapshot-first";
+    const secondAgentDir = "/tmp/operator-auth-runtime-snapshot-second";
     try {
       setRuntimeAuthProfileStoreSnapshot(createStore("main"));
       setRuntimeAuthProfileStoreSnapshot(createStore("first"), firstAgentDir);
@@ -144,14 +144,14 @@ describe("runtime auth profile snapshots", () => {
 
   it("bounds persisted mutation lineage by owner and profile", () => {
     for (let index = 0; index <= testing.MAX_PERSISTED_MUTATION_OWNERS; index += 1) {
-      noteRuntimeAuthProfileStorePersistedMutation(`/tmp/openclaw-mutation-owner-${index}`, {
+      noteRuntimeAuthProfileStorePersistedMutation(`/tmp/operator-mutation-owner-${index}`, {
         credentialsChanged: true,
         stateChanged: false,
         profileIds: ["openai:default"],
       });
     }
     for (let index = 0; index <= testing.MAX_PERSISTED_MUTATION_PROFILES_PER_OWNER; index += 1) {
-      noteRuntimeAuthProfileStorePersistedMutation("/tmp/openclaw-mutation-profile-owner", {
+      noteRuntimeAuthProfileStorePersistedMutation("/tmp/operator-mutation-profile-owner", {
         credentialsChanged: true,
         stateChanged: false,
         profileIds: [`openai:${index}`],

@@ -1,18 +1,21 @@
 import { createHash } from "node:crypto";
-import { resolveDefaultAgentDir, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import {
+  resolveDefaultAgentDir,
+  resolveDefaultAgentId,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   OperatorPluginApi,
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import type {
   SessionCatalogHost,
   SessionCatalogProvider,
-} from "openclaw/plugin-sdk/session-catalog";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { CODEX_CONTROL_METHODS } from "./app-server/capabilities.js";
 import { resolveCodexSupervisionAppServerRuntimeOptions } from "./app-server/config.js";
 import { buildCodexAppServerConnectionFingerprint } from "./app-server/plugin-app-cache-key.js";

@@ -1,9 +1,9 @@
 /** Builds provider auth summaries for model-list/status output. */
-import { normalizeProviderIdForAuth } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderIdForAuth } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { formatRemainingShort } from "../../agents/auth-health.js";
 import { resolveAuthProfileDisplayLabel } from "../../agents/auth-profiles/display.js";
 import { resolveAuthStorePathForDisplay } from "../../agents/auth-profiles/paths.js";

@@ -6,7 +6,7 @@
 import {
   normalizeTrimmedStringList,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { SecretRefSource } from "../config/types.secrets.js";
 import { listOperatorPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
 import { listKnownProviderEnvApiKeyNames } from "./model-auth-env-vars.js";

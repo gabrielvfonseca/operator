@@ -1,5 +1,5 @@
 // Mattermost tests cover monitor.inbound system event plugin behavior.
-import { createInboundDebouncer } from "openclaw/plugin-sdk/channel-inbound-debounce";
+import { createInboundDebouncer } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound-debounce";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { monitorMattermostProvider } from "./monitor.js";
 import type { OperatorConfig, ReplyPayload, RuntimeEnv } from "./runtime-api.js";
@@ -334,7 +334,7 @@ function createRuntimeCore(
         }),
       },
       session: {
-        resolveStorePath: () => "/tmp/openclaw-test-sessions.json",
+        resolveStorePath: () => "/tmp/operator-test-sessions.json",
         recordInboundSession: vi.fn(
           async (_params: {
             createIfMissing?: unknown;
@@ -442,7 +442,7 @@ describe("mattermost inbound user posts", () => {
     });
     mockState.fetchMattermostMe.mockResolvedValue({
       id: "bot-user",
-      username: "openclaw",
+      username: "@gabrielvfonseca/operator",
       update_at: 1,
     });
     mockState.registerMattermostMonitorSlashCommands.mockResolvedValue(undefined);
@@ -1133,7 +1133,7 @@ describe("mattermost inbound user posts", () => {
 
     expect(runtimeCore.channel.session.recordInboundSession).toHaveBeenCalledTimes(1);
     const [recordCall] = runtimeCore.channel.session.recordInboundSession.mock.calls.at(0) ?? [];
-    expect(recordCall?.storePath).toBe("/tmp/openclaw-test-sessions.json");
+    expect(recordCall?.storePath).toBe("/tmp/operator-test-sessions.json");
     expect(recordCall?.sessionKey).toBe("mattermost:default:channel:chan-1");
     const updateLastRoute = recordCall?.updateLastRoute;
     expect(updateLastRoute?.sessionKey).toBe("mattermost:default:channel:chan-1");

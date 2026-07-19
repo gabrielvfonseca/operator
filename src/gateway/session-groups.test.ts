@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
 import { loadSessionEntry, replaceSessionEntry } from "../config/sessions/session-accessor.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
@@ -22,7 +22,7 @@ describe("session groups catalog", () => {
 
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    root = await fs.mkdtemp(path.join(tempRoot, "openclaw-session-groups-"));
+    root = await fs.mkdtemp(path.join(tempRoot, "operator-session-groups-"));
     env = { ...process.env, OPERATOR_STATE_DIR: root };
   });
 

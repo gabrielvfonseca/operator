@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { PluginHealthErrorSummary } from "../../commands/health.types.js";
 import { createConfigIO } from "../../config/io.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

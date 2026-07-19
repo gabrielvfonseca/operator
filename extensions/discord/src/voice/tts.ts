@@ -5,10 +5,16 @@ import {
   resolveTtsConfig,
   resolveTtsPrefsPath,
   type ResolvedTtsConfig,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OperatorConfig, TtsConfig } from "openclaw/plugin-sdk/config-contracts";
-import { parseTtsDirectives } from "openclaw/plugin-sdk/speech";
-import { normalizeOptionalString, uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import type {
+  OperatorConfig,
+  TtsConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { parseTtsDirectives } from "@gabrielvfonseca/operator/plugin-sdk/speech";
+import {
+  normalizeOptionalString,
+  uniqueStrings,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { getDiscordRuntime } from "../runtime.js";
 import { sanitizeVoiceReplyTextForSpeech } from "./sanitize.js";
 

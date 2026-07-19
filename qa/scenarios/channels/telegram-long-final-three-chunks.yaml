@@ -35,7 +35,7 @@ flow:
             conversation: { id: telegram-stream-room, kind: channel }
             senderId: qa-stream-operator
             senderName: QA Stream Operator
-            text: "@openclaw Telegram long final three chunk QA check. Use the scripted three chunk final response."
+            text: "@operator Telegram long final three chunk QA check. Use the scripted three chunk final response."
         - waitForOutbound:
             conversation: { id: telegram-stream-room, kind: channel }
             sinceIndex: { ref: outboundStartIndex }

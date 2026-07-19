@@ -1,6 +1,6 @@
 // Imessage tests cover monitor.media policy plugin behavior.
-import type { dispatchInboundMessage } from "openclaw/plugin-sdk/reply-runtime";
-import type { waitForTransportReady } from "openclaw/plugin-sdk/transport-ready-runtime";
+import type { dispatchInboundMessage } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import type { waitForTransportReady } from "@gabrielvfonseca/operator/plugin-sdk/transport-ready-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { createIMessageRpcClient } from "./client.js";
 import { monitorIMessageProvider } from "./monitor.js";

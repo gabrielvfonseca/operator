@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 import type { RunCliAgentParams } from "../agents/cli-runner/types.js";
 import { fingerprintResolvedProviderAuth } from "../agents/execution-auth-binding.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { planSystemAgentCommandWithConfiguredModel } from "./assistant.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import { resolveSystemAgentConfiguredRouteFromConfig } from "./inference-route.js";
@@ -26,7 +26,7 @@ vi.mock("../agents/harness/runtime-plugin.js", async (importOriginal) => ({
 function overview(defaultModel?: string): SystemAgentOverview {
   return {
     config: {
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       exists: true,
       valid: true,
       issues: [],
@@ -43,7 +43,7 @@ function overview(defaultModel?: string): SystemAgentOverview {
     },
     gateway: { url: "ws://127.0.0.1:18789", source: "local loopback", reachable: false },
     references: {
-      docsUrl: "https://docs.openclaw.ai",
+      docsUrl: "https://docs.operator.ai",
       sourceUrl: "https://github.com/openclaw/openclaw",
     },
   };
@@ -51,7 +51,7 @@ function overview(defaultModel?: string): SystemAgentOverview {
 
 function snapshot(config: OperatorConfig) {
   return {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     exists: true,
     valid: true,
     hash: "hash",
@@ -87,7 +87,7 @@ describe("Operator configured-model planner", () => {
       agents: {
         defaults: {
           model: "openai/gpt-5.5",
-          models: { "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } } },
+          models: { "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } } },
         },
       },
       auth: {
@@ -139,7 +139,7 @@ describe("Operator configured-model planner", () => {
         ...authDeps,
         readConfigFileSnapshot: vi.fn(async () => snapshot(config)) as never,
         runEmbeddedAgent: runEmbeddedAgent as never,
-        createTempDir: async () => "/tmp/openclaw-planner",
+        createTempDir: async () => "/tmp/operator-planner",
         removeTempDir: async () => {},
       },
     });
@@ -207,7 +207,7 @@ describe("Operator configured-model planner", () => {
           ...deps,
           readConfigFileSnapshot: vi.fn(async () => snapshot(currentConfig)) as never,
           runEmbeddedAgent: runEmbeddedAgent as never,
-          createTempDir: async () => "/tmp/openclaw-planner",
+          createTempDir: async () => "/tmp/operator-planner",
           removeTempDir: async () => {
             currentConfig = changedConfig;
           },
@@ -249,7 +249,7 @@ describe("Operator configured-model planner", () => {
         readConfigFileSnapshot: vi.fn(async () => snapshot(config)) as never,
         runCliAgent: runCliAgent as never,
         runEmbeddedAgent: vi.fn() as never,
-        createTempDir: async () => "/tmp/openclaw-planner",
+        createTempDir: async () => "/tmp/operator-planner",
         removeTempDir,
       },
     });
@@ -267,13 +267,13 @@ describe("Operator configured-model planner", () => {
         authProfileId: "claude-cli:ops",
         executionMode: "side-question",
         disableTools: true,
-        workspaceDir: "/tmp/openclaw-planner",
-        cwd: "/tmp/openclaw-planner",
+        workspaceDir: "/tmp/operator-planner",
+        cwd: "/tmp/operator-planner",
         cleanupCliLiveSessionOnRunEnd: true,
       }),
     );
     expect(runCliAgent.mock.calls[0]?.[0]?.toolsAllow).toBeUndefined();
-    expect(removeTempDir).toHaveBeenCalledWith("/tmp/openclaw-planner");
+    expect(removeTempDir).toHaveBeenCalledWith("/tmp/operator-planner");
   });
 
   it("plans through the configured default agent embedded runtime without tools", async () => {
@@ -304,7 +304,7 @@ describe("Operator configured-model planner", () => {
         readConfigFileSnapshot: vi.fn(async () => snapshot(config)) as never,
         runCliAgent: vi.fn() as never,
         runEmbeddedAgent: runEmbeddedAgent as never,
-        createTempDir: async () => "/tmp/openclaw-planner",
+        createTempDir: async () => "/tmp/operator-planner",
         removeTempDir: async () => {},
       },
     });
@@ -359,7 +359,7 @@ describe("Operator configured-model planner", () => {
         ...deps,
         readConfigFileSnapshot: vi.fn(async () => snapshot(config)) as never,
         runEmbeddedAgent: runEmbeddedAgent as never,
-        createTempDir: async () => "/tmp/openclaw-planner",
+        createTempDir: async () => "/tmp/operator-planner",
         removeTempDir: async () => {},
       },
     });

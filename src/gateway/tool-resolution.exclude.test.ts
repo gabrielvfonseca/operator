@@ -2,7 +2,7 @@
  * Gateway tool-resolution exclusion tests.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 
 type CreateOperatorToolsArg = {
   clientCaps?: string[];
@@ -156,7 +156,7 @@ describe("resolveGatewayScopedTools excludeToolNames", () => {
       "sessions",
       "nodes",
       "computer",
-      "openclaw",
+      "@gabrielvfonseca/operator",
     ]);
     expect(args.inheritedToolDenylist).toEqual([
       "cron",
@@ -164,7 +164,7 @@ describe("resolveGatewayScopedTools excludeToolNames", () => {
       "sessions",
       "nodes",
       "computer",
-      "openclaw",
+      "@gabrielvfonseca/operator",
     ]);
   });
 

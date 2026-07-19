@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import { formatSqliteSessionFileMarker } from "../config/sessions/sqlite-marker.js";
@@ -17,7 +17,7 @@ type TrajectoryRuntimeRecorder = NonNullable<ReturnType<typeof createTrajectoryR
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-trajectory-runtime-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-trajectory-runtime-"));
   tempDirs.push(dir);
   return dir;
 }

@@ -736,7 +736,7 @@ describe("trusted-proxy auth", () => {
       headers: {
         "x-forwarded-user": "nick@example.com",
         "x-forwarded-proto": "https",
-        "x-openclaw-proxy-auth": "present",
+        "x-operator-proxy-auth": "present",
       },
     });
 

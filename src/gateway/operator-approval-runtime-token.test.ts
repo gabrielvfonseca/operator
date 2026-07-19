@@ -9,7 +9,7 @@ const envSnapshot = captureEnv(["HOME", "OPERATOR_HOME"]);
 const tempHomes: string[] = [];
 
 function useTempHome(): string {
-  const home = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-runtime-"));
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-runtime-"));
   tempHomes.push(home);
   setTestEnvValue("HOME", home);
   setTestEnvValue("OPERATOR_HOME", home);
@@ -17,18 +17,18 @@ function useTempHome(): string {
 }
 
 function execApprovalsPath(home: string): string {
-  return path.join(home, ".openclaw", "exec-approvals.json");
+  return path.join(home, ".operator", "exec-approvals.json");
 }
 
 function writeExecApprovalsToken(home: string, token: string): void {
-  fs.mkdirSync(path.join(home, ".openclaw"), { recursive: true });
+  fs.mkdirSync(path.join(home, ".operator"), { recursive: true });
   fs.writeFileSync(
     execApprovalsPath(home),
     `${JSON.stringify(
       {
         version: 1,
         socket: {
-          path: "~/.openclaw/exec-approvals.sock",
+          path: "~/.operator/exec-approvals.sock",
           token,
         },
         agents: {},

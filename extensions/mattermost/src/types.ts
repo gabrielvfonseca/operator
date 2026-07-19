@@ -1,5 +1,5 @@
 // Mattermost type declarations define plugin contracts.
-import type { ChannelPreviewStreamingConfig } from "openclaw/plugin-sdk/channel-outbound";
+import type { ChannelPreviewStreamingConfig } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import type { DmPolicy, GroupPolicy } from "./runtime-api.js";
 import type { SecretInput } from "./secret-input.js";
 

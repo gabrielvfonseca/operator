@@ -134,7 +134,7 @@ describe("discord config schema", () => {
         enabled: true,
         allowFrom: ["steipete"],
         groupEnabled: true,
-        groupChannels: ["openclaw-dm"],
+        groupChannels: ["operator-dm"],
       },
       actions: {
         emojiUploads: true,
@@ -155,7 +155,7 @@ describe("discord config schema", () => {
 
     expect(cfg.enabled).toBe(true);
     expect(cfg.dm?.groupEnabled).toBe(true);
-    expect(cfg.dm?.groupChannels).toEqual(["openclaw-dm"]);
+    expect(cfg.dm?.groupChannels).toEqual(["operator-dm"]);
     expect(cfg.actions?.emojiUploads).toBe(true);
     expect(cfg.actions?.stickerUploads).toBe(false);
     expect(cfg.actions?.channels).toBe(true);

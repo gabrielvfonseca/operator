@@ -35,7 +35,7 @@ afterAll(() => {
 
 describe("audit event worker", () => {
   it("returns immediately under SQLite contention and flushes before stop", async () => {
-    const stateDir = makeTempDir(tempDirs, "openclaw-audit-writer-");
+    const stateDir = makeTempDir(tempDirs, "operator-audit-writer-");
     const database = { env: { OPERATOR_STATE_DIR: stateDir } };
     const errors: string[] = [];
     const writer = createAuditEventWriter({ stateDir, onError: (error) => errors.push(error) });

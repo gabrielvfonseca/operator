@@ -14,16 +14,16 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/openclaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/operator-bundle-mcp-gemini",
       config: { plugins: { enabled: false } },
       additionalConfig: {
         mcpServers: {
-          openclaw: {
+          operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
-              "x-openclaw-client-caps": "${OPERATOR_MCP_CLIENT_CAPS}",
+              "x-operator-client-caps": "${OPERATOR_MCP_CLIENT_CAPS}",
             },
           },
         },
@@ -44,10 +44,10 @@ describe("prepareCliBundleMcpConfig gemini", () => {
       mcp?: { allowed?: string[] };
       mcpServers?: Record<string, { url?: string; headers?: Record<string, string> }>;
     };
-    expect(raw.mcp?.allowed).toEqual(["openclaw"]);
-    expect(raw.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:23119/mcp");
-    expect(raw.mcpServers?.openclaw?.headers?.Authorization).toBe("Bearer lb-tk-123");
-    expect(raw.mcpServers?.openclaw?.headers?.["x-openclaw-client-caps"]).toBe(
+    expect(raw.mcp?.allowed).toEqual(["@gabrielvfonseca/operator"]);
+    expect(raw.mcpServers?.operator?.url).toBe("http://127.0.0.1:23119/mcp");
+    expect(raw.mcpServers?.operator?.headers?.Authorization).toBe("Bearer lb-tk-123");
+    expect(raw.mcpServers?.operator?.headers?.["x-operator-client-caps"]).toBe(
       "tool-events,inline-widgets",
     );
 
@@ -62,7 +62,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/openclaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/operator-bundle-mcp-gemini",
       config: {
         plugins: { enabled: false },
         mcp: {
@@ -111,15 +111,15 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/openclaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/operator-bundle-mcp-gemini",
       config: { plugins: { enabled: false } },
       additionalConfig: {
         mcpServers: {
-          openclaw: {
+          operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
-              "x-openclaw-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
+              "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
             },
           },
         },
@@ -140,7 +140,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
       ) as {
         mcpServers?: Record<string, { headers?: Record<string, string> }>;
       };
-      expect(raw.mcpServers?.openclaw?.headers?.["x-openclaw-cli-capture-key"]).toBe("attempt-123");
+      expect(raw.mcpServers?.operator?.headers?.["x-operator-cli-capture-key"]).toBe("attempt-123");
       expect(attempt.env?.GEMINI_CLI_SYSTEM_SETTINGS_PATH).not.toBe(
         prepared.env?.GEMINI_CLI_SYSTEM_SETTINGS_PATH,
       );
@@ -151,7 +151,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
   });
 
   it("preserves inherited Gemini auth selection in generated system settings", async () => {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gemini-settings-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-gemini-settings-"));
     const inheritedSettingsPath = path.join(dir, "settings.json");
     await fs.writeFile(
       inheritedSettingsPath,
@@ -178,11 +178,11 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/openclaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/operator-bundle-mcp-gemini",
       config: { plugins: { enabled: false } },
       additionalConfig: {
         mcpServers: {
-          openclaw: {
+          operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
           },

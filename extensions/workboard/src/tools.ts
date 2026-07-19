@@ -1,9 +1,12 @@
-import type { WorkboardCard } from "@operator/workboard-contract";
 // Workboard plugin module implements tools behavior.
-import { jsonResult, readStringParam } from "openclaw/plugin-sdk/core";
-import type { AnyAgentTool, OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { OperatorPluginToolContext } from "openclaw/plugin-sdk/plugin-entry";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
+import { jsonResult, readStringParam } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import type {
+  AnyAgentTool,
+  OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { OperatorPluginToolContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import type { WorkboardCard } from "@gabrielvfonseca/workboard-contract";
 import { Type } from "typebox";
 import { WorkboardStore } from "./store.js";
 import { cardIdField, claimTokenField, createWorkboardMoveTool } from "./tools-card-mutations.js";

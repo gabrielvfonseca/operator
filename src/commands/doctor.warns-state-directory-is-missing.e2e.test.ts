@@ -137,7 +137,7 @@ describe("doctor command", () => {
   it("warns when the state directory is missing", async () => {
     mockDoctorConfigSnapshot();
 
-    const missingDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-missing-state-"));
+    const missingDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-missing-state-"));
     fs.rmSync(missingDir, { recursive: true, force: true });
     await withEnvAsync({ OPERATOR_STATE_DIR: missingDir }, async () => {
       await doctorCommand(createDoctorRuntime(), {

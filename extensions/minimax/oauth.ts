@@ -5,14 +5,17 @@ import {
   asSafeIntegerInRange,
   resolveExpiresAtMsFromDurationOrEpoch,
   resolvePositiveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { generatePkceVerifierChallenge, toFormUrlEncoded } from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  generatePkceVerifierChallenge,
+  toFormUrlEncoded,
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   readProviderJsonResponse,
   readResponseTextLimited,
-} from "openclaw/plugin-sdk/provider-http";
-import { ensureGlobalUndiciEnvProxyDispatcher } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { ensureGlobalUndiciEnvProxyDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 
 export type MiniMaxRegion = "cn" | "global";
 

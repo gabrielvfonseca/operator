@@ -4,7 +4,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { emitAgentEvent } from "../../infra/agent-events.js";
 import {
@@ -47,7 +47,7 @@ function createTaskRecord(params: Parameters<typeof createTaskRecordOrNull>[0]):
 }
 
 beforeEach(async () => {
-  stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gateway-tasks-"));
+  stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-gateway-tasks-"));
   setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
   resetTaskRegistryForTests();
   cancelSessionMock.mockReset();

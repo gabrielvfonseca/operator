@@ -1,7 +1,7 @@
 // Tavily tests cover tavily tools plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_TAVILY_BASE_URL,
@@ -179,7 +179,7 @@ describe("tavily tools", () => {
       max_results: 5,
       include_answer: true,
       time_range: "week",
-      include_domains: ["docs.openclaw.ai", "", "openclaw.ai"],
+      include_domains: ["docs.operator.ai", "", "operator.ai"],
       exclude_domains: ["bad.example", ""],
     });
 
@@ -191,7 +191,7 @@ describe("tavily tools", () => {
       maxResults: 5,
       includeAnswer: true,
       timeRange: "week",
-      includeDomains: ["docs.openclaw.ai", "openclaw.ai"],
+      includeDomains: ["docs.operator.ai", "operator.ai"],
       excludeDomains: ["bad.example"],
     });
     const expectedResult = {
@@ -204,7 +204,7 @@ describe("tavily tools", () => {
         maxResults: 5,
         includeAnswer: true,
         timeRange: "week",
-        includeDomains: ["docs.openclaw.ai", "openclaw.ai"],
+        includeDomains: ["docs.operator.ai", "operator.ai"],
         excludeDomains: ["bad.example"],
       },
     };
@@ -276,7 +276,7 @@ describe("tavily tools", () => {
       throw new Error("Expected single Tavily tool definitions");
     }
 
-    await searchTool.execute("search-call", { query: "openclaw" });
+    await searchTool.execute("search-call", { query: "@gabrielvfonseca/operator" });
     await extractTool.execute("extract-call", { urls: ["https://example.com"] });
 
     const searchParams = requireFirstMockArg(runTavilySearch, "Tavily search params") as Record<
@@ -284,7 +284,7 @@ describe("tavily tools", () => {
       unknown
     >;
     expect(searchParams.cfg).toBe(runtimeConfig);
-    expect(searchParams.query).toBe("openclaw");
+    expect(searchParams.query).toBe("@gabrielvfonseca/operator");
     const extractParams = requireFirstMockArg(
       runTavilyExtract,
       "Tavily extract params",
@@ -355,13 +355,13 @@ describe("tavily tools", () => {
     const searchTool = createTavilySearchTool(fakeApi());
     await expect(
       searchTool.execute("search-call", {
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
         max_results: 5.5,
       }),
     ).rejects.toThrow("max_results must be an integer from 1 to 20.");
     await expect(
       searchTool.execute("search-call", {
-        query: "openclaw",
+        query: "@gabrielvfonseca/operator",
         max_results: 21,
       }),
     ).rejects.toThrow("max_results must be an integer from 1 to 20.");

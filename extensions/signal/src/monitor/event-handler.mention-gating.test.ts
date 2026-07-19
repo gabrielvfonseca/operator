@@ -1,8 +1,8 @@
 // Signal tests cover event handler.mention gating plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import { buildDispatchInboundCaptureMock } from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { buildDispatchInboundCaptureMock } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 type SignalMsgContext = Pick<MsgContext, "Body" | "WasMentioned"> & {

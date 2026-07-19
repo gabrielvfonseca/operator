@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { buildChannelAccountSnapshotFromAccount } from "./status.js";
 import type { ChannelPlugin } from "./types.plugin.js";
 

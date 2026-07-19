@@ -2,7 +2,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { isRecord, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import {
+  isRecord,
+  normalizeOptionalString,
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type OAuthSettingsFs = {
   existsSync: (path: Parameters<typeof existsSync>[0]) => ReturnType<typeof existsSync>;
@@ -16,7 +19,7 @@ const defaultFs: OAuthSettingsFs = {
   homedir,
 };
 
-const OAUTH_SETTINGS_TEST_API_KEY = Symbol.for("openclaw.google.oauthSettingsTestApi");
+const OAUTH_SETTINGS_TEST_API_KEY = Symbol.for("operator.google.oauthSettingsTestApi");
 
 let oauthSettingsFs: OAuthSettingsFs = defaultFs;
 

@@ -422,9 +422,9 @@ chrome.tabGroups.onUpdated.addListener(() => scheduleTabsSync());
 chrome.tabGroups.onRemoved.addListener(() => scheduleTabsSync());
 
 // Watchdog: MV3 can stop this worker; the alarm revives it and re-connects.
-chrome.alarms.create("openclaw-relay-watchdog", { periodInMinutes: 0.5 });
+chrome.alarms.create("operator-relay-watchdog", { periodInMinutes: 0.5 });
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "openclaw-relay-watchdog") {
+  if (alarm.name === "operator-relay-watchdog") {
     void connectRelay();
   }
 });

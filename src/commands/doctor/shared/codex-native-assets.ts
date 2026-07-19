@@ -3,8 +3,8 @@ import type { Dirent } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { isRecord as hasRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import { isRecord as hasRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { collectConfiguredAgentHarnessRuntimes } from "../../../agents/harness-runtimes.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 
@@ -199,7 +199,7 @@ export async function collectCodexNativeAssetInfoNotes(params: {
   return [
     [
       `- Personal Codex CLI assets found (${counts.join(", ")}) in ${resolveCodexHome(env)} and ${resolvePersonalAgentSkillsDir(env)}; native Codex-mode agents use isolated per-agent homes and will not load them.`,
-      "- To review or promote them: install the Codex plugin (operator plugins install npm:@operator/codex), then run operator migrate plan codex.",
+      "- To review or promote them: install the Codex plugin (openclaw plugins install npm:@gabrielvfonseca/codex), then run openclaw migrate plan codex.",
     ].join("\n"),
   ];
 }

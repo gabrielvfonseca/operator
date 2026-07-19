@@ -6,7 +6,7 @@ import {
   getAgentHarnessHookRunner,
   resolveContextEngineOwnerPluginId,
   runHarnessContextEngineMaintenance,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   buildCodexOperatorPromptContext,
   buildCodexWorkspaceBootstrapContext,

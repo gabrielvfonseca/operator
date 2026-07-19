@@ -1,5 +1,5 @@
 ---
-summary: "Adds vLLM model provider support to OpenClaw."
+summary: "Adds vLLM model provider support to Operator."
 read_when:
   - You are installing, configuring, or auditing the vllm plugin
 title: "vLLM plugin"
@@ -7,12 +7,12 @@ title: "vLLM plugin"
 
 # vLLM plugin
 
-Adds vLLM model provider support to OpenClaw.
+Adds vLLM model provider support to Operator.
 
 ## Distribution
 
-- Package: `@operator/vllm-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/vllm-provider`
+- Install route: included in Operator
 
 ## Surface
 

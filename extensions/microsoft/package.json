@@ -1,5 +1,5 @@
 {
-  "name": "@operator/microsoft-speech",
+  "name": "@gabrielvfonseca/microsoft-speech",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator Microsoft speech plugin",
@@ -8,9 +8,9 @@
     "node-edge-tts": "1.2.10"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

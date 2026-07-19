@@ -56,7 +56,7 @@ describe("resolveVapidKeys", () => {
       createWebPushVapidKeyPair(
         "test-public-key-base64url",
         "test-private-key-base64url",
-        "https://openclaw.ai",
+        "https://operator.ai",
       ),
     );
     expect(readPersistedVapidKeyPair(tmpDir)).toEqual(keys);
@@ -132,7 +132,7 @@ describe("resolveVapidKeys", () => {
         ...initial,
         subject: "mailto:changed@test.com",
       });
-      expect(readPersistedVapidKeyPair(tmpDir)?.subject).toBe("https://openclaw.ai");
+      expect(readPersistedVapidKeyPair(tmpDir)?.subject).toBe("https://operator.ai");
     } finally {
       delete process.env.OPERATOR_VAPID_SUBJECT;
     }
@@ -343,7 +343,7 @@ describe("sending", () => {
     const broadcast = broadcastWebPush({ title: "Expired" }, tmpDir);
     await vi.waitFor(() => expect(rejectSend).toBeTypeOf("function"));
     closeOperatorStateDatabase();
-    const databasePath = path.join(tmpDir, "state", "openclaw.sqlite");
+    const databasePath = path.join(tmpDir, "state", "operator.sqlite");
     await fs.rename(databasePath, `${databasePath}.backup`);
     await fs.mkdir(databasePath);
     rejectSend?.(Object.assign(new Error("gone"), { statusCode: 410 }));

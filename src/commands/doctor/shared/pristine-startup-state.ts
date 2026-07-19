@@ -1,7 +1,7 @@
 // Proves when a new state root cannot contain legacy state migration work.
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   resolveConfigPath,
   resolveLegacyStateDirs,

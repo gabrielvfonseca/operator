@@ -411,7 +411,7 @@ async function compactResolvedContextEngine(
           modelId: policyModelId,
         });
   const lockedNativeHarness =
-    params.modelSelectionLocked === true && selectedHarnessRuntime !== "operator";
+    params.modelSelectionLocked === true && selectedHarnessRuntime !== "@gabrielvfonseca/operator";
   const resolvedCompactionTarget = resolveEmbeddedCompactionTarget({
     config: params.config,
     provider: params.provider,
@@ -1005,7 +1005,11 @@ function shouldAttemptNativeHarnessCompaction(params: {
   selectedHarnessRuntime?: string | null;
 }): boolean {
   const selectedRuntime = normalizeOptionalAgentRuntimeId(params.selectedHarnessRuntime);
-  if (!selectedRuntime || selectedRuntime === "auto" || selectedRuntime === "operator") {
+  if (
+    !selectedRuntime ||
+    selectedRuntime === "auto" ||
+    selectedRuntime === "@gabrielvfonseca/operator"
+  ) {
     return false;
   }
   return isOpenAIProvider(params.provider) ? params.nativeHarnessCompaction === true : true;

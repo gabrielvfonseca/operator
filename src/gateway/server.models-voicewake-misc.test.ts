@@ -143,7 +143,7 @@ const expectedSortedCatalog = (): ModelCatalogRpcEntry[] => [
     id: "gpt-test-a",
     name: "A-Model",
     provider: "openai",
-    agentRuntime: { id: "openclaw", source: "implicit" },
+    agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
     available: false,
     contextWindow: 8000,
   },
@@ -151,7 +151,7 @@ const expectedSortedCatalog = (): ModelCatalogRpcEntry[] => [
     id: "gpt-test-z",
     name: "gpt-test-z",
     provider: "openai",
-    agentRuntime: { id: "openclaw", source: "implicit" },
+    agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
     available: false,
   },
 ];
@@ -273,7 +273,7 @@ describe("gateway server models + voicewake", () => {
   };
 
   const withTempHome = async <T>(fn: (homeDir: string) => Promise<T>): Promise<T> => {
-    const tempHome = await createTempHomeEnv("openclaw-home-");
+    const tempHome = await createTempHomeEnv("operator-home-");
     try {
       return await fn(tempHome.home);
     } finally {
@@ -359,7 +359,11 @@ describe("gateway server models + voicewake", () => {
       await withTempHome(async (homeDir) => {
         const initial = await rpcReq<{ triggers: string[] }>(ws, "voicewake.get");
         expect(initial.ok).toBe(true);
-        expect(initial.payload?.triggers).toEqual(["openclaw", "claude", "computer"]);
+        expect(initial.payload?.triggers).toEqual([
+          "@gabrielvfonseca/operator",
+          "claude",
+          "computer",
+        ]);
 
         const changedP = onceMessage(
           ws,
@@ -384,7 +388,7 @@ describe("gateway server models + voicewake", () => {
         expect(after.payload?.triggers).toEqual(["hi", "there"]);
 
         await expect(
-          fs.readFile(path.join(homeDir, ".openclaw", "settings", "voicewake.json"), "utf8"),
+          fs.readFile(path.join(homeDir, ".operator", "settings", "voicewake.json"), "utf8"),
         ).rejects.toThrow(/ENOENT/u);
       });
     },
@@ -394,7 +398,7 @@ describe("gateway server models + voicewake", () => {
     await withConnectedNodeEvent("voicewake.changed", async (nodeWs, first) => {
       expect(first.event).toBe("voicewake.changed");
       expect((first.payload as { triggers?: unknown } | undefined)?.triggers).toEqual([
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "claude",
         "computer",
       ]);
@@ -404,14 +408,14 @@ describe("gateway server models + voicewake", () => {
         (o) => o.type === "event" && o.event === "voicewake.changed",
       );
       const setRes = await rpcReq(ws, "voicewake.set", {
-        triggers: ["openclaw", "computer"],
+        triggers: ["@gabrielvfonseca/operator", "computer"],
       });
       expect(setRes.ok).toBe(true);
 
       const broadcast = (await broadcastP) as { event?: string; payload?: unknown };
       expect(broadcast.event).toBe("voicewake.changed");
       expect((broadcast.payload as { triggers?: unknown } | undefined)?.triggers).toEqual([
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "computer",
       ]);
     });
@@ -462,7 +466,7 @@ describe("gateway server models + voicewake", () => {
       ]);
 
       await expect(
-        fs.readFile(path.join(homeDir, ".openclaw", "settings", "voicewake-routing.json"), "utf8"),
+        fs.readFile(path.join(homeDir, ".operator", "settings", "voicewake-routing.json"), "utf8"),
       ).rejects.toThrow(/ENOENT/u);
 
       const invalid = await rpcReq(ws, "voicewake.routing.set", { config: null });
@@ -661,7 +665,7 @@ describe("gateway server models + voicewake", () => {
             id: "gpt-test-z",
             name: "gpt-test-z",
             provider: "openai",
-            agentRuntime: { id: "openclaw", source: "implicit" },
+            agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
             available: false,
           },
         ]);
@@ -708,7 +712,7 @@ describe("gateway server models + voicewake", () => {
           id: "gpt-test-z",
           name: "gpt-test-z",
           provider: "openai",
-          agentRuntime: { id: "openclaw", source: "implicit" },
+          agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
           available: false,
         },
       ],
@@ -726,7 +730,7 @@ describe("gateway server models + voicewake", () => {
           id: "not-in-catalog",
           name: "not-in-catalog",
           provider: "openai",
-          agentRuntime: { id: "openclaw", source: "implicit" },
+          agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
           available: false,
         },
       ],

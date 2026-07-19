@@ -5,7 +5,7 @@ import Foundation
 /// transcript exporter and the Listen action so exported and spoken text
 /// always match the visible transcript.
 enum ChatMessageVisibleText {
-    static func visibleText(in message: OpenClawChatMessage) -> String {
+    static func visibleText(in message: OperatorChatMessage) -> String {
         let text = self.primaryText(in: message)
         let role = message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard role != "user" else { return text }
@@ -14,19 +14,19 @@ enum ChatMessageVisibleText {
             .joined(separator: "\n\n")
     }
 
-    static func hasVisibleText(in message: OpenClawChatMessage) -> Bool {
+    static func hasVisibleText(in message: OperatorChatMessage) -> Bool {
         !self.visibleText(in: message)
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty
     }
 
-    private static func primaryText(in message: OpenClawChatMessage) -> String {
+    private static func primaryText(in message: OperatorChatMessage) -> String {
         let parts = message.content.compactMap { content -> String? in
             let kind = (content.type ?? "text").lowercased()
             guard kind == "text" || kind.isEmpty else { return nil }
             return content.text
         }
-        return OpenClawChatMessage.displayText(
+        return OperatorChatMessage.displayText(
             contentText: parts.joined(separator: "\n"),
             role: message.role,
             stopReason: message.stopReason,

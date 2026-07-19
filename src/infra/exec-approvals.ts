@@ -7,7 +7,7 @@ import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   readStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isNamedProfile } from "../config/paths.js";
 import { DEFAULT_AGENT_ID } from "../routing/session-key.js";
 import { resolveGlobalMap } from "../shared/global-singleton.js";
@@ -1863,8 +1863,8 @@ function textMentionsSecurityAuditSuppressions(value: string): boolean {
 
 function isReadOnlySecurityAuditSuppressionInspection(argv: string[]): boolean {
   const command = normalizeCommandName(argv[0]);
-  let offset = command === "pnpm" && argv[1] === "operator" ? 1 : 0;
-  if (normalizeCommandName(argv[offset]) !== "operator") {
+  let offset = command === "pnpm" && argv[1] === "@gabrielvfonseca/operator" ? 1 : 0;
+  if (normalizeCommandName(argv[offset]) !== "@gabrielvfonseca/operator") {
     return false;
   }
   offset += 1;

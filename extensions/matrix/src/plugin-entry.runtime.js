@@ -29,11 +29,11 @@ function hasTrustedOperatorRootIndicator(packageRoot, packageJson) {
   const hasCliEntryExport = Object.hasOwn(packageExports, "./cli-entry");
   const hasOperatorBin =
     (typeof packageJson?.bin === "string" &&
-      normalizeLowercaseStringOrEmpty(packageJson.bin).includes("openclaw")) ||
+      normalizeLowercaseStringOrEmpty(packageJson.bin).includes("@gabrielvfonseca/operator")) ||
     (typeof packageJson?.bin === "object" &&
       packageJson.bin !== null &&
-      typeof packageJson.bin.openclaw === "string");
-  const hasOperatorEntrypoint = fs.existsSync(path.join(packageRoot, "openclaw.mjs"));
+      typeof packageJson.bin.operator === "string");
+  const hasOperatorEntrypoint = fs.existsSync(path.join(packageRoot, "operator.mjs"));
   return hasCliEntryExport || hasOperatorBin || hasOperatorEntrypoint;
 }
 
@@ -41,7 +41,7 @@ function findOperatorPackageRoot(startDir) {
   let cursor = path.resolve(startDir);
   for (let i = 0; i < 12; i += 1) {
     const pkg = readPackageJson(cursor);
-    if (pkg?.name === "openclaw" && hasTrustedOperatorRootIndicator(cursor, pkg)) {
+    if (pkg?.name === "@gabrielvfonseca/operator" && hasTrustedOperatorRootIndicator(cursor, pkg)) {
       return { packageRoot: cursor, packageJson: pkg };
     }
     const parent = path.dirname(cursor);

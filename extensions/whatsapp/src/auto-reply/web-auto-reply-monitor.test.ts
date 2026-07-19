@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createTestWebInboundMessage } from "../inbound/test-message.test-helper.js";
 import type { AdmittedWebInboundMessage } from "../inbound/types.js";
@@ -15,7 +15,7 @@ let sessionDir: string | undefined;
 let sessionStorePath: string;
 
 beforeEach(async () => {
-  sessionDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-group-gating-"));
+  sessionDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-group-gating-"));
   sessionStorePath = path.join(sessionDir, "sessions.json");
   await fs.writeFile(sessionStorePath, "{}");
 });

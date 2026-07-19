@@ -307,10 +307,10 @@ describe("searchMemoryWiki", () => {
           "Alpha body.",
           "",
           "## Related",
-          "<!-- openclaw:wiki:related:start -->",
+          "<!-- operator:wiki:related:start -->",
           "### Related Pages",
           "- [Needle Person](entities/needle-person.md)",
-          "<!-- openclaw:wiki:related:end -->",
+          "<!-- operator:wiki:related:end -->",
           "",
         ].join("\n"),
       }),
@@ -747,7 +747,7 @@ describe("searchMemoryWiki", () => {
         search: { backend: "shared", corpus: "all" },
       },
     });
-    // Partial manager as registered by @mem0/openclaw-mem0 <= 1.0.14.
+    // Partial manager as registered by @mem0/operator-mem0 <= 1.0.14.
     const partialManager = {
       status: vi.fn().mockReturnValue({ backend: "builtin", provider: "builtin" }),
       probeEmbeddingAvailability: vi.fn().mockResolvedValue({ ok: true }),

@@ -129,7 +129,7 @@ describe("attachGatewayWsConnectionHandler", () => {
     };
     const client = {
       socket,
-      connect: { client: { id: "openclaw-worker", mode: "worker" } },
+      connect: { client: { id: "operator-worker", mode: "worker" } },
       worker: { environmentId: "worker-1" },
     };
     expect(handler.setClient(client as never)).toBe(true);
@@ -217,7 +217,7 @@ describe("attachGatewayWsConnectionHandler", () => {
 
     const registered = handlerParams.setClient({
       socket,
-      connect: { client: { id: "openclaw-control-ui", mode: "webchat" } },
+      connect: { client: { id: "operator-control-ui", mode: "webchat" } },
       connId: "late-client",
       usesSharedGatewayAuth: false,
     });
@@ -238,7 +238,7 @@ describe("attachGatewayWsConnectionHandler", () => {
     expect(
       handlerParams.setClient({
         socket,
-        connect: { client: { id: "openclaw-control-ui", mode: "webchat" } },
+        connect: { client: { id: "operator-control-ui", mode: "webchat" } },
         connId: "ping-client",
         usesSharedGatewayAuth: false,
       }),
@@ -418,7 +418,7 @@ describe("attachGatewayWsConnectionHandler", () => {
     expect(
       handlerParams.setClient({
         socket,
-        connect: { client: { id: "openclaw-control-ui", mode: "webchat" } },
+        connect: { client: { id: "operator-control-ui", mode: "webchat" } },
         connId: "ready-client",
         usesSharedGatewayAuth: false,
       } as never),
@@ -453,7 +453,7 @@ describe("attachGatewayWsConnectionHandler", () => {
         socket,
         connect: {
           role: "node",
-          client: { id: "openclaw-macos", mode: "node" },
+          client: { id: "operator-macos", mode: "node" },
           device: { id: "node-1" },
         },
         connId: "conn-old",

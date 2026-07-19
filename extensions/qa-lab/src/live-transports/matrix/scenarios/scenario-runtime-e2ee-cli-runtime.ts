@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { runMatrixQaOperatorCli, startMatrixQaOperatorCli } from "./scenario-runtime-cli.js";
 import {
   assertMatrixQaPrivatePathMode,
@@ -23,7 +23,7 @@ export async function createMatrixQaCliSelfVerificationRuntime(params: {
 }) {
   const outputDir = requireMatrixQaE2eeOutputDir(params.context);
   const rootDir = await mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-matrix-cli-qa-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-matrix-cli-qa-"),
   );
   const artifactDir = path.join(
     outputDir,
@@ -117,7 +117,7 @@ export async function createMatrixQaCliE2eeSetupRuntime(params: {
 }) {
   const outputDir = requireMatrixQaE2eeOutputDir(params.context);
   const rootDir = await mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-matrix-e2ee-setup-qa-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-matrix-e2ee-setup-qa-"),
   );
   const artifactDir = path.join(
     outputDir,

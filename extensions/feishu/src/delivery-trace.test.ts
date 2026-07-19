@@ -12,8 +12,8 @@ import {
   type DeliveryTraceInStep,
   type DeliveryTraceScenarioName,
   type WireRecorder,
-} from "openclaw/plugin-sdk/channel-contract-testing";
-import { withFetchPreconnect } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import { withFetchPreconnect } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, afterEach, beforeAll, describe, it, vi } from "vitest";
 import { FeishuConfigSchema } from "./config-schema.js";
 import type { ReplyPayload } from "./reply-dispatcher-runtime-api.js";

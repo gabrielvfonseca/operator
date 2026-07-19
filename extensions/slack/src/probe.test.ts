@@ -42,7 +42,7 @@ describe("probeSlack", () => {
       ok: true,
       user_id: "U123",
       bot_id: "B123",
-      user: "openclaw-bot",
+      user: "operator-bot",
       team_id: "T123",
       team: "Operator",
     });
@@ -51,7 +51,7 @@ describe("probeSlack", () => {
       ok: true,
       status: 200,
       elapsedMs: 45,
-      bot: { id: "U123", name: "openclaw-bot" },
+      bot: { id: "U123", name: "operator-bot" },
       team: { id: "T123", name: "Operator" },
     });
     expect(createSlackWebClientMock).toHaveBeenCalledWith("xoxb-test");

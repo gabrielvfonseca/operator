@@ -28,7 +28,7 @@ describe("worker session placement gate", () => {
   let store: WorkerSessionPlacementStore;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-gate-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-gate-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerSessionPlacementStore({ database });
   });

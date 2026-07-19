@@ -1,15 +1,15 @@
 // Xai tests cover index plugin behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import { createCapturedPluginRegistration } from "openclaw/plugin-sdk/plugin-test-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
+import { createCapturedPluginRegistration } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   registerProviderPlugin,
   registerSingleProviderPlugin,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   clearLiveCatalogCacheForTests,
   type LiveModelCatalogFetchGuard,
-} from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const providerAuthRuntimeMocks = vi.hoisted(() => ({
@@ -19,7 +19,7 @@ const providerAuthRuntimeMocks = vi.hoisted(() => ({
 vi.mock("openclaw/plugin-sdk/provider-auth-runtime", () => providerAuthRuntimeMocks);
 
 import plugin from "./index.js";
-import manifest from "./openclaw.plugin.json" with { type: "json" };
+import manifest from "./operator.plugin.json" with { type: "json" };
 import { buildLiveXaiProvider } from "./provider-catalog.js";
 import setupPlugin from "./setup-api.js";
 import {

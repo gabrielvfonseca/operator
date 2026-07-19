@@ -7,7 +7,7 @@ import { closeOperatorStateDatabaseForTest } from "../../state/openclaw-state-db
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../test-utils/operator-test-state.js";
+} from "../../test-utils/openclaw-test-state.js";
 import { applyPromotionClaimTags, printAvailablePromotionsSection } from "./list.promotions.js";
 import type { ModelRow } from "./list.types.js";
 
@@ -76,7 +76,7 @@ describe("models list promotion decorations", () => {
   beforeEach(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-list-promotions-",
+      prefix: "operator-list-promotions-",
     });
   });
 

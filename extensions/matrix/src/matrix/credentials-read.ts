@@ -2,8 +2,11 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   requiresExplicitMatrixDefaultAccount,
   resolveMatrixDefaultOrOnlyAccountId,
@@ -46,7 +49,7 @@ function resolveStateDir(env: NodeJS.ProcessEnv): string {
       return path.resolve(override);
     }
     const homeDir = env.OPERATOR_HOME?.trim() || env.HOME?.trim() || os.homedir();
-    return path.join(homeDir, ".openclaw");
+    return path.join(homeDir, ".operator");
   }
 }
 

@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import type { SessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import { closeOperatorAgentDatabasesForTest } from "openclaw/plugin-sdk/sqlite-runtime-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { upsertSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import type { SessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { closeOperatorAgentDatabasesForTest } from "@gabrielvfonseca/operator/plugin-sdk/sqlite-runtime-testing";
 import { afterEach, describe, expect, it } from "vitest";
 import { telegramApprovalCapability } from "./approval-native.js";
 
@@ -36,7 +36,7 @@ afterEach(() => {
 });
 
 function createTempStorePath(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-approval-native-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-telegram-approval-native-"));
   tempDirs.push(dir);
   return path.join(dir, "sessions.json");
 }

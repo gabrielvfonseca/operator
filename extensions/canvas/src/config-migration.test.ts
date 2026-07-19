@@ -1,5 +1,5 @@
 // Canvas tests cover config migration plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, test } from "vitest";
 import { migrateLegacyCanvasHostConfig } from "./config-migration.js";
 

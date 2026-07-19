@@ -1107,10 +1107,10 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       MessageThreadId: 11,
       ChatType: "group",
       GroupSubject: "Dev",
-      Body: "/reset@operator",
-      RawBody: "/reset@operator",
-      CommandBody: "/reset@operator",
-      BotUsername: "operator",
+      Body: "/reset@openclaw",
+      RawBody: "/reset@openclaw",
+      CommandBody: "/reset@openclaw",
+      BotUsername: "@gabrielvfonseca/operator",
       CommandSource: undefined,
       CommandAuthorized: true,
       WasMentioned: false,
@@ -1459,7 +1459,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { operatorProgressKind: "fast-mode-auto" },
+        channelData: { openclawProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1481,7 +1481,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     expect(dispatcher.sendToolResult).toHaveBeenCalledWith(
       expect.objectContaining({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { operatorProgressKind: "fast-mode-auto" },
+        channelData: { openclawProgressKind: "fast-mode-auto" },
       }),
     );
     expect(dispatcher.sendFinalReply).not.toHaveBeenCalled();
@@ -1498,7 +1498,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { operatorProgressKind: "fast-mode-auto" },
+        channelData: { openclawProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1536,7 +1536,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { operatorProgressKind: "fast-mode-auto" },
+        channelData: { openclawProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1568,7 +1568,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const onToolResult = vi.fn();
     const payload = {
       text: "💨Fast: auto-on",
-      channelData: { operatorProgressKind: "fast-mode-auto" },
+      channelData: { openclawProgressKind: "fast-mode-auto" },
     } satisfies ReplyPayload;
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.(payload);

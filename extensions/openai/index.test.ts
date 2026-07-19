@@ -1,16 +1,16 @@
 // Openai tests cover index plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import { requireRegisteredProvider } from "openclaw/plugin-sdk/plugin-test-runtime";
-import * as providerAuth from "openclaw/plugin-sdk/provider-auth-runtime";
-import * as providerHttp from "openclaw/plugin-sdk/provider-http";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
+import { requireRegisteredProvider } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import * as providerAuth from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import * as providerHttp from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
 import {
   GPT5_BEHAVIOR_CONTRACT,
   GPT5_FRIENDLY_CHAT_PROMPT_OVERLAY,
   GPT5_HEARTBEAT_PROMPT_OVERLAY,
   type ProviderPlugin,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildOpenAIImageGenerationProvider } from "./image-generation-provider.js";
 import plugin from "./index.js";

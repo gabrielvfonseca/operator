@@ -326,7 +326,7 @@ function parseHeadlessStartOverride(params: {
 
   const capabilities = getBrowserProfileCapabilities(params.profileCtx.profile);
   if (
-    params.profileCtx.profile.driver !== "openclaw" ||
+    params.profileCtx.profile.driver !== "@gabrielvfonseca/operator" ||
     params.profileCtx.profile.attachOnly ||
     capabilities.isRemote
   ) {
@@ -468,11 +468,16 @@ export function registerBrowserBasicRoutes(app: BrowserRouteRegistrar, ctx: Brow
     if (!name) {
       return jsonError(res, 400, "name is required");
     }
-    if (driver && driver !== "openclaw" && driver !== "clawd" && driver !== "existing-session") {
+    if (
+      driver &&
+      driver !== "@gabrielvfonseca/operator" &&
+      driver !== "clawd" &&
+      driver !== "existing-session"
+    ) {
       return jsonError(
         res,
         400,
-        `unsupported profile driver "${driver}"; use "openclaw", "clawd", or "existing-session"`,
+        `unsupported profile driver "${driver}"; use "@gabrielvfonseca/operator", "clawd", or "existing-session"`,
       );
     }
 
@@ -488,8 +493,8 @@ export function registerBrowserBasicRoutes(app: BrowserRouteRegistrar, ctx: Brow
           driver:
             driver === "existing-session"
               ? "existing-session"
-              : driver === "openclaw" || driver === "clawd"
-                ? "openclaw"
+              : driver === "@gabrielvfonseca/operator" || driver === "clawd"
+                ? "@gabrielvfonseca/operator"
                 : undefined,
         }),
     });

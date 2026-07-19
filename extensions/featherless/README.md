@@ -5,8 +5,8 @@ Official Operator provider plugin for Featherless AI's OpenAI-compatible API.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/featherless-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/featherless-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/featherless> for setup and configuration.
+See <https://docs.operator.ai/providers/featherless> for setup and configuration.

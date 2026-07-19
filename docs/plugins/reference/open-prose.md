@@ -11,8 +11,8 @@ OpenProse VM skill pack with a /prose slash command.
 
 ## Distribution
 
-- Package: `@operator/open-prose`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/open-prose`
+- Install route: included in Operator
 
 ## Surface
 

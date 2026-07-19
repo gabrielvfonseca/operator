@@ -5,8 +5,8 @@ Official Operator provider plugin for DeepSeek.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/deepseek-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/deepseek-provider
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/deepseek> for setup and configuration.
+See <https://docs.operator.ai/providers/deepseek> for setup and configuration.

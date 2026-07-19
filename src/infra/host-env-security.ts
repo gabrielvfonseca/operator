@@ -1,7 +1,7 @@
 // Filters host environment variables before passing them to runtimes.
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { HOST_ENV_SECURITY_POLICY } from "./host-env-security-policy.js";
-import { markOperatorExecEnv } from "./operator-exec-env.js";
+import { markOperatorExecEnv } from "./openclaw-exec-env.js";
 
 const PORTABLE_ENV_VAR_KEY = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const WINDOWS_COMPAT_OVERRIDE_ENV_VAR_KEY = /^[A-Za-z_][A-Za-z0-9_()]*$/;

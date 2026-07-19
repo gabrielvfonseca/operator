@@ -24,7 +24,7 @@ describe("session transcript reader facade", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv(["OPERATOR_STATE_DIR"]);
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-transcript-readers-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-transcript-readers-"));
     storePath = path.join(tempDir, "sessions.json");
     setTestEnvValue("OPERATOR_STATE_DIR", tempDir);
   });
@@ -273,7 +273,7 @@ describe("session transcript reader facade", () => {
     ]);
     await expect(
       readSessionMessagesAsync(scope, { mode: "recent", maxMessages: 1 }),
-    ).resolves.toMatchObject([{ content: "sqlite follow-up", __openclaw: { seq: 4 } }]);
+    ).resolves.toMatchObject([{ content: "sqlite follow-up", __operator: { seq: 4 } }]);
     await expect(readSessionMessageCountAsync(scope)).resolves.toBe(3);
   });
 

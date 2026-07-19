@@ -1,11 +1,11 @@
 /** Converts image provider base64/data-url payloads into generated or source image assets. */
-import { canonicalizeBase64 } from "@operator/media-core/base64";
-import { MAX_IMAGE_BYTES } from "@operator/media-core/constants";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { canonicalizeBase64 } from "@gabrielvfonseca/media-core/base64";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/media-core/constants";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { GeneratedImageAsset, ImageGenerationSourceImage } from "./types.js";
 
 const DEFAULT_IMAGE_MIME_TYPE = "image/png";

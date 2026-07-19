@@ -1,16 +1,16 @@
 import { randomBytes } from "node:crypto";
 import { mkdtempSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import type { ContainerConfig } from "@microsoft/mxc-sdk";
-import { runCommandBuffered } from "openclaw/plugin-sdk/process-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/sandbox";
+import { runCommandBuffered } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
 import type {
   SandboxBackendHandle,
   SandboxBackendExecSpec,
   SandboxBackendCommandParams,
   SandboxBackendCommandResult,
   SandboxBackendManager,
-} from "openclaw/plugin-sdk/sandbox";
+} from "@gabrielvfonseca/operator/plugin-sdk/sandbox";
+import type { ContainerConfig } from "@microsoft/mxc-sdk";
 import { resolveMxcBinaryPath } from "./binary-resolver.js";
 import type { MxcConfig } from "./config.js";
 import { createMxcFsBridge } from "./fs-bridge.js";
@@ -56,7 +56,7 @@ function createLauncherPayloadFile(
   payloadJson: string,
 ): MxcExecFinalizeToken & { payloadFile: string } {
   const payloadDir = mkdtempSync(
-    path.join(resolvePreferredOperatorTmpDir(), "openclaw-mxc-payload-"),
+    path.join(resolvePreferredOperatorTmpDir(), "operator-mxc-payload-"),
   );
   const payloadFile = path.join(payloadDir, "payload.json");
   try {
@@ -83,7 +83,7 @@ function cleanupLauncherPayloadFile(token: unknown): void {
 }
 
 function createSandboxTempDir(hostEnv: BaselineHostEnv): string {
-  return mkdtempSync(path.join(resolveSandboxTempDir(hostEnv), "openclaw-mxc-sandbox-"));
+  return mkdtempSync(path.join(resolveSandboxTempDir(hostEnv), "operator-mxc-sandbox-"));
 }
 
 function assertWorkdirInsideWorkspace(workspaceDir: string, workdir: string): string {

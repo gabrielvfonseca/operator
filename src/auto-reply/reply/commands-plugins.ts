@@ -1,5 +1,5 @@
 // Implements plugin command listing and configuration helpers.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { readConfigFileSnapshot, readConfigFileSnapshotForWrite } from "../../config/config.js";
 import { assertConfigWriteAllowedInCurrentMode } from "../../config/nix-mode-write-guard.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
@@ -113,8 +113,8 @@ function formatPluginsList(report: PluginStatusReport): string {
     `🔌 Plugins (${loaded}/${report.plugins.length} loaded)`,
     ...report.plugins.map((plugin) => {
       const format = plugin.bundleFormat
-        ? `${plugin.format ?? "operator"}/${plugin.bundleFormat}`
-        : (plugin.format ?? "operator");
+        ? `${plugin.format ?? "@gabrielvfonseca/operator"}/${plugin.bundleFormat}`
+        : (plugin.format ?? "@gabrielvfonseca/operator");
       return `- ${formatPluginLabel(plugin)} [${plugin.status}] ${format}`;
     }),
   ];

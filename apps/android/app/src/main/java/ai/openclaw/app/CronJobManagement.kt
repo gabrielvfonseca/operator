@@ -1,11 +1,11 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeText
-import ai.openclaw.app.node.asObjectOrNull
-import ai.openclaw.app.node.asStringOrNull
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeText
+import ai.operator.app.node.asObjectOrNull
+import ai.operator.app.node.asStringOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull

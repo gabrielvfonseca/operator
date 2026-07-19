@@ -8,7 +8,7 @@ import type { SessionEntry } from "../config/sessions/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { getPluginRegistryState } from "../plugins/runtime-state.js";
 import type { SessionCatalogProvider, SessionUpstreamProbe } from "../plugins/session-catalog.js";
-import type { OperatorStateDatabaseOptions } from "../state/operator-state-db.js";
+import type { OperatorStateDatabaseOptions } from "../state/openclaw-state-db.js";
 import {
   recordSessionHumanDirectMessage,
   recordSessionStateEvent,

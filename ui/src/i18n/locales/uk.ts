@@ -270,14 +270,14 @@ export const uk: TranslationMap = {
     genericSubtitle: "Під час завантаження цієї панелі сталася помилка.",
     staleTitle: "Доступна нова версія",
     staleSubtitle:
-      "OpenClaw оновлено у фоновому режимі. Перезавантажте, щоб отримати найновішу панель.",
+      "Operator оновлено у фоновому режимі. Перезавантажте, щоб отримати найновішу панель.",
     retry: "Повторити",
   },
   nodes: {
     pairing: {
       button: "Під’єднати мобільний пристрій",
       adminRequired: "Для створення кодів налаштування потрібен доступ адміністратора.",
-      title: "OpenClaw mobile",
+      title: "Operator mobile",
       subtitle: "Відскануйте цей QR-код у мобільному застосунку, щоб підключити новий телефон.",
       generating: "Створення безпечного коду налаштування…",
       accessTitle: "Мобільний доступ",
@@ -290,14 +290,14 @@ export const uk: TranslationMap = {
       transportLimitedHint:
         "Ця URL-адреса Gateway використовує незашифрований протокол ws://. Використовуйте wss:// або Tailscale Serve, а потім створіть новий код для повного доступу.",
       failed: "Не вдалося створити код налаштування.",
-      qrAlt: "QR-код сполучення OpenClaw mobile",
+      qrAlt: "QR-код сполучення Operator mobile",
       qrUnavailable: "QR-код недоступний. Натомість скопіюйте код налаштування.",
       copySetupCode: "Скопіювати код налаштування",
       newCode: "Новий код",
       showSetupCode: "Показати код налаштування",
       pending: "Запити пристроїв, що очікують на перегляд: {count}",
       review: "Перегляд",
-      waiting: "Офіційні мобільні застосунки OpenClaw підключаються автоматично після сканування.",
+      waiting: "Офіційні мобільні застосунки Operator підключаються автоматично після сканування.",
       help: "Довідка щодо сполучення",
       manageDevices: "Керувати пристроями",
     },
@@ -444,11 +444,11 @@ export const uk: TranslationMap = {
     ownerSession: "Сесія",
     ownerWorkboard: "Workboard",
     title: "Керовані Worktrees",
-    subtitle: "Ізольовані копії репозиторію, що належать OpenClaw.",
+    subtitle: "Ізольовані копії репозиторію, що належать Operator.",
     cleanNow: "Очистити зараз",
     cleanupTitle: "Очищення",
     cleanupSubtitle:
-      "OpenClaw періодично видаляє старі робочі дерева, щоб звільнити місце на диску. Налаштуйте інтенсивність очищення.",
+      "Operator періодично видаляє старі робочі дерева, щоб звільнити місце на диску. Налаштуйте інтенсивність очищення.",
     cleanupMaxCount: "Максимальна кількість робочих дерев",
     cleanupMaxCountHelp:
       "Максимальна кількість керованих робочих дерев, які зберігатимуться в усіх репозиторіях. Для старіших робочих дерев спочатку створюються знімки, після чого їх видаляють. Установіть значення 0, щоб вимкнути обмеження кількості.",
@@ -1340,7 +1340,7 @@ export const uk: TranslationMap = {
     autoSaveFailed: "Не вдалося зберегти",
     autoSaveConflict: "Налаштування змінено в іншому місці",
     retry: "Повторити",
-    applyBannerText: "Збережено в openclaw.json — перезапустіть gateway для застосування.",
+    applyBannerText: "Збережено в operator.json — перезапустіть gateway для застосування.",
     applyBannerAction: "Перезапустити й застосувати",
     rawDiscard: "Відхилити",
     rawDraftBlocksApply:
@@ -1396,7 +1396,7 @@ export const uk: TranslationMap = {
     },
   },
   approvalPage: {
-    brandName: "OpenClaw",
+    brandName: "Operator",
     eyebrow: "Operator approval",
     loadingTitle: "Loading approval",
     loadingDescription: "Checking the current approval state with the Gateway.",
@@ -1405,7 +1405,7 @@ export const uk: TranslationMap = {
       "This approval could not be found or this device is not authorized to review it.",
     connectionErrorTitle: "Connection interrupted",
     connectionErrorDescription:
-      "OpenClaw cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
+      "Operator cannot confirm or record a decision while disconnected. Reconnect to check the current status.",
     retry: "Retry",
     execTitle: "Command approval",
     pending: "Waiting for your decision",
@@ -1729,7 +1729,7 @@ export const uk: TranslationMap = {
       "Переглядайте, уточнюйте й застосовуйте пропозиції, перш ніж вони стануть активними Skills.",
     nodes: "Спарені пристрої та команди.",
     chat: "Чат шлюзу для швидких втручань.",
-    config: "Редагування openclaw.json.",
+    config: "Редагування operator.json.",
     profile: "Статистика, серії та життя вашого агента на рифі.",
     communications: "Канали, повідомлення та налаштування аудіо.",
     appearance: "Тема, інтерфейс і налаштування майстра налаштування.",
@@ -1776,12 +1776,12 @@ export const uk: TranslationMap = {
       "Скопіювати {count} вибраних файлів пам’яті до робочого простору цього агента.",
     confirmReplace:
       "Перед заміною наявні файли призначення буде збережено в резервній копії у звіті про міграцію.",
-    confirmBackup: "Перед копіюванням пам’яті OpenClaw створює перевірену резервну копію.",
+    confirmBackup: "Перед копіюванням пам’яті Operator створює перевірену резервну копію.",
     confirmImport: "Імпортувати пам’ять",
     disconnected: "Підключіться до Gateway, щоб імпортувати пам’ять.",
     title: "Імпорт пам’яті асистента",
     subtitle:
-      "Перегляньте консолідовану пам’ять Codex і автоматичну пам’ять Claude Code, перш ніж копіювати їх до OpenClaw.",
+      "Перегляньте консолідовану пам’ять Codex і автоматичну пам’ять Claude Code, перш ніж копіювати їх до Operator.",
     agent: "Агент призначення",
     replaceExisting: "Замінити наявні імпортовані дані",
     replaceHint:
@@ -1878,7 +1878,7 @@ export const uk: TranslationMap = {
     },
     noInstalledTitle: "Не встановлено жодних додаткових плагінів",
     noInstalledBody:
-      "Відкрийте для себе рекомендований плагін або шукайте в ClawHub, щоб розширити OpenClaw.",
+      "Відкрийте для себе рекомендований плагін або шукайте в ClawHub, щоб розширити Operator.",
     noInstalledMatchTitle: "Немає збігів серед установлених плагінів",
     noMatchBody: "Спробуйте інший пошук.",
     filterAll: "Усі",
@@ -1923,7 +1923,7 @@ export const uk: TranslationMap = {
     detailPluginId: "ID плагіна",
     offlineTitle: "Gateway офлайн",
     offlineBody: "Підключіться, щоб переглянути встановлені й рекомендовані плагіни.",
-    optionalCapability: "Необов’язкова можливість OpenClaw.",
+    optionalCapability: "Необов’язкова можливість Operator.",
     enabled: "Увімкнено",
     disabled: "Вимкнено",
     available: "Доступно",
@@ -1955,7 +1955,7 @@ export const uk: TranslationMap = {
     disabledRestart: "Вимкнено {name}. Щоб застосувати зміну, потрібно перезапустити Gateway.",
   },
   aboutPage: {
-    productName: "OpenClaw",
+    productName: "Operator",
     tagline: "Ваш особистий ШІ-асистент, що працює на ваших власних пристроях.",
     waveHello: "Привітайтеся з Clawd",
     linksLabel: "Спільнота та ресурси",
@@ -1964,7 +1964,7 @@ export const uk: TranslationMap = {
     linkGitHub: "GitHub",
     linkDiscord: "Discord",
     linkChangelog: "Журнал змін",
-    license: "© 2026 OpenClaw Foundation — ліцензія MIT.",
+    license: "© 2026 Operator Foundation — ліцензія MIT.",
     artifactTitle: "Control UI",
     artifactSubtitle: "Ідентифікаційні дані, вбудовані під час збірки цього браузерного артефакту.",
     artifactDetails: "Відомості про збірку Control UI",
@@ -2144,7 +2144,7 @@ export const uk: TranslationMap = {
     selfLearning: {
       pitchTitle: "Увімкнути самонавчання",
       pitchBody:
-        "OpenClaw аналізує виправлення та суттєві завершені запуски, а потім створює чернетки пропозицій навичок для цієї дошки. Він використовує додаткові фонові токени, а чернетки надходять як пропозиції, що очікують розгляду.",
+        "Operator аналізує виправлення та суттєві завершені запуски, а потім створює чернетки пропозицій навичок для цієї дошки. Він використовує додаткові фонові токени, а чернетки надходять як пропозиції, що очікують розгляду.",
       enable: "Увімкнути самонавчання",
       enabling: "Увімкнення…",
       updateError: "Не вдалося оновити налаштування самонавчання.",
@@ -3327,7 +3327,7 @@ export const uk: TranslationMap = {
         stepDevUi:
           "Якщо використовуєте pnpm ui:dev, перебудуйте або перезапустіть dev UI з поточного checkout.",
         stepRestart:
-          "Перезапустіть Gateway після оновлення OpenClaw, щоб він надавав поточний протокол.",
+          "Перезапустіть Gateway після оновлення Operator, щоб він надавав поточний протокол.",
       },
       network: {
         title: "Не вдалося підключитися",
@@ -3350,7 +3350,7 @@ export const uk: TranslationMap = {
       remoteViewOnly: "Цей сеанс розташований на спареному вузлі й доступний лише для перегляду.",
       unsupportedViewOnly: "Це зовнішнє джерело сеансів доступне лише для перегляду.",
       sessionMenu: "External session actions",
-      openInOpenClaw: "Open in OpenClaw",
+      openInOperator: "Open in Operator",
       openInTerminal: "Open in terminal",
       terminalUnavailable: "Terminal opening is unavailable for this session.",
     },
@@ -3401,7 +3401,7 @@ export const uk: TranslationMap = {
     followUpModeQueue: "Додати в чергу до завершення виконання",
     followUpModeSteer: "Спрямувати до активного виконання",
     catalogOpenTarget: "Open Codex/Claude sessions in",
-    catalogOpenTargetViewer: "OpenClaw viewer",
+    catalogOpenTargetViewer: "Operator viewer",
     catalogOpenTargetTerminal: "Terminal",
     onboardingDisabled: "Вимкнено під час налаштування",
     gatewayStatus: "Стан Gateway: {status}",
@@ -3821,7 +3821,7 @@ export const uk: TranslationMap = {
       filters: "Фільтри",
       shownOf: "{shown} з {total}",
       emptyTitle: "Ще немає запланованих завдань",
-      emptyHint: "Опишіть, що і коли має робити OpenClaw — воно виконуватиметься за розкладом.",
+      emptyHint: "Опишіть, що і коли має робити Operator — воно виконуватиметься за розкладом.",
       noMatching: "Немає завдань, що відповідають поточним фільтрам.",
       loadMore: "Завантажити ще",
       loading: "Завантаження...",
@@ -3888,7 +3888,7 @@ export const uk: TranslationMap = {
     detail: {
       tabsLabel: "Відомості про автоматизацію",
       newTitle: "Нове заплановане завдання",
-      newSubtitle: "Опишіть, що має зробити OpenClaw, потім виберіть час запуску.",
+      newSubtitle: "Опишіть, що має зробити Operator, потім виберіть час запуску.",
       back: "Усі автоматизації",
       settingsTab: "Налаштування",
       historyTitle: "Історія запусків",
@@ -3961,7 +3961,7 @@ export const uk: TranslationMap = {
       descriptionPlaceholder: "Необов’язковий контекст для цього завдання",
       agentPlaceholder: "main або ops",
       agentHelp: "Почніть вводити, щоб вибрати відомого агента, або введіть власного.",
-      promptPlaceholder: "Опишіть, що має зробити OpenClaw...",
+      promptPlaceholder: "Опишіть, що має зробити Operator...",
       repeat: "Повторювати",
       repeatInterval: "Інтервал",
       repeatOnce: "Один раз",

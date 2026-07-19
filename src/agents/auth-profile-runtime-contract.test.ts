@@ -10,10 +10,10 @@ import {
   AUTH_PROFILE_RUNTIME_CONTRACT,
   createAuthAliasManifestRegistry,
   expectedForwardedAuthProfile,
-} from "openclaw/plugin-sdk/agent-runtime-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type * as ManifestRegistryModule from "../plugins/manifest-registry.js";
 import { runAgentAttempt as runAgentAttemptImpl } from "./command/attempt-execution.js";
 import type { RunEmbeddedAgentParams } from "./embedded-agent-runner/run/params.js";
@@ -166,7 +166,7 @@ function providerRuntimeConfig(provider: string, runtime: string): OperatorConfi
     models: {
       providers: {
         [provider]: {
-          baseUrl: "https://api.openclaw.test/v1",
+          baseUrl: "https://api.operator.test/v1",
           agentRuntime: { id: runtime },
           models: [],
         },
@@ -239,7 +239,7 @@ describe("Auth profile runtime contract - embedded Operator and CLI adapter", ()
   let storePath: string;
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-auth-contract-"));
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-auth-contract-"));
     storePath = path.join(tmpDir, "sessions.json");
     loadPluginManifestRegistry.mockReset().mockReturnValue(createAuthAliasManifestRegistry());
     runCliAgentMock.mockReset();
@@ -355,7 +355,7 @@ describe("Auth profile runtime contract - embedded Operator and CLI adapter", ()
         models: {
           providers: {
             [AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider]: {
-              baseUrl: "https://api.openclaw.test/v1",
+              baseUrl: "https://api.operator.test/v1",
               agentRuntime: { id: "codex" },
               models: [],
             },
@@ -407,7 +407,10 @@ describe("Auth profile runtime contract - embedded Operator and CLI adapter", ()
       providerOverride: AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider,
       authProfileProvider: AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider,
       authProfileOverride: AUTH_PROFILE_RUNTIME_CONTRACT.openAiProfileId,
-      cfg: providerRuntimeConfig(AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider, "openclaw"),
+      cfg: providerRuntimeConfig(
+        AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider,
+        "@gabrielvfonseca/operator",
+      ),
     });
 
     const params = capturedEmbeddedRunParams();
@@ -436,7 +439,10 @@ describe("Auth profile runtime contract - embedded Operator and CLI adapter", ()
       providerOverride: AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider,
       authProfileProvider: AUTH_PROFILE_RUNTIME_CONTRACT.openAiCodexProvider,
       authProfileOverride: AUTH_PROFILE_RUNTIME_CONTRACT.openAiCodexProfileId,
-      cfg: providerRuntimeConfig(AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider, "openclaw"),
+      cfg: providerRuntimeConfig(
+        AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider,
+        "@gabrielvfonseca/operator",
+      ),
     });
 
     const params = capturedEmbeddedRunParams();

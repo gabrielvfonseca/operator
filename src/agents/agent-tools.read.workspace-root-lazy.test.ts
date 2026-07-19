@@ -66,7 +66,7 @@ describe("workspace-scoped coding tools resolve their fs root lazily", () => {
       write: vi.fn(),
       open: vi.fn(),
     });
-    const missingWorkspace = "/openclaw-nonexistent-workspace-zzz/does/not/exist";
+    const missingWorkspace = "/operator-nonexistent-workspace-zzz/does/not/exist";
 
     createHostWorkspaceEditTool(missingWorkspace, { workspaceOnly: true });
     createHostWorkspaceWriteTool(missingWorkspace, { workspaceOnly: true });
@@ -80,7 +80,7 @@ describe("workspace-scoped coding tools resolve their fs root lazily", () => {
     // validation succeeds, so a failed write never leaves a rejecting root promise
     // unawaited and surfacing as an unhandled rejection.
     rootSpy.mockReset().mockRejectedValue(new Error("root dir not found"));
-    const missingWorkspace = "/openclaw-nonexistent-workspace-zzz/does/not/exist";
+    const missingWorkspace = "/operator-nonexistent-workspace-zzz/does/not/exist";
     const missingFile = path.join(missingWorkspace, "out.txt");
 
     createHostWorkspaceWriteTool(missingWorkspace, { workspaceOnly: true });

@@ -8,7 +8,7 @@
  * labels.
  */
 
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { GatewayBrowserClient } from "../../api/gateway.ts";
 import { resolveToolCallKind, unwrapShellWrapperCommand } from "../../lib/chat/tool-call-view.ts";
 

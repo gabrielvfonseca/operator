@@ -12,7 +12,7 @@ import {
   withPairedDeviceRecords,
 } from "./device-pairing.js";
 
-const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-device-pairing-prune-" });
+const suiteRootTracker = createSuiteTempRootTracker({ prefix: "operator-device-pairing-prune-" });
 type PairedDeviceApprovalKind = NonNullable<
   Parameters<typeof approveDevicePairing>[1]["approvedVia"]
 >;

@@ -26,7 +26,7 @@ const startupMigrationTempDirs = useAutoCleanupTempDirTracker(afterEach);
 describe("startup migration checkpoint", () => {
   it("checks migration activity without creating shared state", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const dbPath = resolveOperatorStateSqlitePath(env);
 
@@ -36,7 +36,7 @@ describe("startup migration checkpoint", () => {
 
   it("records the migrated Operator version in shared state", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
 
     expect(readStartupMigrationVersion(env)).toBeNull();
@@ -81,7 +81,7 @@ describe("startup migration checkpoint", () => {
 
   it("keeps the fast path disabled without immutable build provenance", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
 
     recordSuccessfulStartupMigrations({
@@ -105,7 +105,7 @@ describe("startup migration checkpoint", () => {
 
   it("serializes startup migrations with an expiring shared-state lease", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const lease = acquireStartupMigrationLease({ env, nowMs: 1000, owner: "first" });
 
@@ -125,7 +125,7 @@ describe("startup migration checkpoint", () => {
 
   it("does not report an expired startup migration lease as active", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const lease = acquireStartupMigrationLease({ env, nowMs: 1000, owner: "first" });
 
@@ -136,7 +136,7 @@ describe("startup migration checkpoint", () => {
 
   it("renews startup migration leases while the owner is still running", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const lease = acquireStartupMigrationLease({ env, nowMs: 1000, owner: "first" });
 
@@ -151,7 +151,7 @@ describe("startup migration checkpoint", () => {
 
   it("does not checkpoint startup migrations after the lease is lost", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const first = acquireStartupMigrationLease({ env, nowMs: 1000, owner: "first" });
     const second = acquireStartupMigrationLease({ env, nowMs: 400_000, owner: "second" });
@@ -171,7 +171,7 @@ describe("startup migration checkpoint", () => {
 
   it("reads the checkpoint without requiring the full state schema to be canonical", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const sqlite = requireNodeSqlite();
     const dbPath = resolveOperatorStateSqlitePath(env);
@@ -195,7 +195,7 @@ describe("startup migration checkpoint", () => {
 
   it("refuses future-version state databases before creating checkpoint tables", () => {
     const env = {
-      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("openclaw-startup-migration-"),
+      OPERATOR_STATE_DIR: startupMigrationTempDirs.make("operator-startup-migration-"),
     };
     const sqlite = requireNodeSqlite();
     const dbPath = resolveOperatorStateSqlitePath(env);

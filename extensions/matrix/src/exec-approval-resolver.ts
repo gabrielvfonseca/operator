@@ -2,10 +2,10 @@
 import {
   resolveApprovalOverGateway,
   type ApprovalResolveResult,
-} from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isApprovalNotFoundError } from "openclaw/plugin-sdk/error-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isApprovalNotFoundError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 
 export { isApprovalNotFoundError };
 

@@ -1,4 +1,4 @@
-import type { SlackAccountConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { SlackAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   assertEnterpriseSlackDmPolicy,

@@ -1,18 +1,18 @@
 {
   "stateDirName": "system-agent-ring-zero-state",
-  "defaultWorkspaceName": "openclaw-main-workspace",
-  "agentWorkspaceName": "openclaw-reef-workspace",
+  "defaultWorkspaceName": "operator-main-workspace",
+  "agentWorkspaceName": "operator-reef-workspace",
   "dockerDefaultWorkspace": "/tmp/system-agent-first-run",
-  "dockerAgentWorkspace": "/tmp/openclaw-reef",
+  "dockerAgentWorkspace": "/tmp/operator-reef",
   "agentId": "reef",
   "model": "claude-cli/claude-opus-4-8",
   "telegramEnv": "TELEGRAM_BOT_TOKEN",
-  "telegramToken": "123456:openclaw-openclaw-telegram-e2e-token",
+  "telegramToken": "123456:operator-operator-telegram-e2e-token",
   "commands": [
     {
       "id": "setup",
       "message": "please finish basic setup with workspace {defaultWorkspace}",
-      "expectOutput": "[openclaw] done: openclaw.setup",
+      "expectOutput": "[openclaw] done: operator.setup",
       "approve": true,
       "planner": true
     },
@@ -48,7 +48,7 @@
     }
   ],
   "auditOperations": [
-    "openclaw.setup",
+    "operator.setup",
     "config.setDefaultModel",
     "agents.create",
     "config.setRef",

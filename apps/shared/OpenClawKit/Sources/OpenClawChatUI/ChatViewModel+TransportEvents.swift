@@ -1,20 +1,20 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import OSLog
 
-private let transportEventsLogger = Logger(subsystem: "ai.openclaw", category: "OpenClawChatUI")
+private let transportEventsLogger = Logger(subsystem: "ai.operator", category: "OperatorChatUI")
 
 @MainActor
 private final class PendingRunOwnerReference {
-    weak var value: OpenClawChatViewModel?
+    weak var value: OperatorChatViewModel?
 
-    init(_ value: OpenClawChatViewModel) {
+    init(_ value: OperatorChatViewModel) {
         self.value = value
     }
 }
 
-extension OpenClawChatViewModel {
-    func handleTransportEvent(_ evt: OpenClawChatTransportEvent) {
+extension OperatorChatViewModel {
+    func handleTransportEvent(_ evt: OperatorChatTransportEvent) {
         switch evt {
         case let .health(ok):
             applyTransportHealth(ok)
@@ -46,7 +46,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    private func handleSessionMessageEvent(_ payload: OpenClawSessionMessageEventPayload) {
+    private func handleSessionMessageEvent(_ payload: OperatorSessionMessageEventPayload) {
         guard let message = payload.message else { return }
         let sanitized = Self.stripInboundMetadata(from: message)
         let isCurrentSession = payload.sessionKey.map {
@@ -84,7 +84,7 @@ extension OpenClawChatViewModel {
         self.applyDeferredExternalStateIfReady()
     }
 
-    private func handleChatEvent(_ chat: OpenClawChatEventPayload) {
+    private func handleChatEvent(_ chat: OperatorChatEventPayload) {
         let isOurRun = chat.runId.flatMap { self.pendingRuns.contains($0) } ?? false
         if let runId = chat.runId {
             self.logDiagnostic(
@@ -114,7 +114,7 @@ extension OpenClawChatViewModel {
             self.invalidateRunSnapshots()
             self.adoptRun(
                 runId: runId,
-                bufferedText: OpenClawChatEventText.assistantText(from: chat) ?? "")
+                bufferedText: OperatorChatEventText.assistantText(from: chat) ?? "")
             return
         }
         if chat.state == "final" || chat.state == "aborted" || chat.state == "error" {
@@ -142,7 +142,7 @@ extension OpenClawChatViewModel {
             if chat.state == "error" {
                 self.errorText = chat.errorMessage ?? "Chat failed"
             }
-            let hapticEvent: OpenClawChatHaptics.Event? = switch chat.state {
+            let hapticEvent: OperatorChatHaptics.Event? = switch chat.state {
             case "final": .runCompleted
             case "error": .runFailed
             default: nil
@@ -163,22 +163,22 @@ extension OpenClawChatViewModel {
         }
     }
 
-    private func appendFinalChatMessageIfPresent(_ chat: OpenClawChatEventPayload) {
+    private func appendFinalChatMessageIfPresent(_ chat: OperatorChatEventPayload) {
         guard chat.state == "final" else { return }
-        guard let text = OpenClawChatEventText.assistantText(from: chat) else { return }
+        guard let text = OperatorChatEventText.assistantText(from: chat) else { return }
 
         let decoded = chat.message.flatMap {
-            try? ChatPayloadDecoding.decode($0, as: OpenClawChatMessage.self)
+            try? ChatPayloadDecoding.decode($0, as: OperatorChatMessage.self)
         }
         let message = if let decoded,
                          Self.isAssistantMessage(decoded)
         {
             Self.messageWithTimestampIfNeeded(decoded)
         } else {
-            OpenClawChatMessage(
+            OperatorChatMessage(
                 role: "assistant",
                 content: [
-                    OpenClawChatMessageContent(
+                    OperatorChatMessageContent(
                         type: "text",
                         text: text,
                         thinking: nil,
@@ -221,13 +221,13 @@ extension OpenClawChatViewModel {
         pruneRunMessageScopes()
     }
 
-    static func isAssistantMessage(_ message: OpenClawChatMessage) -> Bool {
+    static func isAssistantMessage(_ message: OperatorChatMessage) -> Bool {
         message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "assistant"
     }
 
-    private static func messageWithTimestampIfNeeded(_ message: OpenClawChatMessage) -> OpenClawChatMessage {
+    private static func messageWithTimestampIfNeeded(_ message: OperatorChatMessage) -> OperatorChatMessage {
         guard message.timestamp == nil else { return message }
-        return OpenClawChatMessage(
+        return OperatorChatMessage(
             id: message.id,
             role: message.role,
             content: message.content,
@@ -240,7 +240,7 @@ extension OpenClawChatViewModel {
             errorMessage: message.errorMessage)
     }
 
-    private func handleAgentEvent(_ evt: OpenClawAgentEventPayload) {
+    private func handleAgentEvent(_ evt: OperatorAgentEventPayload) {
         let isPendingRun = self.pendingRuns.contains(evt.runId)
         let isLegacySessionStream = self.pendingRuns.isEmpty && self.sessionId == evt.runId
         if !isPendingRun, !isLegacySessionStream {
@@ -266,7 +266,7 @@ extension OpenClawChatViewModel {
             if phase == "start" {
                 self.updateActiveSessionRunWithoutChatSnapshot(false)
                 let args = evt.data["args"]
-                self.pendingToolCallsById[toolCallId] = OpenClawChatPendingToolCall(
+                self.pendingToolCallsById[toolCallId] = OperatorChatPendingToolCall(
                     toolCallId: toolCallId,
                     name: name,
                     args: args,
@@ -280,7 +280,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    private func handleAgentLifecycleEvent(_ evt: OpenClawAgentEventPayload, isPendingRun: Bool) {
+    private func handleAgentLifecycleEvent(_ evt: OperatorAgentEventPayload, isPendingRun: Bool) {
         let phase = Self.lowercasedAgentEventString(evt.data["phase"])
         let status = Self.lowercasedAgentEventString(evt.data["status"])
         let aborted = Self.agentEventBool(evt.data["aborted"])
@@ -326,7 +326,7 @@ extension OpenClawChatViewModel {
         return stringValue == "true" || stringValue == "yes" || stringValue == "1"
     }
 
-    private static func agentLifecycleErrorMessage(_ evt: OpenClawAgentEventPayload, aborted: Bool) -> String {
+    private static func agentLifecycleErrorMessage(_ evt: OperatorAgentEventPayload, aborted: Bool) -> String {
         if aborted {
             return "Run aborted"
         }
@@ -343,7 +343,7 @@ extension OpenClawChatViewModel {
         return "Chat failed"
     }
 
-    func finishPendingRunAfterTerminalOkSendAck(_ response: OpenClawChatSendResponse) {
+    func finishPendingRunAfterTerminalOkSendAck(_ response: OperatorChatSendResponse) {
         self.clearPendingRun(response.runId, hapticEvent: .runCompleted)
         self.pendingToolCallsById = [:]
         self.updateStreamingAssistantText(nil)
@@ -352,7 +352,7 @@ extension OpenClawChatViewModel {
                 + "runId=\(response.runId) status=ok")
     }
 
-    func finishPendingRunIfTerminalSendAck(_ response: OpenClawChatSendResponse) -> Bool {
+    func finishPendingRunIfTerminalSendAck(_ response: OperatorChatSendResponse) -> Bool {
         switch response.status {
         case "timeout":
             self.removePendingLocalUserEcho(for: response.runId)
@@ -390,7 +390,7 @@ extension OpenClawChatViewModel {
         sessionSnapshot: SessionSnapshot,
         armID: UInt64? = nil,
         after timestamp: Double?,
-        terminalState: OpenClawChatRunTerminalState? = nil,
+        terminalState: OperatorChatRunTerminalState? = nil,
         allowNoOutputCompletion: Bool = false,
         diagnostic: String) async -> Bool
     {
@@ -459,8 +459,8 @@ extension OpenClawChatViewModel {
         return !self.clearPendingRunIfAssistantMessagePresent(runId: runId, after: timestamp)
     }
 
-    private func finishPendingRun(runId: String, terminalState: OpenClawChatRunTerminalState) {
-        let hapticEvent: OpenClawChatHaptics.Event
+    private func finishPendingRun(runId: String, terminalState: OperatorChatRunTerminalState) {
+        let hapticEvent: OperatorChatHaptics.Event
         switch terminalState {
         case .completed:
             hapticEvent = .runCompleted
@@ -492,11 +492,11 @@ extension OpenClawChatViewModel {
         return true
     }
 
-    static func hasUnansweredLatestUser(in messages: [OpenClawChatMessage]) -> Bool {
+    static func hasUnansweredLatestUser(in messages: [OperatorChatMessage]) -> Bool {
         self.latestUserTurn(in: messages) != nil && !self.hasAssistantMessageAfterLatestUser(in: messages)
     }
 
-    static func latestUserTurn(in messages: [OpenClawChatMessage]) -> LatestUserTurn? {
+    static func latestUserTurn(in messages: [OperatorChatMessage]) -> LatestUserTurn? {
         guard let lastUserIndex = messages.lastIndex(where: { $0.role.lowercased() == "user" }) else {
             return nil
         }
@@ -504,8 +504,8 @@ extension OpenClawChatViewModel {
     }
 
     static func userTurn(
-        at userIndex: [OpenClawChatMessage].Index,
-        in messages: [OpenClawChatMessage]) -> LatestUserTurn?
+        at userIndex: [OperatorChatMessage].Index,
+        in messages: [OperatorChatMessage]) -> LatestUserTurn?
     {
         guard messages.indices.contains(userIndex),
               messages[userIndex].role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "user"
@@ -532,7 +532,7 @@ extension OpenClawChatViewModel {
 
     static func hasAnsweredUser(
         _ user: LatestUserTurn,
-        in messages: [OpenClawChatMessage])
+        in messages: [OperatorChatMessage])
         -> Bool
     {
         // Hooks may transform persisted user content while preserving this key.
@@ -548,7 +548,7 @@ extension OpenClawChatViewModel {
         }
         guard let refreshKey = user.refreshKey else { return false }
         var occurrence = 0
-        var latestMatchingUserIndex: [OpenClawChatMessage].Index?
+        var latestMatchingUserIndex: [OperatorChatMessage].Index?
         for (index, message) in messages.enumerated() {
             guard userRefreshIdentityKey(for: message) == refreshKey else { continue }
             occurrence += 1
@@ -571,8 +571,8 @@ extension OpenClawChatViewModel {
     }
 
     private static func hasAssistantMessage(
-        after userIndex: [OpenClawChatMessage].Index,
-        in messages: [OpenClawChatMessage]) -> Bool
+        after userIndex: [OperatorChatMessage].Index,
+        in messages: [OperatorChatMessage]) -> Bool
     {
         let nextIndex = messages.index(after: userIndex)
         guard nextIndex < messages.endIndex else { return false }
@@ -584,7 +584,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    private static func hasAssistantMessageAfterLatestUser(in messages: [OpenClawChatMessage]) -> Bool {
+    private static func hasAssistantMessageAfterLatestUser(in messages: [OperatorChatMessage]) -> Bool {
         guard let lastUserIndex = messages.lastIndex(where: { $0.role.lowercased() == "user" }) else {
             return false
         }
@@ -600,7 +600,7 @@ extension OpenClawChatViewModel {
     }
 
     private static func assistantHapticEvent(
-        for message: OpenClawChatMessage) -> OpenClawChatHaptics.Event?
+        for message: OperatorChatMessage) -> OperatorChatHaptics.Event?
     {
         guard message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "assistant" else {
             return nil
@@ -612,14 +612,14 @@ extension OpenClawChatViewModel {
         return stopReason == "error" || stopReason == "aborted" ? .runFailed : .runCompleted
     }
 
-    func assistantHapticEventAfterLatestUser() -> OpenClawChatHaptics.Event? {
+    func assistantHapticEventAfterLatestUser() -> OperatorChatHaptics.Event? {
         guard let userIndex = messages.lastIndex(where: { $0.role.lowercased() == "user" }) else { return nil }
         let nextIndex = self.messages.index(after: userIndex)
         guard nextIndex < self.messages.endIndex else { return nil }
         return self.messages[nextIndex...].reversed().lazy.compactMap(Self.assistantHapticEvent).first
     }
 
-    private func assistantHapticEvent(after timestamp: Double) -> OpenClawChatHaptics.Event? {
+    private func assistantHapticEvent(after timestamp: Double) -> OperatorChatHaptics.Event? {
         self.messages.reversed().lazy.compactMap { message in
             guard (message.timestamp ?? 0) >= timestamp else { return nil }
             return Self.assistantHapticEvent(for: message)
@@ -631,7 +631,7 @@ extension OpenClawChatViewModel {
     /// visible session also runs the normal reconciliation/cache pipeline.
     func refreshHistoriesAfterOutboxFlush(
         targets: Set<OutboxDeliveryTarget>,
-        routeLease: OpenClawChatTransportRouteLease) async
+        routeLease: OperatorChatTransportRouteLease) async
     {
         let sortedTargets = targets.sorted { lhs, rhs in
             if lhs.deliverySessionKey != rhs.deliverySessionKey {
@@ -735,7 +735,7 @@ extension OpenClawChatViewModel {
         sessionSnapshot: SessionSnapshot,
         userMessageTimestamp: Double?,
         armID: UInt64,
-        transport: any OpenClawChatTransport) async
+        transport: any OperatorChatTransport) async
     {
         await withTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -766,9 +766,9 @@ extension OpenClawChatViewModel {
         sessionSnapshot: SessionSnapshot,
         userMessageTimestamp: Double?,
         armID: UInt64,
-        transport: any OpenClawChatTransport) async
+        transport: any OperatorChatTransport) async
     {
-        var terminalState: OpenClawChatRunTerminalState?
+        var terminalState: OperatorChatRunTerminalState?
         var completedObservedAtMs: Double?
         while let timeoutMs = await Self.pendingRunWaitTimeout(
             owner: owner,
@@ -785,7 +785,7 @@ extension OpenClawChatViewModel {
                     completedObservedAtMs = Date().timeIntervalSince1970 * 1000
                 }
             }
-            let effectiveObservation = terminalState.map(OpenClawChatRunObservation.terminal) ?? observation
+            let effectiveObservation = terminalState.map(OperatorChatRunObservation.terminal) ?? observation
             guard let retryDelayMs = await Self.processPendingRunObservation(
                 owner: owner,
                 runId: runId,
@@ -824,7 +824,7 @@ extension OpenClawChatViewModel {
         sessionSnapshot: SessionSnapshot,
         userMessageTimestamp: Double?,
         armID: UInt64,
-        observation: OpenClawChatRunObservation,
+        observation: OperatorChatRunObservation,
         completedObservedAtMs: Double?) async -> UInt64?
     {
         guard let model = owner.value,
@@ -935,7 +935,7 @@ extension OpenClawChatViewModel {
 
     func clearPendingRun(
         _ runId: String,
-        hapticEvent: OpenClawChatHaptics.Event? = nil)
+        hapticEvent: OperatorChatHaptics.Event? = nil)
     {
         let wasPending = self.pendingRuns.contains(runId)
         self.pendingRuns.remove(runId)
@@ -955,7 +955,7 @@ extension OpenClawChatViewModel {
 
     func clearPendingRuns(
         reason: String?,
-        hapticEvent: OpenClawChatHaptics.Event? = nil)
+        hapticEvent: OperatorChatHaptics.Event? = nil)
     {
         let runIds = Array(pendingRuns)
         for runId in self.pendingRuns {

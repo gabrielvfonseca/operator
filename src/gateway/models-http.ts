@@ -40,7 +40,7 @@ function toOpenAiModel(id: string): OpenAiModelObject {
     id,
     object: "model",
     created: 0,
-    owned_by: "operator",
+    owned_by: "@gabrielvfonseca/operator",
     permission: [],
   };
 }
@@ -64,9 +64,9 @@ function loadAgentModelIds(): string[] {
   const cfg = getRuntimeConfig();
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const ids = new Set<string>([OPERATOR_MODEL_ID, OPERATOR_DEFAULT_MODEL_ID]);
-  ids.add(`operator/${defaultAgentId}`);
+  ids.add(`openclaw/${defaultAgentId}`);
   for (const agentId of listAgentIds(cfg)) {
-    ids.add(`operator/${agentId}`);
+    ids.add(`openclaw/${agentId}`);
   }
   return Array.from(ids);
 }

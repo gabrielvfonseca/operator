@@ -1,5 +1,5 @@
 // Video live test helpers resolve live provider test settings from environment.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.js";
 import {
   parseLiveCsvFilter,

@@ -27,8 +27,8 @@ describe("parsePairingString", () => {
     }
     expect(parsed.relayUrl).toBe(`ws://127.0.0.1:${port}/extension`);
     expect(buildRelayWsProtocols(parsed.token)).toEqual([
-      "openclaw-extension-relay",
-      `openclaw-extension-token.${token}`,
+      "operator-extension-relay",
+      `operator-extension-token.${token}`,
     ]);
   });
 

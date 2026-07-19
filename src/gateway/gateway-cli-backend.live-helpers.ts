@@ -3,7 +3,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { EventFrame } from "../../packages/gateway-protocol/src/index.js";
 import {
   listCliRuntimeModelBackendBindings,
@@ -132,7 +132,7 @@ export function resolveCliBackendLiveModelSelection(params: {
     cliModelKey: modelKey,
     configModelKey: modelKey,
     configModelSwitchTarget: params.modelSwitchTarget,
-    agentRuntime: { id: "operator" },
+    agentRuntime: { id: "@gabrielvfonseca/operator" },
   };
 }
 
@@ -306,7 +306,7 @@ export function resolveImportedClaudeCliSessionId(messages: unknown[]): string |
   for (const message of messages) {
     const metadata =
       typeof message === "object" && message !== null
-        ? (message as Record<string, unknown>)["__operator"]
+        ? (message as Record<string, unknown>)["__openclaw"]
         : undefined;
     if (typeof metadata !== "object" || metadata === null) {
       continue;

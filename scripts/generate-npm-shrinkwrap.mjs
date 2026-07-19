@@ -19,7 +19,7 @@ const NPM_SHRINKWRAP_COMMAND_TIMEOUT_MS = 10 * 60 * 1000;
 const NPM_SHRINKWRAP_COMMAND_MAX_BUFFER_BYTES = 64 * 1024 * 1024;
 const NPM_SHRINKWRAP_DEFAULT_JOBS = 4;
 const NPM_SHRINKWRAP_MAX_JOBS = 16;
-const SHRINKWRAP_WORKER_KIND = "openclaw-shrinkwrap-package";
+const SHRINKWRAP_WORKER_KIND = "operator-shrinkwrap-package";
 
 function usage() {
   return [
@@ -458,14 +458,14 @@ export function createNpmShrinkwrapExecOptions(invocation, cwd, env = process.en
     cwd,
     env: invocation.env ?? env,
     maxBuffer: readPositiveIntEnv(
-      "OPENCLAW_NPM_SHRINKWRAP_COMMAND_MAX_BUFFER_BYTES",
+      "OPERATOR_NPM_SHRINKWRAP_COMMAND_MAX_BUFFER_BYTES",
       NPM_SHRINKWRAP_COMMAND_MAX_BUFFER_BYTES,
       env,
     ),
     shell: invocation.shell,
     stdio: ["ignore", "pipe", "pipe"],
     timeout: readPositiveIntEnv(
-      "OPENCLAW_NPM_SHRINKWRAP_COMMAND_TIMEOUT_MS",
+      "OPERATOR_NPM_SHRINKWRAP_COMMAND_TIMEOUT_MS",
       NPM_SHRINKWRAP_COMMAND_TIMEOUT_MS,
       env,
     ),
@@ -733,7 +733,7 @@ function normalizeNpmVersionDrift(lockfile) {
 }
 
 function generateShrinkwrap(packageDir, options = {}) {
-  const tempDir = mkdtempSync(path.join(tmpdir(), "openclaw-shrinkwrap-"));
+  const tempDir = mkdtempSync(path.join(tmpdir(), "operator-shrinkwrap-"));
   try {
     const packageJson = JSON.parse(readFileSync(path.join(packageDir, "package.json"), "utf8"));
     const currentShrinkwrap = readCurrentShrinkwrap(packageDir);
@@ -1118,7 +1118,7 @@ function listManagedShrinkwrapPackageDirs() {
       }
       const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
       return (
-        packageJson.openclaw?.release?.publishToNpm === true ||
+        packageJson.operator?.release?.publishToNpm === true ||
         existsSync(shrinkwrapPathForPackage(path.join(ROOT_DIR, packageDir)))
       );
     })
@@ -1354,13 +1354,13 @@ export function resolveShrinkwrapJobs(
   env = process.env,
   fallback = NPM_SHRINKWRAP_DEFAULT_JOBS,
 ) {
-  const raw = rawValue ?? env.OPENCLAW_NPM_SHRINKWRAP_JOBS ?? String(fallback);
-  const jobs = readPositiveIntEnv("OPENCLAW_NPM_SHRINKWRAP_JOBS", raw, {
-    OPENCLAW_NPM_SHRINKWRAP_JOBS: raw,
+  const raw = rawValue ?? env.OPERATOR_NPM_SHRINKWRAP_JOBS ?? String(fallback);
+  const jobs = readPositiveIntEnv("OPERATOR_NPM_SHRINKWRAP_JOBS", raw, {
+    OPERATOR_NPM_SHRINKWRAP_JOBS: raw,
   });
   if (jobs > NPM_SHRINKWRAP_MAX_JOBS) {
     throw new Error(
-      `invalid OPENCLAW_NPM_SHRINKWRAP_JOBS: ${raw}; maximum is ${NPM_SHRINKWRAP_MAX_JOBS}`,
+      `invalid OPERATOR_NPM_SHRINKWRAP_JOBS: ${raw}; maximum is ${NPM_SHRINKWRAP_MAX_JOBS}`,
     );
   }
   return jobs;

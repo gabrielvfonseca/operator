@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import SwiftUI
 
 extension CronJobEditor {

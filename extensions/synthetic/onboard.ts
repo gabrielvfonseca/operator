@@ -2,7 +2,7 @@
 import {
   createModelCatalogPresetAppliers,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildSyntheticModelDefinition,
   SYNTHETIC_BASE_URL,

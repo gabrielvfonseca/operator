@@ -1,5 +1,5 @@
 // Browser tests cover cdp.helpers plugin behavior.
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveCdpReachabilityPolicy } from "./cdp-reachability-policy.js";
 import { resolveCdpReachabilityTimeouts } from "./cdp-timeouts.js";
@@ -210,7 +210,7 @@ describe("cdp helpers", () => {
     });
 
     await expect(
-      fetchOk("http://openclaw:relay-token@127.0.0.1:9222/json/version", 250),
+      fetchOk("http://operator:relay-token@127.0.0.1:9222/json/version", 250),
     ).resolves.toBeUndefined();
 
     const request = requireGuardedFetchRequest();
@@ -279,7 +279,7 @@ function createProfile(overrides: Partial<ResolvedBrowserProfile>): ResolvedBrow
     cdpHost: "172.29.128.1",
     cdpIsLoopback: false,
     color: "#123456",
-    driver: "openclaw",
+    driver: "@gabrielvfonseca/operator",
     attachOnly: false,
     ...overrides,
     headless: overrides.headless ?? false,

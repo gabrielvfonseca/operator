@@ -1,5 +1,5 @@
 // Defines session-related Zod schema fragments for config parsing.
-import { normalizeStringifiedOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeStringifiedOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { z } from "zod";
 import { parseByteSize } from "../cli/parse-bytes.js";
 import { parseDurationMs } from "../cli/parse-duration.js";

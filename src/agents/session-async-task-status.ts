@@ -2,7 +2,7 @@
  * Session async-task lookup helpers for avoiding duplicate long-running work
  * and reporting the active task back through tool/status metadata.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { listTasksForOwnerKey } from "../tasks/runtime-internal.js";
 import type { TaskRecord, TaskRuntime, TaskStatus } from "../tasks/task-registry.types.js";
 

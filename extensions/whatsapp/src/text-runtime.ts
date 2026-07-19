@@ -4,8 +4,11 @@ export {
   sanitizeAssistantVisibleText,
   sanitizeAssistantVisibleTextWithProfile,
   stripToolCallXmlTags,
-} from "openclaw/plugin-sdk/text-chunking";
-export { normalizeE164, resolveUserPath } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+export {
+  normalizeE164,
+  resolveUserPath,
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 export {
   assertWebChannel,
   isSelfChatMode,

@@ -1,5 +1,5 @@
 // Mattermost tests cover monitor plugin behavior.
-import { createClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
+import { createClaimableDedupe } from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../runtime-api.js";
 import { resolveMattermostAccount } from "./accounts.js";

@@ -1,3 +1,4 @@
+import { registerUnhandledRejectionHandler } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Diagnostics Otel plugin module implements service behavior.
 import { metrics, trace } from "@opentelemetry/api";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
@@ -12,7 +13,6 @@ import {
   TraceIdRatioBasedSampler,
 } from "@opentelemetry/sdk-trace-base";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
-import { registerUnhandledRejectionHandler } from "openclaw/plugin-sdk/runtime-env";
 import type { OperatorPluginService } from "../api.js";
 import {
   DEFAULT_SERVICE_NAME,
@@ -252,8 +252,8 @@ export function createDiagnosticsOtelService(): OperatorPluginService {
         ctx.logger.info("diagnostics-otel: using preloaded OpenTelemetry SDK");
       }
 
-      const meter = metrics.getMeter("openclaw");
-      const tracer = trace.getTracer("openclaw");
+      const meter = metrics.getMeter("@gabrielvfonseca/operator");
+      const tracer = trace.getTracer("@gabrielvfonseca/operator");
       const diagnosticsTrace = createDiagnosticsTraceRuntime(tracer);
       stopActiveTrustedSpans = diagnosticsTrace.stopActiveTrustedSpans;
       const diagnosticMetrics = createDiagnosticsMetrics(meter);

@@ -5,12 +5,12 @@ import CoreGraphics
 import CoreLocation
 import Foundation
 import Observation
-import OpenClawIPC
+import OperatorIPC
 import Speech
 import UserNotifications
 
 extension Notification.Name {
-    static let openclawPermissionsChanged = Notification.Name("openclaw.permissions.changed")
+    static let openclawPermissionsChanged = Notification.Name("operator.permissions.changed")
 }
 
 enum PermissionManager {
@@ -33,7 +33,7 @@ enum PermissionManager {
         }
         if interactive {
             await MainActor.run {
-                NotificationCenter.default.post(name: .openclawPermissionsChanged, object: nil)
+                NotificationCenter.default.post(name: .operatorPermissionsChanged, object: nil)
             }
         }
         return results
@@ -358,14 +358,14 @@ final class LocationPermissionRequester: NSObject, CLLocationManagerDelegate {
 }
 
 enum AppleScriptPermission {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "AppleScriptPermission")
+    private static let logger = Logger(subsystem: "ai.operator", category: "AppleScriptPermission")
 
     /// Sends a benign AppleScript to Terminal to verify Automation permission.
     @MainActor
     static func isAuthorized() -> Bool {
         let script = """
         tell application "Terminal"
-            return "openclaw-ok"
+            return "operator-ok"
         end tell
         """
 
@@ -465,7 +465,7 @@ final class PermissionMonitor {
         let latest = await PermissionManager.status()
         if latest != self.status {
             self.status = latest
-            NotificationCenter.default.post(name: .openclawPermissionsChanged, object: nil)
+            NotificationCenter.default.post(name: .operatorPermissionsChanged, object: nil)
         }
         self.lastCheck = Date()
 

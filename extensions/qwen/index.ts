@@ -1,6 +1,6 @@
 // Qwen plugin entrypoint registers its Operator integration.
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
 import { applyQwenNativeStreamingUsageCompat } from "./api.js";
 import { buildQwenMediaUnderstandingProvider } from "./media-understanding-provider.js";
 import {

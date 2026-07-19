@@ -6,35 +6,38 @@ import type {
   ChannelThreadingContext,
   ChannelThreadingToolContext,
   ChannelToolSend,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "openclaw/plugin-sdk/channel-outbound";
-import { createLoggedPairingApprovalNotifier } from "openclaw/plugin-sdk/channel-pairing";
-import { createRestrictSendersChannelSecurity } from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createLoggedPairingApprovalNotifier } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import { createRestrictSendersChannelSecurity } from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import {
   attachChannelToResult,
   createAttachedChannelResultAdapter,
   type ChannelOutboundAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createChannelDirectoryAdapter } from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
+import { buildPassiveProbedChannelStatusSummary } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import {
   type MessagePresentation,
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
   resolveMessagePresentationButtonAction,
   resolveMessagePresentationControlValue,
-} from "openclaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { resolvePayloadMediaUrls, sendTextMediaPayload } from "openclaw/plugin-sdk/reply-payload";
-import { isPrivateNetworkOptInEnabled } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  resolvePayloadMediaUrls,
+  sendTextMediaPayload,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { isPrivateNetworkOptInEnabled } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeAssistantVisibleText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sanitizeAssistantVisibleText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { mattermostApprovalAuth } from "./approval-auth.js";
 import {
   chunkTextForOutbound,

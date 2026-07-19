@@ -1,8 +1,8 @@
 // Qa Lab plugin module implements runtime tool fixture behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { loadTranscriptEventsSync } from "openclaw/plugin-sdk/session-store-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { loadTranscriptEventsSync } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   qaMockRequestCursorUrl,
   qaMockRequestsAfterUrl,

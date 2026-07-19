@@ -1,9 +1,9 @@
 // Memory Wiki helper module supports test helpers behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { PluginStateEntry } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import type { PluginStateEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { afterEach, vi } from "vitest";
 import type { OperatorPluginApi } from "../api.js";
 import {

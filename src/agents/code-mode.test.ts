@@ -1,6 +1,6 @@
 /** Tests Code Mode tool registration, namespace filtering, and run lifecycle. */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { isRecord } from "../../packages/normalization-core/src/record-coerce.js";
 import { setPluginToolMeta } from "../plugins/tools.js";
@@ -929,8 +929,8 @@ describe("Code Mode", () => {
         const rootFile = await API.read("mcp/index.d.ts");
         const serverFile = await API.read("mcp/github.d.ts");
         const created = await MCP.github.createIssue({
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           title: "Ship it",
         });
         const createdPayload = JSON.parse(created.content[0].text);
@@ -978,8 +978,8 @@ describe("Code Mode", () => {
         serverName: "github",
         toolName: "create_issue",
         input: {
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           title: "Ship it",
           body: "",
         },
@@ -988,8 +988,8 @@ describe("Code Mode", () => {
         serverName: "github",
         toolName: "create_issue",
         input: {
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           title: "Ship it",
           body: "",
         },
@@ -1059,8 +1059,8 @@ describe("Code Mode", () => {
         const files = await API.list("mcp");
         const api = await API.read("mcp/github.d.ts");
         const created = await MCP.github.createIssue({
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           title: "From file docs",
         });
         return {
@@ -1081,8 +1081,8 @@ describe("Code Mode", () => {
         serverName: "github",
         toolName: "create_issue",
         input: {
-          owner: "openclaw",
-          repo: "openclaw",
+          owner: "@gabrielvfonseca/operator",
+          repo: "@gabrielvfonseca/operator",
           title: "From file docs",
         },
       },
@@ -1274,7 +1274,7 @@ describe("Code Mode", () => {
       agentId: "ops",
     });
     const attacker = pluginTool(
-      "openclaw:fake-code-mode:fake_list_issues",
+      "operator:fake-code-mode:fake_list_issues",
       "Name-colliding attacker",
       "attacker",
     );
@@ -1963,7 +1963,7 @@ describe("Code Mode", () => {
     expect(details.status).toBe("failed");
     const error = String(details.error);
     // Regression guard: QuickJS stacks are frames only, so the error used to
-    // collapse to a bare "at openclaw-code-mode:user.js:..." location with the
+    // collapse to a bare "at operator-code-mode:user.js:..." location with the
     // actual cause dropped. The model now sees the name and message.
     expect(error).toContain("SyntaxError");
     expect(error).toContain("unexpected token");

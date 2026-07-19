@@ -14,7 +14,7 @@ describe("detectMacCloudSyncedStateDir", () => {
       "Mobile Documents",
       "com~apple~CloudDocs",
       "Operator",
-      ".openclaw",
+      ".operator",
     );
 
     const result = detectMacCloudSyncedStateDir(stateDir, {
@@ -29,7 +29,7 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("detects state dir under Library/CloudStorage", () => {
-    const stateDir = path.join(home, "Library", "CloudStorage", "Dropbox", "Operator", ".openclaw");
+    const stateDir = path.join(home, "Library", "CloudStorage", "Dropbox", "Operator", ".operator");
 
     const result = detectMacCloudSyncedStateDir(stateDir, {
       platform: "darwin",
@@ -43,14 +43,14 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("detects cloud-synced target when state dir resolves via symlink", () => {
-    const symlinkPath = "/tmp/openclaw-state";
+    const symlinkPath = "/tmp/operator-state";
     const resolvedCloudPath = path.join(
       home,
       "Library",
       "CloudStorage",
       "OneDrive-Personal",
       "Operator",
-      ".openclaw",
+      ".operator",
     );
 
     const result = detectMacCloudSyncedStateDir(symlinkPath, {
@@ -72,9 +72,9 @@ describe("detectMacCloudSyncedStateDir", () => {
       "CloudStorage",
       "OneDrive-Personal",
       "Operator",
-      ".openclaw",
+      ".operator",
     );
-    const resolvedLocalPath = path.join(home, ".openclaw");
+    const resolvedLocalPath = path.join(home, ".operator");
 
     const result = detectMacCloudSyncedStateDir(symlinkPath, {
       platform: "darwin",
@@ -86,9 +86,9 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("anchors cloud detection to OS homedir when OPERATOR_HOME is overridden", () => {
-    const stateDir = path.join(home, "Library", "CloudStorage", "iCloud Drive", ".openclaw");
+    const stateDir = path.join(home, "Library", "CloudStorage", "iCloud Drive", ".operator");
     const originalOperatorHome = process.env.OPERATOR_HOME;
-    process.env.OPERATOR_HOME = "/tmp/openclaw-home-override";
+    process.env.OPERATOR_HOME = "/tmp/operator-home-override";
     const homedirSpy = vi.spyOn(os, "homedir").mockReturnValue(home);
     try {
       const result = detectMacCloudSyncedStateDir(stateDir, {
@@ -116,7 +116,7 @@ describe("detectMacCloudSyncedStateDir", () => {
       "Mobile Documents",
       "com~apple~CloudDocs",
       "Operator",
-      ".openclaw",
+      ".operator",
     );
 
     const result = detectMacCloudSyncedStateDir(stateDir, {

@@ -1,3 +1,4 @@
+import { waitForDiagnosticEventsDrained } from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import {
   context as otelContextApi,
   trace,
@@ -5,7 +6,6 @@ import {
   type SpanKind,
   type Tracer,
 } from "@opentelemetry/api";
-import { waitForDiagnosticEventsDrained } from "openclaw/plugin-sdk/diagnostic-runtime";
 import type {
   DiagnosticEventMetadata,
   DiagnosticEventPayload,
@@ -365,16 +365,16 @@ export function createDiagnosticsTraceRuntime(tracer: Tracer) {
     },
   ) => {
     if (evt.provider) {
-      spanAttrs["openclaw.provider"] = evt.provider;
+      spanAttrs["operator.provider"] = evt.provider;
     }
     if (evt.model) {
-      spanAttrs["openclaw.model"] = evt.model;
+      spanAttrs["operator.model"] = evt.model;
     }
     if (evt.channel) {
-      spanAttrs["openclaw.channel"] = evt.channel;
+      spanAttrs["operator.channel"] = evt.channel;
     }
     if (evt.trigger) {
-      spanAttrs["openclaw.trigger"] = evt.trigger;
+      spanAttrs["operator.trigger"] = evt.trigger;
     }
   };
 
@@ -385,8 +385,8 @@ export function createDiagnosticsTraceRuntime(tracer: Tracer) {
       return {};
     }
     return {
-      "openclaw.tool.params.kind": summary.kind,
-      ...("length" in summary ? { "openclaw.tool.params.length": summary.length } : {}),
+      "operator.tool.params.kind": summary.kind,
+      ...("length" in summary ? { "operator.tool.params.length": summary.length } : {}),
     };
   };
   return {

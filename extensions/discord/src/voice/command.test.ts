@@ -1,5 +1,8 @@
 // Discord tests cover command plugin behavior.
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import type { CommandInteraction, CommandWithSubcommands } from "../internal/discord.js";
 import { createPartialDiscordChannelWithThrowingGetters } from "../test-support/partial-channel.js";

@@ -1,5 +1,5 @@
-// Provider/account summary helpers for `operator agents list`.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+// Provider/account summary helpers for `openclaw agents list`.
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isChannelVisibleInConfiguredLists } from "../channels/plugins/exposure.js";
 import { resolveChannelDefaultAccountId } from "../channels/plugins/helpers.js";
 import { normalizeChannelId } from "../channels/plugins/index.js";

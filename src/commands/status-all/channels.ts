@@ -1,9 +1,9 @@
-// Builds channel status rows and account details for `operator status --all`.
+// Builds channel status rows and account details for `openclaw status --all`.
 // This layer stays plugin-generic: channel-specific auth rules live in plugin config/status hooks.
 
 import fs from "node:fs";
-import { asRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../../packages/terminal-core/src/ansi.js";
 import { resolveInspectedChannelAccount } from "../../channels/account-inspection.js";
 import { hasConfiguredUnavailableCredentialStatus } from "../../channels/account-snapshot-fields.js";
@@ -218,7 +218,7 @@ function formatLoadFailureDetail(message: string): string {
   const reason = isLikelyDependencyTreeCorruption(message)
     ? "dependency tree corrupted"
     : "registration failed";
-  return `plugin load failed: ${reason}; run operator doctor --fix`;
+  return `plugin load failed: ${reason}; run openclaw doctor --fix`;
 }
 
 /** Builds the `status --all` channel summary and per-account detail tables. */

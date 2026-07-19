@@ -1,5 +1,5 @@
 // Msteams plugin module implements feedback reflection behavior.
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   dispatchReplyFromConfigWithSettledDispatcher,
   type OperatorConfig,

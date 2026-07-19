@@ -1,6 +1,6 @@
 /** Tests projecting Operator user MCP servers into Codex app-server config. */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   buildCodexUserMcpServersThreadConfigPatch,
   buildCodexUserMcpServersThreadConfigPatchForRuntime,

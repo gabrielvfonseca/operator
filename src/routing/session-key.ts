@@ -1,9 +1,9 @@
-import { isValidAgentId, normalizeAgentId } from "@operator/normalization-core/agent-id";
+import { isValidAgentId, normalizeAgentId } from "@gabrielvfonseca/normalization-core/agent-id";
 // Routing session key helpers build stable session keys from route targets.
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ChatType } from "../channels/chat-type.js";
 import {
   isCronRunSessionKey,

@@ -236,7 +236,7 @@ describe("agent harness user input helpers", () => {
     ).toEqual({
       answers: {
         mode: { answers: ["Deep"] },
-        repo: { answers: ["openclaw"] },
+        repo: { answers: ["@gabrielvfonseca/operator"] },
       },
     });
   });

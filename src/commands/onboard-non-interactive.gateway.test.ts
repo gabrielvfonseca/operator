@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { MigrationApplyResult, MigrationPlan } from "../plugins/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { makeTempWorkspace } from "../test-helpers/workspace.js";
@@ -60,7 +60,7 @@ function resolveTestConfigPath() {
   if (!stateDir) {
     throw new Error("OPERATOR_STATE_DIR must be set before config IO in this test");
   }
-  return path.join(stateDir, "openclaw.json");
+  return path.join(stateDir, "operator.json");
 }
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- Test helper lets assertions ascribe stored config shape.
@@ -126,7 +126,7 @@ vi.mock("./onboard-helpers.js", () => {
     return trimmed === "undefined" || trimmed === "null" ? "" : trimmed;
   };
   return {
-    DEFAULT_WORKSPACE: "/tmp/openclaw-workspace",
+    DEFAULT_WORKSPACE: "/tmp/operator-workspace",
     applyWizardMetadata: (cfg: unknown) => cfg,
     ensureWorkspaceAndSessions: ensureWorkspaceAndSessionsMock,
     normalizeGatewayTokenInput,
@@ -275,7 +275,7 @@ async function expectLocalJsonSetupFailure(stateDir: string, runtimeWithCapture:
       {
         nonInteractive: true,
         mode: "local",
-        workspace: path.join(stateDir, "openclaw"),
+        workspace: path.join(stateDir, "@gabrielvfonseca/operator"),
         authChoice: "skip",
         skipSkills: true,
         skipHealth: false,
@@ -292,7 +292,7 @@ function createLocalDaemonSetupOptions(stateDir: string) {
   return {
     nonInteractive: true,
     mode: "local" as const,
-    workspace: path.join(stateDir, "openclaw"),
+    workspace: path.join(stateDir, "@gabrielvfonseca/operator"),
     authChoice: "skip" as const,
     skipSkills: true,
     skipHealth: false,
@@ -376,7 +376,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
     deleteTestEnvValue("OPERATOR_GATEWAY_PASSWORD");
 
-    tempHome = await makeTempWorkspace("openclaw-onboard-");
+    tempHome = await makeTempWorkspace("operator-onboard-");
     setTestEnvValue("HOME", tempHome);
 
     await loadGatewayOnboardModules();
@@ -406,7 +406,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
 
   it("preserves existing agents.list and bindings on onboard rerun (openclaw#84692)", async () => {
     await withStateDir("state-preserve-agents-", async (stateDir) => {
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
       const seededAgents = [
         { id: "alpha", model: "anthropic/claude-3-5-sonnet" },
         { id: "beta", model: "openai/gpt-4o" },
@@ -462,7 +462,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
 
   it("allows local onboard plugin install-record migration size drops", async () => {
     await withStateDir("state-local-plugin-installs-", async (stateDir) => {
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
       testConfigStore.set(resolveTestConfigPath(), {
         plugins: {
           installs: {
@@ -505,7 +505,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("writes gateway token auth into config", async () => {
     await withStateDir("state-noninteractive-", async (stateDir) => {
       const token = "tok_test_123";
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
 
       await runNonInteractiveSetup(
         {
@@ -541,7 +541,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
 
   it("does not auto-enable default hooks when skipHooks is set", async () => {
     await withStateDir("state-skip-hooks-", async (stateDir) => {
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
 
       await runNonInteractiveSetup(
         {
@@ -566,7 +566,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("persists skipBootstrap and skips workspace bootstrap creation", async () => {
     ensureWorkspaceAndSessionsMock.mockClear();
     await withStateDir("state-skip-bootstrap-", async (stateDir) => {
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
 
       await runNonInteractiveSetup(
         {
@@ -601,7 +601,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("applies non-interactive migration imports instead of ignoring import flags", async () => {
     await withStateDir("state-noninteractive-import-", async (stateDir) => {
       const source = path.join(stateDir, "hermes-home");
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
       const planned: MigrationPlan = {
         providerId: "hermes",
         source,
@@ -805,7 +805,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
           {
             nonInteractive: true,
             mode: "local",
-            workspace: path.join(stateDir, "openclaw"),
+            workspace: path.join(stateDir, "@gabrielvfonseca/operator"),
             authChoice: "skip",
             skipSkills: true,
             skipHealth: false,
@@ -1002,10 +1002,10 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     }
     await withStateDir("state-lan-", async (stateDir) => {
       setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
-      setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(stateDir, "openclaw.json"));
+      setTestEnvValue("OPERATOR_CONFIG_PATH", path.join(stateDir, "operator.json"));
 
       const port = getPseudoPort(40_000);
-      const workspace = path.join(stateDir, "openclaw");
+      const workspace = path.join(stateDir, "@gabrielvfonseca/operator");
 
       await runNonInteractiveSetup(
         {

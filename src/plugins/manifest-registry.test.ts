@@ -31,19 +31,23 @@ function mkdirSafe(dir: string) {
 }
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-manifest-registry", tempDirs);
+  return makeTrackedTempDir("operator-manifest-registry", tempDirs);
 }
 
 function makeOperatorDevSourceRoot() {
   const root = makeTempDir();
-  fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "openclaw" }), "utf-8");
+  fs.writeFileSync(
+    path.join(root, "package.json"),
+    JSON.stringify({ name: "@gabrielvfonseca/operator" }),
+    "utf-8",
+  );
   mkdirSafe(path.join(root, "src"));
   mkdirSafe(path.join(root, "extensions"));
   return root;
 }
 
 function writeManifest(dir: string, manifest: Record<string, unknown>) {
-  fs.writeFileSync(path.join(dir, "openclaw.plugin.json"), JSON.stringify(manifest), "utf-8");
+  fs.writeFileSync(path.join(dir, "operator.plugin.json"), JSON.stringify(manifest), "utf-8");
 }
 
 function writeTextFile(rootDir: string, relativePath: string, value: string) {
@@ -74,7 +78,7 @@ function createPluginCandidate(params: {
   rootDir: string;
   sourceName?: string;
   origin: "bundled" | "global" | "workspace" | "config";
-  format?: "openclaw" | "bundle";
+  format?: "@gabrielvfonseca/operator" | "bundle";
   bundleFormat?: "codex" | "claude" | "cursor";
   packageName?: string;
   packageVersion?: string;
@@ -105,10 +109,10 @@ function createMsteamsClawHubInstallRecord(
 ): PluginInstallRecord {
   const record: PluginInstallRecord = {
     source: "clawhub",
-    spec: "clawhub:@operator/msteams",
+    spec: "clawhub:@gabrielvfonseca/msteams",
     installPath,
     clawhubUrl: "https://clawhub.ai",
-    clawhubPackage: "@operator/msteams",
+    clawhubPackage: "@gabrielvfonseca/msteams",
     clawhubChannel: "official",
   };
   return { ...record, ...overrides };
@@ -125,7 +129,7 @@ function resolveMsteamsClawHubTrust(overrides: Partial<PluginInstallRecord> = {}
       createPluginCandidate({
         idHint: "msteams",
         rootDir: dir,
-        packageName: "@operator/msteams",
+        packageName: "@gabrielvfonseca/msteams",
         origin: "global",
       }),
     ],
@@ -234,8 +238,8 @@ function prepareLinkedManifestFixture(params: { id: string; mode: "symlink" | "h
 } {
   const rootDir = makeTempDir();
   const outsideDir = makeTempDir();
-  const outsideManifest = path.join(outsideDir, "openclaw.plugin.json");
-  const linkedManifest = path.join(rootDir, "openclaw.plugin.json");
+  const outsideManifest = path.join(outsideDir, "operator.plugin.json");
+  const linkedManifest = path.join(rootDir, "operator.plugin.json");
   fs.writeFileSync(path.join(rootDir, "index.ts"), "export default function () {}", "utf-8");
   fs.writeFileSync(
     outsideManifest,
@@ -290,7 +294,7 @@ function loadRegistryForMinHostVersionCase(params: {
         origin: "global",
         packageManifest: {
           install: {
-            npmSpec: "@operator/synology-chat",
+            npmSpec: "@gabrielvfonseca/synology-chat",
             minHostVersion: params.minHostVersion,
           },
         },
@@ -316,7 +320,7 @@ function loadRegistryForPluginApiCase(params: {
         origin: params.origin ?? "global",
         packageManifest: {
           install: {
-            npmSpec: "@operator/synology-chat",
+            npmSpec: "@gabrielvfonseca/synology-chat",
             minHostVersion: ">=2026.4.25",
           },
           compat: {
@@ -453,12 +457,12 @@ describe("loadPluginManifestRegistry", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/cached-manifest",
-        openclaw: { extensions: ["./index.js"] },
+        name: "@gabrielvfonseca/cached-manifest",
+        operator: { extensions: ["./index.js"] },
       }),
       "utf-8",
     );
-    const manifestPath = path.join(pluginDir, "openclaw.plugin.json");
+    const manifestPath = path.join(pluginDir, "operator.plugin.json");
     writeManifest(pluginDir, {
       id: "cached-manifest",
       name: "Before",
@@ -753,7 +757,7 @@ describe("loadPluginManifestRegistry", () => {
         "diagnostics-prometheus": {
           source: "npm",
           installPath: dir,
-          resolvedName: "@operator/diagnostics-prometheus",
+          resolvedName: "@gabrielvfonseca/diagnostics-prometheus",
           resolvedVersion: "2026.5.3",
         },
       },
@@ -761,7 +765,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@operator/diagnostics-prometheus",
+          packageName: "@gabrielvfonseca/diagnostics-prometheus",
           origin: "global",
         }),
       ],
@@ -774,7 +778,7 @@ describe("loadPluginManifestRegistry", () => {
     { name: "complete records", overrides: {} },
     {
       name: "versioned ClawHub specs",
-      overrides: { spec: "clawhub:@operator/msteams@2026.6.11" },
+      overrides: { spec: "clawhub:@gabrielvfonseca/msteams@2026.6.11" },
     },
     {
       name: "legacy spec-only records",
@@ -786,15 +790,15 @@ describe("loadPluginManifestRegistry", () => {
     },
     {
       name: "matching npm resolved specs",
-      overrides: { resolvedSpec: "@operator/msteams@2026.6.11" },
+      overrides: { resolvedSpec: "@gabrielvfonseca/msteams@2026.6.11" },
     },
     {
       name: "matching ClawHub resolved specs",
-      overrides: { resolvedSpec: "clawhub:@operator/msteams@2026.6.11" },
+      overrides: { resolvedSpec: "clawhub:@gabrielvfonseca/msteams@2026.6.11" },
     },
     {
       name: "matching resolved package names",
-      overrides: { resolvedName: "@operator/msteams" },
+      overrides: { resolvedName: "@gabrielvfonseca/msteams" },
     },
   ] satisfies Array<{ name: string; overrides: Partial<PluginInstallRecord> }>)(
     "marks official npm-only ClawHub installs with $name as trusted",
@@ -822,19 +826,19 @@ describe("loadPluginManifestRegistry", () => {
     },
     {
       name: "conflicting ClawHub package",
-      overrides: { clawhubPackage: "@operator/line" },
+      overrides: { clawhubPackage: "@gabrielvfonseca/line" },
     },
     {
       name: "conflicting requested spec",
-      overrides: { spec: "clawhub:@operator/line" },
+      overrides: { spec: "clawhub:@gabrielvfonseca/line" },
     },
     {
       name: "conflicting npm resolved spec",
-      overrides: { resolvedSpec: "@operator/line@2026.6.11" },
+      overrides: { resolvedSpec: "@gabrielvfonseca/line@2026.6.11" },
     },
     {
       name: "conflicting ClawHub resolved spec",
-      overrides: { resolvedSpec: "clawhub:@operator/line@2026.6.11" },
+      overrides: { resolvedSpec: "clawhub:@gabrielvfonseca/line@2026.6.11" },
     },
     {
       name: "blank ClawHub package",
@@ -842,11 +846,11 @@ describe("loadPluginManifestRegistry", () => {
     },
     {
       name: "malformed ClawHub package",
-      overrides: { clawhubPackage: "@operator/msteams@2026.6.11" },
+      overrides: { clawhubPackage: "@gabrielvfonseca/msteams@2026.6.11" },
     },
     {
       name: "malformed requested spec",
-      overrides: { spec: "@operator/msteams" },
+      overrides: { spec: "@gabrielvfonseca/msteams" },
     },
     {
       name: "malformed resolved spec",
@@ -854,11 +858,11 @@ describe("loadPluginManifestRegistry", () => {
     },
     {
       name: "conflicting resolved package name",
-      overrides: { resolvedName: "@operator/line" },
+      overrides: { resolvedName: "@gabrielvfonseca/line" },
     },
     {
       name: "malformed resolved package name",
-      overrides: { resolvedName: "@operator/msteams@2026.6.11" },
+      overrides: { resolvedName: "@gabrielvfonseca/msteams@2026.6.11" },
     },
     {
       name: "missing package identities",
@@ -873,7 +877,7 @@ describe("loadPluginManifestRegistry", () => {
       overrides: {
         clawhubPackage: undefined,
         spec: undefined,
-        resolvedSpec: "@operator/msteams@2026.6.11",
+        resolvedSpec: "@gabrielvfonseca/msteams@2026.6.11",
       },
     },
   ] satisfies Array<{ name: string; overrides: Partial<PluginInstallRecord> }>)(
@@ -898,7 +902,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "msteams",
           rootDir: dir,
-          packageName: "@operator/msteams",
+          packageName: "@gabrielvfonseca/msteams",
           origin: "config",
         }),
       ],
@@ -915,10 +919,10 @@ describe("loadPluginManifestRegistry", () => {
       installRecords: {
         "diagnostics-otel": {
           source: "clawhub",
-          spec: "clawhub:@operator/diagnostics-otel",
+          spec: "clawhub:@gabrielvfonseca/diagnostics-otel",
           installPath: dir,
           clawhubUrl: "https://example.invalid",
-          clawhubPackage: "@operator/diagnostics-otel",
+          clawhubPackage: "@gabrielvfonseca/diagnostics-otel",
           clawhubChannel: "official",
         },
       },
@@ -926,7 +930,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-otel",
           rootDir: dir,
-          packageName: "@operator/diagnostics-otel",
+          packageName: "@gabrielvfonseca/diagnostics-otel",
           origin: "global",
         }),
       ],
@@ -943,7 +947,7 @@ describe("loadPluginManifestRegistry", () => {
       installRecords: {
         "diagnostics-otel": {
           source: "clawhub",
-          spec: "clawhub:@operator/diagnostics-otel@2026.5.18",
+          spec: "clawhub:@gabrielvfonseca/diagnostics-otel@2026.5.18",
           installPath: dir,
         },
       },
@@ -951,7 +955,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-otel",
           rootDir: dir,
-          packageName: "@operator/diagnostics-otel",
+          packageName: "@gabrielvfonseca/diagnostics-otel",
           origin: "global",
         }),
       ],
@@ -968,18 +972,18 @@ describe("loadPluginManifestRegistry", () => {
       installRecords: {
         "diagnostics-otel": {
           source: "npm",
-          spec: "@operator/diagnostics-otel",
+          spec: "@gabrielvfonseca/diagnostics-otel",
           installPath: dir,
-          resolvedName: "@operator/diagnostics-otel",
+          resolvedName: "@gabrielvfonseca/diagnostics-otel",
           resolvedVersion: "2026.5.18",
-          resolvedSpec: "@operator/diagnostics-otel@2026.5.18",
+          resolvedSpec: "@gabrielvfonseca/diagnostics-otel@2026.5.18",
         },
       },
       candidates: [
         createPluginCandidate({
           idHint: "diagnostics-otel",
           rootDir: dir,
-          packageName: "@operator/diagnostics-otel",
+          packageName: "@gabrielvfonseca/diagnostics-otel",
           origin: "config",
         }),
       ],
@@ -1001,7 +1005,7 @@ describe("loadPluginManifestRegistry", () => {
         "diagnostics-prometheus": {
           source: "npm",
           installPath: dir,
-          resolvedName: "@operator/diagnostics-prometheus",
+          resolvedName: "@gabrielvfonseca/diagnostics-prometheus",
           resolvedVersion: "2026.5.3",
         },
       },
@@ -1009,13 +1013,13 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@operator/diagnostics-prometheus",
+          packageName: "@gabrielvfonseca/diagnostics-prometheus",
           origin: "global",
         }),
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@operator/diagnostics-prometheus",
+          packageName: "@gabrielvfonseca/diagnostics-prometheus",
           origin: "config",
         }),
       ],
@@ -1038,7 +1042,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@operator/diagnostics-prometheus",
+          packageName: "@gabrielvfonseca/diagnostics-prometheus",
           origin: "global",
         }),
       ],
@@ -1057,7 +1061,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "msteams",
           rootDir: dir,
-          packageName: "@operator/msteams",
+          packageName: "@gabrielvfonseca/msteams",
           origin: "global",
         }),
       ],
@@ -1520,7 +1524,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "external-openai",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerAuthEnvVars is deprecated compatibility metadata",
     });
   });
@@ -1597,7 +1601,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "external-chat",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "without channelConfigs metadata",
     });
   });
@@ -1662,17 +1666,17 @@ describe("loadPluginManifestRegistry", () => {
   it("hydrates supplemental official external catalog contracts for lagging npm manifests", () => {
     const dir = makeTempDir();
     writeManifest(dir, {
-      id: "wecom-openclaw-plugin",
+      id: "wecom-operator-plugin",
       channels: ["wecom"],
       configSchema: { type: "object" },
     });
 
     const registry = loadRegistry([
       createPluginCandidate({
-        idHint: "wecom-openclaw-plugin",
+        idHint: "wecom-operator-plugin",
         rootDir: dir,
         origin: "global",
-        packageName: "@wecom/wecom-openclaw-plugin",
+        packageName: "@wecom/wecom-operator-plugin",
       }),
     ]);
 
@@ -1701,7 +1705,7 @@ describe("loadPluginManifestRegistry", () => {
         idHint: "diffs",
         rootDir: dir,
         origin: "global",
-        packageName: "@operator/diffs",
+        packageName: "@gabrielvfonseca/diffs",
       }),
     ]);
 
@@ -1711,7 +1715,7 @@ describe("loadPluginManifestRegistry", () => {
   it("fills missing official external catalog descriptors for partial npm channel configs", () => {
     const dir = makeTempDir();
     writeManifest(dir, {
-      id: "wecom-openclaw-plugin",
+      id: "wecom-operator-plugin",
       channels: ["wecom"],
       configSchema: { type: "object" },
       channelConfigs: {
@@ -1729,10 +1733,10 @@ describe("loadPluginManifestRegistry", () => {
 
     const registry = loadRegistry([
       createPluginCandidate({
-        idHint: "wecom-openclaw-plugin",
+        idHint: "wecom-operator-plugin",
         rootDir: dir,
         origin: "global",
-        packageName: "@wecom/wecom-openclaw-plugin",
+        packageName: "@wecom/wecom-operator-plugin",
       }),
     ]);
 
@@ -1756,7 +1760,7 @@ describe("loadPluginManifestRegistry", () => {
     const dir = makeTempDir();
     writeTextFile(
       dir,
-      "openclaw.plugin.json",
+      "operator.plugin.json",
       JSON.stringify({
         id: "external-chat",
         channels: ["safe-chat"],
@@ -1855,7 +1859,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "outside-provider",
-      source: path.join(pluginDir, "openclaw.plugin.json"),
+      source: path.join(pluginDir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -1882,7 +1886,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "absolute-provider",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -1909,7 +1913,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "absolute-catalog",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -1945,7 +1949,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "symlink-provider",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -1981,7 +1985,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "fallback-symlink-provider",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -2020,7 +2024,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "hardlink-provider",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -2059,7 +2063,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "fallback-hardlink-provider",
-      source: path.join(dir, "openclaw.plugin.json"),
+      source: path.join(dir, "operator.plugin.json"),
       messageIncludes: "providerCatalogEntry must resolve inside the plugin root",
     });
   });
@@ -2339,7 +2343,7 @@ describe("loadPluginManifestRegistry", () => {
     writeManifest(dir, {
       id: "workflow-harness",
       contracts: {
-        agentToolResultMiddleware: ["openclaw", "codex"],
+        agentToolResultMiddleware: ["@gabrielvfonseca/operator", "codex"],
         trustedToolPolicies: ["workflow-budget"],
       },
       configSchema: { type: "object" },
@@ -2352,7 +2356,7 @@ describe("loadPluginManifestRegistry", () => {
     });
 
     expect(registry.plugins[0]?.contracts).toEqual({
-      agentToolResultMiddleware: ["openclaw", "codex"],
+      agentToolResultMiddleware: ["@gabrielvfonseca/operator", "codex"],
       trustedToolPolicies: ["workflow-budget"],
     });
   });
@@ -2467,7 +2471,7 @@ describe("loadPluginManifestRegistry", () => {
         idHint: "telegram",
         rootDir: dir,
         origin: "bundled",
-        bundledManifestPath: path.join(dir, "openclaw.plugin.json"),
+        bundledManifestPath: path.join(dir, "operator.plugin.json"),
         bundledManifest: {
           id: "telegram",
           configSchema: { type: "object" },
@@ -2605,7 +2609,7 @@ describe("loadPluginManifestRegistry", () => {
     {
       name: "rejects invalid minHostVersion metadata",
       minHostVersion: "2026.3.22",
-      expectedMessage: "plugin manifest invalid | openclaw.install.minHostVersion must use",
+      expectedMessage: "plugin manifest invalid | operator.install.minHostVersion must use",
       expectWarn: false,
     },
     {
@@ -2651,7 +2655,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "global",
           packageManifest: {
             install: {
-              npmSpec: "@operator/codex",
+              npmSpec: "@gabrielvfonseca/codex",
               minHostVersion: "2026.3.22",
             },
           },
@@ -2660,7 +2664,7 @@ describe("loadPluginManifestRegistry", () => {
     });
 
     expect(registry.plugins.map((plugin) => plugin.id)).toEqual(["codex"]);
-    expectNoRegistryDiagnosticContains(registry, "openclaw.install.minHostVersion must use");
+    expectNoRegistryDiagnosticContains(registry, "operator.install.minHostVersion must use");
   });
 
   it("does not runtime-gate bundled source plugins by install minHostVersion", () => {
@@ -2676,7 +2680,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "bundled",
           packageManifest: {
             install: {
-              npmSpec: "@operator/codex",
+              npmSpec: "@gabrielvfonseca/codex",
               minHostVersion: ">=2026.5.1-beta.1",
             },
           },
@@ -2720,7 +2724,7 @@ describe("loadPluginManifestRegistry", () => {
     expect(registry.plugins).toStrictEqual([]);
     expectRegistryDiagnosticContains(
       registry,
-      "plugin manifest invalid | package.json openclaw.compat.pluginApi must be a string",
+      "plugin manifest invalid | package.json operator.compat.pluginApi must be a string",
     );
     expect(registry.diagnostics.map((diag) => diag.level)).toContain("error");
   });
@@ -3143,7 +3147,7 @@ describe("loadPluginManifestRegistry", () => {
         origin: "global",
         packageManifest: {
           install: {
-            npmSpec: "@operator/synology-chat",
+            npmSpec: "@gabrielvfonseca/synology-chat",
             minHostVersion: ">=2026.3.22",
           },
         },

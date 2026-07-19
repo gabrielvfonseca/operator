@@ -1,6 +1,6 @@
 // Validates the current runtime against Operator's Node engine floor.
 import process from "node:process";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type { RuntimeEnv } from "../runtime.js";
 
 // Runtime validation precedes terminal setup. Keep this default path from
@@ -175,8 +175,8 @@ export function assertSupportedRuntime(
   const execLabel = details.execPath ?? "unknown";
   const requirement =
     details.kind === "bun"
-      ? "operator cannot run under Bun because the runtime does not provide node:sqlite."
-      : "operator requires Node >=22.22.3 <23, >=24.15.0 <25, or >=25.9.0.";
+      ? "openclaw cannot run under Bun because the runtime does not provide node:sqlite."
+      : "openclaw requires Node >=22.22.3 <23, >=24.15.0 <25, or >=25.9.0.";
   const retryHint =
     details.kind === "bun"
       ? "Run Operator with Node; Bun remains supported for installs and package scripts."

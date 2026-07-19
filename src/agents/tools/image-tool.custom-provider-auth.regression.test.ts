@@ -95,7 +95,7 @@ function createBedrockSdkConfig(): OperatorConfig {
 }
 
 async function withEmptyAgentDir<T>(run: (agentDir: string) => Promise<T>): Promise<T> {
-  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-image-auth-regression-"));
+  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-image-auth-regression-"));
   try {
     return await run(agentDir);
   } finally {

@@ -1,8 +1,8 @@
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 // Whatsapp API module exposes the plugin public contract.
-export { getChatChannelMeta, type ChannelPlugin } from "openclaw/plugin-sdk/core";
+export { getChatChannelMeta, type ChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/core";
 export { buildChannelConfigSchema, WhatsAppConfigSchema } from "../config-api.js";
-export { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
+export { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 export {
   formatWhatsAppConfigAllowFromEntries,
   resolveWhatsAppConfigAllowFrom,
@@ -14,12 +14,12 @@ export {
   readReactionParams,
   readStringParam,
   ToolAuthorizationError,
-} from "openclaw/plugin-sdk/channel-actions";
-export { normalizeE164 } from "openclaw/plugin-sdk/account-resolution";
-export type { DmPolicy, GroupPolicy } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorConfig as RuntimeOperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+export { normalizeE164 } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+export type { DmPolicy, GroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorConfig as RuntimeOperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
-export { type ChannelMessageActionName } from "openclaw/plugin-sdk/channel-contract";
+export { type ChannelMessageActionName } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 export { loadOutboundMediaFromUrl } from "./outbound-media.runtime.js";
 export {
   resolveWhatsAppGroupRequireMention,

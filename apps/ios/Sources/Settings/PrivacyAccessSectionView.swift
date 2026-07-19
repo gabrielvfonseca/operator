@@ -50,14 +50,14 @@ struct PrivacyAccessSectionView: View {
 
             if let healthError {
                 Text(healthError)
-                    .font(OpenClawType.footnote)
-                    .foregroundStyle(OpenClawBrand.danger)
+                    .font(OperatorType.footnote)
+                    .foregroundStyle(OperatorBrand.danger)
             }
         } label: {
             Text("Privacy & Access")
-                .font(OpenClawType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
         }
-        .font(OpenClawType.body)
+        .font(OperatorType.body)
         .onAppear { self.refreshAll() }
         .onChange(of: self.scenePhase) { _, phase in
             if phase == .active {
@@ -246,7 +246,7 @@ struct PrivacyAccessSectionView: View {
 
     private var healthGrant: DevicePermissionGrant {
         guard HealthAuthorization.isAvailable else { return .denied }
-        // HealthKit hides read authorization; this is only OpenClaw's sharing switch.
+        // HealthKit hides read authorization; this is only Operator's sharing switch.
         return self.healthEnabled ? .granted : .notRequested
     }
 

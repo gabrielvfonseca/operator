@@ -1,6 +1,6 @@
 // Discord type declarations define plugin contracts.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { CommandArgValues } from "openclaw/plugin-sdk/native-command-registry";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { CommandArgValues } from "@gabrielvfonseca/operator/plugin-sdk/native-command-registry";
 
 export type DiscordConfig = NonNullable<OperatorConfig["channels"]>["discord"];
 

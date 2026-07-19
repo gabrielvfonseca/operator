@@ -92,4 +92,4 @@ export {
   type OperatorPluginApi,
   type OperatorPluginToolContext,
   type OperatorPluginToolFactory,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";

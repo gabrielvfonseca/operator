@@ -1,10 +1,10 @@
 // Discovers gateways over Bonjour and normalizes service records.
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import pLimit from "p-limit";
 import { runCommandWithTimeout } from "../process/exec.js";
 import { parseStrictInteger } from "./parse-finite-number.js";

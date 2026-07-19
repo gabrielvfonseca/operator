@@ -11,7 +11,7 @@ import {
   persistSessionTranscriptTurn,
 } from "../config/sessions/session-accessor.js";
 import { appendAssistantMessageToSessionTranscript } from "../config/sessions/transcript.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   claimAgentRunContext,
   clearAgentRunContext,
@@ -68,7 +68,7 @@ afterEach(async () => {
 });
 
 async function createSessionStoreFile(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-session-message-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-session-message-"));
   cleanupDirs.push(dir);
   const storePath = path.join(dir, "sessions.json");
   testState.sessionStorePath = storePath;
@@ -382,7 +382,7 @@ describe("session.message websocket events", () => {
         message: {
           role: "user",
           content: [{ type: "text", text: "The agent cannot read this message." }],
-          __openclaw: {
+          __operator: {
             beforeAgentRunBlocked: { blockedBy: "policy-plugin", blockedAt: 1 },
           },
         },
@@ -420,7 +420,7 @@ describe("session.message websocket events", () => {
         message: {
           role: "user",
           content: [{ type: "text", text: "The agent cannot read this message." }],
-          __openclaw: {
+          __operator: {
             beforeAgentRunBlocked: {
               blockedBy: "policy-plugin",
               blockedAt: Date.now(),
@@ -482,7 +482,7 @@ describe("session.message websocket events", () => {
             messageSeq: 1,
             message: {
               role: "custom",
-              customType: "openclaw.runtime-context",
+              customType: "operator.runtime-context",
               content: "secret runtime context",
               display: false,
             },
@@ -1317,13 +1317,13 @@ describe("session.message websocket events", () => {
       expect(
         payloads.map((payload) => {
           const message = requireRecord(payload.message, "session.message payload message");
-          return requireRecord(message["__openclaw"], "session.message metadata").id;
+          return ...
         }),
       ).toEqual(outcome.result.entryIds);
       expect(
         payloads.map((payload) => {
           const message = requireRecord(payload.message, "session.message payload message");
-          return requireRecord(message["__openclaw"], "session.message metadata").seq;
+          return ...
         }),
       ).toEqual([1, 2, 3]);
 

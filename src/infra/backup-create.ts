@@ -5,7 +5,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { resolveDateTimestampMs } from "@operator/normalization-core/number-coercion";
+import { resolveDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   buildBackupArchiveBasename,
   buildBackupArchivePath,
@@ -15,7 +15,7 @@ import {
 } from "../commands/backup-shared.js";
 import { isPathWithin } from "../commands/cleanup-utils.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { resolveHomeDir, resolveUserPath } from "../utils.js";
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { writeArchiveStreamToFile } from "./backup-create-stream.js";
@@ -600,7 +600,7 @@ async function createStateSqliteBackupPlan(params: {
       path.resolve(archiveSourcePath) === globalStateSqlitePath
         ? await fs.realpath(archiveSourcePath)
         : archiveSourcePath;
-    const sourcePath = path.join(params.tempDir, `operator-state-db-${snapshots.length}.sqlite`);
+    const sourcePath = path.join(params.tempDir, `openclaw-state-db-${snapshots.length}.sqlite`);
     try {
       await createVerifiedSqliteSnapshot({
         sourcePath: sourceDatabasePath,

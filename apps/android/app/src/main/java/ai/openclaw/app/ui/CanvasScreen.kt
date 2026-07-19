@@ -1,8 +1,8 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.node.CanvasController
-import ai.openclaw.app.node.CanvasNavigationPolicy
+import ai.operator.app.MainViewModel
+import ai.operator.app.node.CanvasController
+import ai.operator.app.node.CanvasNavigationPolicy
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
@@ -123,7 +123,7 @@ internal class CanvasHostView(
         WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, false)
       }
       if (isDebuggable) {
-        Log.d("OpenClawWebView", "userAgent: ${webSettings.userAgentString}")
+        Log.d("OperatorWebView", "userAgent: ${webSettings.userAgentString}")
       }
       webView.isScrollContainer = true
       webView.overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
@@ -170,7 +170,7 @@ internal class CanvasHostView(
             error: WebResourceError,
           ) {
             if (!isDebuggable || !request.isForMainFrame) return
-            Log.e("OpenClawWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
+            Log.e("OperatorWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
           }
 
           override fun onReceivedHttpError(
@@ -180,7 +180,7 @@ internal class CanvasHostView(
           ) {
             if (!isDebuggable || !request.isForMainFrame) return
             Log.e(
-              "OpenClawWebView",
+              "OperatorWebView",
               "onReceivedHttpError: ${errorResponse.statusCode} ${errorResponse.reasonPhrase} ${request.url}",
             )
           }
@@ -191,7 +191,7 @@ internal class CanvasHostView(
           ) {
             currentPageUrlRef.set(url)
             if (isDebuggable) {
-              Log.d("OpenClawWebView", "onPageFinished: $url")
+              Log.d("OperatorWebView", "onPageFinished: $url")
             }
             controller.onPageFinished()
           }
@@ -202,7 +202,7 @@ internal class CanvasHostView(
           ): Boolean {
             if (isDebuggable) {
               Log.e(
-                "OpenClawWebView",
+                "OperatorWebView",
                 "onRenderProcessGone didCrash=${detail.didCrash()} priorityAtExit=${detail.rendererPriorityAtExit()}",
               )
             }
@@ -220,7 +220,7 @@ internal class CanvasHostView(
             if (!isDebuggable) return false
             val msg = consoleMessage ?: return false
             Log.d(
-              "OpenClawWebView",
+              "OperatorWebView",
               "console ${msg.messageLevel()} @ ${msg.sourceId()}:${msg.lineNumber()} ${msg.message()}",
             )
             return false
@@ -242,7 +242,7 @@ internal class CanvasHostView(
           bridge,
         )
       } else if (isDebuggable) {
-        Log.w("OpenClawWebView", "WebMessageListener unsupported; canvas actions disabled")
+        Log.w("OperatorWebView", "WebMessageListener unsupported; canvas actions disabled")
       }
       addView(
         webView,

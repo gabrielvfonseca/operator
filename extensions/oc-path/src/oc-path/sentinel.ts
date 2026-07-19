@@ -2,7 +2,7 @@
  * Redaction-sentinel guard. Throws at emit boundaries so every write
  * path is covered, not just audited consumers.
  *
- * @module @operator/oc-path/sentinel
+ * @module @gabrielvfonseca/oc-path/sentinel
  */
 
 /** Literal marking a redacted secret. Writing it to disk is always a bug. */

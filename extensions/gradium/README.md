@@ -5,8 +5,8 @@ Official Operator plugin for Gradium.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/gradium-speech
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/gradium-speech
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/gradium> for setup and configuration.
+See <https://docs.operator.ai/providers/gradium> for setup and configuration.

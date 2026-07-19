@@ -1,8 +1,8 @@
 // Camera payload validation and artifact writers for node media commands.
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import { canonicalizeBase64, estimateBase64DecodedBytes } from "@operator/media-core/base64";
-import { parseMediaContentLength } from "@operator/media-core/content-length";
+import { canonicalizeBase64, estimateBase64DecodedBytes } from "@gabrielvfonseca/media-core/base64";
+import { parseMediaContentLength } from "@gabrielvfonseca/media-core/content-length";
 import { toErrorObject } from "../infra/errors.js";
 import { fetchWithSsrFGuard } from "../infra/net/fetch-guard.js";
 import { normalizeHostname } from "../infra/net/hostname.js";

@@ -1529,7 +1529,7 @@ function preserveDeliveredQueuedUserTurn(state: ChatPageHost, item: ChatQueueIte
     role: "user",
     content,
     timestamp: item.createdAt,
-    __openclaw: { idempotencyKey },
+    __operator: { idempotencyKey },
   };
   if (visibleSessionMatches(state, sessionKey, item.agentId)) {
     if (!containsUserTurn(state.chatMessages)) {

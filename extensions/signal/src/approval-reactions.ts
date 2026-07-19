@@ -1,6 +1,6 @@
 // Signal plugin module implements approval reactions behavior.
-import { matchesApprovalRequestFilters } from "openclaw/plugin-sdk/approval-client-runtime";
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
+import { matchesApprovalRequestFilters } from "@gabrielvfonseca/operator/plugin-sdk/approval-client-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
 import {
   addApprovalReactionHintToText,
   buildApprovalReactionHint,
@@ -10,20 +10,20 @@ import {
   resolveTypedApprovalReactionTarget,
   type ApprovalReactionDecisionBinding,
   type ApprovalReactionTargetRecord,
-} from "openclaw/plugin-sdk/approval-reaction-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-reaction-runtime";
 import {
   getExecApprovalReplyMetadata,
   type ExecApprovalReplyDecision,
-} from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { normalizeAccountId } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { normalizeE164 } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { normalizeE164 } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { resolveSignalTarget } from "./aliases.js";
 import { getSignalApprovalApprovers, signalApprovalAuth } from "./approval-auth.js";
 import { looksLikeUuid } from "./identity.js";

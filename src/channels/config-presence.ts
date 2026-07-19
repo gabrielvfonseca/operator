@@ -5,8 +5,8 @@
  */
 import fs from "node:fs";
 import os from "node:os";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   hasBundledChannelPersistedAuthState,
   listBundledChannelIdsWithPersistedAuthState,

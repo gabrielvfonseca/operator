@@ -56,7 +56,7 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
               },
             }),
             env: {},
-            agentDirs: ["/tmp/openclaw-agent-main"],
+            agentDirs: ["/tmp/operator-agent-main"],
             loadablePluginOrigins: EMPTY_LOADABLE_PLUGIN_ORIGINS,
             loadAuthStore: () => ({ version: 1, profiles: {} }),
           }),
@@ -68,7 +68,7 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
   it(
     "rejects unresolved active gateway auth refs before persisting them",
     async () => {
-      await withTempHome("openclaw-secrets-runtime-gateway-auth-reload-lkg-", async (home) => {
+      await withTempHome("operator-secrets-runtime-gateway-auth-reload-lkg-", async (home) => {
         const initialTokenRef = {
           source: "env",
           provider: "default",
@@ -79,9 +79,9 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
           provider: "default",
           id: "MISSING_GATEWAY_AUTH_TOKEN",
         } as const;
-        await fs.mkdir(path.join(home, ".openclaw"), { recursive: true });
+        await fs.mkdir(path.join(home, ".operator"), { recursive: true });
         await fs.writeFile(
-          path.join(home, ".openclaw", "openclaw.json"),
+          path.join(home, ".operator", "operator.json"),
           `${JSON.stringify(
             {
               gateway: {
@@ -109,7 +109,7 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
           env: {
             GATEWAY_AUTH_TOKEN: "gateway-runtime-token",
           },
-          agentDirs: ["/tmp/openclaw-agent-main"],
+          agentDirs: ["/tmp/operator-agent-main"],
           loadablePluginOrigins: EMPTY_LOADABLE_PLUGIN_ORIGINS,
           loadAuthStore: () => loadAuthStoreWithProfiles({}),
         });
@@ -137,7 +137,7 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
         expect(activeAfterFailure.sourceConfig.gateway?.auth?.token).toEqual(initialTokenRef);
 
         const persistedConfig = JSON.parse(
-          await fs.readFile(path.join(home, ".openclaw", "openclaw.json"), "utf8"),
+          await fs.readFile(path.join(home, ".operator", "operator.json"), "utf8"),
         ) as OperatorConfig;
         expect(persistedConfig.gateway?.auth?.token).toEqual(initialTokenRef);
       });

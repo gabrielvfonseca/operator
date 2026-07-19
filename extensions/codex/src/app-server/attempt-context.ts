@@ -13,10 +13,10 @@ import {
   type EmbeddedContextFile,
   type EmbeddedRunAttemptParams,
   type EmbeddedRunAttemptResult,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { resolveAgentWorkspaceDir } from "openclaw/plugin-sdk/agent-runtime";
-import { buildMemorySystemPromptAddition } from "openclaw/plugin-sdk/core";
-import { MESSAGE_TOOL_DELIVERY_HINTS } from "openclaw/plugin-sdk/message-tool-delivery-hints";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { resolveAgentWorkspaceDir } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { buildMemorySystemPromptAddition } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { MESSAGE_TOOL_DELIVERY_HINTS } from "@gabrielvfonseca/operator/plugin-sdk/message-tool-delivery-hints";
 import type { CodexDynamicToolFunctionSpec, CodexDynamicToolSpec, JsonValue } from "./protocol.js";
 import { flattenCodexDynamicToolFunctions } from "./protocol.js";
 import { isJsonObject } from "./protocol.js";

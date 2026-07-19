@@ -1,6 +1,6 @@
 // Covers system event queue routing, draining, and formatting.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it } from "vitest";
 import { drainFormattedSystemEvents } from "../auto-reply/reply/session-system-events.js";
 import type { OperatorConfig } from "../config/config.js";

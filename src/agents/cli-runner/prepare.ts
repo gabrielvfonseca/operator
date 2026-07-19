@@ -1,9 +1,9 @@
-import { ensureSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
+import { ensureSystemPromptCacheBoundary } from "@gabrielvfonseca/ai/internal/shared";
 /**
  * Prepares CLI backend run context: backend config, prompts, bootstrap context,
  * MCP, auth epoch, and reusable session metadata.
  */
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getRuntimeConfig } from "../../config/config.js";
 import { canonicalizeMainSessionAlias } from "../../config/sessions/main-session.js";
 import type { CliBackendConfig } from "../../config/types.agent-defaults.js";
@@ -785,7 +785,7 @@ export async function prepareCliRunContext(
       : hashCliSessionText(JSON.stringify([toolBoundExtraSystemPromptHash ?? null, bootstrapMode]));
   // Ring-zero Operator runs replace the bundle MCP surface entirely: no
   // loopback server, no plugin/user servers. A selectable backend also removes
-  // its native tools, leaving only this operator stdio server.
+  // its native tools, leaving only this openclaw stdio server.
   const systemAgentMcpConfig = internalParams.systemAgentTool
     ? buildSystemAgentToolsMcpServerConfig(internalParams.systemAgentTool)
     : undefined;

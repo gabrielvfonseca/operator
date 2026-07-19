@@ -1,6 +1,6 @@
 import Foundation
 import Observation
-import OpenClawProtocol
+import OperatorProtocol
 
 enum AgentAutomationScheduleDraft: Equatable {
     case at(at: String)

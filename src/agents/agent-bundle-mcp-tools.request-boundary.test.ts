@@ -1,6 +1,6 @@
 /** Tests configured MCP tools survive policy/splitting to the outbound request boundary. */
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   createBundleMcpToolRuntime,
   materializeBundleMcpToolsForRun,

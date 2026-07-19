@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { listAgentIds } from "../agents/agent-scope.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";

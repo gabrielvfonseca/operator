@@ -1,5 +1,5 @@
 // Auth-choice plugin provider tests cover loaded provider setup, plugin install, and credential routing.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   applyAuthChoiceLoadedPluginProvider,
@@ -196,7 +196,7 @@ function buildLocalProviderInstallCatalogEntry() {
     label: LOCAL_PROVIDER_LABEL,
     origin: "bundled" as const,
     install: {
-      npmSpec: "@operator/local-provider",
+      npmSpec: "@gabrielvfonseca/local-provider",
     },
   };
 }

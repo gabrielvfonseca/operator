@@ -3,12 +3,15 @@ import { rm } from "node:fs/promises";
 import { isIP } from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { definePluginEntry, type OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import {
+  definePluginEntry,
+  type OperatorPluginApi,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { buildDevicePairPairingQrChannelData } from "./pairing-qr-channel-data.js";
 type NotifyModule = typeof import("./notify.js");
 

@@ -3,7 +3,7 @@
  * Owns Docker exec argument construction, output slicing, environment
  * coercion, and compact session labels.
  */
-import { parseStrictInteger } from "@operator/normalization-core/number-coercion";
+import { parseStrictInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { sliceUtf16Safe } from "../utils.js";
 import type {
   SandboxBackendExecSpec,

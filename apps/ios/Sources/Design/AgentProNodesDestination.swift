@@ -1,9 +1,9 @@
-import OpenClawProtocol
+import OperatorProtocol
 import SwiftUI
 import UIKit
 
 struct AgentProNodesDestination: View {
-    let headerLeadingAction: OpenClawSidebarHeaderAction?
+    let headerLeadingAction: OperatorSidebarHeaderAction?
     let overview: AgentOverviewSnapshot?
     let gatewayConnected: Bool
     let agentCount: Int
@@ -14,7 +14,7 @@ struct AgentProNodesDestination: View {
 
     var body: some View {
         ZStack {
-            OpenClawProBackground()
+            OperatorProBackground()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     self.header
@@ -23,12 +23,12 @@ struct AgentProNodesDestination: View {
                     self.nodesList
                 }
                 .padding(.vertical, 18)
-                .font(OpenClawType.body)
+                .font(OperatorType.body)
             }
             .refreshable {
                 await self.refresh()
             }
-            .safeAreaPadding(.bottom, OpenClawProMetric.bottomScrollInset)
+            .safeAreaPadding(.bottom, OperatorProMetric.bottomScrollInset)
         }
         .navigationTitle("Instances")
         .navigationBarTitleDisplayMode(.inline)
@@ -37,17 +37,17 @@ struct AgentProNodesDestination: View {
     @ViewBuilder
     private var header: some View {
         if let headerLeadingAction {
-            OpenClawAdaptiveHeaderRow(
+            OperatorAdaptiveHeaderRow(
                 title: "Instances",
                 subtitle: .verbatim(self.instancesDetail),
-                titleFont: OpenClawType.title3SemiBold,
-                subtitleFont: OpenClawType.subheadMedium)
+                titleFont: OperatorType.title3SemiBold,
+                subtitleFont: OperatorType.subheadMedium)
             {
-                OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)
+                OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
             } accessory: {
                 EmptyView()
             }
-            .padding(.horizontal, OpenClawProMetric.pagePadding)
+            .padding(.horizontal, OperatorProMetric.pagePadding)
         }
     }
 
@@ -57,16 +57,16 @@ struct AgentProNodesDestination: View {
                 ProIconBadge(systemName: "display", color: self.instancesColor)
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Instances")
-                        .font(OpenClawType.headline)
+                        .font(OperatorType.headline)
                     Text(verbatim: self.instancesDetail)
-                        .font(OpenClawType.caption)
+                        .font(OperatorType.caption)
                         .foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 8)
                 ProValuePill(value: self.instancesValue, color: self.instancesColor)
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private var totalsCard: some View {
@@ -74,7 +74,7 @@ struct AgentProNodesDestination: View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("Presence")
-                        .font(OpenClawType.headline)
+                        .font(OperatorType.headline)
                     Spacer()
                     ProValuePill(value: self.instancesValue, color: self.instancesColor)
                 }
@@ -91,7 +91,7 @@ struct AgentProNodesDestination: View {
                 }
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private var nodesList: some View {
@@ -123,7 +123,7 @@ struct AgentProNodesDestination: View {
                     }
                 }
             }
-            .padding(.horizontal, OpenClawProMetric.pagePadding)
+            .padding(.horizontal, OperatorProMetric.pagePadding)
         }
     }
 
@@ -141,27 +141,27 @@ struct AgentProNodesDestination: View {
             ProIconBadge(systemName: Self.presenceIcon(entry), color: Self.presenceColor(entry))
             VStack(alignment: .leading, spacing: 4) {
                 Text(verbatim: Self.presenceLabel(entry) ?? String(localized: "Instance"))
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                     .lineLimit(1)
                 Text(Self.presenceDetail(entry))
-                    .font(OpenClawType.caption)
+                    .font(OperatorType.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                 if let meta = Self.presenceMeta(entry) {
                     Text(meta)
-                        .font(OpenClawType.caption2)
+                        .font(OperatorType.caption2)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
             }
             Spacer(minLength: 8)
             Text(Self.presenceState(entry))
-                .font(OpenClawType.caption2SemiBold)
+                .font(OperatorType.caption2SemiBold)
                 .foregroundStyle(Self.presenceColor(entry))
                 .lineLimit(1)
             if showsChevron {
                 Image(systemName: "chevron.right")
-                    .font(OpenClawType.caption2Bold)
+                    .font(OperatorType.caption2Bold)
                     .foregroundStyle(.secondary)
                     .padding(.top, 2)
             }
@@ -172,7 +172,7 @@ struct AgentProNodesDestination: View {
 
     private func nodeDetail(_ entry: PresenceEntry) -> some View {
         ZStack {
-            OpenClawProBackground()
+            OperatorProBackground()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     ProCard {
@@ -180,16 +180,16 @@ struct AgentProNodesDestination: View {
                             ProIconBadge(systemName: Self.presenceIcon(entry), color: Self.presenceColor(entry))
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(verbatim: Self.presenceLabel(entry) ?? String(localized: "Instance"))
-                                    .font(OpenClawType.headline)
+                                    .font(OperatorType.headline)
                                 Text(Self.presenceDetail(entry))
-                                    .font(OpenClawType.caption)
+                                    .font(OperatorType.caption)
                                     .foregroundStyle(.secondary)
                             }
                             Spacer(minLength: 8)
                             ProValuePill(value: Self.presenceState(entry), color: Self.presenceColor(entry))
                         }
                     }
-                    .padding(.horizontal, OpenClawProMetric.pagePadding)
+                    .padding(.horizontal, OperatorProMetric.pagePadding)
 
                     ProCard {
                         VStack(spacing: 0) {
@@ -208,34 +208,34 @@ struct AgentProNodesDestination: View {
                             self.nodeDetailRow("Mode", copyLabel: "Copy mode", value: entry.mode)
                         }
                     }
-                    .padding(.horizontal, OpenClawProMetric.pagePadding)
+                    .padding(.horizontal, OperatorProMetric.pagePadding)
 
                     self.nodeListCard(title: "Scopes", values: entry.scopes ?? [])
                     self.nodeListCard(title: "Roles", values: entry.roles ?? [])
                     self.nodeListCard(title: "Tags", values: entry.tags ?? [])
                 }
                 .padding(.vertical, 18)
-                .font(OpenClawType.body)
+                .font(OperatorType.body)
             }
-            .safeAreaPadding(.bottom, OpenClawProMetric.bottomScrollInset)
+            .safeAreaPadding(.bottom, OperatorProMetric.bottomScrollInset)
         }
         .navigationTitle(Self.presenceLabel(entry) ?? String(localized: "Instance"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private func nodeDetailRow(
-        _ title: OpenClawTextValue,
+        _ title: OperatorTextValue,
         copyLabel: LocalizedStringKey,
         value: String?) -> some View
     {
         let normalized = Self.normalized(value) ?? "n/a"
         return HStack(spacing: 10) {
             title.text
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 8)
             Text(verbatim: normalized)
-                .font(OpenClawType.subhead)
+                .font(OperatorType.subhead)
                 .lineLimit(1)
                 .truncationMode(.middle)
             Button {
@@ -247,41 +247,41 @@ struct AgentProNodesDestination: View {
             .disabled(normalized == "n/a")
             .accessibilityLabel(copyLabel)
         }
-        .font(OpenClawType.subhead)
+        .font(OperatorType.subhead)
         .padding(.vertical, 10)
     }
 
-    private func nodeListCard(title: OpenClawTextValue, values: [String]) -> some View {
+    private func nodeListCard(title: OperatorTextValue, values: [String]) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             ProSectionHeader(title: title)
             ProCard {
                 if values.isEmpty {
                     Text("None reported.")
-                        .font(OpenClawType.subhead)
+                        .font(OperatorType.subhead)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(values, id: \.self) { value in
                             Text(verbatim: value)
-                                .font(OpenClawType.monoSmall)
+                                .font(OperatorType.monoSmall)
                                 .textSelection(.enabled)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }
             }
-            .padding(.horizontal, OpenClawProMetric.pagePadding)
+            .padding(.horizontal, OperatorProMetric.pagePadding)
         }
     }
 
-    private func detailMetric(label: OpenClawTextValue, value: String) -> some View {
+    private func detailMetric(label: OperatorTextValue, value: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             label.text
-                .font(OpenClawType.caption2Medium)
+                .font(OperatorType.caption2Medium)
                 .foregroundStyle(.secondary)
             Text(verbatim: value)
-                .font(OpenClawType.subheadSemiBold)
+                .font(OperatorType.subheadSemiBold)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
@@ -289,21 +289,21 @@ struct AgentProNodesDestination: View {
         .padding(10)
         .background(
             Color.primary.opacity(0.055),
-            in: RoundedRectangle(cornerRadius: OpenClawRadius.sm, style: .continuous))
+            in: RoundedRectangle(cornerRadius: OperatorRadius.sm, style: .continuous))
     }
 
     private func emptyRow(
         icon: String,
-        title: OpenClawTextValue,
-        detail: OpenClawTextValue) -> some View
+        title: OperatorTextValue,
+        detail: OperatorTextValue) -> some View
     {
         HStack(spacing: 12) {
             ProIconBadge(systemName: icon, color: .secondary)
             VStack(alignment: .leading, spacing: 3) {
                 title.text
-                    .font(OpenClawType.subheadSemiBold)
+                    .font(OperatorType.subheadSemiBold)
                 detail.text
-                    .font(OpenClawType.caption)
+                    .font(OperatorType.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
@@ -368,7 +368,7 @@ struct AgentProNodesDestination: View {
     }
 
     private static func presenceColor(_ entry: PresenceEntry) -> Color {
-        self.normalized(entry.reason) == nil ? OpenClawBrand.accent : OpenClawBrand.warn
+        self.normalized(entry.reason) == nil ? OperatorBrand.accent : OperatorBrand.warn
     }
 
     private static func normalized(_ value: String?) -> String? {

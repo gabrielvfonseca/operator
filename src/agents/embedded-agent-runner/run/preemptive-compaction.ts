@@ -1,7 +1,7 @@
 /**
  * Estimates prompt pressure and decides pre-prompt compaction routing.
  */
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { SessionContextBudgetStatus } from "../../../config/sessions.js";
 import { estimateStringChars } from "../../../utils/cjk-chars.js";
 import {

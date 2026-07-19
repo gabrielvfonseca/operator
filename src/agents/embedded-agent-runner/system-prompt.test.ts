@@ -177,7 +177,7 @@ describe("buildEmbeddedSystemPrompt", () => {
     });
 
     expect(prompt).toContain("tools.fs.workspaceOnly ON");
-    expect(prompt).toContain("`.openclaw/tmp/`");
+    expect(prompt).toContain("`.operator/tmp/`");
     expect(prompt).toContain("never exec-write `/tmp`");
   });
 

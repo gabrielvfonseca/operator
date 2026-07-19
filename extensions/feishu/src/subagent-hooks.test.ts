@@ -2,7 +2,7 @@
 import {
   getRequiredHookHandler,
   registerHookHandlersForTest,
-} from "openclaw/plugin-sdk/channel-test-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { ClawdbotConfig, OperatorPluginApi } from "../runtime-api.js";
 import { registerFeishuSubagentHooks } from "../subagent-hooks-api.js";

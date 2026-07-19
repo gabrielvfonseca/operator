@@ -5,9 +5,9 @@ import {
   resolveAccountEntry,
   resolveMergedAccountConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
-import type { ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import type { ReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { SignalAccountConfig } from "./account-types.js";
 
 export type ResolvedSignalAccount = {

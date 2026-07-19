@@ -35,7 +35,7 @@ vi.mock("./sandbox-paths.js", () => ({
   assertSandboxPath: mocks.assertSandboxPath,
 }));
 
-const WORKSPACE_ROOT = "/tmp/openclaw-workspace-nodes-guard";
+const WORKSPACE_ROOT = "/tmp/operator-workspace-nodes-guard";
 
 function createNodesToolHarness() {
   // Guard wraps a minimal nodes tool so tests assert only argument rewriting.

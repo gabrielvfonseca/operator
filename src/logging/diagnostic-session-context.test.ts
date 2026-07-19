@@ -6,7 +6,7 @@ import { saveCronStore } from "../cron/store.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import {
   formatCronSessionDiagnosticFields,
   formatStoppedCronSessionDiagnosticFields,
@@ -25,7 +25,7 @@ describe("diagnostic session context", () => {
   beforeEach(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-diagnostic-session-",
+      prefix: "operator-diagnostic-session-",
     });
     tempDir = testState.stateDir;
   });

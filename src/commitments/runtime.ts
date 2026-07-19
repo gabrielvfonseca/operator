@@ -1,7 +1,7 @@
 // Runs commitment extraction, scheduling, and follow-up lifecycle work.
 import { randomUUID } from "node:crypto";
-import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
 import type { OperatorConfig } from "../config/config.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";

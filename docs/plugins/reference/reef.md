@@ -11,8 +11,8 @@ Guarded end-to-end encrypted claw channel.
 
 ## Distribution
 
-- Package: `@operator/reef`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/reef`
+- Install route: included in Operator
 
 ## Surface
 

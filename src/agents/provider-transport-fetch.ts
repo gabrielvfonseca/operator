@@ -3,18 +3,18 @@
  *
  * Applies request timeouts, proxy/TLS overrides, SSRF policy, local-service leases, retry hints, and SSE normalization.
  */
-import { parseRetryAfterHttpDateMs } from "@operator/ai/internal/retry-after";
+import { parseRetryAfterHttpDateMs } from "@gabrielvfonseca/ai/internal/retry-after";
 import {
   isCloudMetadataIpAddress,
   isLinkLocalIpAddress,
   parseCanonicalIpAddress,
-} from "@operator/net-policy/ip";
+} from "@gabrielvfonseca/net-policy/ip";
 import {
   asFiniteNumberInRange,
   clampTimerTimeoutMs,
   parseStrictFiniteNumber,
   parseStrictNonNegativeInteger,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   fetchWithSsrFGuard,
   withTrustedEnvProxyGuardedFetchMode,

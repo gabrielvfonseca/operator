@@ -19,7 +19,7 @@ import {
 import { resolveStorePath } from "../config/sessions/paths.js";
 import { loadSessionStore } from "../config/sessions/store.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { clearPluginLoaderCache } from "../plugins/loader.test-fixtures.js";
 import { resetPluginRuntimeStateForTest } from "../plugins/runtime.js";
@@ -271,8 +271,8 @@ describeLive("gateway live (ACP spawn defaults)", () => {
     "applies existing subagent defaults to live ACP spawns without leaking primary agent model",
     async () => {
       const previousEnv = snapshotAcpSpawnDefaultsLiveEnv();
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-acp-spawn-"));
-      const tempConfigPath = path.join(tempRoot, "openclaw.json");
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-live-acp-spawn-"));
+      const tempConfigPath = path.join(tempRoot, "operator.json");
       const tempStateDir = path.join(tempRoot, "state");
       const port = await getFreeGatewayPort();
       const token = `test-${randomUUID()}`;

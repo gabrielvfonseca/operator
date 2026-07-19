@@ -1,10 +1,10 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.ChatMessage
-import ai.openclaw.app.chat.ChatMessageContent
-import ai.openclaw.app.chat.ChatOutboxItem
-import ai.openclaw.app.chat.ChatOutboxStatus
-import ai.openclaw.app.chat.ChatPendingToolCall
+import ai.operator.app.chat.ChatMessage
+import ai.operator.app.chat.ChatMessageContent
+import ai.operator.app.chat.ChatOutboxItem
+import ai.operator.app.chat.ChatOutboxStatus
+import ai.operator.app.chat.ChatPendingToolCall
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

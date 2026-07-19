@@ -1,4 +1,4 @@
-# @operator/diagnostics-otel
+# @gabrielvfonseca/diagnostics-otel
 
 Official OpenTelemetry diagnostics exporter for Operator.
 
@@ -7,7 +7,7 @@ This plugin exports Operator Gateway traces, metrics, and logs to an OTLP collec
 ## Install
 
 ```bash
-openclaw plugins install @operator/diagnostics-otel
+operator plugins install @gabrielvfonseca/diagnostics-otel
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -18,10 +18,10 @@ Enable the plugin and set the OTLP endpoint in `plugins.entries.diagnostics-otel
 
 The full config surface, metric names, span names, and collector examples live in the docs:
 
-- https://docs.openclaw.ai/gateway/opentelemetry
+- https://docs.operator.ai/gateway/opentelemetry
 
 ## Package
 
 - Plugin id: `diagnostics-otel`
-- Package: `@operator/diagnostics-otel`
+- Package: `@gabrielvfonseca/diagnostics-otel`
 - Minimum Operator host: `2026.4.25`

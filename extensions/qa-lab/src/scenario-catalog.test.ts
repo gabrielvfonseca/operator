@@ -238,7 +238,7 @@ describe("qa scenario catalog", () => {
     if (scenario.execution.kind !== "playwright") {
       throw new Error(`expected Playwright scenario, got ${scenario.execution.kind}`);
     }
-    expect(scenario.execution.path).toBe("ui/src/e2e/chat-flow.e2e.test.ts");
+    expect(scenario.execution.path).toBe("ui/tests/e2e/chat-flow.e2e.test.ts");
     expect(scenario.execution.testNamePattern).toBe(
       "sends a chat turn through the GUI and renders the final Gateway event",
     );
@@ -377,9 +377,9 @@ describe("qa scenario catalog", () => {
     expect(readQaScenarioExecutionConfig(webSearch.id)).toMatchObject({
       toolName: "web_search",
       toolCoverage: {
-        bucket: "openclaw-dynamic-integration",
-        expectedLayer: "openclaw-dynamic",
-        capabilityLayer: "openclaw-dynamic-direct",
+        bucket: "operator-dynamic-integration",
+        expectedLayer: "operator-dynamic",
+        capabilityLayer: "operator-dynamic-direct",
         required: true,
       },
     });
@@ -407,9 +407,9 @@ describe("qa scenario catalog", () => {
       requiredProviderMode: "mock-openai",
       toolName: "image_generate",
       toolCoverage: {
-        bucket: "openclaw-dynamic-integration",
-        expectedLayer: "openclaw-dynamic",
-        capabilityLayer: "openclaw-dynamic-direct",
+        bucket: "operator-dynamic-integration",
+        expectedLayer: "operator-dynamic",
+        capabilityLayer: "operator-dynamic-direct",
         required: false,
       },
     });
@@ -690,8 +690,8 @@ describe("qa scenario catalog", () => {
     expect(scenario.sourcePath).toBe("qa/scenarios/plugins/kitchen-sink-live-openai.yaml");
     expect(config?.requiredProviderMode).toBe("live-frontier");
     expect(config?.requiredProvider).toBe("openai");
-    expect(config?.pluginSpec).toBe("npm:@operator/kitchen-sink@latest");
-    expect(config?.pluginId).toBe("openclaw-kitchen-sink-fixture");
+    expect(config?.pluginSpec).toBe("npm:@gabrielvfonseca/kitchen-sink@latest");
+    expect(config?.pluginId).toBe("operator-kitchen-sink-fixture");
     expect(config?.pluginPersonality).toBe("conformance");
     expect(config?.adversarialPersonality).toBe("adversarial");
     expect(config?.expectedSurfaceIds?.webSearchProviderIds).toContain(

@@ -1,6 +1,6 @@
 /** Covers bundled plugin source overlays and packaged load-path decisions. */
-import { expectDefined } from "@operator/normalization-core";
-import { bundledPluginRootAt } from "openclaw/plugin-sdk/test-fixtures";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { bundledPluginRootAt } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   findBundledPluginSource,
@@ -75,7 +75,7 @@ function setBundledManifestIdsByRoot(
       : {
           ok: false,
           error: "invalid manifest",
-          manifestPath: `${rootDir}/openclaw.plugin.json`,
+          manifestPath: `${rootDir}/operator.plugin.json`,
         },
   );
 }
@@ -84,11 +84,11 @@ function setBundledLookupFixture() {
   setBundledDiscoveryCandidates([
     createBundledCandidate({
       rootDir: appBundledPluginRoot("feishu"),
-      packageName: "@operator/feishu",
+      packageName: "@gabrielvfonseca/feishu",
     }),
     createBundledCandidate({
       rootDir: appBundledPluginRoot("diffs"),
-      packageName: "@operator/diffs",
+      packageName: "@gabrielvfonseca/diffs",
     }),
   ]);
   setBundledManifestIdsByRoot({
@@ -107,7 +107,7 @@ function createResolvedBundledSource(params: {
   return {
     pluginId: params.pluginId,
     localPath: params.localPath,
-    npmSpec: params.npmSpec ?? `@operator/${params.pluginId}`,
+    npmSpec: params.npmSpec ?? `@gabrielvfonseca/${params.pluginId}`,
     ...(params.configSchema ? { configSchema: params.configSchema } : {}),
     requiresConfig: params.requiresConfig ?? false,
   };
@@ -165,19 +165,19 @@ describe("bundled plugin sources", () => {
       createBundledCandidate({
         origin: "global",
         rootDir: "/global/feishu",
-        packageName: "@operator/feishu",
+        packageName: "@gabrielvfonseca/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("feishu"),
-        packageName: "@operator/feishu",
+        packageName: "@gabrielvfonseca/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("feishu-dup"),
-        packageName: "@operator/feishu",
+        packageName: "@gabrielvfonseca/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("msteams"),
-        packageName: "@operator/msteams",
+        packageName: "@gabrielvfonseca/msteams",
       }),
     ]);
     setBundledManifestIdsByRoot({
@@ -199,12 +199,12 @@ describe("bundled plugin sources", () => {
   it.each([
     [
       "finds bundled source by npm spec",
-      { kind: "npmSpec", value: "@operator/feishu" } as const,
+      { kind: "npmSpec", value: "@gabrielvfonseca/feishu" } as const,
       { pluginId: "feishu", localPath: appBundledPluginRoot("feishu") },
     ],
     [
       "returns undefined for missing npm spec",
-      { kind: "npmSpec", value: "@operator/not-found" } as const,
+      { kind: "npmSpec", value: "@gabrielvfonseca/not-found" } as const,
       undefined,
     ],
     [
@@ -229,7 +229,7 @@ describe("bundled plugin sources", () => {
   it("forwards an explicit env to bundled discovery helpers", () => {
     setBundledDiscoveryCandidates([]);
 
-    const env = { HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { HOME: "/tmp/operator-home" } as NodeJS.ProcessEnv;
 
     resolveBundledPluginSources({
       workspaceDir: "/workspace",
@@ -255,7 +255,7 @@ describe("bundled plugin sources", () => {
     setBundledDiscoveryCandidates([
       createBundledCandidate({
         rootDir: appBundledPluginRoot("memory-lancedb"),
-        packageName: "@operator/memory-lancedb",
+        packageName: "@gabrielvfonseca/memory-lancedb",
       }),
     ]);
     setBundledManifestIdsByRoot({
@@ -303,7 +303,7 @@ describe("bundled plugin sources", () => {
     expect(
       findBundledPluginSourceInMap({
         bundled,
-        lookup: { kind: "npmSpec", value: "@operator/feishu" },
+        lookup: { kind: "npmSpec", value: "@gabrielvfonseca/feishu" },
       })?.pluginId,
     ).toBe("feishu");
   });

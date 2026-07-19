@@ -446,7 +446,7 @@ describe("buildTailscaleHttpsUrl", () => {
         serviceName: "svc:openclaw",
         controlUiBasePath: "/control",
       }),
-    ).toBe("https://openclaw.tailnet.ts.net/control");
+    ).toBe("https://operator.tailnet.ts.net/control");
   });
 
   it("does not advertise a node-IP URL for named Services", () => {
@@ -478,7 +478,7 @@ describe("resolveSharedMemoryStatusSnapshot", () => {
     const resolveMemoryConfig = vi.fn(() => null);
     const getMemorySearchManager = vi.fn(async () => ({ manager }));
     const requireDefaultDatabasePath = vi.fn(
-      () => `/tmp/openclaw-missing-memory-${process.pid}.sqlite`,
+      () => `/tmp/operator-missing-memory-${process.pid}.sqlite`,
     );
 
     const result = await resolveSharedMemoryStatusSnapshot({
@@ -570,7 +570,7 @@ describe("resolveSharedMemoryStatusSnapshot", () => {
       memoryPlugin: { enabled: true, slot: "memory-core" },
       resolveMemoryConfig,
       getMemorySearchManager,
-      requireDefaultDatabasePath: () => `/tmp/openclaw-missing-memory-${process.pid}.sqlite`,
+      requireDefaultDatabasePath: () => `/tmp/operator-missing-memory-${process.pid}.sqlite`,
     });
 
     expect(result).toBeNull();
@@ -579,8 +579,8 @@ describe("resolveSharedMemoryStatusSnapshot", () => {
   });
 
   it("recognizes shipped memory tables before the manager migrates them", async () => {
-    const tempDir = makeTempDir(tempDirs, "openclaw-status-memory-");
-    const databasePath = path.join(tempDir, "openclaw-agent.sqlite");
+    const tempDir = makeTempDir(tempDirs, "operator-status-memory-");
+    const databasePath = path.join(tempDir, "operator-agent.sqlite");
     const db = new DatabaseSync(databasePath);
     db.exec(`
       CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -635,8 +635,8 @@ describe("resolveSharedMemoryStatusSnapshot", () => {
   });
 
   it("does not initialize memory status for an agent database owned by another feature", async () => {
-    const tempDir = makeTempDir(tempDirs, "openclaw-status-memory-");
-    const databasePath = path.join(tempDir, "openclaw-agent.sqlite");
+    const tempDir = makeTempDir(tempDirs, "operator-status-memory-");
+    const databasePath = path.join(tempDir, "operator-agent.sqlite");
     const db = new DatabaseSync(databasePath);
     db.exec(`
       CREATE TABLE cache_entries (

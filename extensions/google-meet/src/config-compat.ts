@@ -1,9 +1,9 @@
 // Google Meet helper module supports config compat behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   asNullableRecord as asRecord,
   normalizeOptionalLowercaseString as normalizeProviderId,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type LegacyConfigRule = {
   path: Array<string | number>;

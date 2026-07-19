@@ -5,9 +5,9 @@ Official Operator plugin for SearXNG.
 ## Install
 
 ```sh
-openclaw plugins install @operator/searxng-plugin
+operator plugins install @gabrielvfonseca/searxng-plugin
 ```
 
 ## Docs
 
-See `docs/tools/searxng-search.md` in the Operator repository, or the published docs at `https://docs.openclaw.ai/tools/searxng-search`.
+See `docs/tools/searxng-search.md` in the Operator repository, or the published docs at `https://docs.operator.ai/tools/searxng-search`.

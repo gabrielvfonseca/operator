@@ -1,13 +1,13 @@
 // Telegram conversation routing and session-state lookup for bot handlers.
-import { resolveStoredModelOverride } from "openclaw/plugin-sdk/command-auth-native";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
+import { resolveStoredModelOverride } from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveThreadSessionKeys } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   getSessionEntry,
   listSessionEntries,
   readAmbientTranscriptWatermark,
   resolveAmbientTranscriptWatermarkKey,
-} from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { resolveDefaultModelForAgent } from "./bot-handlers.agent.runtime.js";
 import type { TelegramAmbientTranscriptWatermark } from "./bot-message-context.types.js";
 import type { RegisterTelegramHandlerParams } from "./bot-native-commands.js";

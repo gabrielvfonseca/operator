@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   disableCronJobsBoundToSession,
   resolveCronJobBoundSessionKeys,

@@ -3,8 +3,8 @@ import { isIP } from "node:net";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { GatewayAuthConfig } from "../config/types.gateway.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
@@ -287,7 +287,7 @@ export function collectGatewayConfigFindings(
       detail:
         "mcp.apps.enabled=true allows configured MCP servers to provide interactive HTML. Views are CSP-restricted and origin-isolated, but they can call app-visible tools on their owning MCP server while the session runtime remains active.",
       remediation:
-        "Keep this enabled only for MCP servers you trust. Disable with `operator config set mcp.apps.enabled false --strict-json` when it is not needed.",
+        "Keep this enabled only for MCP servers you trust. Disable with `openclaw config set mcp.apps.enabled false --strict-json` when it is not needed.",
     });
   }
 

@@ -3,9 +3,9 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { withEnvAsync } from "../../test-utils/env.js";
 
 vi.mock("../../config/config.js", () => {
@@ -185,7 +185,7 @@ function expectSuccessfulSessionsUsage(
 async function withUsageState(
   run: (writeSessionFile: (fileName: string) => string) => Promise<void>,
 ) {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-usage-test-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-usage-test-"));
   const agentSessionsDir = path.join(stateDir, "agents", "opus", "sessions");
   const writeSessionFile = (fileName: string) => {
     const sessionFile = path.join(agentSessionsDir, fileName);

@@ -1,16 +1,16 @@
 // Openrouter tests cover video generation provider plugin behavior.
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-shared";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import {
   expectExplicitVideoGenerationCapabilities,
   expectUnifiedModelCatalogEntries,
-} from "openclaw/plugin-sdk/provider-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildOpenRouterVideoGenerationProvider,
   listOpenRouterVideoModelCatalog,
 } from "./video-generation-provider.js";
 
-const SUPPORTED_DURATIONS_HINT = Symbol.for("openclaw.videoGeneration.supportedDurations");
+const SUPPORTED_DURATIONS_HINT = Symbol.for("operator.videoGeneration.supportedDurations");
 
 const {
   assertOkOrThrowHttpErrorMock,

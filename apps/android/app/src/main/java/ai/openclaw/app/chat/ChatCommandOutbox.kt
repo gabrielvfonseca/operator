@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao

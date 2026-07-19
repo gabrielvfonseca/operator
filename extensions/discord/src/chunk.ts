@@ -1,7 +1,10 @@
 // Discord plugin module implements chunk behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { resolveIntegerOption } from "openclaw/plugin-sdk/number-runtime";
-import { chunkMarkdownTextWithMode, type ChunkMode } from "openclaw/plugin-sdk/reply-chunking";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { resolveIntegerOption } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import {
+  chunkMarkdownTextWithMode,
+  type ChunkMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
 
 type ChunkDiscordTextOpts = {
   /** Max characters per Discord message. Default: 2000. */

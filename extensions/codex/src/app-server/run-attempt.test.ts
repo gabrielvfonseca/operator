@@ -4,21 +4,24 @@ import path from "node:path";
 import {
   embeddedAgentLog,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import {
   onInternalDiagnosticEvent,
   waitForDiagnosticEventsDrained,
   type DiagnosticEventPayload,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
-import { initializeGlobalHookRunner, registerInternalHook } from "openclaw/plugin-sdk/hook-runtime";
-import { registerMemoryCapability } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
-import { MESSAGE_TOOL_DELIVERY_HINTS } from "openclaw/plugin-sdk/message-tool-delivery-hints";
-import { registerPluginCommand } from "openclaw/plugin-sdk/plugin-runtime";
-import { createMockPluginRegistry } from "openclaw/plugin-sdk/plugin-test-runtime";
-import { GPT5_BEHAVIOR_CONTRACT as CODEX_GPT5_BEHAVIOR_CONTRACT } from "openclaw/plugin-sdk/provider-model-shared";
-import { upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import { readSessionTranscriptEvents } from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
+import {
+  initializeGlobalHookRunner,
+  registerInternalHook,
+} from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
+import { registerMemoryCapability } from "@gabrielvfonseca/operator/plugin-sdk/memory-core-host-runtime-core";
+import { MESSAGE_TOOL_DELIVERY_HINTS } from "@gabrielvfonseca/operator/plugin-sdk/message-tool-delivery-hints";
+import { registerPluginCommand } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { createMockPluginRegistry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { GPT5_BEHAVIOR_CONTRACT as CODEX_GPT5_BEHAVIOR_CONTRACT } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { upsertSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { readSessionTranscriptEvents } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import { describe, expect, it, vi } from "vitest";
 import WebSocket from "ws";
 import { defaultCodexAppInventoryCache } from "./app-inventory-cache.js";
@@ -114,9 +117,9 @@ const testing = {
     if (
       hostSystemAgentActive &&
       params.toolsAllow?.length === 1 &&
-      params.toolsAllow[0] === "openclaw"
+      params.toolsAllow[0] === "@gabrielvfonseca/operator"
     ) {
-      names.push("openclaw");
+      names.push("@gabrielvfonseca/operator");
     }
     if (params.sourceReplyDeliveryMode === "message_tool_only") {
       names.push("message");
@@ -822,7 +825,7 @@ describe("runCodexAppServerAttempt", () => {
         | undefined;
 
       expect(nativeToolSurfaceEnabled).toBe(true);
-      expect(environmentAddParams?.environmentId).toMatch(/^openclaw-sandbox-/);
+      expect(environmentAddParams?.environmentId).toMatch(/^operator-sandbox-/);
       expect(environmentAddParams?.execServerUrl).toMatch(/^ws:\/\/127\.0\.0\.1:/);
       expect(startParams?.cwd).toBe("/workspace");
       expect(startParams?.config?.["features.code_mode"]).toBe(true);
@@ -1290,7 +1293,7 @@ describe("runCodexAppServerAttempt", () => {
         },
         {
           text: "Operator main command guidance.",
-          surfaces: ["openclaw_main"],
+          surfaces: ["operator_main"],
         },
       ],
       handler: async () => ({ text: "ok" }),
@@ -1321,7 +1324,7 @@ describe("runCodexAppServerAttempt", () => {
       type: string;
     }> = [];
     Object.assign(params, {
-      trajectorySessionFile: `sqlite:main:session-1:${path.join(tempDir, "openclaw-agent.sqlite")}`,
+      trajectorySessionFile: `sqlite:main:session-1:${path.join(tempDir, "operator-agent.sqlite")}`,
       trajectoryRecorder: {
         recordEvent: (type: string, data?: { prompt?: string; systemPrompt?: string }) => {
           trajectoryEvents.push({ type, data });
@@ -1684,9 +1687,9 @@ describe("runCodexAppServerAttempt", () => {
 
     expect(message).not.toHaveProperty("namespace");
     expect(message).not.toHaveProperty("deferLoading");
-    expect(webSearch?.namespace).toBe("openclaw");
+    expect(webSearch?.namespace).toBe("@gabrielvfonseca/operator");
     expect(webSearch?.deferLoading).toBe(true);
-    expect(heartbeat?.namespace).toBe("openclaw");
+    expect(heartbeat?.namespace).toBe("@gabrielvfonseca/operator");
     expect(heartbeat?.deferLoading).toBe(true);
     expect(agentsList).not.toHaveProperty("namespace");
     expect(agentsList).not.toHaveProperty("deferLoading");
@@ -1757,7 +1760,7 @@ describe("runCodexAppServerAttempt", () => {
       const heartbeat = flattenSpecsWithNamespace(bridge.specs).find(
         (tool) => tool.name === "heartbeat_respond",
       );
-      expect(heartbeat?.namespace).toBe("openclaw");
+      expect(heartbeat?.namespace).toBe("@gabrielvfonseca/operator");
       expect(heartbeat?.deferLoading).toBe(true);
     }
     expect(codexDynamicToolsFingerprint(heartbeatBridge.specs)).toBe(
@@ -2574,8 +2577,8 @@ describe("runCodexAppServerAttempt", () => {
     );
     const copilotMirrorMessage = {
       ...assistantMessage("copilot mirror context also matters", bindingUpdatedAt + 3_000),
-      __openclaw: { mirrorIdentity: "copilot:assistant-1" },
-    } as ReturnType<typeof assistantMessage> & { __openclaw: { mirrorIdentity: string } };
+      __operator: { mirrorIdentity: "copilot:assistant-1" },
+    } as ReturnType<typeof assistantMessage> & { __operator: { mirrorIdentity: string } };
     sessionManager.appendMessage(copilotMirrorMessage);
     const harness = createResumeHarness();
     const params = createParams(sessionFile, workspaceDir);
@@ -2617,16 +2620,16 @@ describe("runCodexAppServerAttempt", () => {
     const codexMirrorUserMessage = {
       ...userMessage("codex mirrored user echo", bindingUpdatedAt + 1_000),
       idempotencyKey: "client-run:user",
-      __openclaw: { mirrorIdentity: "turn-1:prompt", mirrorOrigin: "codex-app-server" },
+      __operator: { mirrorIdentity: "turn-1:prompt", mirrorOrigin: "codex-app-server" },
     } as ReturnType<typeof userMessage> & {
       idempotencyKey: string;
-      __openclaw: { mirrorIdentity: string; mirrorOrigin: string };
+      __operator: { mirrorIdentity: string; mirrorOrigin: string };
     };
     sessionManager.appendMessage(codexMirrorUserMessage);
     const codexMirrorAssistantMessage = {
       ...assistantMessage("codex mirrored assistant echo", bindingUpdatedAt + 2_000),
-      __openclaw: { mirrorIdentity: "codex-app-server:assistant-1" },
-    } as ReturnType<typeof assistantMessage> & { __openclaw: { mirrorIdentity: string } };
+      __operator: { mirrorIdentity: "codex-app-server:assistant-1" },
+    } as ReturnType<typeof assistantMessage> & { __operator: { mirrorIdentity: string } };
     sessionManager.appendMessage(codexMirrorAssistantMessage);
     const harness = createResumeHarness();
     const params = createParams(sessionFile, workspaceDir);

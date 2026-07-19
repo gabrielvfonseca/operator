@@ -1,6 +1,6 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 
 extension OnboardingAISetupModel {
     struct Candidate: Identifiable, Equatable {
@@ -79,8 +79,8 @@ extension OnboardingAISetupModel {
     /// Transport/protocol failures deserve plain language, not RPC codes.
     static func friendlyTransportError(_ raw: String) -> String {
         if raw.localizedCaseInsensitiveContains("unknown method") {
-            return "The Gateway is running an older OpenClaw version that doesn’t support " +
-                "app-guided setup. Update OpenClaw on the gateway, then try again."
+            return "The Gateway is running an older Operator version that doesn’t support " +
+                "app-guided setup. Update Operator on the gateway, then try again."
         }
         return raw.isEmpty
             ? "The Gateway setup request failed."
@@ -104,11 +104,11 @@ extension OnboardingAISetupModel {
             return code == "UNKNOWN_METHOD" ||
                 (code == "INVALID_REQUEST" &&
                     (message.contains("unknown method") ||
-                        message.contains("invalid openclaw.setup.activate params")))
+                        message.contains("invalid operator.setup.activate params")))
         }
         return error is GatewayConnectAuthError ||
             error is GatewayTLSValidationError ||
-            error is OpenClawChatTransportSendError
+            error is OperatorChatTransportSendError
     }
 
     static func activationParams(

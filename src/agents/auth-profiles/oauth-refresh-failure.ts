@@ -1,4 +1,4 @@
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { sanitizeForLog } from "../../../packages/terminal-core/src/ansi.js";
 import { formatCliCommand } from "../../cli/command-format.js";
 /**
@@ -216,18 +216,18 @@ export function buildOAuthRefreshFailureLoginCommand(
     // accessed via the CLI auth method. Refresh the local Claude CLI session
     // first, then re-register that auth method with Operator.
     const claudeLoginCommand = formatCliCommand("claude auth login");
-    const operatorLoginCommand = formatCliCommand(
+    const openclawLoginCommand = formatCliCommand(
       sanitizedProfileId
-        ? `operator models auth login --provider anthropic --method cli --profile-id ${quoteShellArg(sanitizedProfileId)}`
-        : "operator models auth login --provider anthropic --method cli",
+        ? `openclaw models auth login --provider anthropic --method cli --profile-id ${quoteShellArg(sanitizedProfileId)}`
+        : "openclaw models auth login --provider anthropic --method cli",
     );
-    return `${claudeLoginCommand} && ${operatorLoginCommand}`;
+    return `${claudeLoginCommand} && ${openclawLoginCommand}`;
   }
   return sanitizedProvider
     ? formatCliCommand(
         sanitizedProfileId
-          ? `operator models auth login --provider ${sanitizedProvider} --profile-id ${quoteShellArg(sanitizedProfileId)}`
-          : `operator models auth login --provider ${sanitizedProvider}`,
+          ? `openclaw models auth login --provider ${sanitizedProvider} --profile-id ${quoteShellArg(sanitizedProfileId)}`
+          : `openclaw models auth login --provider ${sanitizedProvider}`,
       )
-    : formatCliCommand("operator models auth login");
+    : formatCliCommand("openclaw models auth login");
 }

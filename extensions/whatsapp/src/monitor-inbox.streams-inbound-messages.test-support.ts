@@ -1,9 +1,9 @@
 // Whatsapp plugin module implements monitor inbox.streams inbound messages support behavior.
 import fsSync from "node:fs";
 import path from "node:path";
-import type { GroupMetadata, WAMessageKey } from "baileys";
+import { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import "./monitor-inbox.test-harness.js";
-import { defaultRuntime } from "openclaw/plugin-sdk/runtime-env";
+import type { GroupMetadata, WAMessageKey } from "baileys";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { WhatsAppRetryableInboundError } from "./inbound/dedupe.js";
 import {

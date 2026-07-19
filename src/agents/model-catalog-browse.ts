@@ -4,7 +4,7 @@
 import {
   clampTimerTimeoutMs,
   resolveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ModelCatalogEntry, ModelCatalogSnapshot } from "./model-catalog.types.js";
 import {

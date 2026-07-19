@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
+import ai.operator.app.chat.CHAT_IMAGE_MAX_BASE64_CHARS
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

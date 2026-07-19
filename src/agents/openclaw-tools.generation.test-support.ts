@@ -1,6 +1,6 @@
 // Shared registration assertions for optional media-generation Operator tools.
 import { describe, expect, it } from "vitest";
-import { collectPresentOperatorTools } from "./operator-tools.registration.js";
+import { collectPresentOperatorTools } from "./openclaw-tools.registration.js";
 import { textResult, type AnyAgentTool } from "./tools/common.js";
 
 function stubAgentTool(name: string): AnyAgentTool {

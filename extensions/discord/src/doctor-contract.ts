@@ -2,13 +2,16 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   isSupportedRealtimeVoiceActivationName,
   normalizeRealtimeVoiceActivationNamePrefix,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { asObjectRecord, defineChannelAliasMigration } from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import {
+  asObjectRecord,
+  defineChannelAliasMigration,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 
 const LEGACY_TTS_PROVIDER_KEYS = ["openai", "elevenlabs", "microsoft", "edge"] as const;
 type AgentBindingConfig = NonNullable<OperatorConfig["bindings"]>[number];

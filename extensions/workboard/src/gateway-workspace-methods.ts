@@ -1,4 +1,4 @@
-import type { WorkboardCard } from "@operator/workboard-contract";
+import type { WorkboardCard } from "@gabrielvfonseca/workboard-contract";
 // Workboard Gateway methods that can persist workspace-bearing card metadata.
 import type { OperatorPluginApi } from "../api.js";
 import {

@@ -1,10 +1,13 @@
 // Discord plugin module implements realtime behavior.
 import { PassThrough, pipeline } from "node:stream";
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   buildRealtimeVoiceAgentConsultChatMessage,
   buildRealtimeVoiceAgentConsultPolicyInstructions,
@@ -39,10 +42,10 @@ import {
   type RealtimeVoiceTurnContextHandle,
   type RealtimeVoiceTurnContextTracker,
   type RealtimeVoiceActivationNameTranscriptResult,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
-import { asBoolean } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { asBoolean } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   isDiscordRealtimeWakeNameRequired,
   resolveDiscordRealtimeWakeNamePolicy,
@@ -99,7 +102,7 @@ const DISCORD_REALTIME_OUTPUT_PREROLL_FRAMES = 25;
 const DISCORD_REALTIME_TRAILING_SILENCE_MIN_MS = 700;
 const DISCORD_REALTIME_TRAILING_SILENCE_MAX_MS = 3_000;
 const DISCORD_REALTIME_FORCED_CONSULT_REASON =
-  "provider_final_transcript_without_openclaw_agent_consult";
+  "provider_final_transcript_without_operator_agent_consult";
 const DISCORD_REALTIME_VERBOSE_OMITTED_EVENTS = new Set([
   "conversation.output_audio.delta",
   "input_audio_buffer.append",
@@ -249,7 +252,7 @@ function resolveDiscordRealtimeBargeIn(params: {
 function buildDiscordSpeakExactUserMessage(text: string): string {
   return [
     "Internal Operator voice playback result.",
-    "Do not call openclaw_agent_consult or any other tool for this message.",
+    "Do not call operator_agent_consult or any other tool for this message.",
     "Speak this exact Operator answer to the Discord voice channel, without adding, removing, or rephrasing words.",
     `Answer: ${JSON.stringify(text)}`,
   ].join("\n");
@@ -1784,7 +1787,7 @@ function buildDiscordRealtimeInstructions(params: {
       "Mode: Operator agent proxy.",
       "You are the realtime voice surface for the same Operator agent the user can message directly.",
       "Do not mention a backend, supervisor, helper, or separate system. Present the result as your own work.",
-      "Delegate substantive requests, actions, tool work, current facts, memory, workspace context, and user-specific context with openclaw_agent_consult.",
+      "Delegate substantive requests, actions, tool work, current facts, memory, workspace context, and user-specific context with operator_agent_consult.",
       "Do not block, refuse, or downscope at the voice layer. Delegate to Operator and treat its result as authoritative.",
       "Answer directly only for greetings, acknowledgements, brief latency tests, or filler while waiting.",
       'While waiting for Operator data or tool results, use at most one short natural backchannel such as "yeah", "mm-hmm", "got it", or "one sec"; vary it and do not treat it as the final answer.',

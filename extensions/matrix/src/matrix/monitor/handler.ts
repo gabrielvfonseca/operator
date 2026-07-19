@@ -2,15 +2,15 @@
 import {
   buildChannelInboundEventContext,
   toInboundMediaFacts,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { hasFinalInboundReplyDispatch } from "openclaw/plugin-sdk/channel-inbound";
-import type { ChannelBotLoopProtectionFacts } from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { hasFinalInboundReplyDispatch } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import type { ChannelBotLoopProtectionFacts } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   createPreviewMessageReceipt,
   defineFinalizableLivePreviewAdapter,
   deliverWithFinalizableLivePreviewAdapter,
   type MessageReceipt,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   type AgentPlanStep,
   buildChannelProgressDraftLineForEntry,
@@ -22,30 +22,30 @@ import {
   mergeChannelProgressDraftLine,
   normalizeChannelProgressDraftLineIdentity,
   resolveChannelProgressDraftMaxLines,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   evaluateSupplementalContextVisibility,
   resolveChannelContextVisibilityMode,
-} from "openclaw/plugin-sdk/context-visibility-runtime";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/context-visibility-runtime";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { mergePairLoopGuardConfig } from "openclaw/plugin-sdk/pair-loop-guard-runtime";
-import { buildInboundHistoryFromEntries } from "openclaw/plugin-sdk/reply-history";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { mergePairLoopGuardConfig } from "@gabrielvfonseca/operator/plugin-sdk/pair-loop-guard-runtime";
+import { buildInboundHistoryFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
 import {
   buildTtsSupplementMediaPayload,
   getReplyPayloadTtsSupplement,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { GetReplyOptions } from "openclaw/plugin-sdk/reply-runtime";
-import { resolveInboundLastRouteSessionKey } from "openclaw/plugin-sdk/routing";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/security-runtime";
-import { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type { GetReplyOptions } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveInboundLastRouteSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { getSessionEntry } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type {
   CoreConfig,
   MatrixConfig,

@@ -1,7 +1,7 @@
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { createAssistantMessageEventStream } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import OpenAI from "openai";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import type { Model } from "openclaw/plugin-sdk/llm";
-import { createAssistantMessageEventStream } from "openclaw/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../../../agents/live-test-helpers.js";
 import { createOpenAIAnthropicToolPayloadCompatibilityWrapper } from "./anthropic-family-tool-payload-compat.js";

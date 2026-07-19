@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type { Insertable } from "kysely";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -20,7 +20,7 @@ import { createChannelIngressQueue } from "./ingress-queue.js";
 type ChannelIngressTestDatabase = Pick<OperatorStateKyselyDatabase, "channel_ingress_events">;
 
 async function withTempState<T>(fn: (stateDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ingress-queue-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ingress-queue-"));
   try {
     return await fn(stateDir);
   } finally {

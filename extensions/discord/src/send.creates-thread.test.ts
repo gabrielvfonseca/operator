@@ -1,6 +1,6 @@
+import { loadWebMediaRaw } from "@gabrielvfonseca/operator/plugin-sdk/web-media";
 // Discord tests cover send.creates thread plugin behavior.
 import { ChannelType, MessageFlags, Routes } from "discord-api-types/v10";
-import { loadWebMediaRaw } from "openclaw/plugin-sdk/web-media";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { RateLimitError } from "./internal/discord.js";
 import { makeDiscordRest } from "./send.test-harness.js";
@@ -487,7 +487,7 @@ describe("uploadStickerDiscord", () => {
     await uploadStickerDiscord(
       {
         guildId: "g1",
-        name: "openclaw_wave",
+        name: "operator_wave",
         description: "Operator waving",
         tags: "👋",
         mediaUrl: "file:///tmp/wave.png",
@@ -496,7 +496,7 @@ describe("uploadStickerDiscord", () => {
     );
     expect(requestPath(postMock as unknown as MockCallSource)).toBe(Routes.guildStickers("g1"));
     const stickerBody = requestBody(postMock as unknown as MockCallSource);
-    expect(stickerBody.name).toBe("openclaw_wave");
+    expect(stickerBody.name).toBe("operator_wave");
     expect(stickerBody.description).toBe("Operator waving");
     expect(stickerBody.tags).toBe("👋");
     const files = stickerBody.files as Array<{ name?: string; contentType?: string }>;

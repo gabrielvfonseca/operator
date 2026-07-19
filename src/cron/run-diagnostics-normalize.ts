@@ -1,6 +1,6 @@
 /** Dependency-light normalization helpers for stored cron run diagnostics. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 const MAX_ENTRIES = 10;
 const MAX_ENTRY_CHARS = 1_000;

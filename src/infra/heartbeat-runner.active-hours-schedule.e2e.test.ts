@@ -1,6 +1,6 @@
 // Covers heartbeat scheduling within active hours.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import { startHeartbeatRunner } from "./heartbeat-runner.js";

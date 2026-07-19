@@ -1,18 +1,18 @@
 {
-  "name": "@operator/vercel-ai-gateway-provider",
+  "name": "@gabrielvfonseca/vercel-ai-gateway-provider",
   "version": "2026.7.2",
   "description": "Operator Vercel AI Gateway provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/vercel-ai-gateway-provider",
-      "npmSpec": "@operator/vercel-ai-gateway-provider",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/vercel-ai-gateway-provider",
+      "npmSpec": "@gabrielvfonseca/vercel-ai-gateway-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9"
     },
@@ -30,6 +30,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   }
 }

@@ -1,16 +1,19 @@
 // Discord plugin module implements allow list behavior.
-import type { AllowlistMatch } from "openclaw/plugin-sdk/allow-from";
+import type { AllowlistMatch } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
 import {
   buildChannelKeyCandidates,
   resolveChannelEntryMatchWithFallback,
   resolveChannelMatchConfig,
   type ChannelMatchSource,
-} from "openclaw/plugin-sdk/channel-targets";
-import type { DiscordGuildEntry, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-targets";
+import type {
+  DiscordGuildEntry,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { Guild, User } from "../internal/discord.js";
 import { formatDiscordUserTag } from "./format.js";
 

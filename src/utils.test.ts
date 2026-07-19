@@ -20,7 +20,7 @@ import {
 
 describe("ensureDir", () => {
   it("creates nested directory", async () => {
-    await withTempDir({ prefix: "openclaw-test-" }, async (tmp) => {
+    await withTempDir({ prefix: "operator-test-" }, async (tmp) => {
       const target = path.join(tmp, "nested", "dir");
       await ensureDir(target);
       expect(fs.existsSync(target)).toBe(true);
@@ -71,9 +71,9 @@ describe("normalizeE164", () => {
 });
 
 describe("resolveConfigDir", () => {
-  it("prefers ~/.openclaw when legacy dir is missing", async () => {
-    await withTempDir({ prefix: "openclaw-config-dir-" }, async (root) => {
-      const newDir = path.join(root, ".openclaw");
+  it("prefers ~/.operator when legacy dir is missing", async () => {
+    await withTempDir({ prefix: "operator-config-dir-" }, async (root) => {
+      const newDir = path.join(root, ".operator");
       await fs.promises.mkdir(newDir, { recursive: true });
       const resolved = resolveConfigDir({} as NodeJS.ProcessEnv, () => root);
       expect(resolved).toBe(newDir);
@@ -82,25 +82,25 @@ describe("resolveConfigDir", () => {
 
   it("expands OPERATOR_STATE_DIR using the provided env", () => {
     const env = {
-      HOME: "/tmp/openclaw-home",
+      HOME: "/tmp/operator-home",
       OPERATOR_STATE_DIR: "~/state",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/openclaw-home", "state"));
+    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/operator-home", "state"));
   });
 
   it("falls back to the config file directory when only OPERATOR_CONFIG_PATH is set", () => {
     const env = {
-      HOME: "/tmp/openclaw-home",
-      OPERATOR_CONFIG_PATH: "~/profiles/dev/openclaw.json",
+      HOME: "/tmp/operator-home",
+      OPERATOR_CONFIG_PATH: "~/profiles/dev/operator.json",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/openclaw-home", "profiles", "dev"));
+    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/operator-home", "profiles", "dev"));
   });
 
   it("re-pins the exported configuration root after startup environment selection", () => {
     const originalConfigDir = CONFIG_DIR;
-    const selectedConfigDir = path.resolve("/tmp/openclaw-selected-config-root");
+    const selectedConfigDir = path.resolve("/tmp/operator-selected-config-root");
     try {
       expect(
         pinConfigDir({
@@ -120,17 +120,17 @@ describe("resolveConfigDir", () => {
 
 describe("resolveHomeDir", () => {
   it("prefers OPERATOR_HOME over HOME", () => {
-    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
-      expect(resolveHomeDir()).toBe(path.resolve("/srv/openclaw-home"));
+    withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
+      expect(resolveHomeDir()).toBe(path.resolve("/srv/operator-home"));
     });
   });
 });
 
 describe("shortenHomePath", () => {
   it("uses $OPERATOR_HOME prefix when OPERATOR_HOME is set", () => {
-    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
-      expect(shortenHomePath(`${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`)).toBe(
-        "$OPERATOR_HOME/.openclaw/openclaw.json",
+    withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
+      expect(shortenHomePath(`${path.resolve("/srv/operator-home")}/.operator/operator.json`)).toBe(
+        "$OPERATOR_HOME/.operator/operator.json",
       );
     });
   });
@@ -138,12 +138,12 @@ describe("shortenHomePath", () => {
 
 describe("shortenHomeInString", () => {
   it("uses $OPERATOR_HOME replacement when OPERATOR_HOME is set", () => {
-    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
+    withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
       expect(
         shortenHomeInString(
-          `config: ${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`,
+          `config: ${path.resolve("/srv/operator-home")}/.operator/operator.json`,
         ),
-      ).toBe("config: $OPERATOR_HOME/.openclaw/openclaw.json");
+      ).toBe("config: $OPERATOR_HOME/.operator/operator.json");
     });
   });
 });
@@ -155,7 +155,7 @@ describe("resolveUserPath", () => {
 
   it("expands ~/ to home dir", () => {
     expect(resolveUserPath("~/openclaw", {}, () => "/Users/thoffman")).toBe(
-      path.resolve("/Users/thoffman", "openclaw"),
+      path.resolve("/Users/thoffman", "@gabrielvfonseca/operator"),
     );
   });
 
@@ -164,18 +164,22 @@ describe("resolveUserPath", () => {
   });
 
   it("prefers OPERATOR_HOME for tilde expansion", () => {
-    withEnv({ OPERATOR_HOME: "/srv/openclaw-home", HOME: "/home/other" }, () => {
-      expect(resolveUserPath("~/openclaw")).toBe(path.resolve("/srv/openclaw-home", "openclaw"));
+    withEnv({ OPERATOR_HOME: "/srv/operator-home", HOME: "/home/other" }, () => {
+      expect(resolveUserPath("~/openclaw")).toBe(
+        path.resolve("/srv/operator-home", "@gabrielvfonseca/operator"),
+      );
     });
   });
 
   it("uses the provided env for tilde expansion", () => {
     const env = {
-      HOME: "/tmp/openclaw-home",
-      OPERATOR_HOME: "/srv/openclaw-home",
+      HOME: "/tmp/operator-home",
+      OPERATOR_HOME: "/srv/operator-home",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveUserPath("~/openclaw", env)).toBe(path.resolve("/srv/openclaw-home", "openclaw"));
+    expect(resolveUserPath("~/openclaw", env)).toBe(
+      path.resolve("/srv/operator-home", "@gabrielvfonseca/operator"),
+    );
   });
 
   it("keeps blank paths blank", () => {

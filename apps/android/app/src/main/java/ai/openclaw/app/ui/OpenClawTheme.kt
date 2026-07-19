@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.AppearanceThemeMode
+import ai.operator.app.AppearanceThemeMode
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +17,7 @@ import androidx.core.view.WindowCompat
  * App theme wrapper that installs dynamic Material colors and legacy mobile color tokens.
  */
 @Composable
-fun OpenClawTheme(
+fun OperatorTheme(
   themeMode: AppearanceThemeMode = AppearanceThemeMode.Dark,
   content: @Composable () -> Unit,
 ) {
@@ -26,7 +26,7 @@ fun OpenClawTheme(
   val colorScheme = if (isDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
   val mobileColors = if (isDark) darkMobileColors() else lightMobileColors()
 
-  OpenClawSystemBarAppearance(lightAppearance = !isDark)
+  OperatorSystemBarAppearance(lightAppearance = !isDark)
 
   CompositionLocalProvider(
     LocalMobileColors provides mobileColors,
@@ -36,7 +36,7 @@ fun OpenClawTheme(
 }
 
 @Composable
-internal fun OpenClawSystemBarAppearance(lightAppearance: Boolean) {
+internal fun OperatorSystemBarAppearance(lightAppearance: Boolean) {
   val view = LocalView.current
   if (!view.isInEditMode) {
     SideEffect {

@@ -5,8 +5,8 @@ Official Operator plugin for Exa.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/exa-plugin
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/exa-plugin
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/tools/exa-search> for setup and configuration.
+See <https://docs.operator.ai/tools/exa-search> for setup and configuration.

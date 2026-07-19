@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
-import type { ProviderRuntimeModel } from "openclaw/plugin-sdk/plugin-entry";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { ProviderRuntimeModel } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   clearLiveCatalogCacheForTests,
   type LiveModelCatalogFetchGuard,
-} from "openclaw/plugin-sdk/provider-catalog-live-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
 import { beforeEach, describe, expect, it, vi, type MockedFunction } from "vitest";
 import {
   buildClawRouterProviderConfig,

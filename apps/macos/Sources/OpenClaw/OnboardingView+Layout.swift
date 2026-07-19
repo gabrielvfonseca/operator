@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 extension OnboardingView {
-    /// The inference-first flow has no full-page chat; OpenClaw opens in its own sheet.
+    /// The inference-first flow has no full-page chat; Operator opens in its own sheet.
     var usesCompactHero: Bool {
         false
     }
@@ -12,7 +12,7 @@ extension OnboardingView {
             let contentHeight = self.contentHeight(for: windowGeometry.size.height)
             VStack(spacing: 0) {
                 // Chat-heavy pages shrink the mascot so the content gets the room.
-                GlowingOpenClawIcon(size: self.heroSize, mood: self.mascotMood)
+                GlowingOperatorIcon(size: self.heroSize, mood: self.mascotMood)
                     .offset(y: self.usesCompactHero ? 4 : 10)
                     .frame(height: self.heroFrameHeight)
                     .animation(.spring(response: 0.45, dampingFraction: 0.85), value: self.usesCompactHero)
@@ -136,7 +136,7 @@ extension OnboardingView {
         // The UI attempt belongs to one route, but its durable activation lease
         // must survive A -> B -> A while the old Gateway can still be mutating.
         aiSetup.resetForGatewayChange(clearPendingHandoff: false)
-        // OpenClaw sessions belong to one Gateway. Dismiss and replace the chat so
+        // Operator sessions belong to one Gateway. Dismiss and replace the chat so
         // changing routes cannot send an old session ID to the new endpoint.
         systemAgentState.resetForGatewayChange()
     }

@@ -1,7 +1,10 @@
 // Imported by register.test.ts to keep its mocked suite in one Vitest module graph.
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
-import { runDoctorLintChecks, type OperatorConfig } from "openclaw/plugin-sdk/health";
+import {
+  runDoctorLintChecks,
+  type OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/health";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectPolicyEvidence } from "../policy-state.js";
 import {
@@ -28,7 +31,7 @@ describe("registerPolicyDoctorChecks", () => {
   afterEach(describe0AfterEach1);
 
   it("repairs required agent workspace deny tool findings", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy({ workspaceRepairs: true }),
       agents: {
@@ -72,7 +75,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("skips scoped required deny repairs that would mutate root tools deny", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy({ workspaceRepairs: true }),
       tools: { deny: ["exec"] },
@@ -110,14 +113,14 @@ describe("registerPolicyDoctorChecks", () => {
     expect(result.remainingFindings).toEqual([
       expect.objectContaining({
         checkId: "policy/tools-required-deny-missing",
-        ocPath: "oc://openclaw.config/tools/deny",
+        ocPath: "oc://operator.config/tools/deny",
         requirement: "oc://policy.jsonc/scopes/reviewer/tools/denyTools",
       }),
     ]);
   });
 
   it("skips scoped data-handling repairs that would mutate shared config", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy({ workspaceRepairs: true }),
       logging: { redactSensitive: "off" },
@@ -171,7 +174,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("does not report denied providers for disabled channels", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: { telegram: { enabled: false } },
@@ -203,7 +206,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("does not run policy checks for empty category namespaces", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: { telegram: { enabled: true } },
@@ -225,7 +228,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports invalid requireMetadata policy entries", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -249,7 +252,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports blank requireMetadata policy entries", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -272,7 +275,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports invalid requireMetadata entries against a configured policy path", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "workspace.policy.jsonc"),
@@ -297,7 +300,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports governed tools missing risk and sensitivity metadata", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -336,7 +339,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports governed bullet tools missing required metadata", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -372,7 +375,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("accepts governed tool metadata declared on following lines", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -432,7 +435,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports unknown governed tool risk metadata", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -460,7 +463,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports model providers denied by policy", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       models: {
@@ -494,20 +497,20 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-denied-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/models/providers/openrouter",
+        ocPath: "oc://operator.config/models/providers/openrouter",
         requirement: "oc://policy.jsonc/models/providers/deny",
       }),
       expect.objectContaining({
         checkId: "policy/models-denied-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/agents/defaults/model",
+        ocPath: "oc://operator.config/agents/defaults/model",
         requirement: "oc://policy.jsonc/models/providers/deny",
       }),
     ]);
   });
 
   it("compares canonical model provider refs for deny policy checks", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       models: {
@@ -538,14 +541,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-denied-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/agents/defaults/model",
+        ocPath: "oc://operator.config/agents/defaults/model",
         requirement: "oc://policy.jsonc/models/providers/deny",
       }),
     ]);
   });
 
   it("compares canonical model provider refs for allow policy checks", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       models: {
@@ -576,14 +579,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/models/providers/aws-bedrock",
+        ocPath: "oc://operator.config/models/providers/aws-bedrock",
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports model refs outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       agents: {
@@ -612,14 +615,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/agents/defaults/model/fallbacks/#0",
+        ocPath: "oc://operator.config/agents/defaults/model/fallbacks/#0",
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports model allowlist keys outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       agents: {
@@ -647,14 +650,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: 'oc://openclaw.config/agents/defaults/models/"openrouter/*"',
+        ocPath: 'oc://operator.config/agents/defaults/models/"openrouter/*"',
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports per-agent model allowlist keys outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       agents: {
@@ -685,14 +688,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: 'oc://openclaw.config/agents/list/#0/models/"openrouter/*"',
+        ocPath: 'oc://operator.config/agents/list/#0/models/"openrouter/*"',
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports configured model providers outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       models: {
@@ -718,14 +721,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/models/providers/anthropic",
+        ocPath: "oc://operator.config/models/providers/anthropic",
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports non-default agent model refs outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       agents: {
@@ -754,14 +757,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-unapproved-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/agents/defaults/subagents/model",
+        ocPath: "oc://operator.config/agents/defaults/subagents/model",
         requirement: "oc://policy.jsonc/models/providers/allow",
       }),
     ]);
   });
 
   it("reports per-agent model refs outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       agents: {
@@ -790,14 +793,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/models-denied-provider",
         severity: "error",
-        ocPath: "oc://openclaw.config/agents/list/#0/model/primary",
+        ocPath: "oc://operator.config/agents/list/#0/model/primary",
         requirement: "oc://policy.jsonc/models/providers/deny",
       }),
     ]);
   });
 
   it("does not enable tool metadata checks from a model-only policy block", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     await fs.writeFile(configPath, "{}", "utf-8");
     await fs.writeFile(
       join(workspaceDir, "policy.jsonc"),
@@ -818,7 +821,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports MCP servers denied by policy", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       mcp: {
@@ -847,14 +850,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/mcp-denied-server",
         severity: "error",
-        ocPath: "oc://openclaw.config/mcp/servers/untrusted",
+        ocPath: "oc://operator.config/mcp/servers/untrusted",
         requirement: "oc://policy.jsonc/mcp/servers/deny",
       }),
     ]);
   });
 
   it("preserves MCP server casing for deny rules", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       mcp: {
@@ -883,14 +886,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/mcp-denied-server",
         severity: "error",
-        ocPath: "oc://openclaw.config/mcp/servers/DocsServer",
+        ocPath: "oc://operator.config/mcp/servers/DocsServer",
         requirement: "oc://policy.jsonc/mcp/servers/deny",
       }),
     ]);
   });
 
   it("reports MCP servers outside the policy allowlist", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       mcp: {
@@ -923,14 +926,14 @@ describe("registerPolicyDoctorChecks", () => {
       expect.objectContaining({
         checkId: "policy/mcp-unapproved-server",
         severity: "error",
-        ocPath: "oc://openclaw.config/mcp/servers/remote",
+        ocPath: "oc://operator.config/mcp/servers/remote",
         requirement: "oc://policy.jsonc/mcp/servers/allow",
       }),
     ]);
   });
 
   it("preserves MCP server casing for allowlists", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       mcp: {
@@ -992,13 +995,13 @@ describe("registerPolicyDoctorChecks", () => {
     expect(server).toEqual(
       expect.objectContaining({
         id: "Outlook Graph",
-        source: 'oc://openclaw.config/mcp/servers/"Outlook Graph"',
+        source: 'oc://operator.config/mcp/servers/"Outlook Graph"',
       }),
     );
   });
 
   it("does not enable model checks from an MCP-only policy block", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy({ enabled: undefined }),
       models: {
@@ -1024,7 +1027,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("reports ingress channel access conformance findings", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "main" },
@@ -1063,25 +1066,25 @@ describe("registerPolicyDoctorChecks", () => {
         expect.objectContaining({
           checkId: "policy/ingress-dm-scope-unapproved",
           severity: "error",
-          ocPath: "oc://openclaw.config/session/dmScope",
+          ocPath: "oc://operator.config/session/dmScope",
           requirement: "oc://policy.jsonc/ingress/session/requireDmScope",
         }),
         expect.objectContaining({
           checkId: "policy/ingress-dm-policy-unapproved",
           severity: "error",
-          ocPath: "oc://openclaw.config/channels/telegram/dmPolicy",
+          ocPath: "oc://operator.config/channels/telegram/dmPolicy",
           requirement: "oc://policy.jsonc/ingress/channels/allowDmPolicies",
         }),
         expect.objectContaining({
           checkId: "policy/ingress-open-groups-denied",
           severity: "error",
-          ocPath: "oc://openclaw.config/channels/telegram/groupPolicy",
+          ocPath: "oc://operator.config/channels/telegram/groupPolicy",
           requirement: "oc://policy.jsonc/ingress/channels/denyOpenGroups",
         }),
         expect.objectContaining({
           checkId: "policy/ingress-group-mention-required",
           severity: "error",
-          ocPath: "oc://openclaw.config/channels/telegram/groups/ops/requireMention",
+          ocPath: "oc://operator.config/channels/telegram/groups/ops/requireMention",
           requirement: "oc://policy.jsonc/ingress/channels/requireMentionInGroups",
         }),
       ]),
@@ -1089,7 +1092,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("normalizes mixed-case session DM scope before checking ingress policy", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "Per-Channel-Peer" },
@@ -1117,7 +1120,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("applies channel-scoped ingress claims to matching channel posture", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "main" },
@@ -1180,7 +1183,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("does not apply channel-scoped ingress claims from invalid scopes", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: {
@@ -1232,7 +1235,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("does not treat wildcard groupPolicy as channel ingress posture", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: {
@@ -1271,7 +1274,7 @@ describe("registerPolicyDoctorChecks", () => {
       expect.arrayContaining([
         expect.objectContaining({
           kind: "channelGroupPolicy",
-          source: "oc://openclaw.config/channels/telegram/groupPolicy",
+          source: "oc://operator.config/channels/telegram/groupPolicy",
           value: "open",
         }),
       ]),
@@ -1285,7 +1288,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("honors wildcard mention ingress for channel posture", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: {
@@ -1320,7 +1323,7 @@ describe("registerPolicyDoctorChecks", () => {
       expect.arrayContaining([
         expect.objectContaining({
           kind: "channelRequireMention",
-          source: 'oc://openclaw.config/channels/telegram/groups/"*"/requireMention',
+          source: 'oc://operator.config/channels/telegram/groups/"*"/requireMention',
           value: true,
         }),
       ]),
@@ -1333,7 +1336,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("honors strict channel group policy defaults", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: {
@@ -1367,7 +1370,7 @@ describe("registerPolicyDoctorChecks", () => {
           channel: "signal",
           explicit: false,
           kind: "channelGroupPolicy",
-          source: "oc://openclaw.config/channels/signal/groupPolicy",
+          source: "oc://operator.config/channels/signal/groupPolicy",
           value: "allowlist",
         }),
       ]),
@@ -1380,7 +1383,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("treats disabled nested DM config as disabled ingress", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       channels: {
@@ -1412,7 +1415,7 @@ describe("registerPolicyDoctorChecks", () => {
         expect.objectContaining({
           channel: "slack",
           kind: "channelDmPolicy",
-          source: "oc://openclaw.config/channels/slack/dm/enabled",
+          source: "oc://operator.config/channels/slack/dm/enabled",
           value: "disabled",
         }),
       ]),
@@ -1500,21 +1503,21 @@ describe("registerPolicyDoctorChecks", () => {
       expect.arrayContaining([
         expect.objectContaining({
           source:
-            "oc://openclaw.config/channels/discord/guilds/ops/channels/releases/requireMention",
+            "oc://operator.config/channels/discord/guilds/ops/channels/releases/requireMention",
           value: false,
         }),
         expect.objectContaining({
           source:
-            "oc://openclaw.config/channels/msteams/teams/engineering/channels/general/requireMention",
+            "oc://operator.config/channels/msteams/teams/engineering/channels/general/requireMention",
           value: false,
         }),
         expect.objectContaining({
-          source: "oc://openclaw.config/channels/matrix/rooms/standup/requireMention",
+          source: "oc://operator.config/channels/matrix/rooms/standup/requireMention",
           value: false,
         }),
         expect.objectContaining({
           source:
-            "oc://openclaw.config/channels/telegram/groups/ops/topics/incidents/requireMention",
+            "oc://operator.config/channels/telegram/groups/ops/topics/incidents/requireMention",
           value: false,
         }),
       ]),
@@ -1522,7 +1525,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("uses effective ingress defaults when policy governs omitted fields", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "per-channel-peer" },
@@ -1551,13 +1554,13 @@ describe("registerPolicyDoctorChecks", () => {
     expect(result.findings).toEqual([
       expect.objectContaining({
         checkId: "policy/ingress-open-groups-denied",
-        ocPath: "oc://openclaw.config/channels/qqbot/groupPolicy",
+        ocPath: "oc://operator.config/channels/qqbot/groupPolicy",
       }),
     ]);
   });
 
   it("infers allowlist group posture from configured groups", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "per-channel-peer" },
@@ -1592,12 +1595,12 @@ describe("registerPolicyDoctorChecks", () => {
       expect.arrayContaining([
         expect.objectContaining({
           kind: "channelGroupPolicy",
-          source: "oc://openclaw.config/channels/telegram/groups",
+          source: "oc://operator.config/channels/telegram/groups",
           value: "allowlist",
         }),
         expect.objectContaining({
           kind: "channelRequireMention",
-          source: "oc://openclaw.config/channels/telegram/requireMention",
+          source: "oc://operator.config/channels/telegram/requireMention",
           value: true,
         }),
       ]),
@@ -1606,7 +1609,7 @@ describe("registerPolicyDoctorChecks", () => {
   });
 
   it("does not infer allowlist posture from Slack channel entries", async () => {
-    const configPath = join(workspaceDir, "openclaw.jsonc");
+    const configPath = join(workspaceDir, "operator.jsonc");
     const cfg = {
       ...cfgWithPolicy(),
       session: { dmScope: "per-channel-peer" },
@@ -1640,7 +1643,7 @@ describe("registerPolicyDoctorChecks", () => {
         expect.objectContaining({
           channel: "slack",
           kind: "channelGroupPolicy",
-          source: "oc://openclaw.config/channels/slack/groupPolicy",
+          source: "oc://operator.config/channels/slack/groupPolicy",
           value: "open",
         }),
       ]),
@@ -1649,7 +1652,7 @@ describe("registerPolicyDoctorChecks", () => {
       expect.arrayContaining([
         expect.objectContaining({
           checkId: "policy/ingress-open-groups-denied",
-          ocPath: "oc://openclaw.config/channels/slack/groupPolicy",
+          ocPath: "oc://operator.config/channels/slack/groupPolicy",
         }),
       ]),
     );

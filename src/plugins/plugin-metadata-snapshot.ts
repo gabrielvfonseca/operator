@@ -1,8 +1,8 @@
 // Builds plugin metadata snapshots for gateway and diagnostics.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { resolveIsNixMode } from "../config/paths.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {

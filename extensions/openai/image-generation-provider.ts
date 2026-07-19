@@ -1,28 +1,28 @@
 // Openai provider module implements model/runtime integration.
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type {
   ImageGenerationOutputFormat,
   ImageGenerationProvider,
   ImageGenerationResult,
-} from "openclaw/plugin-sdk/image-generation";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
 import {
   parseOpenAiCompatibleImageResponse,
   resolveInlineImageJsonResponseMaxBytes,
   toImageDataUrl,
-} from "openclaw/plugin-sdk/image-generation";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/logging-core";
-import { resolveClosestSize } from "openclaw/plugin-sdk/media-generation-runtime";
-import { extensionForMime } from "openclaw/plugin-sdk/media-mime";
-import { MAX_IMAGE_BYTES } from "openclaw/plugin-sdk/media-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/image-generation";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { resolveClosestSize } from "@gabrielvfonseca/operator/plugin-sdk/media-generation-runtime";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 import {
   ensureAuthProfileStore,
   hasConfiguredSecretInput,
   isProviderApiKeyConfigured,
   listProfilesForProvider,
   type AuthProfileStore,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
@@ -30,9 +30,9 @@ import {
   readProviderJsonResponse,
   resolveProviderHttpRequestConfig,
   sanitizeConfiguredModelProviderRequest,
-} from "openclaw/plugin-sdk/provider-http";
-import { isPrivateNetworkOptInEnabled } from "openclaw/plugin-sdk/ssrf-runtime";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { isPrivateNetworkOptInEnabled } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   canonicalizeCodexResponsesBaseUrl,
   isOpenAICodexBaseUrl,

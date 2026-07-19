@@ -2,7 +2,7 @@ import type {
   OperatorPluginApi,
   OperatorPluginService,
   OperatorPluginServiceContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 const {

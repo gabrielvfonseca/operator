@@ -5,20 +5,23 @@ import {
   markMigrationItemConflict,
   markMigrationItemError,
   summarizeMigrationItems,
-} from "openclaw/plugin-sdk/migration";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration";
 import {
   archiveMigrationItem,
   copyMigrationFileItem,
   withCachedMigrationConfigRuntime,
   writeMigrationReport,
-} from "openclaw/plugin-sdk/migration-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/migration-runtime";
 import type {
   MigrationApplyResult,
   MigrationItem,
   MigrationPlan,
   MigrationProviderContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { resolvePreferredOperatorTmpDir, withTempWorkspace } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import {
+  resolvePreferredOperatorTmpDir,
+  withTempWorkspace,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import { applyAuthItem } from "./auth.js";
 import { applyConfigItem, applyManualItem } from "./config.js";
 import { appendItem } from "./helpers.js";
@@ -32,7 +35,7 @@ import { buildHermesPlan } from "./plan.js";
 import { applySecretItem } from "./secrets.js";
 import { resolveTargets } from "./targets.js";
 
-const HERMES_SQLITE_SNAPSHOT_PREFIX = "openclaw-migrate-hermes-sqlite-";
+const HERMES_SQLITE_SNAPSHOT_PREFIX = "operator-migrate-hermes-sqlite-";
 
 async function archiveHermesItem(item: MigrationItem, reportDir: string): Promise<MigrationItem> {
   if (!item.source || path.extname(item.source) !== ".db") {

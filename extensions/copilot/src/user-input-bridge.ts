@@ -1,11 +1,11 @@
-import type { SessionConfig } from "@github/copilot-sdk";
 import {
   buildAgentHarnessUserInputAnswers,
   deliverAgentHarnessUserInputPrompt,
   embeddedAgentLog,
   type AgentHarnessUserInputQuestion,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { SessionConfig } from "@github/copilot-sdk";
 
 type PendingCopilotUserInput = {
   question: AgentHarnessUserInputQuestion;

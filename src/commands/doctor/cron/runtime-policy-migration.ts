@@ -1,5 +1,5 @@
 // Doctor-only runtime policy repair for migrated cron Codex model refs.
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { resolveDefaultAgentId } from "../../../agents/agent-scope-config.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";
 import { normalizeAgentId } from "../../../routing/session-key.js";

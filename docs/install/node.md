@@ -1,13 +1,13 @@
 ---
-summary: "Install and configure Node.js for OpenClaw - version requirements, install options, and PATH troubleshooting"
+summary: "Install and configure Node.js for Operator - version requirements, install options, and PATH troubleshooting"
 title: "Node.js"
 read_when:
-  - "You need to install Node.js before installing OpenClaw"
-  - "You installed OpenClaw but `openclaw` is command not found"
+  - "You need to install Node.js before installing Operator"
+  - "You installed Operator but `openclaw` is command not found"
   - "npm install -g fails with permissions or PATH issues"
 ---
 
-OpenClaw requires **Node 22.22.3+, Node 24.15+, or Node 25.9+**. **Node 24 is the default and recommended runtime** for installs, CI, and release workflows; Node 22 remains supported via the active LTS line. Node 23 is unsupported. The [installer script](/install#alternative-install-methods) detects and installs Node automatically — use this page when you want to set up Node yourself (versions, PATH, global installs).
+Operator requires **Node 22.22.3+, Node 24.15+, or Node 25.9+**. **Node 24 is the default and recommended runtime** for installs, CI, and release workflows; Node 22 remains supported via the active LTS line. Node 23 is unsupported. The [installer script](/install#alternative-install-methods) detects and installs Node automatically — use this page when you want to set up Node yourself (versions, PATH, global installs).
 
 ## Check your version
 
@@ -86,7 +86,7 @@ fnm use 24
 
 ## Troubleshooting
 
-### `openclaw: command not found`
+### `operator: command not found`
 
 This almost always means npm's global bin directory isn't on your PATH.
 
@@ -138,5 +138,5 @@ Add the `export PATH=...` line to your `~/.bashrc` or `~/.zshrc` to make it perm
 ## Related
 
 - [Install Overview](/install) - all installation methods
-- [Updating](/install/updating) - keeping OpenClaw up to date
+- [Updating](/install/updating) - keeping Operator up to date
 - [Getting Started](/start/getting-started) - first steps after install

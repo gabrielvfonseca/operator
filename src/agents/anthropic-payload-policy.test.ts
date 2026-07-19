@@ -1,4 +1,4 @@
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@gabrielvfonseca/ai/internal/shared";
 /**
  * Tests Anthropic payload policy mutation.
  * Covers service tier, cache-control retention, prompt cache boundaries, and

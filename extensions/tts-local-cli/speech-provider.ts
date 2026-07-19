@@ -1,21 +1,24 @@
 // Tts Local Cli provider module implements model/runtime integration.
 import { readdirSync } from "node:fs";
 import path from "node:path";
-import { runFfmpeg } from "openclaw/plugin-sdk/media-runtime";
-import { runCommandBuffered } from "openclaw/plugin-sdk/process-runtime";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
+import { runFfmpeg } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { runCommandBuffered } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   readRegularFileSync,
   writeExternalFileWithinRoot,
-} from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import type {
   SpeechProviderConfig,
   SpeechProviderPlugin,
   SpeechSynthesisRequest,
   SpeechTelephonySynthesisRequest,
-} from "openclaw/plugin-sdk/speech-core";
-import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech-core";
+import {
+  tempWorkspace,
+  resolvePreferredOperatorTmpDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 
 const log = createSubsystemLogger("tts-local-cli");
 
@@ -345,7 +348,7 @@ export function buildCliSpeechProvider(): SpeechProviderPlugin {
 
       const temp = await tempWorkspace({
         rootDir: resolvePreferredOperatorTmpDir(),
-        prefix: "openclaw-cli-tts-",
+        prefix: "operator-cli-tts-",
       });
       const tempDir = temp.dir;
 
@@ -418,7 +421,7 @@ export function buildCliSpeechProvider(): SpeechProviderPlugin {
 
       const temp = await tempWorkspace({
         rootDir: resolvePreferredOperatorTmpDir(),
-        prefix: "openclaw-cli-tts-",
+        prefix: "operator-cli-tts-",
       });
       const tempDir = temp.dir;
 

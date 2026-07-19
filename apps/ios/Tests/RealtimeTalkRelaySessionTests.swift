@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import OperatorKit
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @MainActor
 private final class UnusedPCMStreamingAudioPlayer: PCMStreamingAudioPlaying {

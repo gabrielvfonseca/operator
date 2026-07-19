@@ -2,10 +2,10 @@
 import type {
   ProviderDefaultThinkingPolicyContext,
   ProviderThinkingProfile,
-} from "openclaw/plugin-sdk/core";
-import type { ProviderFailoverErrorContext } from "openclaw/plugin-sdk/plugin-entry";
-import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-import { buildProviderToolCompatFamilyHooks } from "openclaw/plugin-sdk/provider-tools";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import type { ProviderFailoverErrorContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { buildProviderReplayFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { buildProviderToolCompatFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-tools";
 import { resolveGoogleThinkingProfile } from "./provider-policy.js";
 import { createGoogleThinkingStreamWrapper } from "./thinking-api.js";
 

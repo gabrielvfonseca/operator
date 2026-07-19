@@ -34,7 +34,7 @@ export type PluginInstallRuntime = Awaited<ReturnType<typeof loadPluginInstallRu
 export const defaultLogger: PluginInstallLogger = {};
 
 export function formatUnresolvedOperatorPeerLinkError(packageName: string): string {
-  return `Installed plugin ${packageName} declares operator as a peer dependency, but Operator could not create a plugin-local node_modules/operator link. Run from a packaged Operator install or reinstall Operator, then retry.`;
+  return `Installed plugin ${packageName} declares openclaw as a peer dependency, but Operator could not create a plugin-local node_modules/openclaw link. Run from a packaged Operator install or reinstall Operator, then retry.`;
 }
 
 const MISSING_EXTENSIONS_ERROR =
@@ -344,7 +344,7 @@ export async function runInstallSourceScan(params: {
     });
     return {
       ok: false,
-      error: `${params.subject} installation blocked: code safety scan failed (${String(err)}). Run "operator security audit --deep" for details.`,
+      error: `${params.subject} installation blocked: code safety scan failed (${String(err)}). Run "openclaw security audit --deep" for details.`,
       code: PLUGIN_INSTALL_ERROR_CODE.SECURITY_SCAN_FAILED,
     };
   }

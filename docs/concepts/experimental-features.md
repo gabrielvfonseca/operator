@@ -1,5 +1,5 @@
 ---
-summary: "What experimental flags mean in OpenClaw and which ones are currently documented"
+summary: "What experimental flags mean in Operator and which ones are currently documented"
 title: "Experimental features"
 read_when:
   - You see an `.experimental` config key and want to know whether it is stable
@@ -18,16 +18,16 @@ Experimental features are opt-in preview surfaces behind explicit flags. They ne
 
 | Surface                  | Key                                                                                        | Use it when                                                                                                                       | More                                                                                          |
 | ------------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Local model runtime      | `agents.defaults.experimental.localModelLean`, `agents.list[].experimental.localModelLean` | A smaller or stricter local backend chokes on OpenClaw's full default tool surface                                                | [Local Models](/gateway/local-models)                                                         |
+| Local model runtime      | `agents.defaults.experimental.localModelLean`, `agents.list[].experimental.localModelLean` | A smaller or stricter local backend chokes on Operator's full default tool surface                                                | [Local Models](/gateway/local-models)                                                         |
 | Memory search            | `agents.defaults.memorySearch.experimental.sessionMemory`                                  | You want `memory_search` to index prior session transcripts and accept the extra storage/indexing cost                            | [Memory configuration reference](/reference/memory-config#session-memory-search-experimental) |
-| Codex harness            | `plugins.entries.codex.config.appServer.experimental.sandboxExecServer`                    | You want native Codex app-server 0.132.0 or newer to target an OpenClaw sandbox-backed exec-server instead of disabling Code Mode | [Codex harness reference](/plugins/codex-harness-reference#sandboxed-native-execution)        |
+| Codex harness            | `plugins.entries.codex.config.appServer.experimental.sandboxExecServer`                    | You want native Codex app-server 0.132.0 or newer to target an Operator sandbox-backed exec-server instead of disabling Code Mode | [Codex harness reference](/plugins/codex-harness-reference#sandboxed-native-execution)        |
 | Structured planning tool | `tools.experimental.planTool`                                                              | You want the structured `update_plan` tool exposed for multi-step work tracking in compatible runtimes and UIs                    | [Gateway configuration reference](/gateway/config-tools#toolsexperimental)                    |
 
 ## Local model lean mode
 
 `agents.defaults.experimental.localModelLean: true` drops heavyweight optional tools from the agent's direct surface every turn: `browser`, `cron`, `message`, `image_generate`, `music_generate`, `video_generate`, `tts`, and `pdf`. Explicitly allowed or delivery-required tools remain available, though Tool Search may catalog them instead of exposing them directly. Lean mode also defaults plugin/MCP/client catalogs to structured Tool Search (`tool_search`, `tool_describe`, `tool_call`) when `tools.toolSearch` is not already set. Use `agents.list[].experimental.localModelLean` to scope this to one agent.
 
-If you already tune Tool Search globally, OpenClaw leaves that config alone. Set `tools.toolSearch: false` to opt out of the lean-mode Tool Search default.
+If you already tune Tool Search globally, Operator leaves that config alone. Set `tools.toolSearch: false` to opt out of the lean-mode Tool Search default.
 
 In structured `tools` mode, lean runs keep `exec` directly visible beside the Tool Search controls so coding-tuned local models can still choose their familiar shell path. This changes schema visibility only: normal tool policy, sandboxing, and exec approvals still apply. Explicit `code` and `directory` modes keep their normal compaction behavior.
 
@@ -45,7 +45,7 @@ Removing them only shortens the direct tool list. The model still has `read`, `w
 
 Enable lean mode once you have proved the model can talk to the Gateway but full agent turns misbehave:
 
-1. `openclaw infer model run --gateway --model <ref> --prompt "Reply with exactly: pong"` succeeds.
+1. `operator infer model run --gateway --model <ref> --prompt "Reply with exactly: pong"` succeeds.
 2. A normal agent turn fails with malformed tool calls, oversized prompts, or the model ignoring its tools.
 3. Toggling `localModelLean: true` clears the failure.
 

@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-// Release Beta Verifier script supports OpenClaw repository automation.
+// Release Beta Verifier script supports Operator repository automation.
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -227,7 +227,7 @@ export function parseReleaseVerifyBetaArgs(argv: string[]): ReleaseVerifyBetaArg
   const version = values.shift();
   if (!version || version.startsWith("-")) {
     throw new Error(
-      "Usage: pnpm release:verify-beta -- <version> [--release-sha SHA] [--workflow-ref REF] [--clawhub-workflow-ref REF] [--full-release-validation-run ID] [--openclaw-npm-run ID] [--plugin-npm-run ID] [--plugin-clawhub-run ID] [--plugin-clawhub-bootstrap-run ID --clawhub-bootstrap-plugins NAMES] [--npm-telegram-run ID] [--skip-github-release] [--skip-clawhub]",
+      "Usage: pnpm release:verify-beta -- <version> [--release-sha SHA] [--workflow-ref REF] [--clawhub-workflow-ref REF] [--full-release-validation-run ID] [--operator-npm-run ID] [--plugin-npm-run ID] [--plugin-clawhub-run ID] [--plugin-clawhub-bootstrap-run ID --clawhub-bootstrap-plugins NAMES] [--npm-telegram-run ID] [--skip-github-release] [--skip-clawhub]",
     );
   }
 
@@ -308,8 +308,8 @@ export function parseReleaseVerifyBetaArgs(argv: string[]): ReleaseVerifyBetaArg
       case "--full-release-validation-run":
         parsed.workflowRuns.fullReleaseValidation = next();
         break;
-      case "--openclaw-npm-run":
-        parsed.workflowRuns.openclawNpm = next();
+      case "--operator-npm-run":
+        parsed.workflowRuns.operatorNpm = next();
         break;
       case "--plugin-npm-run":
         parsed.workflowRuns.pluginNpm = next();
@@ -358,12 +358,12 @@ export function parseReleaseVerifyBetaArgs(argv: string[]): ReleaseVerifyBetaArg
   return parsed;
 }
 
-export function resolveOpenClawNpmPostpublishVerifier(rootDir: string, override?: string): string {
+export function resolveOperatorNpmPostpublishVerifier(rootDir: string, override?: string): string {
   if (override === undefined) {
-    return resolve(rootDir, "scripts/openclaw-npm-postpublish-verify.ts");
+    return resolve(rootDir, "scripts/operator-npm-postpublish-verify.ts");
   }
   const verifier = resolve(override);
-  if (verifier !== resolve(TRUSTED_TOOLING_ROOT, "scripts/openclaw-npm-postpublish-verify.ts")) {
+  if (verifier !== resolve(TRUSTED_TOOLING_ROOT, "scripts/operator-npm-postpublish-verify.ts")) {
     throw new Error("--postpublish-verifier must select the trusted tooling verifier.");
   }
   return verifier;
@@ -1290,11 +1290,15 @@ export async function verifyBetaRelease(
     lines.push(`GitHub release OK: ${releaseUrl}`);
   }
 
-  const openclawNpm = await verifyNpmPackage("openclaw", args.version, args.distTag);
+  const openclawNpm = await verifyNpmPackage(
+    "@gabrielvfonseca/operator",
+    args.version,
+    args.distTag,
+  );
   lines.push(`openclaw npm OK: ${args.version} (${args.distTag})`);
 
   if (!args.skipPostpublish) {
-    const postpublishVerifier = resolveOpenClawNpmPostpublishVerifier(
+    const postpublishVerifier = resolveOperatorNpmPostpublishVerifier(
       rootDir,
       args.postpublishVerifier,
     );
@@ -1391,13 +1395,13 @@ export async function verifyBetaRelease(
       }),
     );
   }
-  if (args.workflowRuns.openclawNpm !== undefined) {
+  if (args.workflowRuns.operatorNpm !== undefined) {
     workflowRuns.push(
       verifyWorkflowRun({
-        id: args.workflowRuns.openclawNpm,
-        label: "OpenClaw NPM Release",
+        id: args.workflowRuns.operatorNpm,
+        label: "Operator NPM Release",
         repo: args.repo,
-        expectedWorkflowName: "OpenClaw NPM Release",
+        expectedWorkflowName: "Operator NPM Release",
         expectedHeadBranch: args.workflowRef,
         rerunFailed: false,
       }),

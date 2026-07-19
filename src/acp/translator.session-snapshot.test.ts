@@ -1,5 +1,5 @@
 /** Tests ACP session metadata and usage snapshots after prompts. */
-import { createInMemorySessionStore } from "@operator/acp-core/session";
+import { createInMemorySessionStore } from "@gabrielvfonseca/acp-core/session";
 import { describe, expect, it, vi } from "vitest";
 import type { GatewayClient } from "../gateway/client.js";
 import {

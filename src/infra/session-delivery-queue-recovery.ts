@@ -3,7 +3,7 @@ import {
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
   resolveNonNegativeIntegerOption,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   claimRecoveryEntry as claimSharedRecoveryEntry,
   computeBackoffMs,

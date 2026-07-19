@@ -28,7 +28,7 @@ public struct BridgeInvokeResponse: Codable, Sendable {
     public let ok: Bool
     public let payload: AnyCodable?
     public let payloadJSON: String?
-    public let error: OpenClawNodeError?
+    public let error: OperatorNodeError?
 
     public init(
         type: String = "invoke-res",
@@ -36,7 +36,7 @@ public struct BridgeInvokeResponse: Codable, Sendable {
         ok: Bool,
         payload: AnyCodable? = nil,
         payloadJSON: String? = nil,
-        error: OpenClawNodeError? = nil)
+        error: OperatorNodeError? = nil)
     {
         self.type = type
         self.id = id

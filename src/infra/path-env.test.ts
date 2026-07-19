@@ -82,9 +82,9 @@ describe("ensureOperatorCliOnPath", () => {
   });
 
   function setupAppCliRoot(name: string) {
-    const tmp = abs(`/tmp/openclaw-path/${name}`);
+    const tmp = abs(`/tmp/operator-path/${name}`);
     const appBinDir = path.join(tmp, "AppBin");
-    const appCli = path.join(appBinDir, "openclaw");
+    const appCli = path.join(appBinDir, "@gabrielvfonseca/operator");
     setDir(tmp);
     setDir(appBinDir);
     setExe(appCli);
@@ -138,7 +138,7 @@ describe("ensureOperatorCliOnPath", () => {
   });
 
   it("keeps the current runtime directory ahead of system PATH hardening", () => {
-    const tmp = abs("/tmp/openclaw-path/case-runtime-dir");
+    const tmp = abs("/tmp/operator-path/case-runtime-dir");
     const nodeBinDir = path.join(tmp, "node-bin");
     const nodeExec = path.join(nodeBinDir, "node");
     setDir(tmp);
@@ -204,7 +204,7 @@ describe("ensureOperatorCliOnPath", () => {
     ({ envValue, allowProjectLocalBin }) => {
       const { tmp, appCli } = setupAppCliRoot("case-project-local");
       const localBinDir = path.join(tmp, "node_modules", ".bin");
-      const localCli = path.join(localBinDir, "openclaw");
+      const localCli = path.join(localBinDir, "@gabrielvfonseca/operator");
       setDir(path.join(tmp, "node_modules"));
       setDir(localBinDir);
       setExe(localCli);
@@ -241,7 +241,7 @@ describe("ensureOperatorCliOnPath", () => {
     const { tmp, appCli } = setupAppCliRoot("case-deleted-cwd");
     const localBinDir = path.join(tmp, "node_modules", ".bin");
     setDir(localBinDir);
-    setExe(path.join(localBinDir, "openclaw"));
+    setExe(path.join(localBinDir, "@gabrielvfonseca/operator"));
     resetBootstrapEnv();
     process.env.OPERATOR_ALLOW_PROJECT_LOCAL_BIN = "1";
     const cwdSpy = vi.spyOn(process, "cwd").mockImplementation(() => {
@@ -399,10 +399,10 @@ describe("ensureOperatorCliOnPath", () => {
   });
 
   it("ignores package-manager env roots derived from the active workspace", () => {
-    const homeDir = abs("/tmp/openclaw-path/home");
+    const homeDir = abs("/tmp/operator-path/home");
     const cwd = path.join(homeDir, "workspace");
     const appBinDir = path.join(homeDir, "app-bin");
-    const appCli = path.join(appBinDir, "openclaw");
+    const appCli = path.join(appBinDir, "@gabrielvfonseca/operator");
     const pnpmHome = path.join(cwd, ".pnpm");
     const npmPrefix = path.join(cwd, ".npm-prefix");
     for (const dir of [homeDir, cwd, appBinDir, pnpmHome, path.join(pnpmHome, "bin"), npmPrefix]) {
@@ -427,10 +427,10 @@ describe("ensureOperatorCliOnPath", () => {
   });
 
   it("ignores package-manager env roots whose existing parent resolves into the workspace", () => {
-    const homeDir = abs("/tmp/openclaw-path/home");
+    const homeDir = abs("/tmp/operator-path/home");
     const cwd = path.join(homeDir, "workspace");
     const appBinDir = path.join(homeDir, "app-bin");
-    const appCli = path.join(appBinDir, "openclaw");
+    const appCli = path.join(appBinDir, "@gabrielvfonseca/operator");
     for (const dir of [homeDir, cwd, appBinDir]) {
       setDir(dir);
     }
@@ -487,7 +487,7 @@ describe("ensureOperatorCliOnPath", () => {
     {
       name: "appends Linuxbrew dirs after system dirs",
       setup: () => {
-        const tmp = abs("/tmp/openclaw-path/case-linuxbrew");
+        const tmp = abs("/tmp/operator-path/case-linuxbrew");
         const execDir = path.join(tmp, "exec");
         setDir(tmp);
         setDir(execDir);

@@ -82,11 +82,11 @@ describe("noteSecurityWarnings gateway exposure", () => {
     file: Record<string, unknown>,
     run: () => Promise<void>,
   ): Promise<void> {
-    await withTempDir({ prefix: "openclaw-doctor-security-" }, async (home) => {
+    await withTempDir({ prefix: "operator-doctor-security-" }, async (home) => {
       process.env.HOME = home;
-      await fs.mkdir(path.join(home, ".openclaw"), { recursive: true });
+      await fs.mkdir(path.join(home, ".operator"), { recursive: true });
       await fs.writeFile(
-        path.join(home, ".openclaw", "exec-approvals.json"),
+        path.join(home, ".operator", "exec-approvals.json"),
         JSON.stringify(file, null, 2),
       );
       await run();
@@ -185,7 +185,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
     const message = lastMessage();
     expect(message).toContain("OPERATOR_GATEWAY_TOKEN conflicts with gateway.auth.token");
     expect(message).toContain("Direct local Gateway clients commonly prefer the env token");
-    expect(message).toContain("~/.openclaw/.env");
+    expect(message).toContain("~/.operator/.env");
   });
 
   it("does not warn when only env token is set without config token", async () => {

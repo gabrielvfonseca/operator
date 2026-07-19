@@ -1,6 +1,6 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.takeUtf16Safe
+import ai.operator.app.takeUtf16Safe
 import android.os.Build
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive

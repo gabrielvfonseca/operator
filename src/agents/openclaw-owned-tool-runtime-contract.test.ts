@@ -1,11 +1,11 @@
 // Verifies Operator-owned tool hooks preserve adjusted params and telemetry.
-import type { AgentTool } from "openclaw/plugin-sdk/agent-core";
+import type { AgentTool } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import {
   installOperatorOwnedToolHooks,
   resetOperatorOwnedToolHooks,
   textToolResult,
-} from "openclaw/plugin-sdk/agent-runtime-test-contracts";
-import type { ExtensionContext } from "openclaw/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime-test-contracts";
+import type { ExtensionContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { toToolDefinitions } from "./agent-tool-definition-adapter.js";
 import { createBaseToolHandlerState } from "./agent-tool-handler-state.test-helpers.js";
@@ -251,7 +251,7 @@ describe("Operator-owned tool runtime contract - embedded agent adapter", () => 
     const originalParams = {
       action: "send",
       content: "hello from embedded agent",
-      mediaUrl: "/tmp/openclaw-reply.png",
+      mediaUrl: "/tmp/operator-reply.png",
       provider: "telegram",
       to: "chat-1",
     };
@@ -282,7 +282,7 @@ describe("Operator-owned tool runtime contract - embedded agent adapter", () => 
     );
 
     expect(ctx.state.messagingToolSentTexts).toEqual(["hello from embedded agent"]);
-    expect(ctx.state.messagingToolSentMediaUrls).toEqual(["/tmp/openclaw-reply.png"]);
+    expect(ctx.state.messagingToolSentMediaUrls).toEqual(["/tmp/operator-reply.png"]);
     expect(
       ctx.state.messagingToolSentTargets.map((target) => ({
         tool: "message",
@@ -297,7 +297,7 @@ describe("Operator-owned tool runtime contract - embedded agent adapter", () => 
         provider: "telegram",
         to: "chat-1",
         text: "hello from embedded agent",
-        mediaUrls: ["/tmp/openclaw-reply.png"],
+        mediaUrls: ["/tmp/operator-reply.png"],
       },
     ]);
     const [afterPayload, afterContext] = await waitForAfterToolCall(hooks);

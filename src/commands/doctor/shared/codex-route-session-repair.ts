@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { loadSessionStore, updateSessionStore } from "../../../config/sessions/store.js";
 import { resolveAllAgentSessionStoreTargetsSync } from "../../../config/sessions/targets.js";
 import type { SessionEntry } from "../../../config/sessions/types.js";
@@ -114,11 +114,11 @@ function preserveRepairedSessionRuntimeIntent(entry: SessionEntry): boolean {
   const harnessRuntime = normalizeRuntimeString(entry.agentHarnessId);
   const overrideRuntime = normalizeRuntimeString(entry.agentRuntimeOverride);
   let changed = false;
-  if (entry.agentHarnessId !== undefined && harnessRuntime !== "operator") {
+  if (entry.agentHarnessId !== undefined && harnessRuntime !== "@gabrielvfonseca/operator") {
     delete entry.agentHarnessId;
     changed = true;
   }
-  if (overrideRuntime !== "operator" && entry.agentRuntimeOverride !== "codex") {
+  if (overrideRuntime !== "@gabrielvfonseca/operator" && entry.agentRuntimeOverride !== "codex") {
     entry.agentRuntimeOverride = "codex";
     changed = true;
   }
@@ -309,7 +309,7 @@ export async function maybeRepairCodexSessionRoutes(params: {
               [
                 "- Legacy `codex/*` or `openai-codex/*` session route state detected.",
                 `- Affected sessions: ${stale.length}.`,
-                "- Run `operator doctor --fix` to rewrite stale session model/provider pins across all agent session stores.",
+                "- Run `openclaw doctor --fix` to rewrite stale session model/provider pins across all agent session stores.",
               ].join("\n"),
             ]
           : [],

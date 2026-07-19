@@ -67,7 +67,7 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
         manifestPath: `/plugins/${pluginId}/operator.plugin.json`,
         manifestHash: `${pluginId}-manifest-v1`,
         source: `/plugins/${pluginId}/index.js`,
-        packageName: `@operator/${pluginId}`,
+        packageName: `@gabrielvfonseca/${pluginId}`,
         packageVersion: "1.0.0",
         installRecordHash: `${pluginId}-install-v1`,
         packageJson: {
@@ -87,7 +87,7 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
       : undefined;
     const resolveRuntimeOwnerFingerprint = (currentConfig: OperatorConfig) => {
       const backend = resolveCliBackendConfig(configuredRoute.provider, currentConfig, {
-        agentId: "operator",
+        agentId: "@gabrielvfonseca/operator",
       });
       if (!backend || backend.id !== runtimeArtifactId) {
         return undefined;
@@ -137,10 +137,10 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
 
   const agentHarnessId =
     configuredRoute.agentHarnessRuntimeOverride === "auto"
-      ? "operator"
+      ? "@gabrielvfonseca/operator"
       : configuredRoute.agentHarnessRuntimeOverride;
   const authFingerprint =
-    profileId && agentHarnessId !== "operator"
+    profileId && agentHarnessId !== "@gabrielvfonseca/operator"
       ? fingerprintResolvedAuthProfileCredential({ profileId, credential, resolvedAuth })
       : fingerprintResolvedProviderAuth(resolvedAuth);
   if (!authFingerprint) {
@@ -154,7 +154,7 @@ export async function createSystemAgentVerifiedInferenceTestFixture(
       ...(profileId ? { authProfileId: profileId } : {}),
       authFingerprint,
       agentHarnessId,
-      ...(agentHarnessId === "operator"
+      ...(agentHarnessId === "@gabrielvfonseca/operator"
         ? {}
         : {
             runtimeOwnerKind: "plugin-harness" as const,

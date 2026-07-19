@@ -3,7 +3,7 @@
  * combines explicit policy, configured models, defaults, and runtime
  * auth-backed availability.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type {
   ModelAuthAvailabilityEvaluation,

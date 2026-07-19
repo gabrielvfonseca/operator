@@ -5,7 +5,7 @@ import { loggingState } from "../../../logging/state.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../../../test-utils/operator-test-state.js";
+} from "../../../test-utils/openclaw-test-state.js";
 import {
   legacyOAuthSidecarTestUtils,
   loadLegacyOAuthSidecarMaterial,
@@ -26,12 +26,12 @@ function setPlatform(value: NodeJS.Platform): () => void {
 
 async function writeLegacySidecarThatNeedsKeychain(): Promise<{
   state: OperatorTestState;
-  ref: { source: "openclaw-credentials"; provider: "openai-codex"; id: string };
+  ref: { source: "operator-credentials"; provider: "openai-codex"; id: string };
   profileId: string;
 }> {
   const state = await createOperatorTestState({
     layout: "state-only",
-    prefix: "openclaw-legacy-oauth-keychain-warn-",
+    prefix: "operator-legacy-oauth-keychain-warn-",
     env: {
       OPERATOR_AGENT_DIR: undefined,
       OPERATOR_AUTH_PROFILE_SECRET_KEY: undefined,
@@ -40,7 +40,7 @@ async function writeLegacySidecarThatNeedsKeychain(): Promise<{
   states.push(state);
   const profileId = "openai-codex:default";
   const ref = {
-    source: "openclaw-credentials" as const,
+    source: "operator-credentials" as const,
     provider: "openai-codex" as const,
     id: "0123456789abcdef0123456789abcdef",
   };

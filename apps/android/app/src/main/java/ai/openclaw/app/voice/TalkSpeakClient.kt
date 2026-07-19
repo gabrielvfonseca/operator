@@ -1,6 +1,6 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewaySession
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

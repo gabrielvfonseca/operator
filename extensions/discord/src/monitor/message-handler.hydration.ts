@@ -1,11 +1,11 @@
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { readStringValue as readString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   MessageReferenceType,
   MessageType,
   type APIMessage,
   type APIUser,
 } from "discord-api-types/v10";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { readStringValue as readString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { getChannelMessage, Message as DiscordMessage, type Message } from "../internal/discord.js";
 import { resolveDiscordMessageText, type DiscordChannelInfo } from "./message-utils.js";
 

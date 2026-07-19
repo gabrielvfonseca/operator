@@ -1,29 +1,29 @@
 import Foundation
-import OpenClawChatUI
+import OperatorChatUI
 
 /// Builds the read-only offline chat transcript cache for the macOS app.
 ///
 /// The database lives in the per-user Application Support container
-/// (`~/Library/Application Support/OpenClaw/chat-cache.sqlite`), matching the
-/// existing OpenClaw app-support layout. macOS has no per-file Data Protection
+/// (`~/Library/Application Support/Operator/chat-cache.sqlite`), matching the
+/// existing Operator app-support layout. macOS has no per-file Data Protection
 /// classes (the iOS store applies `completeUntilFirstUserAuthentication`);
 /// at-rest protection here is the per-user container permissions plus FileVault.
 enum MacChatTranscriptCache {
     struct Context {
-        let store: OpenClawChatSQLiteTranscriptCache
-        let routingIdentity: OpenClawChatSessionRoutingIdentity?
+        let store: OperatorChatSQLiteTranscriptCache
+        let routingIdentity: OperatorChatSessionRoutingIdentity?
     }
 
     /// Every chat window for one gateway must share the same outbox actor.
     /// Otherwise a newly opened window can mistake another live window's
     /// claimed send for crash residue during its first recovery pass.
-    @MainActor private static var storesByGatewayID: [String: OpenClawChatSQLiteTranscriptCache] = [:]
+    @MainActor private static var storesByGatewayID: [String: OperatorChatSQLiteTranscriptCache] = [:]
 
     /// Stable identity of the gateway this app talks to, derivable offline
     /// (the cache pre-paints before any connection is up). Keys must not
     /// collide across gateways:
     /// - local mode keys on the gateway state dir, the store that owns local
-    ///   session data: distinct profiles (distinct `OPENCLAW_STATE_DIR`) never
+    ///   session data: distinct profiles (distinct `OPERATOR_STATE_DIR`) never
     ///   share cached transcripts even when they reuse the same port;
     /// - remote/direct keys on the full canonical remote URL (scheme, host,
     ///   resolved port, path, query), since one origin can route to several
@@ -85,7 +85,7 @@ enum MacChatTranscriptCache {
     /// command outbox, and callers wire both protocol facets from one instance.
     @MainActor
     static func currentGatewayID() -> String? {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let mode = ConnectionModeResolver.resolve(root: root).mode
         let resolution = GatewayRemoteConfig.resolveTransportResolution(root: root)
         let sshTarget = CommandResolver.connectionSettings(configRoot: root).target
@@ -98,7 +98,7 @@ enum MacChatTranscriptCache {
             for: sshHost) ?? defaultRemotePort
         return self.gatewayID(
             mode: mode,
-            localStateDir: OpenClawConfigFile.stateDirURL(),
+            localStateDir: OperatorConfigFile.stateDirURL(),
             remoteTransport: resolution.transport,
             directURL: resolution.directURL,
             sshTarget: sshTarget,
@@ -115,20 +115,20 @@ enum MacChatTranscriptCache {
         else {
             return nil
         }
-        let databaseURL = base.appendingPathComponent("OpenClaw/chat-cache.sqlite", isDirectory: false)
+        let databaseURL = base.appendingPathComponent("Operator/chat-cache.sqlite", isDirectory: false)
         return Context(
             store: self.store(databaseURL: databaseURL, gatewayID: gatewayID),
-            routingIdentity: OpenClawChatSQLiteTranscriptCache.loadSessionRoutingIdentity(
+            routingIdentity: OperatorChatSQLiteTranscriptCache.loadSessionRoutingIdentity(
                 databaseURL: databaseURL,
                 gatewayID: gatewayID))
     }
 
     @MainActor
-    static func store(databaseURL: URL, gatewayID: String) -> OpenClawChatSQLiteTranscriptCache {
+    static func store(databaseURL: URL, gatewayID: String) -> OperatorChatSQLiteTranscriptCache {
         if let store = storesByGatewayID[gatewayID] {
             return store
         }
-        let store = OpenClawChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: gatewayID)
+        let store = OperatorChatSQLiteTranscriptCache(databaseURL: databaseURL, gatewayID: gatewayID)
         self.storesByGatewayID[gatewayID] = store
         return store
     }

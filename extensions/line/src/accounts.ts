@@ -3,10 +3,10 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId as normalizeSharedAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/account-id";
-import type { OperatorConfig } from "openclaw/plugin-sdk/account-resolution";
-import { resolveAccountEntry } from "openclaw/plugin-sdk/account-resolution";
-import { tryReadSecretFileSync } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { resolveAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { tryReadSecretFileSync } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type {
   LineAccountConfig,
   LineConfig,

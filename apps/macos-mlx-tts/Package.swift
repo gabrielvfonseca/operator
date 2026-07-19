@@ -5,41 +5,41 @@
 import PackageDescription
 
 let package = Package(
-    name: "OpenClawMLXTTS",
+    name: "OperatorMLXTTS",
     platforms: [
         .macOS(.v15),
     ],
     products: [
-        .executable(name: "openclaw-mlx-tts", targets: ["OpenClawMLXTTSHelper"]),
+        .executable(name: "operator-mlx-tts", targets: ["OperatorMLXTTSHelper"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Blaizzy/mlx-audio-swift", revision: "fc4fe22dc41c053062e647a4e3db9142193670d2"),
-        .package(path: "../shared/OpenClawMLXTTSProtocol"),
+        .package(path: "../shared/OperatorMLXTTSProtocol"),
     ],
     targets: [
         .target(
-            name: "OpenClawMLXTTSRuntime",
+            name: "OperatorMLXTTSRuntime",
             dependencies: [
                 .product(name: "MLXAudioTTS", package: "mlx-audio-swift"),
-                .product(name: "OpenClawMLXTTSProtocol", package: "OpenClawMLXTTSProtocol"),
+                .product(name: "OperatorMLXTTSProtocol", package: "OperatorMLXTTSProtocol"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "OpenClawMLXTTSHelper",
+            name: "OperatorMLXTTSHelper",
             dependencies: [
-                "OpenClawMLXTTSRuntime",
-                .product(name: "OpenClawMLXTTSProtocol", package: "OpenClawMLXTTSProtocol"),
+                "OperatorMLXTTSRuntime",
+                .product(name: "OperatorMLXTTSProtocol", package: "OperatorMLXTTSProtocol"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "OpenClawMLXTTSRuntimeTests",
+            name: "OperatorMLXTTSRuntimeTests",
             dependencies: [
-                "OpenClawMLXTTSRuntime",
-                .product(name: "OpenClawMLXTTSProtocol", package: "OpenClawMLXTTSProtocol"),
+                "OperatorMLXTTSRuntime",
+                .product(name: "OperatorMLXTTSProtocol", package: "OperatorMLXTTSProtocol"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),

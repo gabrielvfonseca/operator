@@ -1,6 +1,6 @@
+import type { Api, Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 // Imported by openai-transport-stream.test.ts to keep its mocked suite in one Vitest module graph.
 import type { ChatCompletionChunk } from "openai/resources/chat/completions.js";
-import type { Api, Model } from "operator/plugin-sdk/llm";
 import { describe, expect, it, vi } from "vitest";
 import {
   resolveAzureOpenAIApiVersion,
@@ -279,7 +279,7 @@ describe("openai transport stream", () => {
     });
     const thinkingBlock = output.content[0] as {
       thinkingSignature?: string;
-      operatorReasoningReplay?: unknown;
+      openclawReasoningReplay?: unknown;
     };
     const replayItem = JSON.parse(thinkingBlock.thinkingSignature ?? "{}") as Record<
       string,
@@ -919,23 +919,23 @@ describe("openai transport stream", () => {
         id: "gpt-5.4",
         name: "GPT-5.4",
         headers: {
-          originator: "operator",
-          "User-Agent": "operator",
+          originator: "@gabrielvfonseca/operator",
+          "User-Agent": "@gabrielvfonseca/operator",
           "X-Provider": "model",
         },
       }),
       { systemPrompt: "", messages: [] } as never,
       {
-        originator: "operator",
-        "User-Agent": "operator",
+        originator: "@gabrielvfonseca/operator",
+        "User-Agent": "@gabrielvfonseca/operator",
         "X-Caller": "request",
       },
     );
 
     expectRecordFields(headers, {
-      originator: "operator",
+      originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "operator/2026.3.22",
+      "User-Agent": "openclaw/2026.3.22",
       "X-Provider": "model",
       "X-Caller": "request",
     });
@@ -950,17 +950,17 @@ describe("openai transport stream", () => {
         api: "openai-chatgpt-responses",
         baseUrl: "https://chatgpt.com/backend-api",
         headers: {
-          originator: "operator",
-          "User-Agent": "operator",
+          originator: "@gabrielvfonseca/operator",
+          "User-Agent": "@gabrielvfonseca/operator",
         },
       }),
       { systemPrompt: "", messages: [] } as never,
     );
 
     expectRecordFields(headers, {
-      originator: "operator",
+      originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
-      "User-Agent": "operator/2026.3.22",
+      "User-Agent": "openclaw/2026.3.22",
     });
     expect(headers.Accept).toBeUndefined();
     expect(headers.accept).toBeUndefined();

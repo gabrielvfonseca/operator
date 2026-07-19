@@ -1,5 +1,5 @@
 // Browser tests cover browser request.shared control state plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getFreePort } from "../browser/test-port.js";
 import type { OperatorConfig } from "../config/config.js";
@@ -43,7 +43,7 @@ vi.mock("../browser/chrome.js", () => ({
   launchOperatorChrome: vi.fn(async () => {
     throw new Error("launch should not be needed for status");
   }),
-  resolveOperatorUserDataDir: vi.fn(() => "/tmp/openclaw-browser"),
+  resolveOperatorUserDataDir: vi.fn(() => "/tmp/operator-browser"),
   stopOperatorChrome: vi.fn(async () => {}),
 }));
 
@@ -65,12 +65,12 @@ function browserConfig(params: {
     },
     browser: {
       enabled: true,
-      defaultProfile: "openclaw",
+      defaultProfile: "@gabrielvfonseca/operator",
       ...(params.executablePath ? { executablePath: params.executablePath } : {}),
       ...(typeof params.headless === "boolean" ? { headless: params.headless } : {}),
       ...(typeof params.noSandbox === "boolean" ? { noSandbox: params.noSandbox } : {}),
       profiles: {
-        openclaw: {
+        operator: {
           cdpPort: params.gatewayPort + 11,
           color: "#FF4500",
         },
@@ -88,7 +88,7 @@ async function browserRequestStatus(): Promise<unknown> {
     params: {
       method: "GET",
       path: "/",
-      query: { profile: "openclaw" },
+      query: { profile: "@gabrielvfonseca/operator" },
     },
     respond: respond as never,
     context: {

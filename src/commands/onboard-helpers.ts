@@ -3,10 +3,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { inspect } from "node:util";
 import { cancel, isCancel } from "@clack/prompts";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   ConnectErrorDetailCodes,
   readConnectErrorDetailCode,
@@ -165,7 +165,7 @@ export function validateGatewayPasswordInput(value: unknown): string | undefined
   return undefined;
 }
 
-/** Prints the onboarding banner: pixel mascot beside the OPERATOR wordmark. */
+/** Prints the onboarding banner: pixel mascot beside the OPENCLAW wordmark. */
 export async function printWizardHeader(runtime: RuntimeEnv): Promise<void> {
   await printClawBanner(runtime);
 }

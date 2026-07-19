@@ -1,5 +1,8 @@
 // Copilot plugin module implements usage bridge behavior.
-import type { AgentMessage, NormalizedUsage } from "openclaw/plugin-sdk/agent-harness-runtime";
+import type {
+  AgentMessage,
+  NormalizedUsage,
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 
 type AssistantMessage = Extract<AgentMessage, { role: "assistant" }>;
 type AssistantUsage = NonNullable<AssistantMessage["usage"]>;

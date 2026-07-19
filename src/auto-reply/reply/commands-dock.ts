@@ -2,8 +2,8 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { getActivePluginChannelRegistry } from "../../plugins/runtime.js";
 import { resolveTextCommand } from "../commands-registry.js";
 import { resolveCommandSurfaceChannel } from "./channel-context.js";

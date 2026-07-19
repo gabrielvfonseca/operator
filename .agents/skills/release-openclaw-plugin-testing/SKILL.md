@@ -1,13 +1,13 @@
 ---
-name: release-openclaw-plugin-testing
-description: Plan and run pre-release OpenClaw plugin validation across bundled plugins, package artifacts, lifecycle commands, doctor/fix, config round-trip, gateway startup, SDK compatibility, Docker E2E, Package Acceptance, and Testbox proof.
+name: release-operator-plugin-testing
+description: Plan and run pre-release Operator plugin validation across bundled plugins, package artifacts, lifecycle commands, doctor/fix, config round-trip, gateway startup, SDK compatibility, Docker E2E, Package Acceptance, and Testbox proof.
 ---
 
-# OpenClaw Pre-Release Plugin Testing
+# Operator Pre-Release Plugin Testing
 
 Use this skill when the user asks for plugin release confidence, plugin lifecycle
 sweeps, package-artifact plugin proof, or "what else should we test before
-release?" It complements `openclaw-testing`; use that skill too when choosing
+release?" It complements `operator-testing`; use that skill too when choosing
 the cheapest safe runner or debugging a failing lane.
 
 ## Goal
@@ -25,7 +25,7 @@ Prove the plugin system as a product surface, not just as source tests:
 
 ## First Checks
 
-From the OpenClaw repo root:
+From the Operator repo root:
 
 ```bash
 pnpm docs:list
@@ -35,7 +35,7 @@ pnpm changed:lanes --json
 ```
 
 In Codex worktrees under `.codex/worktrees`, `node_modules` must be a symlink to
-the main OpenClaw checkout. Do not run `pnpm install` there. For broad or
+the main Operator checkout. Do not run `pnpm install` there. For broad or
 package-heavy proof, use Blacksmith Testbox or GitHub Actions.
 
 ## Runner Choice
@@ -58,11 +58,11 @@ warm a fresh box from current `main`, or switch to Package Acceptance.
 Run or verify these before inventing new coverage:
 
 ```bash
-OPENCLAW_TESTBOX=1 pnpm check:changed
+OPERATOR_TESTBOX=1 pnpm check:changed
 pnpm run test:extensions:package-boundary:canary
 pnpm run test:extensions:package-boundary:compile
 pnpm test:docker:plugins
-OPENCLAW_PLUGINS_E2E_CLAWHUB=0 pnpm test:docker:plugins
+OPERATOR_PLUGINS_E2E_CLAWHUB=0 pnpm test:docker:plugins
 pnpm test:docker:plugin-update
 pnpm test:docker:bundled-channel-deps:fast
 ```
@@ -70,8 +70,8 @@ pnpm test:docker:bundled-channel-deps:fast
 For full bundled install/uninstall proof, shard the packaged sweep:
 
 ```bash
-OPENCLAW_BUNDLED_PLUGIN_SWEEP_TOTAL=8 \
-OPENCLAW_BUNDLED_PLUGIN_SWEEP_INDEX=<0-7> \
+OPERATOR_BUNDLED_PLUGIN_SWEEP_TOTAL=8 \
+OPERATOR_BUNDLED_PLUGIN_SWEEP_INDEX=<0-7> \
 pnpm test:docker:bundled-plugin-install-uninstall
 ```
 
@@ -103,7 +103,7 @@ Use this when validating a release branch, beta, or candidate package:
 
 ```bash
 gh workflow run package-acceptance.yml \
-  --repo openclaw/openclaw \
+  --repo openclaw/operator \
   --ref main \
   -f workflow_ref=main \
   -f source=ref \
@@ -126,11 +126,11 @@ environment, secret, OIDC, npm mutation, or ClawHub mutation path:
 ```bash
 release_sha="$(git rev-parse origin/release/2026.7.1)"
 ghx workflow run plugin-npm-release.yml \
-  --repo openclaw/openclaw \
+  --repo openclaw/operator \
   --ref main \
   -f preflight_only=true \
   -f publish_scope=selected \
-  -f plugins=@operator/meta-provider \
+  -f plugins=@gabrielvfonseca/meta-provider \
   -f ref="${release_sha}" \
   -f npm_dist_tag=default
 ```
@@ -189,7 +189,7 @@ then run doctor again and require idempotence:
 
 ## Gateway Bootstrap Matrix
 
-Start packaged OpenClaw in Docker with clean state:
+Start packaged Operator in Docker with clean state:
 
 - provider plugins enabled, no credentials: ready with warnings, no crash
 - channel plugins configured disabled: no runtime deps staged
@@ -199,8 +199,8 @@ Start packaged OpenClaw in Docker with clean state:
 Assert:
 
 - gateway reaches ready
-- `openclaw status --json` includes plugin diagnostics
-- `openclaw plugins inspect --all --json` is parseable
+- `operator status --json` includes plugin diagnostics
+- `operator plugins inspect --all --json` is parseable
 - package tree is not mutated
 - logs contain no raw tokens
 

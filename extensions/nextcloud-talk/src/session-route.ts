@@ -1,6 +1,6 @@
 // Nextcloud Talk plugin module implements session route behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { buildOutboundBaseSessionKey } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { buildOutboundBaseSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { stripNextcloudTalkTargetPrefix } from "./normalize.js";
 
 type NextcloudTalkOutboundSessionRouteParams = {

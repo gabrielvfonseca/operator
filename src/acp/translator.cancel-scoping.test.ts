@@ -1,7 +1,7 @@
 import type { CancelNotification, PromptRequest, PromptResponse } from "@agentclientprotocol/sdk";
-import { createInMemorySessionStore } from "@operator/acp-core/session";
+import { createInMemorySessionStore } from "@gabrielvfonseca/acp-core/session";
 /** Tests prompt cancellation scoping across concurrent ACP sessions and Gateway runs. */
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import type { EventFrame } from "../../packages/gateway-protocol/src/index.js";
 import type { GatewayClient } from "../gateway/client.js";

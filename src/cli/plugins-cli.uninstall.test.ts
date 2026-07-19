@@ -1,5 +1,5 @@
 // Plugins CLI uninstall tests cover plugin removal selection and uninstall output.
-import { installedPluginRoot } from "openclaw/plugin-sdk/test-fixtures";
+import { installedPluginRoot } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import {
@@ -21,7 +21,7 @@ import {
   writePersistedInstalledPluginIndexInstallRecords,
 } from "./plugins-cli-test-helpers.js";
 
-const CLI_STATE_ROOT = "/tmp/openclaw-state";
+const CLI_STATE_ROOT = "/tmp/operator-state";
 const ALPHA_INSTALL_PATH = installedPluginRoot(CLI_STATE_ROOT, "alpha");
 const ORIGINAL_OPERATOR_NIX_MODE = process.env.OPERATOR_NIX_MODE;
 

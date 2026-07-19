@@ -3,7 +3,7 @@ import {
   DEFAULT_ACCOUNT_ID,
   type ChannelSetupAdapter,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { resolveDefaultFeishuAccountId } from "./accounts.js";
 import type { FeishuConfig } from "./types.js";
 

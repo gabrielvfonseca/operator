@@ -16,7 +16,7 @@ actor RemoteTunnelManager {
         let route: Route
     }
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "remote-tunnel")
+    private let logger = Logger(subsystem: "ai.operator", category: "remote-tunnel")
     private var controlTunnel: ActiveTunnel?
     private var createInFlight: (
         token: UUID,

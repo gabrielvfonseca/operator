@@ -1,11 +1,11 @@
-// OpenClaw rescue-message Docker harness.
+// Operator rescue-message Docker harness.
 // Imports packaged dist modules so the Docker lane verifies the npm tarball,
 // while this small test driver stays mounted from the checkout.
 import fs from "node:fs/promises";
 import path from "node:path";
 import { handleSystemAgentCommand } from "../../dist/auto-reply/reply/commands-system-agent.js";
 import { clearConfigCache } from "../../dist/config/config.js";
-import type { OpenClawConfig } from "../../dist/config/types.openclaw.js";
+import type { OperatorConfig } from "../../dist/config/types.operator.js";
 import { runSystemAgentRescueMessage } from "../../dist/system-agent/rescue-message.js";
 import { createE2eStateDir } from "./lib/temp-state-dir.ts";
 
@@ -17,7 +17,7 @@ function assert(condition: unknown, message: string): asserts condition {
   }
 }
 
-function makeParams(commandBody: string, cfg: OpenClawConfig, isGroup = false) {
+function makeParams(commandBody: string, cfg: OperatorConfig, isGroup = false) {
   return {
     cfg,
     command: {
@@ -39,7 +39,7 @@ function makeParams(commandBody: string, cfg: OpenClawConfig, isGroup = false) {
   } as Parameters<typeof handleSystemAgentCommand>[0];
 }
 
-async function invoke(commandBody: string, cfg: OpenClawConfig, isGroup = false): Promise<string> {
+async function invoke(commandBody: string, cfg: OperatorConfig, isGroup = false): Promise<string> {
   const result: CommandResult = await handleSystemAgentCommand(
     makeParams(commandBody, cfg, isGroup),
     true,
@@ -53,7 +53,7 @@ async function invoke(commandBody: string, cfg: OpenClawConfig, isGroup = false)
 
 async function invokeWithDeps(
   commandBody: string,
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   deps: NonNullable<Parameters<typeof runSystemAgentRescueMessage>[0]["deps"]>,
 ): Promise<string> {
   const result = await runSystemAgentRescueMessage({
@@ -69,12 +69,12 @@ async function invokeWithDeps(
 }
 
 async function main() {
-  const tempState = await createE2eStateDir("openclaw-openclaw-");
+  const tempState = await createE2eStateDir("operator-operator-");
   tempState.registerExitCleanup();
   const stateDir = tempState.stateDir;
-  const configPath = process.env.OPENCLAW_CONFIG_PATH ?? path.join(stateDir, "openclaw.json");
-  process.env.OPENCLAW_STATE_DIR = stateDir;
-  process.env.OPENCLAW_CONFIG_PATH = configPath;
+  const configPath = process.env.OPERATOR_CONFIG_PATH ?? path.join(stateDir, "operator.json");
+  process.env.OPERATOR_STATE_DIR = stateDir;
+  process.env.OPERATOR_CONFIG_PATH = configPath;
   await fs.mkdir(stateDir, { recursive: true });
   await fs.writeFile(
     configPath,
@@ -95,7 +95,7 @@ async function main() {
   });
   assert(denied.includes("sandboxing is active"), "sandboxed rescue was not denied");
 
-  const cfg: OpenClawConfig = {};
+  const cfg: OperatorConfig = {};
   const deterministicInference = {
     verifyInferenceConfig: async () => ({
       ok: true as const,
@@ -134,7 +134,7 @@ async function main() {
   assert(configSetApplied.includes("[openclaw] done: config.set"), "generic config set failed");
 
   const refPlan = await invoke(
-    "/openclaw config set-ref gateway.auth.token env OPENCLAW_GATEWAY_TOKEN",
+    "/openclaw config set-ref gateway.auth.token env OPERATOR_GATEWAY_TOKEN",
     cfg,
   );
   assert(
@@ -144,7 +144,7 @@ async function main() {
   const refApplied = await invoke("/openclaw yes", cfg);
   assert(refApplied.includes("[openclaw] done: config.setRef"), "SecretRef set failed");
 
-  const agentPlan = await invoke("/openclaw create agent work workspace /tmp/openclaw-work", cfg);
+  const agentPlan = await invoke("/openclaw create agent work workspace /tmp/operator-work", cfg);
   assert(
     agentPlan.includes("Reply /openclaw yes to apply"),
     "agent creation did not require approval",
@@ -153,13 +153,13 @@ async function main() {
   assert(agentApplied.includes("[openclaw] done: agents.create"), "agent creation did not apply");
 
   const setupPlan = await invokeWithDeps(
-    "/openclaw setup workspace /tmp/openclaw-setup model openai/gpt-5.2",
+    "/openclaw setup workspace /tmp/operator-setup model openai/gpt-5.2",
     cfg,
     deterministicInference,
   );
   assert(setupPlan.includes("Reply /openclaw yes to apply"), "setup did not require approval");
   const setupApplied = await invokeWithDeps("/openclaw yes", cfg, deterministicInference);
-  assert(setupApplied.includes("[openclaw] done: openclaw.setup"), "setup did not apply");
+  assert(setupApplied.includes("[openclaw] done: operator.setup"), "setup did not apply");
 
   const gatewayRestarts: string[] = [];
   const gatewayCommand = makeParams("/openclaw restart gateway", cfg).command;
@@ -203,7 +203,7 @@ async function main() {
     },
   });
   assert(
-    revokedApproval === "No pending OpenClaw rescue change is waiting for approval.",
+    revokedApproval === "No pending Operator rescue change is waiting for approval.",
     "fresh rescue command did not revoke the older pending change",
   );
   assert(gatewayRestarts.length === 0, "revoked gateway restart was invoked");
@@ -252,7 +252,7 @@ async function main() {
   );
   assert(doctorRuns.length === 0, "remote rescue must not invoke doctor repair");
 
-  const updatedConfig = JSON.parse(await fs.readFile(configPath, "utf8")) as OpenClawConfig;
+  const updatedConfig = JSON.parse(await fs.readFile(configPath, "utf8")) as OperatorConfig;
   const updatedModel = updatedConfig.agents?.defaults?.model;
   assert(
     (typeof updatedModel === "string" ? updatedModel : updatedModel?.primary) === "openai/gpt-5.2",
@@ -263,16 +263,16 @@ async function main() {
     updatedConfig.gateway?.auth?.token &&
       typeof updatedConfig.gateway.auth.token === "object" &&
       "id" in updatedConfig.gateway.auth.token &&
-      updatedConfig.gateway.auth.token.id === "OPENCLAW_GATEWAY_TOKEN",
+      updatedConfig.gateway.auth.token.id === "OPERATOR_GATEWAY_TOKEN",
     "SecretRef set did not update gateway.auth.token",
   );
   assert(
-    updatedConfig.agents?.defaults?.workspace === "/tmp/openclaw-setup",
+    updatedConfig.agents?.defaults?.workspace === "/tmp/operator-setup",
     "setup did not update default workspace",
   );
   assert(
     updatedConfig.agents?.list?.some(
-      (agent) => agent.id === "work" && agent.workspace === "/tmp/openclaw-work",
+      (agent) => agent.id === "work" && agent.workspace === "/tmp/operator-work",
     ),
     "agent config was not updated",
   );
@@ -294,7 +294,7 @@ async function main() {
     "SecretRef config audit missing",
   );
   assert(
-    audits.some((audit) => audit.operation === "openclaw.setup"),
+    audits.some((audit) => audit.operation === "operator.setup"),
     "setup audit missing",
   );
   const agentAudit = audits.find((audit) => audit.operation === "agents.create");
@@ -308,7 +308,7 @@ async function main() {
     "gateway restart audit operation missing",
   );
 
-  console.log("OpenClaw rescue Docker E2E passed");
+  console.log("Operator rescue Docker E2E passed");
 }
 
 main().catch((err: unknown) => {

@@ -1,4 +1,4 @@
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/core";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/core";
 // Zalouser tests cover monitor.account scope plugin behavior.
 import { describe, expect, it, vi } from "vitest";
 import type { OperatorConfig, PluginRuntime } from "../runtime-api.js";

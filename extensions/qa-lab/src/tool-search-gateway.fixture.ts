@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   countSessionLogMentions,
   countSystemPromptChars,
@@ -144,10 +144,10 @@ async function writeFakePlugin(params: {
     path.join(pluginDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "@operator/tool-search-e2e-fixture",
+        name: "@gabrielvfonseca/tool-search-e2e-fixture",
         version: "0.0.0",
         type: "module",
-        openclaw: {
+        operator: {
           extensions: ["./index.js"],
         },
       },
@@ -386,9 +386,9 @@ export async function runToolSearchGatewayLane(params: {
       headers: {
         authorization: `Bearer ${gatewayToken}`,
         "content-type": "application/json",
-        "x-openclaw-scopes": "operator.write",
-        "x-openclaw-agent": "qa",
-        "x-openclaw-session-key": `tool-search-gateway-${params.lane}`,
+        "x-operator-scopes": "operator.write",
+        "x-operator-agent": "qa",
+        "x-operator-session-key": `tool-search-gateway-${params.lane}`,
       },
       body: JSON.stringify({
         model: "openclaw/qa",

@@ -241,7 +241,7 @@ export function buildTrajectoryRunMetadata(
   return {
     capturedAt: new Date().toISOString(),
     harness: {
-      type: "operator",
+      type: "@gabrielvfonseca/operator",
       name: "Operator",
       version: VERSION,
       gitSha:

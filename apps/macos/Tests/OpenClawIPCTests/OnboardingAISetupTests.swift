@@ -1,10 +1,10 @@
 import CryptoKit
 import Foundation
-import OpenClawChatUI
-import OpenClawProtocol
+import OperatorChatUI
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
-@testable import OpenClawKit
+@testable import Operator
+@testable import OperatorKit
 
 private actor ActivationMarkerObservation {
     private var observed = false
@@ -247,7 +247,7 @@ private func detectedSetupResponse(
               "label": "OpenAI API key",
               "hint": null
             }],
-            "workspace": "/tmp/openclaw-workspace",
+            "workspace": "/tmp/operator-workspace",
             "configuredModel": null,
             "setupComplete": false
           }
@@ -281,7 +281,7 @@ private func respondToAISetupPreparation(
     if respondToAISetupHealth(task: task, request: request) {
         return true
     }
-    guard request.method == "openclaw.setup.detect" else { return false }
+    guard request.method == "operator.setup.detect" else { return false }
     let modelRef = kind == "codex-cli" ? "openai/gpt-5.5" : "claude-cli/claude-opus-4-8"
     task.emitReceiveSuccess(.data(detectedSetupResponse(
         id: request.id,
@@ -384,7 +384,7 @@ private func makeAISetupSession(
             }
             await recorder.record(message)
             switch request.method {
-            case "openclaw.setup.detect":
+            case "operator.setup.detect":
                 let modelRef = detectedKind == "codex-cli"
                     ? "openai/gpt-5.5"
                     : "claude-cli/claude-opus-4-8"
@@ -393,7 +393,7 @@ private func makeAISetupSession(
                     kind: detectedKind,
                     modelRef: modelRef
                 )))
-            case "openclaw.setup.activate":
+            case "operator.setup.activate":
                 if indeterminateActivationAfterDispatch {
                     task.emitReceiveSuccess(.data(indeterminateActivationResponse(id: request.id)))
                     return
@@ -423,13 +423,13 @@ private func makeRestartingAISetupSession(
             await recorder.record(message)
             if generation == 0 {
                 switch request.method {
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(
                         id: request.id,
                         kind: "codex-cli",
                         modelRef: "openai/gpt-5.5"
                     )))
-                case "openclaw.setup.activate":
+                case "operator.setup.activate":
                     let owner = UserDefaults(suiteName: suiteName).flatMap {
                         OnboardingSystemAgentResumeStore.activationOwner(
                             for: "local",
@@ -444,7 +444,7 @@ private func makeRestartingAISetupSession(
                 return
             }
             switch request.method {
-            case "openclaw.setup.detect":
+            case "operator.setup.detect":
                 let response = postRestartConfiguredModel.map {
                     persistedDetectedSetupResponse(id: request.id, configuredModel: $0)
                 } ?? detectedSetupResponse(
@@ -453,7 +453,7 @@ private func makeRestartingAISetupSession(
                     modelRef: "openai/gpt-5.5"
                 )
                 task.emitReceiveSuccess(.data(response))
-            case "openclaw.setup.verify":
+            case "operator.setup.verify":
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             default:
                 break
@@ -617,7 +617,7 @@ struct OnboardingAISetupTests {
         #expect(OnboardingProviderAuthLink.safeURL("http://localhost:1455/callback") == nil)
         #expect(OnboardingProviderAuthLink.safeURL("file:///tmp/token") == nil)
         #expect(OnboardingProviderAuthLink.safeURL("https://user:secret@example.com") == nil)
-        #expect(OnboardingProviderAuthLink.safeURL("Read https://docs.openclaw.ai/start/faq") == nil)
+        #expect(OnboardingProviderAuthLink.safeURL("Read https://docs.operator.ai/start/faq") == nil)
     }
 
     @Test func `terminal provider failure remains copyable and can dismiss`() {
@@ -752,7 +752,7 @@ struct OnboardingAISetupTests {
             #"""
             {"type":"hello-ok","protocol":4,
              "server":{"version":"test","connId":"test"},
-             "features":{"methods":[],"events":[],"capabilities":["openclaw-setup-model-ref"]},
+             "features":{"methods":[],"events":[],"capabilities":["operator-setup-model-ref"]},
              "snapshot":{"presence":[],"health":{},
                          "stateVersion":{"presence":0,"health":0},"uptimeMs":0},
              "auth":{},"policy":{}}
@@ -765,25 +765,25 @@ struct OnboardingAISetupTests {
 
     @Test func `only definitive failures can clear an activation marker`() {
         let unknownMethod = GatewayResponseError(
-            method: "openclaw.setup.activate",
+            method: "operator.setup.activate",
             code: "UNKNOWN_METHOD",
             message: "unknown method",
             details: nil
         )
         let invalidParams = GatewayResponseError(
-            method: "openclaw.setup.activate",
+            method: "operator.setup.activate",
             code: "INVALID_REQUEST",
-            message: "invalid openclaw.setup.activate params: kind is required",
+            message: "invalid operator.setup.activate params: kind is required",
             details: nil
         )
         let indeterminate = GatewayResponseError(
-            method: "openclaw.setup.activate",
+            method: "operator.setup.activate",
             code: "UNAVAILABLE",
             message: "Setup inference activation is indeterminate",
             details: nil
         )
         let genericInvalidRequest = GatewayResponseError(
-            method: "openclaw.setup.activate",
+            method: "operator.setup.activate",
             code: "INVALID_REQUEST",
             message: "activation failed after dispatch",
             details: nil
@@ -817,7 +817,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupPreparation(task: task, request: request, kind: "claude-cli") {
                     return
                 }
-                guard request.method == "openclaw.setup.activate" else { return }
+                guard request.method == "operator.setup.activate" else { return }
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             })
         })
@@ -904,10 +904,10 @@ struct OnboardingAISetupTests {
         let activationOwner = try #require(ownerObservation.value())
         #expect(session.snapshotMakeCount() >= 2)
         #expect(await (recorder.snapshot()).methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
-            "openclaw.setup.detect",
-            "openclaw.setup.verify",
+            "operator.setup.detect",
+            "operator.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.verify",
         ])
         #expect(model.connected)
         #expect(model.connectedModelRef == "openai/gpt-5.5")
@@ -955,11 +955,11 @@ struct OnboardingAISetupTests {
 
         let activationOwner = try #require(ownerObservation.value())
         #expect(Array(reconciledRequests.methods.prefix(3)) == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
-            "openclaw.setup.detect",
+            "operator.setup.detect",
+            "operator.setup.activate",
+            "operator.setup.detect",
         ])
-        #expect(!reconciledRequests.methods.contains("openclaw.setup.verify"))
+        #expect(!reconciledRequests.methods.contains("operator.setup.verify"))
         #expect(!model.connected)
         #expect(handoffCount == 0)
         #expect(OnboardingSystemAgentResumeStore.isOwned(
@@ -981,7 +981,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupPreparation(task: task, request: request, kind: "claude-cli") {
                     return
                 }
-                guard request.method == "openclaw.setup.activate" else { return }
+                guard request.method == "operator.setup.activate" else { return }
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             })
         })
@@ -1040,7 +1040,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupPreparation(task: task, request: request, kind: "claude-cli") {
                     return
                 }
-                guard request.method == "openclaw.setup.activate",
+                guard request.method == "operator.setup.activate",
                       let callbackDefaults = UserDefaults(suiteName: suiteName),
                       let originalOwner = OnboardingSystemAgentResumeStore.activationOwner(
                           for: "local",
@@ -1102,7 +1102,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupPreparation(task: task, request: request, kind: "codex-cli") {
                     return
                 }
-                guard request.method == "openclaw.setup.activate" else { return }
+                guard request.method == "operator.setup.activate" else { return }
                 await configGate.armNextRead()
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             })
@@ -1186,7 +1186,7 @@ struct OnboardingAISetupTests {
         ))
     }
 
-    @Test func `fresh inference transition owns the OpenClaw handoff`() {
+    @Test func `fresh inference transition owns the Operator handoff`() {
         #expect(!OnboardingView.shouldOpenConfiguredGatewayDashboard(
             onboardingVisible: true,
             expectedMode: .local,
@@ -1196,7 +1196,7 @@ struct OnboardingAISetupTests {
         ))
     }
 
-    @Test func `pending OpenClaw handoff cannot be mistaken for an existing install`() {
+    @Test func `pending Operator handoff cannot be mistaken for an existing install`() {
         #expect(!OnboardingView.shouldOpenConfiguredGatewayDashboard(
             onboardingVisible: true,
             expectedMode: .local,
@@ -1238,7 +1238,7 @@ struct OnboardingAISetupTests {
                     return
                 }
                 await recorder.record(message)
-                if request.method == "openclaw.setup.verify" {
+                if request.method == "operator.setup.verify" {
                     task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
                 }
             })
@@ -1257,7 +1257,7 @@ struct OnboardingAISetupTests {
         await model.verifyPendingConfiguredInference()
 
         let requests = await recorder.snapshot()
-        #expect(requests.methods == ["openclaw.setup.verify"])
+        #expect(requests.methods == ["operator.setup.verify"])
         #expect(model.connected)
         #expect(model.connectedModelRef == "openai/gpt-5.5")
         #expect(model.connectedLatencyMs == 42)
@@ -1273,7 +1273,7 @@ struct OnboardingAISetupTests {
                     return
                 }
                 await recorder.record(message)
-                guard request.method == "openclaw.setup.verify" else { return }
+                guard request.method == "operator.setup.verify" else { return }
                 await gate.wait()
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             })
@@ -1294,11 +1294,11 @@ struct OnboardingAISetupTests {
         let second = Task { await model.verifyPendingConfiguredInference() }
         await Task.yield()
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.verify"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.verify"])
         await gate.release()
         #expect(await first.value == .connected)
         #expect(await second.value == .connected)
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.verify"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.verify"])
     }
 
     @Test func `pending verification revalidates route after shared task completes`() async throws {
@@ -1311,7 +1311,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupHealth(task: task, request: request) {
                     return
                 }
-                guard request.method == "openclaw.setup.verify" else { return }
+                guard request.method == "operator.setup.verify" else { return }
                 task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
             })
         })
@@ -1345,10 +1345,10 @@ struct OnboardingAISetupTests {
                 }
                 await recorder.record(message)
                 switch request.method {
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     await gate.wait()
                     task.emitReceiveSuccess(.data(actionableDetectedSetupResponse(id: request.id)))
-                case "openclaw.setup.activate":
+                case "operator.setup.activate":
                     task.emitReceiveSuccess(.data(failedActivationResponse(id: request.id)))
                 default:
                     break
@@ -1377,7 +1377,7 @@ struct OnboardingAISetupTests {
         await gate.release()
         await settleQueuedAISetupTasks()
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.detect"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.detect"])
         #expect(view.aiSetup.phase == .idle)
     }
 
@@ -1392,7 +1392,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupHealth(task: task, request: request) {
                     return
                 }
-                guard request.method == "openclaw.setup.verify" else { return }
+                guard request.method == "operator.setup.verify" else { return }
                 task.emitReceiveSuccess(.data(rejectedSetupVerificationResponse(id: request.id)))
             })
         })
@@ -1428,7 +1428,7 @@ struct OnboardingAISetupTests {
                 if respondToAISetupHealth(task: task, request: request) {
                     return
                 }
-                guard request.method == "openclaw.setup.verify" else { return }
+                guard request.method == "operator.setup.verify" else { return }
                 await recorder.record(message)
                 let verifyCount = await recorder.snapshot().methods.count
                 let response = verifyCount == 1
@@ -1479,10 +1479,10 @@ struct OnboardingAISetupTests {
 
         #expect(retryOutcome == .connected)
         #expect(model.connected)
-        #expect(requests.methods == ["openclaw.setup.verify", "openclaw.setup.verify"])
+        #expect(requests.methods == ["operator.setup.verify", "operator.setup.verify"])
     }
 
-    @Test func `pending OpenClaw marker is app local and clearable`() throws {
+    @Test func `pending Operator marker is app local and clearable`() throws {
         let suiteName = "OnboardingSystemAgentResumeStoreTests-\(UUID().uuidString)"
         let defaults = try #require(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
@@ -1603,7 +1603,7 @@ struct OnboardingAISetupTests {
         await model.detectAndAutoConnect()
         await model.activate(kind: "codex-cli")
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.detect"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.detect"])
         #expect(!OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(model.phase == .ready)
         guard case let .failed(failure) = model.statuses["codex-cli"] else {
@@ -1763,7 +1763,7 @@ struct OnboardingAISetupTests {
                 switch request.method {
                 case "agents.list":
                     task.emitReceiveSuccess(.data(missingConfiguredModelResponse(id: request.id)))
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     if let callbackDefaults = UserDefaults(suiteName: suiteName) {
                         await markerObservation.record(!OnboardingSystemAgentResumeStore.isPending(
                             for: routeIdentity,
@@ -1771,7 +1771,7 @@ struct OnboardingAISetupTests {
                         ))
                     }
                     task.emitReceiveSuccess(.data(actionableDetectedSetupResponse(id: request.id)))
-                case "openclaw.setup.activate":
+                case "operator.setup.activate":
                     task.emitReceiveSuccess(.data(failedActivationResponse(id: request.id)))
                 default:
                     break
@@ -1795,8 +1795,8 @@ struct OnboardingAISetupTests {
 
         #expect(requests.methods == [
             "agents.list",
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
         ])
         #expect(await markerObservation.value())
         #expect(!view.aiSetup.waitingForPendingActivationDeadline)
@@ -1840,7 +1840,7 @@ struct OnboardingAISetupTests {
                         )
                     }
                     task.emitReceiveSuccess(.data(missingConfiguredModelResponse(id: request.id)))
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                 default:
                     break
@@ -1901,7 +1901,7 @@ struct OnboardingAISetupTests {
                 case "agents.list":
                     await gate.wait()
                     task.emitReceiveSuccess(.data(missingConfiguredModelResponse(id: request.id)))
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                 default:
                     break
@@ -2138,7 +2138,7 @@ struct OnboardingAISetupTests {
                 }
                 await recorder.record(message)
                 switch request.method {
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                 case "agents.list":
                     let probeCount = await recorder.snapshot().methods.filter { $0 == "agents.list" }.count
@@ -2185,10 +2185,10 @@ struct OnboardingAISetupTests {
         await settleQueuedAISetupTasks()
 
         #expect(requests.methods == [
-            "openclaw.setup.detect",
+            "operator.setup.detect",
             "agents.list",
             "agents.list",
-            "openclaw.setup.detect",
+            "operator.setup.detect",
         ])
         #expect(view.aiSetup.phase == .ready)
         #expect(!view.aiSetup.configuredGatewayProbeUnavailable)
@@ -2276,7 +2276,7 @@ struct OnboardingAISetupTests {
                         ? missingConfiguredModelResponse(id: request.id)
                         : configuredModelResponse(id: request.id)
                     task.emitReceiveSuccess(.data(response))
-                case "openclaw.setup.verify":
+                case "operator.setup.verify":
                     task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
                 default:
                     break
@@ -2315,10 +2315,10 @@ struct OnboardingAISetupTests {
         #expect(Array(methods.prefix(3)) == [
             "agents.list",
             "agents.list",
-            "openclaw.setup.verify",
+            "operator.setup.verify",
         ])
-        #expect(!methods.contains("openclaw.setup.detect"))
-        #expect(!methods.contains("openclaw.setup.activate"))
+        #expect(!methods.contains("operator.setup.detect"))
+        #expect(!methods.contains("operator.setup.activate"))
         #expect(!view.aiSetup.connected)
         #expect(view.aiSetup.waitingForPendingActivationDeadline)
         #expect({
@@ -2439,9 +2439,9 @@ struct OnboardingAISetupTests {
                 }
                 await recorder.record(message)
                 switch request.method {
-                case "openclaw.setup.verify":
+                case "operator.setup.verify":
                     task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                 default:
                     break
@@ -2485,7 +2485,7 @@ struct OnboardingAISetupTests {
         #expect(outcome == .freshSetupAllowed)
         #expect(!model.connected)
         #expect(!handedOff)
-        #expect(requests.methods == ["openclaw.setup.verify", "openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.verify", "operator.setup.detect"])
         #expect(OnboardingSystemAgentResumeStore.pendingState(
             for: "local",
             defaults: defaults
@@ -2529,7 +2529,7 @@ struct OnboardingAISetupTests {
                         return
                     }
                     await recorder.record(message)
-                    if request.method == "openclaw.setup.detect" {
+                    if request.method == "operator.setup.detect" {
                         task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                     }
                 })
@@ -2547,7 +2547,7 @@ struct OnboardingAISetupTests {
 
         #expect(outcome == .freshSetupAllowed)
         #expect(!relaunched.connected)
-        #expect(requests.methods == ["openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.detect"])
         #expect(OnboardingSystemAgentResumeStore.pendingState(
             for: "local",
             defaults: defaults
@@ -2656,7 +2656,7 @@ struct OnboardingAISetupTests {
 
             #expect(outcome == .freshSetupAllowed)
             #expect(!relaunched.connected)
-            #expect(requests.methods == ["openclaw.setup.detect"])
+            #expect(requests.methods == ["operator.setup.detect"])
             #expect(OnboardingSystemAgentResumeStore.pendingState(
                 for: "local",
                 defaults: defaults
@@ -2684,7 +2684,7 @@ struct OnboardingAISetupTests {
                     }
                     await recorder.record(message)
                     switch request.method {
-                    case "openclaw.setup.verify":
+                    case "operator.setup.verify":
                         if let callbackDefaults = UserDefaults(suiteName: suiteName),
                            let originalOwner = OnboardingSystemAgentResumeStore.activationOwner(
                                for: "local",
@@ -2743,7 +2743,7 @@ struct OnboardingAISetupTests {
         #expect(outcome == .notConnected)
         #expect(!relaunched.connected)
         #expect(handoffCount == 0)
-        #expect(requests.methods == ["openclaw.setup.verify"])
+        #expect(requests.methods == ["operator.setup.verify"])
         #expect(OnboardingSystemAgentResumeStore.activationOwner(
             for: "local",
             defaults: defaults
@@ -2997,7 +2997,7 @@ struct OnboardingAISetupTests {
             remoteTransport: .direct,
             remoteURL: "",
             remoteTarget: "",
-            localStateDir: URL(fileURLWithPath: "/tmp/openclaw-state-a")
+            localStateDir: URL(fileURLWithPath: "/tmp/operator-state-a")
         )
         let localB = OnboardingSystemAgentResumeStore.routeIdentity(
             connectionMode: .local,
@@ -3005,7 +3005,7 @@ struct OnboardingAISetupTests {
             remoteTransport: .direct,
             remoteURL: "",
             remoteTarget: "",
-            localStateDir: URL(fileURLWithPath: "/tmp/openclaw-state-b")
+            localStateDir: URL(fileURLWithPath: "/tmp/operator-state-b")
         )
         let sshA = OnboardingSystemAgentResumeStore.routeIdentity(
             connectionMode: .remote,
@@ -3116,7 +3116,7 @@ struct OnboardingAISetupTests {
 
         let requests = await waitForAISetupRequests(recorder, count: 1)
         await settleQueuedAISetupTasks()
-        #expect(requests.methods == ["openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.detect"])
         #expect(requests.apiKeys.isEmpty)
         #expect(model.phase == .ready)
     }
@@ -3147,7 +3147,7 @@ struct OnboardingAISetupTests {
         await settleQueuedAISetupTasks()
 
         let requests = await recorder.snapshot()
-        #expect(requests.methods == ["openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.detect"])
         #expect(!OnboardingSystemAgentResumeStore.isPending(
             for: "remote:id:gateway-b",
             defaults: defaults
@@ -3183,7 +3183,7 @@ struct OnboardingAISetupTests {
         await settleQueuedAISetupTasks()
 
         let requests = await recorder.snapshot()
-        #expect(requests.methods == ["openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.detect"])
         #expect(!requests.apiKeys.contains("old-route-secret"))
         #expect(!OnboardingSystemAgentResumeStore.isPending(
             for: "remote:id:gateway-b",
@@ -3216,7 +3216,7 @@ struct OnboardingAISetupTests {
         config.switchToken(to: "token-b", afterReads: 2)
         await model.activate(kind: "codex-cli")
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.detect"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.detect"])
         #expect(!OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(!model.pendingActivationVerification)
         #expect(model.phase == .ready)
@@ -3250,7 +3250,7 @@ struct OnboardingAISetupTests {
         }
 
         let requests = await recorder.snapshot()
-        #expect(requests.methods == ["openclaw.setup.detect"])
+        #expect(requests.methods == ["operator.setup.detect"])
         #expect(!requests.apiKeys.contains("must-not-send"))
         #expect(!OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(!model.pendingActivationVerification)
@@ -3279,7 +3279,7 @@ struct OnboardingAISetupTests {
                 ) {
                     return
                 }
-                guard request.method == "openclaw.setup.activate" else { return }
+                guard request.method == "operator.setup.activate" else { return }
                 await gate.wait()
                 throw CancellationError()
             })
@@ -3306,8 +3306,8 @@ struct OnboardingAISetupTests {
         await activation.value
 
         #expect(await (recorder.snapshot()).methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
         ])
         #expect(OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(model.pendingActivationVerification)
@@ -3350,7 +3350,7 @@ struct OnboardingAISetupTests {
         await model.detectAndAutoConnect()
         await model.activate(kind: "codex-cli")
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.activate"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.activate"])
         #expect(OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(model.pendingActivationVerification)
         #expect(model.waitingForPendingActivationDeadline)
@@ -3408,7 +3408,7 @@ struct OnboardingAISetupTests {
         await model.detectAndAutoConnect()
         await model.activate(kind: "codex-cli")
 
-        #expect(await (recorder.snapshot()).methods == ["openclaw.setup.activate"])
+        #expect(await (recorder.snapshot()).methods == ["operator.setup.activate"])
         #expect(OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(model.pendingActivationVerification)
         #expect(model.waitingForPendingActivationDeadline)
@@ -3453,7 +3453,7 @@ struct OnboardingAISetupTests {
                     }
                     await recorder.record(message)
                     switch request.method {
-                    case "openclaw.setup.activate":
+                    case "operator.setup.activate":
                         if let callbackDefaults = UserDefaults(suiteName: suiteName) {
                             OnboardingSystemAgentResumeStore.clear(
                                 ifOwnedBy: "local",
@@ -3463,9 +3463,9 @@ struct OnboardingAISetupTests {
                         task.emitReceiveSuccess(.data(indeterminateActivationResponse(id: request.id)))
                     case "agents.list":
                         task.emitReceiveSuccess(.data(configuredModelResponse(id: request.id)))
-                    case "openclaw.setup.verify":
+                    case "operator.setup.verify":
                         task.emitReceiveSuccess(.data(verifiedSetupResponse(id: request.id)))
-                    case "openclaw.setup.detect":
+                    case "operator.setup.detect":
                         task.emitReceiveSuccess(.data(detectedSetupResponse(
                             id: request.id,
                             kind: "codex-cli",
@@ -3507,10 +3507,10 @@ struct OnboardingAISetupTests {
         await settleQueuedAISetupTasks()
 
         #expect(requests.methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
             "agents.list",
-            "openclaw.setup.verify",
+            "operator.setup.verify",
         ])
         #expect(!view.aiSetup.connected)
         #expect(view.aiSetup.waitingForPendingActivationDeadline)
@@ -3545,13 +3545,13 @@ struct OnboardingAISetupTests {
         await settleQueuedAISetupTasks()
 
         #expect(completedRequests.methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
             "agents.list",
-            "openclaw.setup.verify",
+            "operator.setup.verify",
             "agents.list",
-            "openclaw.setup.verify",
-            "openclaw.setup.detect",
+            "operator.setup.verify",
+            "operator.setup.detect",
         ])
         #expect(!view.aiSetup.connected)
         #expect(view.aiSetup.phase == .ready)
@@ -3581,7 +3581,7 @@ struct OnboardingAISetupTests {
                 }
                 await recorder.record(message)
                 switch request.method {
-                case "openclaw.setup.activate":
+                case "operator.setup.activate":
                     if let requestDefaults = UserDefaults(suiteName: suiteName),
                        let activationOwner = OnboardingSystemAgentResumeStore.activationOwner(
                            for: "local",
@@ -3599,7 +3599,7 @@ struct OnboardingAISetupTests {
                     task.emitReceiveSuccess(.data(indeterminateActivationResponse(id: request.id)))
                 case "agents.list":
                     task.emitReceiveSuccess(.data(missingConfiguredModelResponse(id: request.id)))
-                case "openclaw.setup.detect":
+                case "operator.setup.detect":
                     task.emitReceiveSuccess(.data(detectedSetupResponse(id: request.id)))
                 default:
                     break
@@ -3635,10 +3635,10 @@ struct OnboardingAISetupTests {
 
         #expect(recheckRoute == "local")
         #expect(requests.methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
             "agents.list",
-            "openclaw.setup.detect",
+            "operator.setup.detect",
         ])
         #expect(view.aiSetup.phase == .ready)
         #expect(!view.aiSetup.pendingActivationVerification)
@@ -3685,8 +3685,8 @@ struct OnboardingAISetupTests {
         }
 
         #expect(await (recorder.snapshot()).methods == [
-            "openclaw.setup.detect",
-            "openclaw.setup.activate",
+            "operator.setup.detect",
+            "operator.setup.activate",
         ])
         #expect(OnboardingSystemAgentResumeStore.isPending(for: "local", defaults: defaults))
         #expect(model.pendingActivationVerification)

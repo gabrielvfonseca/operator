@@ -9,7 +9,7 @@ export type PluginConfigUiHint = {
 };
 
 /** Top-level plugin manifest format. */
-export type PluginFormat = "operator" | "bundle";
+export type PluginFormat = "@gabrielvfonseca/operator" | "bundle";
 
 /** Supported external bundle manifest formats. */
 export type PluginBundleFormat = "codex" | "claude" | "cursor";

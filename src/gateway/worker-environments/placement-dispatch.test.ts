@@ -295,7 +295,7 @@ describe("worker placement dispatch", () => {
   let placementStore: PlacementStore;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-dispatch-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-dispatch-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     placementStore = createWorkerSessionPlacementStore({ database, now: () => 1_000 });
   });

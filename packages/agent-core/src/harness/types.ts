@@ -1,5 +1,5 @@
 // Agent Core type module defines shared TypeScript contracts.
-import type { Result } from "@operator/normalization-core/result";
+import type { Result } from "@gabrielvfonseca/normalization-core/result";
 import type {
   ImageContent,
   Model,
@@ -12,11 +12,11 @@ import type { AgentEvent, AgentMessage, AgentTool, QueueMode, ThinkingLevel } fr
 import type { AgentCoreCompletionRuntimeDeps, AgentCoreRuntimeDeps } from "../runtime-deps.js";
 import type { Session } from "./session/session.js";
 
-export { err, ok } from "@operator/normalization-core/result";
-export type { Result } from "@operator/normalization-core/result";
+export { err, ok } from "@gabrielvfonseca/normalization-core/result";
+export type { Result } from "@gabrielvfonseca/normalization-core/result";
 
 /**
- * @deprecated Use `toErrorObject` from `@operator/normalization-core/error-coercion`.
+ * @deprecated Use `toErrorObject` from `@gabrielvfonseca/normalization-core/error-coercion`.
  * Kept through the next major release for the shipped agent-core plugin API.
  */
 export function toError(error: unknown): Error {

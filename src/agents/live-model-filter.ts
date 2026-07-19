@@ -3,9 +3,9 @@
  * Curates modern high-signal and small-model refs while preserving provider
  * spread and explicit operator selections for live test lanes.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { parseStrictNonNegativeInteger } from "@operator/normalization-core/number-coercion";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveProviderModernModelRef } from "../plugins/provider-runtime.js";
 import { liveProvidersShareOwningPlugin } from "./live-provider-owner.js";

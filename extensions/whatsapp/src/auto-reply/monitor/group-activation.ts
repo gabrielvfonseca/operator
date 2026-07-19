@@ -1,11 +1,14 @@
 // Whatsapp plugin module implements group activation behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/routing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import {
+  DEFAULT_ACCOUNT_ID,
+  normalizeAccountId,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import {
   getSessionEntry,
   patchSessionEntry,
   resolveStorePath,
-} from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { resolveWhatsAppLegacyGroupSessionKey } from "../../group-session-key.js";
 import { resolveWhatsAppInboundPolicy } from "../../inbound-policy.js";
 import { normalizeGroupActivation } from "./group-activation.runtime.js";

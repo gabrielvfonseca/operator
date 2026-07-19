@@ -1,6 +1,6 @@
 // Unwraps dispatch wrappers that delegate to real commands.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   envInvocationUsesModifiers,
   parseEnvInvocationPrelude,

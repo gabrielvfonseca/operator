@@ -3,8 +3,8 @@
  * helpers.
  */
 import { v0_8 } from "@a2ui/lit";
+import { themeContext } from "@gabrielvfonseca/a2ui-theme-context";
 import { ContextProvider } from "@lit/context";
-import { themeContext } from "@operator/a2ui-theme-context";
 import { html, css, LitElement, unsafeCSS } from "lit";
 import "@a2ui/lit/ui";
 import { repeat } from "lit/directives/repeat.js";
@@ -262,8 +262,8 @@ class OperatorA2UIHost extends LitElement {
       height: 100%;
       position: relative;
       box-sizing: border-box;
-      padding: var(--openclaw-a2ui-inset-top, 0px) var(--openclaw-a2ui-inset-right, 0px)
-        var(--openclaw-a2ui-inset-bottom, 0px) var(--openclaw-a2ui-inset-left, 0px);
+      padding: var(--operator-a2ui-inset-top, 0px) var(--operator-a2ui-inset-right, 0px)
+        var(--operator-a2ui-inset-bottom, 0px) var(--operator-a2ui-inset-left, 0px);
     }
 
     #surfaces {
@@ -272,14 +272,14 @@ class OperatorA2UIHost extends LitElement {
       gap: 12px;
       height: 100%;
       overflow: auto;
-      padding-bottom: var(--openclaw-a2ui-scroll-pad-bottom, 0px);
+      padding-bottom: var(--operator-a2ui-scroll-pad-bottom, 0px);
     }
 
     .status {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      top: var(--openclaw-a2ui-status-top, 12px);
+      top: var(--operator-a2ui-status-top, 12px);
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -305,7 +305,7 @@ class OperatorA2UIHost extends LitElement {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: var(--openclaw-a2ui-toast-bottom, 12px);
+      bottom: var(--operator-a2ui-toast-bottom, 12px);
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -336,7 +336,7 @@ class OperatorA2UIHost extends LitElement {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      top: var(--openclaw-a2ui-empty-top, var(--openclaw-a2ui-status-top, 12px));
+      top: var(--operator-a2ui-empty-top, var(--operator-a2ui-status-top, 12px));
       text-align: center;
       opacity: 0.8;
       padding: 10px 12px;
@@ -374,10 +374,10 @@ class OperatorA2UIHost extends LitElement {
       reset: () => this.reset(),
       getSurfaces: () => Array.from(this.#processor.getSurfaces().keys()),
     };
-    globalThis.openclawA2UI = api;
+    globalThis.operatorA2UI = api;
     this.addEventListener("a2uiaction", (evt) => this.#handleA2UIAction(evt));
     this.#statusListener = (evt) => this.#handleActionStatus(evt);
-    for (const eventName of ["openclaw:a2ui-action-status"]) {
+    for (const eventName of ["operator:a2ui-action-status"]) {
       globalThis.addEventListener(eventName, this.#statusListener);
     }
     this.#syncSurfaces();
@@ -386,7 +386,7 @@ class OperatorA2UIHost extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.#statusListener) {
-      for (const eventName of ["openclaw:a2ui-action-status"]) {
+      for (const eventName of ["operator:a2ui-action-status"]) {
         globalThis.removeEventListener(eventName, this.#statusListener);
       }
       this.#statusListener = null;
@@ -504,12 +504,12 @@ class OperatorA2UIHost extends LitElement {
     globalThis["__openclawLastA2UIAction"] = userAction;
 
     const handler =
-      globalThis.webkit?.messageHandlers?.openclawCanvasA2UIAction ??
-      globalThis.openclawCanvasA2UIAction;
+      globalThis.webkit?.messageHandlers?.operatorCanvasA2UIAction ??
+      globalThis.operatorCanvasA2UIAction;
     if (handler?.postMessage) {
       try {
         // WebKit message handlers support structured objects; Android's JS interface expects strings.
-        if (handler === globalThis.openclawCanvasA2UIAction) {
+        if (handler === globalThis.operatorCanvasA2UIAction) {
           postNativeMessage(handler, JSON.stringify({ userAction }));
         } else {
           postNativeMessage(handler, { userAction });
@@ -604,6 +604,6 @@ class OperatorA2UIHost extends LitElement {
   }
 }
 
-if (!customElements.get("openclaw-a2ui-host")) {
-  customElements.define("openclaw-a2ui-host", OperatorA2UIHost);
+if (!customElements.get("operator-a2ui-host")) {
+  customElements.define("operator-a2ui-host", OperatorA2UIHost);
 }

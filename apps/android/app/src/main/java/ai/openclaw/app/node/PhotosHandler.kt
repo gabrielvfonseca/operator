@@ -1,7 +1,7 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.hasPhotoReadPermission
+import ai.operator.app.gateway.GatewaySession
+import ai.operator.app.hasPhotoReadPermission
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context

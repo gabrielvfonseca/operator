@@ -80,7 +80,7 @@ export type ContextEngineHostRequirements = {
 export type ContextEngineRuntimeSettings = {
   schemaVersion: 1;
   runtime: {
-    host: "operator";
+    host: "@gabrielvfonseca/operator";
     mode: ContextEngineRuntimeMode;
     harnessId: string | null;
     runtimeId: string | null;

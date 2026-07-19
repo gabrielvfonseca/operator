@@ -1,7 +1,7 @@
 // Tool image tests cover image payload sanitization before tool outputs are
 // returned to model-visible content blocks.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 import {
   createNoisyPngBuffer,

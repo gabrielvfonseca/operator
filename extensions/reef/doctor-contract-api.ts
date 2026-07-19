@@ -1,7 +1,7 @@
-import type { ChannelDoctorLegacyConfigRule } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { PluginDoctorStateMigration } from "openclaw/plugin-sdk/runtime-doctor";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { ChannelDoctorLegacyConfigRule } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { PluginDoctorStateMigration } from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { z } from "zod";
 import { ReefChannelConfigSchema, normalizeReefTarget } from "./src/config-schema.js";
 import { ReefPeerTrustSchema, type ReefPeerTrust } from "./src/friend-types.js";

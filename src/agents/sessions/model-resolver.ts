@@ -2,7 +2,7 @@
  * Model resolution, scoping, and initial selection
  */
 
-import { modelsAreEqual } from "@operator/ai/internal/runtime";
+import { modelsAreEqual } from "@gabrielvfonseca/ai/internal/runtime";
 import chalk from "chalk";
 import { minimatch } from "minimatch";
 import type { Model } from "../../llm/types.js";

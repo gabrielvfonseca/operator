@@ -1,5 +1,5 @@
 import path from "node:path";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveStoredSessionOwnerAgentId } from "../../gateway/session-store-key.js";
 import {
   resolveAgentHarnessSessionStoreError,
@@ -8,7 +8,7 @@ import {
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import {
   materializeSqliteSessionStateDeletePlans,
   type MaterializedSqliteSessionStateDeletePlan,

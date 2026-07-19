@@ -135,20 +135,22 @@ describe("Codex usage after runtime fallback", () => {
     }));
   });
 
-  async function renderFallbackStatus(agentHarnessId: "codex" | "openclaw"): Promise<string> {
+  async function renderFallbackStatus(
+    agentHarnessId: "codex" | "@gabrielvfonseca/operator",
+  ): Promise<string> {
     return await buildStatusText({
       cfg: {},
       sessionEntry: {
         sessionId: `fallback-${agentHarnessId}`,
         updatedAt: 0,
-        agentRuntimeOverride: "openclaw",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
         agentHarnessId,
       },
       sessionKey: "agent:main:main",
       statusChannel: "mobilechat",
       provider: "openai",
       model: "gpt-5.4-mini",
-      resolvedHarness: "openclaw",
+      resolvedHarness: "@gabrielvfonseca/operator",
       resolvedVerboseLevel: "off",
       resolvedReasoningLevel: "off",
       resolveDefaultThinkingLevel: async () => undefined,
@@ -177,7 +179,7 @@ describe("Codex usage after runtime fallback", () => {
   });
 
   it("omits Codex rate-limit usage for a never-Codex session", async () => {
-    const text = await renderFallbackStatus("openclaw");
+    const text = await renderFallbackStatus("@gabrielvfonseca/operator");
 
     expect(text).not.toContain("📊 Usage:");
     expect(mocks.loadProviderUsageSummary).toHaveBeenCalledWith(
@@ -193,7 +195,7 @@ describe("session status cost line", () => {
     sessionFile: formatSqliteSessionFileMarker({
       agentId: "main",
       sessionId: "cost-session",
-      storePath: "/tmp/openclaw-status-cost/sessions.json",
+      storePath: "/tmp/operator-status-cost/sessions.json",
     }),
   };
 

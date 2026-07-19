@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { listSkillCommandsForAgents as listActualSkillCommandsForAgents } from "openclaw/plugin-sdk/skill-commands-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { listSkillCommandsForAgents as listActualSkillCommandsForAgents } from "@gabrielvfonseca/operator/plugin-sdk/skill-commands-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { registerTelegramNativeCommands } from "./bot-native-commands.js";
 import {
@@ -33,7 +33,7 @@ describe("registerTelegramNativeCommands skill allowlist integration", () => {
   });
 
   it("registers only allowlisted skills for the bound agent menu", async () => {
-    const workspaceDir = await makeWorkspace("openclaw-telegram-skills-");
+    const workspaceDir = await makeWorkspace("operator-telegram-skills-");
     await writeSkill({
       dir: path.join(workspaceDir, "skills", "alpha-skill"),
       name: "alpha-skill",

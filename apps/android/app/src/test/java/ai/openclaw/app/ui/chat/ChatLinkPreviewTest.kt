@@ -1,15 +1,15 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.ui.image.PublicOnlyDns
-import ai.openclaw.app.ui.image.REMOTE_IMAGE_BODY_MAX_BYTES
-import ai.openclaw.app.ui.image.REMOTE_IMAGE_MAX_DIMENSION
-import ai.openclaw.app.ui.image.RemoteImageResult
-import ai.openclaw.app.ui.image.SafeRemoteImageFetcher
-import ai.openclaw.app.ui.image.SafeRemoteImageStore
-import ai.openclaw.app.ui.image.SafeWebFetcher
-import ai.openclaw.app.ui.image.decodeRemoteImageBitmap
-import ai.openclaw.app.ui.image.isPubliclyRoutableHost
-import ai.openclaw.app.ui.image.resolveRedirect
+import ai.operator.app.ui.image.PublicOnlyDns
+import ai.operator.app.ui.image.REMOTE_IMAGE_BODY_MAX_BYTES
+import ai.operator.app.ui.image.REMOTE_IMAGE_MAX_DIMENSION
+import ai.operator.app.ui.image.RemoteImageResult
+import ai.operator.app.ui.image.SafeRemoteImageFetcher
+import ai.operator.app.ui.image.SafeRemoteImageStore
+import ai.operator.app.ui.image.SafeWebFetcher
+import ai.operator.app.ui.image.decodeRemoteImageBitmap
+import ai.operator.app.ui.image.isPubliclyRoutableHost
+import ai.operator.app.ui.image.resolveRedirect
 import android.graphics.Bitmap
 import android.graphics.Color
 import kotlinx.coroutines.Dispatchers

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
 struct ChatCodeHighlighterTests {
     private func kinds(_ code: String, language id: String) -> [(ChatCodeTokenKind, String)] {

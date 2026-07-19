@@ -1,70 +1,70 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.AndroidLicenseNotice
-import ai.openclaw.app.AppLanguage
-import ai.openclaw.app.AppearanceThemeMode
-import ai.openclaw.app.BuildConfig
-import ai.openclaw.app.CronEditorDraftState
-import ai.openclaw.app.GatewayAgentSummary
-import ai.openclaw.app.GatewayConnectionDisplay
-import ai.openclaw.app.GatewayConnectionProblem
-import ai.openclaw.app.GatewayCronActionState
-import ai.openclaw.app.GatewayCronJobDetail
-import ai.openclaw.app.GatewayCronJobDetailState
-import ai.openclaw.app.GatewayCronJobEdit
-import ai.openclaw.app.GatewayCronJobSummary
-import ai.openclaw.app.GatewayCronRunHistoryState
-import ai.openclaw.app.GatewayExecApprovalNotice
-import ai.openclaw.app.GatewayExecApprovalSummary
-import ai.openclaw.app.GatewayTalkSetupReadiness
-import ai.openclaw.app.GatewayTalkSetupState
-import ai.openclaw.app.GatewayUsageProviderSummary
-import ai.openclaw.app.LocationMode
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.NotificationPackageFilterMode
-import ai.openclaw.app.SensitiveFeatureConfig
-import ai.openclaw.app.appLanguageRowSubtitle
-import ai.openclaw.app.chat.ChatPendingToolCall
-import ai.openclaw.app.currentAppLanguage
-import ai.openclaw.app.currentSystemLanguageTag
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.gateway.GatewayRegistryEntryKind
-import ai.openclaw.app.gatewayExecApprovalTextForDisplay
-import ai.openclaw.app.gatewayTalkSetupDescription
-import ai.openclaw.app.gatewayTalkSetupStatusText
-import ai.openclaw.app.hasPhotoReadPermission
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.resolveNativeText
-import ai.openclaw.app.i18n.resolveNativeTextResource
-import ai.openclaw.app.isReady
-import ai.openclaw.app.loadAndroidLicenseNotices
-import ai.openclaw.app.locationModeAfterBackgroundSettings
-import ai.openclaw.app.node.DeviceNotificationListenerService
-import ai.openclaw.app.photoReadPermissionsForRequest
-import ai.openclaw.app.reconcileRestoredAction
-import ai.openclaw.app.setAppLanguage
-import ai.openclaw.app.ui.design.ClawAgentAvatar
-import ai.openclaw.app.ui.design.ClawDetailRow
-import ai.openclaw.app.ui.design.ClawIconBadge
-import ai.openclaw.app.ui.design.ClawListItem
-import ai.openclaw.app.ui.design.ClawListPanel
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawPlainIconButton
-import ai.openclaw.app.ui.design.ClawPrimaryButton
-import ai.openclaw.app.ui.design.ClawScaffold
-import ai.openclaw.app.ui.design.ClawSecondaryButton
-import ai.openclaw.app.ui.design.ClawSegmentedControl
-import ai.openclaw.app.ui.design.ClawSeparatedColumn
-import ai.openclaw.app.ui.design.ClawStatus
-import ai.openclaw.app.ui.design.ClawStatusPill
-import ai.openclaw.app.ui.design.ClawTextBadge
-import ai.openclaw.app.ui.design.ClawTextField
-import ai.openclaw.app.ui.design.ClawTheme
-import ai.openclaw.app.ui.design.OpenClawMascot
-import ai.openclaw.app.ui.design.TalkWaveform
-import ai.openclaw.app.ui.design.TalkWaveformPhase
-import ai.openclaw.app.ui.design.agentAvatarSource
-import ai.openclaw.app.voice.VoiceWakePreferences
+import ai.operator.app.AndroidLicenseNotice
+import ai.operator.app.AppLanguage
+import ai.operator.app.AppearanceThemeMode
+import ai.operator.app.BuildConfig
+import ai.operator.app.CronEditorDraftState
+import ai.operator.app.GatewayAgentSummary
+import ai.operator.app.GatewayConnectionDisplay
+import ai.operator.app.GatewayConnectionProblem
+import ai.operator.app.GatewayCronActionState
+import ai.operator.app.GatewayCronJobDetail
+import ai.operator.app.GatewayCronJobDetailState
+import ai.operator.app.GatewayCronJobEdit
+import ai.operator.app.GatewayCronJobSummary
+import ai.operator.app.GatewayCronRunHistoryState
+import ai.operator.app.GatewayExecApprovalNotice
+import ai.operator.app.GatewayExecApprovalSummary
+import ai.operator.app.GatewayTalkSetupReadiness
+import ai.operator.app.GatewayTalkSetupState
+import ai.operator.app.GatewayUsageProviderSummary
+import ai.operator.app.LocationMode
+import ai.operator.app.MainViewModel
+import ai.operator.app.NotificationPackageFilterMode
+import ai.operator.app.SensitiveFeatureConfig
+import ai.operator.app.appLanguageRowSubtitle
+import ai.operator.app.chat.ChatPendingToolCall
+import ai.operator.app.currentAppLanguage
+import ai.operator.app.currentSystemLanguageTag
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.gateway.GatewayRegistryEntryKind
+import ai.operator.app.gatewayExecApprovalTextForDisplay
+import ai.operator.app.gatewayTalkSetupDescription
+import ai.operator.app.gatewayTalkSetupStatusText
+import ai.operator.app.hasPhotoReadPermission
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.resolveNativeText
+import ai.operator.app.i18n.resolveNativeTextResource
+import ai.operator.app.isReady
+import ai.operator.app.loadAndroidLicenseNotices
+import ai.operator.app.locationModeAfterBackgroundSettings
+import ai.operator.app.node.DeviceNotificationListenerService
+import ai.operator.app.photoReadPermissionsForRequest
+import ai.operator.app.reconcileRestoredAction
+import ai.operator.app.setAppLanguage
+import ai.operator.app.ui.design.ClawAgentAvatar
+import ai.operator.app.ui.design.ClawDetailRow
+import ai.operator.app.ui.design.ClawIconBadge
+import ai.operator.app.ui.design.ClawListItem
+import ai.operator.app.ui.design.ClawListPanel
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawPlainIconButton
+import ai.operator.app.ui.design.ClawPrimaryButton
+import ai.operator.app.ui.design.ClawScaffold
+import ai.operator.app.ui.design.ClawSecondaryButton
+import ai.operator.app.ui.design.ClawSegmentedControl
+import ai.operator.app.ui.design.ClawSeparatedColumn
+import ai.operator.app.ui.design.ClawStatus
+import ai.operator.app.ui.design.ClawStatusPill
+import ai.operator.app.ui.design.ClawTextBadge
+import ai.operator.app.ui.design.ClawTextField
+import ai.operator.app.ui.design.ClawTheme
+import ai.operator.app.ui.design.OperatorMascot
+import ai.operator.app.ui.design.TalkWaveform
+import ai.operator.app.ui.design.TalkWaveformPhase
+import ai.operator.app.ui.design.agentAvatarSource
+import ai.operator.app.voice.VoiceWakePreferences
 import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -312,7 +312,7 @@ private fun CronJobsSettingsScreen(
     }
   }
 
-  SettingsDetailFrame(title = nativeString("Automations"), subtitle = nativeString("Scheduled OpenClaw work from your gateway."), icon = Icons.Default.Bolt, onBack = onBack) {
+  SettingsDetailFrame(title = nativeString("Automations"), subtitle = nativeString("Scheduled Operator work from your gateway."), icon = Icons.Default.Bolt, onBack = onBack) {
     SettingsMetricPanel(
       rows =
         listOf(
@@ -645,9 +645,9 @@ private fun ProfileSettingsScreen(
   onBack: () -> Unit,
 ) {
   val displayName by viewModel.displayName.collectAsState()
-  var draft by remember(displayName) { mutableStateOf(displayName.ifBlank { "OpenClaw" }) }
+  var draft by remember(displayName) { mutableStateOf(displayName.ifBlank { "Operator" }) }
 
-  SettingsDetailFrame(title = nativeString("Profile"), subtitle = nativeString("How this phone appears to OpenClaw."), icon = Icons.Default.Person, onBack = onBack) {
+  SettingsDetailFrame(title = nativeString("Profile"), subtitle = nativeString("How this phone appears to Operator."), icon = Icons.Default.Person, onBack = onBack) {
     ClawPanel {
       Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
         ClawTextField(value = draft, onValueChange = { draft = it }, placeholder = nativeString("Device name"))
@@ -709,7 +709,7 @@ private fun VoiceSettingsScreen(
               title = nativeString("Listen for wake words"),
               subtitle =
                 if (voiceWakeAvailable) {
-                  nativeString("Runs on-device while OpenClaw is visible.")
+                  nativeString("Runs on-device while Operator is visible.")
                 } else {
                   nativeString("On-device speech recognition is unavailable.")
                 },
@@ -784,7 +784,7 @@ private fun VoiceSettingsScreen(
       Text(text = nativeString("Talk Provider Setup"), style = ClawTheme.type.section, color = ClawTheme.colors.text)
       VoiceSetupPanel(talkSetupReadiness)
       Text(text = nativeString("Audio Test"), style = ClawTheme.type.section, color = ClawTheme.colors.text)
-      Text(text = nativeString("Check that OpenClaw can speak clearly on this phone."), style = ClawTheme.type.body, color = ClawTheme.colors.textMuted)
+      Text(text = nativeString("Check that Operator can speak clearly on this phone."), style = ClawTheme.type.body, color = ClawTheme.colors.textMuted)
       SettingsWaveformPanel(active = speakerEnabled, onClick = ::playVoiceSetupTone)
       VoiceSetupActionRow(
         title = if (speakerEnabled) nativeString("Mute speaker") else nativeString("Enable speaker"),
@@ -975,11 +975,11 @@ private fun NotificationSettingsScreen(
     listenerEnabled = DeviceNotificationListenerService.isAccessEnabled(context)
   }
 
-  SettingsDetailFrame(title = nativeString("Notifications"), subtitle = nativeString("Choose what reaches OpenClaw."), icon = Icons.Default.Notifications, onBack = onBack) {
+  SettingsDetailFrame(title = nativeString("Notifications"), subtitle = nativeString("Choose what reaches Operator."), icon = Icons.Default.Notifications, onBack = onBack) {
     SettingsTogglePanel(
       rows =
         listOf(
-          SettingsToggleRow(nativeString("Forward Notifications"), if (enabled) nativeString("OpenClaw can receive selected alerts.") else nativeString("Alerts stay on this phone."), Icons.Default.Notifications, enabled, ::setForwarding),
+          SettingsToggleRow(nativeString("Forward Notifications"), if (enabled) nativeString("Operator can receive selected alerts.") else nativeString("Alerts stay on this phone."), Icons.Default.Notifications, enabled, ::setForwarding),
           SettingsToggleRow(
             nativeString("Quiet Hours"),
             nativeString("\$quietStart to \$quietEnd", quietStart, quietEnd),
@@ -1366,7 +1366,7 @@ private fun PhoneCapabilitiesScreen(
           },
           SettingsToggleRow(
             nativeString("Installed Apps"),
-            if (installedAppsSharingEnabled) nativeString("OpenClaw can list launcher-visible apps.") else nativeString("App list stays on this phone."),
+            if (installedAppsSharingEnabled) nativeString("Operator can list launcher-visible apps.") else nativeString("App list stays on this phone."),
             Icons.Default.Storage,
             installedAppsSharingEnabled,
             ::setInstalledAppsSharing,
@@ -1385,7 +1385,7 @@ private fun PhoneCapabilitiesScreen(
         )
         if (backgroundLocationAvailable) {
           Text(
-            text = nativeString("Always allows requested location checks while OpenClaw is in the background; Android shows this in the persistent node notification."),
+            text = nativeString("Always allows requested location checks while Operator is in the background; Android shows this in the persistent node notification."),
             style = ClawTheme.type.caption,
             color = ClawTheme.colors.textMuted,
           )
@@ -1424,7 +1424,7 @@ private fun PhoneCapabilitiesScreen(
       text = {
         Text(
           nativeString(
-            "OpenClaw only checks location when your paired Gateway requests it. On the next Android screen, choose \$backgroundPermissionLabel to allow checks while the app is in the background.",
+            "Operator only checks location when your paired Gateway requests it. On the next Android screen, choose \$backgroundPermissionLabel to allow checks while the app is in the background.",
             backgroundPermissionLabel,
           ),
         )
@@ -1460,10 +1460,10 @@ private fun InstalledAppsDisclosureDialog(
     text = {
       Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(
-          nativeString("OpenClaw collects and sends the names, package IDs, and status of apps visible on this phone when your paired OpenClaw Gateway asks for them. This lets your assistant answer questions and take actions using installed apps."),
+          nativeString("Operator collects and sends the names, package IDs, and status of apps visible on this phone when your paired Operator Gateway asks for them. This lets your assistant answer questions and take actions using installed apps."),
         )
         Text(
-          nativeString("Your phone sends this information to your Gateway, not to a server run by OpenClaw. Your Gateway may include it in requests to the AI provider you chose."),
+          nativeString("Your phone sends this information to your Gateway, not to a server run by Operator. Your Gateway may include it in requests to the AI provider you chose."),
         )
       }
     },
@@ -1617,7 +1617,7 @@ private fun GatewaySettingsScreen(
 
   SettingsDetailFrame(
     title = nativeString("Gateway"),
-    subtitle = nativeString("Connection between this phone and OpenClaw."),
+    subtitle = nativeString("Connection between this phone and Operator."),
     icon = Icons.Default.Cloud,
     onBack = onBack,
     trailingAction = {
@@ -1711,7 +1711,7 @@ private fun GatewaySettingsScreen(
         }
         if (showSetupCodeHelp) {
           Text(
-            text = nativeString("Android can scan or paste an existing setup code, but this gateway does not expose setup-code generation to the app yet. Generate the QR/code on the gateway host with openclaw qr, then scan it here or paste the setup code below."),
+            text = nativeString("Android can scan or paste an existing setup code, but this gateway does not expose setup-code generation to the app yet. Generate the QR/code on the gateway host with operator qr, then scan it here or paste the setup code below."),
             style = ClawTheme.type.caption,
             color = ClawTheme.colors.textMuted,
           )
@@ -1859,7 +1859,7 @@ internal fun gatewayAccessLabel(
 
 internal fun gatewayLimitedAccessUpgradeText(): String =
   nativeString(
-    "Use a secure wss:// or Tailscale Serve Gateway, generate a full-access setup code in the Control UI or with openclaw qr, then scan or paste it below and reconnect to enable settings and upgrades.",
+    "Use a secure wss:// or Tailscale Serve Gateway, generate a full-access setup code in the Control UI or with operator qr, then scan or paste it below and reconnect to enable settings and upgrades.",
   )
 
 @Composable
@@ -2008,7 +2008,7 @@ private fun AboutSettingsScreen(
   val currentGatewayVersion = updateAvailable?.currentVersion?.takeIf { it.isNotBlank() } ?: gatewayVersion
   val appLocale = LocalConfiguration.current.locales[0]
 
-  SettingsDetailFrame(title = nativeString("About"), subtitle = nativeString("OpenClaw for Android."), icon = Icons.Default.Info, onBack = onBack) {
+  SettingsDetailFrame(title = nativeString("About"), subtitle = nativeString("Operator for Android."), icon = Icons.Default.Info, onBack = onBack) {
     AboutHeroPanel()
     AboutBuildIdentityPanel(
       versionName = BuildConfig.VERSION_NAME,
@@ -2042,7 +2042,7 @@ private fun AboutSettingsScreen(
     }
     AboutLinksPanel()
     Text(
-      text = nativeString("© 2026 OpenClaw Foundation — MIT License."),
+      text = nativeString("© 2026 Operator Foundation — MIT License."),
       style = ClawTheme.type.caption,
       color = ClawTheme.colors.textSubtle,
       modifier = Modifier.fillMaxWidth(),
@@ -2059,9 +2059,9 @@ private fun AboutHeroPanel() {
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-      OpenClawMascot(contentDescription = nativeString("OpenClaw logo"), modifier = Modifier.size(96.dp))
+      OperatorMascot(contentDescription = nativeString("Operator logo"), modifier = Modifier.size(96.dp))
       Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(text = nativeString("OpenClaw"), style = ClawTheme.type.section, color = ClawTheme.colors.text)
+        Text(text = nativeString("Operator"), style = ClawTheme.type.section, color = ClawTheme.colors.text)
         Text(text = nativeString("Personal AI on your devices"), style = ClawTheme.type.caption, color = ClawTheme.colors.textMuted)
       }
     }
@@ -2077,9 +2077,9 @@ private data class AboutLink(
 
 private val aboutLinks =
   listOf(
-    AboutLink("Website", "openclaw.ai", "https://openclaw.ai"),
-    AboutLink("Docs", "docs.openclaw.ai", "https://docs.openclaw.ai"),
-    AboutLink("GitHub", "github.com/openclaw/openclaw", "https://github.com/openclaw/openclaw"),
+    AboutLink("Website", "operator.ai", "https://operator.ai"),
+    AboutLink("Docs", "docs.operator.ai", "https://docs.operator.ai"),
+    AboutLink("GitHub", "github.com/gabrielvfonseca/operator", "https://github.com/gabrielvfonseca/operator"),
     AboutLink("Discord", "discord.gg/clawd", "https://discord.gg/clawd"),
   )
 
@@ -2122,7 +2122,7 @@ private fun LicensesSettingsScreen(onBack: () -> Unit) {
 
   SettingsDetailFrame(
     title = nativeString("Licenses"),
-    subtitle = if (selectedLicense == null) nativeString("OpenClaw appreciates its partners in the open-source community.") else "",
+    subtitle = if (selectedLicense == null) nativeString("Operator appreciates its partners in the open-source community.") else "",
     subtitleTextAlign = TextAlign.Center,
     icon = Icons.Default.Info,
     onBack = backToListOrSettings,
@@ -2209,7 +2209,7 @@ private fun AboutStatusRow(
 /** Chooses about-screen copy based on whether the gateway advertises an update. */
 private fun aboutUpdateText(latestVersion: String?): String =
   if (latestVersion == null) {
-    nativeString("OpenClaw turns this phone into a clean mobile command surface for sessions, voice, providers, and Gateway.")
+    nativeString("Operator turns this phone into a clean mobile command surface for sessions, voice, providers, and Gateway.")
   } else {
     nativeString("A Gateway update is available. Run the update from the Web UI or CLI when you are ready.")
   }
@@ -2600,7 +2600,7 @@ private fun copyCronDetailValue(
   value: String,
 ) {
   val clipboard = context.getSystemService(ClipboardManager::class.java) ?: return
-  clipboard.setPrimaryClip(ClipData.newPlainText("OpenClaw automation $title", value))
+  clipboard.setPrimaryClip(ClipData.newPlainText("Operator automation $title", value))
   Toast.makeText(context, nativeString("\$title copied", title), Toast.LENGTH_SHORT).show()
 }
 

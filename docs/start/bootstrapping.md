@@ -14,8 +14,8 @@ onboarding, on the agent's first real turn.
 
 ## What happens
 
-On the first run against a brand-new workspace (default `~/.openclaw/workspace`),
-OpenClaw:
+On the first run against a brand-new workspace (default `~/.operator/workspace`),
+Operator:
 
 - Seeds `AGENTS.md`, `SOUL.md`, `TOOLS.md`, `IDENTITY.md`, `USER.md`, `HEARTBEAT.md`, and `BOOTSTRAP.md`.
 - Has the agent follow `BOOTSTRAP.md`: a free-form conversation (not a fixed Q&A form) to settle on a name, personality, and vibe.
@@ -32,7 +32,7 @@ diverged from its starter template, or a `memory/` folder exists.
 
 ## Embedded and local model runs
 
-For embedded or local-model runs, OpenClaw keeps `BOOTSTRAP.md` out of the
+For embedded or local-model runs, Operator keeps `BOOTSTRAP.md` out of the
 privileged system context. On the primary interactive first run it still
 passes the file contents through the user prompt, so models that don't
 reliably call the `read` tool can still complete the ritual. If the current
@@ -44,7 +44,7 @@ note instead of a generic greeting.
 To skip this on a pre-seeded workspace, run:
 
 ```bash
-openclaw onboard --skip-bootstrap
+operator onboard --skip-bootstrap
 ```
 
 ## Where it runs
@@ -55,7 +55,7 @@ machine, not on the Mac.
 
 <Note>
 When the Gateway runs on another machine, edit workspace files on the gateway
-host (for example, `user@gateway-host:~/.openclaw/workspace`).
+host (for example, `user@gateway-host:~/.operator/workspace`).
 </Note>
 
 ## Related docs

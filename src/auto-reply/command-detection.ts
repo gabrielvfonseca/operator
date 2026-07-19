@@ -2,7 +2,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.js";
 import { matchPluginCommand } from "../plugins/commands.js";
 import { listChatCommands, listChatCommandsForConfig } from "./commands-registry-list.js";

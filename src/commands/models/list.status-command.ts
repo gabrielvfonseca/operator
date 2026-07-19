@@ -1,6 +1,6 @@
-/** Implementation of `operator models status`. */
+/** Implementation of `openclaw models status`. */
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { colorize, theme } from "../../../packages/terminal-core/src/theme.js";
 import {
   resolveAgentDir,

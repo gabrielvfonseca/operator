@@ -1,5 +1,8 @@
 // Telegram plugin module implements group history window behavior.
-import { createChannelHistoryWindow, type HistoryEntry } from "openclaw/plugin-sdk/reply-history";
+import {
+  createChannelHistoryWindow,
+  type HistoryEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
 import type {
   TelegramAmbientTranscriptWatermark,
   TelegramPromptContextEntry,

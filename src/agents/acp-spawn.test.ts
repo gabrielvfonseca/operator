@@ -2,11 +2,11 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AcpInitializeSessionInput } from "../acp/control-plane/manager.types.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   testing as sessionBindingServiceTesting,
   registerSessionBindingAdapter,
@@ -343,7 +343,7 @@ async function createCrossAgentWorkspaceFixture(options?: {
   targetDirName?: string;
   createTargetWorkspace?: boolean;
 }): Promise<CrossAgentWorkspaceFixture> {
-  const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-acp-spawn-"));
+  const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "operator-acp-spawn-"));
   const mainWorkspace = path.join(workspaceRoot, "main");
   const targetWorkspace = path.join(workspaceRoot, options?.targetDirName?.trim() || "claude-code");
   await fs.mkdir(mainWorkspace, { recursive: true });

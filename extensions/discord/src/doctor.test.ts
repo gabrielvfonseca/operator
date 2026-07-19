@@ -1,5 +1,5 @@
 // Discord tests cover doctor plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   collectDiscordMissingEnvTokenWarnings,

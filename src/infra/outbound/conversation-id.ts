@@ -3,7 +3,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { stringifyRouteThreadId } from "../../plugin-sdk/channel-route.js";
 
 function resolveExplicitConversationTargetId(target: string): string | undefined {

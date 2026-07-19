@@ -1,14 +1,14 @@
 import AppKit
 import Foundation
-import OpenClawIPC
-import OpenClawKit
+import OperatorIPC
+import OperatorKit
 import OSLog
 
 @MainActor
 final class CanvasManager {
     static let shared = CanvasManager()
 
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "CanvasManager")
+    private static let logger = Logger(subsystem: "ai.operator", category: "CanvasManager")
 
     private var panelController: CanvasWindowController?
     private var panelSessionKey: String?
@@ -26,7 +26,7 @@ final class CanvasManager {
 
     private nonisolated static let canvasRoot: URL = {
         let base = FileManager().urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return base.appendingPathComponent("OpenClaw/canvas", isDirectory: true)
+        return base.appendingPathComponent("Operator/canvas", isDirectory: true)
     }()
 
     func show(

@@ -1,9 +1,9 @@
 // Loads startup context snippets injected into the first reply turn.
 import fs from "node:fs";
 import path from "node:path";
-import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { formatDateStamp, resolveUserTimezone } from "../../agents/date-time.js";
 import type { OperatorConfig } from "../../config/config.js";
 import { openRootFile } from "../../infra/boundary-file-read.js";

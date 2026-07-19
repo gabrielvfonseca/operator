@@ -39,7 +39,7 @@ const env = {
   NODE_ENV: "production",
 };
 const OUTPUT_SOURCE_MAPS = process.env.OUTPUT_SOURCE_MAPS === "1";
-const RUN_NODE_SKIP_DTS_BUILD = process.env.OPENCLAW_RUN_NODE_SKIP_DTS_BUILD === "1";
+const RUN_NODE_SKIP_DTS_BUILD = process.env.OPERATOR_RUN_NODE_SKIP_DTS_BUILD === "1";
 const TSDOWN_DECLARATIONS = !RUN_NODE_SKIP_DTS_BUILD;
 
 const SUPPRESSED_EVAL_WARNING_PATHS = [
@@ -77,7 +77,7 @@ function matchesExternalOption(
 }
 
 function buildInputOptions(options: InputOptionsArg): InputOptionsReturn {
-  if (process.env.OPENCLAW_BUILD_VERBOSE === "1") {
+  if (process.env.OPERATOR_BUILD_VERBOSE === "1") {
     return undefined;
   }
 
@@ -159,7 +159,7 @@ function nodeWorkspacePackageBuildConfig(packageDir: string, config: UserConfig 
 }
 
 const bundledPluginBuildEntries = collectBundledPluginBuildEntries();
-const shouldBuildPrivateQaEntries = process.env.OPENCLAW_BUILD_PRIVATE_QA === "1";
+const shouldBuildPrivateQaEntries = process.env.OPERATOR_BUILD_PRIVATE_QA === "1";
 const productionPluginSdkEntrypoints = shouldBuildPrivateQaEntries
   ? pluginSdkEntrypoints
   : publicPluginSdkEntrypoints;
@@ -201,7 +201,7 @@ const explicitNeverBundleDependencies = [
   "@lancedb/lancedb",
   "@larksuiteoapi/node-sdk",
   "@matrix-org/matrix-sdk-crypto-nodejs",
-  "@operator/ai",
+  "@gabrielvfonseca/ai",
   "@vitest/expect",
   "jimp",
   "matrix-js-sdk",
@@ -220,16 +220,16 @@ function shouldNeverBundleDependency(id: string): boolean {
 
 function shouldAlwaysBundleDependency(id: string): boolean {
   return (
-    id === "openclaw/plugin-sdk/ssrf-runtime-internal" ||
-    id === "@operator/fs-safe" ||
-    id.startsWith("@operator/fs-safe/") ||
-    id === "@operator/normalization-core" ||
-    id.startsWith("@operator/normalization-core/") ||
-    id === "@operator/retry" ||
-    id === "@operator/media-core" ||
-    id.startsWith("@operator/media-core/") ||
-    ["@operator/acp-core", "@operator/workboard-contract"].includes(id) ||
-    id.startsWith("@operator/acp-core/") ||
+    id === "operator/plugin-sdk/ssrf-runtime-internal" ||
+    id === "@openclaw/fs-safe" ||
+    id.startsWith("@openclaw/fs-safe/") ||
+    id === "@gabrielvfonseca/normalization-core" ||
+    id.startsWith("@gabrielvfonseca/normalization-core/") ||
+    id === "@gabrielvfonseca/retry" ||
+    id === "@gabrielvfonseca/media-core" ||
+    id.startsWith("@gabrielvfonseca/media-core/") ||
+    ["@gabrielvfonseca/acp-core", "@gabrielvfonseca/workboard-contract"].includes(id) ||
+    id.startsWith("@gabrielvfonseca/acp-core/") ||
     id === "zod" ||
     id.startsWith("zod/")
   );
@@ -305,7 +305,7 @@ function buildCoreDistEntries(): Record<string, string> {
     "plugins/runtime/index": "src/plugins/runtime/index.ts",
     "llm-slug-generator": "src/hooks/llm-slug-generator.ts",
     "mcp/plugin-tools-serve": "src/mcp/plugin-tools-serve.ts",
-    "mcp/openclaw-tools-serve": "src/mcp/openclaw-tools-serve.ts",
+    "mcp/operator-tools-serve": "src/mcp/operator-tools-serve.ts",
   };
 }
 
@@ -413,13 +413,13 @@ function buildLlmCoreDistEntries(): Record<string, string> {
 
 function shouldExternalizeAgentCoreDependency(id: string): boolean {
   return (
-    id === "@operator/ai" ||
-    id.startsWith("@operator/ai/") ||
-    id === "@operator/llm-core" ||
-    id.startsWith("@operator/llm-core/") ||
+    id === "@gabrielvfonseca/ai" ||
+    id.startsWith("@gabrielvfonseca/ai/") ||
+    id === "@gabrielvfonseca/llm-core" ||
+    id.startsWith("@gabrielvfonseca/llm-core/") ||
     id === "ignore" ||
-    id === "openclaw" ||
-    id.startsWith("openclaw/") ||
+    id === "operator" ||
+    id.startsWith("operator/") ||
     id === "typebox" ||
     id.startsWith("typebox/") ||
     id === "yaml" ||
@@ -432,7 +432,7 @@ function shouldExternalizeGatewayProtocolDependency(id: string): boolean {
 }
 
 function shouldExternalizeGatewayClientDependency(id: string): boolean {
-  return ["ws", "@operator/net-policy", "@operator/gateway-protocol"].some(
+  return ["ws", "@gabrielvfonseca/net-policy", "@gabrielvfonseca/gateway-protocol"].some(
     (dependency) => id === dependency || id.startsWith(`${dependency}/`),
   );
 }
@@ -442,7 +442,7 @@ function shouldExternalizeNetPolicyDependency(id: string): boolean {
 }
 
 function shouldExternalizeSpeechCoreDependency(id: string): boolean {
-  return id === "openclaw" || id.startsWith("openclaw/");
+  return id === "operator" || id.startsWith("operator/");
 }
 
 function shouldExternalizeLlmCoreDependency(id: string): boolean {

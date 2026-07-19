@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.node.DeviceNotificationListenerService
+import ai.operator.app.node.DeviceNotificationListenerService
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -63,7 +63,7 @@ internal fun queryInstalledApps(
     .toList()
 }
 
-/** Merges package sources while excluding OpenClaw from its own forwarding filter. */
+/** Merges package sources while excluding Operator from its own forwarding filter. */
 internal fun resolveNotificationCandidatePackages(
   launcherPackages: Set<String>,
   recentPackages: List<String>,

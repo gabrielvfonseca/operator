@@ -1,11 +1,11 @@
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
   resolveLivePluginConfigObject,
-} from "openclaw/plugin-sdk/plugin-config-runtime";
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import type { AuditRow, PendingAuthorization, StandingGrant } from "./src/broker.js";
 import { OnePasswordBroker } from "./src/broker.js";
 import { MAX_REGISTERED_ITEMS, parseOnePasswordConfig } from "./src/config.js";

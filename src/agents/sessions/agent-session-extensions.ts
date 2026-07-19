@@ -1,6 +1,6 @@
 import { basename, dirname } from "node:path";
-import { defaultApiRegistry } from "@operator/ai/internal/runtime";
-import { resetApiProviders } from "@operator/ai/providers";
+import { defaultApiRegistry } from "@gabrielvfonseca/ai/internal/runtime";
+import { resetApiProviders } from "@gabrielvfonseca/ai/providers";
 import { AgentSessionCompaction } from "./agent-session-compaction.js";
 import type { ExtensionBindings } from "./agent-session-types.js";
 import { ExtensionRunner, type ToolDefinition, wrapRegisteredTools } from "./extensions/index.js";

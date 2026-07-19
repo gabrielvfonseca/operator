@@ -1,5 +1,5 @@
 // Plugin state store exposes persisted per-plugin state operations.
-import { closeOperatorStateDatabaseForTest } from "../state/operator-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import {
   clearPluginStateDatabaseForTests,
   closePluginStateDatabase,

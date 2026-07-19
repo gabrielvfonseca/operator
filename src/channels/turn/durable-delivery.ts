@@ -1,5 +1,5 @@
 // Durable final-reply delivery for inbound channel turns.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import type { FinalizedMsgContext } from "../../auto-reply/templating.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

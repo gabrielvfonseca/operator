@@ -1,28 +1,37 @@
-// Telegram plugin module implements send behavior.
-import * as grammy from "grammy";
-import { type ApiClientOptions, Bot, HttpError } from "grammy";
-import type { ReactionType, ReactionTypeEmoji } from "grammy/types";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
 import {
   formatLocationText,
   normalizeOutboundLocation,
   type OutboundLocation,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   createMessageReceiptFromOutboundResults,
   type MessageReceipt,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { MarkdownTableMode, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import { isDiagnosticFlagEnabled } from "openclaw/plugin-sdk/diagnostic-runtime";
-import { formatUncaughtError } from "openclaw/plugin-sdk/error-runtime";
-import { redactSensitiveText } from "openclaw/plugin-sdk/logging-core";
-import { parseStrictInteger } from "openclaw/plugin-sdk/number-runtime";
-import { resolveTextChunkLimit } from "openclaw/plugin-sdk/reply-chunking";
-import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
-import { createTelegramRetryRunner, type RetryConfig } from "openclaw/plugin-sdk/retry-runtime";
-import { createSubsystemLogger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type {
+  MarkdownTableMode,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isDiagnosticFlagEnabled } from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
+import { formatUncaughtError } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { redactSensitiveText } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import { parseStrictInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { resolveTextChunkLimit } from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { isSingleUseReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-reference";
+import {
+  createTelegramRetryRunner,
+  type RetryConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/retry-runtime";
+import {
+  createSubsystemLogger,
+  logVerbose,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Telegram plugin module implements send behavior.
+import * as grammy from "grammy";
+import { type ApiClientOptions, Bot, HttpError } from "grammy";
+import type { ReactionType, ReactionTypeEmoji } from "grammy/types";
 import { getOrCreateAccountThrottler } from "./account-throttler.js";
 import { type ResolvedTelegramAccount, resolveTelegramAccount } from "./accounts.js";
 import { withTelegramApiErrorLogging } from "./api-logging.js";

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { getRuntimeConfig } from "../config/config.js";
 import { resolveSessionFilePath } from "../config/sessions/paths.js";
@@ -23,7 +23,7 @@ import type { SessionEntry } from "../config/sessions/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveStoredSessionOwnerAgentId } from "../gateway/session-store-key.js";
 import { normalizeAgentId } from "../routing/session-key.js";
-import { closeOperatorAgentDatabaseByPath } from "../state/operator-agent-db.js";
+import { closeOperatorAgentDatabaseByPath } from "../state/openclaw-agent-db.js";
 import { compactDoctorSessionSqliteTarget } from "./doctor-session-sqlite-compact.js";
 import {
   assertSafeSessionSqliteMigrationDirectory,

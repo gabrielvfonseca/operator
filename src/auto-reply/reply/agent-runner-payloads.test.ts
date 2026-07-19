@@ -1,6 +1,6 @@
 // Tests reply payload construction and metadata propagation from agent runs.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it } from "vitest";
 import type { ChannelThreadingAdapter } from "../../channels/plugins/types.public.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../../plugins/runtime.js";

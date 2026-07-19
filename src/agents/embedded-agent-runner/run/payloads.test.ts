@@ -1,6 +1,6 @@
 // Payload tests cover successful embedded run replies, final-answer selection,
 // message-tool source replies, media directives, and tool-error warning policy.
-import type { AssistantMessage } from "openclaw/plugin-sdk/llm";
+import type { AssistantMessage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
 import { resolveHeartbeatReplyPayload } from "../../../auto-reply/heartbeat-reply-payload.js";
 import { resolveHeartbeatToolResponseFromReplyResult } from "../../../auto-reply/heartbeat-tool-response.js";
@@ -630,9 +630,9 @@ describe("buildEmbeddedRunPayloads tool-error warnings", () => {
     const payloads = buildPayloads({
       lastToolError: {
         toolName: "exec",
-        meta: "show last 20 lines of ~/.openclaw/workspace/memory/2026-06-04.md",
+        meta: "show last 20 lines of ~/.operator/workspace/memory/2026-06-04.md",
         error:
-          "tail: cannot open '/home/user/.openclaw/workspace/memory/2026-06-04.md' for reading: No such file or directory",
+          "tail: cannot open '/home/user/.operator/workspace/memory/2026-06-04.md' for reading: No such file or directory",
       },
       isHeartbeatTrigger: true,
       verboseLevel: "off",

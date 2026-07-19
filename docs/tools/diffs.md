@@ -19,7 +19,7 @@ Output: a gateway viewer URL for canvas presentation, a rendered PNG/PDF file pa
 <Steps>
   <Step title="Install the plugin">
     ```bash
-    openclaw plugins install diffs
+    operator plugins install diffs
     ```
   </Step>
   <Step title="Enable the plugin">
@@ -154,7 +154,7 @@ Common aliases (`js`, `ts`, `bash`, `md`, `yml`, `c++`, `dockerfile`, `rb`, `kt`
 Install the Diff Viewer Language Pack plugin for more languages (Astro, Vue, Svelte, MDX, GraphQL, Terraform/HCL, Nix, Clojure, Elixir, Haskell, OCaml, Scala, Zig, Solidity, Verilog/VHDL, Fortran, MATLAB, LaTeX, Mermaid, Sass/Less/SCSS, Nginx, Apache, CSV, dotenv, INI, diff, and more):
 
 ```bash
-openclaw plugins install clawhub:@operator/diffs-language-pack
+operator plugins install clawhub:@gabrielvfonseca/diffs-language-pack
 ```
 
 Without the pack, unsupported languages still render as readable plain text. See [Diffs Language Pack plugin](/plugins/reference/diffs-language-pack) and [Shiki languages](https://shiki.style/languages) for the upstream catalog.
@@ -208,7 +208,7 @@ Patches that touch more than one file start with a changed-files summary card: t
 
 ## Plugin defaults
 
-Set plugin-wide defaults in `~/.openclaw/openclaw.json`:
+Set plugin-wide defaults in `~/.operator/operator.json`:
 
 ```json5
 {
@@ -289,7 +289,7 @@ Supported `defaults` keys: `fontFamily`, `fontSize`, `lineSpacing`, `layout`, `s
 
 ## Artifact lifecycle and storage
 
-- Artifacts live under `$TMPDIR/openclaw-diffs`.
+- Artifacts live under `$TMPDIR/operator-diffs`.
 - Viewer metadata stores a random 20-hex-char artifact ID, a random 48-hex-char token, `createdAt`/`expiresAt`, and the stored `viewer.html` path.
 - Default artifact TTL: 30 minutes. Maximum accepted TTL: 6 hours.
 - Cleanup runs opportunistically after each artifact create call; expired artifacts are deleted.
@@ -337,10 +337,10 @@ Resolution order:
 
 <Steps>
   <Step title="Config">
-    `browser.executablePath` in OpenClaw config.
+    `browser.executablePath` in Operator config.
   </Step>
   <Step title="Environment variables">
-    - `OPENCLAW_BROWSER_EXECUTABLE_PATH`
+    - `OPERATOR_BROWSER_EXECUTABLE_PATH`
     - `BROWSER_EXECUTABLE_PATH`
     - `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`
 

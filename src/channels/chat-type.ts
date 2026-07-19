@@ -3,7 +3,7 @@
  *
  * Maps channel-specific direct/group/channel labels into Operator chat types.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /**
  * Normalized conversation kind shared by channel routing, sessions, and SDK helpers.

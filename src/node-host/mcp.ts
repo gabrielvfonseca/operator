@@ -1,10 +1,10 @@
+import { redactSensitiveUrlLikeString } from "@gabrielvfonseca/net-policy/redact-sensitive-url";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 /** Process-lifetime MCP clients owned by the headless node host. */
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { ErrorCode, type CallToolResult, type Tool } from "@modelcontextprotocol/sdk/types.js";
-import { redactSensitiveUrlLikeString } from "@operator/net-policy/redact-sensitive-url";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import type { NodePluginToolDescriptor } from "../../packages/gateway-protocol/src/schema/nodes.js";
 import { matchesMcpToolFilterPattern } from "../agents/agent-bundle-mcp-filter.js";
 import { createMcpJsonSchemaValidator } from "../agents/mcp-json-schema-validator.js";

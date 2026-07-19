@@ -1,6 +1,6 @@
 /** Migration provider context and report-directory helpers. */
 import path from "node:path";
-import { timestampMsToIsoFileStamp } from "@operator/normalization-core/number-coercion";
+import { timestampMsToIsoFileStamp } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { getRuntimeConfig } from "../../config/config.js";
 import { resolveStateDir } from "../../config/paths.js";
 import type { OperatorConfig } from "../../config/types.operator.js";

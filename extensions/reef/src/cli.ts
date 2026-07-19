@@ -3,10 +3,10 @@
 // asked to by their owner; --json emits machine-readable results.
 import { readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
+import { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+import { mutateConfigFile } from "@gabrielvfonseca/operator/plugin-sdk/config-mutation";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import type { Command } from "commander";
-import { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
-import { mutateConfigFile } from "openclaw/plugin-sdk/config-mutation";
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
 import { fingerprint } from "../protocol/index.js";
 import {
   parseReefRelayUrl,

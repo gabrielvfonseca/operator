@@ -5,20 +5,20 @@ import {
   onAgentEvent,
   resolveActiveEmbeddedRunSessionId,
   type AgentEventPayload,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { SessionManager } from "openclaw/plugin-sdk/agent-sessions";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { SessionManager } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import {
   onInternalDiagnosticEvent,
   waitForDiagnosticEventsDrained,
   type DiagnosticEventPayload,
   type DiagnosticEventPrivateData,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
-import { initializeGlobalHookRunner } from "openclaw/plugin-sdk/hook-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
+import { initializeGlobalHookRunner } from "@gabrielvfonseca/operator/plugin-sdk/hook-runtime";
 import {
   createMockPluginRegistry,
   onTrustedInternalDiagnosticEvent,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { GPT5_BEHAVIOR_CONTRACT as CODEX_GPT5_BEHAVIOR_CONTRACT } from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { GPT5_BEHAVIOR_CONTRACT as CODEX_GPT5_BEHAVIOR_CONTRACT } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { describe, expect, it, vi } from "vitest";
 import {
   assistantMessage,

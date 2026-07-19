@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { saveTaskRegistryStateToSqlite } from "../tasks/task-registry.store.sqlite.js";
 import type { TaskRecord } from "../tasks/task-registry.types.js";
 import { resetTaskRegistryForTests } from "../tasks/task-runtime.test-helpers.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import type { CronRunLogEntry } from "./run-log-types.js";
 import { CronService } from "./service.js";
 import { createNoopLogger } from "./service.test-harness.js";
@@ -66,7 +66,7 @@ function futureCronDetailTask(storeKey: string): TaskRecord {
 describe("cron task run history", () => {
   it("reads executions produced by the cron service from the ledger", async () => {
     await withOperatorTestState(
-      { layout: "state-only", prefix: "openclaw-cron-task-service-history-" },
+      { layout: "state-only", prefix: "operator-cron-task-service-history-" },
       async (state) => {
         resetTaskRegistryForTests();
         const storePath = state.path("cron", "jobs.json");
@@ -166,7 +166,7 @@ describe("cron task run history", () => {
 
   it("round-trips outcomes and telemetry through task detail", async () => {
     await withOperatorTestState(
-      { layout: "state-only", prefix: "openclaw-cron-task-history-" },
+      { layout: "state-only", prefix: "operator-cron-task-history-" },
       async (state) => {
         const storePath = state.path("jobs.json");
         const storeKey = cronStoreKey(storePath);
@@ -277,7 +277,7 @@ describe("cron task run history", () => {
 
   it("preserves paging and text-query filtering", async () => {
     await withOperatorTestState(
-      { layout: "state-only", prefix: "openclaw-cron-task-history-page-" },
+      { layout: "state-only", prefix: "operator-cron-task-history-page-" },
       async (state) => {
         const storeKey = cronStoreKey(state.path("jobs.json"));
         const entries: CronRunLogEntry[] = [
@@ -369,7 +369,7 @@ describe("cron task run history", () => {
 
   it("keeps same-job histories and totals scoped to one cron store", async () => {
     await withOperatorTestState(
-      { layout: "state-only", prefix: "openclaw-cron-task-history-store-scope-" },
+      { layout: "state-only", prefix: "operator-cron-task-history-store-scope-" },
       async (state) => {
         const storeA = cronStoreKey(state.path("cron-a", "jobs.json"));
         const storeB = cronStoreKey(state.path("cron-b", "jobs.json"));

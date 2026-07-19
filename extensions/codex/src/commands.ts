@@ -2,7 +2,7 @@
  * Registers the `/codex` plugin command and lazy-loads the app-server command
  * handler implementation.
  */
-import type { OperatorPluginCommandDefinition } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginCommandDefinition } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { handleCodexCommand } from "./command-dispatch.js";
 import type { CodexCommandDepsOverride } from "./command-handlers.js";
 
@@ -21,11 +21,11 @@ export function createCodexCommand(options: CodexCommandOptions): OperatorPlugin
     agentPromptGuidance: [
       {
         text: "Native Codex app-server plugin is available (`/codex ...`). For Codex bind/control/thread/resume/steer/stop requests, prefer `/codex bind`, `/codex threads`, `/codex resume`, `/codex steer`, and `/codex stop` over ACP. When Operator sandboxing is active, native Codex execution modes are unavailable; use normal Codex harness turns.",
-        surfaces: ["openclaw_main"],
+        surfaces: ["operator_main"],
       },
       {
         text: "Use ACP for Codex only when the user explicitly asks for ACP/acpx or wants to test the ACP path.",
-        surfaces: ["openclaw_main"],
+        surfaces: ["operator_main"],
       },
     ],
     acceptsArgs: true,

@@ -115,8 +115,8 @@ describe("status-all diagnosis port checks", () => {
 
   it("treats same-process dual-stack loopback listeners as healthy", async () => {
     const params = createBaseParams([
-      { pid: 5001, commandLine: "openclaw-gateway", address: "127.0.0.1:18789" },
-      { pid: 5001, commandLine: "openclaw-gateway", address: "[::1]:18789" },
+      { pid: 5001, commandLine: "operator-gateway", address: "127.0.0.1:18789" },
+      { pid: 5001, commandLine: "operator-gateway", address: "[::1]:18789" },
     ]);
 
     await appendStatusAllDiagnosis(params);
@@ -129,7 +129,7 @@ describe("status-all diagnosis port checks", () => {
 
   it("treats a single wildcard Gateway listener as healthy", async () => {
     const params = createBaseParams([
-      { pid: 5001, commandLine: "openclaw-gateway", address: "0.0.0.0:18789" },
+      { pid: 5001, commandLine: "operator-gateway", address: "0.0.0.0:18789" },
     ]);
 
     await appendStatusAllDiagnosis(params);
@@ -142,8 +142,8 @@ describe("status-all diagnosis port checks", () => {
 
   it("keeps warning for multi-process listener conflicts", async () => {
     const params = createBaseParams([
-      { pid: 5001, commandLine: "openclaw-gateway", address: "127.0.0.1:18789" },
-      { pid: 5002, commandLine: "openclaw-gateway", address: "[::1]:18789" },
+      { pid: 5001, commandLine: "operator-gateway", address: "127.0.0.1:18789" },
+      { pid: 5002, commandLine: "operator-gateway", address: "[::1]:18789" },
     ]);
 
     await appendStatusAllDiagnosis(params);

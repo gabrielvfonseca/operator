@@ -1,5 +1,5 @@
 /** Tool-name matching helpers for context-pruning eligibility. */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { compileGlobPatterns, matchesAnyGlobPattern } from "../../glob-pattern.js";
 import type { ContextPruningToolMatch } from "./settings.js";
 

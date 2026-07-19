@@ -3,13 +3,13 @@
  * Normalizes legacy JSON stores, SQLite/raw payloads, runtime state metadata,
  * legacy OAuth files, and merged main/agent stores.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { isRecord } from "@operator/normalization-core/record-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveOAuthPath } from "../../config/paths.js";
 import { coerceSecretRef } from "../../config/types.secrets.js";
 import { loadJsonFile } from "../../infra/json-file.js";
-import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
+import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import { asBoolean } from "../../utils/boolean.js";
 import { AUTH_STORE_VERSION, log } from "./constants.js";
 import { isLegacyOAuthRef } from "./legacy-oauth-ref.js";

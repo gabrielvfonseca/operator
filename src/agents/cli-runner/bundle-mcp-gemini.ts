@@ -113,7 +113,7 @@ export async function writeGeminiMcpCaptureSettings(params: {
   }
   const settings = await readJsonObject(existingSettingsPath);
   const mcpServers = isRecord(settings.mcpServers) ? settings.mcpServers : {};
-  const operator = isRecord(mcpServers.operator) ? mcpServers.operator : {};
+  const openclaw = isRecord(mcpServers.operator) ? mcpServers.operator : {};
   const headers = normalizeStringRecord(operator.headers) ?? {};
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-gemini-mcp-attempt-"));
   const settingsPath = path.join(tempDir, "settings.json");

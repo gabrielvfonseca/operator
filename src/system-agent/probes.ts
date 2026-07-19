@@ -1,5 +1,5 @@
 // Operator probes check local tools and Gateway health with bounded subprocess/network work.
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { runCommandWithTimeout } from "../process/exec.js";
 
 /**

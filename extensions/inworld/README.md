@@ -5,8 +5,8 @@ Official Operator plugin for Inworld.
 Install from Operator:
 
 ```bash
-openclaw plugins install @operator/inworld-speech
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/inworld-speech
+operator gateway restart
 ```
 
-See <https://docs.openclaw.ai/providers/inworld> for setup and configuration.
+See <https://docs.operator.ai/providers/inworld> for setup and configuration.

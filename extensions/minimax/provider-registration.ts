@@ -1,5 +1,5 @@
 // Minimax provider module implements model/runtime integration.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import type {
   OperatorPluginApi,
   OperatorConfig,
@@ -8,22 +8,22 @@ import type {
   ProviderCatalogContext,
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   MINIMAX_OAUTH_MARKER,
   ensureAuthProfileStore,
   listProfilesForProvider,
-} from "openclaw/plugin-sdk/provider-auth";
-import { buildOauthProviderAuthResult } from "openclaw/plugin-sdk/provider-auth";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
-import type { ProviderPlugin } from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { buildOauthProviderAuthResult } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import type { ProviderPlugin } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import {
   buildProviderReplayFamilyHooks,
   normalizeModelCompat,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { buildProviderStreamFamilyHooks } from "openclaw/plugin-sdk/provider-stream-family";
-import { fetchMinimaxUsage } from "openclaw/plugin-sdk/provider-usage";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { buildProviderStreamFamilyHooks } from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-family";
+import { fetchMinimaxUsage } from "@gabrielvfonseca/operator/plugin-sdk/provider-usage";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   isMiniMaxModernModelId,
   MINIMAX_DEFAULT_MODEL_ID,

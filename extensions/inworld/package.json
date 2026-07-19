@@ -1,22 +1,22 @@
 {
-  "name": "@operator/inworld-speech",
+  "name": "@gabrielvfonseca/inworld-speech",
   "version": "2026.7.2",
   "description": "Operator Inworld speech plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/inworld-speech",
-      "npmSpec": "@operator/inworld-speech",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/inworld-speech",
+      "npmSpec": "@gabrielvfonseca/inworld-speech",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

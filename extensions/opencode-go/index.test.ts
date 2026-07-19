@@ -1,15 +1,15 @@
 // Opencode Go tests cover index plugin behavior.
-import type { ProviderRuntimeModel } from "openclaw/plugin-sdk/plugin-entry";
+import type { ProviderRuntimeModel } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   registerProviderPlugin,
   registerSingleProviderPlugin,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import { NON_ENV_SECRETREF_MARKER } from "openclaw/plugin-sdk/provider-auth-runtime";
-import { clearLiveCatalogCacheForTests } from "openclaw/plugin-sdk/provider-catalog-live-runtime";
-import { expectPassthroughReplayPolicy } from "openclaw/plugin-sdk/provider-test-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import { NON_ENV_SECRETREF_MARKER } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import { clearLiveCatalogCacheForTests } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-live-runtime";
+import { expectPassthroughReplayPolicy } from "@gabrielvfonseca/operator/plugin-sdk/provider-test-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import plugin from "./index.js";
-import manifest from "./openclaw.plugin.json" with { type: "json" };
+import manifest from "./operator.plugin.json" with { type: "json" };
 import {
   buildOpencodeGoLiveProviderConfig,
   buildStaticOpencodeGoProviderConfig,

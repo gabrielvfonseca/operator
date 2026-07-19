@@ -1,9 +1,12 @@
 // Discord type declarations define plugin contracts.
-import type { InboundEventKind } from "openclaw/plugin-sdk/channel-inbound";
-import type { OperatorConfig, ReplyToMode } from "openclaw/plugin-sdk/config-contracts";
-import type { SessionBindingRecord } from "openclaw/plugin-sdk/conversation-runtime";
-import type { HistoryEntry } from "openclaw/plugin-sdk/reply-history";
-import type { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
+import type { InboundEventKind } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import type {
+  OperatorConfig,
+  ReplyToMode,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { SessionBindingRecord } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import type { HistoryEntry } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import type { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import type { ChannelType, Client, User } from "../internal/discord.js";
 import type { DiscordChannelConfigResolved, DiscordGuildEntryResolved } from "./allow-list.js";
 import type { DiscordChannelInfo, DiscordMediaInfo } from "./message-utils.js";

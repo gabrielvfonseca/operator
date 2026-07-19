@@ -2,8 +2,8 @@
 import {
   parsePluginBindingApprovalCustomId,
   resolvePinnedMainDmOwnerFromAllowlist,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { isSingleUseReplyToMode } from "openclaw/plugin-sdk/reply-reference";
+} from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { isSingleUseReplyToMode } from "@gabrielvfonseca/operator/plugin-sdk/reply-reference";
 import { vi, type Mock } from "vitest";
 
 type UnknownMock = Mock<(...args: unknown[]) => unknown>;
@@ -164,12 +164,12 @@ export function resetDiscordComponentRuntimeMocks() {
   readSessionUpdatedAtMock.mockClear().mockReturnValue(undefined);
   upsertPairingRequestMock.mockClear().mockResolvedValue({ code: "PAIRCODE", created: true });
   recordInboundSessionMock.mockClear().mockResolvedValue(undefined);
-  resolveStorePathMock.mockClear().mockReturnValue("/tmp/openclaw-sessions-test.json");
+  resolveStorePathMock.mockClear().mockReturnValue("/tmp/operator-sessions-test.json");
   resolvePluginConversationBindingApprovalMock.mockReset().mockResolvedValue({
     status: "approved",
     binding: {
       bindingId: "binding-1",
-      pluginId: "openclaw-codex-app-server",
+      pluginId: "operator-codex-app-server",
       pluginName: "Operator App Server",
       pluginRoot: "/plugins/codex",
       channel: "discord",
@@ -179,7 +179,7 @@ export function resetDiscordComponentRuntimeMocks() {
     },
     request: {
       id: "approval-1",
-      pluginId: "openclaw-codex-app-server",
+      pluginId: "operator-codex-app-server",
       pluginName: "Operator App Server",
       pluginRoot: "/plugins/codex",
       requestedAt: Date.now(),

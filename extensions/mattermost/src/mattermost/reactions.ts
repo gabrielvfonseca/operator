@@ -1,10 +1,10 @@
 // Mattermost plugin module implements reactions behavior.
-import type { ChannelMessageActionContext } from "openclaw/plugin-sdk/channel-contract";
+import type { ChannelMessageActionContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { isPrivateNetworkOptInEnabled } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { isPrivateNetworkOptInEnabled } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { normalizeMattermostMessagingTarget } from "../normalize.js";
 import { resolveMattermostAccount } from "./accounts.js";
 import {

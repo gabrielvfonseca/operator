@@ -1,11 +1,11 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.NodeRuntime
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.ui.design.ClawPlainIconButton
-import ai.openclaw.app.ui.design.ClawScaffold
-import ai.openclaw.app.ui.design.ClawTheme
+import ai.operator.app.MainViewModel
+import ai.operator.app.NodeRuntime
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.ui.design.ClawPlainIconButton
+import ai.operator.app.ui.design.ClawScaffold
+import ai.operator.app.ui.design.ClawTheme
 import android.annotation.SuppressLint
 import android.view.View
 import android.webkit.WebSettings
@@ -141,7 +141,7 @@ private fun TerminalWebView(
 
 /**
  * Hands the gateway credentials to the Control UI via its
- * `__OPENCLAW_NATIVE_CONTROL_AUTH__` startup contract (the same mechanism the
+ * `__OPERATOR_NATIVE_CONTROL_AUTH__` startup contract (the same mechanism the
  * macOS Dashboard and iOS Terminal hub use), origin-locked by the platform's
  * allowed-origin rules, so the token never appears in the page URL. Without
  * document-start script support the page simply shows its own login gate.
@@ -163,7 +163,7 @@ private fun installTerminalAuthScript(
     """
     (() => {
       try {
-        Object.defineProperty(window, "__OPENCLAW_NATIVE_CONTROL_AUTH__", {
+        Object.defineProperty(window, "__OPERATOR_NATIVE_CONTROL_AUTH__", {
           value: $payload,
           configurable: true,
         });

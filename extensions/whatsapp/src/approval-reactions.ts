@@ -1,18 +1,18 @@
-// Whatsapp plugin module implements approval reactions behavior.
-import type { WAMessage } from "baileys";
 import {
   createApprovalReactionTargetStore,
   listApprovalReactionBindings,
   resolveTypedApprovalReactionTarget,
   type ApprovalReactionDecisionBinding,
   type ApprovalReactionTargetRecord,
-} from "openclaw/plugin-sdk/approval-reaction-runtime";
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OutboundDeliveryResult } from "openclaw/plugin-sdk/channel-send-result";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MessagePresentation } from "openclaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-reaction-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OutboundDeliveryResult } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MessagePresentation } from "@gabrielvfonseca/operator/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+// Whatsapp plugin module implements approval reactions behavior.
+import type { WAMessage } from "baileys";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import { getWhatsAppApprovalApprovers, whatsappApprovalAuth } from "./approval-auth.js";
 import { getOptionalWhatsAppRuntime } from "./runtime.js";

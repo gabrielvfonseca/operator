@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import path from "node:path";
-import { collectManifestModelIdNormalizationPolicies } from "@operator/model-catalog-core/provider-model-id-normalization";
+import { collectManifestModelIdNormalizationPolicies } from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalization";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope-config.js";
 import { ensureOwnerDisplaySecret } from "../agents/owner-display.js";
 import { formatErrorMessage } from "../infra/errors.js";
@@ -264,7 +264,7 @@ export function createConfigIoContext(options: ConfigIoFactoryOptions = {}): Con
       return { migrated: true };
     } catch (error) {
       throw new Error(
-        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run operator plugins registry --refresh, then retry. ${formatErrorMessage(error)}`,
+        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run openclaw plugins registry --refresh, then retry. ${formatErrorMessage(error)}`,
         { cause: error },
       );
     }

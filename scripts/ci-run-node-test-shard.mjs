@@ -13,7 +13,7 @@ import { acquireLocalHeavyCheckLockSync } from "./lib/local-heavy-check-runtime.
 // inner test-projects parallelism 1 so a job never exceeds two Vitest runs;
 // stacking outer and inner parallelism oversubscribes the 4 vCPU runner class.
 const PLAN_CONCURRENCY = 2;
-const FS_MODULE_CACHE_PATH_ENV_KEY = "OPENCLAW_VITEST_FS_MODULE_CACHE_PATH";
+const FS_MODULE_CACHE_PATH_ENV_KEY = "OPERATOR_VITEST_FS_MODULE_CACHE_PATH";
 
 function parseJsonEnv(env, name, fallback = null) {
   try {
@@ -24,23 +24,23 @@ function parseJsonEnv(env, name, fallback = null) {
 }
 
 export function resolveShardPlans(env = process.env) {
-  const targets = parseJsonEnv(env, "OPENCLAW_NODE_TEST_TARGETS_JSON");
+  const targets = parseJsonEnv(env, "OPERATOR_NODE_TEST_TARGETS_JSON");
   if (Array.isArray(targets) && targets.length > 0) {
     // One target per child process preserves the isolation boundaries encoded
     // by full-suite include-pattern shards while keeping one runner job.
     return targets.map((target) => ({ kind: "target", name: target, target }));
   }
 
-  const groups = parseJsonEnv(env, "OPENCLAW_NODE_TEST_GROUPS_JSON");
+  const groups = parseJsonEnv(env, "OPERATOR_NODE_TEST_GROUPS_JSON");
   const plans =
     Array.isArray(groups) && groups.length > 0
       ? groups
       : [
           {
-            configs: parseJsonEnv(env, "OPENCLAW_NODE_TEST_CONFIGS_JSON", []),
-            env: parseJsonEnv(env, "OPENCLAW_NODE_TEST_ENV_JSON"),
-            includePatterns: parseJsonEnv(env, "OPENCLAW_NODE_TEST_INCLUDE_PATTERNS_JSON"),
-            shard_name: env.OPENCLAW_VITEST_SHARD_NAME,
+            configs: parseJsonEnv(env, "OPERATOR_NODE_TEST_CONFIGS_JSON", []),
+            env: parseJsonEnv(env, "OPERATOR_NODE_TEST_ENV_JSON"),
+            includePatterns: parseJsonEnv(env, "OPERATOR_NODE_TEST_INCLUDE_PATTERNS_JSON"),
+            shard_name: env.OPERATOR_VITEST_SHARD_NAME,
           },
         ];
   return plans.map((plan) => ({
@@ -56,17 +56,17 @@ export function buildChildEnv(entry, baseEnv, scratchDir, index) {
     // Concurrent children must not share a Vitest module cache directory;
     // shared caches race with ENOTEMPTY when two runs rewrite the same entries.
     [FS_MODULE_CACHE_PATH_ENV_KEY]: join(scratchDir, `vitest-cache-${index}`),
-    OPENCLAW_TEST_PROJECTS_PARALLEL: "1",
+    OPERATOR_TEST_PROJECTS_PARALLEL: "1",
     // This wrapper holds the repo heavy-check lock; children skipping it is
     // what lets two plans run concurrently instead of serializing on the lock.
-    OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD: "1",
+    OPERATOR_TEST_HEAVY_CHECK_LOCK_HELD: "1",
   };
   if (entry.kind === "target") {
     return childEnv;
   }
   const plan = entry.plan;
   if (plan.shard_name) {
-    childEnv.OPENCLAW_VITEST_SHARD_NAME = plan.shard_name;
+    childEnv.OPERATOR_VITEST_SHARD_NAME = plan.shard_name;
   }
   if (plan.env && typeof plan.env === "object" && !Array.isArray(plan.env)) {
     for (const [key, value] of Object.entries(plan.env)) {
@@ -78,9 +78,9 @@ export function buildChildEnv(entry, baseEnv, scratchDir, index) {
   if (Array.isArray(plan.includePatterns) && plan.includePatterns.length > 0) {
     const includeFile = join(scratchDir, `node-test-include-${index}.json`);
     writeFileSync(includeFile, JSON.stringify(plan.includePatterns), "utf8");
-    childEnv.OPENCLAW_VITEST_INCLUDE_FILE = includeFile;
+    childEnv.OPERATOR_VITEST_INCLUDE_FILE = includeFile;
   } else {
-    delete childEnv.OPENCLAW_VITEST_INCLUDE_FILE;
+    delete childEnv.OPERATOR_VITEST_INCLUDE_FILE;
   }
   return childEnv;
 }
@@ -158,7 +158,7 @@ export async function runShardPlans(plans, options = {}) {
   const baseEnv = options.env ?? process.env;
   const concurrency = Math.max(1, options.concurrency ?? PLAN_CONCURRENCY);
   const runner = options.runChild ?? runChild;
-  const scratchDir = options.scratchDir ?? mkdtempSync(join(tmpdir(), "openclaw-node-shard-"));
+  const scratchDir = options.scratchDir ?? mkdtempSync(join(tmpdir(), "operator-node-shard-"));
 
   let nextIndex = 0;
   let exitCode = 0;
@@ -190,7 +190,7 @@ if (isDirectRunUrl(process.argv[1], import.meta.url)) {
   const plans = resolveShardPlans();
   // Bins holding spawn/signal-timing suites are marked planConcurrency 1 by
   // the planner; overlapping them with a sibling Vitest run causes flakes.
-  const planConcurrency = Number(process.env.OPENCLAW_NODE_TEST_PLAN_CONCURRENCY) || undefined;
+  const planConcurrency = Number(process.env.OPERATOR_NODE_TEST_PLAN_CONCURRENCY) || undefined;
   const releaseLock = acquireLocalHeavyCheckLockSync({
     cwd: process.cwd(),
     env: process.env,

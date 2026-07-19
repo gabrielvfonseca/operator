@@ -1,5 +1,5 @@
 /** Collects core config secret refs during runtime preparation. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { MediaUnderstandingModelConfig } from "../config/types.tools.js";
 import {

@@ -1,6 +1,6 @@
 /** Resolves ACP request metadata into Operator Gateway session keys and reset behavior. */
-import { readBool, readString } from "@operator/acp-core/meta";
-import type { AcpServerOptions } from "@operator/acp-core/types";
+import { readBool, readString } from "@gabrielvfonseca/acp-core/meta";
+import type { AcpServerOptions } from "@gabrielvfonseca/acp-core/types";
 import type { GatewayClient } from "../gateway/client.js";
 
 type AcpSessionMeta = {

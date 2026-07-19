@@ -33,7 +33,7 @@ describe("openclaw delegation tool", () => {
 
     const result = await tool.execute("call-1", { message: "Add channel." });
 
-    expect(callGateway).toHaveBeenCalledWith("openclaw.chat", {
+    expect(callGateway).toHaveBeenCalledWith("operator.chat", {
       sessionId: expect.stringMatching(/^delegate-[a-f0-9]{32}$/),
       message: "Add channel.",
       delegation: {
@@ -74,6 +74,6 @@ describe("openclaw delegation tool", () => {
   });
 
   it("uses the owner-only core gate", () => {
-    expect(GATEWAY_OWNER_ONLY_CORE_TOOLS).toContain("openclaw");
+    expect(GATEWAY_OWNER_ONLY_CORE_TOOLS).toContain("@gabrielvfonseca/operator");
   });
 });

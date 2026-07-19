@@ -1,7 +1,7 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.LocationMode
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.LocationMode
+import ai.operator.app.gateway.GatewaySession
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager

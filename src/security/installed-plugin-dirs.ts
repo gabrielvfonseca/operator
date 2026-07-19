@@ -1,7 +1,7 @@
 // Resolves installed plugin directories for security trust audits.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 const IGNORED_INSTALLED_PLUGIN_DIR_NAMES = new Set(["node_modules", ".operator-install-backups"]);
 

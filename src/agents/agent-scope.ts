@@ -9,7 +9,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   resolvePrimaryStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionEntry } from "../config/sessions/types.js";
 import type { AgentDefaultsConfig } from "../config/types.agent-defaults.js";
 import type { AgentModelConfig } from "../config/types.agents-shared.js";

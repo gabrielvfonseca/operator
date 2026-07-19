@@ -63,11 +63,11 @@ export function assignModelCallSizeTimingAttrs(
     timeToFirstByteMs?: number;
   },
 ): void {
-  assignPositiveNumberAttr(attrs, "openclaw.model_call.request_bytes", evt.requestPayloadBytes);
-  assignPositiveNumberAttr(attrs, "openclaw.model_call.response_bytes", evt.responseStreamBytes);
+  assignPositiveNumberAttr(attrs, "operator.model_call.request_bytes", evt.requestPayloadBytes);
+  assignPositiveNumberAttr(attrs, "operator.model_call.response_bytes", evt.responseStreamBytes);
   assignPositiveNumberAttr(
     attrs,
-    "openclaw.model_call.time_to_first_byte_ms",
+    "operator.model_call.time_to_first_byte_ms",
     evt.timeToFirstByteMs,
   );
 }
@@ -107,12 +107,12 @@ export function assignModelCallPromptStatsAttrs(
     return;
   }
   for (const [key, value] of [
-    ["openclaw.model_call.prompt.input_messages_count", stats.inputMessagesCount],
-    ["openclaw.model_call.prompt.input_messages_chars", stats.inputMessagesChars],
-    ["openclaw.model_call.prompt.system_prompt_chars", stats.systemPromptChars],
-    ["openclaw.model_call.prompt.tool_definitions_count", stats.toolDefinitionsCount],
-    ["openclaw.model_call.prompt.tool_definitions_chars", stats.toolDefinitionsChars],
-    ["openclaw.model_call.prompt.total_chars", stats.totalChars],
+    ["operator.model_call.prompt.input_messages_count", stats.inputMessagesCount],
+    ["operator.model_call.prompt.input_messages_chars", stats.inputMessagesChars],
+    ["operator.model_call.prompt.system_prompt_chars", stats.systemPromptChars],
+    ["operator.model_call.prompt.tool_definitions_count", stats.toolDefinitionsCount],
+    ["operator.model_call.prompt.tool_definitions_chars", stats.toolDefinitionsChars],
+    ["operator.model_call.prompt.total_chars", stats.totalChars],
   ] as const) {
     assignNumberAttr(attrs, key, value);
   }
@@ -128,13 +128,13 @@ export function assignModelCallUsageAttrs(
   }
   const promptTokens = modelCallPromptTokens(usage);
   for (const [key, value] of [
-    ["openclaw.model_call.usage.input_tokens", usage.input],
-    ["openclaw.model_call.usage.output_tokens", usage.output],
-    ["openclaw.model_call.usage.cache_read_input_tokens", usage.cacheRead],
-    ["openclaw.model_call.usage.cache_creation_input_tokens", usage.cacheWrite],
-    ["openclaw.model_call.usage.reasoning_output_tokens", usage.reasoningTokens],
-    ["openclaw.model_call.usage.prompt_tokens", promptTokens],
-    ["openclaw.model_call.usage.total_tokens", usage.total],
+    ["operator.model_call.usage.input_tokens", usage.input],
+    ["operator.model_call.usage.output_tokens", usage.output],
+    ["operator.model_call.usage.cache_read_input_tokens", usage.cacheRead],
+    ["operator.model_call.usage.cache_creation_input_tokens", usage.cacheWrite],
+    ["operator.model_call.usage.reasoning_output_tokens", usage.reasoningTokens],
+    ["operator.model_call.usage.prompt_tokens", promptTokens],
+    ["operator.model_call.usage.total_tokens", usage.total],
     ["gen_ai.usage.input_tokens", promptTokens],
     ["gen_ai.usage.output_tokens", usage.output],
     ["gen_ai.usage.cache_read.input_tokens", usage.cacheRead],
@@ -173,7 +173,7 @@ export function assignGenAiModelCallAttrs(
 
 export function modelCallSpanName(evt: { api?: string; model?: string }): string {
   if (!emitLatestGenAiSemconv()) {
-    return "openclaw.model.call";
+    return "operator.model.call";
   }
   return `${genAiOperationName(evt.api)} ${lowCardinalityAttr(evt.model)}`;
 }
@@ -193,7 +193,7 @@ export function addUpstreamRequestIdSpanEvent(
   if (boundedHash === "unknown") {
     return;
   }
-  span.addEvent?.("openclaw.provider.request", {
-    "openclaw.upstreamRequestIdHash": boundedHash,
+  span.addEvent?.("operator.provider.request", {
+    "operator.upstreamRequestIdHash": boundedHash,
   });
 }

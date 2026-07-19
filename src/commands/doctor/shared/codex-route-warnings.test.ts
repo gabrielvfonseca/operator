@@ -1,10 +1,10 @@
 // Codex route warning tests cover doctor diagnostics for Codex route configuration.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveAgentHarnessPolicy } from "../../../agents/harness/policy.js";
 import type { SessionEntry } from "../../../config/sessions/types.js";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 
 const mocks = vi.hoisted(() => ({
   ensureAuthProfileStore: vi.fn(),
@@ -205,7 +205,7 @@ describe("collectCodexRouteWarnings", () => {
               config: {
                 appServer: {
                   command:
-                    "node C:\\Users\\me\\.openclaw\\npm\\node_modules\\@openai\\codex\\bin\\codex.js",
+                    "node C:\\Users\\me\\.operator\\npm\\node_modules\\@openai\\codex\\bin\\codex.js",
                 },
               },
             },
@@ -217,7 +217,7 @@ describe("collectCodexRouteWarnings", () => {
     expect(warnings).toStrictEqual([
       [
         "- Codex app-server command override includes inline arguments.",
-        '- plugins.entries.codex.config.appServer.command: "node C:\\Users\\me\\.openclaw\\npm\\node_modules\\@openai\\codex\\bin\\codex.js" starts with "node" and embeds "C:\\Users\\me\\.openclaw\\npm\\node_modules\\@openai\\codex\\bin\\codex.js". The command field must be only the executable path.',
+        '- plugins.entries.codex.config.appServer.command: "node C:\\Users\\me\\.operator\\npm\\node_modules\\@openai\\codex\\bin\\codex.js" starts with "node" and embeds "C:\\Users\\me\\.operator\\npm\\node_modules\\@openai\\codex\\bin\\codex.js". The command field must be only the executable path.',
         "- Remove the override to use managed Codex startup, or move script/options to plugins.entries.codex.config.appServer.args.",
       ].join("\n"),
     ]);
@@ -909,7 +909,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://proxy.example.test/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
           },
         },
@@ -1483,7 +1483,9 @@ describe("collectCodexRouteWarnings", () => {
               id: "worker",
               model: "anthropic/claude-sonnet-4-6",
               models: {
-                "anthropic/claude-sonnet-4-6": { agentRuntime: { id: "openclaw" } },
+                "anthropic/claude-sonnet-4-6": {
+                  agentRuntime: { id: "@gabrielvfonseca/operator" },
+                },
               },
             },
           ],
@@ -1952,7 +1954,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -1993,7 +1995,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("repairs configured Codex model refs to canonical OpenAI refs with model-scoped Codex runtime", () => {
@@ -2860,7 +2862,7 @@ describe("collectCodexRouteWarnings", () => {
           defaults: {
             model: "anthropic/claude-sonnet-4-6",
             models: {
-              "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
           list: [
@@ -2906,7 +2908,7 @@ describe("collectCodexRouteWarnings", () => {
               model: "gpt-5.5",
               models: {
                 "openai/gpt-5.5": {
-                  agentRuntime: { id: "openclaw" },
+                  agentRuntime: { id: "@gabrielvfonseca/operator" },
                 },
               },
             },
@@ -3038,7 +3040,7 @@ describe("collectCodexRouteWarnings", () => {
         models: {
           providers: {
             openai: {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -3061,7 +3063,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.5",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("keeps the Codex plugin disabled when an auth-profiled OpenAI route explicitly uses the Operator runtime", () => {
@@ -3077,7 +3079,7 @@ describe("collectCodexRouteWarnings", () => {
             model: "openai/gpt-5.5@work",
             models: {
               "openai/gpt-5.5": {
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             },
           },
@@ -3235,7 +3237,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -3269,7 +3271,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -3299,7 +3301,7 @@ describe("collectCodexRouteWarnings", () => {
     });
     expect(result.cfg.agents?.list?.[1]?.model).toBe("openai/gpt-5.5");
     expect(result.cfg.agents?.list?.[1]?.models?.["openai/gpt-5.5"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(
       resolveAgentHarnessPolicy({
@@ -3315,7 +3317,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves inherited default legacy runtime pins for listed-agent legacy refs", () => {
@@ -3324,7 +3326,7 @@ describe("collectCodexRouteWarnings", () => {
         defaults: {
           models: {
             "openai-codex/gpt-5.4": {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
           },
         },
@@ -3344,7 +3346,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3352,7 +3354,7 @@ describe("collectCodexRouteWarnings", () => {
     });
 
     expect(result.cfg.agents?.defaults?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.cfg.agents?.defaults?.models?.["openai-codex/gpt-5.4"]).toBeUndefined();
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
@@ -3367,7 +3369,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves listed-agent legacy model-map runtime pins while repairing listed-agent refs", () => {
@@ -3379,7 +3381,7 @@ describe("collectCodexRouteWarnings", () => {
             model: "openai-codex/gpt-5.4",
             models: {
               "openai-codex/gpt-5.4": {
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             },
           },
@@ -3394,7 +3396,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3403,7 +3405,7 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.list?.[0]?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.cfg.agents?.list?.[0]?.models?.["openai-codex/gpt-5.4"]).toBeUndefined();
     expect(result.changes.join("\n")).not.toContain(
@@ -3416,7 +3418,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves inherited default wildcard runtime pins for listed-agent legacy refs", () => {
@@ -3425,7 +3427,7 @@ describe("collectCodexRouteWarnings", () => {
         defaults: {
           models: {
             "openai-codex/*": {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
           },
         },
@@ -3445,7 +3447,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3453,7 +3455,7 @@ describe("collectCodexRouteWarnings", () => {
     });
 
     expect(result.cfg.agents?.defaults?.models?.["openai/*"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.cfg.agents?.defaults?.models?.["openai-codex/*"]).toBeUndefined();
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
@@ -3468,7 +3470,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves provider-level legacy runtime pins while repairing default legacy refs", () => {
@@ -3476,7 +3478,7 @@ describe("collectCodexRouteWarnings", () => {
       models: {
         providers: {
           "openai-codex": {
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
           },
         },
       },
@@ -3496,7 +3498,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3505,10 +3507,10 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.defaults?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.defaults?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.changes.join("\n")).toContain(
-      'Set agents.defaults.models.openai/gpt-5.4.agentRuntime.id to "openclaw"',
+      'Set agents.defaults.models.openai/gpt-5.4.agentRuntime.id to "@gabrielvfonseca/operator"',
     );
     expect(
       resolveAgentHarnessPolicy({
@@ -3516,7 +3518,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves legacy provider catalog runtime pins while repairing default legacy refs", () => {
@@ -3527,7 +3529,7 @@ describe("collectCodexRouteWarnings", () => {
             models: [
               {
                 id: "gpt-5.4",
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             ],
           },
@@ -3546,7 +3548,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3555,10 +3557,10 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.defaults?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.defaults?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.changes.join("\n")).toContain(
-      'Set agents.defaults.models.openai/gpt-5.4.agentRuntime.id to "openclaw"',
+      'Set agents.defaults.models.openai/gpt-5.4.agentRuntime.id to "@gabrielvfonseca/operator"',
     );
     expect(
       resolveAgentHarnessPolicy({
@@ -3566,7 +3568,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("preserves legacy provider catalog runtime pins while repairing listed-agent legacy refs", () => {
@@ -3577,7 +3579,7 @@ describe("collectCodexRouteWarnings", () => {
             models: [
               {
                 id: "gpt-5.4",
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             ],
           },
@@ -3600,7 +3602,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3609,10 +3611,10 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.list?.[0]?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.changes.join("\n")).toContain(
-      'Set agents.list.worker.models.openai/gpt-5.4.agentRuntime.id to "openclaw"',
+      'Set agents.list.worker.models.openai/gpt-5.4.agentRuntime.id to "@gabrielvfonseca/operator"',
     );
     expect(
       resolveAgentHarnessPolicy({
@@ -3621,7 +3623,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("shields listed canonical refs when provider-level legacy default pins migrate", () => {
@@ -3629,7 +3631,7 @@ describe("collectCodexRouteWarnings", () => {
       models: {
         providers: {
           "openai-codex": {
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
           },
         },
       },
@@ -3657,7 +3659,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "main",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(
       resolveAgentHarnessPolicy({
         provider: "openai",
@@ -3674,7 +3676,7 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.defaults?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.defaults?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.cfg.agents?.list?.[0]?.model).toBeUndefined();
     expect(result.cfg.agents?.list?.[1]?.model).toBe("openai/gpt-5.4");
@@ -3691,7 +3693,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "main",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(
       resolveAgentHarnessPolicy({
         provider: "openai",
@@ -3707,7 +3709,7 @@ describe("collectCodexRouteWarnings", () => {
       models: {
         providers: {
           "openai-codex": {
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
           },
         },
       },
@@ -3728,7 +3730,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
 
     const result = maybeRepairCodexRoutes({
       cfg,
@@ -3737,10 +3739,10 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.list?.[0]?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.changes.join("\n")).toContain(
-      'Set agents.list.worker.models.openai/gpt-5.4.agentRuntime.id to "openclaw"',
+      'Set agents.list.worker.models.openai/gpt-5.4.agentRuntime.id to "@gabrielvfonseca/operator"',
     );
     expect(
       resolveAgentHarnessPolicy({
@@ -3749,7 +3751,7 @@ describe("collectCodexRouteWarnings", () => {
         agentId: "worker",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("does not apply pre-existing canonical default runtime pins to listed-agent legacy refs", () => {
@@ -3758,7 +3760,7 @@ describe("collectCodexRouteWarnings", () => {
         defaults: {
           models: {
             "openai/*": {
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
             },
           },
         },
@@ -3786,7 +3788,7 @@ describe("collectCodexRouteWarnings", () => {
     });
 
     expect(result.cfg.agents?.defaults?.models?.["openai/*"]?.agentRuntime).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
     });
     expect(result.cfg.agents?.list?.[0]?.model).toBe("openai/gpt-5.4");
     expect(result.cfg.agents?.list?.[0]?.models?.["openai/gpt-5.4"]?.agentRuntime).toEqual({
@@ -3813,7 +3815,7 @@ describe("collectCodexRouteWarnings", () => {
             models: {
               "openai-codex/gpt-5.5": {
                 alias: "legacy-codex",
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             },
           },
@@ -3825,7 +3827,7 @@ describe("collectCodexRouteWarnings", () => {
     expect(result.cfg.agents?.defaults?.models).toEqual({
       "openai/gpt-5.5": {
         alias: "legacy-codex",
-        agentRuntime: { id: "openclaw" },
+        agentRuntime: { id: "@gabrielvfonseca/operator" },
       },
     });
     expect(result.changes.join("\n")).not.toContain(
@@ -3837,7 +3839,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.5",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("overwrites non-concrete model-scoped runtime pins when preserving Codex route intent", () => {
@@ -3883,7 +3885,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -3911,7 +3913,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(result.changes).toStrictEqual([]);
     expect(result.warnings).toStrictEqual([
       [
@@ -3964,7 +3966,7 @@ describe("collectCodexRouteWarnings", () => {
           providers: {
             openai: {
               baseUrl: "https://api.openai.com/v1",
-              agentRuntime: { id: "openclaw" },
+              agentRuntime: { id: "@gabrielvfonseca/operator" },
               models: [],
             },
           },
@@ -3992,7 +3994,7 @@ describe("collectCodexRouteWarnings", () => {
         modelId: "gpt-5.4",
         config: result.cfg,
       }).runtime,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(result.changes).toStrictEqual([]);
     expect(result.warnings).toStrictEqual([
       [
@@ -4107,7 +4109,7 @@ describe("collectCodexRouteWarnings", () => {
         model: "codex/foo",
         providerOverride: "custom",
         modelOverride: "openai-codex/bar",
-        agentRuntimeOverride: "openclaw",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
       },
       legacy: {
         sessionId: "s-legacy",
@@ -4125,7 +4127,7 @@ describe("collectCodexRouteWarnings", () => {
       model: "codex/foo",
       providerOverride: "custom",
       modelOverride: "openai-codex/bar",
-      agentRuntimeOverride: "openclaw",
+      agentRuntimeOverride: "@gabrielvfonseca/operator",
       updatedAt: 1,
     });
     expect(store.legacy).toMatchObject({
@@ -4537,8 +4539,8 @@ describe("collectCodexRouteWarnings", () => {
         model: "gpt-5.5",
         providerOverride: "openai",
         modelOverride: "gpt-5.4",
-        agentHarnessId: "openclaw",
-        agentRuntimeOverride: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
         authProfileOverride: "openai:work",
       },
     };
@@ -4550,9 +4552,11 @@ describe("collectCodexRouteWarnings", () => {
 
     expect(result).toEqual({ changed: false, sessionKeys: [] });
     expect(expectDefined(store.main, "store.main test invariant").updatedAt).toBe(1);
-    expect(expectDefined(store.main, "store.main test invariant").agentHarnessId).toBe("openclaw");
+    expect(expectDefined(store.main, "store.main test invariant").agentHarnessId).toBe(
+      "@gabrielvfonseca/operator",
+    );
     expect(expectDefined(store.main, "store.main test invariant").agentRuntimeOverride).toBe(
-      "openclaw",
+      "@gabrielvfonseca/operator",
     );
     expect(expectDefined(store.main, "store.main test invariant").authProfileOverride).toBe(
       "openai:work",
@@ -4663,7 +4667,7 @@ describe("collectCodexRouteWarnings", () => {
             model: { primary: "openai-codex/gpt-5.4" },
             models: {
               "openai-codex/gpt-5.4": {
-                agentRuntime: { id: "openclaw" },
+                agentRuntime: { id: "@gabrielvfonseca/operator" },
               },
             },
           },
@@ -4684,7 +4688,7 @@ describe("collectCodexRouteWarnings", () => {
       | { agentRuntime?: { id?: string } }
       | undefined;
     expect(migrated).toBeDefined();
-    expect(migrated?.agentRuntime).toEqual({ id: "openclaw" });
+    expect(migrated?.agentRuntime).toEqual({ id: "@gabrielvfonseca/operator" });
     expect(result.cfg.agents?.defaults?.models?.["openai-codex/gpt-5.4"]).toBeUndefined();
   });
 
@@ -4697,7 +4701,7 @@ describe("collectCodexRouteWarnings", () => {
               model: { primary: "openai-codex/gpt-5.4" },
               models: {
                 "openai-codex/gpt-5.4": {
-                  agentRuntime: { id: "openclaw" },
+                  agentRuntime: { id: "@gabrielvfonseca/operator" },
                 },
                 "openai/gpt-5.4": {
                   alias: "canonical-codex",
@@ -4716,7 +4720,7 @@ describe("collectCodexRouteWarnings", () => {
       expect(result.cfg.agents?.defaults?.model).toEqual({ primary: "openai/gpt-5.4" });
       expect(result.cfg.agents?.defaults?.models?.["openai/gpt-5.4"]).toEqual({
         alias: "canonical-codex",
-        agentRuntime: { id: "openclaw" },
+        agentRuntime: { id: "@gabrielvfonseca/operator" },
       });
       expect(result.cfg.agents?.defaults?.models?.["openai-codex/gpt-5.4"]).toBeUndefined();
       expect(result.cfg.plugins?.entries?.codex?.enabled).toBe(false);
@@ -4726,7 +4730,7 @@ describe("collectCodexRouteWarnings", () => {
           modelId: "gpt-5.4",
           config: result.cfg,
         }).runtime,
-      ).toBe("openclaw");
+      ).toBe("@gabrielvfonseca/operator");
     });
   }
 });

@@ -1,7 +1,7 @@
 // Hook workspace helpers resolve hook roots and workspace-local hook files.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { openRootFileSync } from "../infra/boundary-file-read.js";

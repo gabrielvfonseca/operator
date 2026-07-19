@@ -1,5 +1,5 @@
 // Authorization and pending-run state transitions for chat cancellation.
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeAgentId } from "../../routing/session-key.js";
 import { parseAgentSessionKey } from "../../sessions/session-key-utils.js";
 import type { ChatAbortControllerEntry } from "../chat-abort.js";

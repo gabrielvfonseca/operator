@@ -1861,7 +1861,7 @@ describe("model-selection", () => {
     });
 
     it("should fall back to the configured default provider and warn if provider is missing for non-alias", async () => {
-      const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
+      const warnLogs = createWarnLogCapture("operator-model-selection-test");
       try {
         const cfg: Partial<OperatorConfig> = {
           agents: {
@@ -1889,7 +1889,7 @@ describe("model-selection", () => {
     });
 
     it("sanitizes control characters in providerless-model warnings", async () => {
-      const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
+      const warnLogs = createWarnLogCapture("operator-model-selection-test");
       try {
         const cfg: Partial<OperatorConfig> = {
           agents: {
@@ -2397,7 +2397,7 @@ describe("model-selection", () => {
     });
 
     it("should warn when specified model cannot be resolved and falls back to default", async () => {
-      const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
+      const warnLogs = createWarnLogCapture("operator-model-selection-test");
       try {
         const cfg: Partial<OperatorConfig> = {
           agents: {

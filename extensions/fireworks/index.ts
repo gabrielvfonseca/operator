@@ -1,12 +1,12 @@
 // Fireworks plugin entrypoint registers its Operator integration.
-import type { ProviderResolveDynamicModelContext } from "openclaw/plugin-sdk/plugin-entry";
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
+import type { ProviderResolveDynamicModelContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
 import {
   buildProviderReplayFamilyHooks,
   cloneFirstTemplateModel,
   DEFAULT_CONTEXT_TOKENS,
   normalizeModelCompat,
-} from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 import { isFireworksKimiModelId } from "./model-id.js";
 import { applyFireworksConfig, FIREWORKS_DEFAULT_MODEL_REF } from "./onboard.js";
 import {

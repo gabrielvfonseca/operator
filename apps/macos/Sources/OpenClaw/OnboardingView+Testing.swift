@@ -1,4 +1,4 @@
-import OpenClawDiscovery
+import OperatorDiscovery
 import SwiftUI
 
 #if DEBUG
@@ -27,7 +27,7 @@ extension OnboardingView {
         view.localGatewayProbe = LocalGatewayProbe(
             port: GatewayEnvironment.gatewayPort(),
             pid: 123,
-            command: "openclaw-gateway",
+            command: "operator-gateway",
             expected: true)
         view.showAdvancedConnection = true
         view.preferredGatewayID = gateway.stableID

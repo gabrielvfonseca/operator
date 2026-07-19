@@ -1,5 +1,5 @@
 /** Chooses which source family should back a model-list invocation. */
-import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
+import type { NormalizedModelCatalogRow } from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../../plugins/plugin-metadata-snapshot.types.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";

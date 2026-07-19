@@ -203,13 +203,13 @@ describe("runServiceRestart token drift", () => {
 
   it("prints the container restart hint when restart is requested for a not-loaded service", async () => {
     service.isLoaded.mockResolvedValue(false);
-    vi.stubEnv("OPERATOR_CONTAINER_HINT", "openclaw-demo-container");
+    vi.stubEnv("OPERATOR_CONTAINER_HINT", "operator-demo-container");
 
     await runServiceRestart({
       serviceNoun: "Gateway",
       service,
       renderStartHints: () => [
-        "Restart the container or the service that manages it for openclaw-demo-container.",
+        "Restart the container or the service that manages it for operator-demo-container.",
         "openclaw gateway install",
       ],
       opts: { json: false },
@@ -217,14 +217,14 @@ describe("runServiceRestart token drift", () => {
 
     expect(runtimeLogs).toContain("Gateway service not loaded.");
     expect(runtimeLogs).toContain(
-      "Start with: Restart the container or the service that manages it for openclaw-demo-container.",
+      "Start with: Restart the container or the service that manages it for operator-demo-container.",
     );
   });
 
   it("repairs managed port drift before restarting", async () => {
     service.readRuntime.mockResolvedValue({ status: "running", pid: 1234 });
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "--port", "18789"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "--port", "18789"],
       environment: { OPERATOR_GATEWAY_PORT: "18789" },
     });
     type RepairLoadedService = NonNullable<
@@ -589,7 +589,7 @@ describe("runServiceRestart token drift", () => {
 
   it("repairs stale loaded services during start before reporting success", async () => {
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway"],
       environment: { OPERATOR_SERVICE_VERSION: "2026.4.24" },
     });
     type RepairLoadedService = NonNullable<
@@ -636,7 +636,7 @@ describe("runServiceRestart token drift", () => {
 
   it("fails start with an install hint when a stale loaded service has no repair callback", async () => {
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway"],
       environment: { OPERATOR_SERVICE_VERSION: "2026.4.24" },
     });
 

@@ -2,8 +2,11 @@
  * Anthropic provider runtime registration. It owns API-key/setup-token/Claude
  * CLI auth, dynamic model normalization, usage auth, media, and stream wrappers.
  */
-import { formatCliCommand, parseDurationMs } from "openclaw/plugin-sdk/cli-runtime";
-import { resolveExpiresAtMsFromDurationMs } from "openclaw/plugin-sdk/number-runtime";
+import {
+  formatCliCommand,
+  parseDurationMs,
+} from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import { resolveExpiresAtMsFromDurationMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type {
   OperatorPluginApi,
   ProviderAuthContext,
@@ -11,7 +14,7 @@ import type {
   ProviderResolveDynamicModelContext,
   ProviderNormalizeResolvedModelContext,
   ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   applyAuthProfileConfig,
   type AuthProfileStore,
@@ -23,7 +26,7 @@ import {
   suggestOAuthProfileIdForLegacyDefault,
   upsertAuthProfileWithLock,
   validateAnthropicSetupToken,
-} from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import {
   buildProviderReplayFamilyHooks,
   cloneFirstTemplateModel,
@@ -37,8 +40,8 @@ import {
   supportsClaudeAdaptiveThinking,
   supportsClaudeNativeMaxEffort,
   supportsClaudeNativeXhighEffort,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import * as claudeCliAuth from "./cli-auth-seam.js";
 import { buildAnthropicCliBackend } from "./cli-backend.js";
 import { buildClaudeCliCatalogEntries } from "./cli-catalog.js";

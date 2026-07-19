@@ -162,7 +162,7 @@ export function renderAgents(props: AgentsProps) {
       <section class="agents-toolbar">
         <div class="agents-toolbar-row">
           <div class="agents-control-select">
-            <openclaw-agent-select
+            <operator-agent-select
               .agents=${agents}
               .selectedId=${selectedId}
               .defaultId=${defaultId}
@@ -170,7 +170,7 @@ export function renderAgents(props: AgentsProps) {
               .authToken=${props.authToken}
               .disabled=${props.loading}
               .onSelect=${props.onSelectAgent}
-            ></openclaw-agent-select>
+            ></operator-agent-select>
           </div>
           <div class="agents-toolbar-actions">
             ${selectedAgent
@@ -355,9 +355,9 @@ export function renderAgents(props: AgentsProps) {
                   })
                 : nothing}
               ${props.activePanel === "memory"
-                ? html`<openclaw-agent-memory-panel
+                ? html`<operator-agent-memory-panel
                     .agentId=${selectedAgent.id}
-                  ></openclaw-agent-memory-panel>`
+                  ></operator-agent-memory-panel>`
                 : nothing}
             `}
       </section>

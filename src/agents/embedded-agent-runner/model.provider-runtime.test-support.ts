@@ -1,5 +1,5 @@
 // Provider-runtime mock used by model resolution tests.
-import { lowercasePreservingWhitespace } from "@operator/normalization-core/string-coerce";
+import { lowercasePreservingWhitespace } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type OpenRouterModelCapabilities = NonNullable<
   ReturnType<typeof import("./openrouter-model-capabilities.js").getOpenRouterModelCapabilities>
@@ -680,13 +680,13 @@ export function createProviderRuntimeTestMock(options: ProviderRuntimeTestMockOp
         case "ollama":
           return (
             "Ollama requires authentication to be registered as a provider. " +
-            'Set OLLAMA_API_KEY="ollama-local" (any value works) or run "operator configure". ' +
+            'Set OLLAMA_API_KEY="ollama-local" (any value works) or run "openclaw configure". ' +
             "See: https://docs.operator.ai/providers/ollama"
           );
         case "vllm":
           return (
             "vLLM requires authentication to be registered as a provider. " +
-            'Set VLLM_API_KEY (any value works) or run "operator configure". ' +
+            'Set VLLM_API_KEY (any value works) or run "openclaw configure". ' +
             "See: https://docs.operator.ai/providers/vllm"
           );
         default:

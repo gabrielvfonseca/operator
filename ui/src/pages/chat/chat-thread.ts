@@ -1,5 +1,5 @@
 // Control UI chat module owns Chat thread item derivation and thread-local caches.
-import { asNullableRecord as asRecord } from "@operator/normalization-core/record-coerce";
+import { asNullableRecord as asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   isToolCallContentType,
   isToolResultContentType,
@@ -1073,7 +1073,7 @@ function queuedSendThreadMessage(item: ChatQueueItem): Record<string, unknown> |
     role: "user",
     content,
     timestamp: item.createdAt,
-    __openclaw: {
+    __operator: {
       kind: "pending-send",
       id: item.id,
       state: item.sendState,

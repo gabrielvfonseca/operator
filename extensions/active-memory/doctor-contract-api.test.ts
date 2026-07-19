@@ -2,15 +2,15 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import type {
   OpenKeyedStoreOptions,
   PluginDoctorStateMigrationContext,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { stateMigrations } from "./doctor-contract-api.js";
 
@@ -31,7 +31,7 @@ describe("active-memory doctor state migration", () => {
 
   beforeEach(async () => {
     resetPluginStateStoreForTests();
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-active-memory-doctor-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-active-memory-doctor-"));
     env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   });
 

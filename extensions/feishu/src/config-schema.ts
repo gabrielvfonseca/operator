@@ -1,6 +1,6 @@
 // Feishu helper module supports config schema behavior.
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { buildChannelConfigSchema } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";
 import { z } from "zod";
 export { z };
 import { buildSecretInputSchema, hasConfiguredSecretInput } from "./secret-input.js";

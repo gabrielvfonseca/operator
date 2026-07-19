@@ -13,7 +13,7 @@ let stateDir = "";
 const prevStateDir = process.env.OPERATOR_STATE_DIR;
 
 beforeEach(() => {
-  stateDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-relay-auth-")));
+  stateDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "operator-relay-auth-")));
   process.env.OPERATOR_STATE_DIR = stateDir;
 });
 afterEach(() => {
@@ -50,7 +50,7 @@ describe("extension relay host-local secret", () => {
   it("gives different hosts (state dirs) different secrets", () => {
     const a = ensureExtensionRelayToken();
     const otherDir = fs.realpathSync(
-      fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-relay-auth-2-")),
+      fs.mkdtempSync(path.join(os.tmpdir(), "operator-relay-auth-2-")),
     );
     try {
       const b = ensureExtensionRelayToken({ ...process.env, OPERATOR_STATE_DIR: otherDir });

@@ -1,5 +1,5 @@
 // Qqbot plugin module implements channel behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/core";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { ChannelApiSchema, executeChannelApi } from "../../engine/tools/channel-api.js";
 import type { ChannelApiParams } from "../../engine/tools/channel-api.js";
 import { listQQBotAccountIds, resolveQQBotAccount } from "../config.js";

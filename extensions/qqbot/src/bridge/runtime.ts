@@ -1,6 +1,6 @@
 // Qqbot plugin module implements runtime behavior.
-import type { PluginRuntime } from "openclaw/plugin-sdk/core";
-import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { createPluginRuntimeStore } from "@gabrielvfonseca/operator/plugin-sdk/runtime-store";
 import type { GatewayPluginRuntime } from "../engine/gateway/types.js";
 import { setOperatorVersion } from "../engine/messaging/sender.js";
 

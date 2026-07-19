@@ -1,13 +1,13 @@
 // Kimi Coding plugin module implements stream behavior.
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import {
   streamSimple,
   type AssistantMessage,
   type AssistantMessageEvent,
-} from "openclaw/plugin-sdk/llm";
-import type { ProviderWrapStreamFnContext } from "openclaw/plugin-sdk/plugin-entry";
-import { streamWithPayloadPatch } from "openclaw/plugin-sdk/provider-stream-shared";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import type { ProviderWrapStreamFnContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { streamWithPayloadPatch } from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 const TOOL_CALLS_SECTION_BEGIN = "<|tool_calls_section_begin|>";
 const TOOL_CALLS_SECTION_END = "<|tool_calls_section_end|>";

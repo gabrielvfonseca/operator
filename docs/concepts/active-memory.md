@@ -17,7 +17,7 @@ reply is generated.
 
 ## Quick start
 
-Paste into `openclaw.json` for a safe default: plugin on, scoped to `main`,
+Paste into `operator.json` for a safe default: plugin on, scoped to `main`,
 direct-message sessions only, model inherited from the session.
 
 ```json5
@@ -50,7 +50,7 @@ the Gateway reloads the plugin runtime automatically and no manual restart is
 needed. If you want to force a full restart anyway, run:
 
 ```bash
-openclaw gateway restart
+operator gateway restart
 ```
 
 To inspect it live in a conversation:
@@ -163,7 +163,7 @@ For narrower rollout inside an allowed chat type, add
 
 Ids come from the persistent channel session key (for example Feishu
 `chat_id`/`open_id`, Telegram chat id, Slack channel id). Matching is
-case-insensitive. If `allowedChatIds` is non-empty and OpenClaw cannot
+case-insensitive. If `allowedChatIds` is non-empty and Operator cannot
 resolve a conversation id for the session, active memory skips the turn
 instead of guessing.
 
@@ -211,7 +211,7 @@ output you want:
 /trace on
 ```
 
-With those on, OpenClaw appends diagnostic lines after the normal reply (as a
+With those on, Operator appends diagnostic lines after the normal reply (as a
 follow-up, so channel clients do not flash a separate pre-reply bubble):
 
 - `/verbose on` adds a status line: `🧩 Active Memory: status=ok elapsed=842ms query=recent summary=34 chars`
@@ -464,7 +464,7 @@ Selecting the memory slot is enough for active memory to use `memory_recall`:
 ### Lossless Claw
 
 [Lossless Claw](https://github.com/martian-engineering/lossless-claw) is an
-external context-engine plugin (`openclaw plugins install
+external context-engine plugin (`operator plugins install
 @martian-engineering/lossless-claw`) with its own recall tools. Set it up as
 a context engine first; see [Context engine](/concepts/context-engine). Then
 point active memory at its tools:
@@ -688,7 +688,7 @@ If active memory is not showing up where you expect:
 2. Confirm the current agent id is listed in `config.agents`.
 3. Confirm you are testing through an interactive persistent chat session.
 4. Turn on `config.logging: true` and watch the gateway logs.
-5. Verify memory search itself works with `openclaw status --deep`.
+5. Verify memory search itself works with `operator status --deep`.
 
 If memory hits are noisy, tighten `maxSummaryChars`. If active memory is too
 slow, lower `queryMode`, lower `timeoutMs`, or reduce recent turn counts and
@@ -705,7 +705,7 @@ registers.
 
 <AccordionGroup>
   <Accordion title="Embedding provider switched or stopped working">
-    If `memorySearch.provider` is unset, OpenClaw uses OpenAI embeddings. Set
+    If `memorySearch.provider` is unset, Operator uses OpenAI embeddings. Set
     `memorySearch.provider` explicitly for Bedrock, DeepInfra, Gemini, GitHub
     Copilot, LM Studio, local, Mistral, Ollama, Voyage, or OpenAI-compatible
     embeddings. If the configured provider cannot run, `memory_search` may
@@ -725,7 +725,7 @@ registers.
       after each reply.
     - Watch gateway logs for `active-memory: ... start|done`,
       `memory sync failed (search-bootstrap)`, or provider embedding errors.
-    - Run `openclaw status --deep` to inspect the memory-search backend and
+    - Run `operator status --deep` to inspect the memory-search backend and
       index health.
     - If you use `ollama`, confirm the embedding model is installed
       (`ollama list`).

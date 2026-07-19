@@ -2,11 +2,11 @@
 import {
   createChannelInboundDebouncer,
   shouldDebounceTextInbound,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { finiteSecondsToTimerSafeMilliseconds } from "openclaw/plugin-sdk/number-runtime";
-import { danger, logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { resolveOpenProviderRuntimeGroupPolicy } from "openclaw/plugin-sdk/runtime-group-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { finiteSecondsToTimerSafeMilliseconds } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { danger, logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolveOpenProviderRuntimeGroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
 import type { Client } from "../internal/discord.js";
 import {
   buildDiscordInboundReplayKey,

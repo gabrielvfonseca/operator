@@ -10,7 +10,7 @@ import {
   resolveGatewayWindowsTaskName,
 } from "../daemon/constants.js";
 import { forceKillChildProcessTree } from "../process/child-process-tree.js";
-import { resolveOperatorStateSqlitePath } from "../state/operator-state-db.paths.js";
+import { resolveOperatorStateSqlitePath } from "../state/openclaw-state-db.paths.js";
 import { SUPERVISOR_HINT_ENV_VARS, type RespawnSupervisor } from "./supervisor-markers.js";
 import type { UpdateChannel } from "./update-channels.js";
 import {
@@ -499,14 +499,14 @@ function resolveUpdateCliArgv(params: {
   if (execPath && !isNodeLikeRuntime(execPath)) {
     return [execPath, ...updateArgs];
   }
-  return ["operator", ...updateArgs];
+  return ["@gabrielvfonseca/operator", ...updateArgs];
 }
 
 export function formatManagedServiceUpdateCommand(params?: {
   timeoutMs?: number;
   channel?: UpdateChannel;
 }): string {
-  const args = ["operator", "update", "--yes"];
+  const args = ["@gabrielvfonseca/operator", "update", "--yes"];
   if (params?.channel) {
     args.push("--channel", params.channel);
   }

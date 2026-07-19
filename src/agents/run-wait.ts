@@ -11,7 +11,7 @@ import {
   parseFiniteNumber,
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { callGateway } from "../gateway/call.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { hasRetryableConnectionErrorCode } from "../infra/retryable-network-errors.js";
@@ -20,7 +20,7 @@ import {
   isOperatorInternalSourceReplyMirrorAssistantMessage,
   isOperatorMessageToolMirrorAssistantMessage,
   isTranscriptOnlyOperatorAssistantMessage,
-} from "../shared/transcript-only-operator-assistant.js";
+} from "../shared/transcript-only-openclaw-assistant.js";
 import {
   buildAgentRunTerminalOutcomeFromWaitResult,
   type AgentRunTerminalOutcome,
@@ -207,7 +207,7 @@ function readTranscriptMessageSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const meta = (message as { __operator?: unknown })["__operator"];
+  const meta = (message as { __openclaw?: unknown })["__openclaw"];
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return undefined;
   }
@@ -218,7 +218,7 @@ function readInternalSourceReplyMessageSeq(message: unknown): number | undefined
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const marker = (message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror;
+  const marker = (message as { openclawMessageToolMirror?: unknown }).operatorMessageToolMirror;
   if (!marker || typeof marker !== "object" || Array.isArray(marker)) {
     return undefined;
   }

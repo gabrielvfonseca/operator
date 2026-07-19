@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { resolveBootstrapWarningSignaturesSeen } from "../../agents/bootstrap-budget.js";
 import type { BootstrapContextRunKind } from "../../agents/bootstrap-mode.js";
 import type { RunEmbeddedAgentParams } from "../../agents/embedded-agent-runner/run/params.js";
@@ -128,8 +128,9 @@ export async function runEmbeddedFallbackCandidate(params: {
   });
   const embeddedRunHarnessOverride =
     params.sessionRuntimeOverride ??
-    (agentHarnessPolicy.runtime === "operator" && embeddedRunProvider !== params.provider
-      ? "operator"
+    (agentHarnessPolicy.runtime === "@gabrielvfonseca/operator" &&
+    embeddedRunProvider !== params.provider
+      ? "@gabrielvfonseca/operator"
       : undefined);
   const messageActionCapabilitySessionKey =
     turn.runtimePolicySessionKey ?? embeddedContext.sessionKey;

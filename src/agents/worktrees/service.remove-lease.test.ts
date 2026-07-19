@@ -22,7 +22,7 @@ async function initializeRepository(root: string): Promise<string> {
   await fs.mkdir(repo, { recursive: true });
   await git(repo, "init", "-b", "main");
   await git(repo, "config", "user.name", "Operator Test");
-  await git(repo, "config", "user.email", "openclaw-test@example.invalid");
+  await git(repo, "config", "user.email", "operator-test@example.invalid");
   await fs.writeFile(path.join(repo, "README.md"), "base\n");
   await git(repo, "add", "README.md");
   await git(repo, "commit", "-m", "initial");
@@ -38,9 +38,9 @@ describe("ManagedWorktreeService removal against a live run lease", () => {
 
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    root = await fs.mkdtemp(path.join(tempRoot, "openclaw-remove-lease-"));
+    root = await fs.mkdtemp(path.join(tempRoot, "operator-remove-lease-"));
     repo = await initializeRepository(root);
-    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "openclaw-state") };
+    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "operator-state") };
     now = 1_700_000_000_000;
     service = new ManagedWorktreeService({ env, now: () => now });
   });

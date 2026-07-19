@@ -5,14 +5,14 @@
 import {
   type JsonSchemaObject,
   validateJsonSchemaValue,
-} from "openclaw/plugin-sdk/json-schema-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/json-schema-runtime";
 import type {
   ImagesDescriptionRequest,
   ImagesDescriptionResult,
   MediaUnderstandingProvider,
   StructuredExtractionRequest,
   StructuredExtractionResult,
-} from "openclaw/plugin-sdk/media-understanding";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-understanding";
 import {
   runBoundedCodexAppServerTurn,
   type CodexBoundedTurnOptions,

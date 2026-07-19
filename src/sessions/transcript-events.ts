@@ -1,6 +1,6 @@
 // Transcript event helpers serialize and trim session transcript events.
-import { asPositiveSafeInteger } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { asPositiveSafeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { parseAgentSessionKey } from "../routing/session-key.js";
 
 /** Storage-neutral identity for the session transcript that changed. */

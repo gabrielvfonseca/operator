@@ -9,13 +9,13 @@ describe("normalizeWindowsArgv", () => {
     try {
       expect(
         normalizeWindowsArgv([
-          "openclaw",
+          "@gabrielvfonseca/operator",
           "C:\\Program Files\\nodejs\\node.exe",
           "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
           "status",
         ]),
       ).toEqual([
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
         "status",
       ]);
@@ -29,7 +29,7 @@ describe("normalizeWindowsArgv", () => {
     try {
       expect(
         normalizeWindowsArgv([
-          "openclaw",
+          "@gabrielvfonseca/operator",
           "C:\\Program Files\\nodejs\\node.exe",
           "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
           "agent",
@@ -37,7 +37,7 @@ describe("normalizeWindowsArgv", () => {
           "debug node.exe-wrapper startup",
         ]),
       ).toEqual([
-        "openclaw",
+        "@gabrielvfonseca/operator",
         "C:\\Users\\me\\AppData\\Roaming\\npm\\node_modules\\openclaw\\dist\\index.js",
         "agent",
         "--message",
@@ -73,12 +73,9 @@ describe("normalizeWindowsArgv", () => {
   it("preserves exact node.exe option values outside the launcher prefix", () => {
     const platform = mockProcessPlatform("win32");
     try {
-      expect(normalizeWindowsArgv(["openclaw", "run", "--message", "node.exe"])).toEqual([
-        "openclaw",
-        "run",
-        "--message",
-        "node.exe",
-      ]);
+      expect(
+        normalizeWindowsArgv(["@gabrielvfonseca/operator", "run", "--message", "node.exe"]),
+      ).toEqual(["@gabrielvfonseca/operator", "run", "--message", "node.exe"]);
     } finally {
       platform.mockRestore();
     }

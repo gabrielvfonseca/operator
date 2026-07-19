@@ -1,7 +1,7 @@
-package ai.openclaw.app.tools
+package ai.operator.app.tools
 
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.takeUtf16Safe
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.takeUtf16Safe
 import android.content.Context
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

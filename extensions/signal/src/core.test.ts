@@ -1,16 +1,16 @@
-import { buildExecApprovalPendingReplyPayload } from "openclaw/plugin-sdk/approval-reply-runtime";
+import { buildExecApprovalPendingReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
 // Signal tests cover core plugin behavior.
 import {
   createMessageReceiptFromOutboundResults,
   verifyChannelMessageAdapterCapabilityProofs,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createPluginSetupWizardStatus,
   createTestWizardPrompter,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { describe, expect, it, vi } from "vitest";
 import {
   clearSignalApprovalReactionTargetsForTest,

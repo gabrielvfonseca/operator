@@ -5,7 +5,7 @@ Official Operator provider plugin for Amazon Bedrock. It adds Bedrock model disc
 Install from Operator:
 
 ```bash
-openclaw plugin add @operator/amazon-bedrock-provider
+operator plugin add @gabrielvfonseca/amazon-bedrock-provider
 ```
 
 Configure AWS credentials and region through your normal Operator credential/profile setup, then select Bedrock models with the `amazon-bedrock/...` provider prefix.

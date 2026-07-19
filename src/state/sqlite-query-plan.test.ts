@@ -14,7 +14,7 @@ import {
 const planTempDirs: string[] = [];
 
 function createTempStateDir(): string {
-  return makeTempDir(planTempDirs, "openclaw-sqlite-plan-");
+  return makeTempDir(planTempDirs, "operator-sqlite-plan-");
 }
 
 function explainQueryPlan(

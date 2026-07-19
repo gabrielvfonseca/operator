@@ -584,11 +584,14 @@ export function getCommandPositionalsWithRootOptions(
   return positionals;
 }
 
-export function buildParseArgv(rawArgs: string[], programName = "operator"): string[] {
+export function buildParseArgv(
+  rawArgs: string[],
+  programName = "@gabrielvfonseca/operator",
+): string[] {
   const normalizedArgv =
     rawArgs[0] === programName
       ? rawArgs.slice(1)
-      : rawArgs[0]?.endsWith("operator")
+      : rawArgs[0]?.endsWith("@gabrielvfonseca/operator")
         ? rawArgs.slice(1)
         : rawArgs;
   const looksLikeNode =

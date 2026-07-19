@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const {
@@ -763,11 +763,11 @@ describe("test-projects args", () => {
   });
 
   it("routes unit ui targets to the unit ui config", () => {
-    expect(buildVitestRunPlans(["ui/src/ui/views/channels.test.ts"])).toEqual([
+    expect(buildVitestRunPlans(["ui/tests/ui/views/channels.test.ts"])).toEqual([
       {
         config: "test/vitest/vitest.ui.config.ts",
         forwardedArgs: [],
-        includePatterns: ["ui/src/ui/views/channels.test.ts"],
+        includePatterns: ["ui/tests/ui/views/channels.test.ts"],
         watchMode: false,
       },
     ]);
@@ -1065,30 +1065,30 @@ describe("test-projects args", () => {
     expect(spec?.includePatterns).toEqual([
       "extensions/discord/src/monitor/message-handler.preflight.test.ts",
     ]);
-    expect(spec?.includeFilePath).toContain("openclaw-vitest-include-");
+    expect(spec?.includeFilePath).toContain("operator-vitest-include-");
     expect(spec?.env.OPERATOR_VITEST_INCLUDE_FILE).toBe(spec?.includeFilePath);
   });
 
   it("rejects explicit test file targets that do not exist", () => {
-    expect(findUnmatchedExplicitTestTargets(["src/not-a-real-openclaw-test.test.ts"])).toEqual([
+    expect(findUnmatchedExplicitTestTargets(["src/not-a-real-operator-test.test.ts"])).toEqual([
       {
-        target: "src/not-a-real-openclaw-test.test.ts",
+        target: "src/not-a-real-operator-test.test.ts",
         reason: "path-does-not-exist",
       },
     ]);
   });
 
   it("rejects explicit globs that match no files", () => {
-    expect(findUnmatchedExplicitTestTargets(["src/**/not-a-real-openclaw-test.test.ts"])).toEqual([
+    expect(findUnmatchedExplicitTestTargets(["src/**/not-a-real-operator-test.test.ts"])).toEqual([
       {
-        target: "src/**/not-a-real-openclaw-test.test.ts",
+        target: "src/**/not-a-real-operator-test.test.ts",
         reason: "glob-matched-no-files",
       },
     ]);
   });
 
   it("rejects explicit non-test file targets with no sibling tests", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-test-targets-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-test-targets-"));
     try {
       fs.mkdirSync(path.join(tempDir, "src", "lonely"), { recursive: true });
       fs.writeFileSync(path.join(tempDir, "src", "lonely", "runtime.ts"), "export {};\n");
@@ -1106,7 +1106,7 @@ describe("test-projects args", () => {
   });
 
   it("accepts explicit untracked test files that exist on disk", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-test-targets-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-test-targets-"));
     try {
       fs.mkdirSync(path.join(tempDir, "src"), { recursive: true });
       fs.writeFileSync(path.join(tempDir, "src", "new.test.ts"), "test('new', () => {});\n");
@@ -1133,7 +1133,7 @@ describe("test-projects args", () => {
   });
 
   it("rejects explicit test-support helper files with no importing tests", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-test-targets-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-test-targets-"));
     try {
       fs.mkdirSync(path.join(tempDir, "src", "lonely"), { recursive: true });
       fs.writeFileSync(
@@ -1194,11 +1194,11 @@ describe("test-projects args", () => {
   });
 
   it("accepts sentinel targets routed as whole config runs", () => {
-    expect(findUnmatchedExplicitTestTargets(["ui/src/test-helpers/control-ui-e2e.ts"])).toEqual([]);
+    expect(findUnmatchedExplicitTestTargets(["ui/tests/helpers/control-ui-e2e.ts"])).toEqual([]);
   });
 
   it("skips channel contract configs with no matching external include patterns", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-contract-include-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-contract-include-"));
     try {
       const includeFile = path.join(tempDir, "include.json");
       fs.writeFileSync(

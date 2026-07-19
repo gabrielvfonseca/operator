@@ -5,11 +5,11 @@
  */
 import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
-import { finiteSecondsToTimerSafeMilliseconds } from "@operator/normalization-core/number-coercion";
+import { finiteSecondsToTimerSafeMilliseconds } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isAcpRuntimeSpawnAvailable } from "../acp/runtime/availability.js";
 import {
   resolveChannelDefaultBindingPlacement,

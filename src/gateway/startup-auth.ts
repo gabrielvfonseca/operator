@@ -1,7 +1,7 @@
 // Gateway startup auth preparation.
 // Merges auth overrides, resolves secret refs, validates weak secrets, and generates fallbacks.
 import crypto from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { GatewayAuthConfig, GatewayTailscaleConfig } from "../config/types.gateway.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
@@ -19,7 +19,7 @@ import {
 import { assertGatewayAuthNotKnownWeak } from "./known-weak-gateway-secrets.js";
 
 const HOOKS_GATEWAY_AUTH_REUSE_WARNING =
-  "Security warning: hooks.token matches active Gateway shared-secret auth. Startup continues for compatibility; rotate hooks.token or Gateway auth. Run operator security audit for a full report, and run operator doctor --fix when the reused hooks.token is persisted in config.";
+  "Security warning: hooks.token matches active Gateway shared-secret auth. Startup continues for compatibility; rotate hooks.token or Gateway auth. Run openclaw security audit for a full report, and run openclaw doctor --fix when the reused hooks.token is persisted in config.";
 
 /** Merge sparse runtime auth overrides into persisted Gateway auth config. */
 export function mergeGatewayAuthConfig(

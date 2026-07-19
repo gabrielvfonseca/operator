@@ -90,8 +90,8 @@ describe("setupOfficialPluginInstalls", () => {
         label: "Diagnostics OpenTelemetry",
         description: "Operator diagnostics OpenTelemetry exporter",
         install: {
-          clawhubSpec: "clawhub:@operator/diagnostics-otel",
-          npmSpec: "@operator/diagnostics-otel",
+          clawhubSpec: "clawhub:@gabrielvfonseca/diagnostics-otel",
+          npmSpec: "@gabrielvfonseca/diagnostics-otel",
           defaultChoice: "npm",
           minHostVersion: ">=2026.4.25",
         },
@@ -119,7 +119,7 @@ describe("setupOfficialPluginInstalls", () => {
           installs: {
             "diagnostics-otel": {
               source: "npm",
-              spec: "@operator/diagnostics-otel",
+              spec: "@gabrielvfonseca/diagnostics-otel",
               installPath: "/tmp/diagnostics-otel",
             },
           },

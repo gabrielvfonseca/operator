@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { err as resultError, ok, type Result } from "@operator/normalization-core/result";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { err as resultError, ok, type Result } from "@gabrielvfonseca/normalization-core/result";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { clearAgentHarnesses } from "../agents/harness/registry.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";

@@ -1,5 +1,8 @@
 // Whatsapp helper module supports group config path behavior.
-import { DEFAULT_ACCOUNT_ID, type OperatorConfig } from "openclaw/plugin-sdk/account-core";
+import {
+  DEFAULT_ACCOUNT_ID,
+  type OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/account-core";
 
 const WHATSAPP_GROUP_SCOPE_FIELDS = ["groupPolicy", "groupAllowFrom", "groups"] as const;
 

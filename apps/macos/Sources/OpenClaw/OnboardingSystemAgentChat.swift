@@ -35,7 +35,7 @@ final class OnboardingSystemAgentChatState {
     }
 }
 
-/// Onboarding talks to OpenClaw over the gateway `openclaw.chat` RPC.
+/// Onboarding talks to Operator over the gateway `operator.chat` RPC.
 /// The conversation is available after structured setup establishes working
 /// inference, so the model-backed helper can answer reliably.
 @MainActor
@@ -57,7 +57,7 @@ final class SystemAgentOnboardingChatModel {
     private(set) var errorMessage: String?
     private(set) var expectsSensitiveReply = false
     var input = ""
-    /// Set when OpenClaw hands off to the normal agent ("talk to agent").
+    /// Set when Operator hands off to the normal agent ("talk to agent").
     var onAgentHandoff: (() -> Void)?
     /// Called after every assistant reply (setup may have applied config).
     var onReplyReceived: (() -> Void)?
@@ -66,7 +66,7 @@ final class SystemAgentOnboardingChatModel {
     private let sessionPrefix: String
     private let gateway: GatewayConnection
     /// "onboarding" seeds the first-run setup proposal; nil gets the
-    /// status/repair greeting (used by Settings → OpenClaw).
+    /// status/repair greeting (used by Settings → Operator).
     private let welcomeVariant: String?
     private var started = false
     private var requestGeneration: UInt64? = 0
@@ -100,7 +100,7 @@ final class SystemAgentOnboardingChatModel {
         await self.requestReply(message: nil, generation: generation)
         if Task.isCancelled, self.requestGeneration == generation {
             self.started = false
-            self.errorMessage = "OpenClaw was interrupted. Restart to try again."
+            self.errorMessage = "Operator was interrupted. Restart to try again."
         }
     }
 
@@ -195,7 +195,7 @@ final class SystemAgentOnboardingChatModel {
             let route = try await self.sessionRoute(for: generation)
             guard self.isCurrentRequest(generation) else { return }
             let data = try await self.gateway.request(
-                method: "openclaw.chat",
+                method: "operator.chat",
                 params: params,
                 timeoutMs: 190_000,
                 ifCurrentRoute: route)
@@ -214,8 +214,8 @@ final class SystemAgentOnboardingChatModel {
             if error is CancellationError || Task.isCancelled {
                 self.started = false
                 self.errorMessage = Task.isCancelled
-                    ? "OpenClaw was interrupted. Restart to try again."
-                    : "The Gateway connection changed. Restart OpenClaw to reconnect."
+                    ? "Operator was interrupted. Restart to try again."
+                    : "The Gateway connection changed. Restart Operator to reconnect."
                 return
             }
             self.errorMessage = error.localizedDescription
@@ -239,7 +239,7 @@ struct SystemAgentOnboardingChatView: View {
                             HStack(spacing: 8) {
                                 ProgressView()
                                     .controlSize(.small)
-                                Text("OpenClaw is working…")
+                                Text("Operator is working…")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -278,7 +278,7 @@ struct SystemAgentOnboardingChatView: View {
                         SecureField("Enter secret…", text: self.$model.input)
                     } else {
                         TextField(
-                            "Reply to OpenClaw… (yes sets everything up)",
+                            "Reply to Operator… (yes sets everything up)",
                             text: self.$model.input)
                     }
                 }
@@ -326,7 +326,7 @@ private struct SystemAgentChatBubble: View {
     }
 
     private var attributedText: AttributedString {
-        // OpenClaw replies use light markdown (headings, bold, backticks).
+        // Operator replies use light markdown (headings, bold, backticks).
         // Parse per line so multi-line replies keep their structure.
         var result = AttributedString()
         let lines = self.message.text.split(separator: "\n", omittingEmptySubsequences: false)

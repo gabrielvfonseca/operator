@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 /**
  * Persisted voice capture mode that controls foreground-service microphone requirements.

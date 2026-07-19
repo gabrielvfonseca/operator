@@ -14,7 +14,7 @@ routes, import paths, and schema tables.
 
 ## Load pipeline
 
-At startup, OpenClaw does roughly this:
+At startup, Operator does roughly this:
 
 1. discover candidate plugin roots
 2. read native or compatible bundle manifests and package metadata
@@ -50,7 +50,7 @@ error.
 
 ### Manifest-first behavior
 
-The manifest is the control-plane source of truth. OpenClaw uses it to:
+The manifest is the control-plane source of truth. Operator uses it to:
 
 - identify the plugin
 - discover declared channels/skills/config schema or bundle capabilities
@@ -99,7 +99,7 @@ Request-time runtime preloads that ask for the broad `all` scope still derive
 an explicit effective plugin id set from config, startup planning, configured
 channels, slots, and auto-enable rules
 (`resolveEffectivePluginIds` in `src/plugins/effective-plugin-ids.ts`). If that
-derived set is empty, OpenClaw keeps the scope empty instead of widening to
+derived set is empty, Operator keeps the scope empty instead of widening to
 every discoverable plugin.
 
 Setup discovery prefers descriptor-owned ids such as `setup.providers` and
@@ -117,7 +117,7 @@ backends actually registered by setup-api, without blocking legacy plugins.
 
 ### Plugin cache boundary
 
-OpenClaw does not cache plugin discovery results or direct manifest registry
+Operator does not cache plugin discovery results or direct manifest registry
 data behind wall-clock windows. Installs, manifest edits, and load-path changes
 must become visible on the next explicit metadata read or snapshot rebuild.
 The manifest file parser keeps a bounded file-signature cache keyed by the
@@ -236,7 +236,7 @@ Provider plugins have three layers:
   stream wrapping, thinking levels, replay policy, and usage endpoints. See
   [Hook order and usage](#hook-order-and-usage).
 
-OpenClaw still owns the generic agent loop, failover, transcript handling, and
+Operator still owns the generic agent loop, failover, transcript handling, and
 tool policy. These hooks are the extension surface for provider-specific
 behavior without needing a whole custom inference transport.
 
@@ -259,9 +259,9 @@ without loading channel runtime.
 
 ### Hook order and usage
 
-For model/provider plugins, OpenClaw calls hooks in this rough order.
+For model/provider plugins, Operator calls hooks in this rough order.
 The "When to use" column is the quick decision guide.
-Compatibility-only provider fields that OpenClaw no longer calls, such as
+Compatibility-only provider fields that Operator no longer calls, such as
 `ProviderPlugin.capabilities` and `suppressBuiltInModel`, are intentionally not
 listed here.
 
@@ -269,7 +269,7 @@ listed here.
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `catalog`                         | Publish provider config into `models.providers` during `models.json` generation                                | Provider owns a catalog or base URL defaults                                                                                                  |
 | `applyConfigDefaults`             | Apply provider-owned global config defaults during config materialization                                      | Defaults depend on auth mode, env, or provider model-family semantics                                                                         |
-| _(built-in model lookup)_         | OpenClaw tries the normal registry/catalog path first                                                          | _(not a plugin hook)_                                                                                                                         |
+| _(built-in model lookup)_         | Operator tries the normal registry/catalog path first                                                          | _(not a plugin hook)_                                                                                                                         |
 | `normalizeModelId`                | Normalize legacy or preview model-id aliases before lookup                                                     | Provider owns alias cleanup before canonical model resolution                                                                                 |
 | `normalizeTransport`              | Normalize provider-family `api` / `baseUrl` before generic model assembly                                      | Provider owns transport cleanup for custom provider ids in the same transport family                                                          |
 | `normalizeConfig`                 | Normalize `models.providers.<id>` before runtime/provider resolution                                           | Provider needs config cleanup that should live with the plugin; bundled Google-family helpers also backstop supported Google config entries   |
@@ -290,7 +290,7 @@ listed here.
 | `resolveTransportTurnState`       | Attach native per-turn transport headers or metadata                                                           | Provider wants generic transports to send provider-native turn identity                                                                       |
 | `resolveWebSocketSessionPolicy`   | Attach native WebSocket headers or session cool-down policy                                                    | Provider wants generic WS transports to tune session headers or fallback policy                                                               |
 | `formatApiKey`                    | Auth-profile formatter: stored profile becomes the runtime `apiKey` string                                     | Provider stores extra auth metadata and needs a custom runtime token shape                                                                    |
-| `refreshOAuth`                    | OAuth refresh override for custom refresh endpoints or refresh-failure policy                                  | Provider does not fit the shared OpenClaw refreshers                                                                                          |
+| `refreshOAuth`                    | OAuth refresh override for custom refresh endpoints or refresh-failure policy                                  | Provider does not fit the shared Operator refreshers                                                                                          |
 | `buildAuthDoctorHint`             | Repair hint appended when OAuth refresh fails                                                                  | Provider needs provider-owned auth repair guidance after refresh failure                                                                      |
 | `matchesContextOverflowError`     | Provider-owned context-window overflow matcher                                                                 | Provider has raw overflow errors generic heuristics would miss                                                                                |
 | `classifyFailoverReason`          | Provider-owned failover reason classification                                                                  | Provider can map raw API/transport errors to rate-limit/overload/etc                                                                          |
@@ -321,9 +321,9 @@ that compatibility cleanup.
 
 If the provider needs a fully custom wire protocol or custom request executor,
 that is a different class of extension. These hooks are for provider behavior
-that still runs on OpenClaw's normal inference loop.
+that still runs on Operator's normal inference loop.
 
-`resolveUsageAuth` decides whether OpenClaw should call `fetchUsageSnapshot` or
+`resolveUsageAuth` decides whether Operator should call `fetchUsageSnapshot` or
 fall back to generic credential resolution for usage/status surfaces. Return
 `{ token, accountId?, subscriptionType?, rateLimitTier? }` when the provider
 has a usage credential (the optional plan metadata flows into
@@ -401,7 +401,7 @@ mirroring the list.
   <Accordion title="Pass-through catalog providers">
     OpenRouter, Kilocode, Z.AI, xAI register `catalog` plus
     `resolveDynamicModel` / `prepareDynamicModel` so they can surface upstream
-    model ids ahead of OpenClaw's static catalog.
+    model ids ahead of Operator's static catalog.
   </Accordion>
   <Accordion title="OAuth and usage endpoint providers">
     GitHub Copilot, Gemini CLI, ChatGPT Codex, MiniMax, Xiaomi, z.ai pair
@@ -434,12 +434,12 @@ Plugins can access selected core helpers via `api.runtime`. For TTS:
 
 ```ts
 const clip = await api.runtime.tts.textToSpeech({
-  text: "Hello from OpenClaw",
+  text: "Hello from Operator",
   cfg: api.config,
 });
 
 const result = await api.runtime.tts.textToSpeechTelephony({
-  text: "Hello from OpenClaw",
+  text: "Hello from Operator",
   cfg: api.config,
 });
 
@@ -483,7 +483,7 @@ Notes:
 - Use speech providers for vendor-owned synthesis behavior.
 - Legacy Microsoft `edge` input is normalized to the `microsoft` provider id.
 - The preferred ownership model is company-oriented: one vendor plugin can own
-  text, speech, image, and future media providers as OpenClaw adds those
+  text, speech, image, and future media providers as Operator adds those
   capability contracts.
 
 For image/audio/video understanding, plugins register one typed
@@ -568,7 +568,7 @@ Notes:
 - `extractStructuredWithModel(...)` is the plugin-facing seam for bounded
   provider-owned image-first extraction. Include at least one image input;
   text inputs are supplemental context. Product plugins own their routes and
-  schemas while OpenClaw owns the provider/runtime boundary.
+  schemas while Operator owns the provider/runtime boundary.
 - Uses core media-understanding audio configuration (`tools.media.audio`) and provider fallback order.
 - Returns `{ text: undefined }` when no transcription output is produced (for example skipped/unsupported input).
 - `api.runtime.stt.transcribeAudioFile(...)` remains as a compatibility alias.
@@ -590,7 +590,7 @@ Notes:
 
 - `provider` and `model` are optional per-run overrides, not persistent session changes.
 - `toolsAlsoAllow` accepts exact, uniquely owned tool names registered by the calling plugin. Core and ambiguous names are rejected. It is additive to the normal profile, but operator allowlists and denies remain authoritative.
-- OpenClaw only honors those override fields for trusted callers.
+- Operator only honors those override fields for trusted callers.
 - For plugin-owned fallback runs, operators must opt in with `plugins.entries.<id>.subagent.allowModelOverride: true`.
 - Use `plugins.entries.<id>.subagent.allowedModels` to restrict trusted plugins to specific canonical `provider/model` targets, or `"*"` to allow any target explicitly.
 - Untrusted plugin subagent runs still work, but override requests are rejected instead of silently falling back.
@@ -607,7 +607,7 @@ const providers = api.runtime.webSearch.listProviders({
 const result = await api.runtime.webSearch.search({
   config: api.config,
   args: {
-    query: "OpenClaw plugin runtime helpers",
+    query: "Operator plugin runtime helpers",
     count: 5,
   },
 });
@@ -672,11 +672,11 @@ Notes:
 - Overlapping routes with different `auth` levels are rejected. Keep `exact`/`prefix` fallthrough chains on the same auth level only.
 - `auth: "plugin"` routes do **not** receive operator runtime scopes automatically. They are for plugin-managed webhooks/signature verification, not privileged Gateway helper calls.
 - `auth: "gateway"` routes run inside a Gateway request runtime scope. The default surface (`gatewayRuntimeScopeSurface: "write-default"`) is intentionally conservative:
-  - shared-secret bearer auth (`gateway.auth.mode = "token"` / `"password"`) and any non-trusted-proxy auth method get a single `operator.write` scope, even if the caller sends `x-openclaw-scopes`
-  - `trusted-proxy` callers without an explicit `x-openclaw-scopes` header also keep the legacy `operator.write`-only surface
-  - `trusted-proxy` callers that do send `x-openclaw-scopes` get the declared scopes instead
-  - a route can opt into `gatewayRuntimeScopeSurface: "trusted-operator"` to always honor `x-openclaw-scopes` for identity-bearing auth modes (falling back to the full CLI default scope set when the header is absent)
-- Practical rule: do not assume a gateway-auth plugin route is an implicit admin surface. If your route needs admin-only behavior, opt into `trusted-operator` scope surface, require an identity-bearing auth mode, and document the explicit `x-openclaw-scopes` header contract.
+  - shared-secret bearer auth (`gateway.auth.mode = "token"` / `"password"`) and any non-trusted-proxy auth method get a single `operator.write` scope, even if the caller sends `x-operator-scopes`
+  - `trusted-proxy` callers without an explicit `x-operator-scopes` header also keep the legacy `operator.write`-only surface
+  - `trusted-proxy` callers that do send `x-operator-scopes` get the declared scopes instead
+  - a route can opt into `gatewayRuntimeScopeSurface: "trusted-operator"` to always honor `x-operator-scopes` for identity-bearing auth modes (falling back to the full CLI default scope set when the header is absent)
+- Practical rule: do not assume a gateway-auth plugin route is an implicit admin surface. If your route needs admin-only behavior, opt into `trusted-operator` scope surface, require an identity-bearing auth mode, and document the explicit `x-operator-scopes` header contract.
 - After route matching and authentication, ordinary handlers participate in Gateway root-work admission. A prepared or restarting Gateway returns `503` before invoking the handler. The narrow exception is a manifest-entitled `auth: "gateway"` route that also opts into the route-specific `trusted-operator` surface; it remains reachable so suspension control dispatch cannot be stranded, while ordinary sibling routes from the same plugin remain behind the admission boundary. WebSocket `handleUpgrade` ownership uses the same atomic admission boundary; once the handler accepts a socket, the socket's later lifetime is plugin-owned and is not tracked by this boundary.
 
 ## Plugin SDK import paths
@@ -689,7 +689,7 @@ barrel when authoring new plugins. Core subpaths:
 | `openclaw/plugin-sdk/plugin-entry`  | Plugin registration primitives                     |
 | `openclaw/plugin-sdk/channel-core`  | Channel entry/build helpers                        |
 | `openclaw/plugin-sdk/core`          | Generic shared helpers and umbrella contract       |
-| `openclaw/plugin-sdk/config-schema` | Root `openclaw.json` Zod schema (`OpenClawSchema`) |
+| `openclaw/plugin-sdk/config-schema` | Root `operator.json` Zod schema (`OperatorSchema`) |
 
 Channel plugins pick from a family of narrow seams — `channel-setup`,
 `setup-runtime`, `setup-tools`, `channel-pairing`,
@@ -808,7 +808,7 @@ plugin implementation.
 Provider plugins can define model catalogs for inference with
 `registerProvider({ catalog: { run(...) { ... } } })`.
 
-`catalog.run(...)` returns the same shape OpenClaw writes into
+`catalog.run(...)` returns the same shape Operator writes into
 `models.providers`:
 
 - `{ provider }` for one provider entry
@@ -817,7 +817,7 @@ Provider plugins can define model catalogs for inference with
 Use `catalog` when the plugin owns provider-specific model ids, base URL
 defaults, or auth-gated model metadata.
 
-`catalog.order` controls when a plugin's catalog merges relative to OpenClaw's
+`catalog.order` controls when a plugin's catalog merges relative to Operator's
 built-in implicit providers:
 
 - `simple`: plain API-key or env-driven providers
@@ -841,7 +841,7 @@ static catalog rows automatically from `defaultModel`, `models`, and
 Compatibility:
 
 - `discovery` still works as a legacy alias, but emits a deprecation warning
-- if both `catalog` and `discovery` are registered, OpenClaw uses `catalog`
+- if both `catalog` and `discovery` are registered, Operator uses `catalog`
   and emits a warning
 - `augmentModelCatalog` is deprecated; bundled providers should publish
   supplemental rows through `registerModelCatalogProvider`
@@ -855,8 +855,8 @@ Why:
 
 - `resolveAccount(...)` is the runtime path. It is allowed to assume credentials
   are fully materialized and can fail fast when required secrets are missing.
-- Read-only command paths such as `openclaw status`, `openclaw status --all`,
-  `openclaw channels status`, `openclaw channels resolve`, and doctor/config
+- Read-only command paths such as `operator status`, `operator status --all`,
+  `operator channels status`, `operator channels resolve`, and doctor/config
   repair flows should not need to materialize runtime credentials just to
   describe configuration.
 
@@ -880,12 +880,12 @@ path" instead of crashing or misreporting the account as not configured.
 
 ## Package packs
 
-A plugin directory may include a `package.json` with `openclaw.extensions`:
+A plugin directory may include a `package.json` with `operator.extensions`:
 
 ```json
 {
   "name": "my-pack",
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./src/safety.ts", "./src/tools.ts"],
     "setupEntry": "./src/setup-entry.ts"
   }
@@ -899,24 +899,24 @@ present; otherwise the unscoped `package.json` name).
 If your plugin imports npm deps, install them in that directory so
 `node_modules` is available (`npm install` / `pnpm install`).
 
-Security guardrail: every `openclaw.extensions` entry must stay inside the plugin
+Security guardrail: every `operator.extensions` entry must stay inside the plugin
 directory after symlink resolution. Entries that escape the package directory are
 rejected.
 
-Security note: `openclaw plugins install` installs plugin dependencies with a
+Security note: `operator plugins install` installs plugin dependencies with a
 project-local `npm install --omit=dev --ignore-scripts` (no lifecycle scripts,
 no dev dependencies at runtime), ignoring inherited global npm install settings.
 Keep plugin dependency trees "pure JS/TS" and avoid packages that require
 `postinstall` builds.
 
-Optional: `openclaw.setupEntry` can point at a lightweight setup-only module.
-When OpenClaw needs setup surfaces for a disabled channel plugin, or
+Optional: `operator.setupEntry` can point at a lightweight setup-only module.
+When Operator needs setup surfaces for a disabled channel plugin, or
 when a channel plugin is enabled but still unconfigured, it loads `setupEntry`
 instead of the full plugin entry. This keeps startup and setup lighter
 when your main plugin entry also wires tools, hooks, or other runtime-only
 code.
 
-Optional: `openclaw.startup.deferConfiguredChannelFullLoadUntilAfterListen`
+Optional: `operator.startup.deferConfiguredChannelFullLoadUntilAfterListen`
 can opt a channel plugin into the same `setupEntry` path during the gateway's
 pre-listen startup phase, even when the channel is already configured.
 
@@ -929,7 +929,7 @@ must register every channel-owned capability that startup depends on, such as:
 - any gateway methods, tools, or services that must exist during that same window
 
 If your full entry still owns any required startup capability, do not enable
-this flag. Keep the plugin on the default behavior and let OpenClaw load the
+this flag. Keep the plugin on the default behavior and let Operator load the
 full entry during startup.
 
 Bundled channels can also publish setup-only contract-surface helpers that core
@@ -961,7 +961,7 @@ Example:
 ```json
 {
   "name": "@scope/my-channel",
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./index.ts"],
     "setupEntry": "./setup-entry.ts",
     "startup": {
@@ -973,15 +973,15 @@ Example:
 
 ### Channel catalog metadata
 
-Channel plugins can advertise setup/discovery metadata via `openclaw.channel` and
-install hints via `openclaw.install`. This keeps the core catalog data-free.
+Channel plugins can advertise setup/discovery metadata via `operator.channel` and
+install hints via `operator.install`. This keeps the core catalog data-free.
 
 Example:
 
 ```json
 {
-  "name": "@operator/nextcloud-talk",
-  "openclaw": {
+  "name": "@gabrielvfonseca/nextcloud-talk",
+  "@gabrielvfonseca/operator": {
     "extensions": ["./index.ts"],
     "channel": {
       "id": "nextcloud-talk",
@@ -994,7 +994,7 @@ Example:
       "aliases": ["nc-talk", "nc"]
     },
     "install": {
-      "npmSpec": "@operator/nextcloud-talk",
+      "npmSpec": "@gabrielvfonseca/nextcloud-talk",
       "localPath": "<bundled-plugin-local-path>",
       "defaultChoice": "npm"
     }
@@ -1002,7 +1002,7 @@ Example:
 }
 ```
 
-Useful `openclaw.channel` fields beyond the minimal example:
+Useful `operator.channel` fields beyond the minimal example:
 
 - `detailLabel`: secondary label for richer catalog/status surfaces
 - `docsLabel`: override link text for the docs link
@@ -1017,19 +1017,19 @@ Useful `openclaw.channel` fields beyond the minimal example:
 - `forceAccountBinding`: require explicit account binding even when only one account exists
 - `preferSessionLookupForAnnounceTarget`: prefer session lookup when resolving announce targets
 
-OpenClaw can also merge **external channel catalogs** (for example, an MPM
+Operator can also merge **external channel catalogs** (for example, an MPM
 registry export). Drop a JSON file at one of:
 
-- `~/.openclaw/mpm/plugins.json`
-- `~/.openclaw/mpm/catalog.json`
-- `~/.openclaw/plugins/catalog.json`
+- `~/.operator/mpm/plugins.json`
+- `~/.operator/mpm/catalog.json`
+- `~/.operator/plugins/catalog.json`
 
-Or point `OPENCLAW_PLUGIN_CATALOG_PATHS` (or `OPENCLAW_MPM_CATALOG_PATHS`) at
+Or point `OPERATOR_PLUGIN_CATALOG_PATHS` (or `OPERATOR_MPM_CATALOG_PATHS`) at
 one or more JSON files (comma/semicolon/`PATH`-delimited). Each file should
-contain `{ "entries": [ { "name": "@scope/pkg", "openclaw": { "channel": {...}, "install": {...} } } ] }`. The parser also accepts `"packages"` or `"plugins"` as legacy aliases for the `"entries"` key.
+contain `{ "entries": [ { "name": "@scope/pkg", "@gabrielvfonseca/operator": { "channel": {...}, "install": {...} } } ] }`. The parser also accepts `"packages"` or `"plugins"` as legacy aliases for the `"entries"` key.
 
 Generated channel catalog entries and provider install catalog entries expose
-normalized install-source facts next to the raw `openclaw.install` block. The
+normalized install-source facts next to the raw `operator.install` block. The
 normalized facts identify whether the npm spec is an exact version or floating
 selector, whether expected integrity metadata is present, and whether a local
 source path is also available. When the catalog/package identity is known, the
@@ -1158,7 +1158,7 @@ Recommended sequence:
    policy, fallback, config merge, lifecycle, channel-facing semantics, and
    runtime helper shape.
 2. **Add typed plugin registration/runtime surfaces.** Extend
-   `OpenClawPluginApi` and/or `api.runtime` with the smallest useful typed
+   `OperatorPluginApi` and/or `api.runtime` with the smallest useful typed
    capability surface.
 3. **Wire core + channel/feature consumers.** Channels and feature plugins
    should consume the new capability through core, not by importing a vendor
@@ -1168,7 +1168,7 @@ Recommended sequence:
 5. **Add contract coverage.** Add tests so ownership and registration shape
    stay explicit over time.
 
-This is how OpenClaw stays opinionated without becoming hardcoded to one
+This is how Operator stays opinionated without becoming hardcoded to one
 provider's worldview. See the [Capability Cookbook](/tools/capability-cookbook)
 for a concrete file checklist and worked example.
 

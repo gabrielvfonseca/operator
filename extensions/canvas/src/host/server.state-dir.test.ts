@@ -1,8 +1,8 @@
 // Canvas tests cover server.state dir plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { defaultRuntime } from "openclaw/plugin-sdk/runtime-env";
-import { withStateDirEnv } from "openclaw/plugin-sdk/test-env";
+import { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { withStateDirEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("canvas host state dir defaults", () => {
@@ -13,7 +13,7 @@ describe("canvas host state dir defaults", () => {
   });
 
   it("uses OPERATOR_STATE_DIR for the default canvas root", async () => {
-    await withStateDirEnv("openclaw-canvas-state-", async ({ stateDir }) => {
+    await withStateDirEnv("operator-canvas-state-", async ({ stateDir }) => {
       const handler = await createCanvasHostHandler({
         runtime: defaultRuntime,
         allowInTests: true,

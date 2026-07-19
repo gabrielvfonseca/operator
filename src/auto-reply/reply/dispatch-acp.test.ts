@@ -1341,7 +1341,7 @@ describe("tryDispatchAcpReply", () => {
 
   it("forwards media-understanding PDF page images alongside current image attachments", async () => {
     setReadyAcpResolution();
-    const currentPath = "/tmp/openclaw-current-image.png";
+    const currentPath = "/tmp/operator-current-image.png";
     const currentImage = Buffer.from("current-image");
     const pdfPage = {
       type: "image" as const,
@@ -1386,7 +1386,7 @@ describe("tryDispatchAcpReply", () => {
       mimeType: "image/png",
       data: Buffer.from("inline-image").toString("base64"),
     };
-    const historyPath = "/tmp/openclaw-history-inline.png";
+    const historyPath = "/tmp/operator-history-inline.png";
     acpAttachmentBuffers.set(historyPath, Buffer.from("history-image"));
 
     await runDispatch({
@@ -1780,7 +1780,7 @@ describe("tryDispatchAcpReply", () => {
         params.sessionKey === canonicalSessionKey
           ? {
               cfg: params.cfg ?? createAcpTestConfig(),
-              storePath: "/tmp/openclaw-session-store.json",
+              storePath: "/tmp/operator-session-store.json",
               sessionKey: canonicalSessionKey,
               storeSessionKey: canonicalSessionKey,
               acp: createAcpSessionMeta({
@@ -1847,7 +1847,7 @@ describe("tryDispatchAcpReply", () => {
         params.sessionKey === canonicalSessionKey
           ? {
               cfg: params.cfg ?? createAcpTestConfig(),
-              storePath: "/tmp/openclaw-session-store.json",
+              storePath: "/tmp/operator-session-store.json",
               sessionKey: canonicalSessionKey,
               storeSessionKey: canonicalSessionKey,
               acp: createAcpSessionMeta({
@@ -2082,7 +2082,7 @@ describe("tryDispatchAcpReply", () => {
     setReadyAcpResolution();
     ttsMocks.resolveTtsConfig.mockReturnValue({ mode: "final" });
     queueTtsReplies({
-      mediaUrl: "/tmp/openclaw-media/acp-tts.ogg",
+      mediaUrl: "/tmp/operator-media/acp-tts.ogg",
       audioAsVoice: true,
     } as MockTtsReply);
     mockVisibleTextTurn("WebChat ACP block reply.");
@@ -2109,7 +2109,7 @@ describe("tryDispatchAcpReply", () => {
     });
 
     const finalPayload = dispatcherCall(dispatcher.sendFinalReply);
-    expect(finalPayload.mediaUrl).toBe("/tmp/openclaw-media/acp-tts.ogg");
+    expect(finalPayload.mediaUrl).toBe("/tmp/operator-media/acp-tts.ogg");
     expect(finalPayload.audioAsVoice).toBe(true);
     expect(finalPayload.spokenText).toBe("WebChat ACP block reply.");
     expect(finalPayload.trustedLocalMedia).toBe(true);

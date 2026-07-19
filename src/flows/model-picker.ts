@@ -1,6 +1,6 @@
 // Model picker flow lets users select provider models for config defaults.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveDefaultAgentDir } from "../agents/agent-scope.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { resolveAgentHarnessPolicy } from "../agents/harness/policy.js";
@@ -58,7 +58,7 @@ type ModelRouteRuntimeResolver = (params: {
   modelId: string;
   api?: string | null;
   baseUrl?: unknown;
-}) => "codex" | "operator" | undefined;
+}) => "codex" | "@gabrielvfonseca/operator" | undefined;
 
 // Internal router models are valid defaults during auth/setup but not manual API targets.
 const HIDDEN_ROUTER_MODELS = new Set(["openrouter/auto"]);
@@ -335,7 +335,7 @@ function createModelRouteRuntimeResolver(params: {
   config: OperatorConfig;
   env?: NodeJS.ProcessEnv;
 }): ModelRouteRuntimeResolver {
-  const cache = new Map<string, "codex" | "operator" | undefined>();
+  const cache = new Map<string, "codex" | "@gabrielvfonseca/operator" | undefined>();
   return (route) => {
     const baseUrlKey =
       typeof route.baseUrl === "string"
@@ -356,7 +356,11 @@ function createModelRouteRuntimeResolver(params: {
       env: params.env,
     });
     const runtime =
-      policy.runtime === "codex" ? "codex" : policy.runtime === "operator" ? "operator" : undefined;
+      policy.runtime === "codex"
+        ? "codex"
+        : policy.runtime === "@gabrielvfonseca/operator"
+          ? "@gabrielvfonseca/operator"
+          : undefined;
     cache.set(key, runtime);
     return runtime;
   };
@@ -380,7 +384,7 @@ function resolveModelRouteHint(params: {
   });
   return runtime === "codex"
     ? "Codex runtime route"
-    : runtime === "operator"
+    : runtime === "@gabrielvfonseca/operator"
       ? "Operator runtime route"
       : undefined;
 }

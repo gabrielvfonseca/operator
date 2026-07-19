@@ -270,13 +270,13 @@ describe("loadModelCatalog", () => {
     prepareOperatorModelsJsonSourceMock = vi.fn().mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "source-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       wrote: false,
     });
     buildModelsJsonSourceFingerprintMock = vi.fn().mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "source-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     vi.doMock("./models-config.js", () => ({
       buildModelsJsonSourceFingerprint: buildModelsJsonSourceFingerprintMock,
@@ -303,7 +303,7 @@ describe("loadModelCatalog", () => {
     vi.doMock("./agent-scope.js", () => ({
       resolveAgentWorkspaceDir: (cfg: OperatorConfig, agentId: string) => {
         const entry = cfg.agents?.list?.find((entryEntry) => entryEntry.id === agentId);
-        return entry?.workspace ?? cfg.agents?.defaults?.workspace ?? "/tmp/openclaw-workspace";
+        return entry?.workspace ?? cfg.agents?.defaults?.workspace ?? "/tmp/operator-workspace";
       },
       resolveDefaultAgentDir: () => "/tmp/openclaw",
       resolveDefaultAgentId: (cfg: OperatorConfig) =>
@@ -367,7 +367,7 @@ describe("loadModelCatalog", () => {
     prepareOperatorModelsJsonSourceMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "source-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       wrote: false,
     });
     augmentCatalogMock.mockClear();
@@ -379,7 +379,7 @@ describe("loadModelCatalog", () => {
     buildModelsJsonSourceFingerprintMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "source-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     buildAgentModelCatalogCacheKeyMock.mockClear();
     readCachedAgentModelCatalogMock.mockReset();
@@ -562,7 +562,7 @@ describe("loadModelCatalog", () => {
     buildModelsJsonSourceFingerprintMock.mockReturnValueOnce(staleFingerprint).mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "fresh-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     const freshCatalog = [{ id: "fresh", name: "Fresh", provider: "ollama", reasoning: true }];
     const staleCatalog = [{ id: "stale", name: "Stale", provider: "ollama", reasoning: false }];
@@ -578,7 +578,7 @@ describe("loadModelCatalog", () => {
     releaseStaleFingerprint?.({
       agentDir: "/tmp/openclaw",
       fingerprint: "stale-fingerprint",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     await expect(staleLoad).resolves.toBe(staleCatalog);
     await expect(loadModelCatalog({ cacheOnly: true })).resolves.toBe(freshCatalog);
@@ -610,12 +610,12 @@ describe("loadModelCatalog", () => {
     buildModelsJsonSourceFingerprintMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "pre-refresh-source",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     prepareOperatorModelsJsonSourceMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "post-refresh-source",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       wrote: true,
     });
     mockAgentDiscoveryModels([{ id: "runtime-fast", name: "Runtime Fast", provider: "openai" }]);
@@ -644,12 +644,12 @@ describe("loadModelCatalog", () => {
     buildModelsJsonSourceFingerprintMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "pre-refresh-source",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
     });
     prepareOperatorModelsJsonSourceMock.mockResolvedValue({
       agentDir: "/tmp/openclaw",
       fingerprint: "post-refresh-source",
-      workspaceDir: "/tmp/openclaw-workspace",
+      workspaceDir: "/tmp/operator-workspace",
       wrote: true,
     });
     readCachedAgentModelCatalogMock.mockImplementation(({ catalogKey }: { catalogKey: string }) =>
@@ -682,12 +682,12 @@ describe("loadModelCatalog", () => {
       .mockResolvedValueOnce({
         agentDir: "/tmp/openclaw",
         fingerprint: "old-source",
-        workspaceDir: "/tmp/openclaw-workspace",
+        workspaceDir: "/tmp/operator-workspace",
       })
       .mockResolvedValueOnce({
         agentDir: "/tmp/openclaw",
         fingerprint: "new-source",
-        workspaceDir: "/tmp/openclaw-workspace",
+        workspaceDir: "/tmp/operator-workspace",
       });
     readCachedAgentModelCatalogMock.mockImplementation(({ catalogKey }: { catalogKey: string }) =>
       catalogKey.endsWith("old-source")
@@ -1750,7 +1750,7 @@ describe("loadModelCatalog", () => {
   });
 
   it("passes explicit env when checking current manifest catalog snapshot compatibility", () => {
-    const env = { HOME: "/tmp/openclaw-model-catalog-env" } as NodeJS.ProcessEnv;
+    const env = { HOME: "/tmp/operator-model-catalog-env" } as NodeJS.ProcessEnv;
 
     loadManifestModelCatalog({
       config: {} as OperatorConfig,

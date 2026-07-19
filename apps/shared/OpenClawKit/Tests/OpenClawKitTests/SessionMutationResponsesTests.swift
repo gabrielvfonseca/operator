@@ -1,11 +1,11 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OperatorKit
 
 struct SessionMutationResponsesTests {
     @Test
     func `compact response accepts success`() throws {
-        try OpenClawSessionsCompactResponse.requireSuccess(
+        try OperatorSessionsCompactResponse.requireSuccess(
             from: Data(#"{"ok":true,"key":"agent:main:main","compacted":true}"#.utf8))
     }
 
@@ -14,10 +14,10 @@ struct SessionMutationResponsesTests {
         let data = Data(
             #"{"ok":false,"key":"agent:main:main","compacted":false,"reason":"turn failed"}"#.utf8)
         do {
-            try OpenClawSessionsCompactResponse.requireSuccess(
+            try OperatorSessionsCompactResponse.requireSuccess(
                 from: data)
             Issue.record("expected failed compaction response to throw")
-        } catch let error as OpenClawSessionsCompactError {
+        } catch let error as OperatorSessionsCompactError {
             #expect(error.errorDescription == "turn failed")
         } catch {
             Issue.record("unexpected error: \(error)")

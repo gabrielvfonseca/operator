@@ -6,14 +6,14 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { stripSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
-import { MAX_IMAGE_BYTES } from "@operator/media-core/constants";
-import { extensionForMime } from "@operator/media-core/mime";
+import { stripSystemPromptCacheBoundary } from "@gabrielvfonseca/ai/internal/shared";
+import { MAX_IMAGE_BYTES } from "@gabrielvfonseca/media-core/constants";
+import { extensionForMime } from "@gabrielvfonseca/media-core/mime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@operator/normalization-core/string-coerce";
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 import { isAcpRuntimeSpawnAvailable } from "../../acp/runtime/availability.js";
 import type { SourceReplyDeliveryMode } from "../../auto-reply/get-reply-options.types.js";
 import type { ThinkLevel } from "../../auto-reply/thinking.js";
@@ -167,7 +167,7 @@ export function buildCliAgentSystemPrompt(params: {
     runtime: {
       sessionKey: params.sessionKey,
       sessionId: params.sessionId,
-      host: "operator",
+      host: "@gabrielvfonseca/operator",
       os: resolveRuntimeOsLabel(),
       arch: os.arch(),
       node: process.version,

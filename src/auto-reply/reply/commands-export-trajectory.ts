@@ -296,7 +296,7 @@ function buildTrajectoryExportExecRequest(
   return {
     argv: buildCurrentOperatorCliArgv(args),
     command: buildCurrentOperatorCliCommand(args),
-    displayCommand: ["operator", ...args].join(" "),
+    displayCommand: ["@gabrielvfonseca/operator", ...args].join(" "),
     encodedRequest,
     request,
   };

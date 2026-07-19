@@ -1,24 +1,24 @@
-// Telegram helper module supports helpers behavior.
-import type { Chat, Message } from "grammy/types";
-import { formatLocationText } from "openclaw/plugin-sdk/channel-inbound";
+import { formatLocationText } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   resolveCommandAuthorization,
   type CommandAuthorization,
-} from "openclaw/plugin-sdk/command-auth-native";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 import type {
   OperatorConfig,
   DmPolicy,
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-contracts";
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { readChannelAllowFromStore } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { normalizeAccountId } from "openclaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Telegram helper module supports helpers behavior.
+import type { Chat, Message } from "grammy/types";
 import { expandTelegramAllowFromWithAccessGroups } from "../access-groups.js";
 import {
   firstDefined,

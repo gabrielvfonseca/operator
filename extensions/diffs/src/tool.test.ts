@@ -1,7 +1,7 @@
 // Diffs tests cover tool plugin behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi, OperatorPluginToolContext } from "../api.js";
 import type { DiffScreenshotter } from "./browser.js";
@@ -23,7 +23,7 @@ describe("diffs tool", () => {
       rootDir,
       store,
       cleanup: cleanupRootDir,
-    } = await createDiffStoreHarness("openclaw-diffs-tool-"));
+    } = await createDiffStoreHarness("operator-diffs-tool-"));
   });
 
   afterEach(async () => {

@@ -3,7 +3,7 @@
  *
  * Normalizes and sorts active plugin runtime state for channel registry callers.
  */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   ActiveChannelPluginRuntimeShape,
   ActivePluginChannelRegistration,

@@ -1,6 +1,6 @@
 // Defines core provider schema fragments for config parsing.
-import { isValidInboundPathRootPattern } from "@operator/media-core/inbound-path-policy";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { isValidInboundPathRootPattern } from "@gabrielvfonseca/media-core/inbound-path-policy";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { z } from "zod";
 import { isSafeScpRemoteHost } from "../infra/scp-host.js";
 import {

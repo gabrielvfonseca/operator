@@ -1,7 +1,7 @@
 // Server chat agent-event tests protect event fanout, heartbeat visibility,
 // session lifecycle persistence, and subscriber registry behavior.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   INTERNAL_RUNTIME_CONTEXT_BEGIN,
@@ -2058,7 +2058,7 @@ describe("agent event handler", () => {
         name: "tool_search_code",
         toolCallId: "tool-search-node-1",
         args: {
-          code: 'return await openclaw.tools.call("openclaw:core:exec", { command: "echo hi" });',
+          code: 'return await operator.tools.call("operator:core:exec", { command: "echo hi" });',
         },
       },
     });
@@ -2073,7 +2073,7 @@ describe("agent event handler", () => {
       name: "exec",
       toolCallId: "tool-search-node-1",
       bridgeToolName: "tool_search_code",
-      bridgeTargetToolName: "openclaw:core:exec",
+      bridgeTargetToolName: "operator:core:exec",
       bridgeVerb: "call",
       args: { command: "echo hi" },
     });

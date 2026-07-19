@@ -1,10 +1,10 @@
 // Google Meet plugin module implements chrome behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { callGatewayFromCli } from "openclaw/plugin-sdk/gateway-runtime";
-import { addTimerTimeoutGraceMs } from "openclaw/plugin-sdk/number-runtime";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import type { RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { callGatewayFromCli } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import { addTimerTimeoutGraceMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import type { RuntimeLogger } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { GoogleMeetConfig, GoogleMeetMode } from "../config.js";
 import {
   startNodeAgentAudioBridge,

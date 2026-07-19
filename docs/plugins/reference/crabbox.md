@@ -11,17 +11,17 @@ Cloud worker provider backed by the Crabbox CLI.
 
 ## Distribution
 
-- Package: `@operator/crabbox-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/crabbox-provider`
+- Install route: included in Operator
 
 ## Surface
 
 contracts: `workerProviders`
 
-<!-- openclaw-plugin-reference:manual-start -->
+<!-- operator-plugin-reference:manual-start -->
 
 ## Configure
 
 See [Cloud worker environments](/gateway/configuration-reference#crabbox-profile) for the profile schema and lifecycle notes.
 
-<!-- openclaw-plugin-reference:manual-end -->
+<!-- operator-plugin-reference:manual-end -->

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   onInternalDiagnosticEvent,
@@ -34,7 +34,7 @@ function stableDiagnosticPayload<TEvent extends DiagnosticEventPayload>(
 
 function stableLogRecordPayload(event: Extract<DiagnosticEventPayload, { type: "log.record" }>) {
   const { code, loggerParents, ...stable } = stableDiagnosticPayload(event);
-  expect(loggerParents).toStrictEqual(["openclaw"]);
+  expect(loggerParents).toStrictEqual(["@gabrielvfonseca/operator"]);
   expect(code?.functionName).toMatch(/^[A-Za-z0-9_.:-]+$/u);
   expect(code?.line).toBeGreaterThan(0);
   return stable;
@@ -61,8 +61,8 @@ describe("talk logging", () => {
   let logFile: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-talk-logs-"));
-    logFile = path.join(tmpDir, "openclaw.log");
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-talk-logs-"));
+    logFile = path.join(tmpDir, "operator.log");
     resetDiagnosticEventsForTest();
     resetLogger();
     setLoggerOverride({ level: "info", file: logFile });

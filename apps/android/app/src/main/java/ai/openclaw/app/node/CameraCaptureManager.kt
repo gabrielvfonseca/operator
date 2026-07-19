@@ -1,4 +1,4 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -276,7 +276,7 @@ class CameraCaptureManager(
         // Give camera pipeline time to initialize before recording
         kotlinx.coroutines.delay(1_500)
 
-        val clipFile = session.ownFile(File.createTempFile("openclaw-clip-", ".mp4", context.cacheDir))
+        val clipFile = session.ownFile(File.createTempFile("operator-clip-", ".mp4", context.cacheDir))
         val outputOptions = FileOutputOptions.Builder(clipFile).build()
 
         val finalized = kotlinx.coroutines.CompletableDeferred<VideoRecordEvent.Finalize>()
@@ -444,7 +444,7 @@ private suspend fun ImageCapture.takeJpegWithExif(
   tempDir: File,
 ): Pair<ByteArray, Int> =
   suspendCancellableCoroutine { cont ->
-    val file = File.createTempFile("openclaw-snap-", ".jpg", tempDir)
+    val file = File.createTempFile("operator-snap-", ".jpg", tempDir)
     val options = ImageCapture.OutputFileOptions.Builder(file).build()
     takePicture(
       options,

@@ -4,7 +4,7 @@ import type { ReactiveController, ReactiveControllerHost } from "lit";
 import { property } from "lit/decorators.js";
 import { icon } from "../components/icons.ts";
 import { t } from "../i18n/index.ts";
-import { OpenClawLightDomElement } from "../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../lit/operator-element.ts";
 import {
   RouterOutletController,
   selectRenderedRouteMatch,
@@ -209,12 +209,12 @@ class LitRouterOutletController<
   }
 }
 
-class OpenClawRouterOutlet<
+class OperatorRouterOutlet<
   TRouteId extends string = string,
   TLoadContext = unknown,
   TModule = unknown,
   TData = unknown,
-> extends OpenClawLightDomElement {
+> extends OperatorLightDomElement {
   @property({ attribute: false }) router?: Router<TRouteId, TLoadContext, TModule, TData>;
   @property({ attribute: false }) retryContext?: TLoadContext;
   @property({ attribute: false }) onNotFound?: () => void;
@@ -233,6 +233,6 @@ class OpenClawRouterOutlet<
   }
 }
 
-if (!customElements.get("openclaw-router-outlet")) {
-  customElements.define("openclaw-router-outlet", OpenClawRouterOutlet);
+if (!customElements.get("operator-router-outlet")) {
+  customElements.define("operator-router-outlet", OperatorRouterOutlet);
 }

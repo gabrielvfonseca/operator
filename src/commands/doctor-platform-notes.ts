@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { OperatorConfig } from "../config/types.operator.js";
@@ -77,7 +77,7 @@ async function collectMacStaleOperatorUpdateLaunchdJobsWarning(deps?: {
     }),
     "- Fix after confirming no update is running:",
     "  launchctl remove <label>",
-    `  ${formatCliCommand("operator gateway restart")}`,
+    `  ${formatCliCommand("openclaw gateway restart")}`,
   ].join("\n");
 }
 

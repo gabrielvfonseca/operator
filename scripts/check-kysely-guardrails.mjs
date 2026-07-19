@@ -38,12 +38,12 @@ const rawSqliteAllowPathGroups = {
     "src/infra/sqlite-transaction.ts",
     "src/infra/sqlite-user-version.ts",
     "src/infra/sqlite-wal.ts",
-    "src/state/openclaw-agent-db-session-migrations.ts",
-    "src/state/openclaw-agent-db-session-provenance.ts",
-    "src/state/openclaw-agent-db.ts",
-    "src/state/openclaw-state-db-operator-approval-migration.ts",
-    "src/state/openclaw-state-db-schema-helpers.ts",
-    "src/state/openclaw-state-db.ts",
+    "src/state/operator-agent-db-session-migrations.ts",
+    "src/state/operator-agent-db-session-provenance.ts",
+    "src/state/operator-agent-db.ts",
+    "src/state/operator-state-db-operator-approval-migration.ts",
+    "src/state/operator-state-db-schema-helpers.ts",
+    "src/state/operator-state-db.ts",
     "src/state/sqlite-schema-shape.test-support.ts",
   ],
   "backup snapshot maintenance": [
@@ -52,7 +52,7 @@ const rawSqliteAllowPathGroups = {
     "src/snapshot/local-repository.ts",
   ],
   "agent auth profile read-only bootstrap": ["src/agents/auth-profiles/sqlite.ts"],
-  "read-only shared state database access": ["src/state/openclaw-state-db-readonly.ts"],
+  "read-only shared state database access": ["src/state/operator-state-db-readonly.ts"],
   "read-only SQLite status probes": [
     "src/commands/doctor-db-bloat.ts",
     "src/commands/status.scan.shared.ts",
@@ -169,7 +169,7 @@ function collectImports(sourceFile) {
       source.endsWith("node-sqlite.js") ||
       source.endsWith("sqlite-transaction.js") ||
       source.endsWith("sqlite-wal.js") ||
-      source.endsWith("openclaw-state-db.js")
+      source.endsWith("operator-state-db.js")
     ) {
       hasSqliteContext = true;
     }

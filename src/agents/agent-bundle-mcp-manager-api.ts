@@ -1,5 +1,5 @@
 /** Module-level session MCP runtime manager entry APIs. */
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import { resolveGlobalSingleton } from "../shared/global-singleton.js";

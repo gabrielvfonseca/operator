@@ -1,5 +1,5 @@
 // Normalizes task owner keys and checks requester access to task records.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   findTaskByRunId,
   getTaskById,

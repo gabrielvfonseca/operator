@@ -55,8 +55,8 @@ function noteCliGatewayVersionSkew(status: StatusSummary | undefined): void {
   note(
     [
       `This command is Operator ${VERSION}; the running Gateway is Operator ${gatewayVersion}.`,
-      "Check `operator --version`, `which operator`, and `operator gateway status --deep`.",
-      "If this mismatch is unexpected, update PATH so `operator` points to the version you want, or reinstall the Gateway service from that same Operator install.",
+      "Check `openclaw --version`, `which openclaw`, and `openclaw gateway status --deep`.",
+      "If this mismatch is unexpected, update PATH so `openclaw` points to the version you want, or reinstall the Gateway service from that same Operator install.",
     ].join("\n"),
     "Operator version mismatch",
   );

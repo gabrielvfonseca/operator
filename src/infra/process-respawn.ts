@@ -1,6 +1,6 @@
 // Respawns the gateway process when no supervisor handles restart.
 import { spawn, type ChildProcess } from "node:child_process";
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isContainerEnvironment } from "./container-environment.js";
 import { formatErrorMessage } from "./errors.js";
 import { triggerOperatorRestart } from "./restart.js";
@@ -27,14 +27,14 @@ function isTruthy(value: string | undefined): boolean {
 }
 
 const PNPM_VERSIONED_OPERATOR_ENTRY_PATTERN =
-  /^(.*?)([\\/])node_modules\2\.pnpm\2operator@[^\\/]+\2node_modules\2operator\2.+$/;
+  /^(.*?)([\\/])node_modules\2\.pnpm\2openclaw@[^\\/]+\2node_modules\2openclaw\2.+$/;
 
 function rewritePnpmVersionedOperatorEntryPath(entryPath: string): string {
   // pnpm can expose argv[1] as a versioned realpath that self-update removes.
   // Respawn through the stable Operator package wrapper instead.
   return entryPath.replace(
     PNPM_VERSIONED_OPERATOR_ENTRY_PATTERN,
-    "$1$2node_modules$2operator$2operator.mjs",
+    "$1$2node_modules$2openclaw$2operator.mjs",
   );
 }
 

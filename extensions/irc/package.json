@@ -1,18 +1,18 @@
 {
-  "name": "@operator/irc",
+  "name": "@gabrielvfonseca/irc",
   "version": "2026.7.2",
   "description": "Operator IRC channel plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@operator/irc",
-      "npmSpec": "@operator/irc",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/irc",
+      "npmSpec": "@gabrielvfonseca/irc",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9",
       "allowInvalidConfigRecovery": true
@@ -58,6 +58,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   }
 }

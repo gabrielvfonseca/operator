@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../api.js";
 import {
@@ -54,9 +54,9 @@ describe("default wiki prompt section", () => {
 
   it("can append a compact compiled digest snapshot when enabled", async () => {
     const rootDir = path.join(suiteRoot, "digest-enabled");
-    await fs.mkdir(path.join(rootDir, ".openclaw-wiki", "cache"), { recursive: true });
+    await fs.mkdir(path.join(rootDir, ".operator-wiki", "cache"), { recursive: true });
     await fs.writeFile(
-      path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"),
+      path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"),
       JSON.stringify(
         {
           claimCount: 8,
@@ -102,9 +102,9 @@ describe("default wiki prompt section", () => {
 
   it("keeps the digest snapshot disabled by default", async () => {
     const rootDir = path.join(suiteRoot, "digest-disabled");
-    await fs.mkdir(path.join(rootDir, ".openclaw-wiki", "cache"), { recursive: true });
+    await fs.mkdir(path.join(rootDir, ".operator-wiki", "cache"), { recursive: true });
     await fs.writeFile(
-      path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json"),
+      path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json"),
       JSON.stringify({
         claimCount: 1,
         pages: [{ title: "Alpha", kind: "entity", claimCount: 1, topClaims: [] }],
@@ -122,7 +122,7 @@ describe("default wiki prompt section", () => {
 
   it("stabilizes digest prompt ordering for prompt-cache-friendly output", async () => {
     const rootDir = path.join(suiteRoot, "digest-stable");
-    const digestPath = path.join(rootDir, ".openclaw-wiki", "cache", "agent-digest.json");
+    const digestPath = path.join(rootDir, ".operator-wiki", "cache", "agent-digest.json");
     await fs.mkdir(path.dirname(digestPath), { recursive: true });
 
     const builder = createStaticWikiPromptSectionBuilder(
@@ -215,7 +215,7 @@ describe("default wiki prompt section", () => {
       const digestPath = path.join(
         rootDir,
         agentId,
-        ".openclaw-wiki",
+        ".operator-wiki",
         "cache",
         "agent-digest.json",
       );

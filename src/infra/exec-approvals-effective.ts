@@ -1,5 +1,5 @@
 // Resolves effective exec approval policy from config and policy files.
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { DEFAULT_AGENT_ID } from "../routing/session-key.js";
 import {

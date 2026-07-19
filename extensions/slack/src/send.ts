@@ -1,7 +1,5 @@
 // Slack plugin module implements send behavior.
 import { createHash, createHmac } from "node:crypto";
-import type { MessageMetadata } from "@slack/types";
-import type { Block, KnownBlock, WebClient } from "@slack/web-api";
 import {
   createMessageReceiptFromOutboundResults,
   type ChannelMessageUnknownSendContext,
@@ -9,25 +7,27 @@ import {
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import {
   chunkMarkdownTextWithMode,
   isSilentReplyText,
   resolveChunkMode,
   resolveTextChunkLimit,
-} from "openclaw/plugin-sdk/reply-chunking";
-import { resolveTextChunksWithFallback } from "openclaw/plugin-sdk/reply-payload";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { safeEqualSecret } from "openclaw/plugin-sdk/security-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-chunking";
+import { resolveTextChunksWithFallback } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { safeEqualSecret } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   normalizeOptionalString,
   normalizeOptionalString as normalizeSlackApiString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import type { MessageMetadata } from "@slack/types";
+import type { Block, KnownBlock, WebClient } from "@slack/web-api";
 import type { SlackTokenSource } from "./accounts.js";
 import { resolveSlackAccount, resolveSlackOperationToken } from "./accounts.js";
 import type { SlackAuthoredTextPlacement } from "./authored-text.js";
@@ -54,11 +54,11 @@ import { normalizeSlackThreadTsCandidate, resolveSlackThreadTsValue } from "./th
 import { resolveSlackBotToken } from "./token.js";
 import { truncateSlackText } from "./truncate.js";
 const SLACK_DM_CHANNEL_CACHE_MAX = 1024;
-const SLACK_DELIVERY_METADATA_EVENT = "openclaw_delivery";
-const SLACK_DELIVERY_METADATA_KEY = "openclaw_delivery_id";
-const SLACK_DELIVERY_METADATA_PART_INDEX_KEY = "openclaw_delivery_part_index";
-const SLACK_DELIVERY_METADATA_PART_COUNT_KEY = "openclaw_delivery_part_count";
-const SLACK_DELIVERY_METADATA_SIGNATURE_KEY = "openclaw_delivery_signature";
+const SLACK_DELIVERY_METADATA_EVENT = "operator_delivery";
+const SLACK_DELIVERY_METADATA_KEY = "operator_delivery_id";
+const SLACK_DELIVERY_METADATA_PART_INDEX_KEY = "operator_delivery_part_index";
+const SLACK_DELIVERY_METADATA_PART_COUNT_KEY = "operator_delivery_part_count";
+const SLACK_DELIVERY_METADATA_SIGNATURE_KEY = "operator_delivery_signature";
 const SLACK_RECONCILE_LOOKBACK_MS = 30_000;
 const SLACK_RECONCILE_CLOCK_SKEW_MS = 5 * 60_000;
 const SLACK_RECONCILE_LIMIT = 100;

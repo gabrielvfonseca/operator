@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   buildCurrentOperatorCliArgv,
   buildCurrentOperatorCliExecEnv,
-} from "./commands-openclaw-cli.js";
+} from "./commands-operator-cli.js";
 
 const requireFromHere = createRequire(import.meta.url);
 const originalArgv = [...process.argv];
@@ -35,12 +35,12 @@ describe("buildCurrentOperatorCliArgv", () => {
   });
 
   it("preserves a real Operator launcher entry", () => {
-    setArgv1("/opt/openclaw/openclaw.mjs");
+    setArgv1("/opt/openclaw/operator.mjs");
 
     expect(buildCurrentOperatorCliArgv(["sessions", "export-trajectory"])).toEqual([
       process.execPath,
       ...process.execArgv,
-      "/opt/openclaw/openclaw.mjs",
+      "/opt/openclaw/operator.mjs",
       "sessions",
       "export-trajectory",
     ]);

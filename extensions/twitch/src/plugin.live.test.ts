@@ -17,9 +17,9 @@
  *   TWITCH_CHANNEL=<channel name to join>
  */
 
+import { runStoppablePassiveMonitor } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
 import { StaticAuthProvider } from "@twurple/auth";
 import { ChatClient } from "@twurple/chat";
-import { runStoppablePassiveMonitor } from "openclaw/plugin-sdk/extension-shared";
 import { describe, expect, it } from "vitest";
 
 const LIVE = process.env.TWITCH_LIVE_TEST === "1";

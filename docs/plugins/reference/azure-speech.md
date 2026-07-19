@@ -11,8 +11,8 @@ Azure AI Speech text-to-speech (MP3, native Ogg/Opus voice notes, PCM telephony)
 
 ## Distribution
 
-- Package: `@operator/azure-speech`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/azure-speech`
+- Install route: included in Operator
 
 ## Surface
 

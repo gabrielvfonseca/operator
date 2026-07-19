@@ -1,8 +1,8 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 // Slack plugin module implements actions behavior.
 import type { Block, KnownBlock, WebClient } from "@slack/web-api";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
 import { z } from "zod";
 import { resolveSlackAccount } from "./accounts.js";
 import type { SlackAuthoredTextPlacement } from "./authored-text.js";

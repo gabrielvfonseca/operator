@@ -35,7 +35,7 @@ describe("worker transcript commit store", () => {
   let store: WorkerTranscriptCommitStore;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-commit-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-commit-"));
     nowMs = 1_000;
     const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     store = createWorkerTranscriptCommitStore({ database, now: () => nowMs });

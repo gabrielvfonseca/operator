@@ -11,7 +11,7 @@ import {
   type HeartbeatToolResponse,
   type MessagingToolSend,
   type MessagingToolSourceReplyPayload,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { CodexAssistantProjection } from "./event-projector-assistant.js";
 import { CodexEventProjection } from "./event-projector-events.js";
 import {

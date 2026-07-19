@@ -1,24 +1,24 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 
 enum GatewayConnectPayload {
     static func makeClient(
         options: GatewayConnectOptions,
         displayName: String,
-        platform: String) -> [String: OpenClawProtocol.AnyCodable]
+        platform: String) -> [String: OperatorProtocol.AnyCodable]
     {
-        var client: [String: OpenClawProtocol.AnyCodable] = [
-            "id": OpenClawProtocol.AnyCodable(options.clientId),
-            "displayName": OpenClawProtocol.AnyCodable(displayName),
-            "version": OpenClawProtocol.AnyCodable(
+        var client: [String: OperatorProtocol.AnyCodable] = [
+            "id": OperatorProtocol.AnyCodable(options.clientId),
+            "displayName": OperatorProtocol.AnyCodable(displayName),
+            "version": OperatorProtocol.AnyCodable(
                 Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"),
-            "platform": OpenClawProtocol.AnyCodable(platform),
-            "mode": OpenClawProtocol.AnyCodable(options.clientMode),
-            "instanceId": OpenClawProtocol.AnyCodable(InstanceIdentity.instanceId),
-            "deviceFamily": OpenClawProtocol.AnyCodable(InstanceIdentity.deviceFamily),
+            "platform": OperatorProtocol.AnyCodable(platform),
+            "mode": OperatorProtocol.AnyCodable(options.clientMode),
+            "instanceId": OperatorProtocol.AnyCodable(InstanceIdentity.instanceId),
+            "deviceFamily": OperatorProtocol.AnyCodable(InstanceIdentity.deviceFamily),
         ]
         if let model = InstanceIdentity.modelIdentifier {
-            client["modelIdentifier"] = OpenClawProtocol.AnyCodable(model)
+            client["modelIdentifier"] = OperatorProtocol.AnyCodable(model)
         }
         return client
     }

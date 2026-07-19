@@ -4,11 +4,11 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import type { SessionCatalogProvider } from "openclaw/plugin-sdk/session-catalog";
-import { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import type { SessionCatalogProvider } from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CodexThread } from "./app-server/protocol.js";
 import { sessionBindingIdentity } from "./app-server/session-binding.js";
@@ -154,7 +154,7 @@ function createEligibleControl(overrides: Partial<CodexSessionCatalogControl> = 
 
 function adoptedEntry(params: { sourceThreadId: string; sessionId?: string }) {
   return {
-    sessionId: params.sessionId ?? "openclaw-session-existing",
+    sessionId: params.sessionId ?? "operator-session-existing",
     updatedAt: 1,
     agentHarnessId: "codex",
     modelSelectionLocked: true,
@@ -269,7 +269,7 @@ function createRuntime(
       summary = existing;
     } else {
       sessionSequence += 1;
-      const sessionId = `openclaw-session-${sessionSequence}`;
+      const sessionId = `operator-session-${sessionSequence}`;
       const entry = {
         sessionId,
         sessionFile: `/tmp/${sessionId}.jsonl`,
@@ -1042,7 +1042,7 @@ describe("Codex supervision catalog", () => {
 
   it("resolves node terminal eligibility and cwd from the node-owned catalog record", async () => {
     const threadId = "123e4567-e89b-12d3-a456-426614174000";
-    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-node-terminal-"));
+    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-node-terminal-"));
     tempDirs.push(binDir);
     const executable = path.join(binDir, process.platform === "win32" ? "codex.cmd" : "codex");
     await fs.writeFile(executable, process.platform === "win32" ? "@echo off\r\n" : "#!/bin/sh\n");
@@ -1254,7 +1254,7 @@ describe("Codex supervision catalog", () => {
       invoke,
     });
     const sessionKey = supervisionSessionKey("source-thread");
-    const sessionId = "openclaw-session-existing";
+    const sessionId = "operator-session-existing";
     entries.push({
       sessionKey,
       entry: adoptedEntry({
@@ -1296,7 +1296,7 @@ describe("Codex supervision catalog", () => {
     });
     const { runtime, entries } = createRuntime();
     const sessionKey = supervisionSessionKey("source-thread");
-    const sessionId = "openclaw-session-pending";
+    const sessionId = "operator-session-pending";
     entries.push({
       sessionKey,
       entry: {
@@ -1328,7 +1328,7 @@ describe("Codex supervision catalog", () => {
       })),
     });
     const sessionKey = supervisionSessionKey("source-thread");
-    const sessionId = "openclaw-session-forged-marker";
+    const sessionId = "operator-session-forged-marker";
     const { runtime, entries } = createRuntime({
       entries: [
         {
@@ -1365,12 +1365,12 @@ describe("Codex supervision catalog", () => {
     const sources = [
       {
         threadId: "unlocked-thread",
-        sessionId: "openclaw-session-unlocked",
+        sessionId: "operator-session-unlocked",
         entryPatch: { modelSelectionLocked: false },
       },
       {
         threadId: "wrong-harness-thread",
-        sessionId: "openclaw-session-wrong-harness",
+        sessionId: "operator-session-wrong-harness",
         entryPatch: { agentHarnessId: "other-harness" },
       },
     ];
@@ -1510,7 +1510,7 @@ describe("Codex supervision actions", () => {
     expect(transcriptMirrorMocks.importCodexThreadHistoryToTranscript).toHaveBeenCalledWith({
       thread: sourceThread,
       storePath: resolveStorePath(undefined, { agentId: "main" }),
-      sessionId: "openclaw-session-1",
+      sessionId: "operator-session-1",
       sessionKey: first.sessionKey,
       agentId: "main",
       cwd: "/workspace/project",
@@ -1521,7 +1521,7 @@ describe("Codex supervision actions", () => {
     await expect(
       bindingStore.read(
         sessionBindingIdentity({
-          sessionId: "openclaw-session-1",
+          sessionId: "operator-session-1",
           sessionKey: first.sessionKey,
           config,
         }),
@@ -1548,7 +1548,7 @@ describe("Codex supervision actions", () => {
 
   it("baselines a re-continued adoption from its bound canonical thread", async () => {
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-session-existing";
+    const sessionId = "operator-session-existing";
     const canonicalTurn = {
       id: "turn-canonical",
       status: "completed",
@@ -1714,7 +1714,7 @@ describe("Codex supervision actions", () => {
           sessionKey,
           entry: interruptedAdoptionEntry({
             sourceThreadId: "thread-1",
-            sessionId: "openclaw-session-initializing",
+            sessionId: "operator-session-initializing",
           }),
         },
       ],
@@ -1747,7 +1747,7 @@ describe("Codex supervision actions", () => {
     expect(control.archiveThread).not.toHaveBeenCalled();
 
     const identity = sessionBindingIdentity({
-      sessionId: "openclaw-session-1",
+      sessionId: "operator-session-1",
       sessionKey: continued.sessionKey,
       config,
     });
@@ -1827,7 +1827,7 @@ describe("Codex supervision actions", () => {
 
   it("recovers the same pending session after a restart before binding commit", async () => {
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-interrupted-before-binding";
+    const sessionId = "operator-interrupted-before-binding";
     const crashedRuntime = createRuntime();
     crashedRuntime.entries.push({
       sessionKey,
@@ -1886,7 +1886,7 @@ describe("Codex supervision actions", () => {
 
   it("recovers the same pending session after a restart following binding commit", async () => {
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-interrupted-after-binding";
+    const sessionId = "operator-interrupted-after-binding";
     const crashedRuntime = createRuntime();
     crashedRuntime.entries.push({
       sessionKey,
@@ -1953,7 +1953,7 @@ describe("Codex supervision actions", () => {
     "pending cleanup artifacts",
   ] as const)("rejects recovery against %s in a same-thread binding", async (invalidState) => {
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-interrupted-invalid-binding";
+    const sessionId = "operator-interrupted-invalid-binding";
     const crashedRuntime = createRuntime();
     crashedRuntime.entries.push({
       sessionKey,
@@ -2033,7 +2033,7 @@ describe("Codex supervision actions", () => {
     await expect(
       bindingStore.read(
         sessionBindingIdentity({
-          sessionId: "openclaw-session-1",
+          sessionId: "operator-session-1",
           sessionKey: result.sessionKey,
           config,
         }),
@@ -2045,7 +2045,7 @@ describe("Codex supervision actions", () => {
     });
     const binding = await bindingStore.read(
       sessionBindingIdentity({
-        sessionId: "openclaw-session-1",
+        sessionId: "operator-session-1",
         sessionKey: result.sessionKey,
         config,
       }),
@@ -2057,7 +2057,7 @@ describe("Codex supervision actions", () => {
     const { runtime, entries, createSessionEntry, patchSessionEntry } = createRuntime();
     const { api } = createGatewayApi(runtime);
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-session-archived";
+    const sessionId = "operator-session-archived";
     entries.push({
       sessionKey,
       entry: {
@@ -2121,7 +2121,7 @@ describe("Codex supervision actions", () => {
       ),
     });
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-session-existing";
+    const sessionId = "operator-session-existing";
     entries.push({
       sessionKey,
       entry: adoptedEntry({ sourceThreadId: "thread-1", sessionId }),
@@ -2162,7 +2162,7 @@ describe("Codex supervision actions", () => {
       const bindingStore = createCodexTestBindingStore();
       if (mapped) {
         const sessionKey = supervisionSessionKey("thread-1");
-        const sessionId = "openclaw-session-existing";
+        const sessionId = "operator-session-existing";
         entries.push({
           sessionKey,
           entry: adoptedEntry({ sourceThreadId: "thread-1", sessionId }),
@@ -2202,7 +2202,7 @@ describe("Codex supervision actions", () => {
     const { runtime, entries, createSessionEntry, patchSessionEntry } = createRuntime();
     const { api } = createGatewayApi(runtime);
     const sessionKey = supervisionSessionKey("thread-1");
-    const sessionId = "openclaw-session-stale";
+    const sessionId = "operator-session-stale";
     entries.push({
       sessionKey,
       entry: {
@@ -2223,7 +2223,7 @@ describe("Codex supervision actions", () => {
         if (!entry) {
           throw new Error("missing mapped session");
         }
-        entry.sessionId = "openclaw-session-replacement";
+        entry.sessionId = "operator-session-replacement";
         return idleThread({ id: "thread-1-branch" });
       }),
     });
@@ -2291,7 +2291,7 @@ describe("Codex supervision actions", () => {
     await expect(
       bindingStore.read(
         sessionBindingIdentity({
-          sessionId: "openclaw-session-1",
+          sessionId: "operator-session-1",
           sessionKey: supervisionSessionKey("thread-1"),
           config,
         }),
@@ -2342,7 +2342,7 @@ describe("Codex supervision actions", () => {
     await expect(
       bindingStore.read(
         sessionBindingIdentity({
-          sessionId: "openclaw-session-1",
+          sessionId: "operator-session-1",
           sessionKey: supervisionSessionKey("thread-1"),
           config,
         }),
@@ -3177,7 +3177,7 @@ describe("Codex supervision actions", () => {
 
   it("builds local and paired-node terminal plans from verified catalog records", async () => {
     const threadId = "123e4567-e89b-12d3-a456-426614174000";
-    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-terminal-"));
+    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-terminal-"));
     tempDirs.push(binDir);
     process.env.PATH = binDir;
     const executable = path.join(binDir, process.platform === "win32" ? "codex.cmd" : "codex");

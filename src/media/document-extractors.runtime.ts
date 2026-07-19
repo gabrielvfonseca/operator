@@ -1,5 +1,5 @@
 // Document extractor runtime helpers choose lazy extraction adapters by media type.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type {
   DocumentExtractionRequest,

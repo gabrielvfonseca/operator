@@ -1,6 +1,6 @@
 /** Tests CLI backend config resolution, normalization, and live-test defaults. */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import type { CliBackendConfig } from "../config/types.js";
@@ -287,7 +287,7 @@ beforeEach(() => {
           "--setting-sources",
           "user",
           "--allowedTools",
-          "mcp__openclaw__*",
+          "mcp__operator__*",
         ],
         resumeArgs: [
           "stream-json",
@@ -296,7 +296,7 @@ beforeEach(() => {
           "--setting-sources",
           "user",
           "--allowedTools",
-          "mcp__openclaw__*",
+          "mcp__operator__*",
           "--resume",
           "{sessionId}",
         ],
@@ -613,7 +613,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
     expect(resolved?.config.args).toContain("--setting-sources");
     expect(resolved?.config.args).toContain("user");
     expect(resolved?.config.args).toContain("--allowedTools");
-    expect(resolved?.config.args).toContain("mcp__openclaw__*");
+    expect(resolved?.config.args).toContain("mcp__operator__*");
     expect(resolved?.config.args).toContain("--permission-mode");
     expect(resolved?.config.args).toContain("bypassPermissions");
     expect(resolved?.config.args).not.toContain("--dangerously-skip-permissions");
@@ -626,7 +626,7 @@ describe("resolveCliBackendConfig claude-cli defaults", () => {
     expect(resolved?.config.resumeArgs).toContain("--setting-sources");
     expect(resolved?.config.resumeArgs).toContain("user");
     expect(resolved?.config.resumeArgs).toContain("--allowedTools");
-    expect(resolved?.config.resumeArgs).toContain("mcp__openclaw__*");
+    expect(resolved?.config.resumeArgs).toContain("mcp__operator__*");
     expect(resolved?.config.resumeArgs).toContain("--permission-mode");
     expect(resolved?.config.resumeArgs).toContain("bypassPermissions");
     expect(resolved?.config.resumeArgs).not.toContain("--dangerously-skip-permissions");

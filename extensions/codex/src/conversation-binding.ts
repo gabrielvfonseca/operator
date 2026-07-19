@@ -2,17 +2,20 @@
 import {
   formatErrorMessage,
   resolveSandboxContext,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import { resolveSessionAgentIds } from "openclaw/plugin-sdk/agent-runtime";
-import { loadExecApprovals } from "openclaw/plugin-sdk/exec-approvals-runtime";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import { resolveSessionAgentIds } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { loadExecApprovals } from "@gabrielvfonseca/operator/plugin-sdk/exec-approvals-runtime";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 import type {
   PluginConversationBindingResolvedEvent,
   PluginHookInboundClaimContext,
   PluginHookInboundClaimEvent,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
-import { getSessionEntry, resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import {
+  getSessionEntry,
+  resolveStorePath,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { resolveCodexAppServerForModelProvider } from "./app-server/app-server-policy.js";
 import { resolveCodexAppServerAuthProfileIdForAgent } from "./app-server/auth-bridge.js";
 import { CODEX_CONTROL_METHODS } from "./app-server/capabilities.js";
@@ -163,7 +166,7 @@ async function resolveConversationAppServerRuntime(params: {
   return { execPolicy, runtime };
 }
 
-const CODEX_CONVERSATION_GLOBAL_STATE = Symbol.for("openclaw.codex.conversationBinding");
+const CODEX_CONVERSATION_GLOBAL_STATE = Symbol.for("operator.codex.conversationBinding");
 const CODEX_CONVERSATION_THREAD_DEVELOPER_INSTRUCTIONS =
   "This Codex thread is bound to an Operator conversation. Answer normally; Operator will deliver your final response back to the conversation.";
 

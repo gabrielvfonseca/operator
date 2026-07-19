@@ -19,7 +19,7 @@ describe("terminal main session transcript freshness", () => {
   let storePath: string;
 
   beforeEach(() => {
-    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-session-lifecycle-"));
+    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-session-lifecycle-"));
     storePath = path.join(stateDir, "agents", "main", "sessions", "sessions.json");
   });
 

@@ -1,9 +1,12 @@
 // Github Copilot tests cover models plugin behavior.
 import { createHash } from "node:crypto";
-import { expectDefined } from "@operator/normalization-core";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
-import { deriveCopilotApiBaseUrlFromToken } from "openclaw/plugin-sdk/provider-auth";
-import { createProviderUsageFetch, makeResponse } from "openclaw/plugin-sdk/test-env";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+import { deriveCopilotApiBaseUrlFromToken } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import {
+  createProviderUsageFetch,
+  makeResponse,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CachedCopilotToken } from "./token-cache.js";
 import { resolveCopilotApiToken } from "./token.js";
@@ -30,10 +33,10 @@ vi.mock("openclaw/plugin-sdk/json-store", () => ({
 }));
 
 vi.mock("openclaw/plugin-sdk/state-paths", () => ({
-  resolveStateDir: () => "/tmp/openclaw-state",
+  resolveStateDir: () => "/tmp/operator-state",
 }));
 
-import type { ProviderResolveDynamicModelContext } from "openclaw/plugin-sdk/core";
+import type { ProviderResolveDynamicModelContext } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { fetchCopilotModelCatalog, resolveCopilotForwardCompatModel } from "./models.js";
 
 function createMockCtx(
@@ -345,7 +348,7 @@ describe("fetchCopilotUsage", () => {
 });
 
 describe("github-copilot token", () => {
-  const cachePath = "/tmp/openclaw-state/credentials/github-copilot.token.json";
+  const cachePath = "/tmp/operator-state/credentials/github-copilot.token.json";
 
   beforeEach(() => {
     jsonStoreMocks.loadJsonFile.mockReset();

@@ -1,15 +1,15 @@
-package ai.openclaw.app.ui
+package ai.operator.app.ui
 
-import ai.openclaw.app.GatewayConnectionProblem
-import ai.openclaw.app.GatewayCronJobSummary
-import ai.openclaw.app.GatewayExecApprovalSummary
-import ai.openclaw.app.GatewayNodeCapabilityApproval
-import ai.openclaw.app.GatewayUsageProviderSummary
-import ai.openclaw.app.GatewayUsageWindowSummary
-import ai.openclaw.app.LocationMode
-import ai.openclaw.app.gateway.GatewayEndpoint
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.verbatimText
+import ai.operator.app.GatewayConnectionProblem
+import ai.operator.app.GatewayCronJobSummary
+import ai.operator.app.GatewayExecApprovalSummary
+import ai.operator.app.GatewayNodeCapabilityApproval
+import ai.operator.app.GatewayUsageProviderSummary
+import ai.operator.app.GatewayUsageWindowSummary
+import ai.operator.app.LocationMode
+import ai.operator.app.gateway.GatewayEndpoint
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.verbatimText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -165,11 +165,11 @@ class SettingsScreensTest {
   @Test
   fun nodeApprovalCommandUsesOnlyASafeExactRequestId() {
     assertEquals(
-      "openclaw nodes approve request-1",
+      "operator nodes approve request-1",
       gatewayNodeApprovalCommand(GatewayNodeCapabilityApproval.PendingApproval("request-1")),
     )
     assertEquals(
-      "openclaw nodes status",
+      "operator nodes status",
       gatewayNodeApprovalCommand(GatewayNodeCapabilityApproval.PendingReapproval("request-1; unsafe")),
     )
     assertEquals(null, gatewayNodeApprovalCommand(GatewayNodeCapabilityApproval.Approved))
@@ -398,8 +398,8 @@ class SettingsScreensTest {
   private fun settingsScreensSource(): String {
     val candidates =
       listOf(
-        Path.of("src/main/java/ai/openclaw/app/ui/SettingsScreens.kt"),
-        Path.of("apps/android/app/src/main/java/ai/openclaw/app/ui/SettingsScreens.kt"),
+        Path.of("src/main/java/ai/operator/app/ui/SettingsScreens.kt"),
+        Path.of("apps/android/app/src/main/java/ai/operator/app/ui/SettingsScreens.kt"),
       )
     val path = candidates.firstOrNull(Files::exists) ?: error("SettingsScreens.kt not found")
     return Files.readString(path)

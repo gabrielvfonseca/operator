@@ -3,9 +3,9 @@ import { randomUUID } from "node:crypto";
 import {
   resolveAcpSessionCwd,
   resolveAcpThreadSessionDetailLines,
-} from "@operator/acp-core/runtime/session-identifiers";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/acp-core/runtime/session-identifiers";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { getAcpSessionManager } from "../../../acp/control-plane/manager.js";
 import { resolveAcpSessionResolutionError } from "../../../acp/control-plane/manager.utils.js";
 import {

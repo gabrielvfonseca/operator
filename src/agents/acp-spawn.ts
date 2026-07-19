@@ -4,12 +4,12 @@ import fs from "node:fs/promises";
 import {
   resolveAcpSessionCwd,
   resolveAcpThreadSessionDetailLines,
-} from "@operator/acp-core/runtime/session-identifiers";
-import type { AcpRuntimeSessionMode } from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/session-identifiers";
+import type { AcpRuntimeSessionMode } from "@gabrielvfonseca/acp-core/runtime/types";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { getAcpSessionManager } from "../acp/control-plane/manager.js";
 import type { AcpTurnAttachment } from "../acp/control-plane/manager.types.js";
 import {

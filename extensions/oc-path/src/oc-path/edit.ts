@@ -6,7 +6,7 @@
  *
  * Section bodies aren't writable through this primitive.
  *
- * @module @operator/oc-path/edit
+ * @module @gabrielvfonseca/oc-path/edit
  */
 
 import type { AstBlock, AstItem, FrontmatterEntry, MdAst } from "./ast.js";

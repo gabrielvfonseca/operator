@@ -1,7 +1,7 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
-import ai.openclaw.app.gateway.GatewayConnectErrorDetails
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewayConnectErrorDetails
+import ai.operator.app.gateway.GatewaySession
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

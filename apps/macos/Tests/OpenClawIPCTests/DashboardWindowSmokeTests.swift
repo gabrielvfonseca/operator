@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private actor DashboardRouteAuthGate {
     private var token: String?
@@ -190,7 +190,7 @@ struct DashboardWindowSmokeTests {
             to: #require(URL(string: "http://127.0.0.1:18789/control/chat")),
             dashboardURL: dashboard))
         #expect(try !DashboardWindowController.shouldAllowNavigation(
-            to: #require(URL(string: "https://docs.openclaw.ai/")),
+            to: #require(URL(string: "https://docs.operator.ai/")),
             dashboardURL: dashboard))
         #expect(!DashboardWindowController.shouldAllowNavigation(
             to: staleEndpoint,
@@ -208,7 +208,7 @@ struct DashboardWindowSmokeTests {
             auth: DashboardWindowAuth(gatewayUrl: nil, token: nil, password: nil))
         #expect(controller._testNavigationWebViewIdentity == controller._testDashboardWebViewIdentity)
 
-        try controller._testOpenLinkBrowser(#require(URL(string: "https://docs.openclaw.ai/")))
+        try controller._testOpenLinkBrowser(#require(URL(string: "https://docs.operator.ai/")))
         let linkWebView = try #require(controller._testLinkBrowserWebViewIdentity)
         #expect(controller._testFocusLinkBrowser())
         #expect(controller._testNavigationWebViewIdentity == linkWebView)
@@ -235,7 +235,7 @@ struct DashboardWindowSmokeTests {
         controller.show()
         #expect(requestCount == 0)
 
-        let link = try #require(URL(string: "https://docs.openclaw.ai/"))
+        let link = try #require(URL(string: "https://docs.operator.ai/"))
         controller._testOpenLinkBrowser(link)
         controller.update(
             url: dashboard,
@@ -277,7 +277,7 @@ struct DashboardWindowSmokeTests {
         let manager = DashboardManager._testMake()
         manager._testSetController(controller)
 
-        let link = try #require(URL(string: "https://docs.openclaw.ai/"))
+        let link = try #require(URL(string: "https://docs.operator.ai/"))
         controller._testOpenLinkBrowser(link, requestBrowserProfileImportOffer: true)
         for _ in 0..<200 where gate.requestCount == 0 {
             await Task.yield()
@@ -319,7 +319,7 @@ struct DashboardWindowSmokeTests {
             })
         defer { controller.closeDashboard() }
 
-        let link = try #require(URL(string: "https://docs.openclaw.ai/"))
+        let link = try #require(URL(string: "https://docs.operator.ai/"))
         controller._testOpenLinkBrowser(link, requestBrowserProfileImportOffer: true)
         for _ in 0..<200 where firstRequestContinuation == nil {
             await Task.yield()
@@ -343,11 +343,11 @@ struct DashboardWindowSmokeTests {
     @Test func `dashboard parses only bounded native link requests`() throws {
         let request = DashboardWindowController.linkRequest(from: [
             "type": "open-link",
-            "url": "https://docs.openclaw.ai/platforms/macos",
+            "url": "https://docs.operator.ai/platforms/macos",
             "target": "inline",
         ])
         #expect(try request == DashboardLinkRequest(
-            url: #require(URL(string: "https://docs.openclaw.ai/platforms/macos")),
+            url: #require(URL(string: "https://docs.operator.ai/platforms/macos")),
             target: .inline))
 
         #expect(DashboardWindowController.linkRequest(from: [
@@ -357,12 +357,12 @@ struct DashboardWindowSmokeTests {
         ]) == nil)
         #expect(DashboardWindowController.linkRequest(from: [
             "type": "open-link",
-            "url": "https://docs.openclaw.ai/",
+            "url": "https://docs.operator.ai/",
             "target": "unknown",
         ]) == nil)
         #expect(DashboardWindowController.linkRequest(from: [
             "type": "other",
-            "url": "https://docs.openclaw.ai/",
+            "url": "https://docs.operator.ai/",
             "target": "external",
         ]) == nil)
         #expect(try DashboardWindowController.linkRequest(from: [
@@ -746,7 +746,7 @@ struct DashboardWindowSmokeTests {
     }
 
     @Test func `sidebar browser reserves auxiliary schemes for subframes`() throws {
-        let webURL = try #require(URL(string: "https://github.com/openclaw/openclaw"))
+        let webURL = try #require(URL(string: "https://github.com/gabrielvfonseca/operator"))
         let blankURL = try #require(URL(string: "about:blank"))
         let fileURL = try #require(URL(string: "file:///tmp/private"))
         let mailURL = try #require(URL(string: "mailto:hello@example.com"))
@@ -759,7 +759,7 @@ struct DashboardWindowSmokeTests {
     }
 
     @Test func `external pointer fallback rejects synthetic link activation`() throws {
-        let webURL = try #require(URL(string: "https://docs.openclaw.ai/"))
+        let webURL = try #require(URL(string: "https://docs.operator.ai/"))
         let mailURL = try #require(URL(string: "mailto:hello@example.com"))
         #expect(DashboardWindowController.shouldOpenExternalDashboardNavigation(
             webURL,
@@ -823,7 +823,7 @@ struct DashboardWindowSmokeTests {
             url: url,
             auth: DashboardWindowAuth(gatewayUrl: nil, token: nil, password: nil))
         let chromeScript = try #require(controller._testUserScripts.first {
-            $0.source.contains("openclaw-native-macos-chrome")
+            $0.source.contains("operator-native-macos-chrome")
         })
 
         // Narrow widths are styled by the Control UI's own compact drawer-row
@@ -835,10 +835,10 @@ struct DashboardWindowSmokeTests {
         // Keep the injected titlebar height in lockstep with the 52pt unified
         // toolbar in makeWindow(); the two must match for the traffic lights and
         // the hosted web buttons to share one vertical center.
-        #expect(chromeScript.source.contains("--openclaw-native-titlebar-height: 52px"))
+        #expect(chromeScript.source.contains("--operator-native-titlebar-height: 52px"))
         #expect(!chromeScript.source.contains("max-width: 1100px"))
-        #expect(chromeScript.source.contains("openclaw-native-web-chrome"))
-        #expect(!chromeScript.source.contains("openclaw-native-nav"))
+        #expect(chromeScript.source.contains("operator-native-web-chrome"))
+        #expect(!chromeScript.source.contains("operator-native-nav"))
         #expect(chromeScript.injectionTime == .atDocumentEnd)
         #expect(chromeScript.isForMainFrameOnly)
     }
@@ -849,7 +849,7 @@ struct DashboardWindowSmokeTests {
             url: url,
             auth: DashboardWindowAuth(gatewayUrl: nil, token: nil, password: nil))
         let capabilityScript = try #require(controller._testUserScripts.first {
-            $0.source.contains("__OPENCLAW_NATIVE_WEB_CHROME__")
+            $0.source.contains("__OPERATOR_NATIVE_WEB_CHROME__")
         })
 
         #expect(capabilityScript.injectionTime == .atDocumentStart)
@@ -863,7 +863,7 @@ struct DashboardWindowSmokeTests {
             message: "Delete 1 session?",
             host: "127.0.0.1")
 
-        #expect(alert.messageText == "OpenClaw Dashboard")
+        #expect(alert.messageText == "Operator Dashboard")
         #expect(alert.informativeText.contains("127.0.0.1 is asking:"))
         #expect(alert.informativeText.contains("Delete 1 session?"))
         #expect(alert.buttons.map(\.title) == ["OK", "Cancel"])
@@ -915,7 +915,7 @@ struct DashboardWindowSmokeTests {
 
         #expect(controller.currentURL.absoluteString == "http://127.0.0.1:60002/#token=device-token")
         let authScripts = controller._testUserScripts
-            .filter { $0.source.contains("__OPENCLAW_NATIVE_CONTROL_AUTH__") }
+            .filter { $0.source.contains("__OPERATOR_NATIVE_CONTROL_AUTH__") }
         #expect(authScripts.count == 1)
         // JSONSerialization escapes "/" so match on host:port, not the full origin.
         #expect(authScripts.first?.source.contains("127.0.0.1:60002") == true)
@@ -985,7 +985,7 @@ struct DashboardWindowSmokeTests {
         #expect(routeBController.currentURL.absoluteString ==
             "http://127.0.0.1:60001/#token=route-b-device-token")
         let scripts = routeBController._testUserScripts
-            .filter { $0.source.contains("__OPENCLAW_NATIVE_CONTROL_AUTH__") }
+            .filter { $0.source.contains("__OPERATOR_NATIVE_CONTROL_AUTH__") }
         #expect(scripts.count == 1)
         #expect(scripts[0].source.contains("route-b-device-token"))
         #expect(!scripts[0].source.contains("route-a-device-token"))
@@ -1018,7 +1018,7 @@ struct DashboardWindowSmokeTests {
         #expect(!controller.isWindowOpen)
         #expect(replacement.currentURL == URL(string: "about:blank"))
         let scripts = replacement._testUserScripts
-            .filter { $0.source.contains("__OPENCLAW_NATIVE_CONTROL_AUTH__") }
+            .filter { $0.source.contains("__OPERATOR_NATIVE_CONTROL_AUTH__") }
         #expect(!scripts.contains { $0.source.contains("route-a-device-token") })
     }
 

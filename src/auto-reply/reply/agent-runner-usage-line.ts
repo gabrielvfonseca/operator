@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { hasNonzeroUsage, type NormalizedUsage } from "../../agents/usage.js";
 import type { OperatorConfig } from "../../config/config.js";
 import type { PluginHookReplyUsageState } from "../../plugins/hook-types.js";

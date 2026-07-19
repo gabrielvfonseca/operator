@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { resolveTimestampMsToIsoString } from "@operator/normalization-core/number-coercion";
+import { resolveTimestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import type {
   SessionTranscriptAccessScope,
   SessionTranscriptTurnMessageAppend,

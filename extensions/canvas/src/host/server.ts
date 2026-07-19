@@ -10,15 +10,21 @@ import {
   clearTimeout as clearNativeTimeout,
   setTimeout as scheduleNativeTimeout,
 } from "node:timers";
-import chokidar from "chokidar";
-import { detectMime } from "openclaw/plugin-sdk/media-mime";
-import { isTruthyEnvValue, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+import { detectMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
+import {
+  isTruthyEnvValue,
+  type RuntimeEnv,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import {
   lowercasePreservingWhitespace,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { ensureDir, resolveUserPath } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import {
+  ensureDir,
+  resolveUserPath,
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+import chokidar from "chokidar";
 import { WebSocketServer } from "ws";
 import {
   CANVAS_HOST_PATH,
@@ -122,14 +128,14 @@ function defaultIndexHTML() {
     !!(
       window.webkit &&
       window.webkit.messageHandlers &&
-      window.webkit.messageHandlers.openclawCanvasA2UIAction
+      window.webkit.messageHandlers.operatorCanvasA2UIAction
     );
   const hasAndroid = () =>
     !!(
-      (window.openclawCanvasA2UIAction &&
-        typeof window.openclawCanvasA2UIAction.postMessage === "function")
+      (window.operatorCanvasA2UIAction &&
+        typeof window.operatorCanvasA2UIAction.postMessage === "function")
     );
-  const hasHelper = () => typeof window.openclawSendUserAction === "function";
+  const hasHelper = () => typeof window.operatorSendUserAction === "function";
   const helperReady = hasHelper();
   statusEl.textContent = "";
   statusEl.appendChild(document.createTextNode("Bridge: "));
@@ -147,7 +153,7 @@ function defaultIndexHTML() {
     const d = ev && ev.detail || {};
     log("Action status: id=" + (d.id || "?") + " ok=" + String(!!d.ok) + (d.error ? (" error=" + d.error) : ""));
   };
-  window.addEventListener("openclaw:a2ui-action-status", onStatus);
+  window.addEventListener("operator:a2ui-action-status", onStatus);
 
   function send(name, sourceComponentId) {
     if (!hasHelper()) {
@@ -155,8 +161,8 @@ function defaultIndexHTML() {
       return;
     }
     const sendUserAction =
-      typeof window.openclawSendUserAction === "function"
-        ? window.openclawSendUserAction
+      typeof window.operatorSendUserAction === "function"
+        ? window.operatorSendUserAction
         : undefined;
     const ok = sendUserAction({
       name,
@@ -251,7 +257,7 @@ function shouldIgnoreCanvasWatchPath(rootReal: string, candidatePath: string): b
     return false;
   }
   // Chokidar evaluates ignored matchers against absolute paths. Scope the
-  // policy below the root so the default ~/.openclaw parent is still watched.
+  // policy below the root so the default ~/.operator parent is still watched.
   return relative
     .split(/[\\/]/u)
     .some((segment) => segment.startsWith(".") || segment === "node_modules");

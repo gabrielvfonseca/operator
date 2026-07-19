@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { parseConfigJson5 } from "../config/io.js";
 import { resolveConfigPath, resolveStateDir } from "../config/paths.js";
 import { redactConfigObject } from "../config/redact-snapshot.js";
@@ -60,7 +60,7 @@ type DiagnosticSupportExportOptions = {
 type DiagnosticSupportExportManifest = {
   version: typeof DIAGNOSTIC_SUPPORT_EXPORT_VERSION;
   generatedAt: string;
-  operatorVersion: string;
+  openclawVersion: string;
   platform: NodeJS.Platform;
   arch: string;
   node: string;
@@ -707,7 +707,7 @@ async function buildDiagnosticSupportExport(
   ]);
   const diagnostics = {
     generatedAt,
-    operatorVersion: VERSION,
+    openclawVersion: VERSION,
     process: {
       platform: process.platform,
       arch: process.arch,
@@ -765,7 +765,7 @@ async function buildDiagnosticSupportExport(
   const manifest: DiagnosticSupportExportManifest = {
     version: DIAGNOSTIC_SUPPORT_EXPORT_VERSION,
     generatedAt,
-    operatorVersion: VERSION,
+    openclawVersion: VERSION,
     platform: process.platform,
     arch: process.arch,
     node: process.versions.node,

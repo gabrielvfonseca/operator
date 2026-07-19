@@ -39,19 +39,19 @@ type UpdatingHost = {
 };
 
 export const COMMAND_PALETTE_ELEMENT = {
-  tagName: "openclaw-command-palette",
+  tagName: "operator-command-palette",
   label: "command palette",
   loadModule: () => import("../components/command-palette.ts"),
 } satisfies OptionalCustomElement;
 
 export const TERMINAL_PANEL_ELEMENT = {
-  tagName: "openclaw-terminal-panel",
+  tagName: "operator-terminal-panel",
   label: "terminal panel",
   loadModule: () => import("../components/terminal/terminal-panel-registration.ts"),
 } satisfies OptionalCustomElement;
 
 export const BROWSER_PANEL_ELEMENT = {
-  tagName: "openclaw-browser-panel",
+  tagName: "operator-browser-panel",
   label: "browser panel",
   loadModule: () => import("../components/browser/browser-panel.ts"),
 } satisfies OptionalCustomElement;

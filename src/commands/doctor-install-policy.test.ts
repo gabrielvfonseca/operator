@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { noteInstallPolicyHealth } from "./doctor-install-policy.js";
 
 const noteMock = vi.hoisted(() => vi.fn());
@@ -23,7 +23,7 @@ async function collectInstallPolicyHealthLines(
 const tempDirs: string[] = [];
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-install-policy-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-doctor-install-policy-"));
   tempDirs.push(dir);
   return dir;
 }

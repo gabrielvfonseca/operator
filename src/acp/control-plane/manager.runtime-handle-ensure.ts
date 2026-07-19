@@ -7,8 +7,8 @@ import {
   resolveRuntimeHandleIdentifiersFromIdentity,
   resolveRuntimeResumeSessionId,
   resolveSessionIdentityFromMeta,
-} from "@operator/acp-core/runtime/session-identity";
-import type { AcpRuntime, AcpRuntimeHandle } from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/session-identity";
+import type { AcpRuntime, AcpRuntimeHandle } from "@gabrielvfonseca/acp-core/runtime/types";
 import { resolveRuntimeConfigCacheKey } from "../../config/runtime-snapshot.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { logVerbose } from "../../globals.js";

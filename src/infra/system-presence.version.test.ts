@@ -1,6 +1,6 @@
 // Tests system command version probing for presence checks.
 import os from "node:os";
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withEnvAsync } from "../test-utils/env.js";
 import { VERSION as runtimeVersion } from "../version.js";

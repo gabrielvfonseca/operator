@@ -1,6 +1,6 @@
 /** Shared harness for sandbox media staging tests. */
 import { join } from "node:path";
-import { withTempHome as withTempHomeBase } from "operator/plugin-sdk/test-env";
+import { withTempHome as withTempHomeBase } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { MsgContext, TemplateContext } from "./templating.js";
 
@@ -33,7 +33,7 @@ export function createSandboxMediaStageConfig(home: string): OperatorConfig {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
-        workspace: join(home, "operator"),
+        workspace: join(home, "@gabrielvfonseca/operator"),
         sandbox: {
           mode: "non-main",
           workspaceRoot: join(home, "sandboxes"),

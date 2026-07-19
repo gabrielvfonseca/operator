@@ -14,7 +14,7 @@ extension NSAppearance {
 }
 #endif
 
-enum OpenClawChatTheme {
+enum OperatorChatTheme {
     #if !os(macOS)
     private enum IOSPalette {
         static let lightCanvasTop = UIColor(red: 246 / 255.0, green: 247 / 255.0, blue: 249 / 255.0, alpha: 1)
@@ -56,11 +56,11 @@ enum OpenClawChatTheme {
     }
 
     static let assistantBubbleDynamicNSColor = NSColor(
-        name: NSColor.Name("OpenClawChatTheme.assistantBubble"),
+        name: NSColor.Name("OperatorChatTheme.assistantBubble"),
         dynamicProvider: resolvedAssistantBubbleColor(for:))
 
     static let onboardingAssistantBubbleDynamicNSColor = NSColor(
-        name: NSColor.Name("OpenClawChatTheme.onboardingAssistantBubble"),
+        name: NSColor.Name("OperatorChatTheme.onboardingAssistantBubble"),
         dynamicProvider: resolvedOnboardingAssistantBubbleColor(for:))
     #endif
 
@@ -201,8 +201,8 @@ enum OpenClawChatTheme {
     }
 }
 
-enum OpenClawPlatformImageFactory {
-    static func image(_ image: OpenClawPlatformImage) -> Image {
+enum OperatorPlatformImageFactory {
+    static func image(_ image: OperatorPlatformImage) -> Image {
         #if os(macOS)
         Image(nsImage: image)
         #else

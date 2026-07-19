@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -43,7 +43,7 @@ struct ConfigStoreTests {
         let notificationCenter = NotificationCenter()
         let changeCount = NotificationCount()
         let observer = notificationCenter.addObserver(
-            forName: .openclawConfigDidChange,
+            forName: .operatorConfigDidChange,
             object: nil,
             queue: nil)
         { note in changeCount.record(note) }
@@ -56,7 +56,7 @@ struct ConfigStoreTests {
                 remoteHit = true
                 // Reproduce a concurrent AppState-style publisher overlapping this save.
                 await Task.detached {
-                    NotificationCenter.default.post(name: .openclawConfigDidChange, object: nil)
+                    NotificationCenter.default.post(name: .operatorConfigDidChange, object: nil)
                 }.value
             },
             notificationCenter: notificationCenter))
@@ -89,7 +89,7 @@ struct ConfigStoreTests {
         let notificationCenter = NotificationCenter()
         let changeCount = NotificationCount()
         let observer = notificationCenter.addObserver(
-            forName: .openclawConfigDidChange,
+            forName: .operatorConfigDidChange,
             object: nil,
             queue: nil)
         { note in changeCount.record(note) }
@@ -100,7 +100,7 @@ struct ConfigStoreTests {
             saveRemote: { _ in
                 // Concurrent same-name traffic must not look like a ConfigStore announcement.
                 await Task.detached {
-                    NotificationCenter.default.post(name: .openclawConfigDidChange, object: nil)
+                    NotificationCenter.default.post(name: .operatorConfigDidChange, object: nil)
                 }.value
                 throw NSError(domain: "ConfigStoreTests", code: 1)
             },
@@ -117,15 +117,15 @@ struct ConfigStoreTests {
 
     @Test func `local save does not fall back to direct write after stale gateway rejection`() async throws {
         let stateDir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-state-\(UUID().uuidString)", isDirectory: true)
+        let configPath = stateDir.appendingPathComponent("operator.json")
         defer { try? FileManager().removeItem(at: stateDir) }
 
         try await TestIsolation.withEnvValues([
-            "OPENCLAW_STATE_DIR": stateDir.path,
-            "OPENCLAW_CONFIG_PATH": configPath.path,
+            "OPERATOR_STATE_DIR": stateDir.path,
+            "OPERATOR_CONFIG_PATH": configPath.path,
         ]) {
-            OpenClawConfigFile.saveDict([
+            OperatorConfigFile.saveDict([
                 "gateway": [
                     "mode": "local",
                     "auth": [
@@ -159,13 +159,13 @@ struct ConfigStoreTests {
 
     @Test func `local save can fall back to protected direct write when gateway is unavailable`() async throws {
         let stateDir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("openclaw.json")
+            .appendingPathComponent("operator-state-\(UUID().uuidString)", isDirectory: true)
+        let configPath = stateDir.appendingPathComponent("operator.json")
         defer { try? FileManager().removeItem(at: stateDir) }
 
         try await TestIsolation.withEnvValues([
-            "OPENCLAW_STATE_DIR": stateDir.path,
-            "OPENCLAW_CONFIG_PATH": configPath.path,
+            "OPERATOR_STATE_DIR": stateDir.path,
+            "OPERATOR_CONFIG_PATH": configPath.path,
         ]) {
             await ConfigStore._testSetOverrides(.init(
                 isRemoteMode: { false },

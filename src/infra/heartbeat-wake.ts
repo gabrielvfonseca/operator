@@ -1,5 +1,5 @@
 // Tracks heartbeat wake requests, busy skips, and retry timing.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { runWithGatewayIndependentRootWorkAdmission } from "../process/gateway-work-admission.js";
 import { resolveTimerTimeoutMs } from "../shared/number-coercion.js";
 import { normalizeHeartbeatWakeReason } from "./heartbeat-reason.js";

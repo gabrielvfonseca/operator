@@ -6,14 +6,17 @@ import {
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-import { kindFromMime, resolveOutboundAttachmentFromUrl } from "openclaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";
-import { sleep as delay } from "openclaw/plugin-sdk/runtime-env";
-import { convertMarkdownTables } from "openclaw/plugin-sdk/text-chunking";
-import { stripInlineDirectiveTagsForDelivery } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import {
+  kindFromMime,
+  resolveOutboundAttachmentFromUrl,
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+import { sleep as delay } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { convertMarkdownTables } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+import { stripInlineDirectiveTagsForDelivery } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import {
   hasExclusiveIMessageLocalDatabase,
   resolveIMessageAccount,

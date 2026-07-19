@@ -1,6 +1,6 @@
 // Control UI module implements format behavior.
-import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { asDateTimestampMs } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   formatDurationCompact,
   formatDurationHuman,
@@ -11,7 +11,7 @@ import {
 } from "../../../src/infra/format-time/format-relative.ts";
 import { t } from "../i18n/index.ts";
 
-export { formatByteSize } from "@operator/normalization-core";
+export { formatByteSize } from "@gabrielvfonseca/normalization-core";
 export { formatRelativeTimestamp, formatTimeAgo, formatDurationCompact, formatDurationHuman };
 
 export function formatUnknownText(

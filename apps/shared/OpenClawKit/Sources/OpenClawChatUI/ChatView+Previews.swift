@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import SwiftUI
 
-private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
+private struct OperatorChatPreviewTransport: OperatorChatTransport {
     enum Scenario {
         case connected
         case empty
@@ -16,31 +16,31 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
         self.scenario = scenario
     }
 
-    func requestHistory(sessionKey: String) async throws -> OpenClawChatHistoryPayload {
+    func requestHistory(sessionKey: String) async throws -> OperatorChatHistoryPayload {
         switch self.scenario {
         case .connected:
             break
         case .empty:
-            return OpenClawChatHistoryPayload(
+            return OperatorChatHistoryPayload(
                 sessionKey: sessionKey,
                 sessionId: "preview-empty-session",
                 messages: [],
                 thinkingLevel: "medium")
         case .loading:
             try await Task.sleep(nanoseconds: 60_000_000_000)
-            return OpenClawChatHistoryPayload(
+            return OperatorChatHistoryPayload(
                 sessionKey: sessionKey,
                 sessionId: "preview-loading-session",
                 messages: [],
                 thinkingLevel: "medium")
         case .error:
             throw NSError(
-                domain: "OpenClawChatPreviewTransport",
+                domain: "OperatorChatPreviewTransport",
                 code: 1,
                 userInfo: [NSLocalizedDescriptionKey: "Gateway not connected. Check Tailscale and retry."])
         }
 
-        return OpenClawChatHistoryPayload(
+        return OperatorChatHistoryPayload(
             sessionKey: sessionKey,
             sessionId: "preview-session",
             messages: [
@@ -68,14 +68,14 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
             thinkingLevel: "medium")
     }
 
-    func listModels() async throws -> [OpenClawChatModelChoice] {
+    func listModels() async throws -> [OperatorChatModelChoice] {
         [
-            OpenClawChatModelChoice(
+            OperatorChatModelChoice(
                 modelID: "gpt-5.6-luna",
                 name: "GPT-5.6 Luna",
                 provider: "openai",
                 contextWindow: 400_000),
-            OpenClawChatModelChoice(
+            OperatorChatModelChoice(
                 modelID: "sonnet-4.6",
                 name: "Claude Sonnet 4.6",
                 provider: "anthropic",
@@ -88,28 +88,28 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
         message _: String,
         thinking _: String,
         idempotencyKey: String,
-        attachments _: [OpenClawChatAttachmentPayload]) async throws -> OpenClawChatSendResponse
+        attachments _: [OperatorChatAttachmentPayload]) async throws -> OperatorChatSendResponse
     {
-        OpenClawChatSendResponse(runId: idempotencyKey, status: "ok")
+        OperatorChatSendResponse(runId: idempotencyKey, status: "ok")
     }
 
     func listSessions(
         limit _: Int?,
         search _: String?,
-        archived _: Bool) async throws -> OpenClawChatSessionsListResponse
+        archived _: Bool) async throws -> OperatorChatSessionsListResponse
     {
-        OpenClawChatSessionsListResponse(
+        OperatorChatSessionsListResponse(
             ts: 0,
             path: nil,
             count: 2,
-            defaults: OpenClawChatSessionsDefaults(
+            defaults: OperatorChatSessionsDefaults(
                 modelProvider: "openai",
                 model: "gpt-5.6-luna",
                 contextTokens: 400_000,
                 thinkingLevels: [
-                    OpenClawChatThinkingLevelOption(id: "off", label: "off"),
-                    OpenClawChatThinkingLevelOption(id: "medium", label: "medium"),
-                    OpenClawChatThinkingLevelOption(id: "high", label: "high"),
+                    OperatorChatThinkingLevelOption(id: "off", label: "off"),
+                    OperatorChatThinkingLevelOption(id: "medium", label: "medium"),
+                    OperatorChatThinkingLevelOption(id: "high", label: "high"),
                 ],
                 thinkingDefault: "medium",
                 mainSessionKey: "main"),
@@ -128,7 +128,7 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
         }
     }
 
-    func events() -> AsyncStream<OpenClawChatTransportEvent> {
+    func events() -> AsyncStream<OperatorChatTransportEvent> {
         AsyncStream { continuation in
             continuation.finish()
         }
@@ -182,9 +182,9 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
     private static func session(
         key: String,
         displayName: String,
-        updatedAt: Double) -> OpenClawChatSessionEntry
+        updatedAt: Double) -> OperatorChatSessionEntry
     {
-        OpenClawChatSessionEntry(
+        OperatorChatSessionEntry(
             key: key,
             kind: nil,
             displayName: displayName,
@@ -209,56 +209,56 @@ private struct OpenClawChatPreviewTransport: OpenClawChatTransport {
 
 #if os(iOS)
 #Preview("Chat") {
-    OpenClawChatPreview(scenario: .connected)
+    OperatorChatPreview(scenario: .connected)
 }
 
 #Preview("Chat connected") {
-    OpenClawChatPreview(scenario: .connected)
+    OperatorChatPreview(scenario: .connected)
 }
 
 #Preview("Chat empty") {
-    OpenClawChatPreview(
+    OperatorChatPreview(
         scenario: .empty,
         sessionKey: "empty-preview")
 }
 
 #Preview("Chat loading") {
-    OpenClawChatPreview(
+    OperatorChatPreview(
         scenario: .loading,
         sessionKey: "loading-preview")
 }
 
 #Preview("Chat gateway error") {
-    OpenClawChatPreview(
+    OperatorChatPreview(
         scenario: .error,
         sessionKey: "error-preview")
 }
 
 #Preview("Onboarding chat") {
-    OpenClawChatView(
-        viewModel: OpenClawChatViewModel(
+    OperatorChatView(
+        viewModel: OperatorChatViewModel(
             sessionKey: "ios-preview",
-            transport: OpenClawChatPreviewTransport()),
+            transport: OperatorChatPreviewTransport()),
         showsSessionSwitcher: false,
         style: .onboarding,
         markdownVariant: .standard,
-        userAccent: OpenClawChatTheme.accent)
+        userAccent: OperatorChatTheme.accent)
 }
 #endif
 
-private struct OpenClawChatPreview: View {
-    let scenario: OpenClawChatPreviewTransport.Scenario
+private struct OperatorChatPreview: View {
+    let scenario: OperatorChatPreviewTransport.Scenario
     var sessionKey: String = "main"
 
     var body: some View {
-        OpenClawChatView(
-            viewModel: OpenClawChatViewModel(
+        OperatorChatView(
+            viewModel: OperatorChatViewModel(
                 sessionKey: self.sessionKey,
-                transport: OpenClawChatPreviewTransport(scenario: self.scenario)),
+                transport: OperatorChatPreviewTransport(scenario: self.scenario)),
             showsSessionSwitcher: true,
             style: .standard,
             markdownVariant: .standard,
-            userAccent: OpenClawChatTheme.accent,
+            userAccent: OperatorChatTheme.accent,
             showsAssistantTrace: true)
     }
 }

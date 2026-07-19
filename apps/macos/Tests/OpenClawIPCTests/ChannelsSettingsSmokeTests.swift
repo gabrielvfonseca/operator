@@ -1,9 +1,9 @@
-import OpenClawProtocol
+import OperatorProtocol
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
-private typealias SnapshotAnyCodable = OpenClaw.AnyCodable
+private typealias SnapshotAnyCodable = Operator.AnyCodable
 
 private let channelOrder = ["whatsapp", "telegram", "signal", "imessage"]
 private let channelLabels = [

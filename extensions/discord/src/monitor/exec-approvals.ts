@@ -1,15 +1,15 @@
-// Discord plugin module implements exec approvals behavior.
-import { ButtonStyle } from "discord-api-types/v10";
 import {
   resolveApprovalOverGateway,
   type ApprovalResolveResult,
-} from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { PendingApprovalView } from "openclaw/plugin-sdk/approval-handler-runtime";
-import type { ExecApprovalDecision } from "openclaw/plugin-sdk/approval-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { PendingApprovalView } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import type { ExecApprovalDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
 import type {
   DiscordExecApprovalConfig,
   OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+// Discord plugin module implements exec approvals behavior.
+import { ButtonStyle } from "discord-api-types/v10";
 import { parseExecApprovalData } from "../approval-custom-id.js";
 import {
   DISCORD_APPROVAL_ALLOWED_MENTIONS,

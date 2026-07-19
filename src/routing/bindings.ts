@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Routing binding helpers resolve configured channel and agent route bindings.
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { listRouteBindings } from "../config/bindings.js";

@@ -2,8 +2,8 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { hasOutboundReplyContent } from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { hasOutboundReplyContent } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import type { ChatType } from "../../channels/chat-type.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";

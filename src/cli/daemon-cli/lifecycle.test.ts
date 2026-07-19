@@ -240,7 +240,7 @@ describe("runDaemonRestart health checks", () => {
     repairLoadedGatewayServiceForStart.mockReset();
 
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "--port", "18789"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "--port", "18789"],
       environment: {},
     });
     service.restart.mockResolvedValue({ outcome: "completed" });
@@ -343,13 +343,13 @@ describe("runDaemonRestart health checks", () => {
   });
 
   it("uses the installed service environment for managed restart health", async () => {
-    process.env.OPERATOR_STATE_DIR = "/tmp/openclaw-caller-state";
-    process.env.OPERATOR_SYSTEMD_UNIT = "openclaw-gateway-maintenance.service";
+    process.env.OPERATOR_STATE_DIR = "/tmp/operator-caller-state";
+    process.env.OPERATOR_SYSTEMD_UNIT = "operator-gateway-maintenance.service";
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "--port", "18789"],
+      programArguments: ["@gabrielvfonseca/operator", "gateway", "--port", "18789"],
       environment: {
-        OPERATOR_STATE_DIR: "/tmp/openclaw-service-state",
-        OPERATOR_SYSTEMD_UNIT: "openclaw-gateway.service",
+        OPERATOR_STATE_DIR: "/tmp/operator-service-state",
+        OPERATOR_SYSTEMD_UNIT: "operator-gateway.service",
       },
     });
 
@@ -359,19 +359,19 @@ describe("runDaemonRestart health checks", () => {
       waitForGatewayHealthyRestart,
       "waitForGatewayHealthyRestart",
     ) as { env?: NodeJS.ProcessEnv };
-    expect(waitParams.env?.OPERATOR_STATE_DIR).toBe("/tmp/openclaw-service-state");
-    expect(waitParams.env?.OPERATOR_SYSTEMD_UNIT).toBe("openclaw-gateway-maintenance.service");
+    expect(waitParams.env?.OPERATOR_STATE_DIR).toBe("/tmp/operator-service-state");
+    expect(waitParams.env?.OPERATOR_SYSTEMD_UNIT).toBe("operator-gateway-maintenance.service");
   });
 
   it("re-reads the installed service environment after restart repair", async () => {
     service.readCommand
       .mockResolvedValueOnce({
-        programArguments: ["openclaw", "gateway", "--port", "18789"],
-        environment: { OPERATOR_STATE_DIR: "/tmp/openclaw-stale-state" },
+        programArguments: ["@gabrielvfonseca/operator", "gateway", "--port", "18789"],
+        environment: { OPERATOR_STATE_DIR: "/tmp/operator-stale-state" },
       })
       .mockResolvedValue({
-        programArguments: ["openclaw", "gateway", "--port", "19001"],
-        environment: { OPERATOR_STATE_DIR: "/tmp/openclaw-repaired-state" },
+        programArguments: ["@gabrielvfonseca/operator", "gateway", "--port", "19001"],
+        environment: { OPERATOR_STATE_DIR: "/tmp/operator-repaired-state" },
       });
     repairLoadedGatewayServiceForStart.mockResolvedValue({
       result: "restarted",
@@ -402,7 +402,7 @@ describe("runDaemonRestart health checks", () => {
       expect.objectContaining({
         port: 19_001,
         env: expect.objectContaining({
-          OPERATOR_STATE_DIR: "/tmp/openclaw-repaired-state",
+          OPERATOR_STATE_DIR: "/tmp/operator-repaired-state",
         }),
       }),
     );
@@ -810,8 +810,8 @@ describe("runDaemonRestart health checks", () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
-      unitName: "openclaw.service",
-      unitPath: "/etc/systemd/system/openclaw.service",
+      unitName: "operator.service",
+      unitPath: "/etc/systemd/system/operator.service",
     });
     restartSystemdService.mockResolvedValue({ outcome: "completed" });
     findVerifiedGatewayListenerPidsOnPortSync.mockReturnValue([4200]);
@@ -828,12 +828,12 @@ describe("runDaemonRestart health checks", () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
-      unitName: "openclaw.service",
-      unitPath: "/etc/systemd/system/openclaw.service",
+      unitName: "operator.service",
+      unitPath: "/etc/systemd/system/operator.service",
     });
     restartSystemdService.mockRejectedValue(
       new Error(
-        "openclaw.service is a system-scope unit (/etc/systemd/system/openclaw.service); run `sudo systemctl restart openclaw.service` to restart it",
+        "operator.service is a system-scope unit (/etc/systemd/system/operator.service); run `sudo systemctl restart operator.service` to restart it",
       ),
     );
     findVerifiedGatewayListenerPidsOnPortSync.mockReturnValue([4200]);
@@ -851,8 +851,8 @@ describe("runDaemonRestart health checks", () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
-      unitName: "openclaw-gateway.service",
-      unitPath: "/etc/systemd/system/openclaw-gateway.service",
+      unitName: "operator-gateway.service",
+      unitPath: "/etc/systemd/system/operator-gateway.service",
     });
     stopSystemdService.mockResolvedValue(undefined);
     findVerifiedGatewayListenerPidsOnPortSync.mockReturnValue([4200]);
@@ -873,12 +873,12 @@ describe("runDaemonRestart health checks", () => {
     vi.spyOn(process, "platform", "get").mockReturnValue("linux");
     findInstalledSystemdGatewayScope.mockResolvedValue({
       scope: "system",
-      unitName: "openclaw-gateway.service",
-      unitPath: "/etc/systemd/system/openclaw-gateway.service",
+      unitName: "operator-gateway.service",
+      unitPath: "/etc/systemd/system/operator-gateway.service",
     });
     stopSystemdService.mockRejectedValue(
       new Error(
-        "openclaw-gateway.service is a system-scope unit (/etc/systemd/system/openclaw-gateway.service); run `sudo systemctl stop openclaw-gateway.service` to stop it",
+        "operator-gateway.service is a system-scope unit (/etc/systemd/system/operator-gateway.service); run `sudo systemctl stop operator-gateway.service` to stop it",
       ),
     );
     findVerifiedGatewayListenerPidsOnPortSync.mockReturnValue([4200]);
@@ -891,7 +891,7 @@ describe("runDaemonRestart health checks", () => {
     );
 
     await expect(runDaemonStop({ json: true })).rejects.toThrow(
-      /sudo systemctl stop openclaw-gateway\.service/,
+      /sudo systemctl stop operator-gateway\.service/,
     );
     expect(stopSystemdService).toHaveBeenCalled();
     expect(signalVerifiedGatewayPidSync).not.toHaveBeenCalled();

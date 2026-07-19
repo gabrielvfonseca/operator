@@ -9,8 +9,8 @@ import { setTimeout as sleep } from "node:timers/promises";
 import {
   closeOperatorStateDatabaseForTest,
   createChannelIngressQueueForTests as createChannelIngressQueue,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import { WEBHOOK_RATE_LIMIT_DEFAULTS } from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import { WEBHOOK_RATE_LIMIT_DEFAULTS } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createTelegramSpooledReplayDeferredParticipant,
@@ -231,7 +231,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   resetTelegramWebhookMocks();
-  webhookStateDir = await fs.mkdtemp(nodePath.join(os.tmpdir(), "openclaw-telegram-webhook-"));
+  webhookStateDir = await fs.mkdtemp(nodePath.join(os.tmpdir(), "operator-telegram-webhook-"));
   webhookSpoolDir = nodePath.join(webhookStateDir, "telegram", "ingress-spool-test");
   await fs.mkdir(webhookSpoolDir, { recursive: true });
   installTelegramIngressQueueRuntime(() => webhookStateDir ?? os.tmpdir());
@@ -558,10 +558,10 @@ describe("startTelegramWebhook", () => {
         expect(botParams.telegramTransport).toBeDefined();
         const health = await fetch(`http://127.0.0.1:${port}/healthz`);
         expect(health.status).toBe(200);
-        expect(health.headers.get("x-openclaw-delivery-accepted")).toBeNull();
+        expect(health.headers.get("x-operator-delivery-accepted")).toBeNull();
         const notFound = await fetch(`http://127.0.0.1:${port}/not-the-webhook`);
         expect(notFound.status).toBe(404);
-        expect(notFound.headers.get("x-openclaw-delivery-accepted")).toBeNull();
+        expect(notFound.headers.get("x-operator-delivery-accepted")).toBeNull();
         expect(initSpy).toHaveBeenCalledTimes(1);
         expect(setWebhookSpy).toHaveBeenCalled();
         expectMockMessageContains(runtimeLog, "webhook local listener on http://127.0.0.1:");
@@ -860,7 +860,7 @@ describe("startTelegramWebhook", () => {
         });
 
         expect(response.status).toBe(200);
-        expect(response.headers.get("x-openclaw-delivery-accepted")).toBe("durable");
+        expect(response.headers.get("x-operator-delivery-accepted")).toBe("durable");
         expect(await response.text()).toBe("");
         await vi.waitFor(() => expect(workStarted).toBe(true));
         expect(workFinished).toBe(false);
@@ -923,7 +923,7 @@ describe("startTelegramWebhook", () => {
           releaseEnqueue?.();
           const response = await responseTask;
           expect(response.status).toBe(200);
-          expect(response.headers.get("x-openclaw-delivery-accepted")).toBe("durable");
+          expect(response.headers.get("x-operator-delivery-accepted")).toBe("durable");
           expect(await response.text()).toBe("");
         } finally {
           releaseEnqueue?.();
@@ -1354,7 +1354,7 @@ describe("startTelegramWebhook", () => {
         });
 
         expect(response.status).toBe(500);
-        expect(response.headers.get("x-openclaw-delivery-accepted")).toBeNull();
+        expect(response.headers.get("x-operator-delivery-accepted")).toBeNull();
         expect(handleUpdateSpy).not.toHaveBeenCalled();
       },
     );
@@ -1401,13 +1401,13 @@ describe("startTelegramWebhook", () => {
 
           if (response.status === 429) {
             saw429 = true;
-            expect(response.headers.get("x-openclaw-delivery-accepted")).toBeNull();
+            expect(response.headers.get("x-operator-delivery-accepted")).toBeNull();
             expect(await response.text()).toBe("Too Many Requests");
             break;
           }
 
           expect(response.status).toBe(401);
-          expect(response.headers.get("x-openclaw-delivery-accepted")).toBeNull();
+          expect(response.headers.get("x-operator-delivery-accepted")).toBeNull();
           expect(await response.text()).toBe("unauthorized");
         }
 
@@ -1419,7 +1419,7 @@ describe("startTelegramWebhook", () => {
           secret: TELEGRAM_SECRET,
         });
         expect(validResponse.status).toBe(200);
-        expect(validResponse.headers.get("x-openclaw-delivery-accepted")).toBe("durable");
+        expect(validResponse.headers.get("x-operator-delivery-accepted")).toBe("durable");
         expect(await validResponse.text()).toBe("");
         await vi.waitFor(() => expect(handleUpdateSpy).toHaveBeenCalledTimes(1));
       },

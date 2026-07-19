@@ -5,7 +5,7 @@
  */
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.types.js";
 
 // Generated catalog files live under each agent profile so provider model

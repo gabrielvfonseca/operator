@@ -87,7 +87,7 @@ function withManifestLoadPaths<T extends { id: string }>(
   return {
     rootDir: `/tmp/plugins/${plugin.id}`,
     source: `/tmp/plugins/${plugin.id}/index.ts`,
-    manifestPath: `/tmp/plugins/${plugin.id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/plugins/${plugin.id}/operator.plugin.json`,
     skills: [],
     hooks: [],
     ...plugin,
@@ -2653,7 +2653,7 @@ describe("resolveGatewayStartupPluginIds", () => {
     expectStartupPluginIdsCase({
       config: {} as OperatorConfig,
       env: createPluginPlanningTestEnv({
-        OPERATOR_STATE_DIR: "/tmp/openclaw-with-persisted-demo-channel",
+        OPERATOR_STATE_DIR: "/tmp/operator-with-persisted-demo-channel",
       }),
       expected: ["browser", "memory-core"],
     });
@@ -2677,7 +2677,7 @@ describe("resolveGatewayStartupPluginIds", () => {
           },
         } as OperatorConfig,
         env: createPluginPlanningTestEnv({
-          OPERATOR_STATE_DIR: "/tmp/openclaw-with-persisted-demo-channel",
+          OPERATOR_STATE_DIR: "/tmp/operator-with-persisted-demo-channel",
         }),
       }),
     ).toStrictEqual([]);
@@ -2963,7 +2963,7 @@ describe("resolveGatewayStartupPluginIds", () => {
           defaults: {
             model: { primary: "openai/gpt-5.5" },
             models: {
-              "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },

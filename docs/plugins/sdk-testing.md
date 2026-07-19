@@ -1,5 +1,5 @@
 ---
-summary: "Testing utilities and patterns for OpenClaw plugins"
+summary: "Testing utilities and patterns for Operator plugins"
 title: "Plugin testing"
 sidebarTitle: "Testing"
 read_when:
@@ -8,7 +8,7 @@ read_when:
   - You want to understand contract tests for bundled plugins
 ---
 
-Reference for test utilities, patterns, and lint enforcement for OpenClaw
+Reference for test utilities, patterns, and lint enforcement for Operator
 plugins.
 
 <Tip>
@@ -19,7 +19,7 @@ plugins.
 
 ## Test utilities
 
-These subpaths are repo-local source entrypoints for OpenClaw's own bundled
+These subpaths are repo-local source entrypoints for Operator's own bundled
 plugin tests. They are not published `package.json` exports for third-party
 plugins, and they may import Vitest or other repo-only test dependencies.
 
@@ -125,7 +125,7 @@ imports of that alias.
 
 Bundled-plugin contract suites also use these SDK testing subpaths for
 test-only registry, manifest, public-artifact, and runtime fixture helpers.
-Core-only suites that depend on bundled OpenClaw inventory stay under
+Core-only suites that depend on bundled Operator inventory stay under
 `src/plugins/contracts` instead.
 
 ### Types
@@ -137,7 +137,7 @@ import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { MockFn, PluginRuntime, RuntimeEnv } from "openclaw/plugin-sdk/plugin-test-runtime";
 ```
 
@@ -171,7 +171,7 @@ describe("my-channel target resolution", () => {
 ### Testing registration contracts
 
 Unit tests that pass a hand-written `api` mock to `register(api)` do not
-exercise OpenClaw's loader acceptance gates. Add at least one loader-backed
+exercise Operator's loader acceptance gates. Add at least one loader-backed
 smoke test for each registration surface your plugin depends on, especially
 hooks and exclusive capabilities such as memory.
 
@@ -346,7 +346,7 @@ patterns is recommended.
 
 ## Test configuration
 
-OpenClaw uses Vitest 4 with informational V8 coverage reporting. For plugin tests:
+Operator uses Vitest 4 with informational V8 coverage reporting. For plugin tests:
 
 ```bash
 # Run all tests
@@ -365,7 +365,7 @@ pnpm test:coverage
 If local runs cause memory pressure:
 
 ```bash
-OPENCLAW_VITEST_MAX_WORKERS=1 pnpm test
+OPERATOR_VITEST_MAX_WORKERS=1 pnpm test
 ```
 
 ## Related

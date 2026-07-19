@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawDiscovery
+import OperatorDiscovery
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -34,7 +34,7 @@ struct GatewayDiscoverySelectionSupportTests {
     @Test func `selecting tailscale serve gateway switches to direct transport`() async {
         let tailnetHost = "gateway-host.tailnet-example.ts.net"
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host"
@@ -57,7 +57,7 @@ struct GatewayDiscoverySelectionSupportTests {
     @Test func `selecting merged tailnet gateway still switches to direct transport`() async {
         let tailnetHost = "gateway-host.tailnet-example.ts.net"
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
 
@@ -67,7 +67,7 @@ struct GatewayDiscoverySelectionSupportTests {
                     servicePort: 443,
                     tailnetDns: tailnetHost,
                     gatewayTls: true,
-                    stableID: "wide-area|openclaw.internal.|gateway-host"),
+                    stableID: "wide-area|operator.internal.|gateway-host"),
                 state: state)
 
             #expect(state.remoteTransport == .direct)
@@ -78,7 +78,7 @@ struct GatewayDiscoverySelectionSupportTests {
     @Test func `legacy tailnet discovery without reachability flags still switches to direct transport`() async {
         let tailnetHost = "gateway-host.tailnet-example.ts.net"
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
 
@@ -87,7 +87,7 @@ struct GatewayDiscoverySelectionSupportTests {
                     serviceHost: tailnetHost,
                     servicePort: 18789,
                     tailnetDns: tailnetHost,
-                    stableID: "wide-area|openclaw.internal.|gateway-host"),
+                    stableID: "wide-area|operator.internal.|gateway-host"),
                 state: state)
 
             #expect(state.remoteTransport == .direct)
@@ -97,7 +97,7 @@ struct GatewayDiscoverySelectionSupportTests {
 
     @Test func `selecting nearby lan gateway keeps ssh without direct reachability signal`() async {
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host"
@@ -114,7 +114,7 @@ struct GatewayDiscoverySelectionSupportTests {
             #expect(state.remoteUrl == "ws://127.0.0.1:29876")
             #expect(CommandResolver.parseSSHTarget(state.remoteTarget)?.host == "nearby-gateway.local")
 
-            let configRoot = OpenClawConfigFile.loadDict()
+            let configRoot = OperatorConfigFile.loadDict()
             let remote = ((configRoot["gateway"] as? [String: Any])?["remote"] as? [String: Any]) ?? [:]
             #expect(remote["transport"] as? String == "ssh")
             #expect(remote["url"] as? String == "ws://127.0.0.1:29876")
@@ -123,7 +123,7 @@ struct GatewayDiscoverySelectionSupportTests {
 
     @Test func `selecting direct reachable lan gateway ignores stale local tunnel port`() async {
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["OPERATOR_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteUrl = "ws://localhost:29876"
@@ -139,7 +139,7 @@ struct GatewayDiscoverySelectionSupportTests {
             #expect(state.remoteTransport == .direct)
             #expect(state.remoteUrl == "ws://nearby-gateway.local:19999")
 
-            let configRoot = OpenClawConfigFile.loadDict()
+            let configRoot = OperatorConfigFile.loadDict()
             let remote = ((configRoot["gateway"] as? [String: Any])?["remote"] as? [String: Any]) ?? [:]
             #expect(remote["transport"] as? String == "direct")
             #expect(remote["url"] as? String == "ws://nearby-gateway.local:19999")

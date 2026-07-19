@@ -1,24 +1,24 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 
-extension OpenClawChatViewModel {
-    static func decodeMessages(_ raw: [AnyCodable]) -> [OpenClawChatMessage] {
+extension OperatorChatViewModel {
+    static func decodeMessages(_ raw: [AnyCodable]) -> [OperatorChatMessage] {
         let decoded = raw.compactMap { item in
-            (try? ChatPayloadDecoding.decode(item, as: OpenClawChatMessage.self))
+            (try? ChatPayloadDecoding.decode(item, as: OperatorChatMessage.self))
                 .map { Self.stripInboundMetadata(from: $0) }
         }
         return Self.dedupeMessages(decoded)
     }
 
-    static func stripInboundMetadata(from message: OpenClawChatMessage) -> OpenClawChatMessage {
+    static func stripInboundMetadata(from message: OperatorChatMessage) -> OperatorChatMessage {
         guard message.role.lowercased() == "user" else {
             return message
         }
 
-        let sanitizedContent = message.content.map { content -> OpenClawChatMessageContent in
+        let sanitizedContent = message.content.map { content -> OperatorChatMessageContent in
             guard let text = content.text else { return content }
             let cleaned = ChatMarkdownPreprocessor.preprocess(markdown: text).cleaned
-            return OpenClawChatMessageContent(
+            return OperatorChatMessageContent(
                 type: content.type,
                 text: cleaned,
                 thinking: content.thinking,
@@ -32,7 +32,7 @@ extension OpenClawChatViewModel {
                 arguments: content.arguments)
         }
 
-        return OpenClawChatMessage(
+        return OperatorChatMessage(
             id: message.id,
             role: message.role,
             content: sanitizedContent,
@@ -45,7 +45,7 @@ extension OpenClawChatViewModel {
             errorMessage: message.errorMessage)
     }
 
-    static func messageContentFingerprint(for message: OpenClawChatMessage) -> String {
+    static func messageContentFingerprint(for message: OperatorChatMessage) -> String {
         message.content.map { item in
             let type = (item.type ?? "text").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             let text = (item.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -56,7 +56,7 @@ extension OpenClawChatViewModel {
         }.joined(separator: "\\u{001E}")
     }
 
-    static func finalMessageContentFingerprint(for message: OpenClawChatMessage) -> String {
+    static func finalMessageContentFingerprint(for message: OperatorChatMessage) -> String {
         message.content.map { item in
             let type = (item.type ?? "text").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             let text = (item.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -64,7 +64,7 @@ extension OpenClawChatViewModel {
         }.joined(separator: "\\u{001E}")
     }
 
-    static func messageIdentityKey(for message: OpenClawChatMessage) -> String? {
+    static func messageIdentityKey(for message: OperatorChatMessage) -> String? {
         let role = message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !role.isEmpty else { return nil }
 
@@ -88,7 +88,7 @@ extension OpenClawChatViewModel {
         return [role, timestamp, toolCallId, toolName, contentFingerprint].joined(separator: "|")
     }
 
-    static func userRefreshIdentityKey(for message: OpenClawChatMessage) -> String? {
+    static func userRefreshIdentityKey(for message: OperatorChatMessage) -> String? {
         let role = message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard role == "user" else { return nil }
 
@@ -101,7 +101,7 @@ extension OpenClawChatViewModel {
         return [role, toolCallId, toolName, contentFingerprint].joined(separator: "|")
     }
 
-    static func finalMessageReconciliationKey(for message: OpenClawChatMessage) -> String? {
+    static func finalMessageReconciliationKey(for message: OperatorChatMessage) -> String? {
         let role = message.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard role == "assistant" else { return nil }
 
@@ -128,10 +128,10 @@ extension OpenClawChatViewModel {
     }
 
     static func adoptingCanonicalMessage(
-        _ incoming: OpenClawChatMessage,
-        over existing: OpenClawChatMessage) -> OpenClawChatMessage
+        _ incoming: OperatorChatMessage,
+        over existing: OperatorChatMessage) -> OperatorChatMessage
     {
-        OpenClawChatMessage(
+        OperatorChatMessage(
             id: existing.id,
             role: incoming.role,
             content: self.preservingLocalAudioDurations(
@@ -147,8 +147,8 @@ extension OpenClawChatViewModel {
     }
 
     private static func preservingLocalAudioDurations(
-        in incoming: [OpenClawChatMessageContent],
-        from existing: [OpenClawChatMessageContent]) -> [OpenClawChatMessageContent]
+        in incoming: [OperatorChatMessageContent],
+        from existing: [OperatorChatMessageContent]) -> [OperatorChatMessageContent]
     {
         let localDurations = existing
             .filter { $0.mimeType?.hasPrefix("audio/") == true }
@@ -163,7 +163,7 @@ extension OpenClawChatViewModel {
             else {
                 return content
             }
-            return OpenClawChatMessageContent(
+            return OperatorChatMessageContent(
                 type: content.type,
                 text: content.text,
                 thinking: content.thinking,
@@ -222,7 +222,7 @@ extension OpenClawChatViewModel {
 
     static func containsUserTurn(
         _ latestUserTurn: LatestUserTurn?,
-        in messages: [OpenClawChatMessage]) -> Bool
+        in messages: [OperatorChatMessage]) -> Bool
     {
         guard let latestUserTurn else { return false }
         if let idempotencyKey = latestUserTurn.idempotencyKey {
@@ -244,8 +244,8 @@ extension OpenClawChatViewModel {
 
     static func indexAfterLatestUserTurn(
         _ latestUserTurn: LatestUserTurn?,
-        in messages: [OpenClawChatMessage])
-        -> [OpenClawChatMessage].Index
+        in messages: [OperatorChatMessage])
+        -> [OperatorChatMessage].Index
     {
         guard let latestUserTurn else { return messages.startIndex }
         if let idempotencyKey = latestUserTurn.idempotencyKey,
@@ -280,7 +280,7 @@ extension OpenClawChatViewModel {
 
     static func messageRange(
         after latestUserTurn: LatestUserTurn?,
-        in messages: [OpenClawChatMessage]) -> Range<[OpenClawChatMessage].Index>
+        in messages: [OperatorChatMessage]) -> Range<[OperatorChatMessage].Index>
     {
         let start = self.indexAfterLatestUserTurn(latestUserTurn, in: messages)
         guard latestUserTurn != nil, start < messages.endIndex else {
@@ -296,7 +296,7 @@ extension OpenClawChatViewModel {
     }
 
     func hasCanonicalFinalMessageMatching(
-        _ message: OpenClawChatMessage,
+        _ message: OperatorChatMessage,
         scope: RunMessageScope) -> Bool
     {
         guard let key = Self.finalMessageReconciliationKey(for: message) else { return false }
@@ -317,7 +317,7 @@ extension OpenClawChatViewModel {
     }
 
     func adoptingProvisionalFinalMessageIDs(
-        in incoming: [OpenClawChatMessage]) -> [OpenClawChatMessage]
+        in incoming: [OperatorChatMessage]) -> [OperatorChatMessage]
     {
         guard !self.provisionalFinalMessagesByID.isEmpty, !incoming.isEmpty else { return incoming }
         var reconciled = incoming
@@ -370,7 +370,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    func clearProvisionalFinalMarkersAdoptedByHistory(_ incoming: [OpenClawChatMessage]) {
+    func clearProvisionalFinalMarkersAdoptedByHistory(_ incoming: [OperatorChatMessage]) {
         let adoptedMessageIDs = Set(incoming.map(\.id))
         self.provisionalFinalMessagesByID = self.provisionalFinalMessagesByID.filter {
             !adoptedMessageIDs.contains($0.key)
@@ -389,7 +389,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    func adoptCorrelatedUserMessage(incoming: OpenClawChatMessage) -> Bool {
+    func adoptCorrelatedUserMessage(incoming: OperatorChatMessage) -> Bool {
         guard incoming.role.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "user" else {
             return false
         }
@@ -434,7 +434,7 @@ extension OpenClawChatViewModel {
         updated[matchIndex] = if let canonical {
             Self.adoptingCanonicalMessage(canonical, over: existing)
         } else {
-            OpenClawChatMessage(
+            OperatorChatMessage(
                 id: existing.id,
                 role: existing.role,
                 content: existing.content,
@@ -480,7 +480,7 @@ extension OpenClawChatViewModel {
         }
     }
 
-    func adoptProvisionalFinalMessage(incoming: OpenClawChatMessage) -> Bool {
+    func adoptProvisionalFinalMessage(incoming: OperatorChatMessage) -> Bool {
         let incomingRunId = Self.normalizedIdempotencyKey(incoming.idempotencyKey)
         let incomingKey = Self.finalMessageReconciliationKey(for: incoming)
         guard incomingRunId != nil || incomingKey != nil else { return false }
@@ -516,12 +516,12 @@ extension OpenClawChatViewModel {
     }
 
     static func reconcileMessageIDs(
-        previous: [OpenClawChatMessage],
-        incoming: [OpenClawChatMessage]) -> [OpenClawChatMessage]
+        previous: [OperatorChatMessage],
+        incoming: [OperatorChatMessage]) -> [OperatorChatMessage]
     {
         guard !previous.isEmpty, !incoming.isEmpty else { return incoming }
 
-        var previousMessagesByKey: [String: [OpenClawChatMessage]] = [:]
+        var previousMessagesByKey: [String: [OperatorChatMessage]] = [:]
         for message in previous {
             guard let key = Self.messageIdentityKey(for: message) else { continue }
             previousMessagesByKey[key, default: []].append(message)
@@ -546,9 +546,9 @@ extension OpenClawChatViewModel {
     }
 
     static func reconcileRunRefreshMessages(
-        previous: [OpenClawChatMessage],
-        incoming: [OpenClawChatMessage],
-        pendingLocalUserEchoIDs: Set<UUID>) -> [OpenClawChatMessage]
+        previous: [OperatorChatMessage],
+        incoming: [OperatorChatMessage],
+        pendingLocalUserEchoIDs: Set<UUID>) -> [OperatorChatMessage]
     {
         guard !previous.isEmpty else { return incoming }
         guard !incoming.isEmpty else { return previous }
@@ -642,8 +642,8 @@ extension OpenClawChatViewModel {
         return Self.dedupeMessages(reconciled)
     }
 
-    static func dedupeMessages(_ messages: [OpenClawChatMessage]) -> [OpenClawChatMessage] {
-        var result: [OpenClawChatMessage] = []
+    static func dedupeMessages(_ messages: [OperatorChatMessage]) -> [OperatorChatMessage] {
+        var result: [OperatorChatMessage] = []
         result.reserveCapacity(messages.count)
         var seen = Set<String>()
 
@@ -660,7 +660,7 @@ extension OpenClawChatViewModel {
         return result
     }
 
-    static func dedupeKey(for message: OpenClawChatMessage) -> String? {
+    static func dedupeKey(for message: OperatorChatMessage) -> String? {
         if let idempotencyKey = normalizedIdempotencyKey(message.idempotencyKey) {
             return "\(message.role)|idempotency|\(idempotencyKey)"
         }

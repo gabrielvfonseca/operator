@@ -1,5 +1,5 @@
 // Provider stream shared helpers implement reusable stream wrappers and payload policies.
-import { resolveOpenAIReasoningEffortForModel } from "@operator/ai/internal/openai";
+import { resolveOpenAIReasoningEffortForModel } from "@gabrielvfonseca/ai/internal/openai";
 import { normalizeLowercaseStringOrEmpty } from "../../packages/normalization-core/src/string-coerce.js";
 import {
   createPromotedPlainTextToolCallBlock,
@@ -18,9 +18,12 @@ import { mapThinkingLevelToReasoningEffort } from "../llm/providers/stream-wrapp
 import { streamWithPayloadPatch } from "../llm/providers/stream-wrappers/stream-payload-utils.js";
 import { streamSimple } from "../llm/stream.js";
 import { createAssistantMessageEventStream } from "../llm/utils/event-stream.js";
-export { applyAnthropicRefusal } from "@operator/ai/internal/anthropic";
-export { createDeferredEventBuffer } from "@operator/ai/internal/runtime";
-export { notifyLlmRequestActivity, onLlmRequestActivity } from "@operator/ai/internal/runtime";
+export { applyAnthropicRefusal } from "@gabrielvfonseca/ai/internal/anthropic";
+export { createDeferredEventBuffer } from "@gabrielvfonseca/ai/internal/runtime";
+export {
+  notifyLlmRequestActivity,
+  onLlmRequestActivity,
+} from "@gabrielvfonseca/ai/internal/runtime";
 
 type ProviderWrapStreamFnContext = import("../plugins/types.js").ProviderWrapStreamFnContext;
 

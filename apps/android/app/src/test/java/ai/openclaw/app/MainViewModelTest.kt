@@ -1,7 +1,7 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayRegistryEntry
-import ai.openclaw.app.gateway.GatewayRegistryEntryKind
+import ai.operator.app.gateway.GatewayRegistryEntry
+import ai.operator.app.gateway.GatewayRegistryEntryKind
 import android.content.Context
 import android.content.Intent
 import org.junit.After
@@ -126,7 +126,7 @@ class MainViewModelTest {
     val intent: Intent? = shadowOf(app).nextStartedService
     assertNotNull(intent)
     assertEquals(NodeForegroundService::class.java.name, intent?.component?.className)
-    assertEquals("ai.openclaw.app.action.STOP", intent?.action)
+    assertEquals("ai.operator.app.action.STOP", intent?.action)
   }
 
   private fun assertNodeServiceResumeRequested() {
@@ -134,7 +134,7 @@ class MainViewModelTest {
     val intent: Intent? = shadowOf(app).nextStartedService
     assertNotNull(intent)
     assertEquals(NodeForegroundService::class.java.name, intent?.component?.className)
-    assertEquals("ai.openclaw.app.action.RESUME", intent?.action)
+    assertEquals("ai.operator.app.action.RESUME", intent?.action)
   }
 
   private fun createViewModel(): Pair<MainViewModel, SecurePrefs> {

@@ -1,7 +1,7 @@
 import CoreLocation
-import OpenClawIPC
+import OperatorIPC
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor

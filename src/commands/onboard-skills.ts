@@ -4,7 +4,7 @@
  * It reports workspace skill readiness, offers safe dependency installs, and
  * leaves per-skill credentials to the agent when a skill actually needs them.
  */
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveBrewExecutable } from "../infra/brew.js";
@@ -256,8 +256,8 @@ export async function setupSkills(
     await prompter.note(
       [
         "No missing skill dependencies to install.",
-        `To inspect available skills, run: ${formatCliCommand("operator skills list --verbose")}`,
-        `To check skill status, run: ${formatCliCommand("operator skills check")}`,
+        `To inspect available skills, run: ${formatCliCommand("openclaw skills list --verbose")}`,
+        `To check skill status, run: ${formatCliCommand("openclaw skills check")}`,
       ].join("\n"),
       t("wizard.skills.allReadyTitle") ?? "All skills ready",
     );
@@ -299,7 +299,7 @@ export async function setupSkills(
         continue;
       }
       // Onboarding installs the primary recipe only; alternative recipes remain
-      // visible through `operator skills list --verbose`.
+      // visible through `openclaw skills list --verbose`.
       const spin = prompter.progress(t("wizard.skills.installing", { name: target.name }));
       const result = await installSkill({
         workspaceDir,
@@ -350,7 +350,7 @@ export async function setupSkills(
         runtime.log(result.stdout.trim());
       }
       runtime.log(
-        `Tip: run \`${formatCliCommand("operator doctor")}\` to review skills + requirements.`,
+        `Tip: run \`${formatCliCommand("openclaw doctor")}\` to review skills + requirements.`,
       );
       runtime.log(t("wizard.skills.docsLine"));
     }

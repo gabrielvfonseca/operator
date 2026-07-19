@@ -47,33 +47,33 @@ describe("renderGatewayServiceStartHints", () => {
   it("resolves daemon container context from either env key", () => {
     expect(
       resolveDaemonContainerContext({
-        OPERATOR_CONTAINER: "openclaw-demo-container",
+        OPERATOR_CONTAINER: "operator-demo-container",
       } as NodeJS.ProcessEnv),
-    ).toBe("openclaw-demo-container");
+    ).toBe("operator-demo-container");
     expect(
       resolveDaemonContainerContext({
-        OPERATOR_CONTAINER_HINT: "openclaw-demo-container",
+        OPERATOR_CONTAINER_HINT: "operator-demo-container",
       } as NodeJS.ProcessEnv),
-    ).toBe("openclaw-demo-container");
+    ).toBe("operator-demo-container");
   });
 
   it("prepends a single container restart hint when OPERATOR_CONTAINER is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        OPERATOR_CONTAINER: "openclaw-demo-container",
+        OPERATOR_CONTAINER: "operator-demo-container",
       } as NodeJS.ProcessEnv),
     ).toContain(
-      "Restart the container or the service that manages it for openclaw-demo-container.",
+      "Restart the container or the service that manages it for operator-demo-container.",
     );
   });
 
   it("prepends a single container restart hint when OPERATOR_CONTAINER_HINT is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        OPERATOR_CONTAINER_HINT: "openclaw-demo-container",
+        OPERATOR_CONTAINER_HINT: "operator-demo-container",
       } as NodeJS.ProcessEnv),
     ).toContain(
-      "Restart the container or the service that manages it for openclaw-demo-container.",
+      "Restart the container or the service that manages it for operator-demo-container.",
     );
   });
 });
@@ -86,7 +86,7 @@ describe("filterContainerGenericHints", () => {
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
           "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
         ],
-        { OPERATOR_CONTAINER: "openclaw-demo-container" } as NodeJS.ProcessEnv,
+        { OPERATOR_CONTAINER: "operator-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toStrictEqual([]);
   });
@@ -98,7 +98,7 @@ describe("filterContainerGenericHints", () => {
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
           "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
         ],
-        { OPERATOR_CONTAINER_HINT: "openclaw-demo-container" } as NodeJS.ProcessEnv,
+        { OPERATOR_CONTAINER_HINT: "operator-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toStrictEqual([]);
   });

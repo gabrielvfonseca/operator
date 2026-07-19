@@ -1,6 +1,6 @@
 /** Tests ACP session lineage metadata in list/load session responses. */
 import type { ListSessionsRequest, LoadSessionRequest } from "@agentclientprotocol/sdk";
-import { createInMemorySessionStore } from "@operator/acp-core/session";
+import { createInMemorySessionStore } from "@gabrielvfonseca/acp-core/session";
 import { describe, expect, it, vi } from "vitest";
 import type { GatewayClient } from "../gateway/client.js";
 import { AcpGatewayAgent } from "./translator.js";

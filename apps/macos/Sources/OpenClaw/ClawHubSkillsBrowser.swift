@@ -1,5 +1,5 @@
 import Observation
-import OpenClawKit
+import OperatorKit
 import SwiftUI
 
 private enum ClawHubReviewSheet: Identifiable {

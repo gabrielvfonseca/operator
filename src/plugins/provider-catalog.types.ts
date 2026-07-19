@@ -1,7 +1,7 @@
 import type {
   UnifiedModelCatalogEntry,
   UnifiedModelCatalogKind,
-} from "@operator/model-catalog-core/model-catalog-types";
+} from "@gabrielvfonseca/model-catalog-core/model-catalog-types";
 import type { ModelCatalogEntry } from "../agents/model-catalog.types.js";
 import type { ModelProviderConfig } from "../config/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";

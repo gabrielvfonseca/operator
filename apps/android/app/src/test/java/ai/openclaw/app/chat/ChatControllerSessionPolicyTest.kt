@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

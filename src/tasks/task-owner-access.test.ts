@@ -1,7 +1,7 @@
 // Verifies requester and owner access checks for task records.
 import { afterEach, describe, expect, it } from "vitest";
 import { captureEnv } from "../test-utils/env.js";
-import { withOperatorTestState } from "../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import {
   findLatestTaskForRelatedSessionKeyForOwner,
   findTaskByRunIdForOwner,
@@ -31,7 +31,7 @@ async function withTaskRegistryTempDir<T>(run: () => Promise<T> | T): Promise<T>
   return await withOperatorTestState(
     {
       layout: "state-only",
-      prefix: "openclaw-task-owner-access-",
+      prefix: "operator-task-owner-access-",
     },
     async () => {
       resetTaskRegistryForTests({ persist: false });

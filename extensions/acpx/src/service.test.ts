@@ -2,12 +2,12 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
-import type { OpenKeyedStoreOptions } from "openclaw/plugin-sdk/plugin-state-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { OpenKeyedStoreOptions } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const { runtimeRegistry } = vi.hoisted(() => ({
@@ -126,7 +126,7 @@ function restoreEnv(name: keyof typeof previousEnv): void {
 }
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-acpx-service-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-acpx-service-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -151,7 +151,7 @@ afterEach(async () => {
 function createServiceContext(workspaceDir: string): OperatorPluginServiceContext {
   return {
     workspaceDir,
-    stateDir: path.join(workspaceDir, ".openclaw-plugin-state"),
+    stateDir: path.join(workspaceDir, ".operator-plugin-state"),
     config: {},
     logger: {
       info: vi.fn(),

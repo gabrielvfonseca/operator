@@ -11,7 +11,7 @@ final class TalkOverlayController {
     static let orbSize: CGFloat = 96
     static let orbPadding: CGFloat = 12
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "talk.overlay")
+    private let logger = Logger(subsystem: "ai.operator", category: "talk.overlay")
 
     struct Model {
         var isVisible: Bool = false

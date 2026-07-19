@@ -1,5 +1,8 @@
 // Discord plugin module implements voice owner resolution.
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { resolveDiscordAccountAllowFrom } from "../accounts.js";
 import { resolveDiscordCommandOwnerAllowFrom } from "../monitor/allow-list.js";
 

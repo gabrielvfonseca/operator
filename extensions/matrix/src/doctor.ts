@@ -1,11 +1,11 @@
 // Matrix plugin module implements doctor behavior.
-import type { ChannelDoctorAdapter } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ChannelDoctorAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   detectPluginInstallPathIssue,
   formatPluginInstallPathIssue,
   removePluginFromConfig,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import {
   legacyConfigRules as MATRIX_LEGACY_CONFIG_RULES,
   normalizeCompatibilityConfig as normalizeMatrixCompatibilityConfig,
@@ -22,7 +22,7 @@ export async function collectMatrixInstallPathWarnings(cfg: OperatorConfig): Pro
   return formatPluginInstallPathIssue({
     issue,
     pluginLabel: "Matrix",
-    defaultInstallCommand: "openclaw plugins install @operator/matrix",
+    defaultInstallCommand: "openclaw plugins install @gabrielvfonseca/matrix",
   }).map((entry) => `- ${entry}`);
 }
 

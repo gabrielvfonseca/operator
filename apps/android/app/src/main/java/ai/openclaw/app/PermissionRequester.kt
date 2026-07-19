@@ -1,6 +1,6 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.nativeString
+import ai.operator.app.i18n.nativeString
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -244,7 +244,7 @@ class PermissionRequester internal constructor(
   private fun buildRationaleMessage(permissions: List<String>): String {
     val labels = permissions.map { permissionLabel(it) }
     return nativeString(
-      "OpenClaw needs \${labels.joinToString(\", \")} permissions to continue.",
+      "Operator needs \${labels.joinToString(\", \")} permissions to continue.",
       labels.joinToString(", "),
     )
   }

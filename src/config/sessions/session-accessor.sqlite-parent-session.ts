@@ -3,7 +3,7 @@ import {
   openOperatorAgentDatabase,
   runOperatorAgentWriteTransaction,
   type OperatorAgentDatabase,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import type {
   ForkSessionEntryFromParentTargetParams,
   ForkSessionEntryFromParentTargetResult,

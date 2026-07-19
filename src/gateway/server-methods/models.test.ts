@@ -1,7 +1,7 @@
 // Models method tests cover slow catalog timeouts, configured/all views,
 // validation errors, and protocol response shapes.
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import {
@@ -9,10 +9,10 @@ import {
   replaceRuntimeAuthProfileStoreSnapshots,
 } from "../../agents/auth-profiles.js";
 import { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } from "../../config/config.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { createDeferred } from "../../test-utils/deferred.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOperatorTestState } from "../../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../../test-utils/openclaw-test-state.js";
 import { expectGatewayErrorResponse } from "./gateway-response.test-helpers.js";
 import { modelsHandlers } from "./models.js";
 import type { RespondFn } from "./types.js";
@@ -21,7 +21,7 @@ const withoutOpenAIEnvAuth = async <T>(run: () => Promise<T>): Promise<T> =>
   await withEnvAsync(
     {
       CODEX_API_KEY: undefined,
-      CODEX_HOME: "/__openclaw_models_list_test__/codex",
+      CODEX_HOME: "/__operator_models_list_test__/codex",
       OPENAI_API_KEY: undefined,
       OPENAI_BASE_URL: undefined,
       OPENAI_OAUTH_TOKEN: undefined,
@@ -160,7 +160,7 @@ describe("models.list", () => {
         providers: {
           "mounted-json": {
             source: "file",
-            path: "/tmp/openclaw-test-secrets.json",
+            path: "/tmp/operator-test-secrets.json",
             mode: "json",
           },
         },
@@ -223,7 +223,7 @@ describe("models.list", () => {
         providers: {
           "mounted-json": {
             source: "file",
-            path: "/tmp/openclaw-test-secrets.json",
+            path: "/tmp/operator-test-secrets.json",
             mode: "json",
           },
         },
@@ -313,7 +313,7 @@ describe("models.list", () => {
                 id: "gpt-test",
                 name: "GPT Test",
                 provider: "openai",
-                agentRuntime: { id: "openclaw", source: "implicit" },
+                agentRuntime: { id: "@gabrielvfonseca/operator", source: "implicit" },
                 available: false,
               },
             ],
@@ -335,7 +335,7 @@ describe("models.list", () => {
         providers: {
           "mounted-json": {
             source: "file",
-            path: "/tmp/openclaw-test-secrets.json",
+            path: "/tmp/operator-test-secrets.json",
             mode: "json",
           },
         },
@@ -566,7 +566,7 @@ describe("models.list", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-local-wildcard-",
+          prefix: "operator-models-list-local-wildcard-",
           agentEnv: "main",
           env: { VLLM_API_KEY: undefined },
         },
@@ -636,7 +636,7 @@ describe("models.list", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-codex-alias-",
+          prefix: "operator-models-list-codex-alias-",
           agentEnv: "main",
         },
         async (state) => {
@@ -695,7 +695,7 @@ describe("models.list", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-cli-runtime-",
+          prefix: "operator-models-list-cli-runtime-",
           agentEnv: "main",
         },
         async (state) => {
@@ -766,7 +766,7 @@ describe("models.list", () => {
         providers: {
           "mounted-json": {
             source: "file",
-            path: "/tmp/openclaw-test-secrets.json",
+            path: "/tmp/operator-test-secrets.json",
             mode: "json",
           },
         },
@@ -852,7 +852,7 @@ describe("models.list", () => {
         providers: {
           "mounted-json": {
             source: "file",
-            path: "/tmp/openclaw-test-secrets.json",
+            path: "/tmp/operator-test-secrets.json",
             mode: "json",
           },
         },
@@ -914,7 +914,7 @@ describe("models.list", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-models-list-expired-profile-",
+        prefix: "operator-models-list-expired-profile-",
         agentEnv: "main",
       },
       async (state) => {
@@ -956,7 +956,7 @@ describe("models.list", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-models-list-stale-runtime-profile-",
+        prefix: "operator-models-list-stale-runtime-profile-",
         agentEnv: "main",
       },
       async (state) => {
@@ -1014,7 +1014,7 @@ describe("models.list", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-models-list-env-profile-",
+        prefix: "operator-models-list-env-profile-",
         agentEnv: "main",
         env: {
           DEMO_PROVIDER_TOKEN: "test-token",
@@ -1068,7 +1068,7 @@ describe("models.list", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-models-list-file-profile-",
+        prefix: "operator-models-list-file-profile-",
         agentEnv: "main",
       },
       async (state) => {
@@ -1095,7 +1095,7 @@ describe("models.list", () => {
               providers: {
                 "mounted-json": {
                   source: "file",
-                  path: "/tmp/openclaw-test-secrets.json",
+                  path: "/tmp/operator-test-secrets.json",
                   mode: "json",
                 },
               },
@@ -1130,7 +1130,7 @@ describe("models.list", () => {
     await withOperatorTestState(
       {
         layout: "state-only",
-        prefix: "openclaw-models-list-hydrated-file-profile-",
+        prefix: "operator-models-list-hydrated-file-profile-",
         agentEnv: "main",
       },
       async (state) => {
@@ -1173,7 +1173,7 @@ describe("models.list", () => {
                 providers: {
                   "mounted-json": {
                     source: "file",
-                    path: "/tmp/openclaw-test-secrets.json",
+                    path: "/tmp/operator-test-secrets.json",
                     mode: "json",
                   },
                 },
@@ -1224,7 +1224,7 @@ describe("models.list", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: `openclaw-models-list-provider-${fixture.name}-profile-`,
+          prefix: `operator-models-list-provider-${fixture.name}-profile-`,
           agentEnv: "main",
           env: {
             OPERATOR_TEST_PROFILE_API_KEY: "test-token",

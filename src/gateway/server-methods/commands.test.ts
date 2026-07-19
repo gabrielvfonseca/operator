@@ -2,7 +2,7 @@
  * Tests for command gateway methods and command registry responses.
  */
 
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChatCommandDefinition } from "../../auto-reply/commands-registry.types.js";
 

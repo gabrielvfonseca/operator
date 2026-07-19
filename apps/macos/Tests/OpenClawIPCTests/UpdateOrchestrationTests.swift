@@ -1,8 +1,8 @@
 import Foundation
-import OpenClawChatUI
-import OpenClawKit
+import OperatorChatUI
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -214,7 +214,7 @@ struct UpdateOrchestrationTests {
 
     @Test func `post-update runtime ownership follows the active service`() {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        let managedEntry = "\(home)/.openclaw/lib/node_modules/openclaw/dist/index.js"
+        let managedEntry = "\(home)/.operator/lib/node_modules/operator/dist/index.js"
 
         #expect(PostUpdateController.ownsManagedRuntime(
             connectionMode: .local,
@@ -236,7 +236,7 @@ struct UpdateOrchestrationTests {
             launchAgentWriteDisabled: true))
         #expect(!PostUpdateController.ownsManagedRuntime(
             connectionMode: .remote,
-            programArguments: ["/usr/local/bin/node", "/opt/openclaw/dist/index.js", "node", "run"],
+            programArguments: ["/usr/local/bin/node", "/opt/operator/dist/index.js", "node", "run"],
             gatewayUpdateChannel: nil,
             installPolicy: "exact",
             launchAgentWriteDisabled: false))
@@ -295,7 +295,7 @@ struct UpdateOrchestrationTests {
 
     @Test func `notification retries only definitely uncommitted sends`() {
         #expect(PostUpdateController.notificationSendFailureOutcome(
-            OpenClawChatTransportSendError.notDispatched) == .retryLater)
+            OperatorChatTransportSendError.notDispatched) == .retryLater)
         #expect(PostUpdateController.notificationSendFailureOutcome(
             GatewayResponseError(
                 method: "system-event",
@@ -310,8 +310,8 @@ struct UpdateOrchestrationTests {
         #expect(allowedSparkleChannels(forGatewayUpdateChannel: "beta") == ["beta"])
         #expect(allowedSparkleChannels(forGatewayUpdateChannel: "dev") == ["beta"])
         #expect(allowedSparkleChannels(forGatewayUpdateChannel:
-            OpenClawConfigFile.normalizedGatewayUpdateChannel("  BETA \n")) == ["beta"])
-        #expect(OpenClawConfigFile.normalizedGatewayUpdateChannel(" \n") == nil)
+            OperatorConfigFile.normalizedGatewayUpdateChannel("  BETA \n")) == ["beta"])
+        #expect(OperatorConfigFile.normalizedGatewayUpdateChannel(" \n") == nil)
         #expect(allowedSparkleChannels(forGatewayUpdateChannel: "stable").isEmpty)
         #expect(allowedSparkleChannels(forGatewayUpdateChannel: "extended-stable").isEmpty)
         #expect(allowedSparkleChannels(forGatewayUpdateChannel: "future").isEmpty)
@@ -437,9 +437,9 @@ struct UpdateOrchestrationTests {
 
     @Test func `managed Gateway ownership ignores the generated environment wrapper`() {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        let wrapper = "\(home)/.openclaw/state/service-env/ai.openclaw.gateway-env-wrapper.sh"
-        let environment = "\(home)/.openclaw/state/service-env/ai.openclaw.gateway.env"
-        let managedEntry = "\(home)/.openclaw/lib/node_modules/openclaw/dist/index.js"
+        let wrapper = "\(home)/.operator/state/service-env/ai.operator.gateway-env-wrapper.sh"
+        let environment = "\(home)/.operator/state/service-env/ai.operator.gateway.env"
+        let managedEntry = "\(home)/.operator/lib/node_modules/operator/dist/index.js"
 
         #expect(CLIInstallPrompter.launchAgentUsesManagedCLI(programArguments: [
             wrapper,
@@ -452,14 +452,14 @@ struct UpdateOrchestrationTests {
             wrapper,
             environment,
             "/usr/local/bin/node",
-            "/opt/homebrew/lib/node_modules/openclaw/dist/index.js",
+            "/opt/homebrew/lib/node_modules/operator/dist/index.js",
             "gateway",
         ]))
         #expect(!CLIInstallPrompter.launchAgentUsesManagedCLI(programArguments: [
             wrapper,
             environment,
-            "\(home)/.openclaw/tools/node/bin/node",
-            "/opt/homebrew/lib/node_modules/openclaw/dist/index.js",
+            "\(home)/.operator/tools/node/bin/node",
+            "/opt/homebrew/lib/node_modules/operator/dist/index.js",
             "gateway",
         ]))
     }

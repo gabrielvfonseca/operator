@@ -5,7 +5,7 @@ import { enableCompileCache, getCompileCacheDir } from "node:module";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { isTerminalInteractiveRespawnArgv } from "./cli/respawn-policy.js";
 import { attachChildProcessBridge } from "./process/child-process-bridge.js";
 import {
@@ -116,7 +116,7 @@ function resolveOperatorCompileCacheDirectory(params: {
       : path.join(os.tmpdir(), "node-compile-cache");
   return path.join(
     baseDirectory,
-    "operator",
+    "@gabrielvfonseca/operator",
     version,
     sanitizeCompileCachePathSegment(installMarker),
   );
@@ -211,7 +211,7 @@ function runOperatorCompileCacheRespawnPlan(
     runtime,
     onError: (error) => {
       runtime.writeError(
-        `[operator] Failed to respawn CLI without compile cache: ${
+        `[openclaw] Failed to respawn CLI without compile cache: ${
           error instanceof Error ? (error.stack ?? error.message) : String(error)
         }\n`,
       );

@@ -1,6 +1,6 @@
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Discord tests cover audit plugin behavior.
 import { ChannelType } from "discord-api-types/v10";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   auditDiscordChannelPermissionsWithFetcher,

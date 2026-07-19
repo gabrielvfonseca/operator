@@ -3,10 +3,10 @@ import {
   jsonResult,
   readStringArrayParam,
   readStringParam,
-} from "openclaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionAdapter } from "openclaw/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { extractToolSend } from "openclaw/plugin-sdk/tool-send";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type { ChannelMessageActionAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { extractToolSend } from "@gabrielvfonseca/operator/plugin-sdk/tool-send";
 import { listEnabledGoogleChatAccounts, resolveGoogleChatAccount } from "./accounts.js";
 import { sendGoogleChatMessage } from "./api.js";
 import { resolveGoogleChatOutboundSpace } from "./targets.js";

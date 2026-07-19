@@ -1,6 +1,6 @@
 // Builds portable APNs payloads for alerts, wakes, and approval lifecycle events.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 const EXEC_APPROVAL_GENERIC_ALERT_BODY = "Open Operator to review this request.";
 const PLUGIN_APPROVAL_ALERT_BODY_MAX_LENGTH = 256;

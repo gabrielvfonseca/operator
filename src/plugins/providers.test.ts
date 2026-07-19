@@ -1,5 +1,5 @@
 // Covers provider plugin registration and runtime composition.
-import { sortUniqueStrings } from "@operator/normalization-core/string-normalization";
+import { sortUniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../config/config.js";
 import type { PluginAutoEnableResult } from "../config/plugin-auto-enable.js";
@@ -81,7 +81,7 @@ function createManifestProviderPlugin(params: {
     origin: params.origin ?? "bundled",
     rootDir: `/tmp/${params.id}`,
     source: params.origin ?? "bundled",
-    manifestPath: `/tmp/${params.id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/${params.id}/operator.plugin.json`,
   };
 }
 
@@ -800,7 +800,7 @@ describe("resolvePluginProviders", () => {
   });
 
   it("forwards an explicit env to plugin loading", () => {
-    const env = { OPERATOR_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { OPERATOR_HOME: "/srv/operator-home" } as NodeJS.ProcessEnv;
 
     const providers = resolvePluginProviders({
       workspaceDir: "/workspace/explicit",

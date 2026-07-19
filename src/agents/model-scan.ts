@@ -1,18 +1,18 @@
-import type { OpenAICompletionsOptions } from "@operator/ai/internal/openai";
-import { getEnvApiKey } from "@operator/ai/internal/runtime";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import type { OpenAICompletionsOptions } from "@gabrielvfonseca/ai/internal/openai";
+import { getEnvApiKey } from "@gabrielvfonseca/ai/internal/runtime";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   asDateTimestampMs,
   resolveTimerTimeoutMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import pMap from "p-map";
 import { Type } from "typebox";
 import { formatErrorMessage } from "../infra/errors.js";

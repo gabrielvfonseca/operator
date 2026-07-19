@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor
@@ -9,7 +9,7 @@ struct SettingsViewSmokeTests {
     @Test func `cron settings builds body`() {
         let store = CronJobsStore(isPreview: true)
         store.schedulerEnabled = false
-        store.schedulerStorePath = "/tmp/openclaw-cron-store.json"
+        store.schedulerStorePath = "/tmp/operator-cron-store.json"
 
         let job1 = CronJob(
             id: "job-1",
@@ -202,7 +202,7 @@ struct SettingsViewSmokeTests {
         _ = view.body
     }
 
-    @Test func `OpenClaw settings require configured inference`() {
+    @Test func `Operator settings require configured inference`() {
         #expect(!SystemAgentAvailability.shouldShow(configuredModel: nil))
         #expect(!SystemAgentAvailability.shouldShow(configuredModel: "   "))
         #expect(SystemAgentAvailability.shouldShow(configuredModel: "openai/gpt-5.5"))
@@ -247,8 +247,8 @@ struct SettingsViewSmokeTests {
             result: .confirmed(nil)) == .loaded(nil))
     }
 
-    @Test func `OpenClaw preserves same route and resets for gateway changes`() {
-        let stateDir = URL(fileURLWithPath: "/Users/tester/.openclaw")
+    @Test func `Operator preserves same route and resets for gateway changes`() {
+        let stateDir = URL(fileURLWithPath: "/Users/tester/.operator")
         let directA = MacChatTranscriptCache.gatewayID(
             mode: .remote,
             localStateDir: stateDir,

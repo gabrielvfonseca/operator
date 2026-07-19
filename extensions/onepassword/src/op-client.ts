@@ -2,9 +2,9 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { runExec } from "openclaw/plugin-sdk/process-runtime";
-import { tryReadSecretFileSync } from "openclaw/plugin-sdk/secret-file-runtime";
-import { FsSafeError } from "openclaw/plugin-sdk/security-runtime";
+import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
+import { tryReadSecretFileSync } from "@gabrielvfonseca/operator/plugin-sdk/secret-file-runtime";
+import { FsSafeError } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { OnePasswordError } from "./errors.js";
 
 const MAX_STDOUT_BYTES = 1024 * 1024;

@@ -1,7 +1,7 @@
 import Darwin
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 struct MacNodeCodexThreadCatalogTests {
@@ -13,7 +13,7 @@ struct MacNodeCodexThreadCatalogTests {
 
     private func makeFakeCodex(_ script: String) throws -> FakeCodex {
         let directory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-fake-codex-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-fake-codex-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let executable = directory.appendingPathComponent("codex")
         try script.write(to: executable, atomically: true, encoding: .utf8)
@@ -150,14 +150,14 @@ struct MacNodeCodexThreadCatalogTests {
     }
 
     @Test func `resolves and runs the configured Codex App Server without a shell`() async throws {
-        let clearEnvSentinel = "OPENCLAW_CODEX_CATALOG_CLEAR_ENV_SENTINEL"
+        let clearEnvSentinel = "OPERATOR_CODEX_CATALOG_CLEAR_ENV_SENTINEL"
         _ = setenv(clearEnvSentinel, "present", 1)
         defer { _ = unsetenv(clearEnvSentinel) }
         let fake = try makeFakeCodex(#"""
         #!/bin/sh
         [ "$1" = "custom-app-server" ] || exit 10
         [ "$2" = "--stdio" ] || exit 11
-        [ -z "${OPENCLAW_CODEX_CATALOG_CLEAR_ENV_SENTINEL+x}" ] || exit 12
+        [ -z "${OPERATOR_CODEX_CATALOG_CLEAR_ENV_SENTINEL+x}" ] || exit 12
         IFS= read -r initialize || exit 2
         printf '%s\n' '{"id":1,"result":{}}'
         IFS= read -r initialized || exit 3
@@ -227,8 +227,8 @@ struct MacNodeCodexThreadCatalogTests {
         let resolved = try MacNodeCodexThreadCatalog.resolveInvocation(
             root: [:],
             environment: [
-                "OPENCLAW_CODEX_APP_SERVER_BIN": " \(fake.executable.path) ",
-                "OPENCLAW_CODEX_APP_SERVER_ARGS": #"custom-app-server "--listen" 'stdio://'"#,
+                "OPERATOR_CODEX_APP_SERVER_BIN": " \(fake.executable.path) ",
+                "OPERATOR_CODEX_APP_SERVER_ARGS": #"custom-app-server "--listen" 'stdio://'"#,
             ],
             searchPaths: [],
             defaultMacOSChatGPTAppExecutable: chatGPTApp.executable.path,
@@ -286,7 +286,7 @@ struct MacNodeCodexThreadCatalogTests {
 
         let resolved = try MacNodeCodexThreadCatalog.resolveInvocation(
             root: root,
-            environment: ["OPENCLAW_CODEX_APP_SERVER_BIN": fallback.executable.path],
+            environment: ["OPERATOR_CODEX_APP_SERVER_BIN": fallback.executable.path],
             searchPaths: [])
 
         #expect(resolved.executable == fallback.executable.path)
@@ -374,7 +374,7 @@ struct MacNodeCodexThreadCatalogTests {
                                 "serviceTier": "priority",
                                 "networkProxy": [
                                     "enabled": true,
-                                    "profileName": "openclaw",
+                                    "profileName": "@gabrielvfonseca/operator",
                                     "baseProfile": "workspace",
                                     "mode": "limited",
                                     "domains": ["example.test": "allow"],

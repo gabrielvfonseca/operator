@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { replaceSessionEntry } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 import type { AgentSandboxConfig } from "../../config/types.agents-shared.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { resolveSandboxWorkspaceAuthority } from "./workspace-authority.js";
 
 const SAFE_WORKBOARD_TOOLS = ["exec", "process", "read", "write", "edit", "apply_patch"];
@@ -265,7 +265,7 @@ describe("resolveSandboxWorkspaceAuthority", () => {
 
   it("applies inherited session denies to required lifecycle tools", async () => {
     const sessionKey = "agent:main:subagent:workboard-card";
-    const storePath = createSessionStorePath("openclaw-workspace-authority");
+    const storePath = createSessionStorePath("operator-workspace-authority");
     await replaceSessionEntry({ sessionKey, storePath }, {
       sessionId: "workboard-card",
       updatedAt: Date.now(),

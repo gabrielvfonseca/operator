@@ -4,10 +4,10 @@
  * preserving the input pattern's slot shape, so each result is
  * pipeable into `resolveOcPath` / `setOcPath`.
  *
- * @module @operator/oc-path/find
+ * @module @gabrielvfonseca/oc-path/find
  */
 
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import { isMap, isScalar, isSeq, type Node, type Pair } from "yaml";
 import type { MdAst } from "./ast.js";
 import type { JsoncValue } from "./jsonc/ast.js";

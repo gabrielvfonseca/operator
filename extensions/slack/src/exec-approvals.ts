@@ -1,12 +1,12 @@
 // Slack plugin module implements exec approvals behavior.
-import { resolveApprovalApprovers } from "openclaw/plugin-sdk/approval-auth-runtime";
+import { resolveApprovalApprovers } from "@gabrielvfonseca/operator/plugin-sdk/approval-auth-runtime";
 import {
   createChannelExecApprovalProfile,
   isChannelExecApprovalTargetRecipient,
-} from "openclaw/plugin-sdk/approval-client-runtime";
-import { doesApprovalRequestMatchChannelAccount } from "openclaw/plugin-sdk/approval-native-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { normalizeStringifiedOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-client-runtime";
+import { doesApprovalRequestMatchChannelAccount } from "@gabrielvfonseca/operator/plugin-sdk/approval-native-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { normalizeStringifiedOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { resolveSlackAccount } from "./accounts.js";
 
 function normalizeSlackUserLikeId(value: string): string | undefined {

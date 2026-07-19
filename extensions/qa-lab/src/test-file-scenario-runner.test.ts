@@ -104,7 +104,7 @@ async function writeScriptProducerEvidence(params: {
     path.join(runRoot, "qa-evidence.json"),
     `${JSON.stringify(
       {
-        kind: "openclaw.qa.evidence-summary",
+        kind: "operator.qa.evidence-summary",
         schemaVersion: 2,
         generatedAt: "2026-06-14T00:00:00.000Z",
         evidenceMode: "full",
@@ -169,7 +169,7 @@ describe("qa test file scenario runner", () => {
       scenarios: [
         makeTestFileScenario(
           "playwright",
-          "ui/src/e2e/chat-flow.e2e.test.ts",
+          "ui/tests/e2e/chat-flow.e2e.test.ts",
           "sends a chat turn through the GUI",
         ),
       ],
@@ -196,7 +196,7 @@ describe("qa test file scenario runner", () => {
         "test/vitest/vitest.ui-e2e.config.ts",
         "--configLoader",
         "runner",
-        "ui/src/e2e/chat-flow.e2e.test.ts",
+        "ui/tests/e2e/chat-flow.e2e.test.ts",
         "--reporter=verbose",
         "--testNamePattern",
         "sends a chat turn through the GUI",
@@ -213,7 +213,7 @@ describe("qa test file scenario runner", () => {
         kind: "playwright-test",
         id: "scenario-playwright",
         source: {
-          path: "ui/src/e2e/chat-flow.e2e.test.ts",
+          path: "ui/tests/e2e/chat-flow.e2e.test.ts",
         },
       },
       coverage: [
@@ -233,7 +233,7 @@ describe("qa test file scenario runner", () => {
         },
         {
           kind: "code",
-          path: "ui/src/e2e/chat-flow.e2e.test.ts",
+          path: "ui/tests/e2e/chat-flow.e2e.test.ts",
         },
       ],
       execution: {
@@ -259,7 +259,7 @@ describe("qa test file scenario runner", () => {
       outputDir: path.join(repoRoot, ".artifacts", "qa-e2e", "scenario-playwright"),
       providerMode: "mock-openai",
       primaryModel: "mock-openai/gpt-5.6-luna",
-      scenarios: [makeTestFileScenario("playwright", "ui/src/e2e/chat-flow.e2e.test.ts")],
+      scenarios: [makeTestFileScenario("playwright", "ui/tests/e2e/chat-flow.e2e.test.ts")],
       writeEvidenceFile: false,
       runCommand: async () => ({
         exitCode: 0,
@@ -365,7 +365,7 @@ describe("qa test file scenario runner", () => {
           path.join(runRoot, "qa-evidence.json"),
           `${JSON.stringify(
             {
-              kind: "openclaw.qa.evidence-summary",
+              kind: "operator.qa.evidence-summary",
               schemaVersion: 2,
               generatedAt: "2026-06-14T00:00:00.000Z",
               evidenceMode: "full",
@@ -657,7 +657,7 @@ describe("qa test file scenario runner", () => {
           path.join(runRoot, "qa-evidence.json"),
           `${JSON.stringify(
             {
-              kind: "openclaw.qa.evidence-summary",
+              kind: "operator.qa.evidence-summary",
               schemaVersion: 2,
               generatedAt: "2026-06-14T00:00:00.000Z",
               evidenceMode: "full",
@@ -788,7 +788,7 @@ describe("qa test file scenario runner", () => {
           path.join(runRoot, "qa-evidence.json"),
           `${JSON.stringify(
             {
-              kind: "openclaw.qa.evidence-summary",
+              kind: "operator.qa.evidence-summary",
               schemaVersion: 2,
               generatedAt: "2026-06-14T00:00:00.000Z",
               evidenceMode: "full",
@@ -977,7 +977,7 @@ describe("qa test file scenario runner", () => {
         await fs.writeFile(
           path.join(scenarioOutputDir, "qa-evidence.json"),
           `${JSON.stringify({
-            kind: "openclaw.qa.evidence-summary",
+            kind: "operator.qa.evidence-summary",
             schemaVersion: 2,
             generatedAt: "2026-06-14T00:00:00.000Z",
             evidenceMode: "full",
@@ -1031,7 +1031,7 @@ describe("qa test file scenario runner", () => {
         await fs.writeFile(
           path.join(scenarioOutputDir, "qa-evidence.json"),
           `${JSON.stringify({
-            kind: "openclaw.qa.evidence-summary",
+            kind: "operator.qa.evidence-summary",
             schemaVersion: 2,
             generatedAt: "2026-06-14T00:00:00.000Z",
             evidenceMode: "full",

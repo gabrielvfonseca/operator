@@ -35,7 +35,7 @@ function createOperatorDelegateTool(options?: {
 }): AnyAgentTool {
   const defaultSessionId = stableDelegationSessionId(options?.agentSessionKey);
   return {
-    name: "operator",
+    name: "@gabrielvfonseca/operator",
     label: "Operator",
     description:
       "Ask system expert. Config, channels, plugins, agents, models/providers, updates. Writes need human approval.",

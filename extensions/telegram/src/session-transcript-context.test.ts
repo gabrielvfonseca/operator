@@ -1,4 +1,4 @@
-import { readRecentUserAssistantTextForSession } from "openclaw/plugin-sdk/session-store-runtime";
+import { readRecentUserAssistantTextForSession } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildTelegramSessionTranscriptPromptEntries } from "./session-transcript-context.js";
 

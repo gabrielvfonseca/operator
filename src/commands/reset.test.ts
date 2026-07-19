@@ -60,7 +60,7 @@ describe("resetCommand", () => {
     });
 
     expect(removeWorkspaceAttestationPaths).toHaveBeenCalledWith(
-      ["/tmp/.openclaw/workspace"],
+      ["/tmp/.operator/workspace"],
       runtime,
       { dryRun: true },
     );

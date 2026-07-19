@@ -5,27 +5,27 @@ import { formatCliParseErrorOutput } from "./error-output.js";
 describe("formatCliParseErrorOutput", () => {
   it("explains unknown commands with root help and plugin hints", () => {
     const output = formatCliParseErrorOutput("error: unknown command 'wat'\n", {
-      argv: ["node", "openclaw", "wat"],
+      argv: ["node", "@gabrielvfonseca/operator", "wat"],
     });
 
     expect(output).toBe(
-      'Operator does not know the command "wat".\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
+      'Operator does not know the command "wat".\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.operator.ai/cli\n',
     );
   });
 
   it("suggests close known commands for unknown commands", () => {
     const output = formatCliParseErrorOutput("error: unknown command 'upate'\n", {
-      argv: ["node", "openclaw", "upate"],
+      argv: ["node", "@gabrielvfonseca/operator", "upate"],
     });
 
     expect(output).toBe(
-      'Operator does not know the command "upate".\nDid you mean this?\n  openclaw update\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.openclaw.ai/cli\n',
+      'Operator does not know the command "upate".\nDid you mean this?\n  openclaw update\nTry: openclaw --help\nPlugin command? openclaw plugins list\nDocs: https://docs.operator.ai/cli\n',
     );
   });
 
   it("suggests explicit aliases for common adjacent terminology", () => {
     const output = formatCliParseErrorOutput("error: unknown command 'upgrade'\n", {
-      argv: ["node", "openclaw", "upgrade"],
+      argv: ["node", "@gabrielvfonseca/operator", "upgrade"],
     });
 
     expect(output).toContain("Did you mean this?\n  openclaw update\n");
@@ -36,7 +36,7 @@ describe("formatCliParseErrorOutput", () => {
     process.env.OPERATOR_PROFILE = "work";
     try {
       const output = formatCliParseErrorOutput("error: unknown command 'doctr'\n", {
-        argv: ["node", "openclaw", "doctr"],
+        argv: ["node", "@gabrielvfonseca/operator", "doctr"],
       });
 
       expect(output).toContain("Did you mean this?\n  openclaw --profile work doctor\n");
@@ -51,7 +51,7 @@ describe("formatCliParseErrorOutput", () => {
 
   it("points unknown options at the active command help", () => {
     const output = formatCliParseErrorOutput("error: unknown option '--wat'\n", {
-      argv: ["node", "openclaw", "channels", "status", "--wat"],
+      argv: ["node", "@gabrielvfonseca/operator", "channels", "status", "--wat"],
     });
 
     expect(output).toBe(
@@ -61,11 +61,11 @@ describe("formatCliParseErrorOutput", () => {
 
   it("points missing required arguments at command help", () => {
     const output = formatCliParseErrorOutput("error: missing required argument 'name'\n", {
-      argv: ["node", "openclaw", "plugins", "install"],
+      argv: ["node", "@gabrielvfonseca/operator", "plugins", "install"],
     });
 
     expect(output).toBe(
-      'Missing required argument "name".\nTry: openclaw plugins install --help\n',
+      'Missing ...
     );
   });
 });

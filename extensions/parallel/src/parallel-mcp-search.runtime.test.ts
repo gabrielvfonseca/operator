@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStreamingResponse } from "../../test-support/streaming-error-response.js";
 
@@ -201,7 +201,7 @@ describe("runParallelMcpSearch", () => {
     expect(headerOf(requireEndpointCall(0), "Authorization")).toBeUndefined();
     // Every call identifies Operator at the HTTP layer (not just node).
     for (const call of endpointMockState.calls) {
-      expect(headerOf(call, "User-Agent")).toMatch(/^openclaw-parallel\//);
+      expect(headerOf(call, "User-Agent")).toMatch(/^operator-parallel\//);
     }
     // tools/call carries the documented web_search args.
     const callArgs = (readBody(requireEndpointCall(2)).params as Record<string, unknown>)

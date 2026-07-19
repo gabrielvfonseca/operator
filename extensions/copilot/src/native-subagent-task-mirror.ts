@@ -1,9 +1,9 @@
-import type { SessionEvent } from "@github/copilot-sdk";
 import {
   createAgentHarnessTaskRuntime,
   type AgentHarnessTaskRuntime,
   type AgentHarnessTaskRuntimeScope,
-} from "openclaw/plugin-sdk/agent-harness-task-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-task-runtime";
+import type { SessionEvent } from "@github/copilot-sdk";
 
 const COPILOT_NATIVE_SUBAGENT_TASK_KIND = "copilot-native";
 const COPILOT_NATIVE_SUBAGENT_RUN_ID_PREFIX = "copilot-agent:";

@@ -3,8 +3,8 @@
  */
 import fs from "node:fs";
 import os from "node:os";
-import { normalizeProviderIdForAuth } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalString as normalizeOptionalPathInput } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderIdForAuth } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalString as normalizeOptionalPathInput } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { getShellEnvAppliedKeys } from "../infra/shell-env.js";
 import { resolvePluginSetupProvider } from "../plugins/setup-registry.js";

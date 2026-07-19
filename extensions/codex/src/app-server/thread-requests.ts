@@ -1,7 +1,7 @@
 import {
   isHostScopedAgentToolActive,
   type EmbeddedRunAttemptParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import type { CodexAppServerClient } from "./client.js";
 import type { CodexAppServerRuntimeOptions } from "./config.js";
 import {
@@ -132,7 +132,7 @@ export function buildThreadStartParams(
   },
 ): CodexThreadStartParams {
   const ringZeroActive =
-    (options.hostSystemAgentActive ?? isHostScopedAgentToolActive("openclaw")) &&
+    (options.hostSystemAgentActive ?? isHostScopedAgentToolActive("@gabrielvfonseca/operator")) &&
     isSystemAgentOnlyCodexDynamicToolAllowlist(params.toolsAllow);
   const resolvedModelProvider = resolveCodexAppServerModelProvider({
     provider: params.provider,
@@ -334,7 +334,7 @@ export function buildCodexRuntimeThreadConfigForRun(
   } = {},
 ): JsonObject {
   const ringZeroActive =
-    (options.hostSystemAgentActive ?? isHostScopedAgentToolActive("openclaw")) &&
+    (options.hostSystemAgentActive ?? isHostScopedAgentToolActive("@gabrielvfonseca/operator")) &&
     isSystemAgentOnlyCodexDynamicToolAllowlist(params.toolsAllow);
   const configMcpServers = config?.mcp_servers;
   if (ringZeroActive && configMcpServers !== undefined && !isJsonObject(configMcpServers)) {
@@ -381,7 +381,7 @@ export function buildCodexRuntimeThreadConfigForRun(
 
 export function buildCodexRingZeroThreadConfigPatch(
   params: Pick<EmbeddedRunAttemptParams, "toolsAllow">,
-  hostSystemAgentActive = isHostScopedAgentToolActive("openclaw"),
+  hostSystemAgentActive = isHostScopedAgentToolActive("@gabrielvfonseca/operator"),
   inheritedMcpServerNames: readonly string[] = [],
 ): JsonObject | undefined {
   if (!hostSystemAgentActive || !isSystemAgentOnlyCodexDynamicToolAllowlist(params.toolsAllow)) {

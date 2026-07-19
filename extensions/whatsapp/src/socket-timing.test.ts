@@ -1,6 +1,6 @@
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 // Whatsapp tests cover socket timing plugin behavior.
 import type { AnyMessageContent, WAMessage } from "baileys";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_WHATSAPP_SOCKET_TIMING,

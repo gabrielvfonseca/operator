@@ -3,8 +3,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 // Zalouser plugin module implements zalo js behavior.
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { extensionForMime } from "openclaw/plugin-sdk/media-mime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { extensionForMime } from "@gabrielvfonseca/operator/plugin-sdk/media-mime";
 import {
   asDateTimestampMs,
   asFiniteNumberInRange,
@@ -13,21 +13,24 @@ import {
   parseStrictNonNegativeInteger,
   resolveExpiresAtMsFromDurationMs,
   resolveTimerTimeoutMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { loadOutboundMediaFromUrl } from "openclaw/plugin-sdk/outbound-media";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { loadOutboundMediaFromUrl } from "@gabrielvfonseca/operator/plugin-sdk/outbound-media";
 import {
   privateFileStoreSync,
   readRegularFileSync,
   statRegularFileSync,
   withTimeout,
-} from "openclaw/plugin-sdk/security-runtime";
-import { resolveStateDir as resolvePluginStateDir } from "openclaw/plugin-sdk/state-paths";
+} from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { resolveStateDir as resolvePluginStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sleep, truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import {
+  sleep,
+  truncateUtf16Safe,
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { normalizeZaloReactionIcon } from "./reaction.js";
 import { createZalouserSendReceipt } from "./send-receipt.js";
 import type {

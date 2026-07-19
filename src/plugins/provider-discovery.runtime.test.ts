@@ -60,7 +60,7 @@ function createManifestPlugin(id: string): PluginManifestRecord {
     origin: "bundled",
     rootDir: `/tmp/${id}`,
     source: "bundled",
-    manifestPath: `/tmp/${id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/${id}/operator.plugin.json`,
     providerDiscoverySource: `/tmp/${id}/provider-discovery.ts`,
   };
 }
@@ -488,7 +488,7 @@ describe("resolvePluginDiscoveryProvidersRuntime", () => {
           {
             ...createManifestPlugin("deepseek"),
             rootDir: "/tmp/openclaw/dist/extensions/deepseek",
-            manifestPath: "/tmp/openclaw/dist/extensions/deepseek/openclaw.plugin.json",
+            manifestPath: "/tmp/openclaw/dist/extensions/deepseek/operator.plugin.json",
             providerDiscoverySource: "/tmp/openclaw/dist/extensions/deepseek/provider-discovery.js",
           },
         ],

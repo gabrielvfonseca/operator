@@ -4,20 +4,20 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { timestampMsToIsoString } from "openclaw/plugin-sdk/number-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { timestampMsToIsoString } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type {
   OperatorPluginNodeHostCommand,
   OperatorPluginNodeInvokePolicy,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginRuntime } from "openclaw/plugin-sdk/plugin-runtime";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   materializeWindowsSpawnProgram,
   resolveWindowsSpawnProgram,
-} from "openclaw/plugin-sdk/windows-spawn";
+} from "@gabrielvfonseca/operator/plugin-sdk/windows-spawn";
 import { formatCodexDisplayText } from "./command-formatters.js";
 
 const CODEX_CLI_SESSIONS_LIST_COMMAND = "codex.cli.sessions.list";
@@ -259,7 +259,7 @@ async function runCodexExecResume(params: {
   timeoutMs: number;
 }): Promise<string> {
   const outputPath = path.join(
-    await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), "openclaw-codex-cli-")),
+    await fs.mkdtemp(path.join(resolvePreferredOperatorTmpDir(), "operator-codex-cli-")),
     "last-message.txt",
   );
   try {

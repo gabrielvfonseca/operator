@@ -2,7 +2,7 @@
 import {
   buildChannelGroupsScopeTree,
   resolveScopeRequireMention,
-} from "openclaw/plugin-sdk/channel-policy";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-policy";
 import { resolveExactLineGroupConfigKey, type OperatorConfig } from "./channel-api.js";
 
 type LineGroupContext = { cfg: OperatorConfig; accountId?: string | null; groupId?: string | null };

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { AuthProfileStore } from "./auth-profiles.js";
 import type {
   ModelAuthAvailabilityEvaluation,
@@ -687,7 +687,7 @@ describe("prepared provider auth state", () => {
   });
 
   it("terminates the off-main-thread warm worker when cancellation fires", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-provider-auth-worker-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-provider-auth-worker-"));
     const workerPath = path.join(tempDir, "slow-worker.mjs");
     const markerPath = path.join(tempDir, "worker-finished");
     await fs.writeFile(

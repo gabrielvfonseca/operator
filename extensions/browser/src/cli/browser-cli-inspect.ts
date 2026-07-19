@@ -2,8 +2,8 @@
  * Browser CLI inspection commands for screenshots and snapshots.
  */
 import fs from "node:fs/promises";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { Command } from "commander";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
 import {
   BROWSER_TAB_REFERENCE_HELP,
   callBrowserRequest,

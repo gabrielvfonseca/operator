@@ -3,10 +3,13 @@ import "./test-helpers.js";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { escapeRegExp, formatEnvelopeTimestamp } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { setLoggerOverride } from "openclaw/plugin-sdk/runtime-env";
-import { withEnvAsync } from "openclaw/plugin-sdk/test-env";
+import {
+  escapeRegExp,
+  formatEnvelopeTimestamp,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { setLoggerOverride } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { withEnvAsync } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { getActiveWebListener } from "./active-listener.js";
 import { WhatsAppAuthUnstableError, resolveWebCredsPath } from "./auth-store.js";
@@ -1172,7 +1175,7 @@ describe("web auto-reply connection", () => {
 
   it("emits heartbeat logs with connection metadata", async () => {
     vi.useFakeTimers();
-    const logPath = `/tmp/openclaw-heartbeat-${crypto.randomUUID()}.log`;
+    const logPath = `/tmp/operator-heartbeat-${crypto.randomUUID()}.log`;
     setLoggerOverride({ level: "trace", file: logPath });
 
     const runtime = {
@@ -1214,7 +1217,7 @@ describe("web auto-reply connection", () => {
   });
 
   it("logs outbound replies to file", async () => {
-    const logPath = `/tmp/openclaw-log-test-${crypto.randomUUID()}.log`;
+    const logPath = `/tmp/operator-log-test-${crypto.randomUUID()}.log`;
     setLoggerOverride({ level: "trace", file: logPath });
 
     const capture = createWebListenerFactoryCapture();

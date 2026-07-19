@@ -1,7 +1,7 @@
-import OpenClawDiscovery
+import OperatorDiscovery
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized)
 @MainActor

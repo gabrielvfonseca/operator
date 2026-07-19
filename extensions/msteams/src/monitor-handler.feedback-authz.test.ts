@@ -142,7 +142,7 @@ async function withFeedbackHandler(params: {
   context: Parameters<typeof createFeedbackInvokeContext>[0];
   assertResult: (args: { tmpDir: string }) => Promise<void>;
 }) {
-  const tmpDir = await mkdtemp(path.join(tmpdir(), "openclaw-msteams-feedback-"));
+  const tmpDir = await mkdtemp(path.join(tmpdir(), "operator-msteams-feedback-"));
   try {
     const deps = createDeps({
       cfg: {
@@ -298,7 +298,7 @@ describe("msteams feedback invoke authz", () => {
   });
 
   it("does not trigger reflection for a group sender outside groupAllowFrom", async () => {
-    const tmpDir = await mkdtemp(path.join(tmpdir(), "openclaw-msteams-feedback-"));
+    const tmpDir = await mkdtemp(path.join(tmpdir(), "operator-msteams-feedback-"));
     try {
       const deps = createDeps({
         cfg: {

@@ -8,14 +8,14 @@ title: "Secrets management"
 sidebarTitle: "Secrets management"
 ---
 
-OpenClaw supports additive SecretRefs so supported credentials do not need to live as plaintext in configuration.
+Operator supports additive SecretRefs so supported credentials do not need to live as plaintext in configuration.
 
 <Note>
 Plaintext still works. SecretRefs are opt-in per credential.
 </Note>
 
 <Warning>
-Plaintext credentials remain agent-readable if they sit in files the agent can inspect, including `openclaw.json`, `auth-profiles.json`, `.env`, or generated `agents/*/agent/models.json` files. SecretRefs only reduce that local blast radius once every supported credential is migrated and `openclaw secrets audit --check` reports no plaintext residue.
+Plaintext credentials remain agent-readable if they sit in files the agent can inspect, including `operator.json`, `auth-profiles.json`, `.env`, or generated `agents/*/agent/models.json` files. SecretRefs only reduce that local blast radius once every supported credential is migrated and `operator secrets audit --check` reports no plaintext residue.
 </Warning>
 
 ## Runtime model
@@ -30,18 +30,18 @@ This keeps secret-provider outages off hot request paths.
 
 ## Egress-time injection (sentinels)
 
-For model-provider credentials backed by SecretRefs, OpenClaw mints an opaque, process-local sentinel during model-auth resolution. Auth storage, stream options, SDK configuration, logs, error objects, and most runtime introspection therefore see a value such as `oc-sent-v1-...`, not the provider credential. The guarded model fetch and managed local-provider health probes replace known sentinels in URL and header values immediately before each request leaves the process.
+For model-provider credentials backed by SecretRefs, Operator mints an opaque, process-local sentinel during model-auth resolution. Auth storage, stream options, SDK configuration, logs, error objects, and most runtime introspection therefore see a value such as `oc-sent-v1-...`, not the provider credential. The guarded model fetch and managed local-provider health probes replace known sentinels in URL and header values immediately before each request leaves the process.
 
-Unknown sentinel-shaped values fail closed before network activity. OpenClaw refuses to send the request rather than forwarding an unresolved sentinel to a provider. Resolved secret values are also registered for exact-value log redaction as a defense in depth measure.
+Unknown sentinel-shaped values fail closed before network activity. Operator refuses to send the request rather than forwarding an unresolved sentinel to a provider. Resolved secret values are also registered for exact-value log redaction as a defense in depth measure.
 
 Provider adapters use the latest injection point their SDK supports:
 
-- SDKs with a custom fetch option receive OpenClaw's guarded fetch, so the SDK retains the sentinel.
-- SDKs without a custom fetch option unwrap the sentinel immediately before client construction. Plugin-owned provider streams and agent harnesses unwrap at the final core-owned handoff because those transports do not share OpenClaw's guarded fetch.
+- SDKs with a custom fetch option receive Operator's guarded fetch, so the SDK retains the sentinel.
+- SDKs without a custom fetch option unwrap the sentinel immediately before client construction. Plugin-owned provider streams and agent harnesses unwrap at the final core-owned handoff because those transports do not share Operator's guarded fetch.
 
 Sentinels reduce plaintext exposure across the model-call chain, but they are not process isolation. The real value still exists in same-process memory and appears at the final adapter boundary. Plain environment credentials that are not configured through SecretRefs remain plaintext and are outside this mechanism.
 
-Set `OPENCLAW_SECRET_SENTINELS=off` (also accepts `0` or `false`, case-insensitive) to disable sentinel minting during incident response or compatibility troubleshooting. The kill switch does not disable exact-value redaction registration.
+Set `OPERATOR_SECRET_SENTINELS=off` (also accepts `0` or `false`, case-insensitive) to disable sentinel minting during incident response or compatibility troubleshooting. The kill switch does not disable exact-value redaction registration.
 
 ## Agent-access boundary
 
@@ -50,8 +50,8 @@ SecretRefs stop credentials from being persisted in config and generated model f
 For production deployments where agent-accessible files are in scope, treat migration as complete only when all of these hold:
 
 - Supported credentials use SecretRefs instead of plaintext values.
-- Legacy plaintext residue is scrubbed from `openclaw.json`, `auth-profiles.json`, `.env`, and generated `models.json` files.
-- `openclaw secrets audit --check` is clean after migration.
+- Legacy plaintext residue is scrubbed from `operator.json`, `auth-profiles.json`, `.env`, and generated `models.json` files.
+- `operator secrets audit --check` is clean after migration.
 - Any remaining unsupported or rotating credentials are protected by OS isolation, container isolation, or an external credential proxy.
 
 This is why the audit/configure/apply workflow is a security migration gate, not just a convenience helper.
@@ -78,7 +78,7 @@ SecretRefs are validated only on effectively active surfaces:
   - `gateway.remote.url` is configured
   - `gateway.tailscale.mode` is `serve` or `funnel`
   - In local mode without those remote surfaces: `gateway.remote.token` is active when token auth can win and no env/auth token is configured; `gateway.remote.password` is active only when password auth can win and no env/auth password is configured.
-- `gateway.auth.token` SecretRef is inactive for startup auth resolution when `OPENCLAW_GATEWAY_TOKEN` is set, because env token input wins for that runtime.
+- `gateway.auth.token` SecretRef is inactive for startup auth resolution when `OPERATOR_GATEWAY_TOKEN` is set, because env token input wins for that runtime.
 
 </Accordion>
 
@@ -165,12 +165,12 @@ Define providers under `secrets.providers`:
       default: { source: "env" },
       filemain: {
         source: "file",
-        path: "~/.openclaw/secrets.json",
+        path: "~/.operator/secrets.json",
         mode: "json", // or "singleValue"
       },
       vault: {
         source: "exec",
-        command: "/usr/local/bin/openclaw-vault-resolver",
+        command: "/usr/local/bin/operator-vault-resolver",
         args: ["--profile", "prod"],
         passEnv: ["PATH", "VAULT_ADDR"],
         jsonOnly: true,
@@ -218,7 +218,7 @@ Define providers under `secrets.providers`:
 - Supports `timeoutMs` (default 5000), `noOutputTimeoutMs` (default equals `timeoutMs`), `maxOutputBytes` (default 1 MiB), `env`/`passEnv` allowlist, and `trustedDirs`.
 - `jsonOnly` defaults to `true`. With `jsonOnly: false` and a single requested id, plain non-JSON stdout is accepted as that id's value.
 - Windows fail-closed: if ACL verification is unavailable for the command path, resolution fails. For trusted paths only, set `allowInsecurePath: true` on that provider to bypass the check.
-- Plugin-managed exec providers can use `pluginIntegration` instead of a copied `command`/`args`. OpenClaw resolves the current command details from the installed plugin manifest during startup/reload; if the plugin is disabled, removed, untrusted, or no longer declares the integration, active SecretRefs on that provider fail closed.
+- Plugin-managed exec providers can use `pluginIntegration` instead of a copied `command`/`args`. Operator resolves the current command details from the installed plugin manifest during startup/reload; if the plugin is disabled, removed, untrusted, or no longer declares the integration, active SecretRefs on that provider fail closed.
 
 Request payload (stdin):
 
@@ -242,7 +242,7 @@ Optional per-id errors:
 }
 ```
 
-`code` is an optional machine-readable diagnostic. OpenClaw displays the recognized
+`code` is an optional machine-readable diagnostic. Operator displays the recognized
 codes `NOT_FOUND` and `AMBIGUOUS_DUPLICATE_KEY` with the provider and ref id. Other
 codes and free-form fields such as `message` are accepted for protocol-v1 compatibility
 but are not displayed because resolver output can contain credential material.
@@ -261,7 +261,7 @@ Use a file SecretRef on a supported credential field instead:
     providers: {
       xai_key_file: {
         source: "file",
-        path: "~/.openclaw/secrets/xai-api-key.txt",
+        path: "~/.operator/secrets/xai-api-key.txt",
         mode: "singleValue",
       },
     },
@@ -295,7 +295,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
             command: "/opt/homebrew/bin/op",
             allowSymlinkCommand: true, // required for Homebrew symlinked binaries
             trustedDirs: ["/opt/homebrew"],
-            args: ["read", "op://Personal/OpenClaw QA API Key/password"],
+            args: ["read", "op://Personal/Operator QA API Key/password"],
             passEnv: ["HOME"],
             jsonOnly: false,
           },
@@ -314,7 +314,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
     ```
   </Accordion>
   <Accordion title="Bitwarden Secrets Manager (`bws`)">
-    Use a resolver wrapper to map SecretRef ids to Bitwarden Secrets Manager item keys. The repository includes `scripts/secrets/openclaw-bws-resolver.mjs`; install or copy it to an absolute trusted path on the host that runs the Gateway.
+    Use a resolver wrapper to map SecretRef ids to Bitwarden Secrets Manager item keys. The repository includes `scripts/secrets/operator-bws-resolver.mjs`; install or copy it to an absolute trusted path on the host that runs the Gateway.
 
     Requirements:
 
@@ -329,7 +329,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
         providers: {
           bws: {
             source: "exec",
-            command: "/usr/local/bin/openclaw-bws-resolver.mjs",
+            command: "/usr/local/bin/operator-bws-resolver.mjs",
             passEnv: ["BWS_ACCESS_TOKEN", "BWS_SERVER_URL", "PATH", "BWS_BIN"],
             jsonOnly: true,
           },
@@ -354,7 +354,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
     The resolver batches requested ids, runs `bws secret list`, and returns values for matching secret `key` fields. Use keys that satisfy the exec SecretRef id contract, such as `openclaw/providers/openai/apiKey`; env-var-style keys with underscores are rejected before the resolver runs. If more than one visible Bitwarden secret shares the requested key, the resolver fails that id as ambiguous instead of guessing. After updating config, verify the resolver path:
 
     ```bash
-    openclaw secrets audit --allow-exec
+    operator secrets audit --allow-exec
     ```
 
   </Accordion>
@@ -387,7 +387,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
     ```
   </Accordion>
   <Accordion title="password-store (`pass`)">
-    Use a small resolver wrapper to map SecretRef ids directly to `pass` entries. Save this as an executable at an absolute path that passes your exec-provider path checks, for example `/usr/local/bin/openclaw-pass-resolver`. The `#!/usr/bin/env node` shebang resolves `node` from the resolver process `PATH`, so include `PATH` in `passEnv`. If `pass` is not on that `PATH`, set `PASS_BIN` in the parent environment and include it in `passEnv` too:
+    Use a small resolver wrapper to map SecretRef ids directly to `pass` entries. Save this as an executable at an absolute path that passes your exec-provider path checks, for example `/usr/local/bin/operator-pass-resolver`. The `#!/usr/bin/env node` shebang resolves `node` from the resolver process `PATH`, so include `PATH` in `passEnv`. If `pass` is not on that `PATH`, set `PASS_BIN` in the parent environment and include it in `passEnv` too:
 
     ```js
     #!/usr/bin/env node
@@ -436,7 +436,7 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
         providers: {
           pass_store: {
             source: "exec",
-            command: "/usr/local/bin/openclaw-pass-resolver",
+            command: "/usr/local/bin/operator-pass-resolver",
             passEnv: ["PATH", "HOME", "GNUPGHOME", "GPG_TTY", "PASSWORD_STORE_DIR", "PASS_BIN"],
             jsonOnly: true,
           },
@@ -461,8 +461,8 @@ For a dedicated 1Password guide covering service accounts, the bundled agent ski
     Keep the secret on the first line of the `pass` entry, or customize the wrapper to return the full `pass show` output instead. After updating config, verify both the static audit and the exec resolver path:
 
     ```bash
-    openclaw secrets audit --check
-    openclaw secrets audit --allow-exec
+    operator secrets audit --check
+    operator secrets audit --allow-exec
     ```
 
   </Accordion>
@@ -554,7 +554,7 @@ The core `ssh` sandbox backend also supports SecretRefs for SSH auth material:
 
 Runtime behavior:
 
-- OpenClaw resolves these refs during sandbox activation, not lazily on each SSH call.
+- Operator resolves these refs during sandbox activation, not lazily on each SSH call.
 - Resolved values are written to a temp directory with restrictive file permissions (`0o600`) and used in the generated SSH config.
 - If the effective sandbox backend is not `ssh` (or sandbox mode is `off`), these refs stay inactive and do not block startup.
 
@@ -571,12 +571,12 @@ Runtime-minted or rotating credentials and OAuth refresh material are intentiona
 - Field without a ref: unchanged.
 - Field with a ref: required on active surfaces during activation.
 - If both plaintext and ref are present, the ref takes precedence on supported precedence paths.
-- The redaction sentinel `__OPENCLAW_REDACTED__` is reserved for internal config redaction/restore and is rejected as literal submitted config data.
+- The redaction sentinel `__OPERATOR_REDACTED__` is reserved for internal config redaction/restore and is rejected as literal submitted config data.
 
 Warning and audit signals:
 
 - `SECRETS_REF_OVERRIDES_PLAINTEXT` (runtime warning)
-- `REF_SHADOWED` (audit finding when `auth-profiles.json` credentials take precedence over `openclaw.json` refs)
+- `REF_SHADOWED` (audit finding when `auth-profiles.json` credentials take precedence over `operator.json` refs)
 
 Google Chat compatibility: `serviceAccountRef` takes precedence over plaintext `serviceAccount`; the plaintext value is ignored once the sibling ref is set.
 
@@ -600,7 +600,7 @@ Activation contract:
 
 ## Degraded and recovered signals
 
-When reload-time activation fails after a healthy state, OpenClaw enters degraded secrets state, emitting one-shot system events and log codes:
+When reload-time activation fails after a healthy state, Operator enters degraded secrets state, emitting one-shot system events and log codes:
 
 - `SECRETS_RELOADER_DEGRADED`
 - `SECRETS_RELOADER_RECOVERED`
@@ -618,10 +618,10 @@ Command paths can opt into supported SecretRef resolution via a gateway snapshot
 
 <Tabs>
   <Tab title="Strict command paths">
-    For example `openclaw memory` remote-memory paths and `openclaw qr --remote` when it needs remote shared-secret refs. They read from the active snapshot and fail fast when a required SecretRef is unavailable.
+    For example `operator memory` remote-memory paths and `operator qr --remote` when it needs remote shared-secret refs. They read from the active snapshot and fail fast when a required SecretRef is unavailable.
   </Tab>
   <Tab title="Read-only command paths">
-    For example `openclaw status`, `openclaw status --all`, `openclaw channels status`, `openclaw channels resolve`, `openclaw security audit`, and read-only doctor/config repair flows. They also prefer the active snapshot, but degrade instead of aborting when a targeted SecretRef is unavailable.
+    For example `operator status`, `operator status --all`, `operator channels status`, `operator channels resolve`, `operator security audit`, and read-only doctor/config repair flows. They also prefer the active snapshot, but degrade instead of aborting when a targeted SecretRef is unavailable.
 
     Read-only behavior:
 
@@ -635,7 +635,7 @@ Command paths can opt into supported SecretRef resolution via a gateway snapshot
 
 Other notes:
 
-- Snapshot refresh after backend secret rotation is handled by `openclaw secrets reload`.
+- Snapshot refresh after backend secret rotation is handled by `operator secrets reload`.
 - Gateway RPC method used by these command paths: `secrets.resolve`.
 
 ## Audit and configure workflow
@@ -645,36 +645,36 @@ Default operator flow:
 <Steps>
   <Step title="Audit current state">
     ```bash
-    openclaw secrets audit --check
+    operator secrets audit --check
     ```
   </Step>
   <Step title="Configure and apply SecretRefs">
     ```bash
-    openclaw secrets configure --apply
+    operator secrets configure --apply
     ```
   </Step>
   <Step title="Re-audit">
     ```bash
-    openclaw secrets audit --check
+    operator secrets audit --check
     ```
   </Step>
 </Steps>
 
 Do not treat the migration as complete until the re-audit is clean. If the audit still reports plaintext values at rest, the agent-access risk remains even when runtime APIs return redacted values.
 
-If you save a plan instead of applying during `configure`, apply that saved plan with `openclaw secrets apply --from <plan-path>` before the re-audit.
+If you save a plan instead of applying during `configure`, apply that saved plan with `operator secrets apply --from <plan-path>` before the re-audit.
 
 <AccordionGroup>
   <Accordion title="secrets audit">
     Findings include:
 
-    - Plaintext values at rest (`openclaw.json`, `auth-profiles.json`, `.env`, and generated `agents/*/agent/models.json`).
+    - Plaintext values at rest (`operator.json`, `auth-profiles.json`, `.env`, and generated `agents/*/agent/models.json`).
     - Plaintext sensitive provider header residues in generated `models.json` entries.
     - Unresolved refs.
-    - Precedence shadowing (`auth-profiles.json` taking priority over `openclaw.json` refs).
+    - Precedence shadowing (`auth-profiles.json` taking priority over `operator.json` refs).
     - Legacy residues (`auth.json`, OAuth reminders).
 
-    Exec note: by default, audit skips exec SecretRef resolvability checks to avoid command side effects. Use `openclaw secrets audit --allow-exec` to execute exec providers during audit.
+    Exec note: by default, audit skips exec SecretRef resolvability checks to avoid command side effects. Use `operator secrets audit --allow-exec` to execute exec providers during audit.
 
     Header residue note: sensitive provider header detection is name-heuristic based (common auth/credential header names and fragments such as `authorization`, `x-api-key`, `token`, `secret`, `password`, and `credential`).
 
@@ -683,7 +683,7 @@ If you save a plan instead of applying during `configure`, apply that saved plan
     Interactive helper that:
 
     - Configures `secrets.providers` first (`env`/`file`/`exec`, add/edit/remove).
-    - Lets you select supported secret-bearing fields in `openclaw.json` plus `auth-profiles.json` for one agent scope.
+    - Lets you select supported secret-bearing fields in `operator.json` plus `auth-profiles.json` for one agent scope.
     - Can create a new `auth-profiles.json` mapping directly in the target picker.
     - Captures SecretRef details (`source`, `provider`, `id`).
     - Runs preflight resolution and can apply immediately.
@@ -692,9 +692,9 @@ If you save a plan instead of applying during `configure`, apply that saved plan
 
     Helpful modes:
 
-    - `openclaw secrets configure --providers-only`
-    - `openclaw secrets configure --skip-provider-setup`
-    - `openclaw secrets configure --agent <id>`
+    - `operator secrets configure --providers-only`
+    - `operator secrets configure --skip-provider-setup`
+    - `operator secrets configure --agent <id>`
 
     `configure` apply defaults:
 
@@ -707,10 +707,10 @@ If you save a plan instead of applying during `configure`, apply that saved plan
     Apply a saved plan:
 
     ```bash
-    openclaw secrets apply --from /tmp/openclaw-secrets-plan.json
-    openclaw secrets apply --from /tmp/openclaw-secrets-plan.json --allow-exec
-    openclaw secrets apply --from /tmp/openclaw-secrets-plan.json --dry-run
-    openclaw secrets apply --from /tmp/openclaw-secrets-plan.json --dry-run --allow-exec
+    operator secrets apply --from /tmp/operator-secrets-plan.json
+    operator secrets apply --from /tmp/operator-secrets-plan.json --allow-exec
+    operator secrets apply --from /tmp/operator-secrets-plan.json --dry-run
+    operator secrets apply --from /tmp/operator-secrets-plan.json --dry-run --allow-exec
     ```
 
     Exec note: dry-run skips exec checks unless `--allow-exec` is set; write mode rejects plans containing exec SecretRefs/providers unless `--allow-exec` is set.
@@ -723,7 +723,7 @@ If you save a plan instead of applying during `configure`, apply that saved plan
 ## One-way safety policy
 
 <Warning>
-OpenClaw intentionally does not write rollback backups containing historical plaintext secret values.
+Operator intentionally does not write rollback backups containing historical plaintext secret values.
 </Warning>
 
 Safety model:

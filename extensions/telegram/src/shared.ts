@@ -1,15 +1,21 @@
 // Telegram plugin module implements shared behavior.
-import { resolveNormalizedAccountEntry } from "openclaw/plugin-sdk/account-core";
-import { normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
+import { resolveNormalizedAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
+import { formatAllowFromLowercase } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { createChannelPluginBase, type ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { getChatChannelMeta } from "openclaw/plugin-sdk/channel-plugin-common";
-import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/routing";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
+import {
+  createChannelPluginBase,
+  type ChannelPlugin,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { getChatChannelMeta } from "@gabrielvfonseca/operator/plugin-sdk/channel-plugin-common";
+import type {
+  OperatorConfig,
+  TelegramAccountConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/routing";
 import { inspectTelegramAccount } from "./account-inspect.js";
 import {
   listTelegramAccountIds,

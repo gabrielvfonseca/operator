@@ -14,7 +14,6 @@ import {
   resolveBrowserConfig,
 } from "../../plugin-sdk/browser-profiles.js";
 import { defaultRuntime } from "../../runtime.js";
-import type { SkillEligibilityContext, SkillUsagePath } from "../../skills/types.js";
 import type { ExecPolicyOverrides } from "../exec-defaults.js";
 import { getSandboxBackendWorkdirResolver, requireSandboxBackendFactory } from "./backend.js";
 import { ensureSandboxBrowser } from "./browser.js";
@@ -26,51 +25,6 @@ import { resolveSandboxRuntimeStatus } from "./runtime-status.js";
 import { resolveSandboxWorkspaceLayoutPaths } from "./shared.js";
 import type { SandboxContext, SandboxWorkspaceInfo } from "./types.js";
 import { ensureSandboxWorkspace } from "./workspace.js";
-
-async function syncSandboxSkillsToWorkspace(params: {
-  sourceWorkspaceDir: string;
-  targetWorkspaceDir: string;
-  config?: OperatorConfig;
-  agentId: string;
-  rawSessionKey: string;
-  execOverrides?: ExecPolicyOverrides;
-}): Promise<{ eligibility?: SkillEligibilityContext; skillUsagePaths?: SkillUsagePath[] }> {
-  try {
-    const [
-      { syncSkillsToWorkspace },
-      { getRemoteSkillEligibility },
-      { resolveNodeExecEligibility },
-    ] = await Promise.all([
-      import("../../skills/loading/workspace.js"),
-      import("../../skills/runtime/remote.js"),
-      import("../exec-defaults.js"),
-    ]);
-    const nodeSkills = resolveNodeExecEligibility({
-      cfg: params.config,
-      sessionKey: params.rawSessionKey,
-      agentId: params.agentId,
-      execOverrides: params.execOverrides,
-    });
-    const eligibility: SkillEligibilityContext = {
-      nodeSkills,
-      remote: getRemoteSkillEligibility({
-        advertiseExecNode: nodeSkills.canExec,
-      }),
-    };
-    const skillUsagePaths = await syncSkillsToWorkspace({
-      sourceWorkspaceDir: params.sourceWorkspaceDir,
-      targetWorkspaceDir: params.targetWorkspaceDir,
-      config: params.config,
-      agentId: params.agentId,
-      eligibility,
-    });
-    return { eligibility, skillUsagePaths };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : JSON.stringify(error);
-    defaultRuntime.error?.(`Sandbox skill sync failed: ${message}`);
-    return {};
-  }
-}
 
 async function ensureSandboxWorkspaceLayout(params: {
   cfg: ReturnType<typeof resolveSandboxConfigForAgent>;
@@ -84,8 +38,6 @@ async function ensureSandboxWorkspaceLayout(params: {
   scopeKey: string;
   sandboxWorkspaceDir: string;
   skillsWorkspaceDir: string;
-  skillsEligibility?: SkillEligibilityContext;
-  skillUsagePaths?: SkillUsagePath[];
   workspaceDir: string;
 }> {
   const { cfg, rawSessionKey } = params;
@@ -96,41 +48,11 @@ async function ensureSandboxWorkspaceLayout(params: {
       workspaceDir: params.workspaceDir,
     });
 
-  let syncedSkills: Awaited<ReturnType<typeof syncSandboxSkillsToWorkspace>>;
-  if (cfg.workspaceAccess !== "rw") {
-    await ensureSandboxWorkspace(
-      sandboxWorkspaceDir,
-      agentWorkspaceDir,
-      params.config?.agents?.defaults?.skipBootstrap,
-      params.config?.agents?.defaults?.skipOptionalBootstrapFiles,
-    );
-    syncedSkills = await syncSandboxSkillsToWorkspace({
-      sourceWorkspaceDir: agentWorkspaceDir,
-      targetWorkspaceDir: sandboxWorkspaceDir,
-      config: params.config,
-      agentId: params.agentId,
-      rawSessionKey,
-      execOverrides: params.execOverrides,
-    });
-  } else {
-    await fs.mkdir(workspaceDir, { recursive: true });
-    syncedSkills = await syncSandboxSkillsToWorkspace({
-      sourceWorkspaceDir: agentWorkspaceDir,
-      targetWorkspaceDir: skillsWorkspaceDir,
-      config: params.config,
-      agentId: params.agentId,
-      rawSessionKey,
-      execOverrides: params.execOverrides,
-    });
-  }
-
   return {
     agentWorkspaceDir,
     scopeKey,
     sandboxWorkspaceDir,
     skillsWorkspaceDir,
-    ...(syncedSkills.eligibility ? { skillsEligibility: syncedSkills.eligibility } : {}),
-    ...(syncedSkills.skillUsagePaths ? { skillUsagePaths: syncedSkills.skillUsagePaths } : {}),
     workspaceDir,
   };
 }
@@ -197,8 +119,6 @@ export async function resolveSandboxContext(params: {
   const {
     agentWorkspaceDir,
     scopeKey,
-    skillsEligibility,
-    skillUsagePaths,
     skillsWorkspaceDir,
     workspaceDir,
   } = await ensureSandboxWorkspaceLayout({
@@ -288,8 +208,6 @@ export async function resolveSandboxContext(params: {
     workspaceDir,
     agentWorkspaceDir,
     skillsWorkspaceDir,
-    ...(skillsEligibility ? { skillsEligibility } : {}),
-    ...(skillUsagePaths ? { skillUsagePaths } : {}),
     workspaceAccess: resolvedCfg.workspaceAccess,
     runtimeId: backend.runtimeId,
     runtimeLabel: backend.runtimeLabel,
@@ -323,8 +241,6 @@ export async function ensureSandboxWorkspaceForSession(params: {
   const {
     agentWorkspaceDir,
     scopeKey,
-    skillsEligibility,
-    skillUsagePaths,
     skillsWorkspaceDir,
     workspaceDir,
   } = await ensureSandboxWorkspaceLayout({
@@ -347,8 +263,6 @@ export async function ensureSandboxWorkspaceForSession(params: {
     workspaceDir,
     ...(containerWorkdir ? { containerWorkdir } : {}),
     skillsWorkspaceDir,
-    ...(skillsEligibility ? { skillsEligibility } : {}),
-    ...(skillUsagePaths ? { skillUsagePaths } : {}),
     workspaceAccess: cfg.workspaceAccess,
   };
 }

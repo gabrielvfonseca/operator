@@ -27,8 +27,8 @@ async function startLocalStreamableHttpMcpServer(): Promise<{
 }> {
   // Real local MCP endpoint verifies Gemini consumes the generated settings
   // rather than just checking file shape.
-  const mcpServer = new McpServer({ name: "openclaw-gemini-live-probe", version: "1.0.0" });
-  mcpServer.tool("openclaw_live_probe", "Operator Gemini MCP live probe", async () => ({
+  const mcpServer = new McpServer({ name: "operator-gemini-live-probe", version: "1.0.0" });
+  mcpServer.tool("operator_live_probe", "Operator Gemini MCP live probe", async () => ({
     content: [{ type: "text", text: "ok" }],
   }));
 

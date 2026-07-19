@@ -1,5 +1,5 @@
 // OC Path module implements cli registration behavior.
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 
 export function registerOcPathCli(api: OperatorPluginApi): void {
   api.registerCli(

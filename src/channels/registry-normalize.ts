@@ -1,5 +1,5 @@
 // Channel id normalization through the active plugin registry.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ChannelId } from "./plugins/channel-id.types.js";
 import { findRegisteredChannelPluginEntry } from "./registry-lookup.js";
 

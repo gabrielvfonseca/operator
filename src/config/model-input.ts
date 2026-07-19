@@ -1,14 +1,14 @@
 // Normalizes model input config into provider and model references.
-import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
+import { parseModelCatalogRef } from "@gabrielvfonseca/model-catalog-core/model-catalog-refs";
 import {
   normalizeGooglePreviewModelId,
   normalizeTogetherModelId,
-} from "@operator/model-catalog-core/provider-model-id-normalize";
-import { isRecord as isPlainRecord } from "@operator/normalization-core/record-coerce";
+} from "@gabrielvfonseca/model-catalog-core/provider-model-id-normalize";
+import { isRecord as isPlainRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeOptionalString,
   resolvePrimaryStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { modelKey } from "../shared/model-key.js";
 import type { AgentModelConfig, AgentToolModelConfig } from "./types.agents-shared.js";
 

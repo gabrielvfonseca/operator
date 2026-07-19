@@ -10,15 +10,15 @@ import { requireNodeSqlite } from "../../src/infra/node-sqlite.js";
 import { createLocalSqliteSnapshotProvider } from "../../src/snapshot/local-repository.js";
 import type { SnapshotDatabaseIdentity } from "../../src/snapshot/snapshot-provider.js";
 import {
-  assertOpenClawAgentDatabaseForMaintenance,
-  closeOpenClawAgentDatabasesForTest,
-  openOpenClawAgentDatabase,
-} from "../../src/state/openclaw-agent-db.js";
+  assertOperatorAgentDatabaseForMaintenance,
+  closeOperatorAgentDatabasesForTest,
+  openOperatorAgentDatabase,
+} from "../../src/state/operator-agent-db.js";
 import {
-  assertOpenClawStateDatabaseForMaintenance,
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawStateDatabase,
-} from "../../src/state/openclaw-state-db.js";
+  assertOperatorStateDatabaseForMaintenance,
+  closeOperatorStateDatabaseForTest,
+  openOperatorStateDatabase,
+} from "../../src/state/operator-state-db.js";
 import {
   COMMITTED_WAL_SENTINEL,
   PROFILES,
@@ -76,23 +76,23 @@ function fileSize(pathname: string): number {
 
 function resolveTargetDatabase(options: CliOptions, env: NodeJS.ProcessEnv): TargetDatabase {
   if (options.agentId) {
-    const database = openOpenClawAgentDatabase({ agentId: options.agentId, env });
+    const database = openOperatorAgentDatabase({ agentId: options.agentId, env });
     const target = {
       identity: { role: "agent", agentId: database.agentId } as const,
       label: `agent:${database.agentId}`,
       path: database.path,
     };
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     return target;
   }
-  const database = openOpenClawStateDatabase({ env });
+  const database = openOperatorStateDatabase({ env });
   const target = {
     identity: { role: "global" } as const,
     label: "global",
     path: database.path,
   };
-  closeOpenClawStateDatabaseForTest();
+  closeOperatorStateDatabaseForTest();
   return target;
 }
 
@@ -103,9 +103,9 @@ function setupStressTable(databasePath: string): void {
     database.exec("PRAGMA journal_mode = WAL;");
     database.exec("PRAGMA busy_timeout = 30000;");
     database.exec(STRESS_TABLE_SQL);
-    database.exec("DROP TABLE IF EXISTS openclaw_reliability_compaction_bloat;");
-    database.prepare("DELETE FROM openclaw_reliability_entries").run();
-    database.prepare("DELETE FROM openclaw_reliability_sentinel").run();
+    database.exec("DROP TABLE IF EXISTS operator_reliability_compaction_bloat;");
+    database.prepare("DELETE FROM operator_reliability_entries").run();
+    database.prepare("DELETE FROM operator_reliability_sentinel").run();
   } finally {
     database.close();
   }
@@ -142,7 +142,7 @@ function readReliabilityState(database: DatabaseSync, rowsPerBatch: number): Rel
   const partial = database
     .prepare(
       `SELECT batch, COUNT(*) AS row_count
-         FROM openclaw_reliability_entries
+         FROM operator_reliability_entries
         GROUP BY batch
        HAVING COUNT(*) <> ?
         LIMIT 1`,
@@ -160,7 +160,7 @@ function readReliabilityState(database: DatabaseSync, rowsPerBatch: number): Rel
   const entries = database
     .prepare(
       `SELECT batch, ordinal, payload
-         FROM openclaw_reliability_entries
+         FROM operator_reliability_entries
         ORDER BY batch, ordinal`,
     )
     .iterate() as Iterable<{ batch?: unknown; ordinal?: unknown; payload?: unknown }>;
@@ -216,15 +216,15 @@ function verifyRestoredDatabase(params: {
       throw new Error(`foreign_key_check failed with ${foreignKeys.length} row(s)`);
     }
     if (params.identity.role === "global") {
-      assertOpenClawStateDatabaseForMaintenance(database, { pathname: params.path });
+      assertOperatorStateDatabaseForMaintenance(database, { pathname: params.path });
     } else if (params.identity.role === "agent") {
-      assertOpenClawAgentDatabaseForMaintenance(database, {
+      assertOperatorAgentDatabaseForMaintenance(database, {
         agentId: params.identity.agentId,
         pathname: params.path,
       });
     }
     const sentinel = database
-      .prepare("SELECT payload FROM openclaw_reliability_sentinel WHERE id = 1")
+      .prepare("SELECT payload FROM operator_reliability_sentinel WHERE id = 1")
       .get() as { payload?: unknown } | undefined;
     if (sentinel?.payload !== COMMITTED_WAL_SENTINEL) {
       throw new Error("committed WAL sentinel is missing after restore");
@@ -232,7 +232,7 @@ function verifyRestoredDatabase(params: {
     const state = readReliabilityState(database, params.rowsPerBatch);
     if (params.uncommittedBatch !== null) {
       const held = database
-        .prepare("SELECT COUNT(*) AS rows FROM openclaw_reliability_entries WHERE batch = ?")
+        .prepare("SELECT COUNT(*) AS rows FROM operator_reliability_entries WHERE batch = ?")
         .get(params.uncommittedBatch) as { rows?: unknown };
       if (Number(held.rows) !== 0) {
         throw new Error(
@@ -258,15 +258,15 @@ function createCompactionBloat(databasePath: string): number {
     database.exec("PRAGMA wal_autocheckpoint = 0;");
     database.exec("PRAGMA busy_timeout = 30000;");
     database.exec(`
-      DROP TABLE IF EXISTS openclaw_reliability_compaction_bloat;
-      CREATE TABLE openclaw_reliability_compaction_bloat (
+      DROP TABLE IF EXISTS operator_reliability_compaction_bloat;
+      CREATE TABLE operator_reliability_compaction_bloat (
         id INTEGER PRIMARY KEY,
         payload TEXT NOT NULL
       );
       BEGIN IMMEDIATE;
     `);
     const insert = database.prepare(
-      "INSERT INTO openclaw_reliability_compaction_bloat (id, payload) VALUES (?, ?)",
+      "INSERT INTO operator_reliability_compaction_bloat (id, payload) VALUES (?, ?)",
     );
     try {
       for (let id = 1; id <= COMPACTION_BLOAT_ROWS; id += 1) {
@@ -277,7 +277,7 @@ function createCompactionBloat(databasePath: string): number {
       database.exec("ROLLBACK;");
       throw error;
     }
-    database.exec("DELETE FROM openclaw_reliability_compaction_bloat;");
+    database.exec("DELETE FROM operator_reliability_compaction_bloat;");
     return COMPACTION_BLOAT_ROWS * COMPACTION_BLOAT_PAYLOAD_BYTES;
   } finally {
     database.close();
@@ -498,13 +498,13 @@ export async function runReliabilityStress(options: CliOptions): Promise<Reliabi
   const ownsStateDir = options.stateDir === null;
   const cleanupIterationArtifacts = ownsStateDir && options.repository === null;
   const stateDir =
-    options.stateDir ?? fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-sqlite-reliability-"));
+    options.stateDir ?? fs.mkdtempSync(path.join(os.tmpdir(), "operator-sqlite-reliability-"));
   const repository = options.repository ?? path.join(stateDir, "snapshots");
   const runScratch = path.join(stateDir, "sqlite-reliability-runs", randomUUID());
   const syncedRepository = path.join(runScratch, "synced-snapshots");
   const validationRoot = path.join(runScratch, "snapshot-validation");
   const restoreRoot = path.join(runScratch, "restored");
-  const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+  const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   const started = nowMs();
   let writer: WriterHandle | undefined;
   try {
@@ -632,8 +632,8 @@ export async function runReliabilityStress(options: CliOptions): Promise<Reliabi
     if (writer && !writer.stopped) {
       await terminateWriter(writer);
     }
-    closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorAgentDatabasesForTest();
+    closeOperatorStateDatabaseForTest();
     if (ownsStateDir) {
       fs.rmSync(stateDir, { force: true, recursive: true });
     }

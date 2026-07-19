@@ -3,7 +3,7 @@
  * Used by migration/health code to detect older Codex/Operator credential
  * sidecar references without accepting arbitrary ref-like objects.
  */
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 /** Legacy OAuth ref source persisted by older credential stores. */
 const LEGACY_OAUTH_REF_SOURCE = "operator-credentials";

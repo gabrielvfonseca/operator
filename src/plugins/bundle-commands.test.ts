@@ -46,7 +46,7 @@ async function createTempDir(prefix: string): Promise<string> {
 }
 
 function resolveBundlePluginRoot(homeDir: string, pluginId: string) {
-  return path.join(homeDir, ".openclaw", "extensions", pluginId);
+  return path.join(homeDir, ".operator", "extensions", pluginId);
 }
 
 async function writeClaudeBundleCommandFixture(params: {
@@ -95,8 +95,8 @@ function expectEnabledClaudeBundleCommands(
 
 describe("loadEnabledClaudeBundleCommands", () => {
   it("loads enabled Claude bundle markdown commands and skips disabled-model-invocation entries", async () => {
-    const homeDir = await createTempDir("openclaw-bundle-commands-home-");
-    const workspaceDir = await createTempDir("openclaw-bundle-commands-workspace-");
+    const homeDir = await createTempDir("operator-bundle-commands-home-");
+    const workspaceDir = await createTempDir("operator-bundle-commands-workspace-");
     await withEnvAsync(
       {
         HOME: homeDir,

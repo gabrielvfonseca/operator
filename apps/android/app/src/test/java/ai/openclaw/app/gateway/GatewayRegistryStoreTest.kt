@@ -1,6 +1,6 @@
-package ai.openclaw.app.gateway
+package ai.operator.app.gateway
 
-import ai.openclaw.app.SecurePrefs
+import ai.operator.app.SecurePrefs
 import android.content.Context
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -60,7 +60,7 @@ class GatewayRegistryStoreTest {
   private fun freshPrefs(): Pair<SecurePrefs, android.content.SharedPreferences> {
     val context = RuntimeEnvironment.getApplication()
     context
-      .getSharedPreferences("openclaw.node", Context.MODE_PRIVATE)
+      .getSharedPreferences("operator.node", Context.MODE_PRIVATE)
       .edit()
       .clear()
       .commit()

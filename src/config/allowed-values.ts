@@ -1,6 +1,6 @@
 // Defines allowed-value metadata for config validation and docs.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 const MAX_ALLOWED_VALUES_HINT = 12;
 const MAX_ALLOWED_VALUE_CHARS = 160;

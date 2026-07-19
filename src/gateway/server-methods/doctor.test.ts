@@ -4,7 +4,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 
@@ -780,7 +780,7 @@ describe("doctor.memory.status", () => {
         enabled: true,
         payload: {
           kind: "systemEvent",
-          text: "__openclaw_memory_core_short_term_promotion_dream__",
+          text: "__operator_memory_core_short_term_promotion_dream__",
         },
         state: { nextRunAtMs: now + 60_000 },
       },
@@ -1041,10 +1041,10 @@ describe("doctor.memory.status", () => {
     getRuntimeConfig.mockReturnValue({
       plugins: {
         slots: {
-          memory: "memos-local-openclaw-plugin",
+          memory: "memos-local-operator-plugin",
         },
         entries: {
-          "memos-local-openclaw-plugin": {
+          "memos-local-operator-plugin": {
             config: {
               dreaming: {
                 enabled: true,
@@ -1193,7 +1193,7 @@ describe("doctor.memory dream actions", () => {
     resolveAgentWorkspaceDir.mockReturnValue("/tmp/openclaw");
     repairDreamingArtifacts.mockResolvedValue({
       changed: true,
-      archiveDir: "/tmp/openclaw/.openclaw-repair/dreaming/2026-04-11T22-00-00-000Z",
+      archiveDir: "/tmp/openclaw/.operator-repair/dreaming/2026-04-11T22-00-00-000Z",
       archivedDreamsDiary: false,
       archivedSessionCorpus: true,
       archivedSessionIngestion: true,
@@ -1213,7 +1213,7 @@ describe("doctor.memory dream actions", () => {
         agentId: "main",
         action: "repairDreamingArtifacts",
         changed: true,
-        archiveDir: "/tmp/openclaw/.openclaw-repair/dreaming/2026-04-11T22-00-00-000Z",
+        archiveDir: "/tmp/openclaw/.operator-repair/dreaming/2026-04-11T22-00-00-000Z",
         archivedDreamsDiary: false,
         archivedSessionCorpus: true,
         archivedSessionIngestion: true,

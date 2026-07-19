@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the OpenClaw package artifact used by Docker E2E.
+// Builds the Operator package artifact used by Docker E2E.
 // The script owns the build/inventory/pack sequence so local scheduler, shell
 // helpers, and GitHub Actions all prepare the exact same npm tarball.
 import { spawn } from "node:child_process";
@@ -19,12 +19,12 @@ const PROCESS_GROUP_EXIT_POLL_MS = 25;
 const POST_FORCE_KILL_WAIT_MS = 1_000;
 const DEFAULT_CAPTURED_STDOUT_MAX_BYTES = 1024 * 1024;
 const MAX_TIMER_TIMEOUT_MS = 2_147_000_000;
-const AI_RUNTIME_PACKAGE = "@operator/ai";
-const AI_RUNTIME_BACKUP_DIR = ".openclaw-ai-package-backup";
+const AI_RUNTIME_PACKAGE = "@gabrielvfonseca/ai";
+const AI_RUNTIME_BACKUP_DIR = ".operator-ai-package-backup";
 const ACTIVE_CHILD_KILLERS = new Set();
 const PACKAGE_BUILD_PLUGIN_SELECTION_ENV_NAMES = [
-  "OPENCLAW_EXTENSIONS",
-  "OPENCLAW_DOCKER_BUILD_EXTENSIONS",
+  "OPERATOR_EXTENSIONS",
+  "OPERATOR_DOCKER_BUILD_EXTENSIONS",
   DOCKER_SELECTED_PLUGIN_BUILD_IDS_ENV,
 ];
 const SIGNAL_EXIT_CODES = {
@@ -112,11 +112,11 @@ function validateOutputName(value) {
   }
 }
 
-function resolvePackedOpenClawFileName(value) {
+function resolvePackedOperatorFileName(value) {
   const filename = value.trim();
   if (
     !filename.endsWith(".tgz") ||
-    (!filename.startsWith("openclaw-") &&
+    (!filename.startsWith("operator-") &&
       !filename.includes(":") &&
       !filename.includes("/") &&
       !filename.includes("\\"))
@@ -124,12 +124,12 @@ function resolvePackedOpenClawFileName(value) {
     return "";
   }
   if (
-    !/^openclaw-[A-Za-z0-9._-]+\.tgz$/u.test(filename) ||
+    !/^operator-[A-Za-z0-9._-]+\.tgz$/u.test(filename) ||
     filename.includes("\0") ||
     filename !== path.basename(filename) ||
     filename !== path.win32.basename(filename)
   ) {
-    throw new Error(`npm pack reported unsafe OpenClaw tarball filename: ${filename}`);
+    throw new Error(`npm pack reported unsafe Operator tarball filename: ${filename}`);
   }
   return filename;
 }
@@ -365,7 +365,7 @@ function run(command, args, cwd, options = {}) {
 
 const PACKAGE_ARTIFACT_BUILD_STEPS = [
   {
-    label: "Building OpenClaw package artifacts",
+    label: "Building Operator package artifacts",
     command: "node",
     args: ["scripts/build-all.mjs", "ciArtifacts"],
   },
@@ -375,8 +375,8 @@ export async function buildPackageArtifacts(sourceDir, options = {}) {
   const runImpl = options.runImpl ?? run;
   const buildEnv = {
     ...process.env,
-    OPENCLAW_BUILD_ALL_NO_PNPM: "1",
-    OPENCLAW_RUN_NODE_SKIP_DTS_BUILD: "0",
+    OPERATOR_BUILD_ALL_NO_PNPM: "1",
+    OPERATOR_RUN_NODE_SKIP_DTS_BUILD: "0",
   };
   for (const envName of PACKAGE_BUILD_PLUGIN_SELECTION_ENV_NAMES) {
     delete buildEnv[envName];
@@ -388,7 +388,7 @@ export async function buildPackageArtifacts(sourceDir, options = {}) {
         ...buildEnv,
       },
       timeoutMs: resolveTimeoutMs(
-        "OPENCLAW_DOCKER_PACKAGE_BUILD_TIMEOUT_MS",
+        "OPERATOR_DOCKER_PACKAGE_BUILD_TIMEOUT_MS",
         DEFAULT_PACKAGE_BUILD_TIMEOUT_MS,
       ),
     });
@@ -401,7 +401,7 @@ async function runCapture(command, args, cwd, options = {}) {
   return await run(command, args, cwd, { ...options, captureStdout: true });
 }
 
-async function newestOpenClawTarball(outputDir, packOutput) {
+async function newestOperatorTarball(outputDir, packOutput) {
   let fromOutput = "";
   try {
     const parsed = JSON.parse(packOutput);
@@ -410,7 +410,7 @@ async function newestOpenClawTarball(outputDir, packOutput) {
         if (typeof entry?.filename !== "string") {
           continue;
         }
-        const filename = resolvePackedOpenClawFileName(entry.filename);
+        const filename = resolvePackedOperatorFileName(entry.filename);
         if (filename) {
           fromOutput = filename;
         }
@@ -418,7 +418,7 @@ async function newestOpenClawTarball(outputDir, packOutput) {
     }
   } catch {}
   for (const line of packOutput.split(/\r?\n/u)) {
-    const filename = resolvePackedOpenClawFileName(line);
+    const filename = resolvePackedOperatorFileName(line);
     if (filename) {
       fromOutput = filename;
     }
@@ -431,7 +431,7 @@ async function newestOpenClawTarball(outputDir, packOutput) {
   const packed = entries
     .filter((entry) => {
       try {
-        return resolvePackedOpenClawFileName(entry) === entry;
+        return resolvePackedOperatorFileName(entry) === entry;
       } catch {
         return false;
       }
@@ -439,7 +439,7 @@ async function newestOpenClawTarball(outputDir, packOutput) {
     .toSorted()
     .at(-1);
   if (!packed) {
-    throw new Error(`missing packed OpenClaw tarball in ${outputDir}`);
+    throw new Error(`missing packed Operator tarball in ${outputDir}`);
   }
   return path.join(outputDir, packed);
 }
@@ -468,7 +468,7 @@ async function writePackJson(packOutput, tarball, packJsonPath, sourceDir) {
   await fs.writeFile(target, `${JSON.stringify(parsed, null, 2)}\n`);
 }
 
-async function cleanPackedOpenClawTarballs(outputDir) {
+async function cleanPackedOperatorTarballs(outputDir) {
   let entries;
   try {
     entries = await fs.readdir(outputDir);
@@ -483,7 +483,7 @@ async function cleanPackedOpenClawTarballs(outputDir) {
     entries
       .filter((entry) => {
         try {
-          return resolvePackedOpenClawFileName(entry) === entry;
+          return resolvePackedOperatorFileName(entry) === entry;
         } catch {
           return false;
         }
@@ -493,7 +493,7 @@ async function cleanPackedOpenClawTarballs(outputDir) {
 }
 
 function isPackedAiRuntimeTarball(filename) {
-  return /^openclaw-ai-[A-Za-z0-9._-]+\.tgz$/u.test(filename);
+  return /^operator-ai-[A-Za-z0-9._-]+\.tgz$/u.test(filename);
 }
 
 export async function prepareBundledAiRuntimePackage(
@@ -518,7 +518,7 @@ export async function prepareBundledAiRuntimePackage(
       // Keep extraction on the system tar contract so only the candidate checkout needs install.
       run("tar", ["-xzf", tarballPath, "-C", destination, "--strip-components=1"], destination, {
         timeoutMs: resolveTimeoutMs(
-          "OPENCLAW_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
+          "OPERATOR_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
           DEFAULT_PACKAGE_PACK_TIMEOUT_MS,
         ),
       }));
@@ -544,10 +544,10 @@ export async function prepareBundledAiRuntimePackage(
     return async () => {};
   }
   if (!hasAiRuntimeWorkspace) {
-    throw new Error("@operator/ai dependency requires the packages/ai workspace");
+    throw new Error("@gabrielvfonseca/ai dependency requires the packages/ai workspace");
   }
   if (typeof aiRuntimeDependency !== "string") {
-    throw new Error("root package.json must declare @operator/ai as a dependency");
+    throw new Error("root package.json must declare @gabrielvfonseca/ai as a dependency");
   }
 
   try {
@@ -601,7 +601,7 @@ export async function prepareBundledAiRuntimePackage(
       {
         deferForwardedSignalExit: true,
         timeoutMs: resolveTimeoutMs(
-          "OPENCLAW_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
+          "OPERATOR_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
           DEFAULT_PACKAGE_PACK_TIMEOUT_MS,
         ),
       },
@@ -611,7 +611,7 @@ export async function prepareBundledAiRuntimePackage(
       .map((filename) => path.join(outputDir, filename));
     if (packedAiTarballs.length !== 1) {
       throw new Error(
-        `expected one packed @operator/ai tarball in ${outputDir}, found ${packedAiTarballs.length}`,
+        `expected one packed @gabrielvfonseca/ai tarball in ${outputDir}, found ${packedAiTarballs.length}`,
       );
     }
 
@@ -631,12 +631,12 @@ export async function prepareBundledAiRuntimePackage(
     const stagedPackageJsonPath = path.join(aiRuntimePath, "package.json");
     const stagedPackageJson = JSON.parse(await fs.readFile(stagedPackageJsonPath, "utf8"));
     if (typeof stagedPackageJson.version !== "string" || !stagedPackageJson.version) {
-      throw new Error("packed @operator/ai package must declare a version");
+      throw new Error("packed @gabrielvfonseca/ai package must declare a version");
     }
     for (const [name, version] of Object.entries(stagedPackageJson.dependencies ?? {})) {
       if (packageJson.dependencies[name] !== version) {
         throw new Error(
-          `root package.json must declare ${name}@${version} to bundle @operator/ai without duplicate dependencies`,
+          `root package.json must declare ${name}@${version} to bundle @gabrielvfonseca/ai without duplicate dependencies`,
         );
       }
     }
@@ -660,7 +660,7 @@ export async function prepareBundledAiRuntimePackage(
   }
 }
 
-export async function packOpenClawPackageForDocker(sourceDir, outputDir, options = {}) {
+export async function packOperatorPackageForDocker(sourceDir, outputDir, options = {}) {
   const runCaptureImpl = options.runCaptureImpl ?? runCapture;
   const prepareChangelog =
     options.prepareChangelog ??
@@ -674,12 +674,12 @@ export async function packOpenClawPackageForDocker(sourceDir, outputDir, options
   if (options.packJsonPath && options.pnpmPack) {
     throw new Error("packJsonPath cannot be combined with pnpmPack");
   }
-  console.error("==> Packing OpenClaw package");
+  console.error("==> Packing Operator package");
   await prepareChangelog(sourceDir);
   let packOutput;
   let cleanupBundledAiRuntime = async () => {};
   try {
-    await cleanPackedOpenClawTarballs(outputDir);
+    await cleanPackedOperatorTarballs(outputDir);
     cleanupBundledAiRuntime = await prepareBundledAiRuntime(sourceDir, outputDir, runCaptureImpl);
     const packArgs =
       packTool === "pnpm"
@@ -695,7 +695,7 @@ export async function packOpenClawPackageForDocker(sourceDir, outputDir, options
     packOutput = await runCaptureImpl(packTool, packArgs, sourceDir, {
       deferForwardedSignalExit: true,
       timeoutMs: resolveTimeoutMs(
-        "OPENCLAW_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
+        "OPERATOR_DOCKER_PACKAGE_PACK_TIMEOUT_MS",
         DEFAULT_PACKAGE_PACK_TIMEOUT_MS,
       ),
     });
@@ -708,7 +708,7 @@ export async function packOpenClawPackageForDocker(sourceDir, outputDir, options
   }
   // pnpm reports an absolute destination path. The directory was emptied before packing,
   // so scan that controlled destination instead of accepting a path from command output.
-  let tarball = await newestOpenClawTarball(outputDir, options.pnpmPack ? "" : packOutput);
+  let tarball = await newestOperatorTarball(outputDir, options.pnpmPack ? "" : packOutput);
   if (options.outputName) {
     const target = path.join(outputDir, options.outputName);
     if (target !== tarball) {
@@ -730,7 +730,7 @@ export async function writePackageInventoryForDocker(sourceDir, runImpl = run) {
     sourceDir,
     {
       timeoutMs: resolveTimeoutMs(
-        "OPENCLAW_DOCKER_PACKAGE_INVENTORY_TIMEOUT_MS",
+        "OPERATOR_DOCKER_PACKAGE_INVENTORY_TIMEOUT_MS",
         DEFAULT_PACKAGE_INVENTORY_TIMEOUT_MS,
       ),
     },
@@ -750,35 +750,35 @@ async function main() {
     await buildPackageArtifacts(sourceDir);
   }
 
-  console.error("==> Writing OpenClaw package inventory");
+  console.error("==> Writing Operator package inventory");
   await writePackageInventoryForDocker(sourceDir);
 
-  const tarball = await packOpenClawPackageForDocker(sourceDir, outputDir, {
+  const tarball = await packOperatorPackageForDocker(sourceDir, outputDir, {
     allowUnreleasedChangelog: options.allowUnreleasedChangelog,
     outputName: options.outputName,
     packJsonPath: options.packJson,
     pnpmPack: options.pnpmPack,
   });
 
-  console.error("==> Checking OpenClaw package tarball");
+  console.error("==> Checking Operator package tarball");
   const checkStartedAt = Date.now();
   await run(
     "node",
     [
-      path.join(ROOT_DIR, "scripts/check-openclaw-package-tarball.mjs"),
+      path.join(ROOT_DIR, "scripts/check-operator-package-tarball.mjs"),
       "--require-bundled-workspace-deps",
       tarball,
     ],
     sourceDir,
     {
       timeoutMs: resolveTimeoutMs(
-        "OPENCLAW_DOCKER_PACKAGE_TARBALL_CHECK_TIMEOUT_MS",
+        "OPERATOR_DOCKER_PACKAGE_TARBALL_CHECK_TIMEOUT_MS",
         DEFAULT_PACKAGE_TARBALL_CHECK_TIMEOUT_MS,
       ),
     },
   );
   console.error(
-    `==> OpenClaw package tarball check finished in ${Math.round((Date.now() - checkStartedAt) / 1000)}s`,
+    `==> Operator package tarball check finished in ${Math.round((Date.now() - checkStartedAt) / 1000)}s`,
   );
 
   process.stdout.write(`${tarball}\n`);

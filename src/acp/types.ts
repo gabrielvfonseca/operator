@@ -1,5 +1,5 @@
 /** ACP protocol helpers and Operator agent identity metadata. */
-export { normalizeAcpProvenanceMode } from "@operator/acp-core/types";
+export { normalizeAcpProvenanceMode } from "@gabrielvfonseca/acp-core/types";
 import { VERSION } from "../version.js";
 
 /** ACP agent identity advertised during protocol initialization. */

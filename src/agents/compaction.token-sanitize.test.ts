@@ -1,5 +1,5 @@
 // Verifies compaction token planning strips private/non-model fields first.
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it, vi } from "vitest";
 
 const agentSessionMocks = vi.hoisted(() => ({
@@ -71,7 +71,7 @@ describe("compaction token accounting sanitization", () => {
       } as AgentMessage,
       {
         role: "custom",
-        customType: "openclaw.runtime-context",
+        customType: "operator.runtime-context",
         content: "internal",
         timestamp: 2,
       } as AgentMessage,

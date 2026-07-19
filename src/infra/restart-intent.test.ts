@@ -23,7 +23,7 @@ const tempDirs: string[] = [];
 type GatewayRestartIntentDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_intent">;
 
 function createIntentEnv(): NodeJS.ProcessEnv {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-restart-intent-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-restart-intent-"));
   tempDirs.push(dir);
   return {
     ...process.env,

@@ -1,5 +1,5 @@
 // Slack plugin module implements dispatch behavior.
-import { resolveHumanDelayConfig } from "openclaw/plugin-sdk/agent-runtime";
+import { resolveHumanDelayConfig } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
 import {
   createStatusReactionController,
   DEFAULT_TIMING,
@@ -7,22 +7,22 @@ import {
   logTypingFailure,
   removeAckReactionAfterReply,
   type StatusReactionAdapter,
-} from "openclaw/plugin-sdk/channel-feedback";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
 import {
   dispatchChannelInboundReply,
   type InboundReplyRecordOptions,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   type ChannelBotLoopProtectionFacts,
   hasVisibleInboundReplyDispatch,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 import {
   createChannelMessageReplyPipeline,
   defineFinalizableLivePreviewAdapter,
   deliverWithFinalizableLivePreviewAdapter,
   resolveChannelMessageSourceReplyDeliveryMode,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { resolveAgentOutboundIdentity } from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { resolveAgentOutboundIdentity } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   type AgentPlanStep,
   buildChannelProgressDraftLine,
@@ -41,20 +41,28 @@ import {
   resolveChannelStreamingProgressCommentary,
   resolveChannelStreamingSuppressDefaultToolProgressMessages,
   type ChannelProgressDraftLine,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { mergePairLoopGuardConfig } from "openclaw/plugin-sdk/pair-loop-guard-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { mergePairLoopGuardConfig } from "@gabrielvfonseca/operator/plugin-sdk/pair-loop-guard-runtime";
 import {
   buildTtsSupplementMediaPayload,
   getReplyPayloadTtsSupplement,
   resolveSendableOutboundReplyParts,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { ReplyDispatchKind, ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import { resolveInboundLastRouteSessionKey } from "openclaw/plugin-sdk/routing";
-import { danger, logVerbose, shouldLogVerbose, sleep } from "openclaw/plugin-sdk/runtime-env";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { stripReasoningTagsFromText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import type {
+  ReplyDispatchKind,
+  ReplyPayload,
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { resolveInboundLastRouteSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import {
+  danger,
+  logVerbose,
+  shouldLogVerbose,
+  sleep,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { stripReasoningTagsFromText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { reactSlackMessage, removeSlackReaction } from "../../actions.js";
 import { createSlackDraftStream } from "../../draft-stream.js";
 import { formatSlackError } from "../../errors.js";

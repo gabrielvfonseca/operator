@@ -37,7 +37,7 @@ vi.mock("../plugins/official-external-plugin-catalog.js", () => ({
 }));
 
 async function createTimelinePath(): Promise<string> {
-  const dir = await mkdtemp(path.join(tmpdir(), "openclaw-marketplace-refresh-"));
+  const dir = await mkdtemp(path.join(tmpdir(), "operator-marketplace-refresh-"));
   return path.join(dir, "timeline.jsonl");
 }
 
@@ -230,7 +230,7 @@ describe("plugins marketplace refresh", () => {
     mocks.getRuntimeConfig.mockReturnValue({});
     mocks.loadConfiguredHostedOfficialExternalPluginCatalogEntries.mockResolvedValue({
       source: "bundled-fallback",
-      entries: [{ name: "@operator/acpx" }],
+      entries: [{ name: "@gabrielvfonseca/acpx" }],
       error: "hosted catalog feed returned HTTP 503",
       metadata: {
         url: "https://clawhub.ai/v1/feeds/plugins",
@@ -251,7 +251,7 @@ describe("plugins marketplace refresh", () => {
     mocks.getRuntimeConfig.mockReturnValue({});
     mocks.loadConfiguredHostedOfficialExternalPluginCatalogEntries.mockResolvedValue({
       source: "bundled-fallback",
-      entries: [{ name: "@operator/acpx" }],
+      entries: [{ name: "@gabrielvfonseca/acpx" }],
       error:
         "hosted catalog feed fetch failed for https://clawhub.ai/v1/feeds/plugins?token=secret#frag",
       metadata: {
@@ -290,7 +290,7 @@ describe("plugins marketplace refresh", () => {
     mocks.getRuntimeConfig.mockReturnValue({});
     mocks.loadConfiguredHostedOfficialExternalPluginCatalogEntries.mockResolvedValue({
       source: "bundled-fallback",
-      entries: [{ name: "@operator/acpx" }],
+      entries: [{ name: "@gabrielvfonseca/acpx" }],
       error: "hosted catalog feed checksum mismatch: expected sha256:expected",
       metadata: {
         url: "https://clawhub.ai/v1/feeds/plugins",

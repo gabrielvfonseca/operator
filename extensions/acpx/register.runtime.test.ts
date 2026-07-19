@@ -63,8 +63,8 @@ function restoreEnv(): void {
 
 function createServiceContext() {
   return {
-    workspaceDir: "/tmp/openclaw-acpx-register-test",
-    stateDir: "/tmp/openclaw-acpx-register-test/state",
+    workspaceDir: "/tmp/operator-acpx-register-test",
+    stateDir: "/tmp/operator-acpx-register-test/state",
     config: {},
     logger: {
       info: vi.fn(),

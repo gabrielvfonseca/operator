@@ -1,8 +1,8 @@
 // Discord plugin module implements message run queue behavior.
-import { createChannelRunQueue } from "openclaw/plugin-sdk/channel-outbound";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import type { ClaimableDedupe } from "openclaw/plugin-sdk/persistent-dedupe";
-import { danger } from "openclaw/plugin-sdk/runtime-env";
+import { createChannelRunQueue } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import type { ClaimableDedupe } from "@gabrielvfonseca/operator/plugin-sdk/persistent-dedupe";
+import { danger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   commitDiscordInboundReplay,
   createDiscordInboundReplayGuard,

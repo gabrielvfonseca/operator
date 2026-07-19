@@ -1,5 +1,3 @@
-// Copilot plugin module implements harness behavior.
-import type { CopilotClient } from "@github/copilot-sdk";
 import {
   buildAgentHookContextChannelFields,
   compactWithSafetyTimeout,
@@ -13,8 +11,10 @@ import {
   type AgentHarnessCompactParams,
   type AgentHarnessCompactResult,
   type AgentHarnessResetParams,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
+// Copilot plugin module implements harness behavior.
+import type { CopilotClient } from "@github/copilot-sdk";
 import type { CopilotSessionConfig } from "./src/attempt.js";
 import { createCopilotByokAuth, resolveCopilotAuth, tokenFingerprint } from "./src/auth-bridge.js";
 import { createCopilotByokProxy } from "./src/byok-proxy.js";

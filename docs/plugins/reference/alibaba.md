@@ -11,8 +11,8 @@ Adds video generation provider support.
 
 ## Distribution
 
-- Package: `@operator/alibaba-provider`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/alibaba-provider`
+- Install route: included in Operator
 
 ## Surface
 

@@ -59,7 +59,7 @@ async function prepareMediaModelAuthSnapshot(params: {
       },
     }),
     env: {},
-    agentDirs: ["/tmp/openclaw-agent-main"],
+    agentDirs: ["/tmp/operator-agent-main"],
     loadAuthStore: () => ({ version: 1, profiles: {} }),
   });
 }
@@ -87,7 +87,7 @@ describe("secrets runtime provider and media surfaces", () => {
       env: {
         OPENAI_REALTIME_API_KEY: "sk-realtime-test",
       },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
 
@@ -99,7 +99,7 @@ describe("secrets runtime provider and media surfaces", () => {
     if (process.platform === "win32") {
       return;
     }
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-secrets-file-provider-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-secrets-file-provider-"));
     const secretsPath = path.join(root, "secrets.json");
     try {
       await fs.writeFile(
@@ -145,7 +145,7 @@ describe("secrets runtime provider and media surfaces", () => {
 
       const snapshot = await prepareSecretsRuntimeSnapshot({
         config,
-        agentDirs: ["/tmp/openclaw-agent-main"],
+        agentDirs: ["/tmp/operator-agent-main"],
         loadAuthStore: () => ({ version: 1, profiles: {} }),
       });
 
@@ -159,7 +159,7 @@ describe("secrets runtime provider and media surfaces", () => {
     if (process.platform === "win32") {
       return;
     }
-    const root = autoCleanupTempDirs.make("openclaw-provider-auth-refresh-");
+    const root = autoCleanupTempDirs.make("operator-provider-auth-refresh-");
     const secretsPath = path.join(root, "secrets.json");
     const writeSecrets = async (gatewayToken: string | undefined, modelKey: string) => {
       await fs.writeFile(
@@ -196,7 +196,7 @@ describe("secrets runtime provider and media surfaces", () => {
       await writeSecrets("gateway-old", "model-old");
       const initial = await prepareSecretsRuntimeSnapshot({
         config,
-        agentDirs: ["/tmp/openclaw-agent-main"],
+        agentDirs: ["/tmp/operator-agent-main"],
         loadAuthStore: () => ({ version: 1, profiles: {} }),
       });
       const {
@@ -255,7 +255,7 @@ describe("secrets runtime provider and media surfaces", () => {
     const initial = await prepareSecretsRuntimeSnapshot({
       config,
       env: { OPENAI_API_KEY: "sk-env-current" },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
     const {
@@ -297,7 +297,7 @@ describe("secrets runtime provider and media surfaces", () => {
     if (process.platform === "win32") {
       return;
     }
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-secrets-file-provider-bad-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "operator-secrets-file-provider-bad-"));
     const secretsPath = path.join(root, "secrets.json");
     try {
       await fs.writeFile(secretsPath, JSON.stringify(["not-an-object"]), "utf8");
@@ -319,7 +319,7 @@ describe("secrets runtime provider and media surfaces", () => {
               ...createOpenAiFileModelsConfig(),
             },
           }),
-          agentDirs: ["/tmp/openclaw-agent-main"],
+          agentDirs: ["/tmp/operator-agent-main"],
           loadAuthStore: () => ({ version: 1, profiles: {} }),
         }),
       ).rejects.toThrow("payload is not a JSON object");
@@ -356,7 +356,7 @@ describe("secrets runtime provider and media surfaces", () => {
       env: {
         MEDIA_SHARED_AUDIO_TOKEN: "shared-audio-token",
       },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
 
@@ -425,7 +425,7 @@ describe("secrets runtime provider and media surfaces", () => {
       env: {
         MEDIA_INFERRED_AUDIO_TOKEN: "inferred-audio-token",
       },
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
 
@@ -495,7 +495,7 @@ describe("secrets runtime provider and media surfaces", () => {
         },
       }),
       env: {},
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
 
@@ -534,7 +534,7 @@ describe("secrets runtime provider and media surfaces", () => {
         },
       }),
       env: {},
-      agentDirs: ["/tmp/openclaw-agent-main"],
+      agentDirs: ["/tmp/operator-agent-main"],
       loadAuthStore: () => ({ version: 1, profiles: {} }),
     });
 

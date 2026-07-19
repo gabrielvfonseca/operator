@@ -2,13 +2,13 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   embeddedAgentLog,
   isToolWrappedWithBeforeToolCallHook,
   type EmbeddedRunAttemptParams,
   wrapToolWithBeforeToolCallHook,
-} from "openclaw/plugin-sdk/agent-harness-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { dynamicToolBuildState } from "./dynamic-tool-build-state.js";
 import {
@@ -149,7 +149,7 @@ describe("Codex app-server dynamic tool build", () => {
   });
 
   beforeEach(async () => {
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-tools-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-tools-"));
   });
 
   afterEach(async () => {
@@ -178,9 +178,9 @@ describe("Codex app-server dynamic tool build", () => {
         } as never,
         nativeToolSurfaceEnabled: true,
         localWorkspaceRoot: "/Users/kevinlin/code/openclaw",
-        remoteWorkspaceRoot: "/home/oai/openclaw-workspaces",
+        remoteWorkspaceRoot: "/home/oai/operator-workspaces",
       }),
-    ).toBe("/home/oai/openclaw-workspaces/sandbox");
+    ).toBe("/home/oai/operator-workspaces/sandbox");
   });
 
   it("filters Codex-native dynamic tools from app-server tool exposure", () => {
@@ -271,25 +271,29 @@ describe("Codex app-server dynamic tool build", () => {
     const params = createParams(path.join(tempDir, "session.jsonl"), workspaceDir);
     params.disableTools = false;
     params.runtimePlan = createCodexRuntimePlanFixture();
-    params.toolsAllow = ["openclaw"];
+    params.toolsAllow = ["@gabrielvfonseca/operator"];
     setOperatorCodingToolsFactoryForTests(() => [
-      { ...createRuntimeDynamicTool("openclaw"), catalogMode: "direct-only" },
+      { ...createRuntimeDynamicTool("@gabrielvfonseca/operator"), catalogMode: "direct-only" },
     ]);
 
     const tools = await buildDynamicToolsForTest(params, workspaceDir, {
-      isHostScopedToolActive: (toolName) => toolName === "openclaw",
-      pluginConfig: { codexDynamicToolsExclude: ["openclaw"] },
+      isHostScopedToolActive: (toolName) => toolName === "@gabrielvfonseca/operator",
+      pluginConfig: { codexDynamicToolsExclude: ["@gabrielvfonseca/operator"] },
     });
 
-    expect(tools.map((tool) => tool.name)).toEqual(["openclaw"]);
+    expect(tools.map((tool) => tool.name)).toEqual(["@gabrielvfonseca/operator"]);
   });
 
   it.each([
-    { label: "host scope is inactive", hostActive: false, toolsAllow: ["openclaw"] },
+    {
+      label: "host scope is inactive",
+      hostActive: false,
+      toolsAllow: ["@gabrielvfonseca/operator"],
+    },
     {
       label: "the public allowlist is not exact",
       hostActive: true,
-      toolsAllow: ["openclaw", "read"],
+      toolsAllow: ["@gabrielvfonseca/operator", "read"],
     },
   ])("does not bypass Codex excludes when $label", async ({ hostActive, toolsAllow }) => {
     const workspaceDir = path.join(tempDir, "workspace");
@@ -298,12 +302,12 @@ describe("Codex app-server dynamic tool build", () => {
     params.runtimePlan = createCodexRuntimePlanFixture();
     params.toolsAllow = toolsAllow;
     setOperatorCodingToolsFactoryForTests(() => [
-      { ...createRuntimeDynamicTool("openclaw"), catalogMode: "direct-only" },
+      { ...createRuntimeDynamicTool("@gabrielvfonseca/operator"), catalogMode: "direct-only" },
     ]);
 
     const tools = await buildDynamicToolsForTest(params, workspaceDir, {
       isHostScopedToolActive: () => hostActive,
-      pluginConfig: { codexDynamicToolsExclude: ["openclaw"] },
+      pluginConfig: { codexDynamicToolsExclude: ["@gabrielvfonseca/operator"] },
     });
 
     expect(tools).toEqual([]);
@@ -1066,7 +1070,7 @@ describe("Codex app-server dynamic tool build", () => {
       sandbox: {
         enabled: true,
         backendId: "docker",
-        docker: { binds: ["/tmp/openclaw-data:/data:rw"] },
+        docker: { binds: ["/tmp/operator-data:/data:rw"] },
       } as never,
       nativeToolSurfaceEnabled: false,
     });
@@ -1534,7 +1538,7 @@ describe("Codex app-server dynamic tool build", () => {
       shouldEnableCodexAppServerNativeToolSurface(params, {
         enabled: true,
         backendId: "docker",
-        docker: { binds: ["/tmp/openclaw-data:/data:rw"] },
+        docker: { binds: ["/tmp/operator-data:/data:rw"] },
       } as never),
     ).toBe(false);
 
@@ -1542,7 +1546,7 @@ describe("Codex app-server dynamic tool build", () => {
       shouldEnableCodexAppServerNativeToolSurface(params, {
         enabled: true,
         backendId: "docker",
-        docker: { binds: ["/tmp/openclaw-data:/tmp/openclaw-data:rw"] },
+        docker: { binds: ["/tmp/operator-data:/tmp/operator-data:rw"] },
       } as never),
     ).toBe(false);
 
@@ -1552,8 +1556,8 @@ describe("Codex app-server dynamic tool build", () => {
         backendId: "docker",
         docker: {
           binds: [
-            "/tmp/openclaw-data:/tmp/openclaw-data:rw",
-            "/tmp/openclaw-data/secrets:/tmp/openclaw-data/secrets:ro",
+            "/tmp/operator-data:/tmp/operator-data:rw",
+            "/tmp/operator-data/secrets:/tmp/operator-data/secrets:ro",
           ],
         },
       } as never),

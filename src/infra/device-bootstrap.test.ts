@@ -22,7 +22,7 @@ import {
 } from "./device-pairing-store.js";
 
 const tempDirs = createTrackedTempDirs();
-const createTempDir = () => tempDirs.make("openclaw-device-bootstrap-test-");
+const createTempDir = () => tempDirs.make("operator-device-bootstrap-test-");
 
 async function verifyBootstrapToken(
   baseDir: string,

@@ -1,4 +1,4 @@
-package ai.openclaw.app.chat
+package ai.operator.app.chat
 
 import android.database.sqlite.SQLiteDatabase
 import kotlinx.coroutines.test.runTest

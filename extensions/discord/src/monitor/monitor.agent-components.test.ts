@@ -1,9 +1,15 @@
+import { expectPairingReplyText } from "@gabrielvfonseca/operator/plugin-sdk/channel-test-helpers";
+import type {
+  DiscordAccountConfig,
+  OperatorConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { buildAgentSessionKey } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import {
+  peekSystemEvents,
+  resetSystemEventsForTest,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 // Discord tests cover monitor.agent components plugin behavior.
 import { ChannelType } from "discord-api-types/v10";
-import { expectPairingReplyText } from "openclaw/plugin-sdk/channel-test-helpers";
-import type { DiscordAccountConfig, OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { buildAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { peekSystemEvents, resetSystemEventsForTest } from "openclaw/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
   ButtonInteraction,

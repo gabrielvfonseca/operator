@@ -1,7 +1,7 @@
 // Coverage for OpenRouter Anthropic cache_control payload rewriting.
 
-import { expectDefined } from "@operator/normalization-core";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it } from "vitest";
 import { createOpenRouterSystemCacheWrapper } from "../../llm/providers/stream-wrappers/proxy.js";
 

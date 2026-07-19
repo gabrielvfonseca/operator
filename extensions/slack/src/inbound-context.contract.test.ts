@@ -1,7 +1,7 @@
 // Slack tests cover inbound context.contract plugin behavior.
-import { expectChannelInboundContextContract } from "openclaw/plugin-sdk/channel-contract-testing";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createTempHomeEnv } from "openclaw/plugin-sdk/test-env";
+import { expectChannelInboundContextContract } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract-testing";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createTempHomeEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { describe, it } from "vitest";
 import {
   createInboundSlackTestContext,
@@ -38,7 +38,7 @@ function createSlackMessage(overrides: Partial<SlackMessageEvent>): SlackMessage
 
 describe("Slack inbound context contract", () => {
   it("keeps inbound context finalized", async () => {
-    const tempHome = await createTempHomeEnv("openclaw-slack-inbound-contract-");
+    const tempHome = await createTempHomeEnv("operator-slack-inbound-contract-");
     try {
       const ctx = createInboundSlackTestContext({
         cfg: {

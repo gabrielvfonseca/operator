@@ -130,11 +130,11 @@ function formatNpmViewError(res: { stdout: string; stderr: string }): string {
 
 function packageTargetSpec(params: { target: string; spec?: string }): string {
   const spec = params.spec?.trim();
-  return spec || `operator@${params.target.trim() || "latest"}`;
+  return spec || `openclaw@${params.target.trim() || "latest"}`;
 }
 
 const PUBLIC_NPM_REGISTRY_URL = "https://registry.npmjs.org/";
-const PUBLIC_NPM_PACKAGE_NAME = "operator";
+const PUBLIC_NPM_PACKAGE_NAME = "@gabrielvfonseca/operator";
 
 function isLoopbackNpmRegistry(raw: string): boolean {
   try {

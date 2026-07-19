@@ -1,6 +1,6 @@
 // Imported by agent.test.ts to keep its mocked suite in one Vitest module graph.
 import fs from "node:fs/promises";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import type { SessionEntry } from "../../config/sessions.js";
@@ -1742,7 +1742,7 @@ describe("gateway agent handler", () => {
       modelProvider: "openai",
       model: "gpt-5.4",
       contextTokens: 128_000,
-      agentHarnessId: "operator",
+      agentHarnessId: "@gabrielvfonseca/operator",
       cliSessionBindings: { "openai-cli": { sessionId: "native-a" } },
       cronRunContinuation: {
         lifecycleRevision: "revision-1",
@@ -1809,7 +1809,7 @@ describe("gateway agent handler", () => {
         modelProvider: "openai",
         model: "gpt-5.4",
         contextTokens: 128_000,
-        agentHarnessId: "operator",
+        agentHarnessId: "@gabrielvfonseca/operator",
         cliSessionBindings: { "openai-cli": { sessionId: "native-a" } },
       });
       expect(

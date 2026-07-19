@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

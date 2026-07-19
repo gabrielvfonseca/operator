@@ -1,5 +1,5 @@
-import { expectDefined } from "@operator/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ExecCommandAnalysis } from "./exec-command-analysis-types.js";
 import { resolveCommandResolutionFromArgv } from "./exec-command-resolution.js";
 

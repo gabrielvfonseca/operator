@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
 
 struct GatewayErrorsTests {
@@ -25,8 +25,8 @@ struct GatewayErrorsTests {
             titleOverride: "Additional permissions required",
             userMessageOverride: "Approve the requested permissions on the gateway, then reconnect.",
             actionLabel: "Approve on gateway",
-            actionCommand: "openclaw devices approve req-123",
-            docsURLString: "https://docs.openclaw.ai/gateway/pairing",
+            actionCommand: "operator devices approve req-123",
+            docsURLString: "https://docs.operator.ai/gateway/pairing",
             retryableOverride: false,
             pauseReconnectOverride: true,
             clientMinProtocol: 4,
@@ -38,8 +38,8 @@ struct GatewayErrorsTests {
         #expect(error.detailsReason == "scope-upgrade")
         #expect(error.ownerRaw == "gateway")
         #expect(error.titleOverride == "Additional permissions required")
-        #expect(error.actionCommand == "openclaw devices approve req-123")
-        #expect(error.docsURLString == "https://docs.openclaw.ai/gateway/pairing")
+        #expect(error.actionCommand == "operator devices approve req-123")
+        #expect(error.docsURLString == "https://docs.operator.ai/gateway/pairing")
         #expect(error.pauseReconnectOverride == true)
         #expect(error.clientMinProtocol == 4)
         #expect(error.clientMaxProtocol == 4)
@@ -95,7 +95,7 @@ struct GatewayErrorsTests {
         #expect(problem?.kind == .protocolMismatch)
         #expect(problem?.owner == .iphone)
         #expect(problem?.title == "App update required")
-        #expect(problem?.message == "This app is older than the gateway. Update OpenClaw on this device, then retry.")
+        #expect(problem?.message == "This app is older than the gateway. Update Operator on this device, then retry.")
         #expect(problem?.retryable == false)
         #expect(problem?.pauseReconnect == true)
         #expect(problem?.technicalDetails?.contains("clientProtocol=4") == true)
@@ -118,9 +118,9 @@ struct GatewayErrorsTests {
         #expect(problem?.owner == .gateway)
         #expect(problem?.title == "Gateway update required")
         #expect(problem?
-            .message == "The gateway is older than this app. Update OpenClaw on the gateway host, then retry.")
+            .message == "The gateway is older than this app. Update Operator on the gateway host, then retry.")
         #expect(problem?.actionLabel == "Copy update command")
-        #expect(problem?.actionCommand == "openclaw update")
+        #expect(problem?.actionCommand == "operator update")
         #expect(problem?.retryable == false)
         #expect(problem?.pauseReconnect == true)
     }
@@ -136,7 +136,7 @@ struct GatewayErrorsTests {
         #expect(problem?.kind == .protocolMismatch)
         #expect(problem?.owner == .both)
         #expect(problem?
-            .message == "The app and gateway use incompatible protocol versions. Update OpenClaw on both, then retry.")
+            .message == "The app and gateway use incompatible protocol versions. Update Operator on both, then retry.")
         #expect(problem?.retryable == false)
         #expect(problem?.pauseReconnect == true)
     }
@@ -154,7 +154,7 @@ struct GatewayErrorsTests {
         #expect(problem?.kind == .pairingScopeUpgradeRequired)
         #expect(problem?.requestId == "req-123")
         #expect(problem?.pauseReconnect == true)
-        #expect(problem?.actionCommand == "openclaw devices approve req-123")
+        #expect(problem?.actionCommand == "operator devices approve req-123")
     }
 
     @Test func `scope mismatch maps to pairing or repair problem`() {

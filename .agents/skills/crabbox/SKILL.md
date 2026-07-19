@@ -1,11 +1,11 @@
 ---
 name: crabbox
-description: "Crabbox/Testbox remote proof for OpenClaw: trusted-source routing, untrusted isolation, Linux/macOS/Windows/WSL2, live E2E, desktop, diagnostics, cleanup."
+description: "Crabbox/Testbox remote proof for Operator: trusted-source routing, untrusted isolation, Linux/macOS/Windows/WSL2, live E2E, desktop, diagnostics, cleanup."
 ---
 
 # Crabbox
 
-Remote OpenClaw proof. Heavy tests. Builds. Typecheck/lint fan-out. Docker.
+Remote Operator proof. Heavy tests. Builds. Typecheck/lint fan-out. Docker.
 Packages. Live providers. Desktop. Cross-OS.
 
 Backends:
@@ -29,7 +29,7 @@ Source trust before test size.
 - Never run untrusted repo wrapper/config locally.
 - No speculative warmup. Acquire when first heavy command ready. Reuse id. Stop.
 
-Need direct AWS semantics? Pass `--provider aws`. Need normal trusted OpenClaw
+Need direct AWS semantics? Pass `--provider aws`. Need normal trusted Operator
 heavy proof? Pass `--provider blacksmith-testbox`.
 
 ## Preflight
@@ -81,9 +81,9 @@ node scripts/crabbox-wrapper.mjs run \
   --provider blacksmith-testbox \
   --timing-json -- \
   CI=1 NODE_OPTIONS=--max-old-space-size=4096 \
-  OPENCLAW_TEST_PROJECTS_PARALLEL=6 \
-  OPENCLAW_VITEST_MAX_WORKERS=1 \
-  OPENCLAW_TESTBOX=1 OPENCLAW_TESTBOX_REMOTE_RUN=1 \
+  OPERATOR_TEST_PROJECTS_PARALLEL=6 \
+  OPERATOR_VITEST_MAX_WORKERS=1 \
+  OPERATOR_TESTBOX=1 OPERATOR_TESTBOX_REMOTE_RUN=1 \
   pnpm check:changed
 ```
 
@@ -94,7 +94,7 @@ node scripts/crabbox-wrapper.mjs warmup \
   --provider blacksmith-testbox --keep --timing-json
 node scripts/crabbox-wrapper.mjs run \
   --provider blacksmith-testbox --id <tbx_id> --timing-json -- \
-  OPENCLAW_TESTBOX=1 OPENCLAW_TESTBOX_REMOTE_RUN=1 \
+  OPERATOR_TESTBOX=1 OPERATOR_TESTBOX_REMOTE_RUN=1 \
   pnpm test <path-or-filter>
 blacksmith testbox stop --id <tbx_id>
 ```
@@ -118,7 +118,7 @@ Autoreview parallel tests:
 - Old helper + macOS `ControlPath too long`: put `TMPDIR=/tmp` on outer process.
 
 ```sh
-TMPDIR=/tmp OPENCLAW_TESTBOX=1 "$AUTOREVIEW" \
+TMPDIR=/tmp OPERATOR_TESTBOX=1 "$AUTOREVIEW" \
   --parallel-tests "pnpm check:changed"
 ```
 
@@ -131,7 +131,7 @@ reviewed full head SHA. No instance role. No Tailscale. No hydration. Only `CI`
 forwarded. Trusted bootstrap uploaded beside `--fresh-pr`.
 
 ```sh
-cd <clean-trusted-openclaw-main>
+cd <clean-trusted-operator-main>
 env -u CRABBOX_AWS_INSTANCE_PROFILE \
   "$CRABBOX" config show --json | \
   jq -e '.aws.instanceProfile == ""' >/dev/null
@@ -202,7 +202,7 @@ Broker auth, not cloud keys:
 "$CRABBOX" config show
 "$CRABBOX" doctor
 "$CRABBOX" whoami
-"$CRABBOX" login --url https://crabbox.openclaw.ai --provider aws
+"$CRABBOX" login --url https://crabbox.operator.ai --provider aws
 ```
 
 Normal validation asking for AWS keys usually means wrong path.
@@ -269,8 +269,8 @@ Before/after: same Testbox when practical. Detached temp worktrees under `/tmp`.
 Never checkout refs in synced root. Full-screen CLI: real PTY. Interactive Clack:
 exact arrows/Enter; raw search typing can lie.
 
-Isolate mutable state: `OPENCLAW_STATE_DIR=$(mktemp -d)`. Test-only local plugin
-artifacts may use `OPENCLAW_ALLOW_PLUGIN_INSTALL_OVERRIDES=1`; never call them
+Isolate mutable state: `OPERATOR_STATE_DIR=$(mktemp -d)`. Test-only local plugin
+artifacts may use `OPERATOR_ALLOW_PLUGIN_INSTALL_OVERRIDES=1`; never call them
 official/trusted installs.
 
 ## Desktop / Cross-OS
@@ -349,4 +349,4 @@ Crabbox stop wrapper: no `--timing-json`.
 ## Boundary
 
 Crabbox stays generic: lease, sync, command, logs, results, timing, cleanup.
-OpenClaw setup belongs hydration workflow/repo scripts.
+Operator setup belongs hydration workflow/repo scripts.

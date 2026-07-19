@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { VoiceCallConfig, VoiceCallCoreSessionConfig } from "./config.js";
 import type { CallManagerContext, StreamSessionIssuer } from "./manager/context.js";
 import { processEvent as processManagerEvent, type ProcessEventResult } from "./manager/events.js";
@@ -61,7 +61,7 @@ function resolveDefaultStoreBase(config: VoiceCallConfig, storePath?: string): s
   if (rawOverride) {
     return resolveUserPath(rawOverride);
   }
-  const preferred = path.join(os.homedir(), ".openclaw", "voice-calls");
+  const preferred = path.join(os.homedir(), ".operator", "voice-calls");
   const candidates = [preferred].map((dir) => resolveUserPath(dir));
   const existing =
     candidates.find((dir) => {

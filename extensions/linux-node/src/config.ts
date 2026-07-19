@@ -1,5 +1,5 @@
-import type { OperatorPluginNodeHostCommandAvailabilityContext } from "openclaw/plugin-sdk/plugin-entry";
-import { buildPluginConfigSchema } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginNodeHostCommandAvailabilityContext } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { buildPluginConfigSchema } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { z } from "zod";
 
 const CapabilityConfigSchema = z.strictObject({

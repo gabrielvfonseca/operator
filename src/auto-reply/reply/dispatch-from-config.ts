@@ -1,15 +1,15 @@
 /** Main reply dispatch pipeline from finalized config/context to delivery payloads. */
-import { isParentOwnedBackgroundAcpSession } from "@operator/acp-core/session-interaction-mode";
+import { isParentOwnedBackgroundAcpSession } from "@gabrielvfonseca/acp-core/session-interaction-mode";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   hasOutboundReplyContent,
   isFastModeAutoProgressPayload,
   resolveSendableOutboundReplyParts,
-} from "operator/plugin-sdk/reply-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import { readAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import {
   resolveAgentConfig,

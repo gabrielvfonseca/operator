@@ -1,6 +1,6 @@
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @Suite(.serialized) struct GatewayConnectionIssueTests {
     @Test func `detects token missing`() {

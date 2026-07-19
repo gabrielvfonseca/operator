@@ -1,6 +1,6 @@
 // Migrate Hermes tests cover model.apply plugin behavior.
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   HERMES_REASON_DEFAULT_MODEL_CONFIGURED,

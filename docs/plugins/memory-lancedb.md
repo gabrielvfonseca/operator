@@ -18,10 +18,10 @@ a memory store outside the default built-in memory backend.
 ## Installation
 
 ```bash
-openclaw plugins install @operator/memory-lancedb
+operator plugins install @gabrielvfonseca/memory-lancedb
 ```
 
-The plugin is published to npm; it is not bundled into the OpenClaw runtime
+The plugin is published to npm; it is not bundled into the Operator runtime
 image. Installing it writes the plugin entry, enables it, and switches
 `plugins.slots.memory` to `memory-lancedb`. If another plugin currently owns
 the memory slot, that plugin is disabled with a warning.
@@ -59,8 +59,8 @@ but only one plugin owns the active memory slot at a time.
 Restart the Gateway after changing plugin config, then verify it loaded:
 
 ```bash
-openclaw gateway restart
-openclaw plugins list
+operator gateway restart
+operator plugins list
 ```
 
 ## Embedding config
@@ -119,7 +119,7 @@ base64-encoded float32 responses, so both response shapes work without config.
 
 ### Dimensions
 
-OpenClaw has a built-in dimension for `text-embedding-3-small` (1536) and
+Operator has a built-in dimension for `text-embedding-3-small` (1536) and
 `text-embedding-3-large` (3072) only. Any other model needs an explicit
 `embedding.dimensions` so LanceDB can create the vector column, for example
 ZhiPu `embedding-3` at 2048 dimensions:
@@ -189,7 +189,7 @@ local server returns context-length errors.
 | `customTriggers`  | `[]`    | 0-50 items, each <=100 chars | Literal phrases that make auto-capture consider a message. |
 
 `recallMaxChars` bounds the `before_prompt_build` auto-recall query, the
-`memory_recall` tool, the `memory_forget` query path, and `openclaw ltm
+`memory_recall` tool, the `memory_forget` query path, and `operator ltm
 search`. Auto-recall embeds the latest user message from the turn and falls
 back to the full prompt only when no user message is present, keeping channel
 metadata and large prompt blocks out of the embedding request.
@@ -212,16 +212,16 @@ and caps at 3 captured memories per agent turn.
 (not only when it owns the active memory slot):
 
 ```bash
-openclaw ltm list [--limit <n>] [--order-by-created-at]
-openclaw ltm search <query> [--limit <n>]
-openclaw ltm stats
+operator ltm list [--limit <n>] [--order-by-created-at]
+operator ltm search <query> [--limit <n>]
+operator ltm stats
 ```
 
 `ltm query` runs a non-vector query directly against the LanceDB table:
 
 ```bash
-openclaw ltm query --cols id,text,createdAt --limit 20
-openclaw ltm query --filter "category = 'preference'" --order-by createdAt:desc
+operator ltm query --cols id,text,createdAt --limit 20
+operator ltm query --filter "category = 'preference'" --order-by createdAt:desc
 ```
 
 | Flag                              | Default                                 | Notes                                                                                                                                     |
@@ -241,7 +241,7 @@ Agents get three tools from the active memory plugin:
 
 ## Storage
 
-LanceDB data defaults to `~/.openclaw/memory/lancedb`. Override with `dbPath`:
+LanceDB data defaults to `~/.operator/memory/lancedb`. Override with `dbPath`:
 
 ```json5
 {
@@ -250,7 +250,7 @@ LanceDB data defaults to `~/.openclaw/memory/lancedb`. Override with `dbPath`:
       "memory-lancedb": {
         enabled: true,
         config: {
-          dbPath: "~/.openclaw/memory/lancedb",
+          dbPath: "~/.operator/memory/lancedb",
           embedding: {
             apiKey: "${OPENAI_API_KEY}",
             model: "text-embedding-3-small",
@@ -292,7 +292,7 @@ LanceDB data defaults to `~/.openclaw/memory/lancedb`. Override with `dbPath`:
 ## Runtime dependencies and platform support
 
 `memory-lancedb` depends on the native `@lancedb/lancedb` package, owned by the
-plugin package (not the OpenClaw core dist). Gateway startup does not repair
+plugin package (not the Operator core dist). Gateway startup does not repair
 plugin dependencies; if the native dependency is missing or fails to load,
 reinstall or update the plugin package and restart the Gateway.
 
@@ -347,8 +347,8 @@ model, set `embedding.dimensions` to the vector size that model reports.
 Confirm `plugins.slots.memory` points at `memory-lancedb`, then run:
 
 ```bash
-openclaw ltm stats
-openclaw ltm search "recent preference"
+operator ltm stats
+operator ltm search "recent preference"
 ```
 
 If `autoCapture` is disabled, the plugin still recalls existing memories but

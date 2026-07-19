@@ -1,11 +1,11 @@
 import Foundation
 
-public enum OpenClawWatchCommand: String, Codable, Sendable {
+public enum OperatorWatchCommand: String, Codable, Sendable {
     case status = "watch.status"
     case notify = "watch.notify"
 }
 
-public enum OpenClawWatchPayloadType: String, Codable, Sendable, Equatable {
+public enum OperatorWatchPayloadType: String, Codable, Sendable, Equatable {
     case notify = "watch.notify"
     case directNodeSetup = "watch.node.setup"
     case reply = "watch.reply"
@@ -21,18 +21,18 @@ public enum OpenClawWatchPayloadType: String, Codable, Sendable, Equatable {
     case execApprovalSnapshotRequest = "watch.execApproval.snapshotRequest"
 }
 
-public enum OpenClawWatchRisk: String, Codable, Sendable, Equatable {
+public enum OperatorWatchRisk: String, Codable, Sendable, Equatable {
     case low
     case medium
     case high
 }
 
-public enum OpenClawWatchExecApprovalDecision: String, Codable, Sendable, Equatable {
+public enum OperatorWatchExecApprovalDecision: String, Codable, Sendable, Equatable {
     case allowOnce = "allow-once"
     case deny
 }
 
-public enum OpenClawWatchExecApprovalCloseReason: String, Codable, Sendable, Equatable {
+public enum OperatorWatchExecApprovalCloseReason: String, Codable, Sendable, Equatable {
     case expired
     case notFound = "not-found"
     case unavailable
@@ -40,7 +40,7 @@ public enum OpenClawWatchExecApprovalCloseReason: String, Codable, Sendable, Equ
     case resolved
 }
 
-public struct OpenClawWatchAction: Codable, Sendable, Equatable, Identifiable {
+public struct OperatorWatchAction: Codable, Sendable, Equatable, Identifiable {
     public var id: String
     public var label: String
     public var style: String?
@@ -52,7 +52,7 @@ public struct OpenClawWatchAction: Codable, Sendable, Equatable, Identifiable {
     }
 }
 
-public struct OpenClawWatchExecApprovalItem: Codable, Sendable, Equatable, Identifiable {
+public struct OperatorWatchExecApprovalItem: Codable, Sendable, Equatable, Identifiable {
     public var id: String
     public var gatewayStableID: String?
     public var commandText: String
@@ -62,8 +62,8 @@ public struct OpenClawWatchExecApprovalItem: Codable, Sendable, Equatable, Ident
     public var nodeId: String?
     public var agentId: String?
     public var expiresAtMs: Int64?
-    public var allowedDecisions: [OpenClawWatchExecApprovalDecision]
-    public var risk: OpenClawWatchRisk?
+    public var allowedDecisions: [OperatorWatchExecApprovalDecision]
+    public var risk: OperatorWatchRisk?
 
     public init(
         id: String,
@@ -75,8 +75,8 @@ public struct OpenClawWatchExecApprovalItem: Codable, Sendable, Equatable, Ident
         nodeId: String? = nil,
         agentId: String? = nil,
         expiresAtMs: Int64? = nil,
-        allowedDecisions: [OpenClawWatchExecApprovalDecision] = [],
-        risk: OpenClawWatchRisk? = nil)
+        allowedDecisions: [OperatorWatchExecApprovalDecision] = [],
+        risk: OperatorWatchRisk? = nil)
     {
         self.id = id
         self.gatewayStableID = gatewayStableID
@@ -92,14 +92,14 @@ public struct OpenClawWatchExecApprovalItem: Codable, Sendable, Equatable, Ident
     }
 }
 
-public struct OpenClawWatchExecApprovalPromptMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
-    public var approval: OpenClawWatchExecApprovalItem
+public struct OperatorWatchExecApprovalPromptMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
+    public var approval: OperatorWatchExecApprovalItem
     public var sentAtMs: Int64?
     public var resetResolutionAttemptId: String?
 
     public init(
-        approval: OpenClawWatchExecApprovalItem,
+        approval: OperatorWatchExecApprovalItem,
         sentAtMs: Int64? = nil,
         resetResolutionAttemptId: String? = nil)
     {
@@ -110,18 +110,18 @@ public struct OpenClawWatchExecApprovalPromptMessage: Codable, Sendable, Equatab
     }
 }
 
-public struct OpenClawWatchExecApprovalResolveMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchExecApprovalResolveMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var approvalId: String
     public var gatewayStableID: String?
-    public var decision: OpenClawWatchExecApprovalDecision
+    public var decision: OperatorWatchExecApprovalDecision
     public var replyId: String
     public var sentAtMs: Int64?
 
     public init(
         approvalId: String,
         gatewayStableID: String? = nil,
-        decision: OpenClawWatchExecApprovalDecision,
+        decision: OperatorWatchExecApprovalDecision,
         replyId: String,
         sentAtMs: Int64? = nil)
     {
@@ -134,18 +134,18 @@ public struct OpenClawWatchExecApprovalResolveMessage: Codable, Sendable, Equata
     }
 }
 
-public enum OpenClawWatchExecApprovalOutcome: String, Codable, Sendable, Equatable {
+public enum OperatorWatchExecApprovalOutcome: String, Codable, Sendable, Equatable {
     case allowedOnce
     case allowedAlways
     case denied
 }
 
-public struct OpenClawWatchExecApprovalResolvedMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchExecApprovalResolvedMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var approvalId: String
     public var gatewayStableID: String?
-    public var decision: OpenClawWatchExecApprovalDecision?
-    public var outcome: OpenClawWatchExecApprovalOutcome?
+    public var decision: OperatorWatchExecApprovalDecision?
+    public var outcome: OperatorWatchExecApprovalOutcome?
     public var resolvedAtMs: Int64?
     public var source: String?
     public var outcomeText: String?
@@ -153,8 +153,8 @@ public struct OpenClawWatchExecApprovalResolvedMessage: Codable, Sendable, Equat
     public init(
         approvalId: String,
         gatewayStableID: String? = nil,
-        decision: OpenClawWatchExecApprovalDecision? = nil,
-        outcome: OpenClawWatchExecApprovalOutcome? = nil,
+        decision: OperatorWatchExecApprovalDecision? = nil,
+        outcome: OperatorWatchExecApprovalOutcome? = nil,
         resolvedAtMs: Int64? = nil,
         source: String? = nil,
         outcomeText: String? = nil)
@@ -170,17 +170,17 @@ public struct OpenClawWatchExecApprovalResolvedMessage: Codable, Sendable, Equat
     }
 }
 
-public struct OpenClawWatchExecApprovalExpiredMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchExecApprovalExpiredMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var approvalId: String
     public var gatewayStableID: String?
-    public var reason: OpenClawWatchExecApprovalCloseReason
+    public var reason: OperatorWatchExecApprovalCloseReason
     public var expiredAtMs: Int64?
 
     public init(
         approvalId: String,
         gatewayStableID: String? = nil,
-        reason: OpenClawWatchExecApprovalCloseReason,
+        reason: OperatorWatchExecApprovalCloseReason,
         expiredAtMs: Int64? = nil)
     {
         self.type = .execApprovalExpired
@@ -191,9 +191,9 @@ public struct OpenClawWatchExecApprovalExpiredMessage: Codable, Sendable, Equata
     }
 }
 
-public struct OpenClawWatchExecApprovalSnapshotMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
-    public var approvals: [OpenClawWatchExecApprovalItem]
+public struct OperatorWatchExecApprovalSnapshotMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
+    public var approvals: [OperatorWatchExecApprovalItem]
     public var gatewayStableID: String?
     public var sentAtMs: Int64?
     public var snapshotId: String?
@@ -201,7 +201,7 @@ public struct OpenClawWatchExecApprovalSnapshotMessage: Codable, Sendable, Equat
     public var requestGatewayStableID: String?
 
     public init(
-        approvals: [OpenClawWatchExecApprovalItem],
+        approvals: [OperatorWatchExecApprovalItem],
         gatewayStableID: String? = nil,
         sentAtMs: Int64? = nil,
         snapshotId: String? = nil,
@@ -218,7 +218,7 @@ public struct OpenClawWatchExecApprovalSnapshotMessage: Codable, Sendable, Equat
     }
 }
 
-public struct OpenClawWatchExecApprovalSnapshotRequestItem: Codable, Sendable, Equatable {
+public struct OperatorWatchExecApprovalSnapshotRequestItem: Codable, Sendable, Equatable {
     public var approvalId: String
     public var activeResolutionAttemptId: String?
 
@@ -231,18 +231,18 @@ public struct OpenClawWatchExecApprovalSnapshotRequestItem: Codable, Sendable, E
     }
 }
 
-public struct OpenClawWatchExecApprovalSnapshotRequestMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchExecApprovalSnapshotRequestMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var requestId: String
     public var sentAtMs: Int64?
     public var gatewayStableID: String?
-    public var heldApprovals: [OpenClawWatchExecApprovalSnapshotRequestItem]
+    public var heldApprovals: [OperatorWatchExecApprovalSnapshotRequestItem]
 
     public init(
         requestId: String,
         sentAtMs: Int64? = nil,
         gatewayStableID: String? = nil,
-        heldApprovals: [OpenClawWatchExecApprovalSnapshotRequestItem] = [])
+        heldApprovals: [OperatorWatchExecApprovalSnapshotRequestItem] = [])
     {
         self.type = .execApprovalSnapshotRequest
         self.requestId = requestId
@@ -252,7 +252,7 @@ public struct OpenClawWatchExecApprovalSnapshotRequestMessage: Codable, Sendable
     }
 }
 
-public struct OpenClawWatchChatItem: Codable, Sendable, Equatable, Identifiable {
+public struct OperatorWatchChatItem: Codable, Sendable, Equatable, Identifiable {
     public var id: String
     public var role: String
     public var text: String
@@ -271,8 +271,8 @@ public struct OpenClawWatchChatItem: Codable, Sendable, Equatable, Identifiable 
     }
 }
 
-public struct OpenClawWatchChatCompletionMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchChatCompletionMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var commandId: String
     public var replyText: String
     public var sentAtMs: Int64?
@@ -285,7 +285,7 @@ public struct OpenClawWatchChatCompletionMessage: Codable, Sendable, Equatable {
     }
 }
 
-public enum OpenClawWatchAppStatusCode: String, Codable, Sendable, Equatable {
+public enum OperatorWatchAppStatusCode: String, Codable, Sendable, Equatable {
     case gatewayConnected
     case gatewayConnecting
     case gatewayReconnecting
@@ -310,14 +310,14 @@ public enum OpenClawWatchAppStatusCode: String, Codable, Sendable, Equatable {
     case legacy
 }
 
-public struct OpenClawWatchAppStatus: Codable, Sendable, Equatable {
-    public var code: OpenClawWatchAppStatusCode
+public struct OperatorWatchAppStatus: Codable, Sendable, Equatable {
+    public var code: OperatorWatchAppStatusCode
     public var localizationKey: String?
     public var arguments: [String]
     public var verbatim: String?
 
     public init(
-        code: OpenClawWatchAppStatusCode,
+        code: OperatorWatchAppStatusCode,
         localizationKey: String? = nil,
         arguments: [String] = [],
         verbatim: String? = nil)
@@ -329,9 +329,9 @@ public struct OpenClawWatchAppStatus: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
-    public var gatewayStatus: OpenClawWatchAppStatus
+public struct OperatorWatchAppSnapshotMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
+    public var gatewayStatus: OperatorWatchAppStatus
     public var gatewayStatusText: String
     public var gatewayConnected: Bool
     public var agentName: String
@@ -339,20 +339,20 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
     public var agentAvatarText: String?
     public var sessionKey: String
     public var gatewayStableID: String?
-    public var talkStatus: OpenClawWatchAppStatus
+    public var talkStatus: OperatorWatchAppStatus
     public var talkStatusText: String
     public var talkEnabled: Bool
     public var talkListening: Bool
     public var talkSpeaking: Bool
     public var pendingApprovalCount: Int
-    public var chatItems: [OpenClawWatchChatItem]?
-    public var chatStatus: OpenClawWatchAppStatus?
+    public var chatItems: [OperatorWatchChatItem]?
+    public var chatStatus: OperatorWatchAppStatus?
     public var chatStatusText: String?
     public var sentAtMs: Int64?
     public var snapshotId: String?
 
     public init(
-        gatewayStatus: OpenClawWatchAppStatus,
+        gatewayStatus: OperatorWatchAppStatus,
         gatewayStatusText: String,
         gatewayConnected: Bool,
         agentName: String,
@@ -360,14 +360,14 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         agentAvatarText: String? = nil,
         sessionKey: String,
         gatewayStableID: String? = nil,
-        talkStatus: OpenClawWatchAppStatus,
+        talkStatus: OperatorWatchAppStatus,
         talkStatusText: String,
         talkEnabled: Bool,
         talkListening: Bool,
         talkSpeaking: Bool,
         pendingApprovalCount: Int,
-        chatItems: [OpenClawWatchChatItem]? = nil,
-        chatStatus: OpenClawWatchAppStatus? = nil,
+        chatItems: [OperatorWatchChatItem]? = nil,
+        chatStatus: OperatorWatchAppStatus? = nil,
         chatStatusText: String? = nil,
         sentAtMs: Int64? = nil,
         snapshotId: String? = nil)
@@ -407,7 +407,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         talkListening: Bool,
         talkSpeaking: Bool,
         pendingApprovalCount: Int,
-        chatItems: [OpenClawWatchChatItem]? = nil,
+        chatItems: [OperatorWatchChatItem]? = nil,
         chatStatusText: String? = nil,
         sentAtMs: Int64? = nil,
         snapshotId: String? = nil)
@@ -467,7 +467,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(OpenClawWatchPayloadType.self, forKey: .type)
+        self.type = try container.decode(OperatorWatchPayloadType.self, forKey: .type)
         self.gatewayConnected = try container.decode(Bool.self, forKey: .gatewayConnected)
         self.agentName = try container.decode(String.self, forKey: .agentName)
         self.agentAvatarURL = try container.decodeIfPresent(String.self, forKey: .agentAvatarURL)
@@ -478,13 +478,13 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         self.talkListening = try container.decode(Bool.self, forKey: .talkListening)
         self.talkSpeaking = try container.decode(Bool.self, forKey: .talkSpeaking)
         self.pendingApprovalCount = try container.decode(Int.self, forKey: .pendingApprovalCount)
-        self.chatItems = try container.decodeIfPresent([OpenClawWatchChatItem].self, forKey: .chatItems)
+        self.chatItems = try container.decodeIfPresent([OperatorWatchChatItem].self, forKey: .chatItems)
         self.sentAtMs = try container.decodeIfPresent(Int64.self, forKey: .sentAtMs)
         self.snapshotId = try container.decodeIfPresent(String.self, forKey: .snapshotId)
 
         let gatewayStatusText = try container.decodeIfPresent(String.self, forKey: .gatewayStatusText)
         if let gatewayStatus = try? container.decode(
-            OpenClawWatchAppStatus.self,
+            OperatorWatchAppStatus.self,
             forKey: .gatewayStatus)
         {
             self.gatewayStatus = gatewayStatus
@@ -492,7 +492,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
                   let gatewayStatusText,
                   !gatewayStatusText.isEmpty
         {
-            self.gatewayStatus = OpenClawWatchAppStatus(
+            self.gatewayStatus = OperatorWatchAppStatus(
                 code: .legacy,
                 verbatim: gatewayStatusText)
         } else {
@@ -503,7 +503,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         self.gatewayStatusText = gatewayStatusText ?? Self.legacyText(for: self.gatewayStatus)
         let talkStatusText = try container.decodeIfPresent(String.self, forKey: .talkStatusText)
         if let talkStatus = try? container.decode(
-            OpenClawWatchAppStatus.self,
+            OperatorWatchAppStatus.self,
             forKey: .talkStatus)
         {
             self.talkStatus = talkStatus
@@ -511,7 +511,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
                   let talkStatusText,
                   !talkStatusText.isEmpty
         {
-            self.talkStatus = OpenClawWatchAppStatus(
+            self.talkStatus = OperatorWatchAppStatus(
                 code: .legacy,
                 verbatim: talkStatusText)
         } else {
@@ -525,7 +525,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         let chatStatusText = try container.decodeIfPresent(String.self, forKey: .chatStatusText)
         let chatStatusCode = try container.decodeIfPresent(String.self, forKey: .chatStatusCode)
         self.chatStatus = (try? container.decode(
-            OpenClawWatchAppStatus.self,
+            OperatorWatchAppStatus.self,
             forKey: .chatStatus)) ?? Self.decodeLegacyChatStatus(
             code: chatStatusCode,
             text: chatStatusText)
@@ -560,60 +560,60 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
 
     private static func decodeLegacyGatewayStatus(
         text: String?,
-        connected: Bool) -> OpenClawWatchAppStatus
+        connected: Bool) -> OperatorWatchAppStatus
     {
         if connected {
-            return OpenClawWatchAppStatus(code: .gatewayConnected)
+            return OperatorWatchAppStatus(code: .gatewayConnected)
         }
         guard let text, !text.isEmpty else {
-            return OpenClawWatchAppStatus(code: .gatewayOffline)
+            return OperatorWatchAppStatus(code: .gatewayOffline)
         }
-        return OpenClawWatchAppStatus(code: .legacy, verbatim: text)
+        return OperatorWatchAppStatus(code: .legacy, verbatim: text)
     }
 
     private static func decodeLegacyTalkStatus(
         text: String?,
         enabled: Bool,
         listening: Bool,
-        speaking: Bool) -> OpenClawWatchAppStatus
+        speaking: Bool) -> OperatorWatchAppStatus
     {
         if speaking {
-            return OpenClawWatchAppStatus(code: .talkSpeaking)
+            return OperatorWatchAppStatus(code: .talkSpeaking)
         }
         if listening {
-            return OpenClawWatchAppStatus(code: .talkListening)
+            return OperatorWatchAppStatus(code: .talkListening)
         }
         if !enabled {
-            return OpenClawWatchAppStatus(code: .talkOff)
+            return OperatorWatchAppStatus(code: .talkOff)
         }
         guard let text, !text.isEmpty else {
-            return OpenClawWatchAppStatus(code: .talkReady)
+            return OperatorWatchAppStatus(code: .talkReady)
         }
-        return OpenClawWatchAppStatus(code: .legacy, verbatim: text)
+        return OperatorWatchAppStatus(code: .legacy, verbatim: text)
     }
 
     private static func decodeLegacyChatStatus(
         code: String?,
-        text: String?) -> OpenClawWatchAppStatus?
+        text: String?) -> OperatorWatchAppStatus?
     {
-        let statusCode: OpenClawWatchAppStatusCode? = switch code {
+        let statusCode: OperatorWatchAppStatusCode? = switch code {
         case "connectIPhone":
-            OpenClawWatchAppStatusCode.chatConnectIPhone
+            OperatorWatchAppStatusCode.chatConnectIPhone
         case "noMessages":
-            OpenClawWatchAppStatusCode.chatNoMessages
+            OperatorWatchAppStatusCode.chatNoMessages
         case "unavailable":
-            OpenClawWatchAppStatusCode.chatUnavailable
+            OperatorWatchAppStatusCode.chatUnavailable
         default:
             nil
         }
         if let statusCode {
-            return OpenClawWatchAppStatus(code: statusCode)
+            return OperatorWatchAppStatus(code: statusCode)
         }
         guard let text, !text.isEmpty else { return nil }
-        return OpenClawWatchAppStatus(code: .legacy, verbatim: text)
+        return OperatorWatchAppStatus(code: .legacy, verbatim: text)
     }
 
-    private static func legacyText(for status: OpenClawWatchAppStatus) -> String {
+    private static func legacyText(for status: OperatorWatchAppStatus) -> String {
         if let verbatim = status.verbatim, !verbatim.isEmpty {
             return verbatim
         }
@@ -648,7 +648,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         }
     }
 
-    private static func legacyGatewayText(for code: OpenClawWatchAppStatusCode) -> String {
+    private static func legacyGatewayText(for code: OperatorWatchAppStatusCode) -> String {
         switch code {
         case .gatewayConnected: "Connected"
         case .gatewayConnecting: "Connecting…"
@@ -659,7 +659,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         }
     }
 
-    private static func legacyTalkText(for code: OpenClawWatchAppStatusCode) -> String {
+    private static func legacyTalkText(for code: OperatorWatchAppStatusCode) -> String {
         switch code {
         case .talkOff: "Off"
         case .talkReady: "Ready"
@@ -677,7 +677,7 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
         }
     }
 
-    private static func legacyChatText(for code: OpenClawWatchAppStatusCode) -> String {
+    private static func legacyChatText(for code: OperatorWatchAppStatusCode) -> String {
         switch code {
         case .chatConnectIPhone: "Connect iPhone chat to read messages"
         case .chatNoMessages: "No chat messages yet"
@@ -687,8 +687,8 @@ public struct OpenClawWatchAppSnapshotMessage: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawWatchAppSnapshotRequestMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
+public struct OperatorWatchAppSnapshotRequestMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
     public var requestId: String
     public var sentAtMs: Int64?
 
@@ -699,7 +699,7 @@ public struct OpenClawWatchAppSnapshotRequestMessage: Codable, Sendable, Equatab
     }
 }
 
-public enum OpenClawWatchAppCommand: String, Codable, Sendable, Equatable {
+public enum OperatorWatchAppCommand: String, Codable, Sendable, Equatable {
     case refresh
     case openChat = "open-chat"
     case sendChat = "send-chat"
@@ -707,9 +707,9 @@ public enum OpenClawWatchAppCommand: String, Codable, Sendable, Equatable {
     case stopTalk = "stop-talk"
 }
 
-public struct OpenClawWatchAppCommandMessage: Codable, Sendable, Equatable {
-    public var type: OpenClawWatchPayloadType
-    public var command: OpenClawWatchAppCommand
+public struct OperatorWatchAppCommandMessage: Codable, Sendable, Equatable {
+    public var type: OperatorWatchPayloadType
+    public var command: OperatorWatchAppCommand
     public var commandId: String
     public var sessionKey: String?
     public var gatewayStableID: String?
@@ -717,7 +717,7 @@ public struct OpenClawWatchAppCommandMessage: Codable, Sendable, Equatable {
     public var sentAtMs: Int64?
 
     public init(
-        command: OpenClawWatchAppCommand,
+        command: OperatorWatchAppCommand,
         commandId: String,
         sessionKey: String? = nil,
         gatewayStableID: String? = nil,
@@ -734,7 +734,7 @@ public struct OpenClawWatchAppCommandMessage: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawWatchStatusPayload: Codable, Sendable, Equatable {
+public struct OperatorWatchStatusPayload: Codable, Sendable, Equatable {
     public var supported: Bool
     public var paired: Bool
     public var appInstalled: Bool
@@ -756,31 +756,31 @@ public struct OpenClawWatchStatusPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawWatchNotifyParams: Codable, Sendable, Equatable {
+public struct OperatorWatchNotifyParams: Codable, Sendable, Equatable {
     public var title: String
     public var body: String
-    public var priority: OpenClawNotificationPriority?
+    public var priority: OperatorNotificationPriority?
     public var promptId: String?
     public var sessionKey: String?
     public var gatewayStableID: String?
     public var kind: String?
     public var details: String?
     public var expiresAtMs: Int64?
-    public var risk: OpenClawWatchRisk?
-    public var actions: [OpenClawWatchAction]?
+    public var risk: OperatorWatchRisk?
+    public var actions: [OperatorWatchAction]?
 
     public init(
         title: String,
         body: String,
-        priority: OpenClawNotificationPriority? = nil,
+        priority: OperatorNotificationPriority? = nil,
         promptId: String? = nil,
         sessionKey: String? = nil,
         gatewayStableID: String? = nil,
         kind: String? = nil,
         details: String? = nil,
         expiresAtMs: Int64? = nil,
-        risk: OpenClawWatchRisk? = nil,
-        actions: [OpenClawWatchAction]? = nil)
+        risk: OperatorWatchRisk? = nil,
+        actions: [OperatorWatchAction]? = nil)
     {
         self.title = title
         self.body = body
@@ -796,7 +796,7 @@ public struct OpenClawWatchNotifyParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct OpenClawWatchNotifyPayload: Codable, Sendable, Equatable {
+public struct OperatorWatchNotifyPayload: Codable, Sendable, Equatable {
     public var deliveredImmediately: Bool
     public var queuedForDelivery: Bool
     public var transport: String

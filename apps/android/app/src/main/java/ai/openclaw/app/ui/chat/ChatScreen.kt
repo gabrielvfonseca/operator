@@ -1,43 +1,43 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
-import ai.openclaw.app.GatewayAgentSummary
-import ai.openclaw.app.GatewayModelSummary
-import ai.openclaw.app.MainViewModel
-import ai.openclaw.app.R
-import ai.openclaw.app.chat.ChatCommandEntry
-import ai.openclaw.app.chat.ChatMessage
-import ai.openclaw.app.chat.ChatMessageContent
-import ai.openclaw.app.chat.ChatOutboxItem
-import ai.openclaw.app.chat.ChatPendingToolCall
-import ai.openclaw.app.chat.ChatSessionEntry
-import ai.openclaw.app.chat.ChatThinkingLevelOption
-import ai.openclaw.app.chat.ChatThinkingLevelSelection
-import ai.openclaw.app.chat.MessageSpeechPhase
-import ai.openclaw.app.chat.MessageSpeechState
-import ai.openclaw.app.chat.VoiceNoteRecorderState
-import ai.openclaw.app.currentAppLanguage
-import ai.openclaw.app.i18n.NativeText
-import ai.openclaw.app.i18n.nativeString
-import ai.openclaw.app.i18n.nativeText
-import ai.openclaw.app.i18n.resolveNativeTextResource
-import ai.openclaw.app.resolveAgentIdFromMainSessionKey
-import ai.openclaw.app.ui.copyGatewayDiagnosticsReport
-import ai.openclaw.app.ui.design.AgentAvatarSource
-import ai.openclaw.app.ui.design.ClawAgentAvatar
-import ai.openclaw.app.ui.design.ClawListItem
-import ai.openclaw.app.ui.design.ClawLoadingState
-import ai.openclaw.app.ui.design.ClawPanel
-import ai.openclaw.app.ui.design.ClawPrimaryButton
-import ai.openclaw.app.ui.design.ClawSecondaryButton
-import ai.openclaw.app.ui.design.ClawSegmentedControl
-import ai.openclaw.app.ui.design.ClawStatus
-import ai.openclaw.app.ui.design.ClawStatusPill
-import ai.openclaw.app.ui.design.ClawTheme
-import ai.openclaw.app.ui.design.OpenClawMascot
-import ai.openclaw.app.ui.design.agentAvatarSource
-import ai.openclaw.app.ui.gatewayDiagnosticsEndpoint
-import ai.openclaw.app.ui.gatewayStatusForDisplay
-import ai.openclaw.app.ui.localizedUppercase
+import ai.operator.app.GatewayAgentSummary
+import ai.operator.app.GatewayModelSummary
+import ai.operator.app.MainViewModel
+import ai.operator.app.R
+import ai.operator.app.chat.ChatCommandEntry
+import ai.operator.app.chat.ChatMessage
+import ai.operator.app.chat.ChatMessageContent
+import ai.operator.app.chat.ChatOutboxItem
+import ai.operator.app.chat.ChatPendingToolCall
+import ai.operator.app.chat.ChatSessionEntry
+import ai.operator.app.chat.ChatThinkingLevelOption
+import ai.operator.app.chat.ChatThinkingLevelSelection
+import ai.operator.app.chat.MessageSpeechPhase
+import ai.operator.app.chat.MessageSpeechState
+import ai.operator.app.chat.VoiceNoteRecorderState
+import ai.operator.app.currentAppLanguage
+import ai.operator.app.i18n.NativeText
+import ai.operator.app.i18n.nativeString
+import ai.operator.app.i18n.nativeText
+import ai.operator.app.i18n.resolveNativeTextResource
+import ai.operator.app.resolveAgentIdFromMainSessionKey
+import ai.operator.app.ui.copyGatewayDiagnosticsReport
+import ai.operator.app.ui.design.AgentAvatarSource
+import ai.operator.app.ui.design.ClawAgentAvatar
+import ai.operator.app.ui.design.ClawListItem
+import ai.operator.app.ui.design.ClawLoadingState
+import ai.operator.app.ui.design.ClawPanel
+import ai.operator.app.ui.design.ClawPrimaryButton
+import ai.operator.app.ui.design.ClawSecondaryButton
+import ai.operator.app.ui.design.ClawSegmentedControl
+import ai.operator.app.ui.design.ClawStatus
+import ai.operator.app.ui.design.ClawStatusPill
+import ai.operator.app.ui.design.ClawTheme
+import ai.operator.app.ui.design.OperatorMascot
+import ai.operator.app.ui.design.agentAvatarSource
+import ai.operator.app.ui.gatewayDiagnosticsEndpoint
+import ai.operator.app.ui.gatewayStatusForDisplay
+import ai.operator.app.ui.localizedUppercase
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -647,9 +647,9 @@ private fun ChatHeader(
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-      OpenClawMascot(modifier = Modifier.size(25.dp))
+      OperatorMascot(modifier = Modifier.size(25.dp))
       Text(
-        text = nativeString("OpenClaw"),
+        text = nativeString("Operator"),
         style = ClawTheme.type.title.copy(fontSize = 17.sp, lineHeight = 21.sp),
         color = ClawTheme.colors.text,
         modifier = Modifier.weight(1f),
@@ -987,7 +987,7 @@ internal val starterPrompts =
       mark = "1",
       title = nativeText("Catch me up"),
       subtitle = nativeText("Summarize recent sessions and next steps."),
-      message = nativeText("Catch me up on my recent OpenClaw sessions and suggest next steps."),
+      message = nativeText("Catch me up on my recent Operator sessions and suggest next steps."),
     ),
     StarterPrompt(
       mark = "2",
@@ -998,7 +998,7 @@ internal val starterPrompts =
     StarterPrompt(
       mark = "3",
       title = nativeText("Use this phone"),
-      subtitle = nativeText("Ask OpenClaw to use Android capabilities."),
+      subtitle = nativeText("Ask Operator to use Android capabilities."),
       message = nativeText("What can you help me do from this phone right now?"),
     ),
   )
@@ -1061,10 +1061,10 @@ private fun ChatBubble(
           Text(
             text =
               when {
-                live -> nativeString("OpenClaw · Live")
+                live -> nativeString("Operator · Live")
                 isUser -> nativeString("You")
                 normalizedRole == "system" -> nativeString("System")
-                else -> nativeString("OpenClaw")
+                else -> nativeString("Operator")
               },
             style = ClawTheme.type.caption.copy(fontSize = 12.5.sp, lineHeight = 16.sp, fontWeight = FontWeight.SemiBold),
             color = ClawTheme.colors.text,
@@ -1154,7 +1154,7 @@ private fun ToolBubble(toolCalls: List<ChatPendingToolCall>) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
       ClawStatusPill(text = nativeString("Tools running"), status = ClawStatus.Warning)
       toolCalls.take(4).forEach { tool ->
-        ClawListItem(title = tool.name, subtitle = nativeString("OpenClaw is working"))
+        ClawListItem(title = tool.name, subtitle = nativeString("Operator is working"))
       }
       if (toolCalls.size > 4) {
         Text(text = nativeString("+\${toolCalls.size - 4} more", toolCalls.size - 4), style = ClawTheme.type.caption, color = ClawTheme.colors.textSubtle)
@@ -1168,7 +1168,7 @@ private fun ChatThinkingBubble() {
   ClawPanel {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
       ClawStatusPill(text = nativeString("Thinking"), status = ClawStatus.Warning)
-      Text(text = nativeString("OpenClaw is preparing a response."), style = ClawTheme.type.body, color = ClawTheme.colors.textMuted)
+      Text(text = nativeString("Operator is preparing a response."), style = ClawTheme.type.body, color = ClawTheme.colors.textMuted)
     }
   }
 }
@@ -1753,7 +1753,7 @@ private fun ChatInputPill(
             decorationBox = { innerTextField ->
               Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                 if (value.isEmpty()) {
-                  Text(text = nativeString("Message OpenClaw"), style = ClawTheme.type.body, color = ClawTheme.colors.textSubtle)
+                  Text(text = nativeString("Message Operator"), style = ClawTheme.type.body, color = ClawTheme.colors.textSubtle)
                 }
                 innerTextField()
               }

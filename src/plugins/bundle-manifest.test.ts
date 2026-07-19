@@ -33,7 +33,7 @@ type ReadonlyBundleManifestExpectation = Omit<
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-bundle-manifest", tempDirs);
+  return makeTrackedTempDir("operator-bundle-manifest", tempDirs);
 }
 
 const mkdirSafe = mkdirSafeDir;
@@ -149,9 +149,9 @@ afterEach(() => {
 });
 
 describe("bundle manifest parsing", () => {
-  it("does not treat openclaw.bundle.json as a bundle manifest", () => {
+  it("does not treat operator.bundle.json as a bundle manifest", () => {
     const rootDir = makeTempDir();
-    writeBundleManifest(rootDir, "openclaw.bundle.json", {
+    writeBundleManifest(rootDir, "operator.bundle.json", {
       name: "Not Real",
       skills: ["skills"],
     });

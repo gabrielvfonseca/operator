@@ -1,5 +1,5 @@
 // Imessage plugin module implements channel behavior.
-import { resolveOutboundSendDep } from "openclaw/plugin-sdk/channel-outbound";
+import { resolveOutboundSendDep } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import { resolveIMessageDuplicateSourceOwner, type ResolvedIMessageAccount } from "./accounts.js";
 import { PAIRING_APPROVED_MESSAGE, resolveChannelMediaMaxBytes } from "./channel-api.js";
 import type { ChannelPlugin } from "./channel-api.js";

@@ -1,13 +1,13 @@
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { isPathInside } from "openclaw/plugin-sdk/security-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { isPathInside } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import {
   asOptionalRecord as asRecord,
   normalizeLowercaseStringOrEmpty,
   normalizeStringEntries,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   ACTIVE_MEMORY_RESERVED_TOOLS_ALLOW,
   DEFAULT_ACTIVE_MEMORY_TOOLS_ALLOW,

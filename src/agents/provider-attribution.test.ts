@@ -190,7 +190,7 @@ describe("provider attribution", () => {
       product: "Operator",
       version: "2026.3.22",
       headers: {
-        "HTTP-Referer": "https://openclaw.ai",
+        "HTTP-Referer": "https://operator.ai",
         "X-OpenRouter-Title": "Operator",
         "X-OpenRouter-Categories":
           "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent",
@@ -246,7 +246,7 @@ describe("provider attribution", () => {
         OPERATOR_VERSION: "2026.3.22",
       })?.headers,
     ).toEqual({
-      "HTTP-Referer": "https://openclaw.ai",
+      "HTTP-Referer": "https://operator.ai",
       "X-OpenRouter-Title": "Operator",
       "X-OpenRouter-Categories":
         "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent",
@@ -264,7 +264,7 @@ describe("provider attribution", () => {
       product: "Operator",
       version: "2026.3.22",
       headers: {
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       },
@@ -272,7 +272,7 @@ describe("provider attribution", () => {
     expect(
       resolveProviderAttributionPolicy("openai", { OPERATOR_VERSION: "2026.3.22" })?.headers,
     ).toEqual({
-      originator: "openclaw",
+      originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
       "User-Agent": "openclaw/2026.3.22",
     });
@@ -289,7 +289,7 @@ describe("provider attribution", () => {
       product: "Operator",
       version: "2026.3.22",
       headers: {
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       },
@@ -307,7 +307,7 @@ describe("provider attribution", () => {
       product: "Operator",
       version: "2026.3.22",
       headers: {
-        originator: "openclaw",
+        originator: "@gabrielvfonseca/operator",
         version: "2026.3.22",
         "User-Agent": "openclaw/2026.3.22",
       },
@@ -315,7 +315,7 @@ describe("provider attribution", () => {
     expect(
       resolveProviderAttributionPolicy("xai", { OPERATOR_VERSION: "2026.3.22" })?.headers,
     ).toEqual({
-      originator: "openclaw",
+      originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
       "User-Agent": "openclaw/2026.3.22",
     });
@@ -373,7 +373,7 @@ describe("provider attribution", () => {
         { OPERATOR_VERSION: "2026.3.22" },
       ).attributionHeaders,
     ).toEqual({
-      originator: "openclaw",
+      originator: "@gabrielvfonseca/operator",
       version: "2026.3.22",
       "User-Agent": "openclaw/2026.3.22",
     });

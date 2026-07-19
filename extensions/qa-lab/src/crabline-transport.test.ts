@@ -1,9 +1,9 @@
 // Qa Lab tests cover Crabline local-provider transport integration behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OperatorCrablineChannelDriverSelection } from "@operator/crabline";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
-import { withTempDir } from "openclaw/plugin-sdk/test-env";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import { withTempDir } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+import type { OperatorCrablineChannelDriverSelection } from "@openclaw/crabline";
 import { describe, expect, it } from "vitest";
 import { createQaBusState } from "./bus-state.js";
 import { createQaCrablineTransportAdapter } from "./crabline-transport.js";
@@ -656,7 +656,7 @@ describe("crabline transport", () => {
               encryption: false,
               homeserver: expect.stringMatching(/^http:\/\/127\.0\.0\.1:\d+$/u),
               network: { dangerouslyAllowPrivateNetwork: true },
-              userId: "@openclaw:matrix.test",
+              userId: "@operator:matrix.test",
             },
           },
         });
@@ -668,7 +668,7 @@ describe("crabline transport", () => {
         expect(transport.createRuntimeEnvPatch?.()).toMatchObject({
           MATRIX_ACCESS_TOKEN: expect.any(String),
           MATRIX_BASE_URL: expect.stringMatching(/^http:\/\/127\.0\.0\.1:\d+$/u),
-          MATRIX_USER_ID: "@openclaw:matrix.test",
+          MATRIX_USER_ID: "@operator:matrix.test",
         });
 
         const roomId = "main";

@@ -3,7 +3,7 @@
  * Converts nested provider, transport, timeout, auth, and local coordination
  * failures into structured failover reasons and remediation metadata.
  */
-import { parseStrictNonNegativeInteger } from "@operator/normalization-core/number-coercion";
+import { parseStrictNonNegativeInteger } from "@gabrielvfonseca/normalization-core/number-coercion";
 import { formatCliCommand } from "../cli/command-format.js";
 import { readErrorName } from "../infra/errors.js";
 import {
@@ -706,7 +706,7 @@ export function buildProviderReauthCommand(
     return undefined;
   }
   return formatCliCommand(
-    `operator models auth login --provider ${quotePosixShellArg(trimmed)} --force`,
+    `openclaw models auth login --provider ${quotePosixShellArg(trimmed)} --force`,
     env,
   );
 }

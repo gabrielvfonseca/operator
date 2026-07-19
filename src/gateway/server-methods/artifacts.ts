@@ -1,9 +1,9 @@
 // Artifact gateway methods collect generated artifacts from session transcripts
 // and expose list/get/download RPCs scoped by session, run, task, or agent.
 import { createHash } from "node:crypto";
-import { isHttpUrl } from "@operator/net-policy/url-protocol";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString as asNonEmptyString } from "@operator/normalization-core/string-coerce";
+import { isHttpUrl } from "@gabrielvfonseca/net-policy/url-protocol";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString as asNonEmptyString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,
@@ -279,18 +279,18 @@ function artifactId(parts: {
 }
 
 function resolveMessageSeq(message: Record<string, unknown>, fallback: number): number {
-  const meta = asOptionalRecord(message["__operator"]);
+  const meta = asOptionalRecord(message["__openclaw"]);
   const seq = meta?.seq;
   return typeof seq === "number" && Number.isInteger(seq) && seq > 0 ? seq : fallback;
 }
 
 function resolveMessageRunId(message: Record<string, unknown>): string | undefined {
-  const meta = asOptionalRecord(message["__operator"]);
+  const meta = asOptionalRecord(message["__openclaw"]);
   return asNonEmptyString(meta?.runId) ?? asNonEmptyString(message.runId);
 }
 
 function resolveMessageTaskId(message: Record<string, unknown>): string | undefined {
-  const meta = asOptionalRecord(message["__operator"]);
+  const meta = asOptionalRecord(message["__openclaw"]);
   return (
     asNonEmptyString(meta?.messageTaskId) ??
     asNonEmptyString(meta?.taskId) ??

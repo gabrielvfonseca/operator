@@ -4,7 +4,7 @@
  * round-robin ordering semantics.
  */
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { resolveAuthProfileOrder } from "./auth-profiles/order.js";
 import type { AuthProfileStore } from "./auth-profiles/types.js";
 

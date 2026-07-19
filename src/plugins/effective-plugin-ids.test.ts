@@ -1,6 +1,6 @@
 /** Verifies effective plugin id resolution across config, manifests, and activation sources. */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "./plugin-metadata-snapshot.js";
 
 const mocks = vi.hoisted(() => ({

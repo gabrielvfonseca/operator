@@ -1,7 +1,7 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.gateway.GatewayConnectErrorDetails
-import ai.openclaw.app.gateway.GatewaySession
+import ai.operator.app.gateway.GatewayConnectErrorDetails
+import ai.operator.app.gateway.GatewaySession
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals

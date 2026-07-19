@@ -3,7 +3,7 @@
  *
  * Loads paired nodes from Gateway and resolves requested/default nodes with legacy pair-list fallback.
  */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { parseNodeList, parsePairingList } from "../../shared/node-list-parse.js";
 import type { NodeListNode } from "../../shared/node-list-types.js";
 import { resolveNodeFromNodeList, resolveNodeIdFromNodeList } from "../../shared/node-resolve.js";

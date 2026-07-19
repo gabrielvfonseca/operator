@@ -4,8 +4,8 @@ import { randomUUID } from "node:crypto";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { validateNodePresenceActivityPayload } from "../../packages/gateway-protocol/src/index.js";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { updatePairedDeviceMetadata } from "../infra/device-pairing.js";

@@ -7,9 +7,9 @@
 
 // Extensions cannot import core internals directly, so use node:crypto here.
 import { randomBytes } from "node:crypto";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { PendingApproval } from "../settings.js";
 
 export type { PendingApproval };

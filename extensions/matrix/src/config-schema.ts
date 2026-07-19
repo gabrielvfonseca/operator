@@ -9,8 +9,8 @@ import {
   MarkdownConfigSchema,
   MentionPatternsPolicySchema,
   ToolPolicySchema,
-} from "openclaw/plugin-sdk/channel-config-schema";
-import { buildSecretInputSchema } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-config-schema";
+import { buildSecretInputSchema } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import { z } from "zod";
 import { matrixChannelConfigUiHints } from "./config-ui-hints.js";
 

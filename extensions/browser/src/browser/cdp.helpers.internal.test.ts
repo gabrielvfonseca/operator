@@ -141,7 +141,7 @@ describe("cdp.helpers internal", () => {
       });
 
       const { release: guardedRelease } = await fetchCdpChecked(
-        "http://openclaw:secret@127.0.0.1:9222/json/version",
+        "http://operator:secret@127.0.0.1:9222/json/version",
         250,
         undefined,
         { dangerouslyAllowPrivateNetwork: false, allowedHostnames: ["127.0.0.1"] },

@@ -46,7 +46,7 @@ describe("auth-profile database permission repair", () => {
   });
 
   it("keeps captured auth rows when pre-commit permission repair fails", () => {
-    const stateDir = tempDirs.make("openclaw-auth-chmod-");
+    const stateDir = tempDirs.make("operator-auth-chmod-");
     vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const agentDir = join(stateDir, "agents", "main", "agent");
     const initial: AuthProfileStore = {
@@ -93,7 +93,7 @@ describe("auth-profile database permission repair", () => {
   });
 
   it("does not publish a caller-owned save before permission repair commits", () => {
-    const stateDir = tempDirs.make("openclaw-auth-overload-chmod-");
+    const stateDir = tempDirs.make("operator-auth-overload-chmod-");
     vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
     const agentDir = join(stateDir, "agents", "main", "agent");
     const initial: AuthProfileStore = {

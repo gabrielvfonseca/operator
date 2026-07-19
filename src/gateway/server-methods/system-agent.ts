@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "@gabrielvfonseca/operator/plugin-sdk/keyed-async-queue";
 // Operator gateway methods host the setup/repair conversation for clients.
 import {
   ErrorCodes,
@@ -35,7 +35,7 @@ import { assertValidParams } from "./validation.js";
 
 /**
  * `operator.chat` lets clients (macOS app onboarding, future UIs) run the
- * same conversational setup as `operator setup`. Structured setup owns
+ * same conversational setup as `openclaw setup`. Structured setup owns
  * the pre-inference phase; a new chat session starts only after a live model
  * turn succeeds.
  *

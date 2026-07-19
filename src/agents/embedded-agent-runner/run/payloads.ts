@@ -4,7 +4,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SourceReplyDeliveryMode } from "../../../auto-reply/get-reply-options.types.js";
 import {
   createHeartbeatToolResponsePayload,
@@ -253,7 +253,7 @@ const LITERAL_RUN_SUMMARY_PREFIXES = new Set([
   "pnpm",
   "yarn",
   "bun",
-  "operator",
+  "@gabrielvfonseca/operator",
   "make",
   "cargo",
   "go",

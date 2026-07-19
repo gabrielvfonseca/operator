@@ -29,7 +29,7 @@ async function createLingeringPluginFixture(): Promise<{
   markerPath: string;
   stateDir: string;
 }> {
-  const root = tempDirs.make("openclaw-hooks-cli-");
+  const root = tempDirs.make("operator-hooks-cli-");
   const stateDir = path.join(root, "state");
   const pluginDir = path.join(root, "linger-plugin");
   const markerPath = path.join(root, "registered");
@@ -41,11 +41,11 @@ async function createLingeringPluginFixture(): Promise<{
       name: "linger-plugin",
       version: "1.0.0",
       type: "module",
-      openclaw: { extensions: ["./index.js"] },
+      operator: { extensions: ["./index.js"] },
     }),
   );
   await fs.writeFile(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify({
       id: "linger",
       name: "Linger",
@@ -67,7 +67,7 @@ async function createLingeringPluginFixture(): Promise<{
       "",
     ].join("\n"),
   );
-  const configPath = path.join(stateDir, "openclaw.json");
+  const configPath = path.join(stateDir, "operator.json");
   await fs.writeFile(
     configPath,
     JSON.stringify({
@@ -85,7 +85,7 @@ async function createLingeringPreloadFixture(): Promise<{
   preloadPath: string;
   stateDir: string;
 }> {
-  const root = tempDirs.make("openclaw-hooks-relay-");
+  const root = tempDirs.make("operator-hooks-relay-");
   const markerPath = path.join(root, "loaded");
   const preloadPath = path.join(root, "linger.mjs");
   const stateDir = path.join(root, "state");

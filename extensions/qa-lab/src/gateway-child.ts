@@ -7,17 +7,17 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import {
   isRecord,
   normalizeStringEntries,
   uniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   createQaBundledPluginsDir,
   resolveQaBundledPluginSourceDir,
@@ -908,7 +908,7 @@ export async function startQaGatewayChild(params: {
   // Verified launchers may require every runtime artifact to stay inside their
   // prepared root; carry that root forward instead of rediscovering host temp policy.
   const tempParentDir = params.command?.tempParentDir ?? resolvePreferredOperatorTmpDir();
-  const tempRoot = await fs.mkdtemp(path.join(tempParentDir, "openclaw-qa-suite-"));
+  const tempRoot = await fs.mkdtemp(path.join(tempParentDir, "operator-qa-suite-"));
   const runtimeCwd = tempRoot;
   const distEntryPath = path.join(params.repoRoot, "dist", "index.js");
   const gatewayCommand =
@@ -924,7 +924,7 @@ export async function startQaGatewayChild(params: {
   const xdgConfigHome = path.join(tempRoot, "xdg-config");
   const xdgDataHome = path.join(tempRoot, "xdg-data");
   const xdgCacheHome = path.join(tempRoot, "xdg-cache");
-  const configPath = path.join(tempRoot, "openclaw.json");
+  const configPath = path.join(tempRoot, "operator.json");
   const gatewayToken = `qa-suite-${randomUUID()}`;
   const transport = params.transport ?? createQaGatewayEmptyTransport();
   await seedQaAgentWorkspace({

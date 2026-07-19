@@ -1,11 +1,11 @@
 ---
-name: release-openclaw-mac
-description: "Run or recover OpenClaw macOS release signing, notarization, appcast, and asset promotion."
+name: release-operator-mac
+description: "Run or recover Operator macOS release signing, notarization, appcast, and asset promotion."
 ---
 
-# OpenClaw Mac Release
+# Operator Mac Release
 
-Use with `$release-openclaw-maintainer`, `$release-openclaw-ci`, `$one-password`, and `$release-private` if it exists when stable macOS assets, release-ops mac preflight, notarization, appcast promotion, or mac release recovery is involved.
+Use with `$release-operator-maintainer`, `$release-operator-ci`, `$one-password`, and `$release-private` if it exists when stable macOS assets, release-ops mac preflight, notarization, appcast promotion, or mac release recovery is involved.
 
 ## Credentials
 
@@ -57,7 +57,7 @@ Do not update these from mixed sources. All three ASC fields must come from the 
 
 ## Notarization
 
-- OpenClaw uses `scripts/notarize-mac-artifact.sh`.
+- Operator uses `scripts/notarize-mac-artifact.sh`.
 - `xcrun notarytool submit` should use `--no-s3-acceleration`; accelerated upload can surface misleading 401s even when `notarytool history` succeeds.
 - If signing succeeds but notarization fails immediately with 401, check ASC key freshness first.
 - If notarization stays in progress for several minutes after key-file write, that is normal Apple wait time; do not edit blindly.
@@ -72,7 +72,7 @@ workflow; the publisher owns draft creation and final undraft.
 Public handoff validation:
 
 ```bash
-gh workflow run macos-release.yml --repo openclaw/openclaw \
+gh workflow run macos-release.yml --repo openclaw/operator \
   --ref release/YYYY.M.PATCH \
   -f tag=vYYYY.M.PATCH \
   -f preflight_only=true \
@@ -87,7 +87,7 @@ gh workflow run macos-release.yml --repo openclaw/openclaw \
 Release-ops preflight:
 
 ```bash
-gh workflow run openclaw-macos-publish.yml --repo openclaw/releases --ref main \
+gh workflow run operator-macos-publish.yml --repo openclaw/releases --ref main \
   -f tag=vYYYY.M.PATCH \
   -f source_ref=release/YYYY.M.PATCH \
   -f preflight_only=true \
@@ -103,7 +103,7 @@ reviewer. Record the successful preflight run id.
 Release-ops validation for a branch-variation preflight:
 
 ```bash
-gh workflow run openclaw-macos-validate.yml --repo openclaw/releases --ref main \
+gh workflow run operator-macos-validate.yml --repo openclaw/releases --ref main \
   -f tag=vYYYY.M.PATCH \
   -f source_ref=release/YYYY.M.PATCH
 ```
@@ -113,7 +113,7 @@ Record the successful validation run id.
 Real publish:
 
 ```bash
-gh workflow run openclaw-macos-publish.yml --repo openclaw/releases --ref main \
+gh workflow run operator-macos-publish.yml --repo openclaw/releases --ref main \
   -f tag=vYYYY.M.PATCH \
   -f preflight_only=false \
   -f smoke_test_only=false \
@@ -128,11 +128,11 @@ publish run before it promotes assets.
 
 - Release-ops `openclaw/releases` publish/validate workflows run from their own
   trusted `main` workflow ref. Real publish has a guard that rejects any other
-  workflow ref. That displayed `main` ref is expected; the public OpenClaw
+  workflow ref. That displayed `main` ref is expected; the public Operator
   source is selected by `tag` and optional `source_ref`.
 
 ## Verify
 
 - `gh release view vYYYY.M.PATCH --repo openclaw/openclaw` shows zip, dmg, dSYM zip, not draft, not prerelease.
-- Public `main` `appcast.xml` points at `OpenClaw-YYYY.M.PATCH.zip`.
+- Public `main` `appcast.xml` points at `Operator-YYYY.M.PATCH.zip`.
 - Appcast entry has `sparkle:version`, `sparkle:shortVersionString`, length, and `sparkle:edSignature`.

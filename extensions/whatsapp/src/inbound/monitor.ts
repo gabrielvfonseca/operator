@@ -1,3 +1,22 @@
+import { recordChannelActivity } from "@gabrielvfonseca/operator/plugin-sdk/channel-activity-runtime";
+import {
+  formatInboundMediaUnavailableText,
+  formatLocationText,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { createInboundDebouncer } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound-debounce";
+import {
+  collectErrorGraphCandidates,
+  formatErrorMessage,
+} from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { getChildLogger } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
+import {
+  asDateTimestampMs,
+  parseStrictFiniteNumber,
+  resolveExpiresAtMsFromDurationMs,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { defaultRuntime } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Whatsapp plugin module implements monitor behavior.
 import type {
   AnyMessageContent,
@@ -9,22 +28,6 @@ import type {
   WAMessageKey,
   WASocket,
 } from "baileys";
-import { recordChannelActivity } from "openclaw/plugin-sdk/channel-activity-runtime";
-import {
-  formatInboundMediaUnavailableText,
-  formatLocationText,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { createInboundDebouncer } from "openclaw/plugin-sdk/channel-inbound-debounce";
-import { collectErrorGraphCandidates, formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { getChildLogger } from "openclaw/plugin-sdk/logging-core";
-import {
-  asDateTimestampMs,
-  parseStrictFiniteNumber,
-  resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import { defaultRuntime } from "openclaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { maybeResolveWhatsAppApprovalReaction } from "../approval-reactions.js";
 import { readWebSelfIdentityForDecision, WhatsAppAuthUnstableError } from "../auth-store.js";
 import { getWhatsAppConnectionController } from "../connection-controller-runtime-context.js";

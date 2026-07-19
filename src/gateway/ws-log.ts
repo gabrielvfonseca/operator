@@ -1,9 +1,9 @@
 // Gateway WebSocket log formatting.
 // Redacts and compacts request/response/event metadata for console diagnostics.
-import { readStringValue } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { readStringValue } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
+import { resolveSendableOutboundReplyParts } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import chalk from "chalk";
-import { resolveSendableOutboundReplyParts } from "operator/plugin-sdk/reply-payload";
 import { isVerbose } from "../globals.js";
 import { stringifyNonErrorCause } from "../infra/errors.js";
 import { shouldLogSubsystemToConsole } from "../logging/console.js";

@@ -3,7 +3,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 
 export type ParsedAgentSessionKey = {
   agentId: string;
@@ -41,7 +41,7 @@ export type RawSessionConversationRef = {
  * Session keys are canonicalized to lowercase for stable comparison/routing, but
  * some channels own opaque, case-SENSITIVE peer IDs that must survive verbatim.
  * Channels enroll here individually; un-enrolled channels keep the default
- * lowercase behavior. See operator/operator#75670 (Matrix) and #82853 (Signal).
+ * lowercase behavior. See openclaw/openclaw#75670 (Matrix) and #82853 (Signal).
  *
  *   span "segment" — preserve a single colon-free id segment, matched anywhere
  *                    (incl. unscoped keys without an `agent:<id>:` head).

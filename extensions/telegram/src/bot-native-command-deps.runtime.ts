@@ -1,13 +1,13 @@
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
-import { getPluginCommandSpecs } from "openclaw/plugin-sdk/plugin-runtime";
+import { readChannelAllowFromStore } from "@gabrielvfonseca/operator/plugin-sdk/conversation-runtime";
+import { getPluginCommandSpecs } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 // Telegram plugin module implements bot native command deps behavior.
 import type {
   ModelsAuthLoginFlowOptions,
   ModelsAuthLoginFlowResult,
-} from "openclaw/plugin-sdk/provider-auth-login-flow-runtime";
-import { dispatchReplyWithBufferedBlockDispatcher } from "openclaw/plugin-sdk/reply-dispatch-runtime";
-import { getRuntimeConfig } from "openclaw/plugin-sdk/runtime-config-snapshot";
-import { listSkillCommandsForAgents } from "openclaw/plugin-sdk/skill-commands-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-login-flow-runtime";
+import { dispatchReplyWithBufferedBlockDispatcher } from "@gabrielvfonseca/operator/plugin-sdk/reply-dispatch-runtime";
+import { getRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+import { listSkillCommandsForAgents } from "@gabrielvfonseca/operator/plugin-sdk/skill-commands-runtime";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import { syncTelegramMenuCommands } from "./bot-native-command-menu.js";
 import { loadTelegramSendModule } from "./send-runtime.js";

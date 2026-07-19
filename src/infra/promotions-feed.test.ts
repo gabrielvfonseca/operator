@@ -10,7 +10,7 @@ import { useMockHttp } from "../test-utils/mock-http.js";
 import {
   createOperatorTestState,
   type OperatorTestState,
-} from "../test-utils/operator-test-state.js";
+} from "../test-utils/openclaw-test-state.js";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "./kysely-sync.js";
 import {
   listLivePromotionEntries,
@@ -54,7 +54,7 @@ describe("promotions feed state", () => {
   beforeEach(async () => {
     testState = await createOperatorTestState({
       layout: "state-only",
-      prefix: "openclaw-promotions-feed-",
+      prefix: "operator-promotions-feed-",
     });
   });
 

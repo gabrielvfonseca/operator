@@ -22,7 +22,10 @@ describe("stopKnownBrowserProfiles", () => {
           releases.push(() => resolve({ stopped: true }));
         }),
     );
-    const runtimes = [{ profile: { name: "openclaw" } }, { profile: { name: "user" } }];
+    const runtimes = [
+      { profile: { name: "@gabrielvfonseca/operator" } },
+      { profile: { name: "user" } },
+    ];
     const state = { profiles: new Map(runtimes.map((runtime) => [runtime.profile.name, runtime])) };
 
     const stopping = stopKnownBrowserProfiles({
@@ -43,7 +46,10 @@ describe("stopKnownBrowserProfiles", () => {
     beginProfileTransitionMock
       .mockResolvedValueOnce({ stopped: true })
       .mockRejectedValueOnce(new Error("profile stop failed"));
-    const runtimes = [{ profile: { name: "openclaw" } }, { profile: { name: "user" } }];
+    const runtimes = [
+      { profile: { name: "@gabrielvfonseca/operator" } },
+      { profile: { name: "user" } },
+    ];
     const state = { profiles: new Map(runtimes.map((runtime) => [runtime.profile.name, runtime])) };
     const onWarn = vi.fn();
 

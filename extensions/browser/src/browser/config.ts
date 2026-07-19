@@ -6,11 +6,11 @@
  */
 import os from "node:os";
 import path from "node:path";
-import { MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+import { MAX_TIMER_TIMEOUT_MS } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   normalizeOptionalString,
   normalizeOptionalTrimmedStringList,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { BrowserConfig, BrowserProfileConfig, OperatorConfig } from "../config/config.js";
 import { resolveGatewayPort } from "../config/paths.js";
 import {
@@ -114,7 +114,7 @@ export type ResolvedBrowserProfile = {
   mcpCommand?: string;
   mcpArgs?: string[];
   color: string;
-  driver: "openclaw" | "existing-session" | "extension";
+  driver: "@gabrielvfonseca/operator" | "existing-session" | "extension";
   executablePath?: string;
   headless: boolean;
   headlessSource?: "profile" | "config" | "default";
@@ -137,7 +137,7 @@ const DEFAULT_BROWSER_CDP_PORT_RANGE_START = 18800;
  */
 const EXTENSION_RELAY_PORT_OFFSET = 8;
 /** Username half of the relay's Basic credential; the password is the derived token. */
-const EXTENSION_RELAY_CDP_USER = "openclaw";
+const EXTENSION_RELAY_CDP_USER = "@gabrielvfonseca/operator";
 const MAX_BROWSER_STARTUP_TIMEOUT_MS = 120_000;
 /** Environment variable that overrides managed Chrome headless mode. */
 const OPERATOR_BROWSER_HEADLESS_ENV = "OPERATOR_BROWSER_HEADLESS";
@@ -260,7 +260,9 @@ function hasLinuxDisplay(env: NodeJS.ProcessEnv): boolean {
 }
 
 function isLocalManagedProfile(profile: ResolvedBrowserProfile): boolean {
-  return profile.driver === "openclaw" && profile.cdpIsLoopback && !profile.attachOnly;
+  return (
+    profile.driver === "@gabrielvfonseca/operator" && profile.cdpIsLoopback && !profile.attachOnly
+  );
 }
 
 function resolveBrowserTabCleanupConfig(
@@ -593,7 +595,7 @@ export function resolveProfile(
   const driver =
     profile.driver === "existing-session" || profile.driver === "extension"
       ? profile.driver
-      : "openclaw";
+      : "@gabrielvfonseca/operator";
   const headless = profile.headless ?? resolved.headless;
   const headlessSource =
     typeof profile.headless === "boolean" ? "profile" : resolved.headlessSource;

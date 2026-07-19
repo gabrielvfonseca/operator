@@ -1,13 +1,13 @@
 // Matrix plugin entrypoint registers its Operator integration.
 import { format } from "node:util";
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelRuntimeSurface } from "openclaw/plugin-sdk/channel-contract";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelRuntimeSurface } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 import {
   resolveChannelStreamingBlockEnabled,
   waitUntilAbort,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import { resolveOptionalIntegerOption } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import { resolveOptionalIntegerOption } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveThreadBindingIdleTimeoutMsForChannel,

@@ -1,6 +1,6 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
-import ai.openclaw.app.GatewayAgentSummary
+import ai.operator.app.GatewayAgentSummary
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -54,7 +54,7 @@ class AgentAvatarTest {
     assertNull(agentAvatarSource(agent(avatarUrl = "data:image/png,raw")))
     assertNull(agentAvatarSource(agent(avatarUrl = "data:text/plain;base64,dGV4dA==")))
     assertNull(agentAvatarSource(agent(avatarUrl = "data:image/png;base64,")))
-    assertNull(agentAvatarSource(agent(avatar = "avatars/openclaw.png")))
+    assertNull(agentAvatarSource(agent(avatar = "avatars/operator.png")))
     assertNull(agentAvatarSource(agent(avatar = "🦞")))
   }
 

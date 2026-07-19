@@ -1,24 +1,24 @@
 {
-  "name": "@operator/llama-cpp-provider",
+  "name": "@gabrielvfonseca/llama-cpp-provider",
   "version": "2026.7.2",
   "description": "Operator llama.cpp embedding provider plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "optionalDependencies": {
     "node-llama-cpp": "3.19.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/llama-cpp-provider",
+      "npmSpec": "@gabrielvfonseca/llama-cpp-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.2"
     },

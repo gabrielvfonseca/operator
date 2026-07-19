@@ -7,7 +7,7 @@ import WatchKit
 #endif
 
 public enum InstanceIdentity {
-    private static let suiteName = "ai.openclaw.shared"
+    private static let suiteName = "ai.operator.shared"
     private static let instanceIdKey = "instanceId"
 
     private static var defaults: UserDefaults {
@@ -44,7 +44,7 @@ public enum InstanceIdentity {
         let name = Self.readMainActor {
             UIDevice.current.name.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        return name.isEmpty ? "openclaw" : name
+        return name.isEmpty ? "@gabrielvfonseca/operator" : name
         #elseif os(watchOS)
         let name = Self.readMainActor {
             WKInterfaceDevice.current().name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -56,7 +56,7 @@ public enum InstanceIdentity {
         {
             return name
         }
-        return "openclaw"
+        return "@gabrielvfonseca/operator"
         #endif
     }()
 

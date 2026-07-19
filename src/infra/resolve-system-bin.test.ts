@@ -1,6 +1,6 @@
 // Covers trusted system binary resolution across platform install roots.
 import path from "node:path";
-import { importFreshModule } from "openclaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 type ResolveSystemBin = typeof import("./resolve-system-bin.js").resolveSystemBin;

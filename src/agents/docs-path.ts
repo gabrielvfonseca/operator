@@ -3,10 +3,10 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { resolveOperatorPackageRoot } from "../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../infra/openclaw-root.js";
 
 export const OPERATOR_DOCS_URL = "https://docs.operator.ai";
-export const OPERATOR_SOURCE_URL = "https://github.com/operator/operator";
+export const OPERATOR_SOURCE_URL = "https://github.com/openclaw/openclaw";
 
 type ResolveOperatorReferencePathParams = {
   workspaceDir?: string;

@@ -25,7 +25,7 @@ function createMissingCounts() {
 }
 
 function createDatabaseOptions() {
-  const stateDir = makeTempDir(tempDirs, "openclaw-session-upstream-monitor-");
+  const stateDir = makeTempDir(tempDirs, "operator-session-upstream-monitor-");
   vi.stubEnv("OPERATOR_STATE_DIR", stateDir);
   return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }
@@ -618,7 +618,7 @@ describe("session upstream monitor", () => {
         message: {
           role: "user",
           content: "visible prompt",
-          __openclaw: {
+          __operator: {
             mirrorOrigin: "codex-app-server",
             upstreamUserText: " exact   decorated prompt ",
           },

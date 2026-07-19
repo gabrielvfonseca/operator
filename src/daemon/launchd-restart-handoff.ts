@@ -2,8 +2,8 @@
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
-import { err, ok, type Result } from "@operator/normalization-core/result";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { err, ok, type Result } from "@gabrielvfonseca/normalization-core/result";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { sanitizeHostExecEnv } from "../infra/host-env-security.js";
@@ -99,7 +99,7 @@ function buildLaunchdRestartScript(
   const waitForCallerPid = `wait_pid="$4"
 label="$5"
 ${renderPosixRestartLogSetup(restartLogEnv)}
-printf '[%s] operator restart attempt source=launchd-handoff mode=${mode} target=%s waitPid=%s\\n' "$(date -u +%FT%TZ)" "$service_target" "$wait_pid" >&2
+printf '[%s] openclaw restart attempt source=launchd-handoff mode=${mode} target=%s waitPid=%s\\n' "$(date -u +%FT%TZ)" "$service_target" "$wait_pid" >&2
 if [ -n "$wait_pid" ] && [ "$wait_pid" -gt 1 ] 2>/dev/null; then
   while kill -0 "$wait_pid" >/dev/null 2>&1; do
     sleep 0.1
@@ -127,9 +127,9 @@ else
   fi
 fi
 if [ "$status" -eq 0 ]; then
-  printf '[%s] operator restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
+  printf '[%s] openclaw restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
 else
-  printf '[%s] operator restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+  printf '[%s] openclaw restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
 fi
 exit "$status"
 `;
@@ -167,9 +167,9 @@ else
   status=$?
 fi
 if [ "$status" -eq 0 ]; then
-  printf '[%s] operator restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
+  printf '[%s] openclaw restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
 else
-  printf '[%s] operator restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+  printf '[%s] openclaw restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
 fi
 exit "$status"
 `;
@@ -178,7 +178,7 @@ exit "$status"
   const verifyLaunchdReload = `print_retry_count="${START_AFTER_EXIT_PRINT_RETRY_COUNT}"
 while [ "$print_retry_count" -gt 0 ]; do
   if launchctl print "$service_target" >/dev/null 2>&1; then
-    printf '[%s] operator restart done source=launchd-handoff mode=${mode} reason=launchd-auto-reload\\n' "$(date -u +%FT%TZ)" >&2
+    printf '[%s] openclaw restart done source=launchd-handoff mode=${mode} reason=launchd-auto-reload\\n' "$(date -u +%FT%TZ)" >&2
     exit 0
   fi
   print_retry_count=$((print_retry_count - 1))
@@ -202,9 +202,9 @@ else
   status=$?
 fi
 if [ "$status" -eq 0 ]; then
-  printf '[%s] operator restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
+  printf '[%s] openclaw restart done source=launchd-handoff mode=${mode}\\n' "$(date -u +%FT%TZ)" >&2
 else
-  printf '[%s] operator restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+  printf '[%s] openclaw restart failed source=launchd-handoff mode=${mode} status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
 fi
 exit "$status"
 `;

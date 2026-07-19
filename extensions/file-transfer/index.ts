@@ -3,7 +3,7 @@ import {
   definePluginEntry,
   type AnyAgentTool,
   type OperatorPluginNodeHostCommand,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { createLazyFileTransferNodeInvokePolicy } from "./src/shared/lazy-node-invoke-policy.js";
 import {
   DIR_FETCH_TOOL_DESCRIPTOR,

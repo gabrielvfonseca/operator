@@ -3,8 +3,8 @@ import {
   listCombinedAccountIds,
   normalizeAccountId,
   resolveNormalizedAccountEntry,
-} from "openclaw/plugin-sdk/account-resolution";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { resolveTwitchToken, type TwitchTokenResolution } from "./token.js";
 import type { TwitchAccountConfig } from "./types.js";
 import { isAccountConfigured } from "./utils/twitch.js";

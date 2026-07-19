@@ -7,9 +7,9 @@ import type {
   ChannelIngressQueueClaimRef,
   ChannelIngressQueueCorruptClaim,
   ChannelIngressQueueRecord,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { resolveStateDir } from "@gabrielvfonseca/operator/plugin-sdk/state-paths";
 import type { TelegramBotInfo } from "./bot-info.js";
 import { getTelegramRuntime } from "./runtime.js";
 import { getTelegramSequentialKey } from "./sequential-key.js";

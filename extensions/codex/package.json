@@ -1,10 +1,10 @@
 {
-  "name": "@operator/codex",
+  "name": "@gabrielvfonseca/codex",
   "version": "2026.7.2",
   "description": "Operator Codex app-server harness, model provider, and native session supervision plugin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -16,14 +16,14 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/codex",
+      "npmSpec": "@gabrielvfonseca/codex",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.1-beta.1",
       "requiredPlatformPackages": [

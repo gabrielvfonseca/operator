@@ -13,15 +13,15 @@ export type {
   OperatorConfig,
   OperatorPluginApi,
   PluginRuntime,
-} from "openclaw/plugin-sdk/core";
-export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
-export type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-export type { ModelsProviderData } from "openclaw/plugin-sdk/models-provider-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+export type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
+export type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+export type { ModelsProviderData } from "@gabrielvfonseca/operator/plugin-sdk/models-provider-runtime";
 export type {
   BlockStreamingCoalesceConfig,
   DmPolicy,
   GroupPolicy,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 export {
   DEFAULT_ACCOUNT_ID,
   buildChannelConfigSchema,
@@ -29,32 +29,32 @@ export {
   parseStrictPositiveInteger,
   resolveClientIp,
   isTrustedProxyAddress,
-} from "openclaw/plugin-sdk/core";
-export { buildComputedAccountStatusSnapshot } from "openclaw/plugin-sdk/channel-status";
-export { createAccountStatusSink } from "openclaw/plugin-sdk/channel-outbound";
-export { buildAgentMediaPayload } from "openclaw/plugin-sdk/agent-media-payload";
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+export { buildComputedAccountStatusSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/channel-status";
+export { createAccountStatusSink } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+export { buildAgentMediaPayload } from "@gabrielvfonseca/operator/plugin-sdk/agent-media-payload";
 export {
   listSkillCommandsForAgents,
   resolveControlCommandGate,
   resolveStoredModelOverride,
-} from "openclaw/plugin-sdk/command-auth-native";
-export { buildModelsProviderData } from "openclaw/plugin-sdk/models-provider-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
+export { buildModelsProviderData } from "@gabrielvfonseca/operator/plugin-sdk/models-provider-runtime";
 export {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/runtime-group-policy";
-export { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
-export { resolveStorePath } from "openclaw/plugin-sdk/session-store-runtime";
-export { formatInboundFromLabel } from "openclaw/plugin-sdk/channel-inbound";
-export { logInboundDrop } from "openclaw/plugin-sdk/channel-inbound";
-export { createChannelPairingController } from "openclaw/plugin-sdk/channel-pairing";
-export { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
-export { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
-export { loadOutboundMediaFromUrl } from "openclaw/plugin-sdk/outbound-media";
-export { rawDataToString } from "openclaw/plugin-sdk/webhook-ingress";
-export { chunkTextForOutbound } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-group-policy";
+export { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
+export { resolveStorePath } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+export { formatInboundFromLabel } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+export { logInboundDrop } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+export { createChannelPairingController } from "@gabrielvfonseca/operator/plugin-sdk/channel-pairing";
+export { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+export { logTypingFailure } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+export { loadOutboundMediaFromUrl } from "@gabrielvfonseca/operator/plugin-sdk/outbound-media";
+export { rawDataToString } from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
+export { chunkTextForOutbound } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 // Legacy map-helper exports stay for older plugin consumers. New message-turn
 // code should use createChannelHistoryWindow.
 export {
@@ -63,22 +63,25 @@ export {
   buildPendingHistoryContextFromMap,
   clearHistoryEntriesIfEnabled,
   recordPendingHistoryEntryIfEnabled,
-} from "openclaw/plugin-sdk/reply-history";
-export { normalizeAccountId, resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-export { resolveAllowlistMatchSimple } from "openclaw/plugin-sdk/allow-from";
-export { registerPluginHttpRoute } from "openclaw/plugin-sdk/webhook-targets";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+export {
+  normalizeAccountId,
+  resolveThreadSessionKeys,
+} from "@gabrielvfonseca/operator/plugin-sdk/routing";
+export { resolveAllowlistMatchSimple } from "@gabrielvfonseca/operator/plugin-sdk/allow-from";
+export { registerPluginHttpRoute } from "@gabrielvfonseca/operator/plugin-sdk/webhook-targets";
 export {
   isRequestBodyLimitError,
   readRequestBodyWithLimit,
-} from "openclaw/plugin-sdk/webhook-ingress";
+} from "@gabrielvfonseca/operator/plugin-sdk/webhook-ingress";
 export {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
   migrateBaseNameToDefaultAccount,
-} from "openclaw/plugin-sdk/setup";
+} from "@gabrielvfonseca/operator/plugin-sdk/setup";
 export {
   getAgentScopedMediaLocalRoots,
   resolveChannelMediaMaxBytes,
-} from "openclaw/plugin-sdk/media-runtime";
-export { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+export { normalizeProviderId } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
 export { setMattermostRuntime } from "./src/runtime.js";

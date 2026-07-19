@@ -211,7 +211,7 @@ describe("matrixOutbound cfg threading", () => {
     };
     expect(rendered?.text).toContain("fallback");
     expect(rendered?.text).toContain("Select thinking level");
-    expect(matrixData.extraContent?.["com.openclaw.presentation"]).toEqual({
+    expect(matrixData.extraContent?.["com.operator.presentation"]).toEqual({
       ...presentation,
       version: 1,
       type: "message.presentation",
@@ -232,7 +232,7 @@ describe("matrixOutbound cfg threading", () => {
     expect(rendered?.text).toBe("---");
     expect(
       (rendered!.channelData!.matrix as { extraContent?: Record<string, unknown> }).extraContent?.[
-        "com.openclaw.presentation"
+        "com.operator.presentation"
       ],
     ).toEqual({
       ...presentation,
@@ -272,7 +272,7 @@ describe("matrixOutbound cfg threading", () => {
         channelData: {
           matrix: {
             extraContent: {
-              "com.openclaw.presentation": presentationContent,
+              "com.operator.presentation": presentationContent,
             },
           },
         },
@@ -291,7 +291,7 @@ describe("matrixOutbound cfg threading", () => {
     expect(options.threadId).toBe("$thread");
     expect(options.replyToId).toBe("$reply");
     expect(options.extraContent).toEqual({
-      "com.openclaw.presentation": presentationContent,
+      "com.operator.presentation": presentationContent,
     });
   });
 
@@ -319,7 +319,7 @@ describe("matrixOutbound cfg threading", () => {
         channelData: {
           matrix: {
             extraContent: {
-              "com.openclaw.presentation": presentationContent,
+              "com.operator.presentation": presentationContent,
             },
           },
         },
@@ -331,7 +331,7 @@ describe("matrixOutbound cfg threading", () => {
     expect(call[0]).toBe("room:!room:example");
     expect(call[1]).toBe("---");
     expect(mockOptions(mocks.sendMessageMatrix, "sendMessageMatrix").extraContent).toEqual({
-      "com.openclaw.presentation": presentationContent,
+      "com.operator.presentation": presentationContent,
     });
   });
 
@@ -363,7 +363,7 @@ describe("matrixOutbound cfg threading", () => {
               body: "spoofed",
               msgtype: "m.notice",
               "m.relates_to": { "m.in_reply_to": { event_id: "$spoof" } },
-              "com.openclaw.presentation": presentationContent,
+              "com.operator.presentation": presentationContent,
             },
           },
         },
@@ -375,7 +375,7 @@ describe("matrixOutbound cfg threading", () => {
     expect(call[0]).toBe("room:!room:example");
     expect(call[1]).toBe("Select model");
     expect(mockOptions(mocks.sendMessageMatrix, "sendMessageMatrix").extraContent).toEqual({
-      "com.openclaw.presentation": presentationContent,
+      "com.operator.presentation": presentationContent,
     });
   });
 
@@ -436,7 +436,7 @@ describe("matrixOutbound cfg threading", () => {
         channelData: {
           matrix: {
             extraContent: {
-              "com.openclaw.presentation": {
+              "com.operator.presentation": {
                 version: 1,
                 type: "message.presentation",
               },
@@ -453,7 +453,7 @@ describe("matrixOutbound cfg threading", () => {
     expect(firstCall[0]).toBe("room:!room:example");
     expect(firstCall[1]).toBe("caption");
     expect(mockOptions(mocks.sendMessageMatrix, "sendMessageMatrix", 0).extraContent).toEqual({
-      "com.openclaw.presentation": {
+      "com.operator.presentation": {
         version: 1,
         type: "message.presentation",
       },

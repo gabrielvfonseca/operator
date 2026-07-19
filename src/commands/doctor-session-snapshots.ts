@@ -1,7 +1,7 @@
 /** Doctor repair for stale runtime snapshot paths cached in session stores. */
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveStateDir } from "../config/paths.js";
 import { hydrateSessionStoreSkillPromptRefs } from "../config/sessions/skill-prompt-blobs.js";
@@ -12,7 +12,7 @@ import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { expandHomePrefix } from "../infra/home-dir.js";
 import { writeTextAtomic } from "../infra/json-files.js";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 import { resolveBundledSkillsDir } from "../skills/loading/bundled-dir.js";
 import { resolveConfigDir, shortenHomePath } from "../utils.js";
 
@@ -163,11 +163,11 @@ function isWindowsAbsolutePath(value: string): boolean {
 }
 function isTempBackedOperatorRoot(segments: readonly string[]): boolean {
   const lower = segments.map((segment) => segment.toLowerCase());
-  const operatorIndex = lower.lastIndexOf("operator");
-  if (operatorIndex < 1) {
+  const openclawIndex = lower.lastIndexOf("@gabrielvfonseca/operator");
+  if (openclawIndex < 1) {
     return false;
   }
-  return lower[operatorIndex - 1] === "tmp" || lower[operatorIndex - 1] === "temp";
+  return lower[openclawIndex - 1] === "tmp" || lower[openclawIndex - 1] === "temp";
 }
 
 function isBundledRuntimeSkillsPath(cachedPath: string, skillRootIndex: number): boolean {
@@ -176,7 +176,7 @@ function isBundledRuntimeSkillsPath(cachedPath: string, skillRootIndex: number):
   return (
     lower.some(
       (segment) =>
-        segment === "dist-runtime" || segment === "node_modules" || segment.startsWith("operator@"),
+        segment === "dist-runtime" || segment === "node_modules" || segment.startsWith("openclaw@"),
     ) || isTempBackedOperatorRoot(beforeSkillRoot)
   );
 }
@@ -395,7 +395,7 @@ export function sessionSnapshotIssueToHealthFinding(
     target: issue.cachedPath,
     requirement: `Current bundled skill path: ${issue.expectedPath}`,
     fixHint:
-      "To clean up the advisory artifact, run `operator doctor --fix` to rewrite stale cached session metadata paths, or start a fresh session after confirming history can be retired.",
+      "To clean up the advisory artifact, run `openclaw doctor --fix` to rewrite stale cached session metadata paths, or start a fresh session after confirming history can be retired.",
   };
 }
 

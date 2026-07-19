@@ -1,11 +1,11 @@
 // Telegram plugin module implements message cache behavior.
 import { createHash } from "node:crypto";
+import { formatLocationText } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import type { Message } from "grammy/types";
-import { formatLocationText } from "openclaw/plugin-sdk/channel-inbound";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { resolveTelegramPrimaryMedia, resolveTelegramRichMessageBody } from "./bot/body-helpers.js";
 import {
   buildSenderName,
@@ -75,7 +75,7 @@ type TelegramMessageCache = {
 
 type MessageWithExternalReply = Message & { external_reply?: Message };
 type MessageWithPromptContextTimestamp = Message & {
-  openclaw_prompt_context_timestamp_ms?: unknown;
+  operator_prompt_context_timestamp_ms?: unknown;
 };
 
 type TelegramMessageCacheBucket = {
@@ -101,7 +101,7 @@ export const TELEGRAM_MESSAGE_CACHE_PERSISTENT_NAMESPACE = "telegram.message-cac
 // hydrate as markerless context only; they never imply transcript projection.
 export const TELEGRAM_MESSAGE_CACHE_PERSISTED_VERSION = 1;
 const PERSISTENT_BUCKET_KEY = `plugin-state:${TELEGRAM_MESSAGE_CACHE_PERSISTENT_NAMESPACE}`;
-const TELEGRAM_MESSAGE_CACHE_BUCKETS_KEY = Symbol.for("openclaw.telegram.messageCacheBuckets");
+const TELEGRAM_MESSAGE_CACHE_BUCKETS_KEY = Symbol.for("operator.telegram.messageCacheBuckets");
 
 function getPersistedMessageCacheBuckets(): Map<string, TelegramMessageCacheBucket> {
   const globalRecord = globalThis as Record<PropertyKey, unknown>;
@@ -191,7 +191,7 @@ function resolveMediaType(placeholder?: string): string | undefined {
 
 function resolveMessageTimestamp(msg: Message): number | undefined {
   const promptContextTimestamp = (msg as MessageWithPromptContextTimestamp)
-    .openclaw_prompt_context_timestamp_ms;
+    .operator_prompt_context_timestamp_ms;
   return typeof promptContextTimestamp === "number" && Number.isFinite(promptContextTimestamp)
     ? promptContextTimestamp
     : msg.date

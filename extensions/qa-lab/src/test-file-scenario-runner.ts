@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { resolvePositiveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { resolvePositiveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { assertQaSuiteArtifactWritten } from "./artifact-assertion.js";
 import { isRepoRootRelativeRef, toRepoRelativePath } from "./cli-paths.js";
 import {

@@ -1,7 +1,7 @@
 <resources>
-    <string-array name="ask_openclaw_query_patterns">
-        <item>"از OpenClaw بپرس %1$s"</item>
-        <item>"به OpenClaw بگو %1$s"</item>
-        <item>"OpenClaw را باز کن و بپرس %1$s"</item>
+    <string-array name="ask_operator_query_patterns">
+        <item>"از Operator بپرس %1$s"</item>
+        <item>"به Operator بگو %1$s"</item>
+        <item>"Operator را باز کن و بپرس %1$s"</item>
     </string-array>
 </resources>

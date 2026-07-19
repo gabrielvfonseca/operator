@@ -126,7 +126,7 @@ async function invoke(tool: string, scopes = "operator.write") {
     headers: {
       "content-type": "application/json",
       authorization: `Bearer ${TEST_GATEWAY_TOKEN}`,
-      "x-openclaw-scopes": scopes,
+      "x-operator-scopes": scopes,
     },
     body: JSON.stringify({ tool, action: "status", args: {}, sessionKey: "main" }),
   });

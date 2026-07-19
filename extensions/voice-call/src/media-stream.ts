@@ -9,21 +9,21 @@
 
 import type { IncomingMessage } from "node:http";
 import type { Duplex } from "node:stream";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolveTimerTimeoutMs } from "openclaw/plugin-sdk/number-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type {
   RealtimeTranscriptionProviderConfig,
   RealtimeTranscriptionProviderPlugin,
   RealtimeTranscriptionSession,
-} from "openclaw/plugin-sdk/realtime-transcription";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-transcription";
 import {
   createTalkSessionController,
   recordTalkObservabilityEvent,
   type TalkEvent,
   type TalkEventInput,
   type TalkSessionController,
-} from "openclaw/plugin-sdk/realtime-voice";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { type RawData, WebSocket, WebSocketServer } from "ws";
 
 /**

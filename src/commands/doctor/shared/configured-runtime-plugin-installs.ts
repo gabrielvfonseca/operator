@@ -1,5 +1,5 @@
 // Doctor helpers for installing plugins required by configured agent runtimes.
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   collectConfiguredAgentHarnessRuntimes,
   type ConfiguredAgentHarnessRuntimeOptions,
@@ -29,14 +29,14 @@ export const CONFIGURED_RUNTIME_PLUGIN_INSTALL_CANDIDATES: readonly ConfiguredRu
     {
       pluginId: "acpx",
       label: "ACPX Runtime",
-      npmSpec: "@operator/acpx",
+      npmSpec: "@gabrielvfonseca/acpx",
       trustedSourceLinkedOfficialInstall: true,
     },
     // Runtime-only configs do not have a provider/channel integration catalog entry.
     {
       pluginId: "codex",
       label: "Codex",
-      npmSpec: "@operator/codex",
+      npmSpec: "@gabrielvfonseca/codex",
       trustedSourceLinkedOfficialInstall: true,
       versionBoundToOperator: true,
     },

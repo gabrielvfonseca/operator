@@ -1,8 +1,8 @@
 // Inspects installed package metadata for update/install verification.
 import fsSync from "node:fs";
 import path from "node:path";
-import { readRootJsonObjectSync } from "@operator/fs-safe/json";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { readRootJsonObjectSync } from "@openclaw/fs-safe/json";
 
 // Package update utilities inspect installed package metadata without trusting
 // paths outside the provided package root.
@@ -56,15 +56,15 @@ export function readInstalledPackagePeerDependencies(dir: string): Record<string
   );
 }
 
-/** Return true when an installed package needs an operator peer link repair. */
+/** Return true when an installed package needs an openclaw peer link repair. */
 export function installedPackageNeedsOperatorPeerLinkRepair(dir: string): boolean {
   const peerDependencies = readInstalledPackagePeerDependencies(dir);
-  if (!Object.hasOwn(peerDependencies, "operator")) {
+  if (!Object.hasOwn(peerDependencies, "@gabrielvfonseca/operator")) {
     return false;
   }
 
   try {
-    fsSync.statSync(path.join(dir, "node_modules", "operator"));
+    fsSync.statSync(path.join(dir, "node_modules", "@gabrielvfonseca/operator"));
     return false;
   } catch (error) {
     const code = (error as NodeJS.ErrnoException | undefined)?.code;

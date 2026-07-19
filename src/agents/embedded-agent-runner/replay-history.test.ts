@@ -1,5 +1,5 @@
 // Coverage for normalizing assistant replay content before provider requests.
-import type { AgentMessage } from "openclaw/plugin-sdk/agent-core";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it } from "vitest";
 import { OPERATOR_TRANSCRIPT_ARTIFACT_API } from "../../shared/transcript-only-openclaw-assistant.js";
 import {
@@ -52,7 +52,7 @@ function openclawTranscriptAssistant(model: "delivery-mirror" | "gateway-injecte
     role: "assistant",
     content: [{ type: "text", text: "channel mirror" }],
     api: OPERATOR_TRANSCRIPT_ARTIFACT_API,
-    provider: "openclaw",
+    provider: "@gabrielvfonseca/operator",
     model,
     usage: {
       input: 0,

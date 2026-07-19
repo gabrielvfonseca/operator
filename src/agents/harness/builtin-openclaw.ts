@@ -11,7 +11,7 @@ import type { AgentHarness } from "./types.js";
 /** Creates the built-in harness backed by the embedded Operator agent runner. */
 export function createOperatorAgentHarness(): AgentHarness {
   return {
-    id: "operator",
+    id: "@gabrielvfonseca/operator",
     label: "Operator embedded agent",
     contextEngineHostCapabilities: OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST.capabilities,
     supports: () => ({ supported: true, priority: 0 }),

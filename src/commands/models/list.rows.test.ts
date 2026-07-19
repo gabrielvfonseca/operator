@@ -78,7 +78,7 @@ describe("appendDiscoveredRows", () => {
       ] as never,
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: { evaluateModelAuth: () => authEvaluation(undefined) },
         configuredByKey: new Map(),
         discoveredKeys: new Set(["openai/gpt-5.5"]),
@@ -130,7 +130,7 @@ describe("appendDiscoveredRows", () => {
       ] as never,
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => ({
             availability: true,
@@ -174,7 +174,7 @@ describe("appendDiscoveredRows", () => {
       ] as never,
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => ({
             availability: false,
@@ -233,7 +233,7 @@ describe("appendConfiguredRows", () => {
             },
           },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => ({ availability: undefined, routeResolution: null }),
         },
@@ -276,7 +276,7 @@ describe("appendProviderCatalogRows", () => {
           agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
           models: { providers: {} },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => authEvaluation(false),
         },
@@ -328,7 +328,7 @@ describe("appendProviderCatalogRows", () => {
           agents: { defaults: { model: { primary: "openai/gpt-5.5" } } },
           models: { providers: {} },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth,
         },
@@ -388,7 +388,7 @@ describe("appendProviderCatalogRows", () => {
       ],
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => authEvaluation(undefined),
         },
@@ -425,7 +425,7 @@ describe("appendProviderCatalogRows", () => {
       ],
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => authEvaluation(true),
         },
@@ -462,7 +462,7 @@ describe("appendProviderCatalogRows", () => {
       ],
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => authEvaluation(undefined),
         },
@@ -513,7 +513,7 @@ describe("appendConfiguredProviderRows", () => {
             },
           },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex,
         configuredByKey: new Map(),
         discoveredKeys: new Set(),
@@ -555,7 +555,7 @@ describe("appendConfiguredProviderRows", () => {
             },
           },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth,
         },
@@ -612,7 +612,7 @@ describe("appendConfiguredProviderRows", () => {
             },
           },
         },
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth,
         },
@@ -657,7 +657,7 @@ describe("appendAuthenticatedCatalogRows", () => {
       seenKeys: new Set(),
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => ({
             availability: undefined,
@@ -702,7 +702,7 @@ describe("appendAuthenticatedCatalogRows", () => {
       seenKeys: new Set(),
       context: {
         cfg: {},
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
         authIndex: {
           evaluateModelAuth: () => ({ availability: undefined, routeResolution: null }),
         },

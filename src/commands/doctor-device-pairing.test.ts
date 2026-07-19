@@ -1,7 +1,7 @@
 // Doctor device pairing tests cover device-pairing checks, repair prompts, and diagnostics.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { storeDeviceAuthToken } from "../infra/device-auth-store.js";
 import {
@@ -72,7 +72,7 @@ describe("noteDevicePairingHealth", () => {
       initial: Awaited<ReturnType<typeof requestDevicePairing>>;
     }) => Promise<void>,
   ): Promise<void> {
-    await withTempDir("openclaw-doctor-device-pairing-", async (stateDir) => {
+    await withTempDir("operator-doctor-device-pairing-", async (stateDir) => {
       await withEnvAsync(
         {
           OPERATOR_STATE_DIR: stateDir,
@@ -157,7 +157,7 @@ describe("noteDevicePairingHealth", () => {
   });
 
   it("warns when a legacy pairing store file has not been imported into SQLite", async () => {
-    await withTempDir("openclaw-doctor-device-pairing-", async (stateDir) => {
+    await withTempDir("operator-doctor-device-pairing-", async (stateDir) => {
       await withEnvAsync(
         {
           OPERATOR_STATE_DIR: stateDir,

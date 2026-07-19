@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   validateApprovalGetResult,
@@ -43,7 +43,7 @@ const managersForCleanup: Array<{
 }> = [];
 
 function createDatabaseOptions(): OperatorStateDatabaseOptions {
-  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-handler-"));
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-handler-"));
   tempDirs.push(stateDir);
   return { env: { ...process.env, OPERATOR_STATE_DIR: stateDir } };
 }
@@ -524,7 +524,7 @@ describe("unified approval handlers", () => {
     ["approval.get", "."],
     ["approval.resolve", ".."],
   ] as const)("rejects unsafe approval id through %s: %s", async (method, id) => {
-    const databasePath = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-unsafe-approval-id-"));
+    const databasePath = fs.mkdtempSync(path.join(os.tmpdir(), "operator-unsafe-approval-id-"));
     tempDirs.push(databasePath);
     const handlers = createApprovalHandlers({
       execApprovalManager: new ExecApprovalManager(),
@@ -549,7 +549,7 @@ describe("unified approval handlers", () => {
   it.each(["approval.get", "approval.resolve"] as const)(
     "returns sanitized UNAVAILABLE when %s cannot read durable state",
     async (method) => {
-      const databasePath = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-broken-db-"));
+      const databasePath = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-broken-db-"));
       tempDirs.push(databasePath);
       const context = createContext();
       const handlers = createApprovalHandlers({
@@ -751,7 +751,7 @@ describe("unified approval handlers", () => {
   });
 
   it("repairs durable pending state after a transient local storage failure", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-approval-reconcile-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-approval-reconcile-"));
     tempDirs.push(stateDir);
     const databasePath = path.join(stateDir, "state.sqlite");
     const backupPath = path.join(stateDir, "state.backup.sqlite");

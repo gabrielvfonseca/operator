@@ -1,7 +1,7 @@
 /** Doctor repair for legacy OAuth sidecar files and inline auth profile stores. */
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { listAgentIds, resolveAgentDir, resolveDefaultAgentDir } from "../agents/agent-scope.js";
 import { AUTH_STORE_VERSION } from "../agents/auth-profiles/constants.js";
@@ -234,7 +234,7 @@ export async function maybeRepairLegacyOAuthSidecarProfiles(params: {
               `- Unreferenced sidecar files are left in place because external agent directories outside this scan may still reference them.`,
             ]
           : []),
-        `- ${formatCliCommand("operator doctor --fix")} migrates active profiles back to inline OAuth credentials and removes only sidecar files it successfully migrated.`,
+        `- ${formatCliCommand("openclaw doctor --fix")} migrates active profiles back to inline OAuth credentials and removes only sidecar files it successfully migrated.`,
       ].join("\n"),
       "Auth profiles",
     );

@@ -1,6 +1,6 @@
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 private func makeSkillStatus(
     name: String,
@@ -71,7 +71,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Needs Setup",
                 description: "Missing bins and env",
-                source: "openclaw-managed",
+                source: "operator-managed",
                 filePath: "/tmp/skills/needs-setup",
                 skillKey: "needs-setup",
                 primaryEnv: "API_KEY",
@@ -95,7 +95,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Ready Skill",
                 description: "All set",
-                source: "openclaw-bundled",
+                source: "operator-bundled",
                 filePath: "/tmp/skills/ready",
                 skillKey: "ready",
                 emoji: "✅",
@@ -109,7 +109,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Disabled Skill",
                 description: "Disabled in config",
-                source: "openclaw-extra",
+                source: "operator-extra",
                 filePath: "/tmp/skills/disabled",
                 skillKey: "disabled",
                 emoji: "🚫",
@@ -132,7 +132,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Local Skill",
                 description: "Local ready",
-                source: "openclaw-workspace",
+                source: "operator-workspace",
                 filePath: "/tmp/skills/local",
                 skillKey: "local",
                 emoji: "🏠",

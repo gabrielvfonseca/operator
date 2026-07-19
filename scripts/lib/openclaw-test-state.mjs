@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Creates isolated OpenClaw test HOME/state directories and shell snippets.
+// Creates isolated Operator test HOME/state directories and shell snippets.
 import { randomBytes } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -20,9 +20,9 @@ const SCENARIOS = new Set([
 
 function usage() {
   return `Usage:
-  node scripts/lib/openclaw-test-state.mjs -- create [--label <name>] [--scenario <name>] [--env-file <path>] [--json]
-  node scripts/lib/openclaw-test-state.mjs shell [--label <name>] [--scenario <name>]
-  node scripts/lib/openclaw-test-state.mjs shell-function
+  node scripts/lib/operator-test-state.mjs -- create [--label <name>] [--scenario <name>] [--env-file <path>] [--json]
+  node scripts/lib/operator-test-state.mjs shell [--label <name>] [--scenario <name>]
+  node scripts/lib/operator-test-state.mjs shell-function
 
 Scenarios: ${[...SCENARIOS].join(", ")}
 `;
@@ -149,7 +149,7 @@ function scenarioConfig(scenario, options = {}) {
         ],
       },
       skills: {
-        allowBundled: ["memory", "openclaw-testing"],
+        allowBundled: ["memory", "operator-testing"],
         limits: {
           maxSkillsInPrompt: 8,
           maxSkillsPromptChars: 30000,
@@ -224,7 +224,7 @@ function scenarioConfig(scenario, options = {}) {
         port: Number(options.port || 18789),
         auth: {
           mode: "token",
-          token: options.token || "openclaw-test-token",
+          token: options.token || "operator-test-token",
         },
         controlUi: {
           enabled: false,
@@ -238,7 +238,7 @@ function scenarioConfig(scenario, options = {}) {
 function scenarioEnv(scenario) {
   if (scenario === "external-service") {
     return {
-      OPENCLAW_SERVICE_REPAIR_POLICY: "external",
+      OPERATOR_SERVICE_REPAIR_POLICY: "external",
     };
   }
   return {};
@@ -260,18 +260,18 @@ function generateAuthProfileSecretKey() {
 
 function renderAuthProfileSecretKeyExport() {
   return [
-    'OPENCLAW_AUTH_PROFILE_SECRET_KEY_FILE="$OPENCLAW_TEST_STATE_HOME/.openclaw-test-auth-profile-secret-key"',
-    'if [ -s "$OPENCLAW_AUTH_PROFILE_SECRET_KEY_FILE" ]; then',
-    '  OPENCLAW_AUTH_PROFILE_SECRET_KEY="$(cat "$OPENCLAW_AUTH_PROFILE_SECRET_KEY_FILE")"',
+    'OPERATOR_AUTH_PROFILE_SECRET_KEY_FILE="$OPERATOR_TEST_STATE_HOME/.operator-test-auth-profile-secret-key"',
+    'if [ -s "$OPERATOR_AUTH_PROFILE_SECRET_KEY_FILE" ]; then',
+    '  OPERATOR_AUTH_PROFILE_SECRET_KEY="$(cat "$OPERATOR_AUTH_PROFILE_SECRET_KEY_FILE")"',
     "else",
-    '  OPENCLAW_AUTH_PROFILE_SECRET_KEY="$(od -An -N 32 -tx1 /dev/urandom | tr -d " \\n")"',
-    '  ( umask 077; printf "%s\\n" "$OPENCLAW_AUTH_PROFILE_SECRET_KEY" > "$OPENCLAW_AUTH_PROFILE_SECRET_KEY_FILE" )',
+    '  OPERATOR_AUTH_PROFILE_SECRET_KEY="$(od -An -N 32 -tx1 /dev/urandom | tr -d " \\n")"',
+    '  ( umask 077; printf "%s\\n" "$OPERATOR_AUTH_PROFILE_SECRET_KEY" > "$OPERATOR_AUTH_PROFILE_SECRET_KEY_FILE" )',
     "fi",
-    'if [ -z "$OPENCLAW_AUTH_PROFILE_SECRET_KEY" ]; then',
-    '  echo "failed to generate OPENCLAW_AUTH_PROFILE_SECRET_KEY" >&2',
+    'if [ -z "$OPERATOR_AUTH_PROFILE_SECRET_KEY" ]; then',
+    '  echo "failed to generate OPERATOR_AUTH_PROFILE_SECRET_KEY" >&2',
     "  return 1 2>/dev/null || exit 1",
     "fi",
-    "export OPENCLAW_AUTH_PROFILE_SECRET_KEY",
+    "export OPERATOR_AUTH_PROFILE_SECRET_KEY",
   ];
 }
 
@@ -281,9 +281,9 @@ function renderConfigWrite(configPathExpression, config) {
   }
   const json = JSON.stringify(config, null, 2);
   return [
-    `cat > ${configPathExpression} <<'OPENCLAW_TEST_STATE_JSON'`,
+    `cat > ${configPathExpression} <<'OPERATOR_TEST_STATE_JSON'`,
     json,
-    "OPENCLAW_TEST_STATE_JSON",
+    "OPERATOR_TEST_STATE_JSON",
   ].join("\n");
 }
 
@@ -295,17 +295,17 @@ function buildCreatePlan(options = {}) {
   }
   const root = options.root;
   const home = path.join(root, "home");
-  const stateDir = path.join(home, ".openclaw");
-  const configPath = path.join(stateDir, "openclaw.json");
+  const stateDir = path.join(home, ".operator");
+  const configPath = path.join(stateDir, "operator.json");
   const workspaceDir = path.join(home, "workspace");
   const config = scenarioConfig(scenario, options);
   const env = {
     HOME: home,
     USERPROFILE: home,
-    OPENCLAW_HOME: home,
-    OPENCLAW_STATE_DIR: stateDir,
-    OPENCLAW_CONFIG_PATH: configPath,
-    OPENCLAW_AUTH_PROFILE_SECRET_KEY: generateAuthProfileSecretKey(),
+    OPERATOR_HOME: home,
+    OPERATOR_STATE_DIR: stateDir,
+    OPERATOR_CONFIG_PATH: configPath,
+    OPERATOR_AUTH_PROFILE_SECRET_KEY: generateAuthProfileSecretKey(),
     ...scenarioEnv(scenario),
   };
   return {
@@ -322,10 +322,10 @@ function buildCreatePlan(options = {}) {
   };
 }
 
-/** Create an isolated OpenClaw test state directory and optional scenario config. */
+/** Create an isolated Operator test state directory and optional scenario config. */
 async function createState(options = {}) {
   const label = normalizeLabel(options.label);
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), `openclaw-${label}-`));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), `operator-${label}-`));
   const plan = buildCreatePlan({ ...options, root });
   await fs.mkdir(plan.stateDir, { recursive: true });
   await fs.mkdir(plan.workspaceDir, { recursive: true });
@@ -340,95 +340,95 @@ function renderEnvFile(plan) {
   return `${renderExports(plan.env)}\n`;
 }
 
-/** Render shell commands that create and export an isolated OpenClaw test state. */
+/** Render shell commands that create and export an isolated Operator test state. */
 function renderShellSnippet(options = {}) {
   const label = normalizeLabel(options.label);
   const scenario = requireScenario(options.scenario);
   const config = scenarioConfig(scenario, options);
   const env = scenarioEnv(scenario);
-  const homeTemplate = `openclaw-${label}-${scenario}-home.XXXXXX`;
+  const homeTemplate = `operator-${label}-${scenario}-home.XXXXXX`;
   const lines = [
-    'OPENCLAW_TEST_STATE_TMP_ROOT="${OPENCLAW_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
-    'OPENCLAW_TEST_STATE_TMP_ROOT="${OPENCLAW_TEST_STATE_TMP_ROOT%/}"',
-    '[ -n "$OPENCLAW_TEST_STATE_TMP_ROOT" ] || OPENCLAW_TEST_STATE_TMP_ROOT="/tmp"',
-    "export OPENCLAW_TEST_STATE_TMP_ROOT",
-    'mkdir -p "$OPENCLAW_TEST_STATE_TMP_ROOT"',
-    `OPENCLAW_TEST_STATE_HOME="$(mktemp -d "$OPENCLAW_TEST_STATE_TMP_ROOT/${homeTemplate}")"`,
-    'export HOME="$OPENCLAW_TEST_STATE_HOME"',
-    'export USERPROFILE="$OPENCLAW_TEST_STATE_HOME"',
-    'export OPENCLAW_HOME="$OPENCLAW_TEST_STATE_HOME"',
-    'export OPENCLAW_STATE_DIR="$OPENCLAW_TEST_STATE_HOME/.openclaw"',
-    'export OPENCLAW_CONFIG_PATH="$OPENCLAW_STATE_DIR/openclaw.json"',
+    'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
+    'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMP_ROOT%/}"',
+    '[ -n "$OPERATOR_TEST_STATE_TMP_ROOT" ] || OPERATOR_TEST_STATE_TMP_ROOT="/tmp"',
+    "export OPERATOR_TEST_STATE_TMP_ROOT",
+    'mkdir -p "$OPERATOR_TEST_STATE_TMP_ROOT"',
+    `OPERATOR_TEST_STATE_HOME="$(mktemp -d "$OPERATOR_TEST_STATE_TMP_ROOT/${homeTemplate}")"`,
+    'export HOME="$OPERATOR_TEST_STATE_HOME"',
+    'export USERPROFILE="$OPERATOR_TEST_STATE_HOME"',
+    'export OPERATOR_HOME="$OPERATOR_TEST_STATE_HOME"',
+    'export OPERATOR_STATE_DIR="$OPERATOR_TEST_STATE_HOME/.operator"',
+    'export OPERATOR_CONFIG_PATH="$OPERATOR_STATE_DIR/operator.json"',
     ...renderAuthProfileSecretKeyExport(),
-    'export OPENCLAW_TEST_WORKSPACE_DIR="$OPENCLAW_TEST_STATE_HOME/workspace"',
-    'mkdir -p "$OPENCLAW_STATE_DIR" "$OPENCLAW_TEST_WORKSPACE_DIR"',
+    'export OPERATOR_TEST_WORKSPACE_DIR="$OPERATOR_TEST_STATE_HOME/workspace"',
+    'mkdir -p "$OPERATOR_STATE_DIR" "$OPERATOR_TEST_WORKSPACE_DIR"',
   ];
   for (const [key, value] of Object.entries(env)) {
     lines.push(`export ${key}=${shellQuote(value)}`);
   }
-  const configWrite = renderConfigWrite('"$OPENCLAW_CONFIG_PATH"', config);
+  const configWrite = renderConfigWrite('"$OPERATOR_CONFIG_PATH"', config);
   if (configWrite) {
     lines.push(configWrite);
   }
   return `${lines.join("\n")}\n`;
 }
 
-/** Render a reusable shell function for creating isolated OpenClaw test state. */
+/** Render a reusable shell function for creating isolated Operator test state. */
 function renderShellFunction() {
-  return `openclaw_test_state_create() {
+  return `operator_test_state_create() {
   local raw_label="\${1:-state}"
   local label="$raw_label"
   local scenario="\${2:-empty}"
   case "$scenario" in
     empty|minimal|update-stable|upgrade-survivor|gateway-loopback|external-service) ;;
     *)
-      echo "unknown OpenClaw test-state scenario: $scenario" >&2
+      echo "unknown Operator test-state scenario: $scenario" >&2
       return 1
       ;;
   esac
   case "$raw_label" in
     /*)
-      OPENCLAW_TEST_STATE_HOME="$raw_label"
-      mkdir -p "$OPENCLAW_TEST_STATE_HOME"
+      OPERATOR_TEST_STATE_HOME="$raw_label"
+      mkdir -p "$OPERATOR_TEST_STATE_HOME"
       ;;
     *)
       label="$(printf "%s" "$label" | tr -cs "A-Za-z0-9_.-" "-" | sed -e "s/^-*//" -e "s/-*$//")"
       [ -n "$label" ] || label="state"
-      local tmp_root="\${OPENCLAW_TEST_STATE_TMPDIR:-\${TMPDIR:-/tmp}}"
+      local tmp_root="\${OPERATOR_TEST_STATE_TMPDIR:-\${TMPDIR:-/tmp}}"
       tmp_root="\${tmp_root%/}"
       [ -n "$tmp_root" ] || tmp_root="/tmp"
       mkdir -p "$tmp_root"
-      OPENCLAW_TEST_STATE_HOME="$(mktemp -d "$tmp_root/openclaw-$label-$scenario-home.XXXXXX")"
+      OPERATOR_TEST_STATE_HOME="$(mktemp -d "$tmp_root/operator-$label-$scenario-home.XXXXXX")"
       ;;
   esac
-  export HOME="$OPENCLAW_TEST_STATE_HOME"
-  export USERPROFILE="$OPENCLAW_TEST_STATE_HOME"
-  export OPENCLAW_HOME="$OPENCLAW_TEST_STATE_HOME"
-  export OPENCLAW_STATE_DIR="$OPENCLAW_TEST_STATE_HOME/.openclaw"
-  export OPENCLAW_CONFIG_PATH="$OPENCLAW_STATE_DIR/openclaw.json"
+  export HOME="$OPERATOR_TEST_STATE_HOME"
+  export USERPROFILE="$OPERATOR_TEST_STATE_HOME"
+  export OPERATOR_HOME="$OPERATOR_TEST_STATE_HOME"
+  export OPERATOR_STATE_DIR="$OPERATOR_TEST_STATE_HOME/.operator"
+  export OPERATOR_CONFIG_PATH="$OPERATOR_STATE_DIR/operator.json"
   ${renderAuthProfileSecretKeyExport().join("\n  ")}
-  export OPENCLAW_TEST_WORKSPACE_DIR="$OPENCLAW_TEST_STATE_HOME/workspace"
-  unset OPENCLAW_AGENT_DIR
-  unset OPENCLAW_SERVICE_REPAIR_POLICY
-  mkdir -p "$OPENCLAW_STATE_DIR" "$OPENCLAW_TEST_WORKSPACE_DIR"
+  export OPERATOR_TEST_WORKSPACE_DIR="$OPERATOR_TEST_STATE_HOME/workspace"
+  unset OPERATOR_AGENT_DIR
+  unset OPERATOR_SERVICE_REPAIR_POLICY
+  mkdir -p "$OPERATOR_STATE_DIR" "$OPERATOR_TEST_WORKSPACE_DIR"
   case "$scenario" in
     minimal)
-      cat > "$OPENCLAW_CONFIG_PATH" <<'OPENCLAW_TEST_STATE_JSON'
+      cat > "$OPERATOR_CONFIG_PATH" <<'OPERATOR_TEST_STATE_JSON'
 {}
-OPENCLAW_TEST_STATE_JSON
+OPERATOR_TEST_STATE_JSON
       ;;
     update-stable)
-      cat > "$OPENCLAW_CONFIG_PATH" <<'OPENCLAW_TEST_STATE_JSON'
+      cat > "$OPERATOR_CONFIG_PATH" <<'OPERATOR_TEST_STATE_JSON'
 {
   "update": {
     "channel": "stable"
   },
   "plugins": {}
 }
-OPENCLAW_TEST_STATE_JSON
+OPERATOR_TEST_STATE_JSON
       ;;
     upgrade-survivor)
-      cat > "$OPENCLAW_CONFIG_PATH" <<'OPENCLAW_TEST_STATE_JSON'
+      cat > "$OPERATOR_CONFIG_PATH" <<'OPERATOR_TEST_STATE_JSON'
 {
   "update": {
     "channel": "stable"
@@ -502,7 +502,7 @@ OPENCLAW_TEST_STATE_JSON
   "skills": {
     "allowBundled": [
       "memory",
-      "openclaw-testing"
+      "operator-testing"
     ],
     "limits": {
       "maxSkillsInPrompt": 8,
@@ -600,29 +600,29 @@ OPENCLAW_TEST_STATE_JSON
     }
   }
 }
-OPENCLAW_TEST_STATE_JSON
+OPERATOR_TEST_STATE_JSON
       ;;
     gateway-loopback)
-      cat > "$OPENCLAW_CONFIG_PATH" <<'OPENCLAW_TEST_STATE_JSON'
+      cat > "$OPERATOR_CONFIG_PATH" <<'OPERATOR_TEST_STATE_JSON'
 {
   "gateway": {
     "port": 18789,
     "auth": {
       "mode": "token",
-      "token": "openclaw-test-token"
+      "token": "operator-test-token"
     },
     "controlUi": {
       "enabled": false
     }
   }
 }
-OPENCLAW_TEST_STATE_JSON
+OPERATOR_TEST_STATE_JSON
       ;;
     external-service)
-      export OPENCLAW_SERVICE_REPAIR_POLICY="external"
-      cat > "$OPENCLAW_CONFIG_PATH" <<'OPENCLAW_TEST_STATE_JSON'
+      export OPERATOR_SERVICE_REPAIR_POLICY="external"
+      cat > "$OPERATOR_CONFIG_PATH" <<'OPERATOR_TEST_STATE_JSON'
 {}
-OPENCLAW_TEST_STATE_JSON
+OPERATOR_TEST_STATE_JSON
       ;;
   esac
 }

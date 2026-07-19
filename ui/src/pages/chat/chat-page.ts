@@ -1,5 +1,5 @@
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { consume } from "@lit/context";
-import { expectDefined } from "@operator/normalization-core";
 import { html, nothing } from "lit";
 import { property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -10,7 +10,7 @@ import { t } from "../../i18n/index.ts";
 import { resolveSessionDisplayName } from "../../lib/session-display.ts";
 import { readSessionDragData, sessionDragActive } from "../../lib/sessions/drag.ts";
 import { searchForSession } from "../../lib/sessions/index.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import "../../styles/chat.css";
 import "./chat-pane.ts";
@@ -54,7 +54,7 @@ const NARROW_SPLIT_QUERY = "(max-width: 1099px)";
 type DropIndicator = { paneId: string; zone: SplitDropZone; rect: SplitDropRect };
 type ChatPaneElement = HTMLElement & { paneId?: string };
 
-export class ChatPage extends OpenClawLightDomElement {
+export class ChatPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
   @property({ attribute: false }) data!: ChatRouteData;
@@ -149,7 +149,7 @@ export class ChatPage extends OpenClawLightDomElement {
       event.dataTransfer.dropEffect = "copy";
     }
     const target = event.target instanceof Element ? event.target : null;
-    const pane = target?.closest<ChatPaneElement>("openclaw-chat-pane");
+    const pane = target?.closest<ChatPaneElement>("operator-chat-pane");
     if (!pane || !this.contains(pane)) {
       // Dividers and pane gaps sit between drop targets; keep the last preview
       // instead of flickering it away while the pointer crosses them.
@@ -200,7 +200,7 @@ export class ChatPage extends OpenClawLightDomElement {
     event.preventDefault();
     const sessionKey = readSessionDragData(event.dataTransfer);
     const target = event.target instanceof Element ? event.target : null;
-    const pane = target?.closest<ChatPaneElement>("openclaw-chat-pane");
+    const pane = target?.closest<ChatPaneElement>("operator-chat-pane");
     // Fall back to the retained preview when the drop lands on a divider or
     // gap, so the drop always matches what the indicator promised.
     const indicator =
@@ -445,7 +445,7 @@ export class ChatPage extends OpenClawLightDomElement {
         @pointerdown=${() => this.handleFocusPane(pane.id)}
         @focusin=${() => this.handleFocusPane(pane.id)}
       >
-        <openclaw-chat-pane
+        <operator-chat-pane
           class=${splitMode ? "chat-split-view__pane" : ""}
           .paneId=${pane.id}
           .chatMessagesBySession=${this.chatMessagesBySession}
@@ -461,7 +461,7 @@ export class ChatPage extends OpenClawLightDomElement {
           .onClosePane=${splitMode ? this.handleClosePane : undefined}
           .onFocusPane=${this.handleFocusPane}
           .onPaneSessionChange=${this.handlePaneSessionChange}
-        ></openclaw-chat-pane>
+        ></operator-chat-pane>
       </div>
     `;
   }
@@ -598,6 +598,6 @@ export class ChatPage extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-chat-page")) {
-  customElements.define("openclaw-chat-page", ChatPage);
+if (!customElements.get("operator-chat-page")) {
+  customElements.define("operator-chat-page", ChatPage);
 }

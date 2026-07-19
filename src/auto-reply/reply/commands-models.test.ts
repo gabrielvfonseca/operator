@@ -1,9 +1,9 @@
 // Tests model command output, catalog loading, and provider auth status rendering.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { testing as cliBackendsTesting } from "../../agents/cli-backends.test-support.js";
 import type { ChannelPlugin } from "../../channels/plugins/types.public.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
   createChannelTestPluginBase,
@@ -733,7 +733,7 @@ describe("handleModelsCommand", () => {
       description: "Use the OpenAI Codex runtime selected by the effective harness policy.",
     });
     expect(data.runtimeChoicesByProvider?.get("openai")?.[1]).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     });
@@ -757,7 +757,7 @@ describe("handleModelsCommand", () => {
     } as OperatorConfig);
 
     expect(data.runtimeChoicesByProvider?.get("openai")?.[0]).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     });
@@ -769,7 +769,7 @@ describe("handleModelsCommand", () => {
         providers: {
           openai: {
             baseUrl: "https://api.openai.com/v1",
-            agentRuntime: { id: "openclaw" },
+            agentRuntime: { id: "@gabrielvfonseca/operator" },
             models: [],
           },
         },
@@ -790,7 +790,7 @@ describe("handleModelsCommand", () => {
       description: "Use the OpenAI Codex runtime selected by the effective harness policy.",
     });
     expect(data.runtimeChoicesByProvider?.get("openai")?.[1]).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     });
@@ -815,7 +815,7 @@ describe("handleModelsCommand", () => {
     } as OperatorConfig);
 
     expect(data.runtimeChoicesByProvider?.get("anthropic")?.[0]).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     });
@@ -845,7 +845,7 @@ describe("handleModelsCommand", () => {
       description: "Use the Claude CLI runtime selected by the effective harness policy.",
     });
     expect(data.runtimeChoicesByProvider?.get("anthropic")?.[1]).toEqual({
-      id: "openclaw",
+      id: "@gabrielvfonseca/operator",
       label: "Operator Default",
       description: "Use the built-in Operator runtime.",
     });

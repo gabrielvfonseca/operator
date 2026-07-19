@@ -2,7 +2,7 @@ import AppKit
 import Foundation
 import OSLog
 
-let dashboardWindowLogger = Logger(subsystem: "ai.openclaw", category: "DashboardWindow")
+let dashboardWindowLogger = Logger(subsystem: "ai.operator", category: "DashboardWindow")
 
 enum DashboardWindowLayout {
     static let windowSize = NSSize(width: 1240, height: 860)
@@ -15,8 +15,8 @@ enum DashboardWindowLayout {
     static let linkBrowserTabBarHeight: CGFloat = 30
     static let linkBrowserToolbarHeight: CGFloat = 52
     static let linkBrowserToolbarWithTabsHeight: CGFloat = 78
-    static let linkBrowserWidthDefaultsKey = "OpenClawDashboardLinkBrowserWidth"
-    static let windowFrameAutosaveName = "OpenClawDashboardWindow"
+    static let linkBrowserWidthDefaultsKey = "OperatorDashboardLinkBrowserWidth"
+    static let windowFrameAutosaveName = "OperatorDashboardWindow"
 
     static func linkBrowserWidth(
         splitWidth: CGFloat,
@@ -44,15 +44,15 @@ enum DashboardWindowLayout {
 /// reuses the shipped pre-web-chrome event; `commandPalette` gets a dedicated
 /// toggle event because the legacy `native-open-search` contract is open-only.
 enum DashboardNativeCommand: String {
-    case newSession = "openclaw:native-new-session"
-    case commandPalette = "openclaw:native-toggle-search"
+    case newSession = "operator:native-new-session"
+    case commandPalette = "operator:native-toggle-search"
 
     /// Older gateway bundles lack the toggle listener; dispatch degrades to the
     /// open-only legacy event when the primary event goes unhandled.
     var legacyFallbackEventName: String? {
         switch self {
         case .newSession: nil
-        case .commandPalette: "openclaw:native-open-search"
+        case .commandPalette: "operator:native-open-search"
         }
     }
 }

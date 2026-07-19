@@ -34,7 +34,7 @@ async function initializeRepository(root: string): Promise<string> {
   await fs.mkdir(repo, { recursive: true });
   await git(repo, "init", "-b", "main");
   await git(repo, "config", "user.name", "Operator Test");
-  await git(repo, "config", "user.email", "openclaw-test@example.invalid");
+  await git(repo, "config", "user.email", "operator-test@example.invalid");
   await fs.writeFile(path.join(repo, "README.md"), "base\n");
   await git(repo, "add", "README.md");
   await git(repo, "commit", "-m", "initial");
@@ -58,18 +58,18 @@ describe("worktree run lease", () => {
 
   beforeAll(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    const templateRoot = templateTempDirs.make("openclaw-run-lease-template-", tempRoot);
+    const templateRoot = templateTempDirs.make("operator-run-lease-template-", tempRoot);
     templateRepo = await initializeRepository(templateRoot);
   });
 
   beforeEach(async () => {
     const tempRoot = await fs.realpath(os.tmpdir());
-    root = caseTempDirs.make("openclaw-run-lease-", tempRoot);
+    root = caseTempDirs.make("operator-run-lease-", tempRoot);
     repo = path.join(root, "repo");
     // Each case keeps a private .git directory; only repository construction is shared.
     await fs.cp(templateRepo, repo, { recursive: true });
     repo = await fs.realpath(repo);
-    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "openclaw-state") };
+    env = { ...process.env, OPERATOR_STATE_DIR: path.join(root, "operator-state") };
     service = new ManagedWorktreeService({ env });
   });
 

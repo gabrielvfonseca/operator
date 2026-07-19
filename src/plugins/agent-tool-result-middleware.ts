@@ -7,7 +7,7 @@ import type {
 import { getActivePluginRegistry } from "./runtime.js";
 
 const AGENT_TOOL_RESULT_MIDDLEWARE_RUNTIMES = [
-  "operator",
+  "@gabrielvfonseca/operator",
   "codex",
 ] as const satisfies AgentToolResultMiddlewareRuntime[];
 

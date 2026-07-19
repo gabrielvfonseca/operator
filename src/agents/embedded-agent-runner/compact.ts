@@ -8,19 +8,16 @@ import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import { resolveAgentModelFallbackValues } from "../../config/model-input.js";
 import { parseSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
-import {
   createFileBackedCompactionCheckpointStore,
   readSessionLeafStateFromTranscriptAsync,
   resolveCompactionCheckpointTranscriptPosition,
   resolveSessionCompactionCheckpointReason,
   type CapturedCompactionCheckpointSnapshot,
 } from "../../gateway/session-compaction-checkpoints.js";
-import {
   formatActiveNodeContextLabel,
   getActiveNodeContext,
 } from "../../infra/active-node-context.js";
 import { resolveDiagnosticModelContentCapturePolicy } from "../../infra/diagnostic-llm-content.js";
-import {
   createDiagnosticTraceContext,
   freezeDiagnosticTraceContext,
   getActiveDiagnosticTraceContext,
@@ -34,55 +31,41 @@ import { getCurrentPluginMetadataSnapshot } from "../../plugins/current-plugin-m
 import { getGlobalHookRunner } from "../../plugins/hook-runner-global.js";
 import { extractModelCompat } from "../../plugins/provider-model-compat.js";
 import type { ProviderRuntimeModel } from "../../plugins/provider-runtime-model.types.js";
-import {
   prepareProviderRuntimeAuth,
   transformProviderSystemPrompt,
 } from "../../plugins/provider-runtime.js";
-import {
   isCronSessionKey,
   isSubagentSessionKey,
   parseAgentSessionKey,
 } from "../../routing/session-key.js";
-import { resolveSkillsPromptForRun } from "../../skills/loading/workspace.js";
-import { resolveEmbeddedRunSkillEntries } from "../../skills/runtime/embedded-run-entries.js";
-import {
-  applySkillEnvOverrides,
-  applySkillEnvOverridesFromSnapshot,
-} from "../../skills/runtime/env-overrides.js";
 import { resolveUserPath } from "../../utils.js";
 import { normalizeMessageChannel } from "../../utils/message-channel.js";
 import { isReasoningTagProvider } from "../../utils/provider-utils.js";
 import { createBundleLspToolRuntime } from "../agent-bundle-lsp-runtime.js";
 import { createBundleMcpToolRuntime } from "../agent-bundle-mcp-tools.js";
-import {
   consumeCompactionSafeguardCancelReason,
   setCompactionSafeguardCancelReason,
 } from "../agent-hooks/compaction-safeguard-runtime.js";
 import { createPreparedEmbeddedAgentSettingsManager } from "../agent-project-settings.js";
 import { isDefaultAgentRuntimeId, normalizeOptionalAgentRuntimeId } from "../agent-runtime-id.js";
-import {
   resolveAgentDir,
   resolveRunModelFallbacksOverride,
   resolveSessionAgentIds,
 } from "../agent-scope.js";
-import {
   applyAgentAutoCompactionGuard,
   applyAgentCompactionSettingsFromConfig,
   isSilentOverflowProneModel,
 } from "../agent-settings.js";
 import { createOperatorCodingTools, resolveProcessToolScopeKey } from "../agent-tools.js";
 import { listActiveProcessSessionReferences } from "../bash-process-references.js";
-import {
   makeBootstrapWarn,
   resolveBootstrapContextForRun,
   resolveContextInjectionMode,
 } from "../bootstrap-files.js";
-import {
   listChannelSupportedActions,
   resolveChannelMessageToolHints,
   resolveChannelReactionGuidance,
 } from "../channel-tools.js";
-import {
   hasMeaningfulConversationContent,
   isRealConversationMessage,
 } from "../compaction-real-conversation.js";
@@ -96,12 +79,10 @@ import { pickFallbackThinkingLevel } from "../embedded-agent-helpers.js";
 import { coerceToFailoverError, describeFailoverError } from "../failover-error.js";
 import { resolveAgentHarnessPolicy } from "../harness/policy.js";
 import { ensureSelectedAgentHarnessPlugin } from "../harness/runtime-plugin.js";
-import {
   selectAgentHarness,
   selectAgentHarnessForPreparedModelProviders,
 } from "../harness/selection.js";
 import { resolveHeartbeatPromptForSystemPrompt } from "../heartbeat-system-prompt.js";
-import {
   applyAuthHeaderOverride,
   applyLocalNoAuthHeaderOverride,
   ensureAuthProfileStore,
@@ -109,7 +90,6 @@ import {
   MissingProviderAuthError,
   resolveModelAuthMode,
 } from "../model-auth.js";
-import {
   isFallbackSummaryError,
   resolveModelCandidateChain,
   runWithModelFallback,
@@ -119,27 +99,22 @@ import { ensureOperatorModelsJson } from "../models-config.js";
 import { isOpenAIProvider } from "../openai-routing.js";
 import { resolveAgentPromptSurfaceForSessionKey } from "../prompt-surface.js";
 import { applyPreparedRuntimeAuthToModel } from "../provider-request-config.js";
-import {
   protectPreparedProviderRuntimeAuth,
   unwrapSecretSentinelsForProviderEgress,
 } from "../provider-secret-egress.js";
 import { registerProviderStreamForModel } from "../provider-stream.js";
-import {
   applyAgentRunSessionTargetIdentity,
   resolveAgentRunSessionTarget,
 } from "../run-session-target.js";
 import { collectRuntimeChannelCapabilities } from "../runtime-capabilities.js";
 import { buildAgentRuntimePlan } from "../runtime-plan/build.js";
-import {
   providerUsesCredentialScopedModelMetadata,
   resolveReusableRuntimeModelAuth,
 } from "../runtime-plan/credential-scoped-model.js";
 import { materializePreparedRuntimeModel } from "../runtime-plan/materialize-model.js";
-import {
   prepareAgentRuntimeAuth,
   type PreparedAgentRuntimeAuthAttempt,
 } from "../runtime-plan/prepare-auth.js";
-import {
   resolvePreparedRuntimeAuthAttempts,
   resolvePreparedRuntimeModelAuth,
 } from "../runtime-plan/resolve-auth.js";
@@ -150,7 +125,6 @@ import { resolveSandboxContext } from "../sandbox.js";
 import { repairSessionFileIfNeeded } from "../session-file-repair.js";
 import { guardSessionManager } from "../session-tool-result-guard-wrapper.js";
 import { sanitizeToolUseResultPairing } from "../session-transcript-repair.js";
-import {
   acquireSessionWriteLock,
   resolveSessionLockMaxHoldFromTimeout,
   resolveSessionWriteLockOptions,
@@ -158,12 +132,10 @@ import {
 import { createAgentSession, estimateTokens, SessionManager } from "../sessions/index.js";
 import { detectRuntimeShell } from "../shell-utils.js";
 import { resolveCandidateThinkingLevel } from "../thinking-runtime.js";
-import {
   filterProviderNormalizableTools,
   filterRuntimeCompatibleTools,
 } from "../tool-schema-projection.js";
 import { logRuntimeToolSchemaQuarantine } from "../tool-schema-quarantine.js";
-import {
   classifyCompactionReason,
   formatUnknownCompactionReasonDetail,
   resolveCompactionFailureReason,
@@ -175,7 +147,6 @@ import type {
 } from "./compact.types.js";
 import { dedupeDuplicateUserMessagesForCompaction } from "./compaction-duplicate-user-messages.js";
 import { buildCompactionHarnessModelProvider } from "./compaction-harness-model-provider.js";
-import {
   asCompactionHookRunner,
   buildBeforeCompactionHookMetrics,
   estimateTokensAfterCompaction,
@@ -183,16 +154,13 @@ import {
   runBeforeCompactionHooks,
   runPostCompactionSideEffects,
 } from "./compaction-hooks.js";
-import {
   resolveCompactionHarnessRuntime,
   resolveEmbeddedCompactionTarget,
 } from "./compaction-runtime-context.js";
-import {
   compactWithSafetyTimeout,
   resolveCompactionTimeoutMs,
 } from "./compaction-safety-timeout.js";
 import { prepareCompactionSessionAgent } from "./compaction-session-agent.js";
-import {
   type CompactionTranscriptRotation,
   rotateTranscriptAfterCompaction,
   shouldRotateCompactionTranscript,
@@ -210,14 +178,8 @@ import { createEmbeddedAgentResourceLoader } from "./resource-loader.js";
 import { wrapStreamFnWithDiagnosticModelCallEvents } from "./run/attempt.model-diagnostic-events.js";
 import { resolveAttemptSpawnWorkspaceDir } from "./run/attempt.thread-helpers.js";
 import { buildEmbeddedSandboxInfo, resolveEmbeddedSandboxInfoExecPolicy } from "./sandbox-info.js";
-import {
-  mapSandboxSkillEntriesForPrompt,
-  mapSandboxSkillUsagePaths,
-  resolveSandboxSkillRuntimeInputs,
-} from "./sandbox-skills.js";
 import { prewarmSessionFile, trackSessionManagerAccess } from "./session-manager-cache.js";
 import { applySystemPromptToSession, buildEmbeddedSystemPrompt } from "./system-prompt.js";
-import {
   collectAllowedToolNames,
   collectRegisteredToolNames,
   toSessionToolAllowlist,
@@ -225,7 +187,6 @@ import {
 import { splitSdkTools } from "./tool-split.js";
 import { readTranscriptFileState } from "./transcript-file-state.js";
 import type { EmbeddedAgentCompactResult } from "./types.js";
-import {
   mapThinkingLevel,
   mapThinkingLevelForProvider,
   normalizeContextTokenBudget,
@@ -426,7 +387,10 @@ export async function compactEmbeddedAgentSessionDirect(
 ): Promise<EmbeddedAgentCompactResult> {
   const paramsBase = applyAgentRunSessionTargetIdentity(paramsInput);
   const lockedHarnessRuntime = normalizeOptionalAgentRuntimeId(paramsBase.agentHarnessId);
-  if (paramsBase.modelSelectionLocked === true && lockedHarnessRuntime !== "operator") {
+  if (
+    paramsBase.modelSelectionLocked === true &&
+    lockedHarnessRuntime !== "@gabrielvfonseca/operator"
+  ) {
     return {
       ok: false,
       compacted: false,
@@ -906,58 +870,10 @@ async function compactEmbeddedAgentSessionDirectOnce(
   }
   const { sessionAgentId: effectiveSkillAgentId } = earlyAgentIds;
 
-  let restoreSkillEnv: (() => void) | undefined;
   let compactionSessionManager: unknown = null;
   let checkpointSnapshot: CapturedCompactionCheckpointSnapshot | null = null;
   let checkpointSnapshotRetained = false;
   try {
-    const {
-      skillsEligibility,
-      skillsPromptWorkspaceDir: effectiveSkillsPromptWorkspace,
-      skillsSnapshot: skillsSnapshotForRun,
-      skillsWorkspaceDir: effectiveSkillsWorkspace,
-      workspaceOnly: loadSkillsWorkspaceOnly,
-    } = resolveSandboxSkillRuntimeInputs({
-      sandbox,
-      effectiveWorkspace,
-      skillsSnapshot: params.skillsSnapshot,
-    });
-    const { shouldLoadSkillEntries, skillEntries } = resolveEmbeddedRunSkillEntries({
-      workspaceDir: effectiveSkillsWorkspace,
-      config: params.config,
-      agentId: effectiveSkillAgentId,
-      eligibility: skillsEligibility,
-      skillsSnapshot: skillsSnapshotForRun,
-      workspaceOnly: loadSkillsWorkspaceOnly,
-    });
-    restoreSkillEnv = skillsSnapshotForRun
-      ? applySkillEnvOverridesFromSnapshot({
-          snapshot: skillsSnapshotForRun,
-          config: params.config,
-        })
-      : applySkillEnvOverrides({
-          skills: skillEntries ?? [],
-          config: params.config,
-        });
-    const promptSkillEntries = mapSandboxSkillEntriesForPrompt({
-      entries: shouldLoadSkillEntries ? skillEntries : undefined,
-      skillsWorkspaceDir: effectiveSkillsWorkspace,
-      skillsPromptWorkspaceDir: effectiveSkillsPromptWorkspace,
-    });
-    const skillUsagePaths = mapSandboxSkillUsagePaths({
-      paths: sandbox?.skillUsagePaths,
-      skillsWorkspaceDir: effectiveSkillsWorkspace,
-      skillsPromptWorkspaceDir: effectiveSkillsPromptWorkspace,
-    });
-    const skillsPrompt = resolveSkillsPromptForRun({
-      skillsSnapshot: skillsSnapshotForRun,
-      entries: promptSkillEntries,
-      config: params.config,
-      workspaceDir: effectiveSkillsPromptWorkspace,
-      agentId: effectiveSkillAgentId,
-      eligibility: skillsEligibility,
-    });
-
     const sessionLabel = params.sessionKey ?? params.sessionId;
     const resolvedMessageProvider = params.messageChannel ?? params.messageProvider;
     const contextInjectionMode = resolveContextInjectionMode(params.config, effectiveSkillAgentId);
@@ -1070,7 +986,6 @@ async function compactEmbeddedAgentSessionDirectOnce(
       workspaceDir: effectiveWorkspace,
       cwd: effectiveCwd,
       spawnWorkspaceDir,
-      skillsSnapshot: skillsSnapshotForRun,
       sandboxToolPolicy: sandbox?.tools,
     });
     const toolsEnabled = supportsModelTools(effectiveModel);
@@ -1116,8 +1031,6 @@ async function compactEmbeddedAgentSessionDirectOnce(
           modelCompat: extractModelCompat(effectiveModel),
           modelApi: effectiveModel.api,
           modelContextWindowTokens: contextTokenBudget,
-          skillsSnapshot: skillsSnapshotForRun,
-          skillUsagePaths,
           conversationCapabilityProfile: runtimeCapabilityProfile,
           modelAuthMode: resolveModelAuthMode(effectiveModel.provider, params.config, undefined, {
             workspaceDir: effectiveWorkspace,
@@ -1443,7 +1356,7 @@ async function compactEmbeddedAgentSessionDirectOnce(
       await resourceLoader.reload();
       // DefaultResourceLoader.reload() rehydrates settings from disk and can drop Operator
       // compaction overrides applied in createPreparedEmbeddedAgentSettingsManager — same
-      // rehydration also restores Operator runtime's auto-compaction (operator#75799), so re-apply
+      // rehydration also restores Operator runtime's auto-compaction (openclaw#75799), so re-apply
       // both guards. effectiveModel.baseUrl matches the surrounding scope so
       // auth-profile-injected baseUrls reach the endpoint-class detector.
       applyAgentCompactionSettingsFromConfig({
@@ -1894,7 +1807,6 @@ async function compactEmbeddedAgentSessionDirectOnce(
     if (!checkpointSnapshotRetained) {
       await compactionCheckpointStore.cleanupSnapshot(checkpointSnapshot);
     }
-    restoreSkillEnv?.();
   }
 }
 

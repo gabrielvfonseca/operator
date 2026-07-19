@@ -1,7 +1,7 @@
-import OpenClawKit
+import OperatorKit
 
-public enum OpenClawChatEventText {
-    public static func assistantText(from event: OpenClawChatEventPayload) -> String? {
+public enum OperatorChatEventText {
+    public static func assistantText(from event: OperatorChatEventPayload) -> String? {
         self.assistantText(fromMessage: event.message)
     }
 

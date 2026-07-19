@@ -1,5 +1,5 @@
 /** Policy gates for ACP availability, dispatch, and allowed agent ids. */
-import { AcpRuntimeError } from "@operator/acp-core/runtime/errors";
+import { AcpRuntimeError } from "@gabrielvfonseca/acp-core/runtime/errors";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 

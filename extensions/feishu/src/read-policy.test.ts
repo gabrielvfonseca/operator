@@ -1,4 +1,4 @@
-import type { OperatorConfig } from "openclaw/plugin-sdk/core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { describe, expect, it } from "vitest";
 import { resolveFeishuAccount } from "./accounts.js";
 import { resolveFeishuChatType } from "./chat-type.js";

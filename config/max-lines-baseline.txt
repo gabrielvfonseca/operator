@@ -1098,9 +1098,9 @@ ui/src/components/config-form.node.ts
 ui/src/components/lobster-pet.ts
 ui/src/components/markdown.ts
 ui/src/components/terminal/terminal-panel.ts
-ui/src/e2e/chat-flow.e2e.test.ts
-ui/src/e2e/new-session-page.e2e.test.ts
-ui/src/e2e/session-management.e2e.test.ts
+ui/tests/e2e/chat-flow.e2e.test.ts
+ui/tests/e2e/new-session-page.e2e.test.ts
+ui/tests/e2e/session-management.e2e.test.ts
 ui/src/lib/config/index.test.ts
 ui/src/lib/config/index.ts
 ui/src/lib/cron/index.test.ts
@@ -1159,4 +1159,4 @@ ui/src/pages/usage/view-overview.ts
 ui/src/pages/usage/view.ts
 ui/src/pages/workboard/view.test.ts
 ui/src/pages/workboard/view.ts
-ui/src/test-helpers/control-ui-e2e.ts
+ui/tests/helpers/control-ui-e2e.ts

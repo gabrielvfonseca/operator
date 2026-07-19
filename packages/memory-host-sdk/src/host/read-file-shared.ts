@@ -1,5 +1,5 @@
 // Memory Host SDK module implements read file shared behavior.
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { MemoryReadResult } from "./types.js";
 
 // Shared memory-file read result shaping and truncation notices.

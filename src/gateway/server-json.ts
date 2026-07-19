@@ -1,6 +1,6 @@
 // Gateway JSON parsing helper.
 // Safely parses optional JSON payloads while preserving invalid raw payload text.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 /** Safely parses an optional JSON string, returning a payloadJSON wrapper on parse failure. */
 export function safeParseJson(value: string | null | undefined): unknown {

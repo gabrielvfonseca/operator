@@ -8,11 +8,11 @@ import {
   resolveAgentIdFromSessionKey,
 } from "../../routing/session-key.js";
 import { runQueuedStoreWrite, type StoreWriterQueue } from "../../shared/store-writer-queue.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
 import {
   resolveOperatorAgentSqlitePath,
   type OperatorAgentDatabaseOptions,
-} from "../../state/operator-agent-db.js";
+} from "../../state/openclaw-agent-db.js";
 import type {
   SessionAccessScope,
   SessionTranscriptReadScope,

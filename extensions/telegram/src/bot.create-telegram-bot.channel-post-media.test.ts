@@ -1,6 +1,6 @@
 // Telegram tests cover bot.create telegram bot.channel post media plugin behavior.
 import { setTimeout as delay } from "node:timers/promises";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const saveRemoteMedia = vi.fn();
@@ -172,7 +172,7 @@ function createChannelPostContext(params: {
       ...(params.mediaGroupId ? { media_group_id: params.mediaGroupId } : {}),
       ...(photoFileId ? { photo: [{ file_id: photoFileId }] } : {}),
     },
-    me: { username: "openclaw_bot" },
+    me: { username: "operator_bot" },
     getFile: async () =>
       params.getFileResult ?? (photoFileId ? { file_path: `photos/${photoFileId}.jpg` } : {}),
   };
@@ -348,7 +348,7 @@ describe("createTelegramBot channel_post media", () => {
           date: 1736380800,
           text: part1,
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
 
@@ -359,7 +359,7 @@ describe("createTelegramBot channel_post media", () => {
           date: 1736380801,
           text: part2,
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
 
@@ -426,7 +426,7 @@ describe("createTelegramBot channel_post media", () => {
           photo: [{ file_id: "p1" }],
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
       await waitForMockCalls(sendMessageSpy, 1);
@@ -465,7 +465,7 @@ describe("createTelegramBot channel_post media", () => {
         document: { file_id: "doc-100000", file_name: "report.pdf" },
         from: { id: 55, is_bot: false, first_name: "u" },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => {
         throw new Error("Network request for 'getFile' failed!");
       },
@@ -506,7 +506,7 @@ describe("createTelegramBot channel_post media", () => {
           document: { file_id: "doc-100001", file_name: "large.bin" },
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => {
           throw new Error("Bad Request: file is too big");
         },
@@ -545,7 +545,7 @@ describe("createTelegramBot channel_post media", () => {
         document: { file_id: "doc-1", file_name: "report.pdf" },
         from: { id: 55, is_bot: false, first_name: "u" },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ file_path: "documents/doc-1" }),
     };
 
@@ -579,7 +579,7 @@ describe("createTelegramBot channel_post media", () => {
         document: { file_id: "doc-2", file_name: "huge.pdf" },
         from: { id: 55, is_bot: false, first_name: "u" },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ file_path: "documents/doc-2" }),
     };
 
@@ -618,7 +618,7 @@ describe("createTelegramBot channel_post media", () => {
         document: { file_id: "doc-3", file_name: "blocked.pdf" },
         from: { id: 55, is_bot: false, first_name: "u" },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ file_path: "documents/doc-3" }),
     };
 
@@ -663,7 +663,7 @@ describe("createTelegramBot channel_post media", () => {
           photo: [{ file_id: "p1" }],
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile,
       });
 
@@ -699,11 +699,11 @@ describe("createTelegramBot channel_post media", () => {
           chat: { id: -100456, type: "supergroup", title: "Ops Chat" },
           message_id: 81182,
           date: 1736380800,
-          caption: "@openclaw_bot check this",
+          caption: "@operator_bot check this",
           photo: [{ file_id: "p1" }],
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
       await waitForMockCalls(sendMessageSpy, 1);
@@ -741,7 +741,7 @@ describe("createTelegramBot channel_post media", () => {
     try {
       createTelegramBot({ token: "tok" });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
-      const caption = "/inspect@openclaw_bot";
+      const caption = "/inspect@operator_bot";
 
       await handler({
         message: {
@@ -753,7 +753,7 @@ describe("createTelegramBot channel_post media", () => {
           photo: [{ file_id: "p1" }],
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
       await waitForMockCalls(sendMessageSpy, 1);
@@ -805,7 +805,7 @@ describe("createTelegramBot channel_post media", () => {
             from: { id: 999, is_bot: true, first_name: "Operator" },
           },
         },
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
       await waitForMockCalls(sendMessageSpy, 1);

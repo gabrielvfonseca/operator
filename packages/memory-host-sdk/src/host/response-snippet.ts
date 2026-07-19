@@ -1,6 +1,6 @@
 // Memory Host SDK module implements response snippet behavior.
-import { decodeTextPrefix } from "@operator/normalization-core";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { decodeTextPrefix } from "@gabrielvfonseca/normalization-core";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 
 const DEFAULT_ERROR_BODY_MAX_BYTES = 8 * 1024;
 const DEFAULT_ERROR_BODY_MAX_CHARS = 1_000;

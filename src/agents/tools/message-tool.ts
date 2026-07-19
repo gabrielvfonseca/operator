@@ -7,8 +7,11 @@ import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   normalizeOptionalStringifiedId,
-} from "@operator/normalization-core/string-coerce";
-import { sortUniqueStrings, uniqueValues } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import {
+  sortUniqueStrings,
+  uniqueValues,
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import { Type, type TSchema } from "typebox";
 import {
   GATEWAY_CLIENT_IDS,

@@ -57,7 +57,7 @@ vi.mock("../../config/config.js", () => ({
     const afterWrite = params.afterWrite ?? { mode: "auto" };
     await replaceConfigFileMock({ nextConfig: transformed.nextConfig, afterWrite });
     return {
-      path: snapshot.path ?? "/tmp/openclaw.json",
+      path: snapshot.path ?? "/tmp/operator.json",
       previousHash,
       persistedHash: "persisted-hash",
       snapshot,
@@ -198,7 +198,7 @@ describe("handlePluginsCommand", () => {
     vi.clearAllMocks();
     readConfigFileSnapshotMock.mockResolvedValue({
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       sourceConfig: buildCfg(),
       resolved: buildCfg(),
       hash: "config-1",
@@ -215,7 +215,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "superpowers",
           status: "disabled",
-          format: "openclaw",
+          format: "@gabrielvfonseca/operator",
           bundleFormat: "claude",
         },
       ],
@@ -227,7 +227,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "superpowers",
           status: "disabled",
-          format: "openclaw",
+          format: "@gabrielvfonseca/operator",
           bundleFormat: "claude",
         },
       ],
@@ -380,7 +380,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "Super Powers",
           status: "disabled",
-          format: "openclaw",
+          format: "@gabrielvfonseca/operator",
           bundleFormat: "claude",
         },
       ],

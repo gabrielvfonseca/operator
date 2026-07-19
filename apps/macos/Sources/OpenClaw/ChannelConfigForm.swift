@@ -631,7 +631,7 @@ struct ChannelConfigForm: View {
             SettingsCardGroup("Configuration") {
                 SettingsCardRow(
                     title: "Schema unavailable",
-                    subtitle: "OpenClaw could not load editable settings for this channel.",
+                    subtitle: "Operator could not load editable settings for this channel.",
                     showsDivider: false)
                 {
                     EmptyView()

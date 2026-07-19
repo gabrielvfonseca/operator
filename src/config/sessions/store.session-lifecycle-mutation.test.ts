@@ -33,7 +33,7 @@ describe("session store lifecycle mutations", () => {
   let storePath: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-session-lifecycle-mutation-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-session-lifecycle-mutation-"));
     storePath = path.join(tempDir, "agents", "main", "sessions", "sessions.json");
   });
 

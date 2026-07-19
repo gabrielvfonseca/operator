@@ -6,6 +6,7 @@ import { createHash, randomUUID } from "node:crypto";
 import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import path from "node:path";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   auth,
   type OAuthClientProvider,
@@ -17,7 +18,6 @@ import type {
   OAuthTokens,
 } from "@modelcontextprotocol/sdk/shared/auth.js";
 import type { FetchLike } from "@modelcontextprotocol/sdk/shared/transport.js";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveStateDir } from "../config/paths.js";
 import { type FileLockOptions, withFileLock } from "../infra/file-lock.js";
 import { resolveGlobalSingleton } from "../shared/global-singleton.js";
@@ -157,7 +157,7 @@ export function createMcpOAuthClientProvider(params: {
   const assertAuthorizationRedirectAllowed = () => {
     if (!allowAuthorizationRedirect) {
       throw new Error(
-        `MCP server "${params.serverName}" requires OAuth authorization. Run operator mcp login ${params.serverName}.`,
+        `MCP server "${params.serverName}" requires OAuth authorization. Run openclaw mcp login ${params.serverName}.`,
       );
     }
   };
@@ -268,7 +268,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   const tokens = store.tokens;
   if (!tokens?.access_token) {
     throw new Error(
-      `MCP server "${params.serverName}" requires OAuth authorization. Run operator mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" requires OAuth authorization. Run openclaw mcp login ${params.serverName}.`,
     );
   }
 
@@ -279,7 +279,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   }
   if (!tokens.refresh_token) {
     throw new Error(
-      `MCP server "${params.serverName}" has expired OAuth credentials. Run operator mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" has expired OAuth credentials. Run openclaw mcp login ${params.serverName}.`,
     );
   }
 
@@ -292,7 +292,7 @@ async function resolveMcpOAuthAccessTokenLocked(
   const refreshedTokens = await provider.tokens();
   if (result !== "AUTHORIZED" || !refreshedTokens?.access_token) {
     throw new Error(
-      `MCP server "${params.serverName}" could not refresh OAuth credentials. Run operator mcp login ${params.serverName}.`,
+      `MCP server "${params.serverName}" could not refresh OAuth credentials. Run openclaw mcp login ${params.serverName}.`,
     );
   }
   return refreshedTokens.access_token;

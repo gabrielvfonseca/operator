@@ -1,5 +1,5 @@
 // Tencent config compatibility repairs shipped TokenHub model allowlists.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 const TENCENT_TOKENHUB_DEFAULT_MODEL_REF = "tencent-tokenhub/hy3";
 const TENCENT_TOKENHUB_PREVIEW_MODEL_REF = "tencent-tokenhub/hy3-preview";

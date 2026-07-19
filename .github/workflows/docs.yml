@@ -47,5 +47,5 @@ jobs:
 
       - name: Check docs
         env:
-          OPENCLAW_DOCS_SYNC_CLAWHUB_REPO: ${{ github.workspace }}/clawhub-source
+          OPERATOR_DOCS_SYNC_CLAWHUB_REPO: ${{ github.workspace }}/clawhub-source
         run: pnpm check:docs

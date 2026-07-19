@@ -109,7 +109,7 @@ describe("printDaemonStatus", () => {
           notLoadedText: "not loaded",
           runtime: { status: "running", pid: 8000 },
         },
-        logFile: "/tmp/openclaw.log",
+        logFile: "/tmp/operator.log",
         gateway: {
           bindMode: "loopback",
           bindHost: "127.0.0.1",
@@ -272,11 +272,11 @@ describe("printDaemonStatus", () => {
           runtime: { status: "running", pid: 8000 },
           staleUpdateLaunchdJobs: [
             {
-              label: "ai.openclaw.update.2026.5.12",
+              label: "ai.operator.update.2026.5.12",
               lastExitStatus: 127,
             },
             {
-              label: "ai.openclaw.manual-update.1717168800",
+              label: "ai.operator.manual-update.1717168800",
               lastExitStatus: 0,
             },
           ],
@@ -294,8 +294,8 @@ describe("printDaemonStatus", () => {
     );
 
     expectMockLineContains(runtime.error, "Stale Operator updater launchd job(s) detected.");
-    expectMockLineContains(runtime.error, "ai.openclaw.update.2026.5.12");
-    expectMockLineContains(runtime.error, "ai.openclaw.manual-update.1717168800");
+    expectMockLineContains(runtime.error, "ai.operator.update.2026.5.12");
+    expectMockLineContains(runtime.error, "ai.operator.manual-update.1717168800");
     expectMockLineContains(runtime.error, "launchctl remove <label>");
     expectMockLineContains(runtime.error, formatCliCommand("openclaw gateway restart"));
   });
@@ -574,12 +574,12 @@ describe("printDaemonStatus", () => {
         },
         config: {
           cli: {
-            path: "/tmp/openclaw-cli/openclaw.json",
+            path: "/tmp/operator-cli/operator.json",
             exists: true,
             valid: true,
           },
           daemon: {
-            path: "/tmp/openclaw-daemon/openclaw.json",
+            path: "/tmp/operator-daemon/operator.json",
             exists: true,
             valid: true,
             controlUi: { basePath: "/ui" },
@@ -625,12 +625,12 @@ describe("printDaemonStatus", () => {
         },
         config: {
           cli: {
-            path: "/tmp/openclaw-cli/openclaw.json",
+            path: "/tmp/operator-cli/operator.json",
             exists: true,
             valid: true,
           },
           daemon: {
-            path: "/tmp/openclaw-daemon/openclaw.json",
+            path: "/tmp/operator-daemon/operator.json",
             exists: true,
             valid: true,
             controlUi: { basePath: "/ui" },
@@ -670,7 +670,7 @@ describe("printDaemonStatus", () => {
         },
         config: {
           cli: {
-            path: "/tmp/openclaw-cli/openclaw.json",
+            path: "/tmp/operator-cli/operator.json",
             exists: true,
             valid: true,
             warnings: [
@@ -713,13 +713,13 @@ describe("printDaemonStatus", () => {
           listeners: [],
           hints: [],
         },
-        extraServices: [{ label: "ai.openclaw.gateway.rescue", scope: "user", detail: "loaded" }],
+        extraServices: [{ label: "ai.operator.gateway.rescue", scope: "user", detail: "loaded" }],
       },
       { json: false },
     );
 
     expectMockLineContains(runtime.log, "Other gateway-like services detected");
-    expectMockLineContains(runtime.log, "ai.openclaw.gateway.rescue");
+    expectMockLineContains(runtime.log, "ai.operator.gateway.rescue");
     expect(runtime.error).not.toHaveBeenCalled();
   });
 
@@ -803,8 +803,8 @@ describe("printDaemonStatus", () => {
               installedVersion: "2026.6.9",
               gatewayVersion: "2026.6.10-beta.1",
               source: "npm",
-              packageName: "@operator/brave-plugin",
-              spec: "@operator/brave-plugin@2026.6.9",
+              packageName: "@gabrielvfonseca/brave-plugin",
+              spec: "@gabrielvfonseca/brave-plugin@2026.6.9",
             },
           ],
         },
@@ -816,7 +816,7 @@ describe("printDaemonStatus", () => {
     expectMockLineContains(runtime.log, "- brave: 2026.6.9 (npm)");
     expectMockLineContains(
       runtime.log,
-      "openclaw plugins update @operator/brave-plugin@2026.6.10-beta.1",
+      "openclaw plugins update @gabrielvfonseca/brave-plugin@2026.6.10-beta.1",
     );
     expectMockLineContains(runtime.log, "openclaw gateway restart");
   });

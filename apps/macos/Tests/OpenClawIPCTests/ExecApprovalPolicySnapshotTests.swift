@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawKit
+import OperatorKit
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct ExecApprovalPolicySnapshotTests {
     @Test
@@ -42,8 +42,8 @@ struct ExecApprovalPolicySnapshotTests {
         #expect(portable.askFallback == .deny)
         #expect(portable.autoAllowSkills)
         #expect(portable.allowlistRules == [
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/usr/bin/tool"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/usr/bin/tool"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(
                 pattern: "/usr/bin/tool",
                 argPattern: "^ok$",
                 source: .allowAlways),
@@ -74,18 +74,18 @@ struct ExecApprovalPolicySnapshotTests {
         """#.utf8)
 
         let portable = try JSONDecoder().decode(
-            OpenClawSystemRunApprovalPolicySnapshot.self,
+            OperatorSystemRunApprovalPolicySnapshot.self,
             from: data)
 
         #expect(portable.allowlistRules == [
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/", argPattern: "A"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/", argPattern: "é"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/A"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/A", source: .allowAlways),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/e\u{0301}"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/ä"),
-            OpenClawSystemRunApprovalPolicySnapshot.Rule(pattern: "/é"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/", argPattern: "A"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/", argPattern: "é"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/A"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/A", source: .allowAlways),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/e\u{0301}"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/ä"),
+            OperatorSystemRunApprovalPolicySnapshot.Rule(pattern: "/é"),
         ])
         #expect(ExecApprovalPolicySnapshot(portable: portable).portable == portable)
     }

@@ -1,4 +1,4 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -150,7 +150,7 @@ class VoiceE2eService : Service() {
     runtime.setManualTls(intent.getBooleanExtra("tls", false))
     runtime.setOnboardingCompleted(true)
     runtime.connect(
-      ai.openclaw.app.gateway.GatewayEndpoint
+      ai.operator.app.gateway.GatewayEndpoint
         .manual(host, port),
       NodeRuntime.GatewayConnectAuth(
         token = intent.getDecodedStringExtra("token"),

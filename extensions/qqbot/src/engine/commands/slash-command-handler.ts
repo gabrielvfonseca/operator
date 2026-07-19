@@ -5,7 +5,7 @@
  * Handles urgent commands, normal slash commands, and file delivery.
  */
 
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import { resolveGroupCommandLevelFromAccountConfig } from "../config/group.js";
 import type { QueuedMessage } from "../gateway/message-queue.js";
 import type { GatewayAccount, EngineLogger } from "../gateway/types.js";

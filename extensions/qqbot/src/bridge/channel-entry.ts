@@ -8,7 +8,7 @@
  * under `src/bridge/` (or `src/bootstrap/` in the standalone variant).
  */
 
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { registerQQBotFrameworkCommands } from "./commands/framework-registration.js";
 import { registerQQBotTools } from "./tools/index.js";
 

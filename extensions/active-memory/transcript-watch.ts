@@ -2,7 +2,7 @@ import {
   asOptionalRecord as asRecord,
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   extractActiveMemorySearchDebugFromSessionRecord,
   extractToolResultNameFromSessionRecord,

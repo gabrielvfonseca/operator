@@ -1,12 +1,12 @@
 // Zalouser plugin module implements channel behavior.
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import { createAccountStatusSink } from "openclaw/plugin-sdk/channel-outbound";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { createChatChannelPlugin } from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import { createAccountStatusSink } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { buildPassiveProbedChannelStatusSummary } from "@gabrielvfonseca/operator/plugin-sdk/extension-shared";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   createAsyncComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import {
   checkZcaAuthenticated,
   resolveZalouserAccountSync,

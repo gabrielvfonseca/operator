@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct ExecSkillBinTrustTests {
     @Test func `build trust index resolves skill bin paths`() throws {
@@ -69,7 +69,7 @@ struct ExecSkillBinTrustTests {
 
     @Test func `skill auto allow rejects retargeted PATH symlink`() throws {
         let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-skill-symlink-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-skill-symlink-\(UUID().uuidString)", isDirectory: true)
             .resolvingSymlinksInPath()
         defer { try? FileManager.default.removeItem(at: root) }
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -97,7 +97,7 @@ struct ExecSkillBinTrustTests {
 
     @Test func `skill auto allow rejects an alias to a shell carrier`() throws {
         let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-skill-shell-alias-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-skill-shell-alias-\(UUID().uuidString)", isDirectory: true)
             .resolvingSymlinksInPath()
         defer { try? FileManager.default.removeItem(at: root) }
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -119,7 +119,7 @@ struct ExecSkillBinTrustTests {
 
     private static func makeExecutable(named name: String) throws -> (root: URL, path: String) {
         let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("openclaw-skill-bin-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("operator-skill-bin-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let file = root.appendingPathComponent(name)
         try "#!/bin/sh\nexit 0\n".write(to: file, atomically: true, encoding: .utf8)

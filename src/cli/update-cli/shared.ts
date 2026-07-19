@@ -3,10 +3,10 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
 import { resolveRequiredHomeDir } from "../../infra/home-dir.js";
-import { resolveOperatorPackageRoot } from "../../infra/operator-root.js";
+import { resolveOperatorPackageRoot } from "../../infra/openclaw-root.js";
 import { readPackageName, readPackageVersion } from "../../infra/package-json.js";
 import { normalizePackageTagInput } from "../../infra/package-tag.js";
 import { parseStrictPositiveInteger } from "../../infra/parse-finite-number.js";
@@ -74,15 +74,15 @@ export function parseTimeoutMsOrExit(timeout?: string): number | undefined | nul
   return seconds * 1000;
 }
 
-const OPERATOR_REPO_URL = "https://github.com/operator/operator.git";
+const OPERATOR_REPO_URL = "https://github.com/openclaw/operator.git";
 const MAX_LOG_CHARS = 8000;
 
-export const DEFAULT_PACKAGE_NAME = "operator";
+export const DEFAULT_PACKAGE_NAME = "@gabrielvfonseca/operator";
 const CORE_PACKAGE_NAMES = new Set([DEFAULT_PACKAGE_NAME]);
 
 /** Normalize a CLI tag/version/spec into the npm target form accepted by update flows. */
 export function normalizeTag(value?: string | null): string | null {
-  return normalizePackageTagInput(value, ["operator", DEFAULT_PACKAGE_NAME]);
+  return normalizePackageTagInput(value, ["@gabrielvfonseca/operator", DEFAULT_PACKAGE_NAME]);
 }
 
 function normalizeVersionTag(tag: string): string | null {
@@ -157,9 +157,9 @@ export function resolveGitInstallDir(): string {
 function resolveDefaultGitDir(): string {
   const home = resolveRequiredHomeDir(process.env, os.homedir);
   if (home.startsWith("/")) {
-    return path.posix.join(home, "operator");
+    return path.posix.join(home, "@gabrielvfonseca/operator");
   }
-  return path.join(home, "operator");
+  return path.join(home, "@gabrielvfonseca/operator");
 }
 
 /** Prefer the current Node executable, falling back to `node` when run through another shim. */
@@ -262,7 +262,7 @@ export async function ensureGitCheckout(params: {
     const empty = await isEmptyDir(params.dir);
     if (!empty) {
       throw new Error(
-        `OPERATOR_GIT_DIR points at a non-git directory: ${params.dir}. Set OPERATOR_GIT_DIR to an empty folder or an operator checkout.`,
+        `OPERATOR_GIT_DIR points at a non-git directory: ${params.dir}. Set OPERATOR_GIT_DIR to an empty folder or an openclaw checkout.`,
       );
     }
 
@@ -308,7 +308,7 @@ export async function resolveGlobalManager(params: {
 
 const COMPLETION_CACHE_WRITE_TIMEOUT_MS = 30_000;
 const COMPLETION_CACHE_MANUAL_REFRESH_HINT =
-  "Shell tab-completion may be stale; refresh manually with: operator completion --write-state";
+  "Shell tab-completion may be stale; refresh manually with: openclaw completion --write-state";
 
 /** Best-effort refresh of shell completion state after a successful update. */
 export async function tryWriteCompletionCache(root: string, jsonMode: boolean): Promise<void> {

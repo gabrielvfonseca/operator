@@ -1,6 +1,6 @@
 // Gateway session child-discovery helpers.
 // Finds direct parent/child relationships across canonical and legacy fields.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { loadCombinedSessionStoreForGateway } from "../config/sessions/combined-store-gateway.js";
 import type { SessionEntry } from "../config/sessions/types.js";
 import type { OperatorConfig } from "../config/types.operator.js";

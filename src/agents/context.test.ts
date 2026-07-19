@@ -1,6 +1,6 @@
 // Covers context-window cache application and session-manager runtime registry.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { createSessionManagerRuntimeRegistry } from "./agent-hooks/session-manager-runtime-registry.js";
 import {
   MODEL_CONFIGURED_CONTEXT_TOKEN_CACHE,

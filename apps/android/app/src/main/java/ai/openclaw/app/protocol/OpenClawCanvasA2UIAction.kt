@@ -1,9 +1,9 @@
-package ai.openclaw.app.protocol
+package ai.operator.app.protocol
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-object OpenClawCanvasA2UIAction {
+object OperatorCanvasA2UIAction {
   /** Reads the agent-facing action name from either the modern name field or legacy action field. */
   fun extractActionName(userAction: JsonObject): String? {
     val name =
@@ -69,7 +69,7 @@ object OpenClawCanvasA2UIAction {
     val err = jsonStringLiteral(error ?: "")
     val okLiteral = if (ok) "true" else "false"
     val idLiteral = jsonStringLiteral(actionId)
-    return "window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', { detail: { id: $idLiteral, ok: $okLiteral, error: $err } }));"
+    return "window.dispatchEvent(new CustomEvent('operator:a2ui-action-status', { detail: { id: $idLiteral, ok: $okLiteral, error: $err } }));"
   }
 
   private fun jsonStringLiteral(raw: String): String = JsonPrimitive(raw).toString().replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")

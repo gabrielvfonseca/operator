@@ -16,7 +16,7 @@ const TARBALL_SHA256 = "b".repeat(64);
 const VERSION = "2026.7.11";
 const NPM_INTEGRITY = `sha512-${Buffer.alloc(64).toString("base64")}`;
 const OUTPUT_TAG = "OPERATOR_WORKER_BOOTSTRAP_V1";
-const REMOTE_TARBALL = `/home/worker/.openclaw-worker/.incoming/${BUNDLE_HASH}.tgz.ABCDEFGH`;
+const REMOTE_TARBALL = `/home/worker/.operator-worker/.incoming/${BUNDLE_HASH}.tgz.ABCDEFGH`;
 const HOST_KEY = ["ssh-ed25519", "AAAA"].join(" ");
 const RECEIPT_JSON = JSON.stringify({
   bundleHash: BUNDLE_HASH,
@@ -117,8 +117,8 @@ describe("bootstrapWorker", () => {
     expect(runner.calls).toHaveLength(1);
     expect(runner.calls[0]?.argv[0]).toBe("ssh");
     expect(runner.calls[0]?.argv).toContain("StrictHostKeyChecking=yes");
-    expect(runner.calls[0]?.options.input).toContain("actual.openclawVersion");
-    expect(runner.calls[0]?.options.input).toContain("openclaw-worker-bundle-v1");
+    expect(runner.calls[0]?.options.input).toContain("actual.operatorVersion");
+    expect(runner.calls[0]?.options.input).toContain("operator-worker-bundle-v1");
     expect(runner.calls[0]?.options.input).not.toContain("$root/current");
     expect(knownHosts).toBe(`[worker.example.com]:2222 ${HOST_KEY}\n`);
   });
@@ -390,15 +390,15 @@ describe("bootstrapWorker", () => {
   it.skipIf(process.platform === "win32")(
     "verifies the transferred archive and installed manifest before a receipt",
     async () => {
-      await withTempDir({ prefix: "openclaw-worker-bootstrap-script-" }, async (root) => {
+      await withTempDir({ prefix: "operator-worker-bootstrap-script-" }, async (root) => {
         const packageRoot = path.join(root, "package");
         const remoteHome = path.join(root, "remote-home");
         await fs.mkdir(path.join(packageRoot, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(packageRoot, "package.json"),
-          `${JSON.stringify({ name: "openclaw", version: VERSION, files: ["dist/"] })}\n`,
+          `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: VERSION, files: ["dist/"] })}\n`,
         );
-        await fs.writeFile(path.join(packageRoot, "openclaw.mjs"), "import './dist/entry.js';\n", {
+        await fs.writeFile(path.join(packageRoot, "operator.mjs"), "import './dist/entry.js';\n", {
           mode: 0o755,
         });
         await fs.writeFile(path.join(packageRoot, "dist/entry.js"), "export {};\n");
@@ -415,12 +415,12 @@ describe("bootstrapWorker", () => {
         });
         const staleStaging = path.join(
           remoteHome,
-          ".openclaw-worker",
+          ".operator-worker",
           `.staging-${artifact.bundleHash}-99999`,
         );
         await fs.mkdir(staleStaging, { recursive: true });
         await fs.writeFile(path.join(staleStaging, "partial"), "abandoned install");
-        const staleLock = path.join(remoteHome, ".openclaw-worker", ".locks", artifact.bundleHash);
+        const staleLock = path.join(remoteHome, ".operator-worker", ".locks", artifact.bundleHash);
         await fs.mkdir(path.dirname(staleLock), { recursive: true });
         // A reused live PID must not keep a crashed install locked forever.
         await fs.symlink(`${process.pid}:1`, staleLock);
@@ -467,7 +467,7 @@ describe("bootstrapWorker", () => {
           fs.readFile(
             path.join(
               remoteHome,
-              ".openclaw-worker",
+              ".operator-worker",
               artifact.bundleHash,
               "bootstrap-receipt.json",
             ),
@@ -481,10 +481,10 @@ describe("bootstrapWorker", () => {
   it.skipIf(process.platform === "win32")(
     "fails closed instead of following a poisoned incoming directory",
     async () => {
-      await withTempDir({ prefix: "openclaw-worker-bootstrap-path-" }, async (root) => {
+      await withTempDir({ prefix: "operator-worker-bootstrap-path-" }, async (root) => {
         const remoteHome = path.join(root, "remote-home");
         const unrelated = path.join(root, "unrelated");
-        const bootstrapRoot = path.join(remoteHome, ".openclaw-worker");
+        const bootstrapRoot = path.join(remoteHome, ".operator-worker");
         await fs.mkdir(bootstrapRoot, { recursive: true });
         await fs.mkdir(unrelated);
         await fs.writeFile(path.join(unrelated, "sentinel"), "keep");
@@ -506,15 +506,15 @@ describe("bootstrapWorker", () => {
   it.skipIf(process.platform === "win32")(
     "verifies npm installs from the packaged dist inventory",
     async () => {
-      await withTempDir({ prefix: "openclaw-worker-bootstrap-npm-inventory-" }, async (root) => {
+      await withTempDir({ prefix: "operator-worker-bootstrap-npm-inventory-" }, async (root) => {
         const packageRoot = path.join(root, "package");
         const remoteHome = path.join(root, "remote-home");
         await fs.mkdir(path.join(packageRoot, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(packageRoot, "package.json"),
-          `${JSON.stringify({ name: "openclaw", version: VERSION, files: ["dist/"] })}\n`,
+          `${JSON.stringify({ name: "@gabrielvfonseca/operator", version: VERSION, files: ["dist/"] })}\n`,
         );
-        await fs.writeFile(path.join(packageRoot, "openclaw.mjs"), "import './dist/entry.js';\n", {
+        await fs.writeFile(path.join(packageRoot, "operator.mjs"), "import './dist/entry.js';\n", {
           mode: 0o755,
         });
         await fs.writeFile(path.join(packageRoot, "dist/entry.js"), "export {};\n");
@@ -541,7 +541,7 @@ describe("bootstrapWorker", () => {
           openclawVersion: VERSION,
           protocolFeatures: [],
         });
-        const installRoot = path.join(remoteHome, ".openclaw-worker", bundle.bundleHash);
+        const installRoot = path.join(remoteHome, ".operator-worker", bundle.bundleHash);
         await fs.mkdir(path.dirname(installRoot), { recursive: true });
         await fs.cp(packageRoot, installRoot, { recursive: true });
         await fs.writeFile(path.join(installRoot, "bootstrap-receipt.json"), `${receiptJson}\n`);

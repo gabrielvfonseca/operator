@@ -13,7 +13,7 @@ import {
   TUI_KEYBINDINGS,
   KeybindingsManager as TuiKeybindingsManager,
 } from "@earendil-works/pi-tui";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { getAgentDir } from "../config.js";
 
 /** Operator-specific key ids added to the shared pi-tui keybinding registry. */

@@ -29,7 +29,7 @@ const coreTools = [
   stubActionTool("message", ["send", "reply"]),
   stubTool("heartbeat_respond"),
   stubActionTool("gateway", ["config.get", "config.schema.lookup"]),
-  stubTool("operator"),
+  stubTool("@gabrielvfonseca/operator"),
   stubActionTool("agents_list", ["list", "show"]),
   stubActionTool("sessions_list", ["list", "show"]),
   stubActionTool("sessions_history", ["read", "tail"]),
@@ -50,7 +50,7 @@ const coreTools = [
 
 const createOperatorToolsMock = vi.fn(
   (options?: { enableHeartbeatTool?: boolean; recordToolPrepStage?: (name: string) => void }) => {
-    options?.recordToolPrepStage?.("operator-tools:test-helper");
+    options?.recordToolPrepStage?.("openclaw-tools:test-helper");
     return coreTools
       .filter((tool) => tool.name !== "heartbeat_respond" || options?.enableHeartbeatTool === true)
       .map((tool) => Object.assign({}, tool));
@@ -60,8 +60,8 @@ const createOperatorToolsMock = vi.fn(
 // Preserve action enums for tools whose tests assert schema/inventory behavior without paying the
 // cost of constructing the real tool bundle. The real capability filter stays
 // in place so client-caps gating behaves like production in these suites.
-vi.mock("../operator-tools.js", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../operator-tools.js")>();
+vi.mock("../openclaw-tools.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../openclaw-tools.js")>();
   return {
     createOperatorTools: createOperatorToolsMock,
     filterToolsByClientCaps: actual.filterToolsByClientCaps,

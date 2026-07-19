@@ -1,6 +1,6 @@
 #!/usr/bin/env -S pnpm tsx
 import { spawn } from "node:child_process";
-// Npm Update Smoke script supports OpenClaw repository automation.
+// Npm Update Smoke script supports Operator repository automation.
 import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { copyFile, readFile, rm } from "node:fs/promises";
@@ -10,16 +10,16 @@ import {
   addTimerTimeoutGraceMs,
   clampTimerTimeoutMs,
   finiteSecondsToTimerSafeMilliseconds,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { formatDurationCompact } from "../../../src/infra/format-time/format-duration.ts";
 import {
   die,
   ensureValue,
   extractPackageJsonFromTgz,
-  extractLastOpenClawVersionFromLog,
+  extractLastOperatorVersionFromLog,
   isLikelyMacosDesktopHome,
   makeTempDir,
-  packOpenClaw,
+  packOperator,
   packageBuildCommitFromTgz,
   parseMacosDsclUserHomeLine,
   parsePlatformList,
@@ -28,7 +28,7 @@ import {
   repoRoot,
   resolveHostIp,
   resolveLatestVersion,
-  resolveOpenClawRegistryVersion,
+  resolveOperatorRegistryVersion,
   resolveProviderAuth,
   resolveWindowsProviderAuth,
   run,
@@ -145,13 +145,13 @@ function resolveSecondsTimerMs(timeoutSeconds: number): number {
   return finiteSecondsToTimerSafeMilliseconds(timeoutSeconds) ?? 1;
 }
 
-const updateTimeoutSeconds = readPositiveIntEnv("OPENCLAW_PARALLELS_NPM_UPDATE_TIMEOUT_S", 1200);
+const updateTimeoutSeconds = readPositiveIntEnv("OPERATOR_PARALLELS_NPM_UPDATE_TIMEOUT_S", 1200);
 const updateCleanupBackstopMs = 60_000;
 const updateTimeoutMs = resolveSecondsTimerMs(updateTimeoutSeconds);
 const updateWithCleanupTimeoutMs =
   addTimerTimeoutGraceMs(updateTimeoutMs, updateCleanupBackstopMs) ?? 1;
 const freshLaneTimeoutKillGraceMs = readPositiveIntEnv(
-  "OPENCLAW_PARALLELS_NPM_UPDATE_FRESH_TIMEOUT_KILL_GRACE_MS",
+  "OPERATOR_PARALLELS_NPM_UPDATE_FRESH_TIMEOUT_KILL_GRACE_MS",
   2_000,
 );
 const activeLoggedChildren = new Set<ReturnType<typeof spawn>>();
@@ -161,7 +161,7 @@ let loggedExitCleanupInstalled = false;
 export function freshLaneTimeoutMs(platform: Platform): number {
   const defaultSeconds = platform === "windows" ? 90 * 60 : 75 * 60;
   return resolveSecondsTimerMs(
-    readPositiveIntEnv("OPENCLAW_PARALLELS_NPM_UPDATE_FRESH_TIMEOUT_S", defaultSeconds),
+    readPositiveIntEnv("OPERATOR_PARALLELS_NPM_UPDATE_FRESH_TIMEOUT_S", defaultSeconds),
   );
 }
 
@@ -522,12 +522,12 @@ function openClawVersionFamily(version: string): string {
   return /^(\d{4}\.\d{1,2}\.\d{1,2})(?:[-.]|$)/u.exec(version.trim())?.[1] ?? "";
 }
 
-function parseOpenClawPackageSpecVersion(spec: string): string {
+function parseOperatorPackageSpecVersion(spec: string): string {
   const value = spec.trim();
   if (!value) {
     return "";
   }
-  return resolveOpenClawRegistryVersion(value) || "";
+  return resolveOperatorRegistryVersion(value) || "";
 }
 
 function readString(value: unknown): string {
@@ -614,8 +614,8 @@ export class NpmUpdateSmoke {
 
   async run(): Promise<void> {
     this.startedAt = Date.now();
-    this.runDir = await this.makeRunTempDir("openclaw-parallels-npm-update.");
-    this.tgzDir = await this.makeRunTempDir("openclaw-parallels-npm-update-tgz.");
+    this.runDir = await this.makeRunTempDir("operator-parallels-npm-update.");
+    this.tgzDir = await this.makeRunTempDir("operator-parallels-npm-update-tgz.");
     try {
       await this.runSteps();
     } finally {
@@ -686,7 +686,7 @@ export class NpmUpdateSmoke {
     if (this.options.platforms.has("linux")) {
       jobs.push(
         this.spawnFresh("Linux", "linux", ["--vm", this.linuxVm], {
-          OPENCLAW_PARALLELS_LINUX_DISABLE_BONJOUR: "1",
+          OPERATOR_PARALLELS_LINUX_DISABLE_BONJOUR: "1",
         }),
       );
     }
@@ -719,7 +719,7 @@ export class NpmUpdateSmoke {
           "linux",
           ["--vm", this.linuxVm],
           {
-            OPENCLAW_PARALLELS_LINUX_DISABLE_BONJOUR: "1",
+            OPERATOR_PARALLELS_LINUX_DISABLE_BONJOUR: "1",
           },
           this.freshTargetSpec,
           "fresh-target",
@@ -854,7 +854,7 @@ export class NpmUpdateSmoke {
           hostIp: this.hostIp,
           packages: [
             {
-              name: "openclaw",
+              name: "@gabrielvfonseca/operator",
               version: this.targetTarballVersion,
               tarballPath: hostedTarballPath,
             },
@@ -889,7 +889,7 @@ export class NpmUpdateSmoke {
       return;
     }
     if (!this.options.updateTarget || this.options.updateTarget === "local-main") {
-      this.artifact = await packOpenClaw({
+      this.artifact = await packOperator({
         destination: this.tgzDir,
         requireControlUi: true,
       });
@@ -911,7 +911,7 @@ export class NpmUpdateSmoke {
     this.updateTargetEffective = this.options.updateTarget;
     this.updateExpectedNeedle = this.isExplicitPackageTarget(this.updateTargetEffective)
       ? ""
-      : resolveOpenClawRegistryVersion(this.updateTargetEffective) || this.updateTargetEffective;
+      : resolveOperatorRegistryVersion(this.updateTargetEffective) || this.updateTargetEffective;
     const metadata = this.resolveRegistryPackageMetadata(this.updateTargetEffective);
     this.updateTargetPackageVersion = metadata.version;
     this.updateTargetBuildCommit =
@@ -1117,7 +1117,7 @@ export class NpmUpdateSmoke {
     const scriptPath = this.writeGuestScript(
       this.macosVm,
       script,
-      "openclaw-parallels-npm-update-macos",
+      "operator-parallels-npm-update-macos",
     );
     const macosExecArgs = this.resolveMacosUpdateExecArgs(ctx);
     const sudoUserArgIndex = macosExecArgs.indexOf("-u");
@@ -1253,7 +1253,7 @@ export class NpmUpdateSmoke {
     const scriptPath = this.writeGuestScript(
       this.linuxVm,
       script,
-      "openclaw-parallels-npm-update-linux",
+      "operator-parallels-npm-update-linux",
     );
     try {
       const status = await this.runStreamingToJobLog(
@@ -1263,7 +1263,7 @@ export class NpmUpdateSmoke {
           this.linuxVm,
           "/usr/bin/env",
           "HOME=/root",
-          "OPENCLAW_ALLOW_ROOT=1",
+          "OPERATOR_ALLOW_ROOT=1",
           "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/snap/bin",
           "bash",
           scriptPath,
@@ -1414,8 +1414,8 @@ export class NpmUpdateSmoke {
     ) {
       return;
     }
-    const baseline = resolveOpenClawRegistryVersion(this.packageSpec);
-    const target = resolveOpenClawRegistryVersion(this.options.updateTarget);
+    const baseline = resolveOperatorRegistryVersion(this.packageSpec);
+    const target = resolveOperatorRegistryVersion(this.options.updateTarget);
     if (baseline && target && baseline === target) {
       die(
         `--update-target ${this.options.updateTarget} resolves to openclaw@${target}, same as baseline ${this.packageSpec}; publish or choose a newer --update-target before running VM update coverage`,
@@ -1431,7 +1431,7 @@ export class NpmUpdateSmoke {
   }
 
   private async extractLastVersion(logPath: string): Promise<string> {
-    return await extractLastOpenClawVersionFromLog(logPath);
+    return await extractLastOperatorVersionFromLog(logPath);
   }
 
   private dumpLogTail(logPath: string): void {
@@ -1480,7 +1480,7 @@ export class NpmUpdateSmoke {
           }>(tarballPath, "package/package.json");
           const name = dependencyPackage.name ?? "";
           const version = dependencyPackage.version ?? "";
-          if (!name || !version || name === "openclaw") {
+          if (!name || !version || name === "@gabrielvfonseca/operator") {
             throw new Error(`dependency tarball has invalid package metadata: ${tarballPath}`);
           }
           if (targetPackageJson.dependencies?.[name] !== version) {
@@ -1503,7 +1503,7 @@ export class NpmUpdateSmoke {
       return;
     }
     if (this.options.betaValidation) {
-      const version = resolveOpenClawRegistryVersion(this.options.betaValidation);
+      const version = resolveOperatorRegistryVersion(this.options.betaValidation);
       if (!version) {
         die(`could not resolve beta validation target: ${this.options.betaValidation}`);
       }
@@ -1515,27 +1515,27 @@ export class NpmUpdateSmoke {
       this.options.updateTarget !== "local-main" &&
       !this.isExplicitPackageTarget(this.options.updateTarget)
     ) {
-      const version = resolveOpenClawRegistryVersion(this.options.updateTarget);
+      const version = resolveOperatorRegistryVersion(this.options.updateTarget);
       if (version) {
         this.options.updateTarget = version;
       }
     }
 
     if (this.options.freshTargetSpec) {
-      const version = resolveOpenClawRegistryVersion(this.options.freshTargetSpec);
+      const version = resolveOperatorRegistryVersion(this.options.freshTargetSpec);
       this.freshTargetSpec = version ? `openclaw@${version}` : this.options.freshTargetSpec;
     }
   }
 
   private assertPublishedTargetMatchesHarnessCheckout(): void {
-    if (process.env.OPENCLAW_PARALLELS_ALLOW_HARNESS_TARGET_MISMATCH === "1") {
+    if (process.env.OPERATOR_PARALLELS_ALLOW_HARNESS_TARGET_MISMATCH === "1") {
       return;
     }
     const candidateVersion =
       this.targetTarballVersion ||
       (this.freshTargetSpec
-        ? parseOpenClawPackageSpecVersion(this.freshTargetSpec)
-        : parseOpenClawPackageSpecVersion(this.options.updateTarget));
+        ? parseOperatorPackageSpecVersion(this.freshTargetSpec)
+        : parseOperatorPackageSpecVersion(this.options.updateTarget));
     const targetFamily = openClawVersionFamily(candidateVersion);
     if (!targetFamily) {
       return;
@@ -1546,7 +1546,7 @@ export class NpmUpdateSmoke {
       return;
     }
     die(
-      `refusing to run Parallels ${candidateVersion} target with harness checkout ${this.harnessCheckoutVersion || "unknown"}; checkout the matching release branch or set OPENCLAW_PARALLELS_ALLOW_HARNESS_TARGET_MISMATCH=1 for an intentional cross-version harness run`,
+      `refusing to run Parallels ${candidateVersion} target with harness checkout ${this.harnessCheckoutVersion || "unknown"}; checkout the matching release branch or set OPERATOR_PARALLELS_ALLOW_HARNESS_TARGET_MISMATCH=1 for an intentional cross-version harness run`,
     );
   }
 

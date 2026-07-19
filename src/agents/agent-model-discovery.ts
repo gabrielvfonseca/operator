@@ -1,6 +1,6 @@
 /** Discovers agent models and auth storage with provider/plugin normalization hooks. */
 import path from "node:path";
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { Model } from "../llm/types.js";
 import { normalizeModelCompat } from "../plugins/provider-model-compat.js";

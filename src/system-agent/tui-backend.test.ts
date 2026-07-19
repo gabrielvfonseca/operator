@@ -1,6 +1,6 @@
 // Operator TUI backend tests cover rescue status integration with the TUI backend.
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { SystemAgentInferenceUnavailableError } from "./inference-error.js";
 import type { SystemAgentCommandDeps, SystemAgentOperation } from "./operations.js";
@@ -18,7 +18,7 @@ const overview: SystemAgentOverview = {
   defaultAgentId: "main",
   defaultModel: "openai/gpt-5.5",
   agents: [{ id: "main", isDefault: true, model: "openai/gpt-5.5" }],
-  config: { path: "/tmp/openclaw.json", exists: true, valid: true, issues: [], hash: null },
+  config: { path: "/tmp/operator.json", exists: true, valid: true, issues: [], hash: null },
   tools: {
     codex: { command: "codex", found: false, error: "not found" },
     claude: { command: "claude", found: false, error: "not found" },
@@ -32,7 +32,7 @@ const overview: SystemAgentOverview = {
     error: "offline",
   },
   references: {
-    docsUrl: "https://docs.openclaw.ai",
+    docsUrl: "https://docs.operator.ai",
     sourceUrl: "https://github.com/openclaw/openclaw",
   },
 };
@@ -55,7 +55,7 @@ function configSnapshot(config: OperatorConfig) {
   return {
     exists: true,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     hash: "h",
     config,
     runtimeConfig: config,
@@ -142,7 +142,7 @@ describe("runSystemAgentTui", () => {
       backend?: unknown;
     };
     expect(options.local).toBe(true);
-    expect(options.session).toBe("agent:openclaw:main");
+    expect(options.session).toBe("agent:operator:main");
     expect(options.historyLimit).toBe(200);
     expect(options.config).toEqual({});
     expect(options.title).toBe("openclaw setup");

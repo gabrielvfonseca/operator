@@ -1,5 +1,5 @@
 ---
-summary: "Canvas rendering bridge for the OpenClaw Linux desktop app."
+summary: "Canvas rendering bridge for the Operator Linux desktop app."
 read_when:
   - You are installing, configuring, or auditing the linux-canvas plugin
 title: "Linux Canvas plugin"
@@ -7,12 +7,12 @@ title: "Linux Canvas plugin"
 
 # Linux Canvas plugin
 
-Canvas rendering bridge for the OpenClaw Linux desktop app.
+Canvas rendering bridge for the Operator Linux desktop app.
 
 ## Distribution
 
-- Package: `@operator/linux-canvas`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/linux-canvas`
+- Install route: included in Operator
 
 ## Surface
 

@@ -1,10 +1,10 @@
-// Tests isolated operator test-state setup and cleanup behavior.
+// Tests isolated Operator test-state setup and cleanup behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadPersistedAuthProfileStore } from "../agents/auth-profiles/persisted.js";
 import { withEnvAsync } from "./env.js";
-import { createoperatorTestState, withoperatorTestState } from "./operator-test-state.js";
+import { createOperatorTestState, withOperatorTestState } from "./openclaw-test-state.js";
 
 async function expectPathMissing(targetPath: string): Promise<void> {
   try {
@@ -16,14 +16,14 @@ async function expectPathMissing(targetPath: string): Promise<void> {
   throw new Error(`expected missing path: ${targetPath}`);
 }
 
-describe("operator test state", () => {
+describe("openclaw test state", () => {
   it("creates an isolated home layout with spawn env and restores process env", async () => {
     const previousHome = process.env.HOME;
-    const previousoperatorHome = process.env.operator_HOME;
-    const previousStateDir = process.env.operator_STATE_DIR;
-    const previousConfigPath = process.env.operator_CONFIG_PATH;
+    const previousOperatorHome = process.env.OPERATOR_HOME;
+    const previousStateDir = process.env.OPERATOR_STATE_DIR;
+    const previousConfigPath = process.env.OPERATOR_CONFIG_PATH;
 
-    const state = await createoperatorTestState({
+    const state = await createOperatorTestState({
       label: "unit",
       scenario: "minimal",
     });
@@ -34,35 +34,35 @@ describe("operator test state", () => {
       expect(state.configPath).toBe(path.join(state.stateDir, "operator.json"));
       expect(state.workspaceDir).toBe(path.join(state.home, "workspace"));
       expect(state.env.HOME).toBe(state.home);
-      expect(state.env.operator_HOME).toBe(state.home);
-      expect(state.env.operator_STATE_DIR).toBe(state.stateDir);
-      expect(state.env.operator_CONFIG_PATH).toBe(state.configPath);
+      expect(state.env.OPERATOR_HOME).toBe(state.home);
+      expect(state.env.OPERATOR_STATE_DIR).toBe(state.stateDir);
+      expect(state.env.OPERATOR_CONFIG_PATH).toBe(state.configPath);
       expect(process.env.HOME).toBe(state.home);
-      expect(process.env.operator_HOME).toBe(state.home);
+      expect(process.env.OPERATOR_HOME).toBe(state.home);
       expect(JSON.parse(await fs.readFile(state.configPath, "utf8"))).toStrictEqual({});
     } finally {
       await state.cleanup();
     }
 
     expect(process.env.HOME).toBe(previousHome);
-    expect(process.env.operator_HOME).toBe(previousoperatorHome);
-    expect(process.env.operator_STATE_DIR).toBe(previousStateDir);
-    expect(process.env.operator_CONFIG_PATH).toBe(previousConfigPath);
+    expect(process.env.OPERATOR_HOME).toBe(previousOperatorHome);
+    expect(process.env.OPERATOR_STATE_DIR).toBe(previousStateDir);
+    expect(process.env.OPERATOR_CONFIG_PATH).toBe(previousConfigPath);
     await expectPathMissing(state.root);
   });
 
   it("supports state-only layout without overriding HOME", async () => {
     const previousHome = process.env.HOME;
 
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         layout: "state-only",
         scenario: "empty",
       },
       async (state) => {
         expect(process.env.HOME).toBe(previousHome);
-        expect(process.env.operator_STATE_DIR).toBe(state.stateDir);
-        expect(process.env.operator_CONFIG_PATH).toBe(state.configPath);
+        expect(process.env.OPERATOR_STATE_DIR).toBe(state.stateDir);
+        expect(process.env.OPERATOR_CONFIG_PATH).toBe(state.configPath);
         expect(state.env.HOME).toBe(previousHome);
         await expectPathMissing(state.configPath);
       },
@@ -70,51 +70,51 @@ describe("operator test state", () => {
   });
 
   it("clears inherited agent-dir overrides by default", async () => {
-    await withEnvAsync({ operator_AGENT_DIR: "/tmp/outside-operator-agent" }, async () => {
-      const state = await createoperatorTestState({
+    await withEnvAsync({ OPERATOR_AGENT_DIR: "/tmp/outside-operator-agent" }, async () => {
+      const state = await createOperatorTestState({
         layout: "state-only",
       });
 
       try {
-        expect(process.env.operator_AGENT_DIR).toBeUndefined();
-        expect(state.env.operator_AGENT_DIR).toBeUndefined();
+        expect(process.env.OPERATOR_AGENT_DIR).toBeUndefined();
+        expect(state.env.OPERATOR_AGENT_DIR).toBeUndefined();
         expect(state.agentDir()).toBe(path.join(state.stateDir, "agents", "main", "agent"));
       } finally {
         await state.cleanup();
       }
 
-      expect(process.env.operator_AGENT_DIR).toBe("/tmp/outside-operator-agent");
+      expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/outside-operator-agent");
     });
   });
 
   it("allows explicit agent-dir overrides when a test needs them", async () => {
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         env: {
-          operator_AGENT_DIR: "/tmp/explicit-operator-agent",
+          OPERATOR_AGENT_DIR: "/tmp/explicit-operator-agent",
         },
       },
       async (state) => {
-        expect(process.env.operator_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
-        expect(state.env.operator_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
+        expect(process.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
+        expect(state.env.OPERATOR_AGENT_DIR).toBe("/tmp/explicit-operator-agent");
       },
     );
   });
 
   it("can route agent-dir env vars to the isolated main agent store", async () => {
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         agentEnv: "main",
       },
       async (state) => {
-        expect(process.env.operator_AGENT_DIR).toBe(state.agentDir());
-        expect(state.env.operator_AGENT_DIR).toBe(state.agentDir());
+        expect(process.env.OPERATOR_AGENT_DIR).toBe(state.agentDir());
+        expect(state.env.OPERATOR_AGENT_DIR).toBe(state.agentDir());
       },
     );
   });
 
   it("writes scenario configs and auth profile stores", async () => {
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         scenario: "update-stable",
       },
@@ -146,7 +146,7 @@ describe("operator test state", () => {
   });
 
   it("creates upgrade survivor fixture state", async () => {
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         scenario: "upgrade-survivor",
       },
@@ -160,18 +160,18 @@ describe("operator test state", () => {
   });
 
   it("keeps external-service env scoped to the fixture", async () => {
-    const previousPolicy = process.env.operator_SERVICE_REPAIR_POLICY;
+    const previousPolicy = process.env.OPERATOR_SERVICE_REPAIR_POLICY;
 
-    await withoperatorTestState(
+    await withOperatorTestState(
       {
         scenario: "external-service",
       },
       async (state) => {
-        expect(process.env.operator_SERVICE_REPAIR_POLICY).toBe("external");
-        expect(state.env.operator_SERVICE_REPAIR_POLICY).toBe("external");
+        expect(process.env.OPERATOR_SERVICE_REPAIR_POLICY).toBe("external");
+        expect(state.env.OPERATOR_SERVICE_REPAIR_POLICY).toBe("external");
       },
     );
 
-    expect(process.env.operator_SERVICE_REPAIR_POLICY).toBe(previousPolicy);
+    expect(process.env.OPERATOR_SERVICE_REPAIR_POLICY).toBe(previousPolicy);
   });
 });

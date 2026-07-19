@@ -2,7 +2,7 @@
 import {
   createDefaultModelPresetAppliers,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-onboard";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-onboard";
 import {
   buildMoonshotProvider,
   MOONSHOT_BASE_URL,

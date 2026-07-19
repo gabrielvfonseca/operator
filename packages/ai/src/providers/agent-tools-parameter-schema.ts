@@ -3,12 +3,12 @@
  * Handles local JSON Schema refs, OpenAPI nullable syntax, top-level unions,
  * and provider-specific unsupported keyword stripping.
  */
-import { isRecord as isSchemaRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { isRecord as isSchemaRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueValues,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { TSchema } from "typebox";
 import { cleanSchemaForGemini } from "./clean-for-gemini.js";
 import { stripUnsupportedSchemaKeywords } from "./schema-keyword-strip.js";

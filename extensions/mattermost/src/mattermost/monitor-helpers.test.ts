@@ -88,7 +88,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "",
         rawText: "   ",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
@@ -98,7 +98,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "hello",
         rawText: "hello",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(false);
   });
@@ -108,7 +108,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "",
         rawText: "@openclaw",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(false);
   });
@@ -118,7 +118,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "",
         rawText: "@Operator",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(false);
   });
@@ -138,7 +138,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "",
         rawText: "",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
@@ -148,7 +148,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "\u0085",
         rawText: "@openclaw\u0085",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
@@ -158,7 +158,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "\ufe0f",
         rawText: "@openclaw\ufe0f",
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });
@@ -179,7 +179,7 @@ describe("shouldDropEmptyMattermostBody", () => {
       shouldDropEmptyMattermostBody({
         bodyText: "",
         rawText,
-        botUsername: "openclaw",
+        botUsername: "@gabrielvfonseca/operator",
       }),
     ).toBe(true);
   });

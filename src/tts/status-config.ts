@@ -1,11 +1,11 @@
 // TTS status config helpers resolve status output paths for speech generation.
 import path from "node:path";
-import { isRecord as isObjectRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord as isObjectRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { OperatorConfig } from "../config/types.js";
 import type { TtsAutoMode, TtsConfig, TtsProvider } from "../config/types.tts.js";
 import { tryReadJsonSync } from "../infra/json-files.js";

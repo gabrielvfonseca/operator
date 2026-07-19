@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const SHA_PATTERN = /^[a-f0-9]{40}$/u;
 const RELEASE_PUBLISH_REF_PATTERN = /^release-publish\/([a-f0-9]{12})-([1-9][0-9]*)$/u;
-const WORKFLOW_PATH = ".github/workflows/openclaw-npm-release.yml";
+const WORKFLOW_PATH = ".github/workflows/operator-npm-release.yml";
 
 function fail(message) {
   throw new Error(message);
@@ -20,7 +20,7 @@ function parseJson(raw, label) {
 
 function requiredString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
-    fail(`OpenClaw npm resume run is missing ${label}.`);
+    fail(`Operator npm resume run is missing ${label}.`);
   }
   return value;
 }
@@ -28,7 +28,7 @@ function requiredString(value, label) {
 function requiredSha(value, label) {
   const sha = requiredString(value, label);
   if (!SHA_PATTERN.test(sha)) {
-    fail(`OpenClaw npm resume run has invalid ${label}.`);
+    fail(`Operator npm resume run has invalid ${label}.`);
   }
   return sha;
 }
@@ -41,7 +41,7 @@ function trustedWorkflowPath(path, branch) {
   ]).has(path);
 }
 
-export function validateOpenClawNpmResumeRun({
+export function validateOperatorNpmResumeRun({
   canonicalWorkflowId,
   compareStatus,
   jobs,
@@ -53,7 +53,7 @@ export function validateOpenClawNpmResumeRun({
   const branch = requiredString(run?.head_branch, "head_branch");
   const branchMatch = RELEASE_PUBLISH_REF_PATTERN.exec(branch);
   if (!branchMatch) {
-    fail(`OpenClaw npm resume run has an untrusted workflow ref: ${url}`);
+    fail(`Operator npm resume run has an untrusted workflow ref: ${url}`);
   }
 
   const sha = requiredSha(run?.head_sha, "head_sha");
@@ -65,12 +65,12 @@ export function validateOpenClawNpmResumeRun({
     run?.workflow_id !== canonicalWorkflowId ||
     sha.slice(0, 12) !== branchMatch[1]
   ) {
-    fail(`OpenClaw npm resume run has an untrusted workflow identity: ${url}`);
+    fail(`Operator npm resume run has an untrusted workflow identity: ${url}`);
   }
 
   const tagObjectSha = requiredSha(tagRef?.object?.sha, "tooling tag object SHA");
   if (tagRef?.object?.type !== "tag") {
-    fail(`OpenClaw npm resume run tooling ref is not a signed annotated tag: ${url}`);
+    fail(`Operator npm resume run tooling ref is not a signed annotated tag: ${url}`);
   }
 
   const tagCommitSha = requiredSha(tag?.object?.sha, "tooling tag commit SHA");
@@ -81,7 +81,7 @@ export function validateOpenClawNpmResumeRun({
     (compareStatus !== "ahead" && compareStatus !== "identical")
   ) {
     fail(
-      `OpenClaw npm resume run is not bound to a real, main-reachable protected tooling tag: ${url}`,
+      `Operator npm resume run is not bound to a real, main-reachable protected tooling tag: ${url}`,
     );
   }
 
@@ -89,7 +89,7 @@ export function validateOpenClawNpmResumeRun({
     !Array.isArray(jobs) ||
     !jobs.some((job) => job?.name === "validate_publish_request" && job?.conclusion === "success")
   ) {
-    fail(`OpenClaw npm resume run lacks successful parent release approval validation: ${url}`);
+    fail(`Operator npm resume run lacks successful parent release approval validation: ${url}`);
   }
 
   return {
@@ -107,12 +107,12 @@ function defaultRunGh(args) {
   });
 }
 
-export function resolveOpenClawNpmResumeRun({ repo, runId, runGh = defaultRunGh }) {
+export function resolveOperatorNpmResumeRun({ repo, runId, runGh = defaultRunGh }) {
   if (!/^[1-9][0-9]*$/u.test(runId)) {
-    fail("OpenClaw npm resume run id must be a positive integer.");
+    fail("Operator npm resume run id must be a positive integer.");
   }
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repo)) {
-    fail("OpenClaw npm resume repository must be owner/name.");
+    fail("Operator npm resume repository must be owner/name.");
   }
 
   const api = (endpoint) =>
@@ -130,7 +130,7 @@ export function resolveOpenClawNpmResumeRun({ repo, runId, runGh = defaultRunGh 
     "resume run jobs",
   );
 
-  return validateOpenClawNpmResumeRun({
+  return validateOperatorNpmResumeRun({
     canonicalWorkflowId: canonicalWorkflow?.id,
     compareStatus: comparison?.status,
     jobs,
@@ -156,7 +156,7 @@ function parseArgs(argv) {
 }
 
 function main(argv = process.argv.slice(2)) {
-  const result = resolveOpenClawNpmResumeRun(parseArgs(argv));
+  const result = resolveOperatorNpmResumeRun(parseArgs(argv));
   process.stdout.write(`${JSON.stringify(result)}\n`);
 }
 

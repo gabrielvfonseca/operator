@@ -2,8 +2,8 @@
 import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { writeExternalFileWithinRoot } from "openclaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { writeExternalFileWithinRoot } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { chromium } from "playwright-core";
 import type { OperatorConfig } from "../api.js";
 import type { DiffRenderOptions, DiffTheme } from "./types.js";
@@ -137,10 +137,10 @@ export class PlaywrightDiffScreenshotter implements DiffScreenshotter {
         await page.setContent(injectBaseHref(params.html), { waitUntil: "load" });
         await page.waitForFunction(
           () => {
-            if (document.documentElement.dataset.openclawDiffsReady === "true") {
+            if (document.documentElement.dataset.operatorDiffsReady === "true") {
               return true;
             }
-            return [...document.querySelectorAll("[data-openclaw-diff-host]")].every((element) => {
+            return [...document.querySelectorAll("[data-operator-diff-host]")].every((element) => {
               return (
                 element instanceof HTMLElement && element.shadowRoot?.querySelector("[data-diffs]")
               );

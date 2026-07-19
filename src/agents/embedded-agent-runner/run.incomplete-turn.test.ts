@@ -1473,7 +1473,7 @@ describe("runEmbeddedAgent incomplete-turn safety", () => {
     expect(mockedRunEmbeddedAttempt).toHaveBeenCalledTimes(1);
 
     resolvePersistApproved?.({
-      sessionFile: "/tmp/openclaw-transcript.jsonl",
+      sessionFile: "/tmp/operator-transcript.jsonl",
       sessionEntry: undefined,
       messageId: "msg-user-delayed",
       message: persistedMessage,

@@ -4,7 +4,7 @@ import type {
   AcpRuntimeEvent,
   AcpRuntimeTurnInput,
   AcpRuntimeTurnResult,
-} from "@operator/acp-core/runtime/types";
+} from "@gabrielvfonseca/acp-core/runtime/types";
 import { AcpRuntimeError } from "../runtime/errors.js";
 import { normalizeAcpErrorCode } from "./manager.utils.js";
 import { normalizeText } from "./runtime-options.js";

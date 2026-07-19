@@ -1,6 +1,6 @@
+import { formatLocationText } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
 // Whatsapp plugin module implements qa driver behavior.
 import type { ConnectionState, proto, WAMessage } from "baileys";
-import { formatLocationText } from "openclaw/plugin-sdk/channel-inbound";
 import {
   describeReplyContext,
   extractContextInfo,

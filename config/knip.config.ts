@@ -55,13 +55,13 @@ const repositoryScriptEntries = [
   "scripts/fixtures/packed-plugin-sdk-type-smoke.ts!",
   "scripts/ios-release-signing.mjs!",
   "scripts/lib/docker-plugin-selection.mjs!",
-  "scripts/lib/openclaw-test-state.mjs!",
+  "scripts/lib/operator-test-state.mjs!",
   "scripts/list-prod-store-packages.mjs!",
   // Invoked by scripts/lib/live-docker-stage.sh during container validation.
   "scripts/live-docker-normalize-config.ts!",
   "scripts/mcp-code-mode-gateway-e2e.ts!",
-  "scripts/openclaw-release-clawhub-plan.ts!",
-  "scripts/openclaw-release-clawhub-runtime-state.ts!",
+  "scripts/operator-release-clawhub-plan.ts!",
+  "scripts/operator-release-clawhub-runtime-state.ts!",
   "scripts/plugin-prerelease-liveish-matrix.mjs!",
   "scripts/pr-gates-lock.mjs!",
   "scripts/pr-lib/process-group-runner.mjs!",
@@ -70,7 +70,7 @@ const repositoryScriptEntries = [
   "scripts/qa-parity-report.ts!",
   "scripts/repro/tsx-name-repro.ts!",
   "scripts/resolve-frozen-codex-live-suite.mjs!",
-  "scripts/secrets/openclaw-bws-resolver.mjs!",
+  "scripts/secrets/operator-bws-resolver.mjs!",
   "scripts/sync-labels.ts!",
   "scripts/test-built-bundled-channel-entry-smoke.mjs!",
   "scripts/update-clawtributors.ts!",
@@ -88,7 +88,7 @@ const rootEntries = [
   "config/knip.config.ts!",
   "config/knip.all-exports.config.ts!",
   "config/knip.scripts-exports.config.ts!",
-  "openclaw.mjs!",
+  "operator.mjs!",
   "src/index.ts!",
   "src/entry.ts!",
   "src/cli/daemon-cli.ts!",
@@ -98,7 +98,7 @@ const rootEntries = [
   "scripts/print-cli-backend-live-metadata.ts!",
   "scripts/repro/code-mode-namespace-live.ts!",
   // Workflow/package-script entrypoints are not imported from production modules.
-  "scripts/openclaw-cross-os-release-checks.ts!",
+  "scripts/operator-cross-os-release-checks.ts!",
   "scripts/bench-sqlite-reliability.ts!",
   // Docker/manual E2E executables and their nested assertion/probe entrypoints.
   "scripts/e2e/*.{js,mjs,ts}!",
@@ -125,7 +125,7 @@ const rootEntries = [
   "src/plugins/source-display.ts!",
   "src/mcp/codex-supervision-tools-serve.ts!",
   // Spawned by generated system-agent MCP configs; this stdio entry is not statically imported.
-  "src/mcp/openclaw-tools-serve.ts!",
+  "src/mcp/operator-tools-serve.ts!",
   // Spawned by ACPX and QA Lab from a generated plugin-tool MCP command line.
   "src/mcp/plugin-tools-serve.ts!",
   // Dedicated tsdown entry exercised against built plugin singletons.
@@ -339,8 +339,8 @@ const config = {
   workspaces: {
     ".": {
       ignoreDependencies: [
-        "@operator/*",
-        // Docker packaging stages @operator/ai without nested dependencies after
+        "@gabrielvfonseca/*",
+        // Docker packaging stages @gabrielvfonseca/ai without nested dependencies after
         // verifying the root owns its exact runtime dependency versions.
         "@mistralai/mistralai",
         "cross-spawn",
@@ -412,7 +412,7 @@ const config = {
       ],
       project: ["src/**/*.ts!"],
     },
-    "sdks/operator-sdk": {
+    "packages/sdk": {
       entry: ["src/index.ts!"],
       project: ["src/**/*.ts!"],
     },
@@ -624,7 +624,6 @@ const config = {
     ]),
     [`${BUNDLED_PLUGIN_ROOT_DIR}/microsoft`]: bundledPluginWorkspace(),
     [`${BUNDLED_PLUGIN_ROOT_DIR}/memory-core`]: bundledPluginWorkspace(),
-    [`${BUNDLED_PLUGIN_ROOT_DIR}/memory-tiered`]: bundledPluginWorkspace(),
     [`${BUNDLED_PLUGIN_ROOT_DIR}/memory-lancedb`]: bundledPluginWorkspace(),
     [`${BUNDLED_PLUGIN_ROOT_DIR}/microsoft-foundry`]: bundledPluginWorkspace(),
     [`${BUNDLED_PLUGIN_ROOT_DIR}/migrate-claude`]: bundledPluginWorkspace(),

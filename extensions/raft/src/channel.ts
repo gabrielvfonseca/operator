@@ -1,13 +1,16 @@
 // Raft channel plugin wires the wake bridge into the canonical channel runtime.
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { createChatChannelPlugin, type ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { detectBinary } from "openclaw/plugin-sdk/setup-tools";
+import { describeAccountSnapshot } from "@gabrielvfonseca/operator/plugin-sdk/account-helpers";
+import {
+  createChatChannelPlugin,
+  type ChannelPlugin,
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { detectBinary } from "@gabrielvfonseca/operator/plugin-sdk/setup-tools";
 import {
   buildBaseChannelStatusSummary,
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "@gabrielvfonseca/operator/plugin-sdk/status-helpers";
 import {
   listRaftAccountIds,
   RAFT_CHANNEL_ID,

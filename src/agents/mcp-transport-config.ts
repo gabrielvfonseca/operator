@@ -1,7 +1,7 @@
 /**
  * Resolves MCP transport command, environment, and timeout configuration.
  */
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import { resolveOperatorMcpTransportAlias } from "../config/mcp-config-normalize.js";
 import { logWarn } from "../logger.js";

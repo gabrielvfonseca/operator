@@ -1,14 +1,14 @@
-// Slack plugin module implements directory live behavior.
-import type { ConversationsListResponse, UsersListResponse } from "@slack/web-api";
 import type {
   ChannelDirectoryEntry,
   DirectoryConfigParams,
-} from "openclaw/plugin-sdk/directory-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/directory-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeOptionalLowercaseString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Slack plugin module implements directory live behavior.
+import type { ConversationsListResponse, UsersListResponse } from "@slack/web-api";
 import { resolveSlackAccount } from "./accounts.js";
 import { createSlackLookupClient } from "./client.js";
 

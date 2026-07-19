@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { getRuntimeConfig } from "../config/config.js";
 import type { OperatorConfig } from "../config/config.js";
 import { resolveGatewayAuth } from "../gateway/auth.js";

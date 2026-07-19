@@ -3,7 +3,7 @@
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_CRON_MAX_CONCURRENT_RUNS } from "../config/cron-limits.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { enqueueCommandInLane, setCommandLaneConcurrency } from "../process/command-queue.js";
 import { resetCommandQueueStateForTest } from "../process/command-queue.test-support.js";
 import { CommandLane } from "../process/lanes.js";

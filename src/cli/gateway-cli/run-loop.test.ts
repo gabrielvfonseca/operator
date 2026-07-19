@@ -1743,7 +1743,7 @@ describe("runGatewayLoop", () => {
     peekGatewaySigusr1RestartReason.mockReturnValue(undefined);
     try {
       setPlatform("darwin");
-      process.env.OPERATOR_LAUNCHD_LABEL = "ai.openclaw.gateway";
+      process.env.OPERATOR_LAUNCHD_LABEL = "ai.operator.gateway";
       restartGatewayProcessWithFreshPid.mockReturnValueOnce({
         mode: "supervised",
       });
@@ -1780,7 +1780,7 @@ describe("runGatewayLoop", () => {
     consumeGatewayRestartIntentPayloadSync.mockReturnValueOnce({ reason: "gateway.restart" });
     try {
       setPlatform("darwin");
-      process.env.OPERATOR_LAUNCHD_LABEL = "ai.openclaw.gateway";
+      process.env.OPERATOR_LAUNCHD_LABEL = "ai.operator.gateway";
       restartGatewayProcessWithFreshPid.mockReturnValueOnce({
         mode: "supervised",
       });

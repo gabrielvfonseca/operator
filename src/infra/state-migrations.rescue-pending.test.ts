@@ -10,10 +10,13 @@ import {
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 
 function makeStateDir(): string {
-  return tempDirs.make("openclaw-rescue-migration-");
+  return tempDirs.make("operator-rescue-migration-");
 }
 
-function writeLegacyApproval(stateDir: string, owner: "crestodian" | "openclaw"): string {
+function writeLegacyApproval(
+  stateDir: string,
+  owner: "crestodian" | "@gabrielvfonseca/operator",
+): string {
   const sourcePath = path.join(stateDir, owner, "rescue-pending", "approval.json");
   fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
   fs.writeFileSync(sourcePath, "{}\n");
@@ -24,7 +27,7 @@ describe("legacy rescue pending cleanup", () => {
   it("discards both retired stores only during explicit doctor migration", () => {
     const stateDir = makeStateDir();
     const crestodianPath = writeLegacyApproval(stateDir, "crestodian");
-    const openclawPath = writeLegacyApproval(stateDir, "openclaw");
+    const openclawPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
 
     const runtimeDetection = detectLegacyRescuePending({ stateDir });
     expect(runtimeDetection.hasLegacy).toBe(false);
@@ -53,7 +56,7 @@ describe("legacy rescue pending cleanup", () => {
 
   it("recomputes fixed owner paths instead of trusting detection paths", () => {
     const stateDir = makeStateDir();
-    const openclawPath = writeLegacyApproval(stateDir, "openclaw");
+    const openclawPath = writeLegacyApproval(stateDir, "@gabrielvfonseca/operator");
 
     discardLegacyRescuePending({
       detected: { hasLegacy: true, sourcePaths: [path.join(stateDir, "untrusted")] },
@@ -66,8 +69,11 @@ describe("legacy rescue pending cleanup", () => {
   it("refuses to traverse a symlinked owner directory", () => {
     const stateDir = makeStateDir();
     const externalDir = makeStateDir();
-    const externalApproval = writeLegacyApproval(externalDir, "openclaw");
-    fs.symlinkSync(path.join(externalDir, "openclaw"), path.join(stateDir, "openclaw"));
+    const externalApproval = writeLegacyApproval(externalDir, "@gabrielvfonseca/operator");
+    fs.symlinkSync(
+      path.join(externalDir, "@gabrielvfonseca/operator"),
+      path.join(stateDir, "@gabrielvfonseca/operator"),
+    );
 
     const detected = detectLegacyRescuePending({ stateDir, doctorOnlyStateMigrations: true });
     const result = discardLegacyRescuePending({ detected, stateDir });

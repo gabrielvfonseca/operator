@@ -1,4 +1,4 @@
-import { setActiveEmbeddedRun } from "openclaw/plugin-sdk/agent-harness-runtime";
+import { setActiveEmbeddedRun } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   interruptCodexTurnBestEffort,
   retireCodexAppServerClientAfterTimedOutTurn,

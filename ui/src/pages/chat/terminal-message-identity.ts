@@ -77,7 +77,7 @@ export function rememberAuthoritativeTerminal(options: {
   });
 }
 
-function messageOpenClawId(message: unknown): string | null {
+function messageOperatorId(message: unknown): string | null {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return null;
   }
@@ -100,7 +100,7 @@ export function reconcileAuthoritativeTerminalHistory<T>(options: {
   const historyContainsTerminal = Boolean(
     terminal &&
     areUiSessionKeysEquivalent(terminal.sessionKey, options.sessionKey) &&
-    options.visibleMessages.some((message) => messageOpenClawId(message) === terminal.messageId),
+    options.visibleMessages.some((message) => messageOperatorId(message) === terminal.messageId),
   );
   if (!terminal || !historyContainsTerminal) {
     return options;

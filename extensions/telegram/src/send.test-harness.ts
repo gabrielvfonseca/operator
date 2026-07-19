@@ -1,12 +1,12 @@
 // Telegram plugin module implements send harness behavior.
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
 import {
   buildOutboundMediaLoadOptions,
   isGifMedia,
   kindFromMime,
   normalizePollInput,
-} from "openclaw/plugin-sdk/media-runtime";
-import type { MockFn } from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import type { MockFn } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { beforeEach, vi } from "vitest";
 import { markdownToTelegramHtml } from "./format.js";
 import { inputRichBlocksToPlainText, type InputRichBlock } from "./rich-block-model.js";
@@ -72,7 +72,7 @@ const { probeVideoDimensions } = vi.hoisted(() => ({
 const { loadConfig, resolveStorePath } = vi.hoisted(() => ({
   loadConfig: vi.fn(() => ({})),
   resolveStorePath: vi.fn(
-    (storePath?: string) => storePath ?? "/tmp/openclaw-telegram-send-tests.json",
+    (storePath?: string) => storePath ?? "/tmp/operator-telegram-send-tests.json",
   ),
 }));
 
@@ -221,7 +221,7 @@ export function getTelegramSendTestMocks(): TelegramSendTestMocks {
 export function installTelegramSendTestHooks() {
   beforeEach(() => {
     loadConfig.mockReturnValue({});
-    resolveStorePath.mockReturnValue("/tmp/openclaw-telegram-send-tests.json");
+    resolveStorePath.mockReturnValue("/tmp/operator-telegram-send-tests.json");
     loadWebMedia.mockReset();
     probeVideoDimensions.mockReset();
     probeVideoDimensions.mockResolvedValue(undefined);

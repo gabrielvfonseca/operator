@@ -1,5 +1,5 @@
 // Imessage plugin module implements approval reactions behavior.
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
 import {
   addApprovalReactionHintToText,
   buildApprovalReactionHint,
@@ -9,17 +9,17 @@ import {
   resolveTypedApprovalReactionTarget,
   type ApprovalReactionDecisionBinding,
   type ApprovalReactionTargetRecord,
-} from "openclaw/plugin-sdk/approval-reaction-runtime";
-import type { ExecApprovalReplyDecision } from "openclaw/plugin-sdk/approval-reply-runtime";
-import type { OutboundDeliveryResult } from "openclaw/plugin-sdk/channel-send-result";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/approval-reaction-runtime";
+import type { ExecApprovalReplyDecision } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
+import type { OutboundDeliveryResult } from "@gabrielvfonseca/operator/plugin-sdk/channel-send-result";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
 import {
   asDateTimestampMs,
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { getIMessageApprovalApprovers, imessageApprovalAuth } from "./approval-auth.js";
 import { resolveIMessageReactionContext } from "./monitor/reaction-context.js";
 import type { IMessagePayload } from "./monitor/types.js";

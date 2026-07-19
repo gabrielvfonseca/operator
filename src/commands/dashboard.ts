@@ -1,4 +1,4 @@
-// Implements `operator dashboard` URL resolution, readiness check, clipboard, and browser launch.
+// Implements `openclaw dashboard` URL resolution, readiness check, clipboard, and browser launch.
 import { readConfigFileSnapshot, resolveGatewayPort } from "../config/config.js";
 import { resolveGatewayAuthToken } from "../gateway/auth-token-resolution.js";
 import { copyToClipboard } from "../infra/clipboard.js";
@@ -213,7 +213,7 @@ export async function dashboardCommand(
     runtime.error(
       "Dashboard loopback listener could not be verified as the configured Gateway; refusing to copy or open an authenticated URL.",
     );
-    runtime.log("Restart the Gateway, then run `operator gateway status --deep` for details.");
+    runtime.log("Restart the Gateway, then run `openclaw gateway status --deep` for details.");
     return;
   }
   const { port, basePath, links, resolvedToken, token, includeTokenInUrl, dashboardUrl } = target;
@@ -230,7 +230,7 @@ export async function dashboardCommand(
   if (resolvedToken.unresolvedRefReason) {
     runtime.log(`Token auto-auth unavailable: ${resolvedToken.unresolvedRefReason}`);
     runtime.log(
-      "Set OPERATOR_GATEWAY_TOKEN in this shell or resolve your secret provider, then rerun `operator dashboard`.",
+      "Set OPERATOR_GATEWAY_TOKEN in this shell or resolve your secret provider, then rerun `openclaw dashboard`.",
     );
   }
 

@@ -1,5 +1,5 @@
-import type { AgentMessage } from "operator/plugin-sdk/agent-core";
-import type { ExtensionContext } from "operator/plugin-sdk/agent-sessions";
+import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { ExtensionContext } from "@gabrielvfonseca/operator/plugin-sdk/agent-sessions";
 import type { CompactionSummarizationInstructions } from "./compaction.js";
 import "./compaction.js";
 

@@ -597,7 +597,7 @@ describe("runMessageAction core send routing", () => {
       chatId: "c1",
     });
     ttsMocks.maybeApplyTtsToPayload.mockResolvedValueOnce({
-      mediaUrl: "file:///tmp/openclaw-voice.ogg",
+      mediaUrl: "file:///tmp/operator-voice.ogg",
       audioAsVoice: true,
       spokenText: "hello there",
     });
@@ -653,7 +653,7 @@ describe("runMessageAction core send routing", () => {
     expect(sendMedia).toHaveBeenCalledOnce();
     const mediaInput = firstMockArg(sendMedia, "send media");
     expect(mediaInput.text).toBe("");
-    expect(mediaInput.mediaUrl).toBe("file:///tmp/openclaw-voice.ogg");
+    expect(mediaInput.mediaUrl).toBe("file:///tmp/operator-voice.ogg");
   });
 
   it("forwards inbound audio context to message-tool TTS", async () => {

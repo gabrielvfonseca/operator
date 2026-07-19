@@ -1,5 +1,5 @@
 ---
-summary: "Use the Qwen Portal provider id with OpenClaw"
+summary: "Use the Qwen Portal provider id with Operator"
 read_when:
   - You want to configure the qwen-oauth provider id
   - You previously used Qwen Portal OAuth credentials
@@ -8,7 +8,7 @@ title: "Qwen OAuth / Portal"
 ---
 
 `qwen-oauth` is the Qwen Portal provider id, registered by the Qwen plugin
-(`@operator/qwen-provider`). It targets the Qwen Portal endpoint at
+(`@gabrielvfonseca/qwen-provider`). It targets the Qwen Portal endpoint at
 `https://portal.qwen.ai/v1` and keeps older Qwen OAuth / portal setups
 addressable through a distinct provider id, separate from the canonical `qwen`
 provider.
@@ -25,14 +25,14 @@ and the full Qwen plugin catalog.
 Install the Qwen plugin if you have not already:
 
 ```bash
-openclaw plugins install @operator/qwen-provider
-openclaw gateway restart
+operator plugins install @gabrielvfonseca/qwen-provider
+operator gateway restart
 ```
 
 Provide your portal token through onboarding:
 
 ```bash
-openclaw onboard --auth-choice qwen-oauth
+operator onboard --auth-choice qwen-oauth
 ```
 
 Non-interactive runs read the token from `--qwen-oauth-token <token>`, or set:
@@ -56,7 +56,7 @@ none is configured.
 
 ## How this differs from Qwen
 
-OpenClaw has two Qwen-facing provider ids:
+Operator has two Qwen-facing provider ids:
 
 | Provider     | Endpoint family                                          | Best for                                                                               |
 | ------------ | -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -90,18 +90,18 @@ If your account uses ModelStudio / DashScope API keys instead, configure the
 canonical `qwen` provider:
 
 ```bash
-openclaw onboard --auth-choice qwen-standard-api-key
-openclaw models set qwen/qwen3-coder-plus
+operator onboard --auth-choice qwen-standard-api-key
+operator models set qwen/qwen3-coder-plus
 ```
 
 ## Migration
 
-Legacy Qwen Portal OAuth profiles are not refreshable; `openclaw doctor` flags
+Legacy Qwen Portal OAuth profiles are not refreshable; `operator doctor` flags
 them. If a portal profile stops working, re-run onboarding with a current token
 or switch to the Standard Qwen provider:
 
 ```bash
-openclaw onboard --auth-choice qwen-standard-api-key
+operator onboard --auth-choice qwen-standard-api-key
 ```
 
 Standard global ModelStudio uses:

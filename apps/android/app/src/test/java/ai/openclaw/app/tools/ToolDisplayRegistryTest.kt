@@ -1,4 +1,4 @@
-package ai.openclaw.app.tools
+package ai.operator.app.tools
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive

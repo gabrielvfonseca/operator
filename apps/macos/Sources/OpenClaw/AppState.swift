@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 import Observation
-import OpenClawKit
+import OperatorKit
 import ServiceManagement
 import SwiftUI
 
@@ -23,7 +23,7 @@ enum ExecApprovalsPolicyLoadState: Equatable {
 @MainActor
 @Observable
 final class AppState {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "app-state")
+    private static let logger = Logger(subsystem: "ai.operator", category: "app-state")
     private static let execApprovalsReadRetryAttempts = 5
     private static let execApprovalsReadUnavailableMessage = "Exec approvals unavailable. Retry to refresh."
 
@@ -402,7 +402,7 @@ final class AppState {
             UserDefaults.standard.set(IconOverrideSelection.system.rawValue, forKey: iconOverrideKey)
         }
 
-        let configRoot = OpenClawConfigFile.loadDict()
+        let configRoot = OperatorConfigFile.loadDict()
         self.lastConfigFingerprint = Self.configFingerprint(configRoot)
         let configRemoteToken = GatewayRemoteConfig.resolveTokenValue(root: configRoot)
         let configRemoteResolution = GatewayRemoteConfig.resolveTransportResolution(root: configRoot)
@@ -529,8 +529,8 @@ final class AppState {
         let preservePort: Bool = if LoopbackHost.isLoopbackHost(host) {
             true
         } else if let expectedRemoteHost {
-            OpenClawConfigFile.canonicalHostForComparison(host) ==
-                OpenClawConfigFile.canonicalHostForComparison(expectedRemoteHost)
+            OperatorConfigFile.canonicalHostForComparison(host) ==
+                OperatorConfigFile.canonicalHostForComparison(expectedRemoteHost)
         } else {
             false
         }
@@ -625,7 +625,7 @@ final class AppState {
     }
 
     private func startConfigWatcher() {
-        let configUrl = OpenClawConfigFile.url()
+        let configUrl = OperatorConfigFile.url()
         self.configWatcher = ConfigFileWatcher(url: configUrl) { [weak self] in
             Task { @MainActor in
                 self?.applyConfigFromDisk()
@@ -635,13 +635,13 @@ final class AppState {
     }
 
     private func applyConfigFromDisk() {
-        let root = OpenClawConfigFile.loadDict()
+        let root = OperatorConfigFile.loadDict()
         let fingerprint = Self.configFingerprint(root)
         guard fingerprint != self.lastConfigFingerprint else { return }
         self.lastConfigFingerprint = fingerprint
         self.applyConfigOverrides(root)
         MacNodeModeCoordinator.shared.refresh()
-        NotificationCenter.default.post(name: .openclawConfigDidChange, object: nil)
+        NotificationCenter.default.post(name: .operatorConfigDidChange, object: nil)
     }
 
     private static func configFingerprint(_ root: [String: Any]) -> Data? {
@@ -1112,20 +1112,20 @@ extension AppState {
 
         // Keep app-only connection settings local to avoid overwriting remote gateway config.
         let synced = Self.syncedGatewayRoot(
-            currentRoot: OpenClawConfigFile.loadDict(),
+            currentRoot: OperatorConfigFile.loadDict(),
             draft: draft)
         guard synced.changed else {
             self.setGatewayConfigSyncState(.current)
             return true
         }
-        guard OpenClawConfigFile.saveDict(synced.root) else {
+        guard OperatorConfigFile.saveDict(synced.root) else {
             self.setGatewayConfigSyncState(.failed)
             Self.logger.warning("gateway config sync rejected to protect persisted gateway auth/mode")
             return false
         }
         self.lastConfigFingerprint = Self.configFingerprint(synced.root)
         self.setGatewayConfigSyncState(.current)
-        NotificationCenter.default.post(name: .openclawConfigDidChange, object: nil)
+        NotificationCenter.default.post(name: .operatorConfigDidChange, object: nil)
         return true
     }
 }

@@ -1,5 +1,5 @@
 // Qa Lab plugin module implements coverage report behavior.
-import { normalizeStringEntriesLower } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeStringEntriesLower } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { QA_SCENARIO_PACKS, type QaSeedScenarioWithSource } from "./scenario-catalog.js";
 import {
   readQaScorecardTaxonomyReport,

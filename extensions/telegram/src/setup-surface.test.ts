@@ -1,6 +1,6 @@
 // Telegram tests cover setup surface plugin behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { describe, expect, it, vi } from "vitest";
 import { promptTelegramAllowFromForAccount } from "./setup-core.js";
 import {

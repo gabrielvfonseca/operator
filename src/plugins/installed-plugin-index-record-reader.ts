@@ -1,13 +1,13 @@
 /** Reads installed-index records back into manifest registry records. */
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import { isPrereleaseResolutionAllowed, parseRegistryNpmSpec } from "../infra/npm-registry-spec.js";
 import { isNotFoundPathError, normalizeWindowsPathForComparison } from "../infra/path-guards.js";
 import { compareValidSemver } from "../infra/semver.js";
-import { withOperatorStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
+import { withOperatorStateDatabaseReadOnly } from "../state/openclaw-state-db-readonly.js";
 import {
   resolveDefaultPluginNpmDir,
   resolvePluginNpmProjectsDir,
@@ -85,8 +85,8 @@ function readStringRecord(value: unknown): Record<string, string> {
 }
 
 function hasPackagePluginMetadata(manifest: Record<string, unknown>): boolean {
-  const operator = manifest.operator;
-  if (!isRecord(operator)) {
+  const openclaw = manifest.operator;
+  if (!isRecord(openclaw)) {
     return false;
   }
   const extensions = operator.extensions;

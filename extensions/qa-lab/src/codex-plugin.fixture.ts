@@ -10,7 +10,7 @@ export const CODEX_PLUGIN_ID = "codex";
 
 export const CODEX_PLUGIN_LIFECYCLE_MESSAGES = Object.freeze({
   missingPlugin:
-    'Codex plugin is required for Codex runtime. Run "openclaw doctor --fix" to install @operator/codex, then retry.',
+    'Codex plugin is required for Codex runtime. Run "openclaw doctor --fix" to install @gabrielvfonseca/codex, then retry.',
 });
 
 export type CodexPluginFixtureVersion = "missing" | "current" | "head" | (string & {});
@@ -32,9 +32,9 @@ export type CodexPluginLifecycleResult = {
 };
 
 type CodexPluginPackageJson = {
-  name: "@operator/codex";
+  name: "@gabrielvfonseca/codex";
   version: string;
-  openclaw: {
+  operator: {
     install: {
       minHostVersion: string;
     };
@@ -63,9 +63,9 @@ function resolveFixtureVersion(version: CodexPluginFixtureVersion): string {
 
 function buildPackageJson(version: string): CodexPluginPackageJson {
   return {
-    name: "@operator/codex",
+    name: "@gabrielvfonseca/codex",
     version,
-    openclaw: {
+    operator: {
       install: {
         minHostVersion: `>=${version === CODEX_PLUGIN_HEAD_VERSION ? CODEX_PLUGIN_CURRENT_VERSION : version}`,
       },
@@ -130,7 +130,7 @@ function collectStaleLegacyRuntimePins(config: unknown): string[] {
   };
   const markers = new Set<string>();
   const collectRuntimePin = (value: unknown) => {
-    if (value === "openclaw") {
+    if (value === "@gabrielvfonseca/operator") {
       markers.add(`agentRuntime.id=${value}`);
     }
   };

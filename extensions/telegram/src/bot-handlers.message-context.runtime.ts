@@ -1,8 +1,11 @@
+import type {
+  OperatorConfig,
+  TelegramAccountConfig,
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { DEFAULT_GROUP_HISTORY_LIMIT } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { stripInlineDirectiveTagsForDelivery } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 // Telegram reply-chain cache and prompt-context projection.
 import type { Message } from "grammy/types";
-import type { OperatorConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { DEFAULT_GROUP_HISTORY_LIMIT } from "openclaw/plugin-sdk/reply-history";
-import { stripInlineDirectiveTagsForDelivery } from "openclaw/plugin-sdk/text-chunking";
 import type { TelegramMessageSessionRuntime } from "./bot-handlers.message-session.runtime.js";
 import type { TelegramMediaRef } from "./bot-message-context.js";
 import type {
@@ -38,8 +41,8 @@ function hasLegacyPromptContextTimestamp(
     return false;
   }
   const timestamp = (
-    node.sourceMessage as Message & { openclaw_prompt_context_timestamp_ms?: unknown }
-  ).openclaw_prompt_context_timestamp_ms;
+    node.sourceMessage as Message & { operator_prompt_context_timestamp_ms?: unknown }
+  ).operator_prompt_context_timestamp_ms;
   if (typeof timestamp !== "number" || !Number.isFinite(timestamp)) {
     return false;
   }

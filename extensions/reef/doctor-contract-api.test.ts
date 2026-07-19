@@ -1,15 +1,15 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import type {
   OpenKeyedStoreOptions,
   PluginDoctorStateMigrationContext,
-} from "openclaw/plugin-sdk/runtime-doctor";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   legacyConfigRules,
@@ -66,7 +66,7 @@ describe("Reef doctor contract", () => {
 
   beforeEach(() => {
     resetPluginStateStoreForTests();
-    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-reef-doctor-"));
+    stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-reef-doctor-"));
     env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   });
 

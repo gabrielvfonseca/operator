@@ -3,15 +3,15 @@ import { createHash } from "node:crypto";
 import { EventEmitter } from "node:events";
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import { bundledPluginFile } from "openclaw/plugin-sdk/test-fixtures";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { bundledPluginFile } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
 import { runNodeWatchedPaths } from "../../scripts/run-node.mjs";
 import { runWatchMain } from "../../scripts/watch-node.mjs";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 
 const VOICE_CALL_README = bundledPluginFile("voice-call", "README.md");
-const VOICE_CALL_MANIFEST = bundledPluginFile("voice-call", "openclaw.plugin.json");
+const VOICE_CALL_MANIFEST = bundledPluginFile("voice-call", "operator.plugin.json");
 const VOICE_CALL_PACKAGE = bundledPluginFile("voice-call", "package.json");
 const VOICE_CALL_INDEX = bundledPluginFile("voice-call", "index.ts");
 const VOICE_CALL_RUNTIME = bundledPluginFile("voice-call", "src/runtime.ts");
@@ -121,7 +121,7 @@ function requireSpawnEnv(spawn: ReturnType<typeof vi.fn>, callIndex: number) {
 describe("watch-node script", () => {
   it("wires chokidar watch to run-node with watched source/config paths", async () => {
     const { child, spawn, watcher, createWatcher, fakeProcess } = createWatchHarness();
-    await withTempDir({ prefix: "openclaw-watch-node-" }, async (cwd) => {
+    await withTempDir({ prefix: "operator-watch-node-" }, async (cwd) => {
       fs.mkdirSync(path.join(cwd, "src", "infra"), { recursive: true });
       fs.mkdirSync(path.join(cwd, "extensions", "voice-call"), { recursive: true });
 
@@ -210,7 +210,7 @@ describe("watch-node script", () => {
 
   it("preserves explicit sync I/O trace overrides for gateway watch", async () => {
     const { child, spawn, createWatcher, fakeProcess } = createWatchHarness();
-    await withTempDir({ prefix: "openclaw-watch-node-" }, async (cwd) => {
+    await withTempDir({ prefix: "operator-watch-node-" }, async (cwd) => {
       const runPromise = runWatch({
         args: ["gateway", "--force"],
         cwd,
@@ -437,7 +437,7 @@ describe("watch-node script", () => {
       args: ["gateway", "--force"],
       createWatcher,
       env: {
-        LAUNCH_JOB_LABEL: "ai.openclaw.gateway",
+        LAUNCH_JOB_LABEL: "ai.operator.gateway",
         PATH: "/usr/bin",
       },
       lockDisabled: true,
@@ -449,7 +449,7 @@ describe("watch-node script", () => {
     expect(spawnCall[0]).toBe("/usr/local/bin/node");
     expect(spawnCall[1]).toEqual(["scripts/run-node.mjs", "gateway", "--force"]);
     const spawnEnv = requireSpawnEnv(spawn, 0);
-    expect(spawnEnv.LAUNCH_JOB_LABEL).toBe("ai.openclaw.gateway");
+    expect(spawnEnv.LAUNCH_JOB_LABEL).toBe("ai.operator.gateway");
     expect(spawnEnv.OPERATOR_NO_RESPAWN).toBe("1");
 
     fakeProcess.emit("SIGINT");
@@ -735,7 +735,7 @@ describe("watch-node script", () => {
 
   it("replaces an existing watcher lock holder before starting", async () => {
     const { child, spawn, watcher, createWatcher, fakeProcess } = createWatchHarness();
-    await withTempDir({ prefix: "openclaw-watch-node-lock-" }, async (cwd) => {
+    await withTempDir({ prefix: "operator-watch-node-lock-" }, async (cwd) => {
       const lockPath = resolveTestWatchLockPath(cwd, ["gateway", "--force"]);
       fs.mkdirSync(path.dirname(lockPath), { recursive: true });
       fs.writeFileSync(

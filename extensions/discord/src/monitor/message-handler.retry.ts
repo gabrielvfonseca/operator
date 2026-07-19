@@ -1,5 +1,5 @@
 // Discord plugin module implements narrow inbound dispatch retry behavior.
-import { logVerbose, sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
+import { logVerbose, sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { DiscordRetryableInboundError } from "./inbound-dedupe.js";
 
 const REPLY_SESSION_INIT_CONFLICT_MESSAGE_RE = /^reply session initialization conflicted for \S+$/u;

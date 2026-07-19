@@ -81,7 +81,7 @@ describe("QA Lab Matrix CLI registration", () => {
 
     await qa.parseAsync([
       "node",
-      "openclaw",
+      "@gabrielvfonseca/operator",
       "matrix",
       "--profile",
       "release",
@@ -107,7 +107,9 @@ describe("QA Lab Matrix CLI registration", () => {
     matrixQaCliRegistration.register(qa);
     runLiveTransportQaSuiteCommand.mockResolvedValue(undefined);
 
-    await expect(qa.parseAsync(["node", "openclaw", "matrix"])).rejects.toThrow("process.exit(0)");
+    await expect(qa.parseAsync(["node", "@gabrielvfonseca/operator", "matrix"])).rejects.toThrow(
+      "process.exit(0)",
+    );
 
     expect(exitSpy).toHaveBeenCalledWith(0);
   });
@@ -119,7 +121,9 @@ describe("QA Lab Matrix CLI registration", () => {
       new Error("Matrix QA failed.\nreport: /tmp/report.md"),
     );
 
-    await expect(qa.parseAsync(["node", "openclaw", "matrix"])).rejects.toThrow("process.exit(1)");
+    await expect(qa.parseAsync(["node", "@gabrielvfonseca/operator", "matrix"])).rejects.toThrow(
+      "process.exit(1)",
+    );
 
     expect(stderrSpy).toHaveBeenCalledWith("Matrix QA failed.\nreport: /tmp/report.md\n");
     expect(exitSpy).toHaveBeenCalledWith(1);
@@ -132,7 +136,9 @@ describe("QA Lab Matrix CLI registration", () => {
       process.exitCode = 1;
     });
 
-    await expect(qa.parseAsync(["node", "openclaw", "matrix"])).rejects.toThrow("process.exit(1)");
+    await expect(qa.parseAsync(["node", "@gabrielvfonseca/operator", "matrix"])).rejects.toThrow(
+      "process.exit(1)",
+    );
 
     expect(exitSpy).toHaveBeenCalledWith(1);
   });
@@ -143,7 +149,9 @@ describe("QA Lab Matrix CLI registration", () => {
     matrixQaCliRegistration.register(qa);
     runLiveTransportQaSuiteCommand.mockRejectedValue(new Error("scenario failed"));
 
-    await expect(qa.parseAsync(["node", "openclaw", "matrix"])).rejects.toThrow("scenario failed");
+    await expect(qa.parseAsync(["node", "@gabrielvfonseca/operator", "matrix"])).rejects.toThrow(
+      "scenario failed",
+    );
 
     expect(exitSpy).not.toHaveBeenCalled();
   });

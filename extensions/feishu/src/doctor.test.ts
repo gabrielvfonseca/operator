@@ -8,11 +8,11 @@ import {
   listSessionEntries,
   type SessionEntry,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import {
   appendSessionTranscriptMessageByIdentity,
   readSessionTranscriptEvents,
-} from "openclaw/plugin-sdk/session-transcript-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 import { feishuDoctor } from "./doctor.js";
@@ -72,7 +72,7 @@ function storePath(agentId = "main"): string {
 }
 
 function sqliteStorePath(agentId = "main"): string {
-  return path.join(stateDir(), "agents", agentId, "agent", "openclaw-agent.sqlite");
+  return path.join(stateDir(), "agents", agentId, "agent", "operator-agent.sqlite");
 }
 
 function corruptTranscriptEventJson(agentId: string, sessionId: string): void {
@@ -145,10 +145,10 @@ describe("Feishu doctor state repair", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv();
-    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-feishu-doctor-"));
+    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "operator-feishu-doctor-"));
     process.env.HOME = tempHome;
     process.env.OPERATOR_HOME = tempHome;
-    process.env.OPERATOR_STATE_DIR = path.join(tempHome, ".openclaw");
+    process.env.OPERATOR_STATE_DIR = path.join(tempHome, ".operator");
     fs.mkdirSync(process.env.OPERATOR_STATE_DIR, { recursive: true, mode: 0o700 });
   });
 
@@ -460,7 +460,7 @@ describe("Feishu doctor state repair", () => {
       true,
     );
     expect(
-      fs.existsSync(path.join(backupDir, "session-stores", "main", "openclaw-agent.sqlite")),
+      fs.existsSync(path.join(backupDir, "session-stores", "main", "operator-agent.sqlite")),
     ).toBe(true);
 
     const store = readStoreEntries(targetStorePath);
@@ -551,7 +551,7 @@ describe("Feishu doctor state repair", () => {
       false,
     );
     expect(
-      fs.existsSync(path.join(backupDir, "session-stores", "main", "openclaw-agent.sqlite")),
+      fs.existsSync(path.join(backupDir, "session-stores", "main", "operator-agent.sqlite")),
     ).toBe(true);
 
     expect(readStoreEntries(targetStorePath)[sessionKey]).toBeUndefined();
@@ -561,7 +561,7 @@ describe("Feishu doctor state repair", () => {
     const customStorePath = path.join(stateDir(), "custom-sessions", "sessions.json");
     const customSqlitePath = path.join(
       path.dirname(customStorePath),
-      "openclaw-agent.support.sqlite",
+      "operator-agent.support.sqlite",
     );
     const sessionKey = "agent:support:feishu:direct:ou_migrated";
     await upsertSessionEntry({
@@ -605,7 +605,7 @@ describe("Feishu doctor state repair", () => {
     );
     expect(
       fs.existsSync(
-        path.join(backupDir, "session-stores", "support", "openclaw-agent.support.sqlite"),
+        path.join(backupDir, "session-stores", "support", "operator-agent.support.sqlite"),
       ),
     ).toBe(true);
 

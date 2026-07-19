@@ -39,7 +39,7 @@ enum ApplicationRelocator {
         case terminating
     }
 
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "app-relocation")
+    private static let logger = Logger(subsystem: "ai.operator", category: "app-relocation")
 
     static func recommendation(for environment: Environment) -> Recommendation {
         guard !environment.isDebugOrTesting,
@@ -128,12 +128,12 @@ enum ApplicationRelocator {
             } catch {
                 self.logger.error("Could not install app: \(error.localizedDescription, privacy: .public)")
                 self.showFailure(
-                    "OpenClaw couldn’t be installed in Applications. Move it there manually, then open that copy.")
+                    "Operator couldn’t be installed in Applications. Move it there manually, then open that copy.")
                 return .continueLaunch(startUpdater: false)
             }
         case .cannotInstall:
             let message =
-                "OpenClaw is running from a temporary location. " +
+                "Operator is running from a temporary location. " +
                 "Move it to Applications manually to enable updates and launch at login."
             self.showFailure(message)
             return .continueLaunch(startUpdater: false)
@@ -279,11 +279,11 @@ enum ApplicationRelocator {
     private static func confirmInstall(replacing: Bool) -> Bool {
         let alert = NSAlert()
         alert.messageText = replacing
-            ? "Replace the older OpenClaw in Applications?"
-            : "Install OpenClaw in Applications?"
+            ? "Replace the older Operator in Applications?"
+            : "Install Operator in Applications?"
         alert.informativeText = replacing
-            ? "This copy is newer than the installed app. OpenClaw will replace it and reopen from Applications."
-            : "OpenClaw will copy itself to Applications and reopen there so updates and launch at login stay reliable."
+            ? "This copy is newer than the installed app. Operator will replace it and reopen from Applications."
+            : "Operator will copy itself to Applications and reopen there so updates and launch at login stay reliable."
         alert.alertStyle = .informational
         alert.addButton(withTitle: replacing ? "Replace and Relaunch" : "Install and Relaunch")
         let cancel = alert.addButton(withTitle: "Not Now")
@@ -298,7 +298,7 @@ enum ApplicationRelocator {
         helper.arguments = [
             "-c",
             "while /bin/kill -0 \"$2\" 2>/dev/null; do /bin/sleep 0.1; done; exec /usr/bin/open -n \"$1\"",
-            "openclaw-relocation",
+            "operator-relocation",
             destination.path,
             String(ProcessInfo.processInfo.processIdentifier),
         ]
@@ -310,14 +310,14 @@ enum ApplicationRelocator {
             self.logger.error("Could not schedule relaunch: \(error.localizedDescription, privacy: .public)")
             self
                 .showFailure(
-                    "OpenClaw is installed in Applications, but couldn’t reopen automatically. Open it there manually.")
+                    "Operator is installed in Applications, but couldn’t reopen automatically. Open it there manually.")
             return .continueLaunch(startUpdater: false)
         }
     }
 
     private static func showFailure(_ message: String) {
         let alert = NSAlert()
-        alert.messageText = "Move OpenClaw to Applications"
+        alert.messageText = "Move Operator to Applications"
         alert.informativeText = message
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")

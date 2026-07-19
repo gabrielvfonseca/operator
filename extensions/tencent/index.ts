@@ -1,7 +1,7 @@
 // Tencent plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
-import { buildSingleProviderApiKeyCatalog } from "openclaw/plugin-sdk/provider-catalog-shared";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-api-key";
+import { buildSingleProviderApiKeyCatalog } from "@gabrielvfonseca/operator/plugin-sdk/provider-catalog-shared";
 import {
   TOKENHUB_MODEL_CATALOG,
   TOKENHUB_PROVIDER_ID,

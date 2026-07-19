@@ -1,5 +1,5 @@
 // Policy plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { registerPolicyCli } from "./src/cli.js";
 import { registerPolicyDoctorChecks } from "./src/doctor/register.js";
 

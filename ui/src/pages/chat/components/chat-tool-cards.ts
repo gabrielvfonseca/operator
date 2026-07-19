@@ -1,5 +1,5 @@
 // Control UI chat module implements tool cards behavior.
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 import { ensureCustomElementDefined } from "../../../app/lazy-custom-element.ts";
@@ -137,7 +137,7 @@ function handleRawDetailsToggle(event: Event) {
 // preview iframe can fit short/tall widgets. The event source must be one of our
 // preview frames and the height is clamped, so widget code can only resize its
 // own frame within the same bounds the preview contract allows.
-const WIDGET_SIZE_MESSAGE_TYPE = "openclaw:widget-size";
+const WIDGET_SIZE_MESSAGE_TYPE = "operator:widget-size";
 const WIDGET_FRAME_MIN_HEIGHT = 160;
 const WIDGET_FRAME_MAX_HEIGHT = 1200;
 // Preview frames render inside lit shadow roots, so a document query cannot
@@ -868,7 +868,7 @@ export function renderExpandedToolCardContent(
   const sidebarAction = canOpenSidebar
     ? html`
         <div class="chat-tool-card__actions">
-          <openclaw-tooltip content=${t("chat.toolCards.openDetails")}>
+          <operator-tooltip content=${t("chat.toolCards.openDetails")}>
             <button
               class="chat-tool-card__action-btn"
               type="button"
@@ -877,7 +877,7 @@ export function renderExpandedToolCardContent(
             >
               <span class="chat-tool-card__action-icon">${icons.panelRightOpen}</span>
             </button>
-          </openclaw-tooltip>
+          </operator-tooltip>
         </div>
       `
     : nothing;

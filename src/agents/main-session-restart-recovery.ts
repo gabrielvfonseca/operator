@@ -4,7 +4,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { resolveStateDir } from "../config/paths.js";
 import {
@@ -559,7 +559,7 @@ function isExactMessageToolDeliveryMirror(params: {
   if (!params.message || typeof params.message !== "object") {
     return false;
   }
-  const marker = (params.message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
+  const marker = (params.message as { openclawDeliveryMirror?: unknown }).operatorDeliveryMirror;
   if (!marker || typeof marker !== "object") {
     return false;
   }
@@ -680,7 +680,7 @@ function readDeliveredTerminalSourceReplyToolCallId(
     if (!message || typeof message !== "object" || getMessageRole(message) !== "assistant") {
       continue;
     }
-    const marker = (message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
+    const marker = (message as { openclawDeliveryMirror?: unknown }).operatorDeliveryMirror;
     if (!marker || typeof marker !== "object") {
       continue;
     }

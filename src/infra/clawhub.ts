@@ -3,12 +3,12 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { prerelease as parseSemverPrerelease, satisfies as satisfiesSemver } from "semver";
 import { retryClawHubRead } from "./clawhub-retry.js";
 import { sha256Base64, sha256Hex as digestSha256Hex } from "./crypto-digest.js";
@@ -36,7 +36,7 @@ const CLAWHUB_ERROR_BODY_MAX_CHARS = 400;
 
 export type ClawHubPackageFamily = "skill" | "code-plugin" | "bundle-plugin";
 export type ClawHubPackageChannel = "official" | "community" | "private";
-// Keep aligned with @operator/plugin-package-contract ExternalPluginCompatibility.
+// Keep aligned with @gabrielvfonseca/plugin-package-contract ExternalPluginCompatibility.
 export type ClawHubPackageCompatibility = {
   pluginApiRange?: string;
   builtWithOperatorVersion?: string;

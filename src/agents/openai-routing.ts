@@ -3,7 +3,7 @@
  *
  * Custom OpenAI-compatible base URLs intentionally bypass Codex-runtime defaults.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import type { ProviderRouteOverridePresence } from "../plugin-sdk/provider-model-types.js";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
@@ -45,7 +45,7 @@ export function resolveOpenAIImplicitAgentRuntime(params: {
   sessionKey?: string;
   env?: Readonly<Record<string, string | undefined>>;
   requestTransportOverrides?: ProviderRouteOverridePresence;
-}): "codex" | "operator" | null {
+}): "codex" | "@gabrielvfonseca/operator" | null {
   if (!isOpenAIProvider(params.provider)) {
     return null;
   }
@@ -73,11 +73,11 @@ export function resolveOpenAIImplicitAgentRuntime(params: {
   if (!resolution) {
     // Endpoint and adapter ownership stays in the provider artifact. Without
     // that policy, keep credentials and traffic on the core Operator runtime.
-    return "operator";
+    return "@gabrielvfonseca/operator";
   }
   return resolution.kind !== "incompatible" && resolution.defaultRuntimeId === "codex"
     ? "codex"
-    : "operator";
+    : "@gabrielvfonseca/operator";
 }
 
 /** Parses the provider portion from a provider/model ref. */

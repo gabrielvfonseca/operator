@@ -5,6 +5,10 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import fs from "node:fs/promises";
 import path, { resolve as resolvePath } from "node:path";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { redactSensitiveText } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import {
   ACPX_BACKEND_ID,
   AcpxRuntime as BaseAcpxRuntime,
@@ -24,10 +28,6 @@ import {
   type AcpRuntimeTurnResult,
   type SessionAgentOptions,
 } from "acpx/runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { redactSensitiveText } from "openclaw/plugin-sdk/security-runtime";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { AcpRuntimeError, type AcpRuntime, type AcpRuntimeErrorCode } from "../runtime-api.js";
 import { splitCommandParts } from "./command-line.js";
 import {
@@ -88,8 +88,8 @@ function withOperatorLeaseSessionMetadata<T extends object>(
 ): T & OperatorLeaseSessionMetadata {
   return {
     ...record,
-    openclawLeaseId: metadata.openclawLeaseId,
-    openclawGatewayInstanceId: metadata.openclawGatewayInstanceId,
+    openclawLeaseId: metadata.operatorLeaseId,
+    openclawGatewayInstanceId: metadata.operatorGatewayInstanceId,
   };
 }
 
@@ -332,7 +332,7 @@ function createResetAwareSessionStore(
   };
 }
 
-const OPERATOR_BRIDGE_EXECUTABLE = "openclaw";
+const OPERATOR_BRIDGE_EXECUTABLE = "@gabrielvfonseca/operator";
 const OPERATOR_BRIDGE_SUBCOMMAND = "acp";
 const CODEX_ACP_AGENT_ID = "codex";
 const CODEX_ACP_OPERATOR_PREFIX = "openai/";
@@ -733,10 +733,10 @@ export class AcpxRuntime implements AcpRuntime {
   constructor(options: OperatorAcpxRuntimeOptions, testOptions?: AcpxRuntimeTestOptions) {
     const { openclawProcessCleanup, ...delegateTestOptions } = testOptions ?? {};
     this.processCleanupDeps = openclawProcessCleanup;
-    this.wrapperRoot = options.openclawWrapperRoot;
-    this.gatewayInstanceId = options.openclawGatewayInstanceId;
-    this.processLeaseStore = options.openclawProcessLeaseStore;
-    this.openclawToolsMcpBridgeEnabled = options.openclawToolsMcpBridgeEnabled === true;
+    this.wrapperRoot = options.operatorWrapperRoot;
+    this.gatewayInstanceId = options.operatorGatewayInstanceId;
+    this.processLeaseStore = options.operatorProcessLeaseStore;
+    this.operatorToolsMcpBridgeEnabled = options.operatorToolsMcpBridgeEnabled === true;
     this.cwd = options.cwd;
     this.sessionStore = createResetAwareSessionStore(options.sessionStore, {
       gatewayInstanceId: this.gatewayInstanceId,
@@ -771,7 +771,7 @@ export class AcpxRuntime implements AcpRuntime {
       agentRegistry: this.agentRegistry,
     });
     const useBridgeSafeProbe =
-      this.openclawToolsMcpBridgeEnabled || shouldUseBridgeSafeDelegateForCommand(probeCommand);
+      this.operatorToolsMcpBridgeEnabled || shouldUseBridgeSafeDelegateForCommand(probeCommand);
     this.probeDelegate = useBridgeSafeProbe ? this.bridgeSafeDelegate : this.delegate;
   }
 
@@ -786,14 +786,14 @@ export class AcpxRuntime implements AcpRuntime {
   }
 
   private resolveOperatorToolsDelegateForSession(sessionKey: string): BaseAcpxRuntime {
-    if (!this.openclawToolsMcpBridgeEnabled) {
+    if (!this.operatorToolsMcpBridgeEnabled) {
       return this.delegate;
     }
     const normalizedSessionKey = sessionKey.trim();
     if (!normalizedSessionKey) {
       return this.delegate;
     }
-    const cached = this.openclawToolsSessionDelegates.get(normalizedSessionKey);
+    const cached = this.operatorToolsSessionDelegates.get(normalizedSessionKey);
     if (cached) {
       return cached;
     }
@@ -804,26 +804,26 @@ export class AcpxRuntime implements AcpRuntime {
       {
         ...this.delegateOptions,
         mcpServers: withOperatorToolsMcpSessionEnv({
-          enabled: this.openclawToolsMcpBridgeEnabled,
+          enabled: this.operatorToolsMcpBridgeEnabled,
           mcpServers: this.delegateOptions.mcpServers,
           sessionKey: normalizedSessionKey,
         }),
       },
       this.delegateTestOptions,
     );
-    this.openclawToolsSessionDelegates.set(normalizedSessionKey, delegate);
+    this.operatorToolsSessionDelegates.set(normalizedSessionKey, delegate);
     return delegate;
   }
 
   private releaseOperatorToolsDelegateForSession(sessionKey: string): void {
-    if (!this.openclawToolsMcpBridgeEnabled) {
+    if (!this.operatorToolsMcpBridgeEnabled) {
       return;
     }
     const normalizedSessionKey = sessionKey.trim();
     if (!normalizedSessionKey) {
       return;
     }
-    this.openclawToolsSessionDelegates.delete(normalizedSessionKey);
+    this.operatorToolsSessionDelegates.delete(normalizedSessionKey);
   }
 
   private async resolveDelegateForHandle(handle: AcpRuntimeHandle): Promise<BaseAcpxRuntime> {

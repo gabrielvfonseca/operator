@@ -3,7 +3,7 @@ import fsp from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
 // QA runtime helpers register and execute plugin QA scenarios from local files.
-import { toErrorObject } from "@operator/normalization-core/error-coercion";
+import { toErrorObject } from "@gabrielvfonseca/normalization-core/error-coercion";
 import type { Command } from "commander";
 import { formatErrorMessage } from "./error-runtime.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-runtime.js";

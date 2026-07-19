@@ -1,5 +1,5 @@
 // Checks package compatibility metadata for plugin manifests.
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 
 /** Result of reading package.json operator.compat.pluginApi metadata. */
 type PackagePluginApiRangeResult = { ok: true; range?: string } | { ok: false; error: string };

@@ -8,7 +8,7 @@ import {
   resolvePositiveTimerTimeoutMs,
   resolveTimerTimeoutMs,
   resolveTimestampMsToIsoString,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { z } from "zod";
 import { resolveConfigPath, resolveGatewayLockDir, resolveStateDir } from "../config/paths.js";
 import { getFileLockProcessStartTime, isPidAlive } from "../shared/pid-alive.js";

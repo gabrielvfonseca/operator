@@ -1,8 +1,8 @@
+import { createDraftStreamLoop } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 // Slack plugin module implements draft stream behavior.
 import type { MessageMetadata } from "@slack/types";
 import type { Block, KnownBlock } from "@slack/web-api";
-import { createDraftStreamLoop } from "openclaw/plugin-sdk/channel-outbound";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { deleteSlackMessage, editSlackMessage } from "./actions.js";
 import { formatSlackError } from "./errors.js";
 import { SLACK_TEXT_LIMIT } from "./limits.js";

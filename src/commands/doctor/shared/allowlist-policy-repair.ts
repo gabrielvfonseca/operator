@@ -1,6 +1,6 @@
 // Doctor repair for dmPolicy allowlists whose sender entries only exist in pairing stores.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { normalizeChatChannelId } from "../../../channels/ids.js";
 import { setCanonicalDmAllowFrom } from "../../../channels/plugins/dm-access.js";
 import type { OperatorConfig } from "../../../config/types.operator.js";

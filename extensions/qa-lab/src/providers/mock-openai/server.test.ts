@@ -4435,8 +4435,8 @@ describe("qa mock openai server", () => {
             ok: true,
             value: {
               tool: {
-                id: `openclaw:tool-search-e2e-fixture:${targetTool}`,
-                source: "openclaw",
+                id: `operator:tool-search-e2e-fixture:${targetTool}`,
+                source: "@gabrielvfonseca/operator",
                 sourceName: "tool-search-e2e-fixture",
                 name: targetTool,
                 description: "x".repeat(260),

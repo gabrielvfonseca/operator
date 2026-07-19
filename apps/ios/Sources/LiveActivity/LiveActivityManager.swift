@@ -7,10 +7,10 @@ import os
 final class LiveActivityManager {
     static let shared = LiveActivityManager()
 
-    private let logger = Logger(subsystem: "ai.openclawfoundation.app", category: "LiveActivity")
+    private let logger = Logger(subsystem: "ai.operatorfoundation.app", category: "LiveActivity")
     private let connectingStaleSeconds: TimeInterval = 120
     private let hydrationStaleSeconds: TimeInterval = 300
-    private var currentActivity: Activity<OpenClawActivityAttributes>?
+    private var currentActivity: Activity<OperatorActivityAttributes>?
     private var activityStartDate: Date = .now
 
     private init() {
@@ -37,7 +37,7 @@ final class LiveActivityManager {
         }
 
         self.activityStartDate = .now
-        let attributes = OpenClawActivityAttributes(agentName: agentName, sessionKey: sessionKey)
+        let attributes = OperatorActivityAttributes(agentName: agentName, sessionKey: sessionKey)
         let state = self.connectingState(presentation: presentation)
 
         do {
@@ -65,7 +65,7 @@ final class LiveActivityManager {
                 return
             }
             self.activityStartDate = .now
-            let attributes = OpenClawActivityAttributes(agentName: agentName, sessionKey: sessionKey)
+            let attributes = OperatorActivityAttributes(agentName: agentName, sessionKey: sessionKey)
             do {
                 let activity = try Activity.request(
                     attributes: attributes,
@@ -105,7 +105,7 @@ final class LiveActivityManager {
     }
 
     private func hydrateCurrentAndPruneDuplicates() {
-        let active = Activity<OpenClawActivityAttributes>.activities
+        let active = Activity<OperatorActivityAttributes>.activities
         guard !active.isEmpty else {
             self.currentActivity = nil
             return
@@ -140,7 +140,7 @@ final class LiveActivityManager {
         }
     }
 
-    private func updateCurrent(state: OpenClawActivityAttributes.ContentState, staleDate: Date? = nil) {
+    private func updateCurrent(state: OperatorActivityAttributes.ContentState, staleDate: Date? = nil) {
         guard let activity = self.currentActivity, activity.activityState == .active else {
             self.currentActivity = nil
             return
@@ -150,7 +150,7 @@ final class LiveActivityManager {
         }
     }
 
-    private func end(activity: Activity<OpenClawActivityAttributes>) {
+    private func end(activity: Activity<OperatorActivityAttributes>) {
         Task {
             await activity.end(
                 ActivityContent(state: self.disconnectedState(), staleDate: nil),
@@ -159,7 +159,7 @@ final class LiveActivityManager {
     }
 
     private struct StatusPresentation {
-        let status: OpenClawActivityAttributes.ContentState.Status
+        let status: OperatorActivityAttributes.ContentState.Status
         let verbatimDetail: String?
     }
 
@@ -190,22 +190,22 @@ final class LiveActivityManager {
         return trimmed.isEmpty ? nil : trimmed
     }
 
-    private func connectingState(presentation: StatusPresentation) -> OpenClawActivityAttributes.ContentState {
-        OpenClawActivityAttributes.ContentState(
+    private func connectingState(presentation: StatusPresentation) -> OperatorActivityAttributes.ContentState {
+        OperatorActivityAttributes.ContentState(
             status: presentation.status,
             verbatimDetail: presentation.verbatimDetail,
             startedAt: self.activityStartDate)
     }
 
-    private func attentionState(presentation: StatusPresentation) -> OpenClawActivityAttributes.ContentState {
-        OpenClawActivityAttributes.ContentState(
+    private func attentionState(presentation: StatusPresentation) -> OperatorActivityAttributes.ContentState {
+        OperatorActivityAttributes.ContentState(
             status: presentation.status,
             verbatimDetail: presentation.verbatimDetail,
             startedAt: self.activityStartDate)
     }
 
-    private func disconnectedState() -> OpenClawActivityAttributes.ContentState {
-        OpenClawActivityAttributes.ContentState(
+    private func disconnectedState() -> OperatorActivityAttributes.ContentState {
+        OperatorActivityAttributes.ContentState(
             status: .disconnected,
             verbatimDetail: nil,
             startedAt: self.activityStartDate)

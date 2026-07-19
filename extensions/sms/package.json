@@ -1,19 +1,19 @@
 {
-  "name": "@operator/sms",
+  "name": "@gabrielvfonseca/sms",
   "version": "2026.7.2",
   "description": "Operator SMS channel plugin for Twilio text messages.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
@@ -36,8 +36,8 @@
       "bundledDist": false
     },
     "install": {
-      "clawhubSpec": "clawhub:@operator/sms",
-      "npmSpec": "@operator/sms",
+      "clawhubSpec": "clawhub:@gabrielvfonseca/sms",
+      "npmSpec": "@gabrielvfonseca/sms",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9",
       "allowInvalidConfigRecovery": true

@@ -6,5 +6,5 @@ export {
   type OperatorConfig,
   type OperatorPluginApi,
   type OperatorPluginConfigSchema,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 export { z } from "zod";

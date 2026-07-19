@@ -1,9 +1,9 @@
-package ai.openclaw.app.ui.design
+package ai.operator.app.ui.design
 
-import ai.openclaw.app.ui.LocalMobileColors
-import ai.openclaw.app.ui.darkMobileColors
-import ai.openclaw.app.ui.lightMobileColors
-import ai.openclaw.app.ui.mobileFontFamily
+import ai.operator.app.ui.LocalMobileColors
+import ai.operator.app.ui.darkMobileColors
+import ai.operator.app.ui.lightMobileColors
+import ai.operator.app.ui.mobileFontFamily
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
@@ -137,7 +137,7 @@ private val LocalClawRadii = staticCompositionLocalOf { ClawRadii() }
 private val LocalClawTypography = staticCompositionLocalOf { clawTypography(mobileFontFamily) }
 
 /**
- * Composition-local access point for OpenClaw Android design tokens.
+ * Composition-local access point for Operator Android design tokens.
  */
 internal object ClawTheme {
   val colors: ClawColors
@@ -162,7 +162,7 @@ internal object ClawTheme {
 }
 
 /**
- * Installs OpenClaw design tokens and maps them into MaterialTheme for Material3 controls.
+ * Installs Operator design tokens and maps them into MaterialTheme for Material3 controls.
  */
 @Composable
 internal fun ClawDesignTheme(

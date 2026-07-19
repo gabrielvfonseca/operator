@@ -104,13 +104,13 @@ export async function appendInjectedAssistantMessageToTranscript(params: {
     usage,
     // Make these explicit so downstream tooling never treats this as model output.
     api: "openai-responses",
-    provider: "operator",
+    provider: "@gabrielvfonseca/operator",
     model: "gateway-injected",
     ...(params.idempotencyKey ? { idempotencyKey: params.idempotencyKey } : {}),
-    ...(params.ttsSupplement ? { operatorTtsSupplement: params.ttsSupplement } : {}),
+    ...(params.ttsSupplement ? { openclawTtsSupplement: params.ttsSupplement } : {}),
     ...(params.abortMeta
       ? {
-          operatorAbort: {
+          openclawAbort: {
             aborted: true,
             origin: params.abortMeta.origin,
             runId: params.abortMeta.runId,

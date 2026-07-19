@@ -1,5 +1,5 @@
 // Applies semantic validators for safe-bin command arguments.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 
 type SafeBinSemanticValidationParams = {
   binName?: string;

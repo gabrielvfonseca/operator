@@ -1,4 +1,4 @@
-package ai.openclaw.app.voice
+package ai.operator.app.voice
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -15,18 +15,18 @@ class VoiceWakePreferencesTest {
   fun sanitizePreservesPhrasePunctuationAndNewlines() {
     assertEquals(
       listOf("hey, openclaw", "line\nbreak"),
-      VoiceWakePreferences.sanitizeTriggerWords(listOf(" hey, openclaw ", "line\nbreak")),
+      VoiceWakePreferences.sanitizeTriggerWords(listOf(" hey, operator ", "line\nbreak")),
     )
   }
 
   @Test
   fun matcherRequiresWordBoundariesAndCommand() {
-    assertNull(VoiceWakePhraseMatcher.match("reopenclaw show status", listOf("openclaw")))
-    assertNull(VoiceWakePhraseMatcher.match("openclaw", listOf("openclaw")))
-    assertNull(VoiceWakePhraseMatcher.match("tell openclaw show status", listOf("openclaw")))
+    assertNull(VoiceWakePhraseMatcher.match("reoperator show status", listOf("@gabrielvfonseca/operator")))
+    assertNull(VoiceWakePhraseMatcher.match("@gabrielvfonseca/operator", listOf("@gabrielvfonseca/operator")))
+    assertNull(VoiceWakePhraseMatcher.match("tell operator show status", listOf("@gabrielvfonseca/operator")))
     assertEquals(
-      VoiceWakeMatch(trigger = "OpenClaw", command = "show status"),
-      VoiceWakePhraseMatcher.match("Hey OpenClaw, show status", listOf("openclaw")),
+      VoiceWakeMatch(trigger = "Operator", command = "show status"),
+      VoiceWakePhraseMatcher.match("Hey Operator, show status", listOf("@gabrielvfonseca/operator")),
     )
   }
 
@@ -53,8 +53,8 @@ class VoiceWakePreferencesTest {
   @Test
   fun matcherNormalizesSpokenPunctuationAndWhitespace() {
     assertEquals(
-      VoiceWakeMatch(trigger = "Hey OpenClaw", command = "show status"),
-      VoiceWakePhraseMatcher.match("Hey OpenClaw show status", listOf("hey,\nopenclaw")),
+      VoiceWakeMatch(trigger = "Hey Operator", command = "show status"),
+      VoiceWakePhraseMatcher.match("Hey Operator show status", listOf("hey,\nopenclaw")),
     )
   }
 }

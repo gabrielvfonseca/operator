@@ -33,7 +33,7 @@ import {
   type CronState,
 } from "../../lib/cron/index.ts";
 import { searchForSession } from "../../lib/sessions/index.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import {
   buildCronSuggestions,
@@ -42,7 +42,7 @@ import {
 } from "./form-suggestions.ts";
 import { renderCron, type CronDetailTab, type CronListTab } from "./view.ts";
 
-class CronPage extends OpenClawLightDomElement {
+class CronPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context!: ApplicationContext;
 
@@ -467,6 +467,6 @@ class CronPage extends OpenClawLightDomElement {
 }
 
 // Module re-evaluation can retain the shared registry (for example, in Vitest).
-if (!customElements.get("openclaw-cron-page")) {
-  customElements.define("openclaw-cron-page", CronPage);
+if (!customElements.get("operator-cron-page")) {
+  customElements.define("operator-cron-page", CronPage);
 }

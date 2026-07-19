@@ -13,12 +13,12 @@ import type {
   DB as StateDatabase,
   WorkerTranscriptCommitHeads,
   WorkerTranscriptCommits,
-} from "../../state/operator-state-db.generated.js";
+} from "../../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabase,
-} from "../../state/operator-state-db.js";
+} from "../../state/openclaw-state-db.js";
 
 type TranscriptCommitDb = Pick<
   StateDatabase,

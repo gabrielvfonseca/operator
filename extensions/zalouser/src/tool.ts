@@ -1,8 +1,14 @@
 // Zalouser plugin module implements tool behavior.
-import { stringEnum } from "openclaw/plugin-sdk/channel-actions";
-import type { AnyAgentTool, OperatorPluginToolContext } from "openclaw/plugin-sdk/core";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { jsonResult as json, type AgentToolResult } from "openclaw/plugin-sdk/tool-results";
+import { stringEnum } from "@gabrielvfonseca/operator/plugin-sdk/channel-actions";
+import type {
+  AnyAgentTool,
+  OperatorPluginToolContext,
+} from "@gabrielvfonseca/operator/plugin-sdk/core";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import {
+  jsonResult as json,
+  type AgentToolResult,
+} from "@gabrielvfonseca/operator/plugin-sdk/tool-results";
 import { Type } from "typebox";
 import { sendImageZalouser, sendLinkZalouser, sendMessageZalouser } from "./send.js";
 import { parseZalouserOutboundTarget } from "./session-route.js";

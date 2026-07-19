@@ -3,7 +3,7 @@
 import {
   resolveDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import type {
   ChannelMessageSendCommitContext,
   ChannelMessageUnknownSendReconciliationResult,

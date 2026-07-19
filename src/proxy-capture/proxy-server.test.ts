@@ -34,7 +34,7 @@ async function cleanupTestRoot(): Promise<void> {
 }
 
 async function makeSettings(): Promise<DebugProxySettings> {
-  testRoot = await mkdtemp(join(tmpdir(), "openclaw-debug-proxy-server-"));
+  testRoot = await mkdtemp(join(tmpdir(), "operator-debug-proxy-server-"));
   const certDir = join(testRoot, "certs");
   await mkdir(certDir, { recursive: true });
   await writeFile(join(certDir, "root-ca.pem"), "test root cert\n", "utf8");

@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import OpenClawChatUI
+@testable import OperatorChatUI
 
-private func textContent(_ text: String) -> OpenClawChatMessageContent {
-    OpenClawChatMessageContent(type: "text", text: text, mimeType: nil, fileName: nil, content: nil)
+private func textContent(_ text: String) -> OperatorChatMessageContent {
+    OperatorChatMessageContent(type: "text", text: text, mimeType: nil, fileName: nil, content: nil)
 }
 
-private func toolCallContent(name: String) -> OpenClawChatMessageContent {
-    OpenClawChatMessageContent(
+private func toolCallContent(name: String) -> OperatorChatMessageContent {
+    OperatorChatMessageContent(
         type: "toolCall",
         text: nil,
         mimeType: nil,
@@ -20,7 +20,7 @@ private func toolCallContent(name: String) -> OpenClawChatMessageContent {
 @Suite("ChatMessageVisibleText")
 struct ChatMessageVisibleTextTests {
     @Test func `assistant visible text skips non text blocks`() {
-        let message = OpenClawChatMessage(
+        let message = OperatorChatMessage(
             role: "assistant",
             content: [
                 textContent("Here is the answer."),
@@ -34,7 +34,7 @@ struct ChatMessageVisibleTextTests {
     }
 
     @Test func `user text passes through without assistant parsing`() {
-        let message = OpenClawChatMessage(
+        let message = OperatorChatMessage(
             role: "user",
             content: [textContent("What is <final>up</final>?")],
             timestamp: 1)
@@ -43,19 +43,19 @@ struct ChatMessageVisibleTextTests {
     }
 
     @Test func `has visible text ignores tool blank and thinking only messages`() {
-        let toolOnly = OpenClawChatMessage(
+        let toolOnly = OperatorChatMessage(
             role: "assistant",
             content: [toolCallContent(name: "exec")],
             timestamp: 1)
-        let blank = OpenClawChatMessage(
+        let blank = OperatorChatMessage(
             role: "assistant",
             content: [textContent("   ")],
             timestamp: 1)
-        let spoken = OpenClawChatMessage(
+        let spoken = OperatorChatMessage(
             role: "assistant",
             content: [textContent("Say this")],
             timestamp: 1)
-        let thinkingOnly = OpenClawChatMessage(
+        let thinkingOnly = OperatorChatMessage(
             role: "assistant",
             content: [textContent("<think>Do not speak this</think>")],
             timestamp: 1)

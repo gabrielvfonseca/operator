@@ -5,7 +5,7 @@
  * file so that the plugin-level `index.ts` stays a pure declaration.
  */
 
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/core";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { registerChannelTool } from "./channel.js";
 import { registerRemindTool } from "./remind.js";
 

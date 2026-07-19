@@ -7,13 +7,13 @@ import { VERSION } from "../version.js";
 import { createConfigIO } from "./io.js";
 import { normalizeExecSafeBinProfilesInConfig } from "./normalize-exec-safe-bin.js";
 import { withTempHome } from "./test-helpers.js";
-import type { OperatorConfig } from "./types.openclaw.js";
+import type { OperatorConfig } from "./types.operator.js";
 
 async function writeConfig(
   home: string,
-  dirname: ".openclaw",
+  dirname: ".operator",
   port: number,
-  filename = "openclaw.json",
+  filename = "operator.json",
 ) {
   const dir = path.join(home, dirname);
   await fs.mkdir(dir, { recursive: true });
@@ -53,18 +53,18 @@ describe("config io paths", () => {
     whatsappSharedAccessDefaults = migrated.config.channels?.whatsapp?.accounts?.default;
   });
 
-  it("uses ~/.openclaw/openclaw.json when config exists", async () => {
+  it("uses ~/.operator/operator.json when config exists", async () => {
     await withTempHome(async (home) => {
-      const configPath = await writeConfig(home, ".openclaw", 19001);
+      const configPath = await writeConfig(home, ".operator", 19001);
       const io = createIoForHome(home);
       expect(io.configPath).toBe(configPath);
     });
   });
 
-  it("defaults to ~/.openclaw/openclaw.json when config is missing", async () => {
+  it("defaults to ~/.operator/operator.json when config is missing", async () => {
     await withTempHome(async (home) => {
       const io = createIoForHome(home);
-      expect(io.configPath).toBe(path.join(home, ".openclaw", "openclaw.json"));
+      expect(io.configPath).toBe(path.join(home, ".operator", "operator.json"));
     });
   });
 
@@ -74,13 +74,13 @@ describe("config io paths", () => {
         env: { OPERATOR_HOME: path.join(home, "svc-home") } as NodeJS.ProcessEnv,
         homedir: () => path.join(home, "ignored-home"),
       });
-      expect(io.configPath).toBe(path.join(home, "svc-home", ".openclaw", "openclaw.json"));
+      expect(io.configPath).toBe(path.join(home, "svc-home", ".operator", "operator.json"));
     });
   });
 
   it("honors explicit OPERATOR_CONFIG_PATH override", async () => {
     await withTempHome(async (home) => {
-      const customPath = await writeConfig(home, ".openclaw", 20002, "custom.json");
+      const customPath = await writeConfig(home, ".operator", 20002, "custom.json");
       const io = createIoForHome(home, { OPERATOR_CONFIG_PATH: customPath } as NodeJS.ProcessEnv);
       expect(io.configPath).toBe(customPath);
     });
@@ -88,7 +88,7 @@ describe("config io paths", () => {
 
   it("logs validation warnings with real line breaks", async () => {
     await withTempHome(async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".operator", "operator.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -129,7 +129,7 @@ describe("config io paths", () => {
 
   it("logs each warning payload once until warnings clear", async () => {
     await withTempHome(async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".operator", "operator.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const logger = {
         error: vi.fn(),
@@ -196,7 +196,7 @@ describe("config io paths", () => {
 
   it("explains what to check when config was written by a newer Operator", async () => {
     await withTempHome(async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".operator", "operator.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -234,7 +234,7 @@ describe("config io paths", () => {
 
   it("does not warn about newer config during internal update handoff reads", async () => {
     await withTempHome(async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".operator", "operator.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,

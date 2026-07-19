@@ -1,11 +1,11 @@
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { Selectable } from "kysely";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
 } from "../../infra/kysely-sync.js";
-import type { DB as OperatorAgentKyselyDatabase } from "../../state/operator-agent-db.generated.js";
-import type { OperatorAgentDatabase } from "../../state/operator-agent-db.js";
+import type { DB as OperatorAgentKyselyDatabase } from "../../state/openclaw-agent-db.generated.js";
+import type { OperatorAgentDatabase } from "../../state/openclaw-agent-db.js";
 import { normalizeSqliteNumber } from "./session-accessor.sqlite-normalize.js";
 import { resolveSessionEntryProvenanceRow } from "./session-accessor.sqlite-provenance.js";
 import {

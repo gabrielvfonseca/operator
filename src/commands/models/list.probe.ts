@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import pMap from "p-map";
 import {
   resolveAgentDir,
@@ -47,7 +47,7 @@ import {
 } from "../../config/types.secrets.js";
 import { type SecretRefResolveCache, resolveSecretRefString } from "../../secrets/resolve.js";
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
-import { disposeOperatorAgentDatabaseByPath } from "../../state/operator-agent-db.js";
+import { disposeOperatorAgentDatabaseByPath } from "../../state/openclaw-agent-db.js";
 import { redactSecrets } from "../status-all/format.js";
 import { buildProbeCandidateMap, selectProbeModel } from "./list.probe.models.js";
 import { formatMs } from "./shared.js";

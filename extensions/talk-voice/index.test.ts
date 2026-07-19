@@ -1,5 +1,5 @@
 // Talk Voice tests cover index plugin behavior.
-import type { OperatorPluginCommandDefinition } from "openclaw/plugin-sdk/core";
+import type { OperatorPluginCommandDefinition } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { describe, expect, it, vi } from "vitest";
 import type { PluginRuntime } from "./api.js";
 import register from "./index.js";
@@ -17,7 +17,7 @@ function createHarness(initialConfig: Record<string, unknown>) {
           mutate(draft);
           config = draft;
           return {
-            path: "/tmp/openclaw.json",
+            path: "/tmp/operator.json",
             previousHash: null,
             persistedHash: null,
             snapshot: {},

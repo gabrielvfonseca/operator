@@ -1,6 +1,6 @@
 /** Operator CLI for bounded metadata-only activity audit pages. */
-import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { timestampMsToIsoString } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type {
   AuditActivityListParams,
   AuditActivityListResult,

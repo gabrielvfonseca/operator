@@ -1,12 +1,12 @@
 // Slack plugin module implements progress blocks behavior.
 import { createHash } from "node:crypto";
-import type { AnyChunk } from "@slack/types";
-import type { Block, KnownBlock } from "@slack/web-api";
 import {
   type AgentPlanStep,
   type ChannelProgressDraftLine,
   formatPlanChecklistLines,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import type { AnyChunk } from "@slack/types";
+import type { Block, KnownBlock } from "@slack/web-api";
 import { SLACK_MAX_BLOCKS } from "./blocks-input.js";
 import { escapeSlackMrkdwn } from "./monitor/mrkdwn.js";
 import { truncateSlackText } from "./truncate.js";

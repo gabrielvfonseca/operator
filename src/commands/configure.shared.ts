@@ -7,7 +7,7 @@ import {
   select as clackSelect,
   text as clackText,
 } from "@clack/prompts";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { styleSelectParams } from "../../packages/terminal-core/src/prompt-select-styled-params.js";
 import {
   stylePromptMessage,

@@ -25,7 +25,7 @@ built entries:
 
 ```json
 {
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": ["./src/index.ts"],
     "runtimeExtensions": ["./dist/index.js"],
     "setupEntry": "./src/setup-entry.ts",
@@ -41,10 +41,10 @@ built entries:
 - `runtimeExtensions`, when present, must match `extensions` in array length
   (entries pair positionally). `runtimeSetupEntry` requires `setupEntry`.
 - If a `runtimeExtensions`/`runtimeSetupEntry` artifact is declared but
-  missing, install/discovery fails with a packaging error; OpenClaw does not
+  missing, install/discovery fails with a packaging error; Operator does not
   silently fall back to source. Source fallback (below) only applies when no
   runtime entry is declared at all.
-- If an installed package declares only a TypeScript source entry, OpenClaw
+- If an installed package declares only a TypeScript source entry, Operator
   looks for a matching built `dist/*.js` (or `.mjs`/`.cjs`) peer and uses it;
   otherwise it falls back to the TypeScript source.
 - All entry paths must stay inside the plugin package directory. Runtime
@@ -57,8 +57,8 @@ built entries:
 
 For plugins that only add agent tools. Keeps the source small, infers config
 and tool-parameter types from TypeBox schemas, wraps plain return values in
-the OpenClaw tool-result format, and exposes static metadata that
-`openclaw plugins build` writes into the plugin manifest (`contracts.tools`,
+the Operator tool-result format, and exposes static metadata that
+`operator plugins build` writes into the plugin manifest (`contracts.tools`,
 `configSchema`).
 
 ```typescript
@@ -93,10 +93,10 @@ export default defineToolPlugin({
   (unstringified) return value.
 - For custom tool results, `openclaw/plugin-sdk/tool-results` exports
   `textResult` and `jsonResult`.
-- Tool names are static, so `openclaw plugins build` derives
+- Tool names are static, so `operator plugins build` derives
   `contracts.tools` from the declared tools without hand-duplicated names.
 - Runtime loading stays strict: installed plugins still need
-  `openclaw.plugin.json` and `package.json` `openclaw.extensions`. OpenClaw
+  `operator.plugin.json` and `package.json` `operator.extensions`. Operator
   never executes plugin code to infer missing manifest data.
 
 ## `definePluginEntry`
@@ -126,28 +126,28 @@ export default definePluginEntry({
 | `name`                    | `string`                                                         | Yes      | -                   |
 | `description`             | `string`                                                         | Yes      | -                   |
 | `kind`                    | `string` (deprecated, see below)                                 | No       | -                   |
-| `configSchema`            | `OpenClawPluginConfigSchema \| () => OpenClawPluginConfigSchema` | No       | Empty object schema |
-| `reload`                  | `OpenClawPluginReloadRegistration`                               | No       | -                   |
-| `nodeHostCommands`        | `OpenClawPluginNodeHostCommand[]`                                | No       | -                   |
-| `securityAuditCollectors` | `OpenClawPluginSecurityAuditCollector[]`                         | No       | -                   |
-| `register`                | `(api: OpenClawPluginApi) => void`                               | Yes      | -                   |
+| `configSchema`            | `OperatorPluginConfigSchema \| () => OperatorPluginConfigSchema` | No       | Empty object schema |
+| `reload`                  | `OperatorPluginReloadRegistration`                               | No       | -                   |
+| `nodeHostCommands`        | `OperatorPluginNodeHostCommand[]`                                | No       | -                   |
+| `securityAuditCollectors` | `OperatorPluginSecurityAuditCollector[]`                         | No       | -                   |
+| `register`                | `(api: OperatorPluginApi) => void`                               | Yes      | -                   |
 
-- `id` must match your `openclaw.plugin.json` manifest.
+- `id` must match your `operator.plugin.json` manifest.
 - External session catalogs use
   `openclaw/plugin-sdk/session-catalog` and
   `api.registerSessionCatalog({ id, label, list, read, continueSession?, archive? })`.
   Core owns the `sessions.catalog.*` Gateway methods; providers return host,
   session, and normalized transcript projections without registering RPCs.
 - `kind` is deprecated: declare an exclusive slot (`"memory"` or
-  `"context-engine"`) in the `openclaw.plugin.json` manifest `kind` field
+  `"context-engine"`) in the `operator.plugin.json` manifest `kind` field
   instead. Runtime-entry `kind` remains only as a compatibility fallback for
   older plugins.
-- `configSchema` can be a function for lazy evaluation. OpenClaw resolves and
+- `configSchema` can be a function for lazy evaluation. Operator resolves and
   memoizes the schema on first access, so expensive schema builders only run
   once.
 - A `nodeHostCommands` descriptor can define `isAvailable({ config, env })`.
   Returning `false` omits that command and its capability from the headless
-  node's Gateway declaration. OpenClaw evaluates it against the node-local
+  node's Gateway declaration. Operator evaluates it against the node-local
   startup config; command handlers should still validate availability when
   invoked.
 
@@ -183,10 +183,10 @@ export default defineChannelPluginEntry({
 | `name`                | `string`                                                         | Yes      | -                   |
 | `description`         | `string`                                                         | Yes      | -                   |
 | `plugin`              | `ChannelPlugin`                                                  | Yes      | -                   |
-| `configSchema`        | `OpenClawPluginConfigSchema \| () => OpenClawPluginConfigSchema` | No       | Empty object schema |
+| `configSchema`        | `OperatorPluginConfigSchema \| () => OperatorPluginConfigSchema` | No       | Empty object schema |
 | `setRuntime`          | `(runtime: PluginRuntime) => void`                               | No       | -                   |
-| `registerCliMetadata` | `(api: OpenClawPluginApi) => void`                               | No       | -                   |
-| `registerFull`        | `(api: OpenClawPluginApi) => void`                               | No       | -                   |
+| `registerCliMetadata` | `(api: OperatorPluginApi) => void`                               | No       | -                   |
+| `registerFull`        | `(api: OperatorPluginApi) => void`                               | No       | -                   |
 
 Callbacks run per registration mode (full table under
 [Registration mode](#registration-mode)):
@@ -200,16 +200,16 @@ Callbacks run per registration mode (full table under
   command metadata, and normal CLI registration stays compatible with full
   plugin loads.
 - `registerFull` runs only for `"full"` and `"tool-discovery"`. For
-  `"tool-discovery"` it runs _instead of_ channel registration: OpenClaw
+  `"tool-discovery"` it runs _instead of_ channel registration: Operator
   skips `registerChannel`/`setRuntime` entirely and calls only
   `registerFull`, so any provider/tool registration your channel needs for
   standalone tool discovery or execution must live there, not behind normal
   channel setup.
-- Discovery registration is non-activating, not import-free: OpenClaw may
+- Discovery registration is non-activating, not import-free: Operator may
   evaluate the trusted plugin entry and channel plugin module to build the
   snapshot. Keep top-level imports side-effect-free and put sockets,
   clients, workers, and services behind `"full"`-only paths.
-- Like `definePluginEntry`, `configSchema` can be a lazy factory; OpenClaw
+- Like `definePluginEntry`, `configSchema` can be a lazy factory; Operator
   memoizes the resolved schema on first access.
 
 CLI registration:
@@ -217,15 +217,15 @@ CLI registration:
 - Use `api.registerCli(..., { descriptors: [...] })` for plugin-owned root
   CLI commands you want lazy-loaded without disappearing from the root CLI
   parse tree. Descriptor names must match letters, numbers, hyphen, and
-  underscore, starting with a letter or number; OpenClaw rejects other
+  underscore, starting with a letter or number; Operator rejects other
   shapes and strips terminal control sequences from descriptions before
   rendering help. Cover every top-level command root the registrar exposes.
   `commands` alone stays on the eager compatibility path.
 - Use `api.registerNodeCliFeature(...)` for paired-node feature commands so
-  they land under `openclaw nodes` (equivalent to
+  they land under `operator nodes` (equivalent to
   `registerCli(registrar, { parentPath: ["nodes"], ... })`).
 - For other nested plugin commands, add `parentPath` and register commands
-  on the `program` object passed to the registrar; OpenClaw resolves it to
+  on the `program` object passed to the registrar; Operator resolves it to
   the parent command before calling the plugin.
 - For channel plugins, register CLI descriptors from `registerCliMetadata`
   and keep `registerFull` focused on runtime-only work.
@@ -247,7 +247,7 @@ import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
 export default defineSetupPluginEntry(myChannelPlugin);
 ```
 
-OpenClaw loads this instead of the full entry when a channel is disabled,
+Operator loads this instead of the full entry when a channel is disabled,
 unconfigured, or when deferred loading is enabled. See
 [Setup and Config](/plugins/sdk-setup#setup-entry) for when this matters.
 
@@ -352,7 +352,7 @@ api.registerService({
 });
 ```
 
-OpenClaw namespaces this as `plugin.<plugin-id>.changed`. Event names are one
+Operator namespaces this as `plugin.<plugin-id>.changed`. Event names are one
 lowercase segment, payloads must be bounded JSON, and the scope must be
 `operator.read`, `operator.write`, or `operator.admin`. The emitter exists only
 for the service lifetime and is revoked after stop or failed start. Prefer
@@ -360,7 +360,7 @@ version or invalidation payloads over full records so authorized clients reread
 canonical state through the plugin's scoped Gateway methods.
 
 Discovery mode builds a non-activating registry snapshot. It may still
-evaluate the plugin entry and the channel plugin object so OpenClaw can
+evaluate the plugin entry and the channel plugin object so Operator can
 register channel capabilities and static CLI descriptors. Treat module
 evaluation in discovery as trusted but lightweight: no network clients,
 subprocesses, listeners, database connections, background workers,
@@ -374,7 +374,7 @@ provider/client SDK bootstraps still belong in `"full"`.
 
 ## Plugin shapes
 
-OpenClaw classifies loaded plugins by their registration behavior:
+Operator classifies loaded plugins by their registration behavior:
 
 | Shape                 | Description                                        |
 | --------------------- | -------------------------------------------------- |
@@ -383,7 +383,7 @@ OpenClaw classifies loaded plugins by their registration behavior:
 | **hook-only**         | Only hooks, no capabilities                        |
 | **non-capability**    | Tools/commands/services but no capabilities        |
 
-Use `openclaw plugins inspect <id>` to see a plugin's shape.
+Use `operator plugins inspect <id>` to see a plugin's shape.
 
 ## Related
 

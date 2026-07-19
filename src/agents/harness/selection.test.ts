@@ -1,5 +1,5 @@
 // Covers agent harness selection, fallback behavior, and compaction routing.
-import type { Model } from "openclaw/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../../config/config.js";
 import { OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
@@ -37,7 +37,7 @@ import type {
 } from "./types.js";
 
 const agentRunAttempt = vi.fn<AgentHarness["runAttempt"]>(async () =>
-  createAttemptResult("openclaw"),
+  createAttemptResult("@gabrielvfonseca/operator"),
 );
 const compactAuthMocks = vi.hoisted(() => ({
   ensureAuthProfileStore: vi.fn(),
@@ -50,11 +50,11 @@ const providerOwnerMocks = vi.hoisted(() => ({
 }));
 
 it("identifies harnesses that expose Operator tools", () => {
-  expect(agentHarnessBuildsOperatorTools("openclaw")).toBe(false);
+  expect(agentHarnessBuildsOperatorTools("@gabrielvfonseca/operator")).toBe(false);
   expect(agentHarnessBuildsOperatorTools("codex")).toBe(true);
   expect(agentHarnessBuildsOperatorTools("copilot")).toBe(true);
   expect(agentHarnessBuildsOperatorTools("custom")).toBe(false);
-  expect(agentHarnessExposesOperatorTools("openclaw")).toBe(true);
+  expect(agentHarnessExposesOperatorTools("@gabrielvfonseca/operator")).toBe(true);
   expect(agentHarnessExposesOperatorTools("codex")).toBe(true);
   expect(agentHarnessExposesOperatorTools("copilot")).toBe(true);
   expect(agentHarnessExposesOperatorTools("custom")).toBe(false);
@@ -62,7 +62,7 @@ it("identifies harnesses that expose Operator tools", () => {
 
 vi.mock("./builtin-openclaw.js", () => ({
   createOperatorAgentHarness: (): AgentHarness => ({
-    id: "openclaw",
+    id: "@gabrielvfonseca/operator",
     label: "Operator embedded agent",
     contextEngineHostCapabilities: OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST.capabilities,
     supports: () => ({ supported: true, priority: 0 }),
@@ -388,10 +388,12 @@ describe("runAgentHarnessAttempt", () => {
       const pluginRunAttempt = vi.fn<AgentHarness["runAttempt"]>(async (attemptParams) => {
         receivedPrivateAuthority = "systemAgentTool" in attemptParams;
         await Promise.resolve();
-        hostScopeActive = isHostScopedAgentToolActive("openclaw");
+        hostScopeActive = isHostScopedAgentToolActive("@gabrielvfonseca/operator");
         toolNames = createOperatorCodingTools({
-          config: { tools: { allow: ["read"], deny: ["openclaw"], toolSearch: true } },
-          runtimeToolAllowlist: ["openclaw"],
+          config: {
+            tools: { allow: ["read"], deny: ["@gabrielvfonseca/operator"], toolSearch: true },
+          },
+          runtimeToolAllowlist: ["@gabrielvfonseca/operator"],
           toolConstructionPlan: {
             includeBaseCodingTools: false,
             includeShellTools: false,
@@ -414,7 +416,7 @@ describe("runAgentHarnessAttempt", () => {
       const params = createAttemptParams(
         providerRuntimeConfig("codex", harnessId),
       ) as EmbeddedRunAttemptParams & { systemAgentTool?: SystemAgentToolOptions };
-      params.toolsAllow = ["openclaw"];
+      params.toolsAllow = ["@gabrielvfonseca/operator"];
       params.systemAgentTool = { surface: "cli", proposalRef: {}, directiveRef: {} };
 
       await runAgentHarnessAttempt(params);
@@ -422,14 +424,14 @@ describe("runAgentHarnessAttempt", () => {
       expect(pluginRunAttempt).toHaveBeenCalledTimes(1);
       expect(receivedPrivateAuthority).toBe(false);
       expect(hostScopeActive).toBe(true);
-      expect(toolNames).toEqual(["openclaw"]);
-      expect(isHostScopedAgentToolActive("openclaw")).toBe(false);
+      expect(toolNames).toEqual(["@gabrielvfonseca/operator"]);
+      expect(isHostScopedAgentToolActive("@gabrielvfonseca/operator")).toBe(false);
     },
   );
 
   it.each([
     { name: "missing", toolsAllow: undefined },
-    { name: "broad", toolsAllow: ["openclaw", "read"] },
+    { name: "broad", toolsAllow: ["@gabrielvfonseca/operator", "read"] },
   ])("rejects $name allowlists for private Operator authority", async ({ toolsAllow }) => {
     const pluginRunAttempt = vi.fn<AgentHarness["runAttempt"]>(async () =>
       createAttemptResult("codex"),
@@ -450,10 +452,10 @@ describe("runAgentHarnessAttempt", () => {
     params.systemAgentTool = { surface: "cli", proposalRef: {}, directiveRef: {} };
 
     await expect(runAgentHarnessAttempt(params)).rejects.toThrow(
-      'Operator host authority requires toolsAllow: ["openclaw"]',
+      'Operator host authority requires toolsAllow: ["@gabrielvfonseca/operator"]',
     );
     expect(pluginRunAttempt).not.toHaveBeenCalled();
-    expect(isHostScopedAgentToolActive("openclaw")).toBe(false);
+    expect(isHostScopedAgentToolActive("@gabrielvfonseca/operator")).toBe(false);
   });
 
   it("keeps the host Operator allowlist across global, agent, and sandbox deny-all policy", async () => {
@@ -466,7 +468,7 @@ describe("runAgentHarnessAttempt", () => {
       received.push({
         toolsAllow: attemptParams.toolsAllow,
         extraSystemPrompt: attemptParams.extraSystemPrompt,
-        hostScopeActive: isHostScopedAgentToolActive("openclaw"),
+        hostScopeActive: isHostScopedAgentToolActive("@gabrielvfonseca/operator"),
       });
       return createAttemptResult("codex");
     });
@@ -508,17 +510,29 @@ describe("runAgentHarnessAttempt", () => {
       params.agentHarnessRuntimeOverride = "codex";
       params.agentId = testCase.agentId;
       params.sessionKey = testCase.sessionKey;
-      params.toolsAllow = ["openclaw"];
+      params.toolsAllow = ["@gabrielvfonseca/operator"];
       params.systemAgentTool = { surface: "cli", proposalRef: {}, directiveRef: {} };
       await runAgentHarnessAttempt(params);
     }
 
     expect(received).toEqual([
-      { toolsAllow: ["openclaw"], extraSystemPrompt: undefined, hostScopeActive: true },
-      { toolsAllow: ["openclaw"], extraSystemPrompt: undefined, hostScopeActive: true },
-      { toolsAllow: ["openclaw"], extraSystemPrompt: undefined, hostScopeActive: true },
+      {
+        toolsAllow: ["@gabrielvfonseca/operator"],
+        extraSystemPrompt: undefined,
+        hostScopeActive: true,
+      },
+      {
+        toolsAllow: ["@gabrielvfonseca/operator"],
+        extraSystemPrompt: undefined,
+        hostScopeActive: true,
+      },
+      {
+        toolsAllow: ["@gabrielvfonseca/operator"],
+        extraSystemPrompt: undefined,
+        hostScopeActive: true,
+      },
     ]);
-    expect(isHostScopedAgentToolActive("openclaw")).toBe(false);
+    expect(isHostScopedAgentToolActive("@gabrielvfonseca/operator")).toBe(false);
   });
 
   it("binds the same host Operator scope to the built-in Operator harness", async () => {
@@ -526,8 +540,10 @@ describe("runAgentHarnessAttempt", () => {
     agentRunAttempt.mockImplementationOnce(async () => {
       await Promise.resolve();
       toolNames = createOperatorCodingTools({
-        config: { tools: { allow: ["read"], deny: ["openclaw"], toolSearch: true } },
-        runtimeToolAllowlist: ["openclaw"],
+        config: {
+          tools: { allow: ["read"], deny: ["@gabrielvfonseca/operator"], toolSearch: true },
+        },
+        runtimeToolAllowlist: ["@gabrielvfonseca/operator"],
         toolConstructionPlan: {
           includeBaseCodingTools: false,
           includeShellTools: false,
@@ -536,19 +552,19 @@ describe("runAgentHarnessAttempt", () => {
           includePluginTools: false,
         },
       }).map((tool) => tool.name);
-      return createAttemptResult("openclaw");
+      return createAttemptResult("@gabrielvfonseca/operator");
     });
     const params = createAttemptParams(
-      providerRuntimeConfig("codex", "openclaw"),
+      providerRuntimeConfig("codex", "@gabrielvfonseca/operator"),
     ) as EmbeddedRunAttemptParams & { systemAgentTool?: SystemAgentToolOptions };
-    params.toolsAllow = ["openclaw"];
+    params.toolsAllow = ["@gabrielvfonseca/operator"];
     params.systemAgentTool = { surface: "gateway", proposalRef: {}, directiveRef: {} };
 
     const result = await runAgentHarnessAttempt(params);
 
-    expect(result.sessionIdUsed).toBe("openclaw");
-    expect(toolNames).toEqual(["openclaw"]);
-    expect(isHostScopedAgentToolActive("openclaw")).toBe(false);
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
+    expect(toolNames).toEqual(["@gabrielvfonseca/operator"]);
+    expect(isHostScopedAgentToolActive("@gabrielvfonseca/operator")).toBe(false);
   });
 
   it("unwraps sentinels only at the plugin harness handoff", async () => {
@@ -594,17 +610,17 @@ describe("runAgentHarnessAttempt", () => {
   it("falls back to the Operator harness in auto mode when no plugin harness matches", async () => {
     const result = await runAgentHarnessAttempt(createAttemptParams());
 
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
     expect(agentRunAttempt).toHaveBeenCalledTimes(1);
   });
 
   it("allows the selected Operator harness to satisfy context-engine pre-prompt assembly", async () => {
     const result = await runAgentHarnessAttempt({
-      ...createAttemptParams(providerRuntimeConfig("codex", "openclaw")),
+      ...createAttemptParams(providerRuntimeConfig("codex", "@gabrielvfonseca/operator")),
       contextEngine: createContextEngineRequiringAssembly(),
     });
 
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
     expect(agentRunAttempt).toHaveBeenCalledTimes(1);
   });
 
@@ -660,7 +676,7 @@ describe("runAgentHarnessAttempt", () => {
         harnessAuthProvider: "openai",
         deferredRouteSupport: {
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
       },
     } as never;
@@ -672,7 +688,7 @@ describe("runAgentHarnessAttempt", () => {
       expect.objectContaining({
         modelProvider: expect.objectContaining({
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
           preparedAuth: { source: "harness" },
         }),
       }),
@@ -769,7 +785,7 @@ describe("runAgentHarnessAttempt", () => {
       runtimeSource: "implicit",
     });
     expect(resolveAvailableAgentHarnessPolicy({ provider: "openai", modelId: "gpt-5.4" })).toEqual({
-      runtime: "openclaw",
+      runtime: "@gabrielvfonseca/operator",
       runtimeSource: "implicit",
     });
 
@@ -779,17 +795,17 @@ describe("runAgentHarnessAttempt", () => {
       modelId: "gpt-5.4",
     });
 
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
     expect(agentRunAttempt).toHaveBeenCalledTimes(1);
   });
 
   it("honors explicit Operator runtime for OpenAI agent model runs", async () => {
     const result = await runAgentHarnessAttempt({
-      ...createAttemptParams(providerRuntimeConfig("openai", "openclaw")),
+      ...createAttemptParams(providerRuntimeConfig("openai", "@gabrielvfonseca/operator")),
       provider: "openai",
       modelId: "gpt-5.4",
     });
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
     expect(agentRunAttempt).toHaveBeenCalledTimes(1);
   });
 
@@ -797,11 +813,11 @@ describe("runAgentHarnessAttempt", () => {
     registerSuccessfulCodexHarness();
 
     const result = await runAgentHarnessAttempt({
-      ...createAttemptParams(agentModelRuntimeConfig("openai/*", "openclaw")),
+      ...createAttemptParams(agentModelRuntimeConfig("openai/*", "@gabrielvfonseca/operator")),
       provider: "openai",
       modelId: "gpt-5.4",
     });
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
     expect(agentRunAttempt).toHaveBeenCalledTimes(1);
   });
 
@@ -985,7 +1001,7 @@ describe("selectAgentHarness", () => {
       runtimeSource: "implicit",
     });
     expect(selectAgentHarness({ provider: "custom", modelId: "gpt-5.4-codex" }).id).toBe(
-      "openclaw",
+      "@gabrielvfonseca/operator",
     );
   });
 
@@ -1073,10 +1089,10 @@ describe("selectAgentHarness", () => {
     const harness = selectAgentHarness({
       provider: "codex",
       modelId: "gpt-5.4",
-      agentHarnessId: "openclaw",
+      agentHarnessId: "@gabrielvfonseca/operator",
     });
 
-    expect(harness.id).toBe("openclaw");
+    expect(harness.id).toBe("@gabrielvfonseca/operator");
     expect(supports).not.toHaveBeenCalled();
   });
 
@@ -1306,7 +1322,7 @@ describe("selectAgentHarness", () => {
     ).toMatchObject({
       api: "openai-completions",
       requestTransportOverrides: "present",
-      runtimePolicy: { compatibleIds: ["openclaw"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
     });
   });
 
@@ -1339,7 +1355,7 @@ describe("selectAgentHarness", () => {
       api: "openai-completions",
       baseUrl: "https://api.openai.com/v1",
       requestTransportOverrides: "present",
-      runtimePolicy: { compatibleIds: ["openclaw"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
     });
   });
 
@@ -1355,7 +1371,7 @@ describe("selectAgentHarness", () => {
         requestedRuntime: "codex",
       }).modelProvider,
     ).toMatchObject({
-      runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
     });
   });
 
@@ -1401,7 +1417,7 @@ describe("selectAgentHarness", () => {
         }).modelProvider,
       ).toMatchObject({
         requestTransportOverrides: "present",
-        runtimePolicy: { compatibleIds: ["openclaw"] },
+        runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
       });
     },
   );
@@ -1427,7 +1443,7 @@ describe("selectAgentHarness", () => {
           api: "openai-responses",
           baseUrl: "https://api.openai.com/v1",
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         },
         config: { agents: { defaults: { params: { store: false } } } },
         agentHarnessRuntimeOverride: "codex",
@@ -1471,7 +1487,7 @@ describe("selectAgentHarness", () => {
         modelProvider,
         config,
       }),
-    ).toEqual({ runtime: "openclaw", runtimeSource: "implicit" });
+    ).toEqual({ runtime: "@gabrielvfonseca/operator", runtimeSource: "implicit" });
     expect(
       selectAgentHarness({
         provider: "openai",
@@ -1479,7 +1495,7 @@ describe("selectAgentHarness", () => {
         modelProvider,
         config,
       }).id,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
     expect(
       selectAgentHarness({
         provider: "openai",
@@ -1523,9 +1539,9 @@ describe("selectAgentHarness", () => {
 
     expect(
       resolveAvailableAgentHarnessPolicy({ provider: "openai", modelId: "gpt-5.5", config }),
-    ).toEqual({ runtime: "openclaw", runtimeSource: "implicit" });
+    ).toEqual({ runtime: "@gabrielvfonseca/operator", runtimeSource: "implicit" });
     expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.5", config }).id).toBe(
-      "openclaw",
+      "@gabrielvfonseca/operator",
     );
     expect(() =>
       selectAgentHarness({
@@ -1553,11 +1569,11 @@ describe("selectAgentHarness", () => {
       api: "openai-completions",
       baseUrl: "https://api.openai.com/v1",
       requestTransportOverrides: "none" as const,
-      runtimePolicy: { compatibleIds: ["openclaw"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
     };
 
     expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.5", modelProvider }).id).toBe(
-      "openclaw",
+      "@gabrielvfonseca/operator",
     );
     expect(() =>
       selectAgentHarness({
@@ -1582,7 +1598,9 @@ describe("selectAgentHarness", () => {
       runAttempt: vi.fn(async () => createAttemptResult("codex")),
     });
 
-    expect(selectAgentHarness({ provider: "openai", modelId: "gpt-future" }).id).toBe("openclaw");
+    expect(selectAgentHarness({ provider: "openai", modelId: "gpt-future" }).id).toBe(
+      "@gabrielvfonseca/operator",
+    );
     expect(supports).toHaveBeenCalledWith(
       expect.objectContaining({
         modelProvider: expect.objectContaining({ runtimePolicy: undefined }),
@@ -1593,7 +1611,7 @@ describe("selectAgentHarness", () => {
   it("projects a harness-owned auth plan as a closed harness source", () => {
     const deferredRouteSupport = {
       requestTransportOverrides: "none" as const,
-      runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
     };
     expect(
       resolveAgentHarnessPreparedAuthSupport({
@@ -1652,7 +1670,7 @@ describe("selectAgentHarness", () => {
         modelId: "gpt-future",
         modelProvider: {
           requestTransportOverrides: "none",
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
           preparedAuth: { source: "harness" },
         },
         agentHarnessRuntimeOverride: "codex",
@@ -1662,7 +1680,7 @@ describe("selectAgentHarness", () => {
       expect.objectContaining({
         modelProvider: expect.objectContaining({
           preparedAuth: { source: "harness" },
-          runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+          runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
         }),
       }),
     );
@@ -1682,14 +1700,14 @@ describe("selectAgentHarness", () => {
       api: "openai-responses",
       baseUrl: "https://api.openai.com/v1",
       requestTransportOverrides: "none" as const,
-      runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
       preparedAuth: { source: "direct" as const, mode: "api-key", requirement: "api-key" as const },
     };
     const incompatible = {
       api: "openai-completions",
       baseUrl: "https://api.openai.com/v1",
       requestTransportOverrides: "none" as const,
-      runtimePolicy: { compatibleIds: ["openclaw"] },
+      runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
       preparedAuth: { source: "direct" as const, mode: "api-key", requirement: "api-key" as const },
     };
     const base = { provider: "openai", modelId: "gpt-5.5" };
@@ -1705,7 +1723,7 @@ describe("selectAgentHarness", () => {
         ...base,
         modelProviders: [compatible, incompatible],
       }).id,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it.each([
@@ -1731,13 +1749,13 @@ describe("selectAgentHarness", () => {
             api: "openai-responses",
             baseUrl: "https://api.openai.com/v1",
             requestTransportOverrides: "none",
-            runtimePolicy: { compatibleIds: ["openclaw", "codex"] },
+            runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator", "codex"] },
           },
           {
             api: "openai-completions",
             baseUrl: "https://api.openai.com/v1",
             requestTransportOverrides: "none",
-            runtimePolicy: { compatibleIds: ["openclaw"] },
+            runtimePolicy: { compatibleIds: ["@gabrielvfonseca/operator"] },
           },
         ],
         ...pin,
@@ -1806,19 +1824,19 @@ describe("selectAgentHarness", () => {
     const harness = selectAgentHarness({
       provider: "openai",
       modelId: "gpt-5.4",
-      agentHarnessRuntimeOverride: "openclaw",
+      agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
     });
 
-    expect(harness.id).toBe("openclaw");
+    expect(harness.id).toBe("@gabrielvfonseca/operator");
     expect(providerOwnerMocks.resolveProviderRefOwnership).not.toHaveBeenCalled();
 
     const result = await runAgentHarnessAttempt({
       ...createAttemptParams(),
       provider: "openai",
       modelId: "gpt-5.4",
-      agentHarnessRuntimeOverride: "openclaw",
+      agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
     });
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
   });
 
   it("treats legacy PI runtime overrides as the built-in Operator harness", async () => {
@@ -1830,7 +1848,7 @@ describe("selectAgentHarness", () => {
       agentHarnessRuntimeOverride: "pi",
     });
 
-    expect(harness.id).toBe("openclaw");
+    expect(harness.id).toBe("@gabrielvfonseca/operator");
 
     const result = await runAgentHarnessAttempt({
       ...createAttemptParams(),
@@ -1838,7 +1856,7 @@ describe("selectAgentHarness", () => {
       modelId: "gpt-5.4",
       agentHarnessRuntimeOverride: "pi",
     });
-    expect(result.sessionIdUsed).toBe("openclaw");
+    expect(result.sessionIdUsed).toBe("@gabrielvfonseca/operator");
   });
 
   it("allows per-agent model runtime policy overrides", () => {
@@ -1853,12 +1871,14 @@ describe("selectAgentHarness", () => {
       }),
     ).toThrow('Requested agent harness "codex" is not registered');
     expect(selectAgentHarness({ provider: "anthropic", modelId: "sonnet-4.6", config }).id).toBe(
-      "openclaw",
+      "@gabrielvfonseca/operator",
     );
   });
 
   it("selects Operator when the implicit OpenAI Codex harness is unavailable", () => {
-    expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.4" }).id).toBe("openclaw");
+    expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.4" }).id).toBe(
+      "@gabrielvfonseca/operator",
+    );
   });
 
   it.each(["default", "auto"] as const)(
@@ -1869,7 +1889,7 @@ describe("selectAgentHarness", () => {
         { runtime: "codex", runtimeSource: "implicit" },
       );
       expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.4", config }).id).toBe(
-        "openclaw",
+        "@gabrielvfonseca/operator",
       );
 
       const supports = vi.fn(() => ({ supported: false as const, reason: "unsupported route" }));
@@ -1883,7 +1903,7 @@ describe("selectAgentHarness", () => {
         { ownerPluginId: "codex" },
       );
       expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.4", config }).id).toBe(
-        "openclaw",
+        "@gabrielvfonseca/operator",
       );
       expect(supports).toHaveBeenCalledOnce();
     },
@@ -1916,10 +1936,10 @@ describe("selectAgentHarness", () => {
       } as OperatorConfig;
 
       expect(resolveAgentHarnessPolicy({ provider: "openai", modelId: "gpt-5.4", config })).toEqual(
-        { runtime: "openclaw", runtimeSource: "implicit" },
+        { runtime: "@gabrielvfonseca/operator", runtimeSource: "implicit" },
       );
       expect(selectAgentHarness({ provider: "openai", modelId: "gpt-5.4", config }).id).toBe(
-        "openclaw",
+        "@gabrielvfonseca/operator",
       );
       expect(supports).not.toHaveBeenCalled();
     },
@@ -1940,7 +1960,7 @@ describe("selectAgentHarness", () => {
         modelId: "sonnet-4.6",
         config,
       }).id,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("ignores legacy agent CLI runtime aliases for OpenAI agent model runs", async () => {
@@ -1971,14 +1991,14 @@ describe("selectAgentHarness", () => {
       selectAgentHarness({
         provider: "codex",
         modelId: "gpt-5.4",
-        agentHarnessId: "openclaw",
+        agentHarnessId: "@gabrielvfonseca/operator",
         config: providerRuntimeConfig("codex", "codex"),
       }).id,
-    ).toBe("openclaw");
+    ).toBe("@gabrielvfonseca/operator");
   });
 
   it("ignores env-forced Operator for OpenAI default runtime selection", () => {
-    process.env.OPERATOR_AGENT_RUNTIME = "openclaw";
+    process.env.OPERATOR_AGENT_RUNTIME = "@gabrielvfonseca/operator";
     registerFailingCodexHarness();
 
     expect(
@@ -2022,7 +2042,7 @@ describe("selectAgentHarness", () => {
     await expect(
       maybeCompactAgentHarnessSession(
         createCompactionParams({
-          agentHarnessId: "openclaw",
+          agentHarnessId: "@gabrielvfonseca/operator",
           authProfileId: "openai:work",
           authProfileIdSource: "user",
           runtimeAuthPlan: {
@@ -2202,7 +2222,7 @@ describe("selectAgentHarness", () => {
             list: [{ id: "main", default: true, agentDir: "/tmp/main-agent" }],
             defaults: {
               models: {
-                "openai/gpt-5.5": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.5": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           },
@@ -2342,7 +2362,7 @@ describe("selectAgentHarness", () => {
         model: "gpt-5.5",
         authProfileId: "deleted-profile",
         agentHarnessId: "codex",
-        config: agentModelRuntimeConfig("openai/gpt-5.5", "openclaw"),
+        config: agentModelRuntimeConfig("openai/gpt-5.5", "@gabrielvfonseca/operator"),
       }),
     ).resolves.toEqual({ ok: true, compacted: false });
     expect(compact).toHaveBeenCalledTimes(1);
@@ -2617,7 +2637,7 @@ describe("selectAgentHarness", () => {
           modelId,
           agentHarnessRuntimeOverride: alias,
         }).id,
-      ).toBe("openclaw");
+      ).toBe("@gabrielvfonseca/operator");
     },
   );
 

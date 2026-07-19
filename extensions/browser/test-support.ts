@@ -3,16 +3,19 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 
 export {
   createCliRuntimeCapture,
   expectGeneratedTokenPersistedToGatewayAuth,
   type CliRuntimeCapture,
-} from "openclaw/plugin-sdk/test-fixtures";
-export { createTempHomeEnv, isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
-export type { TempHomeEnv } from "openclaw/plugin-sdk/test-env";
-export type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
+export {
+  createTempHomeEnv,
+  isLiveTestEnabled,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+export type { TempHomeEnv } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+export type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
 export function useAutoCleanupTempDirTracker(registerCleanup: (cleanup: () => void) => unknown) {
   const dirs = new Set<string>();

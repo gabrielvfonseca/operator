@@ -1,5 +1,5 @@
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { Block, KnownBlock } from "@slack/web-api";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { renderSlackBlockFallbackText } from "./blocks-fallback.js";
 import { SLACK_MAX_BLOCKS } from "./blocks-input.js";
 import { SLACK_MESSAGE_TEXT_HARD_LIMIT } from "./limits.js";

@@ -1,6 +1,6 @@
 /** Applies model override tokens embedded in reset/new command text. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ModelCatalogEntry } from "../../agents/model-catalog.types.js";
 import {
   buildAllowedModelSetWithFallbacks,

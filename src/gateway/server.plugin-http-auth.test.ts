@@ -160,7 +160,7 @@ async function expectPluginRequestOk(
 
 describe("gateway plugin HTTP auth boundary", () => {
   test("applies default security headers and optional strict transport security", async () => {
-    await withGatewayTempConfig("openclaw-plugin-http-security-headers-test-", async () => {
+    await withGatewayTempConfig("operator-plugin-http-security-headers-test-", async () => {
       const withoutHsts = createTestGatewayServer({ resolvedAuth: AUTH_NONE });
       const withoutHstsResponse = await sendRequest(withoutHsts, { path: "/missing" });
       expect(withoutHstsResponse.setHeader).toHaveBeenCalledWith(
@@ -190,7 +190,7 @@ describe("gateway plugin HTTP auth boundary", () => {
 
   test("serves unauthenticated liveness/readiness probe routes when no other route handles them", async () => {
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-probes-test-",
+      prefix: "operator-plugin-http-probes-test-",
       resolvedAuth: AUTH_TOKEN,
       run: async (server) => {
         await expectProbeRoutesHealthy(server);
@@ -202,7 +202,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     const handlePluginRequest = createHealthzPluginHandler();
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-probes-shadow-test-",
+      prefix: "operator-plugin-http-probes-shadow-test-",
       resolvedAuth: AUTH_NONE,
       overrides: { handlePluginRequest },
       run: async (server) => {
@@ -213,7 +213,7 @@ describe("gateway plugin HTTP auth boundary", () => {
 
   test("rejects non-GET/HEAD methods on probe routes", async () => {
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-probes-method-test-",
+      prefix: "operator-plugin-http-probes-method-test-",
       resolvedAuth: AUTH_NONE,
       run: async (server) => {
         const postResponse = await sendRequest(server, { path: "/healthz", method: "POST" });
@@ -245,7 +245,7 @@ describe("gateway plugin HTTP auth boundary", () => {
           trustedProxies: ["203.0.113.10"],
         },
       },
-      prefix: "openclaw-plugin-http-runtime-scope-trusted-proxy-test-",
+      prefix: "operator-plugin-http-runtime-scope-trusted-proxy-test-",
       run: async () => {
         const server = createTestGatewayServer({
           resolvedAuth: {
@@ -266,7 +266,7 @@ describe("gateway plugin HTTP auth boundary", () => {
           headers: {
             "x-forwarded-user": "operator",
             "x-forwarded-for": "198.51.100.20",
-            "x-openclaw-scopes": "operator.read",
+            "x-operator-scopes": "operator.read",
           },
         });
       },
@@ -288,7 +288,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-runtime-scope-bearer-test-",
+      prefix: "operator-plugin-http-runtime-scope-bearer-test-",
       resolvedAuth: AUTH_TOKEN,
       overrides: {
         handlePluginRequest,
@@ -299,7 +299,7 @@ describe("gateway plugin HTTP auth boundary", () => {
           path: "/secure-hook",
           authorization: "Bearer test-token",
           headers: {
-            "x-openclaw-scopes": "operator.read",
+            "x-operator-scopes": "operator.read",
           },
         });
       },
@@ -322,7 +322,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-runtime-scope-bearer-trusted-operator-test-",
+      prefix: "operator-plugin-http-runtime-scope-bearer-trusted-operator-test-",
       resolvedAuth: AUTH_TOKEN,
       overrides: {
         handlePluginRequest,
@@ -362,7 +362,7 @@ describe("gateway plugin HTTP auth boundary", () => {
 
     await withTempConfig({
       cfg: createMattermostCallbackConfig("/api/channels/mattermost/command"),
-      prefix: "openclaw-plugin-http-auth-mm-callback-",
+      prefix: "operator-plugin-http-auth-mm-callback-",
       run: async () => {
         const server = createTestGatewayServer({
           resolvedAuth: AUTH_TOKEN,
@@ -398,7 +398,7 @@ describe("gateway plugin HTTP auth boundary", () => {
 
     await withTempConfig({
       cfg: createMattermostCallbackConfig("/api/channels/nostr/default/profile"),
-      prefix: "openclaw-plugin-http-auth-mm-misconfig-",
+      prefix: "operator-plugin-http-auth-mm-misconfig-",
       run: async () => {
         const server = createTestGatewayServer({
           resolvedAuth: AUTH_TOKEN,
@@ -430,7 +430,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-auth-wildcard-handler-test-",
+      prefix: "operator-plugin-http-auth-wildcard-handler-test-",
       resolvedAuth: AUTH_TOKEN,
       overrides: {
         handlePluginRequest,
@@ -469,7 +469,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-auth-wildcard-default-test-",
+      prefix: "operator-plugin-http-auth-wildcard-default-test-",
       resolvedAuth: AUTH_TOKEN,
       overrides: { handlePluginRequest },
       run: async (server) => {
@@ -524,7 +524,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-precedence-test-",
+      prefix: "operator-plugin-http-control-ui-precedence-test-",
       handlePluginRequest,
       run: async (server) => {
         const response = await sendRequest(server, {
@@ -560,7 +560,7 @@ describe("gateway plugin HTTP auth boundary", () => {
       });
 
       await withGatewayServer({
-        prefix: "openclaw-plugin-http-plugin-manager-reserved-test-",
+        prefix: "operator-plugin-http-plugin-manager-reserved-test-",
         resolvedAuth: AUTH_NONE,
         overrides: {
           controlUiEnabled: true,
@@ -591,7 +591,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-approval-reservation-test-",
+      prefix: "operator-plugin-http-approval-reservation-test-",
       handlePluginRequest,
       run: async (server) => {
         const response = await sendRequest(server, { path: "/approve/plugin%3Arequest.json" });
@@ -611,7 +611,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-approval-write-reservation-test-",
+      prefix: "operator-plugin-http-approval-write-reservation-test-",
       handlePluginRequest,
       run: async (server) => {
         for (const method of ["POST", "PUT"] as const) {
@@ -638,7 +638,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withPluginGatewayServer({
-      prefix: "openclaw-plugin-http-disabled-approval-reservation-test-",
+      prefix: "operator-plugin-http-disabled-approval-reservation-test-",
       resolvedAuth: AUTH_NONE,
       overrides: {
         controlUiEnabled: false,
@@ -668,7 +668,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-webhook-post-test-",
+      prefix: "operator-plugin-http-control-ui-webhook-post-test-",
       handlePluginRequest,
       run: async (server) => {
         const response = await sendRequest(server, {
@@ -696,7 +696,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-shadow-test-",
+      prefix: "operator-plugin-http-control-ui-shadow-test-",
       handlePluginRequest,
       run: async (server) => {
         const response = await sendRequest(server, { path: "/my-plugin/inbound" });
@@ -712,7 +712,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     const handlePluginRequest = vi.fn(async () => false);
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-fallthrough-test-",
+      prefix: "operator-plugin-http-control-ui-fallthrough-test-",
       handlePluginRequest,
       run: async (server) => {
         const response = await sendRequest(server, { path: "/chat" });
@@ -728,7 +728,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     const handlePluginRequest = vi.fn(async () => false);
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-probes-test-",
+      prefix: "operator-plugin-http-control-ui-probes-test-",
       handlePluginRequest,
       run: async (server) => {
         await expectProbeRoutesHealthy(server);
@@ -741,7 +741,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     const handlePluginRequest = createHealthzPluginHandler();
 
     await withRootMountedControlUiServer({
-      prefix: "openclaw-plugin-http-control-ui-probe-shadow-test-",
+      prefix: "operator-plugin-http-control-ui-probe-shadow-test-",
       handlePluginRequest,
       run: async (server) => {
         await expectHealthzProbeReserved({ server, handlePluginRequest });
@@ -761,7 +761,7 @@ describe("gateway plugin HTTP auth boundary", () => {
     });
 
     await withGatewayServer({
-      prefix: "openclaw-plugin-http-auth-encoded-order-test-",
+      prefix: "operator-plugin-http-auth-encoded-order-test-",
       resolvedAuth: AUTH_TOKEN,
       overrides: { handlePluginRequest },
       run: async (server) => {
@@ -774,7 +774,7 @@ describe("gateway plugin HTTP auth boundary", () => {
   test.each(["0.0.0.0", "::"])(
     "returns 404 (not 500) for non-hook routes with hooks enabled and bindHost=%s",
     async (bindHost) => {
-      await withGatewayTempConfig("openclaw-plugin-http-hooks-bindhost-", async () => {
+      await withGatewayTempConfig("operator-plugin-http-hooks-bindhost-", async () => {
         const handleHooksRequest = createHooksHandler(bindHost);
         const server = createTestGatewayServer({
           resolvedAuth: AUTH_NONE,
@@ -790,7 +790,7 @@ describe("gateway plugin HTTP auth boundary", () => {
   );
 
   test("rejects query-token hooks requests with bindHost=::", async () => {
-    await withGatewayTempConfig("openclaw-plugin-http-hooks-query-token-", async () => {
+    await withGatewayTempConfig("operator-plugin-http-hooks-query-token-", async () => {
       const handleHooksRequest = createHooksHandler("::");
       const server = createTestGatewayServer({
         resolvedAuth: AUTH_NONE,

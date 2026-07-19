@@ -35,7 +35,7 @@ import {
 } from "../../lib/sessions/session-key.ts";
 import { normalizeOptionalString } from "../../lib/string-coerce.ts";
 import { captureSessionToWorkboard } from "../../lib/workboard/index.ts";
-import { OpenClawLightDomElement } from "../../lit/openclaw-element.ts";
+import { OperatorLightDomElement } from "../../lit/operator-element.ts";
 import { SubscriptionsController } from "../../lit/subscriptions-controller.ts";
 import {
   searchVisibleSessionTranscripts,
@@ -65,7 +65,7 @@ type SessionsPageRequestScope = {
   client: GatewayBrowserClient;
 };
 
-class SessionsPage extends OpenClawLightDomElement {
+class SessionsPage extends OperatorLightDomElement {
   @consume({ context: applicationContext, subscribe: true })
   private context?: ApplicationContext;
 
@@ -1064,7 +1064,7 @@ class SessionsPage extends OpenClawLightDomElement {
       }),
     );
     return html`
-      <openclaw-session-menu
+      <operator-session-menu
         .session=${{
           label: normalizeOptionalString(row.label) ?? row.key,
           pinned: row.pinned === true,
@@ -1134,7 +1134,7 @@ class SessionsPage extends OpenClawLightDomElement {
               break;
           }
         }}
-      ></openclaw-session-menu>
+      ></operator-session-menu>
     `;
   }
 
@@ -1288,7 +1288,7 @@ class SessionsPage extends OpenClawLightDomElement {
   }
 }
 
-if (!customElements.get("openclaw-sessions-page")) {
-  customElements.define("openclaw-sessions-page", SessionsPage);
+if (!customElements.get("operator-sessions-page")) {
+  customElements.define("operator-sessions-page", SessionsPage);
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

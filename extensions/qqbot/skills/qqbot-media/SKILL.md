@@ -1,7 +1,8 @@
 ---
 name: qqbot-media
 description: QQBot rich media send and receive support. Use <qqmedia> tags only for explicit media send/view requests, treating inbound attachment paths as private current-conversation context.
-metadata: { "openclaw": { "emoji": "📸", "requires": { "config": ["channels.qqbot"] } } }
+metadata:
+  { "@gabrielvfonseca/operator": { "emoji": "📸", "requires": { "config": ["channels.qqbot"] } } }
 ---
 
 # QQBot 富媒体收发

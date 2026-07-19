@@ -42,10 +42,10 @@ export function renderChatWorkingIndicator(part: Extract<ChatItem, { kind: "read
       </div>
       <span class="chat-working-indicator__status">
         <span class="agent-chat__sr-only">${t("common.working")}</span>
-        <openclaw-elapsed-time
+        <operator-elapsed-time
           class="chat-working-indicator__elapsed"
           .startMs=${part.startedAt}
-        ></openclaw-elapsed-time>
+        ></operator-elapsed-time>
       </span>
     </div>
   `;

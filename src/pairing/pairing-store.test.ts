@@ -46,7 +46,7 @@ let caseId = 0;
 type RandomIntSync = (minOrMax: number, max?: number) => number;
 
 beforeAll(() => {
-  fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-pairing-"));
+  fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-pairing-"));
 });
 
 afterAll(() => {

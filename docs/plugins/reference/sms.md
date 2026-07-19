@@ -1,5 +1,5 @@
 ---
-summary: "Twilio SMS channel plugin for OpenClaw text messages."
+summary: "Twilio SMS channel plugin for Operator text messages."
 read_when:
   - You are installing, configuring, or auditing the sms plugin
 title: "Sms plugin"
@@ -7,12 +7,12 @@ title: "Sms plugin"
 
 # Sms plugin
 
-Twilio SMS channel plugin for OpenClaw text messages.
+Twilio SMS channel plugin for Operator text messages.
 
 ## Distribution
 
-- Package: `@operator/sms`
-- Install route: npm; ClawHub: `clawhub:@operator/sms`
+- Package: `@gabrielvfonseca/sms`
+- Install route: npm; ClawHub: `clawhub:@gabrielvfonseca/sms`
 
 ## Surface
 

@@ -45,10 +45,10 @@ describe("loadOperatorPlugins", () => {
       name: "does not reuse cached registries when env-resolved install paths change",
       setup: () => {
         useNoBundledPlugins();
-        const operatorHome = makeTempDir();
+        const openclawHome = makeTempDir();
         const ignoredHome = makeTempDir();
         const stateDir = makeTempDir();
-        const pluginDir = path.join(operatorHome, "plugins", "tracked-install-cache");
+        const pluginDir = path.join(openclawHome, "plugins", "tracked-install-cache");
         mkdirSafe(pluginDir);
         const plugin = writePlugin({
           id: "tracked-install-cache",
@@ -84,7 +84,7 @@ describe("loadOperatorPlugins", () => {
               ...options,
               env: {
                 ...process.env,
-                OPERATOR_HOME: operatorHome,
+                OPERATOR_HOME: openclawHome,
                 HOME: ignoredHome,
                 OPERATOR_STATE_DIR: stateDir,
                 OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
@@ -209,12 +209,12 @@ describe("loadOperatorPlugins", () => {
 
   it("prefers OPERATOR_HOME over HOME for env-expanded load paths", () => {
     const ignoredHome = makeTempDir();
-    const operatorHome = makeTempDir();
+    const openclawHome = makeTempDir();
     const stateDir = makeTempDir();
     const bundledDir = makeTempDir();
     const plugin = writePlugin({
       id: "operator-home-demo",
-      dir: path.join(operatorHome, "plugins", "operator-home-demo"),
+      dir: path.join(openclawHome, "plugins", "operator-home-demo"),
       filename: "index.cjs",
       body: `module.exports = { id: "operator-home-demo", register() {} };`,
     });
@@ -223,7 +223,7 @@ describe("loadOperatorPlugins", () => {
       env: {
         ...process.env,
         HOME: ignoredHome,
-        OPERATOR_HOME: operatorHome,
+        OPERATOR_HOME: openclawHome,
         OPERATOR_STATE_DIR: stateDir,
         OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
       },
@@ -1066,7 +1066,7 @@ describe("loadOperatorPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@operator/nested-default-channel",
+          name: "@gabrielvfonseca/nested-default-channel",
           operator: {
             extensions: ["./index.cjs"],
           },
@@ -1602,7 +1602,7 @@ describe("loadOperatorPlugins", () => {
         path.join(globalDir, "package.json"),
         JSON.stringify(
           {
-            name: "@operator/untrusted-global-channel",
+            name: "@gabrielvfonseca/untrusted-global-channel",
             version: "0.0.0-test",
             main: "./index.cjs",
             operator: {

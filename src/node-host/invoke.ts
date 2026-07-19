@@ -1,10 +1,10 @@
 /** Node-host command dispatcher for system commands, approvals, env policy, and plugin commands. */
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import type { ContentBlock } from "@modelcontextprotocol/sdk/types.js";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { mcpContentBlockToAgentContent } from "../agents/mcp-content.js";
 import {
   analyzeArgvCommand,

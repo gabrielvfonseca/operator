@@ -1,7 +1,7 @@
 // Auth-choice model check tests cover warnings for mismatched model and auth config.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileStore } from "../agents/auth-profiles.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import {
   resolveDefaultModelAuthStatus,
   warnIfModelConfigLooksOff,

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { verifySystemAgentInferenceWithFallback } from "./inference-fallback.js";
 import type { SystemAgentConfiguredRoute } from "./inference-route.js";
@@ -9,7 +9,7 @@ const runtime = {} as RuntimeEnv;
 function route(agentId: string, provider: string): SystemAgentConfiguredRoute {
   return {
     runner: "embedded",
-    agentHarnessRuntimeOverride: "openclaw",
+    agentHarnessRuntimeOverride: "@gabrielvfonseca/operator",
     runConfig: {},
     modelLabel: `${provider}/model`,
     provider,

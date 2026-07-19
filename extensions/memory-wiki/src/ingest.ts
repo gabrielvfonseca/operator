@@ -1,7 +1,7 @@
 // Memory Wiki plugin module implements ingest behavior.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { pathExists } from "openclaw/plugin-sdk/security-runtime";
+import { pathExists } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { compileMemoryWikiVault } from "./compile.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import { appendMemoryWikiLog } from "./log.js";
@@ -107,8 +107,8 @@ export async function ingestMemoryWikiSource(params: {
       renderMarkdownFence(content, "text"),
       "",
       "## Notes",
-      "<!-- openclaw:human:start -->",
-      "<!-- openclaw:human:end -->",
+      "<!-- operator:human:start -->",
+      "<!-- operator:human:end -->",
       "",
     ].join("\n"),
   });

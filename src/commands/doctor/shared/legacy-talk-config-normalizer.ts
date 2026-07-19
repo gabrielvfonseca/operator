@@ -1,6 +1,6 @@
 // Legacy Talk config normalizer for provider scalar fields and realtime aliases.
 import { isDeepStrictEqual } from "node:util";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { normalizeTalkSection } from "../../../config/talk.js";
 import type { OperatorConfig } from "../../../config/types.js";
 

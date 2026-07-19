@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { SessionEntry } from "../../config/sessions/types.js";
 
 function normalizePromptRouteChannel(raw?: string | null): string | undefined {

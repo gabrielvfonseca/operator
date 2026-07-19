@@ -3,7 +3,7 @@ import Foundation
 
 /// A target display expressed in the global CoreGraphics point space (top-left
 /// origin), which is exactly the space CGEvent mouse coordinates use.
-public struct OpenClawComputerDisplayGeometry: Sendable, Equatable {
+public struct OperatorComputerDisplayGeometry: Sendable, Equatable {
     public var originX: Double
     public var originY: Double
     public var widthPoints: Double
@@ -28,7 +28,7 @@ public struct OpenClawComputerDisplayGeometry: Sendable, Equatable {
 /// rather than the display point width keeps clicks aligned on Retina modes
 /// where physical pixels and logical points differ. Retina backing scale never
 /// enters CGEvent coordinates, which are always points.
-public enum OpenClawComputerInputGeometry {
+public enum OperatorComputerInputGeometry {
     /// Stable opaque identity for one physical display geometry and reference
     /// scale. Screenshot and input paths independently derive this value so
     /// hot-plug/reindex/geometry/scale changes fail closed before coordinates can
@@ -38,7 +38,7 @@ public enum OpenClawComputerInputGeometry {
         sourceWidth: Double,
         sourceHeight: Double,
         referenceWidth: Int,
-        display: OpenClawComputerDisplayGeometry) -> String
+        display: OperatorComputerDisplayGeometry) -> String
     {
         let descriptor = [
             String(displayID),
@@ -62,7 +62,7 @@ public enum OpenClawComputerInputGeometry {
     public static func isValidMappingGeometry(
         sourceWidth: Double,
         sourceHeight: Double,
-        display: OpenClawComputerDisplayGeometry) -> Bool
+        display: OperatorComputerDisplayGeometry) -> Bool
     {
         guard sourceWidth.isFinite,
               sourceHeight.isFinite,
@@ -112,7 +112,7 @@ public enum OpenClawComputerInputGeometry {
         x: Double,
         y: Double,
         capturedWidthPixels: Double,
-        display: OpenClawComputerDisplayGeometry) -> (x: Double, y: Double)
+        display: OperatorComputerDisplayGeometry) -> (x: Double, y: Double)
     {
         guard capturedWidthPixels > 0, display.widthPoints > 0 else {
             return (x: display.originX, y: display.originY)
@@ -131,7 +131,7 @@ public enum OpenClawComputerInputGeometry {
     public static func clampToDisplay(
         x: Double,
         y: Double,
-        display: OpenClawComputerDisplayGeometry) -> (x: Double, y: Double)
+        display: OperatorComputerDisplayGeometry) -> (x: Double, y: Double)
     {
         let maxX = display.originX + max(0, display.widthPoints - 1)
         let maxY = display.originY + max(0, display.heightPoints - 1)

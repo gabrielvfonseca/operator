@@ -6,8 +6,8 @@
  * All adapter dependencies are assembled here in one place.
  */
 
-import { resolveRuntimeServiceVersion } from "openclaw/plugin-sdk/cli-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import { resolveRuntimeServiceVersion } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { EngineAdapters } from "../engine/adapter/index.js";
 import {
   startGateway as coreStartGateway,

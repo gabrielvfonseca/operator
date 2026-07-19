@@ -1,11 +1,11 @@
 /**
  * Looks up model catalog entries and input capability support.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { ModelCatalogEntry, ModelInputType } from "./model-catalog.types.js";
 
 /** Returns whether a catalog entry declares support for an input modality. */

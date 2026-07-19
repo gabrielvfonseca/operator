@@ -325,7 +325,7 @@ function createHttpCaptureEventBase(params: {
   return {
     sessionId: params.settings.sessionId,
     ts: Date.now(),
-    sourceScope: "operator",
+    sourceScope: "@gabrielvfonseca/operator",
     sourceProcess: params.settings.sourceProcess,
     protocol: params.transport ?? protocolFromUrl(params.rawUrl),
     direction: params.direction,
@@ -400,7 +400,7 @@ function installDebugProxyGlobalFetchPatch(
         store.recordEvent({
           sessionId: settings.sessionId,
           ts: Date.now(),
-          sourceScope: "operator",
+          sourceScope: "@gabrielvfonseca/operator",
           sourceProcess: settings.sourceProcess,
           protocol: protocolFromUrl(captureUrl),
           direction: "local",
@@ -456,7 +456,7 @@ export function initializeDebugProxyCapture(
     id: settings.sessionId,
     startedAt: Date.now(),
     mode,
-    sourceScope: "operator",
+    sourceScope: "@gabrielvfonseca/operator",
     sourceProcess: settings.sourceProcess,
     proxyUrl: settings.proxyUrl,
   });
@@ -663,7 +663,7 @@ export function captureWsEvent(
   store.recordEvent({
     sessionId: settings.sessionId,
     ts: Date.now(),
-    sourceScope: "operator",
+    sourceScope: "@gabrielvfonseca/operator",
     sourceProcess: settings.sourceProcess,
     protocol: protocolFromUrl(captureUrl),
     direction: params.direction,

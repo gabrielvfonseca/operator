@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ModelsAuthLoginFlowOptions } from "../../commands/models/auth.js";
 import type { SessionEntryUpdateOptions } from "../../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { buildBuiltinChatCommands } from "../commands-registry.shared.js";
 import type { HandleCommandsParams } from "./commands-types.js";
 import { buildCommandTestParams } from "./commands.test-harness.js";
@@ -62,7 +62,7 @@ function buildLoginParams(
       MessageThreadId: "thread-1",
       ...overrides.ctx,
     },
-    { workspaceDir: "/tmp/openclaw-login-test" },
+    { workspaceDir: "/tmp/operator-login-test" },
   );
   params.sessionKey = overrides.sessionKey ?? "agent:main:slack:channel:C123";
   params.agentId = overrides.agentId;
@@ -278,7 +278,7 @@ describe("handleLoginCommand", () => {
     const params = buildLoginParams("/login codex", {
       opts: blockReplyOpts(),
       sessionEntry: previousEntry,
-      storePath: "/tmp/openclaw-login-sessions.json",
+      storePath: "/tmp/operator-login-sessions.json",
     });
 
     await handleLoginCommand(params, true);
@@ -293,7 +293,7 @@ describe("handleLoginCommand", () => {
     expect(updateSessionEntryMock).toHaveBeenCalledWith(
       expect.objectContaining({
         sessionKey: "agent:main:slack:channel:C123",
-        storePath: "/tmp/openclaw-login-sessions.json",
+        storePath: "/tmp/operator-login-sessions.json",
         requireWriteSuccess: true,
       }),
     );
@@ -420,7 +420,7 @@ describe("handleLoginCommand", () => {
       opts: blockReplyOpts(),
       sessionEntry: previousEntry,
       sessionStore,
-      storePath: "/tmp/openclaw-login-sessions.json",
+      storePath: "/tmp/operator-login-sessions.json",
     });
 
     const result = await handleLoginCommand(params, true);
@@ -461,7 +461,7 @@ describe("handleLoginCommand", () => {
       opts: blockReplyOpts(),
       sessionEntry: previousEntry,
       sessionStore,
-      storePath: "/tmp/openclaw-login-sessions.json",
+      storePath: "/tmp/operator-login-sessions.json",
     });
 
     const result = await handleLoginCommand(params, true);
@@ -495,7 +495,7 @@ describe("handleLoginCommand", () => {
     const params = buildLoginParams("/login codex", {
       opts: blockReplyOpts(),
       sessionEntry: previousEntry,
-      storePath: "/tmp/openclaw-login-sessions.json",
+      storePath: "/tmp/operator-login-sessions.json",
     });
 
     const result = await handleLoginCommand(params, true);

@@ -1,6 +1,6 @@
 // Channel route target tests cover target parsing and validation.
 import { describe, expect, it } from "vitest";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { collectChannelRouteTargets } from "./channel-route-targets.js";
 
 function targetMap(cfg: OperatorConfig): Map<string, string[]> {

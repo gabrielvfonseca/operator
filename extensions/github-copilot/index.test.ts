@@ -2,22 +2,25 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import {
   clearRuntimeAuthProfileStoreSnapshots,
   ensureAuthProfileStore,
   saveAuthProfileStore,
-} from "openclaw/plugin-sdk/agent-runtime";
-import { MAX_DATE_TIMESTAMP_MS, MAX_TIMER_TIMEOUT_MS } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import {
+  MAX_DATE_TIMESTAMP_MS,
+  MAX_TIMER_TIMEOUT_MS,
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type {
   OperatorConfig,
   OperatorPluginApi,
   ProviderAuthResult,
   ProviderCatalogResult,
   UnifiedModelCatalogEntry,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
-import type { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
+import type { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { runGitHubCopilotDeviceFlow } from "./login.js";
 
@@ -99,7 +102,7 @@ afterAll(() => {
 });
 
 async function createAgentDir() {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-github-copilot-test-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-github-copilot-test-"));
   tempDirs.push(dir);
   return dir;
 }

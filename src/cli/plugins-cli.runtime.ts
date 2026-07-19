@@ -1,4 +1,4 @@
-// Runtime implementations for `operator plugins` subcommands. Heavy plugin modules stay
+// Runtime implementations for `openclaw plugins` subcommands. Heavy plugin modules stay
 // lazy-loaded so the base CLI can start without activating the plugin registry.
 import { formatDocsLink } from "../../packages/terminal-core/src/links.js";
 import { theme } from "../../packages/terminal-core/src/theme.js";
@@ -119,7 +119,7 @@ function formatBlockedRuntimePluginGuidance(params: {
   const alternative =
     pluginId === "acpx"
       ? "disable ACP/acpx in acp config"
-      : 'change the runtime policy to "operator"';
+      : 'change the runtime policy to "@gabrielvfonseca/operator"';
   if (params.cfg.plugins?.enabled === false) {
     return `Enable plugin loading and the "${pluginId}" plugin, or ${alternative}.`;
   }
@@ -140,7 +140,7 @@ function formatDisabledRuntimePluginGuidance(params: {
   const alternative =
     params.pluginId === "acpx"
       ? "disable ACP/acpx in acp config"
-      : 'change the runtime policy to "operator"';
+      : 'change the runtime policy to "@gabrielvfonseca/operator"';
   if (Array.isArray(allow) && allow.length > 0 && !allow.includes(params.pluginId)) {
     return `Add "${params.pluginId}" to plugins.allow and enable the plugin, or ${alternative}.`;
   }
@@ -181,7 +181,7 @@ function collectConfiguredRuntimePluginWarnings(params: {
     }
     const installSpec = formatConfiguredRuntimePluginInstallSpec(candidate);
     return [
-      `- Configured runtime "${runtimeId}" requires the ${candidate.label} plugin, but no enabled "${runtimeId}" plugin was found. Run "operator doctor --fix" to install ${installSpec}, or install it manually with "operator plugins install ${installSpec}".`,
+      `- Configured runtime "${runtimeId}" ...
     ];
   });
 }
@@ -330,7 +330,7 @@ export async function runPluginsRegistryCommand(opts: PluginRegistryOptions): Pr
   ];
   if (inspection.refreshReasons.length > 0) {
     lines.push(`${theme.muted("Refresh reasons:")} ${inspection.refreshReasons.join(", ")}`);
-    lines.push(`${theme.muted("Repair:")} ${theme.command("operator plugins registry --refresh")}`);
+    lines.push(`${theme.muted("Repair:")} ${theme.command("openclaw plugins registry --refresh")}`);
   }
   defaultRuntime.log(lines.join("\n"));
 }
@@ -362,7 +362,7 @@ export async function runPluginsDoctorCommand(): Promise<void> {
   const stalePluginConfigHits = scanStalePluginConfig(sourceCfg ?? cfg, process.env);
   const stalePluginConfigWarnings = collectStalePluginConfigWarnings({
     hits: stalePluginConfigHits,
-    doctorFixCommand: "operator doctor --fix",
+    doctorFixCommand: "openclaw doctor --fix",
     autoRepairBlocked: isStalePluginAutoRepairBlocked(sourceCfg ?? cfg, process.env),
   });
   const configuredRuntimePluginWarnings = collectConfiguredRuntimePluginWarnings({
@@ -416,10 +416,10 @@ export async function runPluginsDoctorCommand(): Promise<void> {
         lines.push(`  shadowed: ${shortenHomeInString(diag.source)}`);
       }
       lines.push("  repair:");
-      lines.push("    operator plugins inspect " + (diag.pluginId ?? "<plugin-id>"));
+      lines.push("    openclaw plugins inspect " + (diag.pluginId ?? "<plugin-id>"));
       lines.push("    edit or remove the config-selected plugin source");
-      lines.push("    operator plugins registry --refresh");
-      lines.push("    operator gateway restart --force");
+      lines.push("    openclaw plugins registry --refresh");
+      lines.push("    openclaw gateway restart --force");
     }
   }
   if (compatibility.length > 0) {

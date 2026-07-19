@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { InternalChannelThreadingToolContext } from "../channels/threading-tool-context-internal.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import {

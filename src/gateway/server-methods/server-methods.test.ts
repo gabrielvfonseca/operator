@@ -6,14 +6,14 @@ import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { expectDefined } from "@operator/normalization-core";
-import { asOptionalRecord } from "@operator/normalization-core/record-coerce";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import { asOptionalRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { GATEWAY_CLIENT_IDS } from "../../../packages/gateway-protocol/src/client-info.js";
 import { validateExecApprovalRequestParams } from "../../../packages/gateway-protocol/src/index.js";
 import { STREAM_ERROR_FALLBACK_TEXT } from "../../agents/stream-message-shared.js";
 import { HEARTBEAT_PROMPT } from "../../auto-reply/heartbeat.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { registerLegacyContextEngine } from "../../context-engine/legacy.registration.js";
 import {
   clearContextEnginesForOwner,
@@ -691,7 +691,7 @@ describe("augmentChatHistoryWithCanvasBlocks", () => {
       view: {
         backend: "canvas",
         id: "cv_user_text",
-        url: "/__openclaw__/canvas/documents/cv_user_text/index.html",
+        url: "/__operator__/canvas/documents/cv_user_text/index.html",
         title: "User pasted preview",
         preferred_height: 240,
       },
@@ -1476,7 +1476,7 @@ describe("projectRecentChatDisplayMessages", () => {
             args: { action: "send", message: "visible via message tool" },
           },
         ],
-        __openclaw: { seq: 1 },
+        __operator: { seq: 1 },
         timestamp: 1,
       },
       {
@@ -1487,7 +1487,7 @@ describe("projectRecentChatDisplayMessages", () => {
           sourceSessionKey: "agent:main:webchat:source",
           sourceTool: "sessions_send",
         },
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
         timestamp: 2,
       },
       {
@@ -1516,7 +1516,7 @@ describe("projectRecentChatDisplayMessages", () => {
             args: { action: "send", message: "visible via message tool" },
           },
         ],
-        __openclaw: { seq: 1 },
+        __operator: { seq: 1 },
         timestamp: 1,
       },
       {
@@ -1528,7 +1528,7 @@ describe("projectRecentChatDisplayMessages", () => {
           sourceSessionKey: "agent:main:webchat:source",
           sourceTool: "sessions_send",
         },
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
         timestamp: 2,
       },
       {
@@ -1648,7 +1648,7 @@ describe("projectRecentChatDisplayMessages", () => {
           sourceSessionKey: "agent:main:webchat:source",
           sourceTool: "sessions_send",
         },
-        __openclaw: { turnBoundary: true },
+        __operator: { turnBoundary: true },
         timestamp: 2,
       },
     ]);
@@ -1659,32 +1659,32 @@ describe("projectRecentChatDisplayMessages", () => {
       {
         role: "user",
         content: [{ type: "text", text: HEARTBEAT_PROMPT }],
-        __openclaw: { seq: 1 },
+        __operator: { seq: 1 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "First run started." }],
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "First run finished." }],
-        __openclaw: { seq: 3 },
+        __operator: { seq: 3 },
       },
       {
         role: "user",
         content: [{ type: "text", text: HEARTBEAT_PROMPT }],
-        __openclaw: { seq: 4 },
+        __operator: { seq: 4 },
       },
       {
         role: "system",
         content: [{ type: "text", text: "Compaction" }],
-        __openclaw: { kind: "compaction", seq: 5 },
+        __operator: { kind: "compaction", seq: 5 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "Second run finished." }],
-        __openclaw: { seq: 6 },
+        __operator: { seq: 6 },
       },
     ]);
 
@@ -1841,7 +1841,7 @@ describe("projectRecentChatDisplayMessages", () => {
           },
         ],
         timestamp: 2,
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
       {
         role: "toolResult",
@@ -1856,7 +1856,7 @@ describe("projectRecentChatDisplayMessages", () => {
       role: "assistant",
       content: [{ type: "text", text: "I will clean that up now." }],
       timestamp: 2,
-      __openclaw: { seq: 2 },
+      __operator: { seq: 2 },
     });
   });
 
@@ -1902,14 +1902,14 @@ describe("projectRecentChatDisplayMessages", () => {
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "acp-runtime",
         content: [{ type: "text", text: "Good morning." }],
         timestamp: 2,
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "gateway-injected",
         content: [{ type: "text", text: "Good morning." }],
         idempotencyKey: "run-1",
@@ -1925,7 +1925,7 @@ describe("projectRecentChatDisplayMessages", () => {
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "acp-runtime",
         content: [{ type: "text", text: "Good morning." }],
         timestamp: 2,
@@ -1945,12 +1945,12 @@ describe("projectRecentChatDisplayMessages", () => {
         provider: "openai",
         model: "gpt-5.5",
         content: [{ type: "text", text: "Yo Peter. I’m here." }],
-        __openclaw: { mirrorIdentity: "run-1:assistant" },
+        __operator: { mirrorIdentity: "run-1:assistant" },
         timestamp: 2,
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: [{ type: "text", text: "Yo Peter. I’m here." }],
         idempotencyKey: "channel-final:message-1:0",
@@ -1970,7 +1970,7 @@ describe("projectRecentChatDisplayMessages", () => {
         provider: "openai",
         model: "gpt-5.5",
         content: [{ type: "text", text: "Yo Peter. I’m here." }],
-        __openclaw: { mirrorIdentity: "run-1:assistant" },
+        __operator: { mirrorIdentity: "run-1:assistant" },
         timestamp: 2,
       },
     ]);
@@ -1983,7 +1983,7 @@ describe("projectRecentChatDisplayMessages", () => {
         provider: "openai",
         model: "gpt-5.5",
         content: [{ type: "text", text: "Repeated reply" }],
-        __openclaw: { mirrorIdentity: "run-1:assistant" },
+        __operator: { mirrorIdentity: "run-1:assistant" },
         timestamp: 1,
       },
       {
@@ -1993,7 +1993,7 @@ describe("projectRecentChatDisplayMessages", () => {
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: [{ type: "text", text: "Repeated reply" }],
         idempotencyKey: "channel-final:message-2:0",
@@ -2005,7 +2005,7 @@ describe("projectRecentChatDisplayMessages", () => {
     expect(result).toHaveLength(2);
     expect(result[1]).toEqual(
       expect.objectContaining({
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
       }),
     );
@@ -2014,7 +2014,7 @@ describe("projectRecentChatDisplayMessages", () => {
   it("keeps adjacent channel-final delivery mirrors from distinct sends", () => {
     const deliveryMirror = (sourceMessageId: string, timestamp: number) => ({
       role: "assistant",
-      provider: "openclaw",
+      provider: "@gabrielvfonseca/operator",
       model: "delivery-mirror",
       content: [{ type: "text", text: "Repeated reply" }],
       idempotencyKey: `channel-final:${sourceMessageId}:0`,
@@ -2041,7 +2041,7 @@ describe("projectRecentChatDisplayMessages", () => {
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: [{ type: "text", text: "Repeated reply" }],
         idempotencyKey: "channel-final:message-unmarked:0",
@@ -2067,7 +2067,7 @@ describe("projectRecentChatDisplayMessages", () => {
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
         content: [{ type: "text", text: "Forwarded status" }],
         idempotencyKey: "channel-final:message-forwarded:0",
@@ -2088,7 +2088,7 @@ describe("projectRecentChatDisplayMessages", () => {
     );
     expect(result[1]).toEqual(
       expect.objectContaining({
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "delivery-mirror",
       }),
     );
@@ -2098,14 +2098,14 @@ describe("projectRecentChatDisplayMessages", () => {
     const result = projectRecentChatDisplayMessages([
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "acp-runtime",
         content: [{ type: "text", text: "First answer." }],
         timestamp: 1,
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "gateway-injected",
         content: [{ type: "text", text: "Second answer." }],
         timestamp: 2,
@@ -2115,14 +2115,14 @@ describe("projectRecentChatDisplayMessages", () => {
     expect(result).toEqual([
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "acp-runtime",
         content: [{ type: "text", text: "First answer." }],
         timestamp: 1,
       },
       {
         role: "assistant",
-        provider: "openclaw",
+        provider: "@gabrielvfonseca/operator",
         model: "gateway-injected",
         content: [{ type: "text", text: "Second answer." }],
         timestamp: 2,
@@ -2139,7 +2139,7 @@ describe("projectRecentChatDisplayMessages", () => {
         { role: "assistant", content: "ANNOUNCE_SKIP", timestamp: 4 },
         {
           role: "custom",
-          customType: "openclaw.runtime-context",
+          customType: "operator.runtime-context",
           content: "hidden runtime context",
           display: false,
           timestamp: 5,
@@ -2427,28 +2427,28 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
       {
         role: "user",
         content: [{ type: "text", text: "real prior" }],
-        __openclaw: { seq: 1, recordTimestampMs: cutoff - 86_400_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff - 86_400_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "real reply" }],
-        __openclaw: { seq: 2, recordTimestampMs: cutoff - 86_400_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff - 86_400_000 },
       },
       {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 3, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 3, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "fanfic lore-bible summary" }],
-        __openclaw: { seq: 4, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 4, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "user",
         content: [{ type: "text", text: "fresh user turn" }],
-        __openclaw: { seq: 5, recordTimestampMs: cutoff + 5_000 },
+        __operator: { seq: 5, recordTimestampMs: cutoff + 5_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2488,12 +2488,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 1, recordTimestampMs: cutoff + 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff + 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "current-session reply" }],
-        __openclaw: { seq: 2, recordTimestampMs: cutoff + 2_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff + 2_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2506,12 +2506,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 1, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "fresh-session reply" }],
-        __openclaw: { seq: 2, recordTimestampMs: cutoff + 1_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff + 1_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2524,12 +2524,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 1, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "timestampless reply" }],
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2542,12 +2542,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 1, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "would-be-stripped reply" }],
-        __openclaw: { seq: 2, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff - 1_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, undefined);
@@ -2559,13 +2559,13 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
       {
         role: "user",
         content: [{ type: "text", text: "real prior" }],
-        __openclaw: { seq: 1, recordTimestampMs: cutoff + 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff + 1_000 },
       },
       {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 2, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff - 1_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2579,12 +2579,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
       {
         role: "user",
         content: [{ type: "text", text: "older user turn" }],
-        __openclaw: { seq: 1, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 1, recordTimestampMs: cutoff - 1_000 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "older reply" }],
-        __openclaw: { seq: 2, recordTimestampMs: cutoff - 1_000 },
+        __operator: { seq: 2, recordTimestampMs: cutoff - 1_000 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -2597,12 +2597,12 @@ describe("dropPreSessionStartAnnouncePairs (#85648)", () => {
         role: "user",
         content: [{ type: "text", text: "[Inter-session message] sourceTool=subagent_announce" }],
         provenance: announceProvenance,
-        __openclaw: { seq: 1 },
+        __operator: { seq: 1 },
       },
       {
         role: "assistant",
         content: [{ type: "text", text: "reply" }],
-        __openclaw: { seq: 2 },
+        __operator: { seq: 2 },
       },
     ];
     const out = dropPreSessionStartAnnouncePairs(messages, cutoff);
@@ -5165,7 +5165,7 @@ describe("gateway healthHandlers.health cache freshness", () => {
   });
 
   it("merges live dead-lettered delivery queue counts into cached health responses", async () => {
-    const tmpStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-health-cached-dq-"));
+    const tmpStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-health-cached-dq-"));
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
     process.env.OPERATOR_STATE_DIR = tmpStateDir;
     try {
@@ -5414,16 +5414,16 @@ describe("logs.tail", () => {
   });
 
   it("falls back to latest rolling log file when today is missing", async () => {
-    const tempDir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "openclaw-logs-"));
-    const older = path.join(tempDir, "openclaw-2026-01-20.log");
-    const newer = path.join(tempDir, "openclaw-2026-01-21.log");
+    const tempDir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "operator-logs-"));
+    const older = path.join(tempDir, "operator-2026-01-20.log");
+    const newer = path.join(tempDir, "operator-2026-01-21.log");
 
     await fsPromises.writeFile(older, '{"msg":"old"}\n');
     await fsPromises.writeFile(newer, '{"msg":"new"}\n');
     await fsPromises.utimes(older, new Date(0), new Date(0));
     await fsPromises.utimes(newer, new Date(), new Date());
 
-    setLoggerOverride({ file: path.join(tempDir, "openclaw-2026-01-22.log") });
+    setLoggerOverride({ file: path.join(tempDir, "operator-2026-01-22.log") });
 
     const respond = vi.fn();
     await expectDefined(
@@ -5449,8 +5449,8 @@ describe("logs.tail", () => {
   });
 
   it("redacts sensitive CLI tokens from returned lines", async () => {
-    const tempDir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "openclaw-logs-"));
-    const file = path.join(tempDir, "openclaw-2026-01-22.log");
+    const tempDir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "operator-logs-"));
+    const file = path.join(tempDir, "operator-2026-01-22.log");
 
     await fsPromises.writeFile(
       file,

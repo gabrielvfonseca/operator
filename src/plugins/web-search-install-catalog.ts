@@ -1,6 +1,6 @@
 // Builds web-search install catalog entries from plugin metadata.
-import { normalizeOptionalString as normalizeString } from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString as normalizeString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
 import { enablePluginInConfig } from "./enable.js";

@@ -33,7 +33,7 @@ describe("entry root version fast path", () => {
     }));
 
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "@gabrielvfonseca/operator", "--version"], {
         output,
         exit,
         resolveVersion,
@@ -51,7 +51,7 @@ describe("entry root version fast path", () => {
     });
 
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "@gabrielvfonseca/operator", "--version"], {
         output,
         exit,
         resolveVersion,
@@ -64,18 +64,21 @@ describe("entry root version fast path", () => {
     output.mockClear();
     exit.mockClear();
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--container", "demo", "--version"], {
-        output,
-        exit,
-        resolveVersion,
-      }),
+      tryHandleRootVersionFastPath(
+        ["node", "@gabrielvfonseca/operator", "--container", "demo", "--version"],
+        {
+          output,
+          exit,
+          resolveVersion,
+        },
+      ),
     ).toBe(false);
     expect(resolveVersion).toHaveBeenCalledTimes(2);
     expect(output).not.toHaveBeenCalled();
     expect(exit).not.toHaveBeenCalled();
 
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "@gabrielvfonseca/operator", "--version"], {
         env: { OPERATOR_CONTAINER: "demo" },
         output,
         exit,
@@ -92,7 +95,7 @@ describe("entry root version fast path", () => {
       .mockRejectedValue(new Error("version resolution failed"));
 
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "@gabrielvfonseca/operator", "--version"], {
         output,
         exit,
         resolveVersion,
@@ -113,7 +116,7 @@ describe("entry root version fast path", () => {
       .mockRejectedValue(new Error("version resolution failed"));
 
     expect(
-      tryHandleRootVersionFastPath(["node", "openclaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "@gabrielvfonseca/operator", "--version"], {
         exit,
         onError,
         resolveVersion,

@@ -2,15 +2,15 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   createEmptyPluginRegistry,
   setActivePluginRegistry,
-} from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import {
   clearSessionStoreCacheForTest,
   upsertSessionEntry,
-} from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { ChannelType, type AutocompleteInteraction } from "../internal/discord.js";
 import { createNoopThreadBindingManager } from "./thread-bindings.js";
@@ -126,7 +126,7 @@ vi.mock("openclaw/plugin-sdk/models-provider-runtime", () => ({
 
 const STORE_PATH = path.join(
   os.tmpdir(),
-  `openclaw-discord-think-autocomplete-${process.pid}.json`,
+  `operator-discord-think-autocomplete-${process.pid}.json`,
 );
 const SESSION_KEY = "agent:main:main";
 let findCommandByNativeName: typeof import("openclaw/plugin-sdk/command-auth-native").findCommandByNativeName;
@@ -333,7 +333,11 @@ describe("discord native /think autocomplete", () => {
 
   it.each([
     { sessionRuntime: undefined, expectedRuntime: "codex", supportsUltra: false },
-    { sessionRuntime: "openclaw", expectedRuntime: "openclaw", supportsUltra: true },
+    {
+      sessionRuntime: "@gabrielvfonseca/operator",
+      expectedRuntime: "@gabrielvfonseca/operator",
+      supportsUltra: true,
+    },
   ])(
     "uses the effective $expectedRuntime runtime for Luna choices",
     async ({ sessionRuntime, expectedRuntime, supportsUltra }) => {
@@ -344,7 +348,9 @@ describe("discord native /think autocomplete", () => {
                 levels: [
                   { id: "off" },
                   { id: "max" },
-                  ...(context.agentRuntime === "openclaw" ? [{ id: "ultra" as const }] : []),
+                  ...(context.agentRuntime === "@gabrielvfonseca/operator"
+                    ? [{ id: "ultra" as const }]
+                    : []),
                 ],
               }
             : undefined,

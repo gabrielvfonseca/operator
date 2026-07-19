@@ -4,9 +4,9 @@ import {
   type MessageReceipt,
   type MessageReceiptPart,
   type MessageReceiptPartKind,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/markdown-table-runtime";
-import { convertMarkdownTables } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import { resolveMarkdownTableMode } from "@gabrielvfonseca/operator/plugin-sdk/markdown-table-runtime";
+import { convertMarkdownTables } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { loadOutboundMediaFromUrl, type OperatorConfig } from "../runtime-api.js";
 import {
   classifyMSTeamsSendError,

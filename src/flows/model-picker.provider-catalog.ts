@@ -1,5 +1,5 @@
 // Model picker provider catalog helpers build provider choices from catalog data.
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import { resolveDefaultAgentDir } from "../agents/agent-scope.js";
 import { ensureAuthProfileStoreWithoutExternalProfiles } from "../agents/auth-profiles.js";
 import type { ModelCatalogEntry } from "../agents/model-catalog.js";

@@ -1,6 +1,6 @@
 // Normalizes system-run metadata and string-array inputs.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { mapAllowFromEntries } from "operator/plugin-sdk/channel-config-helpers";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { mapAllowFromEntries } from "@gabrielvfonseca/operator/plugin-sdk/channel-config-helpers";
 
 /** Normalizes unknown system-run metadata to a trimmed non-empty string. */
 export function normalizeNonEmptyString(value: unknown): string | null {

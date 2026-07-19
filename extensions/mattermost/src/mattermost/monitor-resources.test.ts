@@ -69,7 +69,7 @@ describe("mattermost monitor resources", () => {
 
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client: {
         apiBaseUrl: "https://chat.example.com/api/v4",
         baseUrl: "https://chat.example.com",
@@ -134,7 +134,7 @@ describe("mattermost monitor resources", () => {
 
       const resources = createMattermostMonitorResources({
         accountId: "default",
-        callbackUrl: "https://openclaw.test/callback",
+        callbackUrl: "https://operator.test/callback",
         client: {
           apiBaseUrl: `http://127.0.0.1:${address.port}/api/v4`,
           baseUrl: `http://127.0.0.1:${address.port}`,
@@ -167,7 +167,7 @@ describe("mattermost monitor resources", () => {
 
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client: {} as never,
       logger: {},
       mediaMaxBytes: 1024,
@@ -214,7 +214,7 @@ describe("mattermost monitor resources", () => {
       fetchResource.mockImplementation(async (_client, id: string) => ({ id }));
       const resources = createMattermostMonitorResources({
         accountId: "default",
-        callbackUrl: "https://openclaw.test/callback",
+        callbackUrl: "https://operator.test/callback",
         client: {} as never,
         logger: {},
         mediaMaxBytes: 1024,
@@ -246,7 +246,7 @@ describe("mattermost monitor resources", () => {
     fetchResource.mockImplementation(async (_client, id: string) => ({ id }));
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client: {} as never,
       logger: {},
       mediaMaxBytes: 1024,
@@ -272,7 +272,7 @@ describe("mattermost monitor resources", () => {
 
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client: {} as never,
       logger: {},
       mediaMaxBytes: 1024,
@@ -308,7 +308,7 @@ describe("mattermost monitor resources", () => {
 
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client: {} as never,
       logger: {},
       mediaMaxBytes: 1024,
@@ -333,7 +333,7 @@ describe("mattermost monitor resources", () => {
 
     const resources = createMattermostMonitorResources({
       accountId: "default",
-      callbackUrl: "https://openclaw.test/callback",
+      callbackUrl: "https://operator.test/callback",
       client,
       logger: {},
       mediaMaxBytes: 1024,

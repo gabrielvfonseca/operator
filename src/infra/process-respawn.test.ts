@@ -68,7 +68,7 @@ function expectLaunchdSupervisedWithoutKickstart(params?: { launchJobLabel?: str
   if (params?.launchJobLabel) {
     process.env.LAUNCH_JOB_LABEL = params.launchJobLabel;
   }
-  process.env.OPERATOR_LAUNCHD_LABEL = "ai.openclaw.gateway";
+  process.env.OPERATOR_LAUNCHD_LABEL = "ai.operator.gateway";
   const result = restartGatewayProcessWithFreshPid();
   expect(result).toEqual({ mode: "supervised" });
   expect(triggerOperatorRestartMock).not.toHaveBeenCalled();
@@ -87,7 +87,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
     clearSupervisorHints();
     setPlatform("darwin");
     process.env.OPERATOR_NO_RESPAWN = "1";
-    process.env.LAUNCH_JOB_LABEL = "ai.openclaw.gateway";
+    process.env.LAUNCH_JOB_LABEL = "ai.operator.gateway";
 
     const result = restartGatewayProcessWithFreshPid();
 
@@ -98,13 +98,13 @@ describe("restartGatewayProcessWithFreshPid", () => {
 
   it("returns supervised when Operator launchd markers are present on macOS (no kickstart)", () => {
     clearSupervisorHints();
-    expectLaunchdSupervisedWithoutKickstart({ launchJobLabel: "ai.openclaw.gateway" });
+    expectLaunchdSupervisedWithoutKickstart({ launchJobLabel: "ai.operator.gateway" });
   });
 
   it("returns supervised for a real gateway launchd job without the injected marker", () => {
     clearSupervisorHints();
     setPlatform("darwin");
-    process.env.LAUNCH_JOB_LABEL = "ai.openclaw.gateway";
+    process.env.LAUNCH_JOB_LABEL = "ai.operator.gateway";
 
     const result = restartGatewayProcessWithFreshPid();
 
@@ -116,7 +116,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("returns supervised for a real gateway XPC launchd job without the injected marker", () => {
     clearSupervisorHints();
     setPlatform("darwin");
-    process.env.XPC_SERVICE_NAME = "ai.openclaw.gateway";
+    process.env.XPC_SERVICE_NAME = "ai.operator.gateway";
 
     const result = restartGatewayProcessWithFreshPid();
 
@@ -126,13 +126,13 @@ describe("restartGatewayProcessWithFreshPid", () => {
   });
 
   it("returns supervised on macOS when launchd label is set (no kickstart)", () => {
-    expectLaunchdSupervisedWithoutKickstart({ launchJobLabel: "ai.openclaw.gateway" });
+    expectLaunchdSupervisedWithoutKickstart({ launchJobLabel: "ai.operator.gateway" });
   });
 
   it("launchd supervisor never returns failed regardless of triggerOperatorRestart outcome", () => {
     clearSupervisorHints();
     setPlatform("darwin");
-    process.env.OPERATOR_LAUNCHD_LABEL = "ai.openclaw.gateway";
+    process.env.OPERATOR_LAUNCHD_LABEL = "ai.operator.gateway";
     // Even if triggerOperatorRestart *would* fail, launchd path must not call it.
     triggerOperatorRestartMock.mockReturnValue({
       ok: false,
@@ -148,7 +148,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("does not schedule kickstart on non-darwin platforms", () => {
     setPlatform("linux");
     process.env.INVOCATION_ID = "abc123";
-    process.env.OPERATOR_LAUNCHD_LABEL = "ai.openclaw.gateway";
+    process.env.OPERATOR_LAUNCHD_LABEL = "ai.operator.gateway";
 
     const result = restartGatewayProcessWithFreshPid();
 
@@ -160,7 +160,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("does not treat inherited XPC_SERVICE_NAME as launchd supervision", () => {
     clearSupervisorHints();
     setPlatform("darwin");
-    process.env.XPC_SERVICE_NAME = "ai.openclaw.mac";
+    process.env.XPC_SERVICE_NAME = "ai.operator.mac";
     process.env.OPERATOR_PROFILE = "mac";
 
     const result = restartGatewayProcessWithFreshPid();
@@ -198,7 +198,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("returns supervised when OPERATOR_SYSTEMD_UNIT is set", () => {
     clearSupervisorHints();
     setPlatform("linux");
-    process.env.OPERATOR_SYSTEMD_UNIT = "openclaw-gateway.service";
+    process.env.OPERATOR_SYSTEMD_UNIT = "operator-gateway.service";
     const result = restartGatewayProcessWithFreshPid();
     expect(result.mode).toBe("supervised");
     expect(spawnMock).not.toHaveBeenCalled();
@@ -207,7 +207,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("returns supervised when Operator gateway task markers are set on Windows", () => {
     clearSupervisorHints();
     setPlatform("win32");
-    process.env.OPERATOR_SERVICE_MARKER = "openclaw";
+    process.env.OPERATOR_SERVICE_MARKER = "@gabrielvfonseca/operator";
     process.env.OPERATOR_SERVICE_KIND = "gateway";
     triggerOperatorRestartMock.mockReturnValue({ ok: true, method: "schtasks" });
     const result = restartGatewayProcessWithFreshPid();
@@ -219,7 +219,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
   it("keeps generic service markers out of non-Windows supervisor detection", () => {
     clearSupervisorHints();
     setPlatform("linux");
-    process.env.OPERATOR_SERVICE_MARKER = "openclaw";
+    process.env.OPERATOR_SERVICE_MARKER = "@gabrielvfonseca/operator";
     process.env.OPERATOR_SERVICE_KIND = "gateway";
 
     const result = restartGatewayProcessWithFreshPid();
@@ -263,7 +263,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
     setPlatform("win32");
     process.env.OPERATOR_TASK_SCRIPT = "C:\\openclaw\\node.cmd";
     process.env.OPERATOR_TASK_SCRIPT_NAME = "node.cmd";
-    process.env.OPERATOR_SERVICE_MARKER = "openclaw";
+    process.env.OPERATOR_SERVICE_MARKER = "@gabrielvfonseca/operator";
     process.env.OPERATOR_SERVICE_KIND = "node";
 
     const result = restartGatewayProcessWithFreshPid();
@@ -319,7 +319,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     expect(result.pid).toBe(5151);
     expect(spawnMock).toHaveBeenCalledWith(
       process.execPath,
-      ["C:\\openclaw\\node_modules\\openclaw\\openclaw.mjs", "gateway", "run"],
+      ["C:\\openclaw\\node_modules\\openclaw\\operator.mjs", "gateway", "run"],
       {
         detached: true,
         env: process.env,
@@ -345,7 +345,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     expect(result.mode).toBe("spawned");
     expect(spawnMock).toHaveBeenCalledWith(
       process.execPath,
-      ["/app/node_modules/openclaw/openclaw.mjs", "gateway", "run"],
+      ["/app/node_modules/openclaw/operator.mjs", "gateway", "run"],
       {
         detached: true,
         env: process.env,
@@ -375,7 +375,7 @@ describe("respawnGatewayProcessForUpdate", () => {
   it("spawns a detached update process when macOS only has inherited XPC state", () => {
     clearSupervisorHints();
     setPlatform("darwin");
-    process.env.XPC_SERVICE_NAME = "ai.openclaw.mac";
+    process.env.XPC_SERVICE_NAME = "ai.operator.mac";
     process.execArgv = [];
     process.argv = ["/usr/local/bin/node", "/repo/dist/index.js", "gateway", "run"];
     spawnMock.mockReturnValue(mockDetachedChild(6161));
@@ -420,7 +420,7 @@ describe("respawnGatewayProcessForUpdate", () => {
     clearSupervisorHints();
     setPlatform("linux");
     process.env.OPERATOR_NO_RESPAWN = "1";
-    process.env.OPERATOR_SERVICE_MARKER = "openclaw";
+    process.env.OPERATOR_SERVICE_MARKER = "@gabrielvfonseca/operator";
     process.env.OPERATOR_SERVICE_KIND = "gateway";
 
     const result = respawnGatewayProcessForUpdate();

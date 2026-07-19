@@ -2,7 +2,7 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { normalizeHttpWebhookUrl } from "../../../cron/webhook-url.js";
 
 type LegacyNotifyMigrationOutcome = {

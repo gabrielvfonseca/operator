@@ -1,9 +1,9 @@
 // Telegram plugin module implements fetch behavior.
 import { randomUUID } from "node:crypto";
 import * as dns from "node:dns";
-import type { TelegramNetworkConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
+import type { TelegramNetworkConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { expectDefined } from "@gabrielvfonseca/operator/plugin-sdk/expect-runtime";
 import {
   createHttp1EnvHttpProxyAgent,
   createHttp1ProxyAgent,
@@ -13,18 +13,18 @@ import {
   resolveEnvHttpProxyAgentOptions,
   resolveFetch,
   type PinnedDispatcherPolicy,
-} from "openclaw/plugin-sdk/fetch-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/fetch-runtime";
 import {
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   captureHttpExchange,
   resolveEffectiveDebugProxyUrl,
-} from "openclaw/plugin-sdk/proxy-capture";
-import { resolveRequestUrl } from "openclaw/plugin-sdk/request-url";
-import { createSubsystemLogger } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
+import { resolveRequestUrl } from "@gabrielvfonseca/operator/plugin-sdk/request-url";
+import { createSubsystemLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { Agent, fetch as undiciFetch } from "undici";
 import { normalizeTelegramApiRoot } from "./api-root.js";
 import {

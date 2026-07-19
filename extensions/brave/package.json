@@ -1,21 +1,21 @@
 {
-  "name": "@operator/brave-plugin",
+  "name": "@gabrielvfonseca/brave-plugin",
   "version": "2026.7.2",
   "description": "Operator Brave Search provider plugin for web search.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/brave-plugin",
+      "npmSpec": "@gabrielvfonseca/brave-plugin",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10",
       "allowInvalidConfigRecovery": true

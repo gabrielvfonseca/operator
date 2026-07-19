@@ -17,7 +17,7 @@ type WebKitBridgeWindow = Window & {
 
 export function postNativeNavState(state: NativeNavState): void {
   try {
-    (window as WebKitBridgeWindow).webkit?.messageHandlers?.openclawNav?.postMessage({
+    (window as WebKitBridgeWindow).webkit?.messageHandlers?.operatorNav?.postMessage({
       type: "nav-state",
       ...state,
     });

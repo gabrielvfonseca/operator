@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { FetchLike, SavedMedia } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 // Slack tests cover media plugin behavior.
 import type { WebClient } from "@slack/web-api";
-import type { FetchLike, SavedMedia } from "openclaw/plugin-sdk/media-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   resolveSlackAttachmentContent,

@@ -24,7 +24,7 @@ const tempDirs: string[] = [];
 type GatewayRestartHandoffDatabase = Pick<OperatorStateKyselyDatabase, "gateway_restart_handoff">;
 
 function createHandoffEnv(): NodeJS.ProcessEnv {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-restart-handoff-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-restart-handoff-"));
   tempDirs.push(dir);
   return {
     ...process.env,

@@ -1,10 +1,10 @@
 // Codex tests cover native hook relay plugin behavior.
-import type { NativeHookRelayRegistrationHandle } from "openclaw/plugin-sdk/agent-harness-runtime";
+import type { NativeHookRelayRegistrationHandle } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness-runtime";
 import {
   onInternalDiagnosticEvent,
   resetDiagnosticEventsForTest,
   type DiagnosticEventPayload,
-} from "openclaw/plugin-sdk/diagnostic-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/diagnostic-runtime";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   buildCodexNativeHookRelayConfig,

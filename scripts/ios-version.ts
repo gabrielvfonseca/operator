@@ -1,4 +1,4 @@
-// Ios Version script supports OpenClaw repository automation.
+// Ios Version script supports Operator repository automation.
 import { renderIosReleaseNotesForVersion, resolveIosVersion } from "./lib/ios-version.ts";
 import { parseVersionQueryArgs } from "./lib/version-script-args.ts";
 
@@ -39,9 +39,9 @@ function main(argv = process.argv.slice(2)): number {
   if (options.format === "shell") {
     process.stdout.write(
       [
-        `OPENCLAW_IOS_VERSION=${version.canonicalVersion}`,
-        `OPENCLAW_MARKETING_VERSION=${version.marketingVersion}`,
-        `OPENCLAW_BUILD_VERSION=${version.buildVersion}`,
+        `OPERATOR_IOS_VERSION=${version.canonicalVersion}`,
+        `OPERATOR_MARKETING_VERSION=${version.marketingVersion}`,
+        `OPERATOR_BUILD_VERSION=${version.buildVersion}`,
       ].join("\n") + "\n",
     );
   } else {

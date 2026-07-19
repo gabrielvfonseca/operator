@@ -11,7 +11,7 @@ let fixtureRoot = "";
 let fixtureId = 0;
 
 beforeAll(() => {
-  fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-tts-status-"));
+  fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "operator-tts-status-"));
 });
 
 afterAll(() => {
@@ -28,7 +28,7 @@ async function withStatusTempHome(run: (home: string) => Promise<void>): Promise
       HOME: home,
       USERPROFILE: home,
       OPERATOR_HOME: undefined,
-      OPERATOR_STATE_DIR: path.join(home, ".openclaw"),
+      OPERATOR_STATE_DIR: path.join(home, ".operator"),
     },
     async () => await run(home),
   );
@@ -37,7 +37,7 @@ async function withStatusTempHome(run: (home: string) => Promise<void>): Promise
 describe("resolveStatusTtsSnapshot", () => {
   it("uses prefs overrides without loading speech providers", async () => {
     await withStatusTempHome(async (home) => {
-      const prefsPath = path.join(home, ".openclaw", "settings", "tts.json");
+      const prefsPath = path.join(home, ".operator", "settings", "tts.json");
       fs.mkdirSync(path.dirname(prefsPath), { recursive: true });
       fs.writeFileSync(
         prefsPath,
@@ -334,7 +334,7 @@ describe("resolveStatusTtsSnapshot", () => {
 
   it("uses provider metadata for local provider prefs overrides", async () => {
     await withStatusTempHome(async (home) => {
-      const prefsPath = path.join(home, ".openclaw", "settings", "tts.json");
+      const prefsPath = path.join(home, ".operator", "settings", "tts.json");
       fs.mkdirSync(path.dirname(prefsPath), { recursive: true });
       fs.writeFileSync(
         prefsPath,
@@ -378,7 +378,7 @@ describe("resolveStatusTtsSnapshot", () => {
 
   it("derives the default prefs path from OPERATOR_CONFIG_PATH when set", async () => {
     await withStatusTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw-dev");
+      const stateDir = path.join(home, ".operator-dev");
       const prefsPath = path.join(stateDir, "settings", "tts.json");
       fs.mkdirSync(path.dirname(prefsPath), { recursive: true });
       fs.writeFileSync(
@@ -394,7 +394,7 @@ describe("resolveStatusTtsSnapshot", () => {
       await withEnvAsync(
         {
           OPERATOR_STATE_DIR: undefined,
-          OPERATOR_CONFIG_PATH: path.join(stateDir, "openclaw.json"),
+          OPERATOR_CONFIG_PATH: path.join(stateDir, "operator.json"),
         },
         async () => {
           expect(

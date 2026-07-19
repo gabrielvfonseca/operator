@@ -12,7 +12,7 @@
  * (we don't strip them in render mode either — we preserve them as
  * "raw" line entries) live in the AST.
  *
- * @module @operator/oc-path/jsonl/ast
+ * @module @gabrielvfonseca/oc-path/jsonl/ast
  */
 
 import type { JsoncValue } from "../jsonc/ast.js";

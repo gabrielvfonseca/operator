@@ -1,4 +1,4 @@
-import type { WorkboardChange } from "@operator/workboard-contract";
+import type { WorkboardChange } from "@gabrielvfonseca/workboard-contract";
 
 export function normalizeWorkboardChange(payload: unknown): WorkboardChange | null {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {

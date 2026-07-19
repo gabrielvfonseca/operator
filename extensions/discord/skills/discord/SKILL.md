@@ -1,7 +1,11 @@
 ---
 name: discord
 description: "Discord message-tool ops: send/read/edit/delete, react, poll, pin, thread, search, presence, media/components."
-metadata: { "openclaw": { "emoji": "🎮", "requires": { "config": ["channels.discord.token"] } } }
+metadata:
+  {
+    "@gabrielvfonseca/operator":
+      { "emoji": "🎮", "requires": { "config": ["channels.discord.token"] } },
+  }
 allowed-tools: ["message"]
 ---
 

@@ -47,7 +47,7 @@ describe("warnLegacyOperatorEnvVars", () => {
     });
   });
 
-  it("does not warn for current OPERATOR names", () => {
+  it("does not warn for current OPENCLAW names", () => {
     warnLegacyOperatorEnvVars({ OPERATOR_GATEWAY_TOKEN: "token" });
 
     expect(emitWarning).not.toHaveBeenCalled();

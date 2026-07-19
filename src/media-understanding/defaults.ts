@@ -1,7 +1,7 @@
 // Media-understanding default model/provider selection from config, manifest
 // metadata, and capability declarations.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { providerSupportsCapability } from "../../packages/media-understanding-common/src/provider-supports.js";
 import { resolveRuntimeConfigCacheKey } from "../config/runtime-snapshot.js";
 import type { OperatorConfig } from "../config/types.js";

@@ -2,9 +2,9 @@
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 
-export type EmbeddedAgentRuntime = "operator" | "auto" | (string & {});
+export type EmbeddedAgentRuntime = "@gabrielvfonseca/operator" | "auto" | (string & {});
 
-export const OPERATOR_AGENT_RUNTIME_ID = "operator";
+export const OPERATOR_AGENT_RUNTIME_ID = "@gabrielvfonseca/operator";
 export const AUTO_AGENT_RUNTIME_ID = "auto";
 
 /** Normalizes configured runtime aliases to the current embedded-agent runtime id vocabulary. */
@@ -13,7 +13,7 @@ export function normalizeEmbeddedAgentRuntime(raw: string | undefined): Embedded
   if (!value) {
     return OPERATOR_AGENT_RUNTIME_ID;
   }
-  if (value === "operator" || value === "pi") {
+  if (value === "@gabrielvfonseca/operator" || value === "pi") {
     return OPERATOR_AGENT_RUNTIME_ID;
   }
   if (value === "auto") {

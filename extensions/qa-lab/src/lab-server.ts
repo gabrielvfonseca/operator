@@ -2,12 +2,12 @@
 import fs from "node:fs";
 import { createServer } from "node:http";
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   acquireDebugProxyCaptureStore,
   resolveDebugProxySettings,
-} from "openclaw/plugin-sdk/proxy-capture";
+} from "@gabrielvfonseca/operator/plugin-sdk/proxy-capture";
 import {
   closeQaHttpServer,
   handleQaBusRequest,

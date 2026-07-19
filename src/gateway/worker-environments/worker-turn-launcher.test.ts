@@ -54,7 +54,7 @@ describe("worker turn launcher", () => {
   let sessionFile: string;
 
   beforeEach(async () => {
-    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "openclaw-worker-turn-"));
+    root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), "operator-worker-turn-"));
     database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: root } });
     placements = createWorkerSessionPlacementStore({ database });
     const manager = SessionManager.create(path.join(root, "sessions"), path.join(root, "sessions"));
@@ -224,7 +224,7 @@ describe("worker turn launcher", () => {
         agents: {
           defaults: {
             models: {
-              "openai/gpt-test": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-test": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },
@@ -518,8 +518,8 @@ describe("worker turn launcher", () => {
         expect(command.argv).toEqual([
           "sh",
           "-c",
-          'exec node "$HOME/.openclaw-worker/$1/openclaw.mjs" worker',
-          "openclaw-worker",
+          'exec node "$HOME/.operator-worker/$1/operator.mjs" worker',
+          "operator-worker",
           BUNDLE_HASH,
         ]);
         expect(command.argv.join(" ")).not.toContain(credential().credential);

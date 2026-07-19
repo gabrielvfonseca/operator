@@ -2,7 +2,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { closeOperatorAgentDatabasesForTest } from "../../state/openclaw-agent-db.js";
 import { createSuiteTempRootTracker } from "../../test-helpers/temp-dir.js";
@@ -17,7 +17,7 @@ import {
 import type { TrajectoryEvent } from "../../trajectory/types.js";
 import type { SessionEntry } from "./types.js";
 
-// Keep integration tests deterministic: never read a real openclaw.json.
+// Keep integration tests deterministic: never read a real operator.json.
 vi.mock("../config.js", async () => ({
   ...(await vi.importActual<typeof import("../config.js")>("../config.js")),
   getRuntimeConfig: vi.fn().mockReturnValue({}),
@@ -61,7 +61,7 @@ function jsonRoundTrip<T>(value: T): T {
 
 const archiveTimestamp = (ms: number) => new Date(ms).toISOString().replaceAll(":", "-");
 
-const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-pruning-integ-" });
+const suiteRootTracker = createSuiteTempRootTracker({ prefix: "operator-pruning-integ-" });
 
 function makeEntry(updatedAt: number): SessionEntry {
   return { sessionId: crypto.randomUUID(), updatedAt };
@@ -164,7 +164,7 @@ async function seedSqliteTrajectoryEvent(params: {
   storePath: string;
 }): Promise<void> {
   const event: TrajectoryEvent = {
-    traceSchema: "openclaw-trajectory",
+    traceSchema: "operator-trajectory",
     schemaVersion: 1,
     traceId: params.sessionId,
     source: "runtime",
@@ -303,7 +303,7 @@ describe("Integration: saveSessionStore with pruning", () => {
 
   it("sessions cleanup dry-run does not create a missing SQLite store", async () => {
     applyEnforcedMaintenanceConfig(mockLoadConfig);
-    const sqlitePath = path.join(testDir, "openclaw-agent.sqlite");
+    const sqlitePath = path.join(testDir, "operator-agent.sqlite");
 
     await expectPathMissing(sqlitePath);
 
@@ -423,12 +423,12 @@ describe("Integration: saveSessionStore with pruning", () => {
     const freshPointer = resolveTrajectoryPointerFilePath(freshTranscript);
     await fs.writeFile(staleTranscript, '{"type":"session"}\n', "utf-8");
     await fs.writeFile(freshTranscript, '{"type":"session"}\n', "utf-8");
-    await fs.writeFile(staleRuntime, '{"traceSchema":"openclaw-trajectory"}\n', "utf-8");
-    await fs.writeFile(freshRuntime, '{"traceSchema":"openclaw-trajectory"}\n', "utf-8");
+    await fs.writeFile(staleRuntime, '{"traceSchema":"operator-trajectory"}\n', "utf-8");
+    await fs.writeFile(freshRuntime, '{"traceSchema":"operator-trajectory"}\n', "utf-8");
     await fs.writeFile(
       stalePointer,
       JSON.stringify({
-        traceSchema: "openclaw-trajectory-pointer",
+        traceSchema: "operator-trajectory-pointer",
         schemaVersion: 1,
         sessionId: staleSessionId,
         runtimeFile: staleRuntime,
@@ -438,7 +438,7 @@ describe("Integration: saveSessionStore with pruning", () => {
     await fs.writeFile(
       freshPointer,
       JSON.stringify({
-        traceSchema: "openclaw-trajectory-pointer",
+        traceSchema: "operator-trajectory-pointer",
         schemaVersion: 1,
         sessionId: freshSessionId,
         runtimeFile: freshRuntime,

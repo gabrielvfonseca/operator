@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createWizardPrompter } from "../../test/helpers/wizard-prompter.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { CallGatewayCliOptions } from "../gateway/call.js";
 import { createSuiteLogPathTracker } from "../logging/log-test-helpers.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
@@ -40,18 +40,18 @@ const readConfigFileSnapshot = vi.hoisted(() =>
   vi.fn(async () => ({
     exists: false,
     valid: true,
-    path: "/tmp/openclaw.json",
+    path: "/tmp/operator.json",
     issues: [] as Array<{ path?: string; message: string }>,
     config: {},
   })),
 );
 
-const logPathTracker = createSuiteLogPathTracker("openclaw-guided-onboard-log-");
+const logPathTracker = createSuiteLogPathTracker("operator-guided-onboard-log-");
 
 vi.mock("../config/config.js", () => ({ readConfigFileSnapshot }));
 
 vi.mock("./onboard-helpers.js", () => ({
-  DEFAULT_WORKSPACE: "/tmp/openclaw-workspace",
+  DEFAULT_WORKSPACE: "/tmp/operator-workspace",
   printWizardHeader: vi.fn(),
 }));
 
@@ -93,7 +93,7 @@ function detection(
     unavailableCandidates: [],
     manualProviders: [],
     authOptions: [],
-    workspace: "/tmp/openclaw-workspace",
+    workspace: "/tmp/operator-workspace",
     setupComplete: false,
     ...overrides,
   };
@@ -138,7 +138,7 @@ describe("runGuidedOnboarding", () => {
     readConfigFileSnapshot.mockResolvedValue({
       exists: false,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       issues: [],
       config: {},
     });
@@ -201,7 +201,7 @@ describe("runGuidedOnboarding", () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       issues: [],
       config: { agents: { defaults: { workspace: "/tmp/configured" } } },
     });
@@ -229,9 +229,9 @@ describe("runGuidedOnboarding", () => {
 
     expect(text).not.toHaveBeenCalled();
     expect(deps.activate).toHaveBeenCalledWith(
-      expect.objectContaining({ workspace: "/tmp/openclaw-workspace" }),
+      expect.objectContaining({ workspace: "/tmp/operator-workspace" }),
     );
-    expect(deps.runSystemAgentChat).toHaveBeenCalledWith("/tmp/openclaw-workspace", runtime, true);
+    expect(deps.runSystemAgentChat).toHaveBeenCalledWith("/tmp/operator-workspace", runtime, true);
   });
 
   it("live-tests an unverified CLI before automatic setup", async () => {
@@ -650,7 +650,7 @@ describe("runGuidedOnboarding", () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
       exists: true,
       valid: false,
-      path: "/tmp/broken-openclaw.json",
+      path: "/tmp/broken-operator.json",
       issues: [{ path: "agents.defaults.model", message: "Expected a model reference" }],
       config: {},
     });
@@ -661,7 +661,7 @@ describe("runGuidedOnboarding", () => {
     await runGuidedOnboarding({ workspace: "/tmp/repair" }, runtime, deps);
 
     const notes = JSON.stringify((prompter.note as ReturnType<typeof vi.fn>).mock.calls);
-    expect(notes).toContain("/tmp/broken-openclaw.json");
+    expect(notes).toContain("/tmp/broken-operator.json");
     expect(notes).toContain("agents.defaults.model: Expected a model reference");
     expect(prompter.outro).toHaveBeenCalledWith(expect.stringContaining("openclaw doctor --fix"));
     expect(prompter.outro).toHaveBeenCalledWith(
@@ -691,7 +691,7 @@ describe("runGuidedOnboarding", () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
       exists: true,
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       issues: [],
       config: localConfig,
     });
@@ -705,7 +705,7 @@ describe("runGuidedOnboarding", () => {
       expect(options.ignoreEnvUrlOverride).toBe(true);
       expect(options.config?.gateway?.remote?.url).toBe("wss://selected.example/ws");
       order.push(options.method);
-      if (options.method === "openclaw.setup.detect") {
+      if (options.method === "operator.setup.detect") {
         return {
           candidates: [
             {
@@ -730,7 +730,7 @@ describe("runGuidedOnboarding", () => {
           setupComplete: false,
         };
       }
-      if (options.method === "openclaw.setup.activate") {
+      if (options.method === "operator.setup.activate") {
         expect(options.params).toEqual({
           kind: "claude-cli",
           modelRef: "claude-cli/opus",
@@ -744,11 +744,11 @@ describe("runGuidedOnboarding", () => {
           lines: ["Default model: claude-cli/opus"],
         };
       }
-      if (options.method === "openclaw.setup.verify") {
+      if (options.method === "operator.setup.verify") {
         expect(remoteConfig.modelRef).toBe("claude-cli/opus");
         return { ok: true, modelRef: remoteConfig.modelRef, latencyMs: 100 };
       }
-      if (options.method === "openclaw.chat") {
+      if (options.method === "operator.chat") {
         expect(remoteConfig.modelRef).toBe("claude-cli/opus");
         expect(options.params).toEqual({
           sessionId: expect.any(String),
@@ -801,10 +801,10 @@ describe("runGuidedOnboarding", () => {
     );
 
     expect(order).toEqual([
-      "openclaw.setup.detect",
-      "openclaw.setup.activate",
-      "openclaw.setup.verify",
-      "openclaw.chat",
+      "operator.setup.detect",
+      "operator.setup.activate",
+      "operator.setup.verify",
+      "operator.chat",
       "tui",
     ]);
     expect(remoteConfig.modelRef).toBe("claude-cli/opus");

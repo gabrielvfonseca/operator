@@ -1,5 +1,5 @@
 // Bundled health checks define built-in doctor checks for runtime readiness.
-import { asOptionalObjectRecord as readRecord } from "@operator/normalization-core/record-coerce";
+import { asOptionalObjectRecord as readRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
 import { passesManifestOwnerBasePolicy } from "../plugins/manifest-owner-policy.js";

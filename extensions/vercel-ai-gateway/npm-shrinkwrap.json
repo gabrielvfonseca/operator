@@ -1,11 +1,11 @@
 {
-  "name": "@operator/vercel-ai-gateway-provider",
+  "name": "@gabrielvfonseca/vercel-ai-gateway-provider",
   "version": "2026.7.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/vercel-ai-gateway-provider",
+      "name": "@gabrielvfonseca/vercel-ai-gateway-provider",
       "version": "2026.7.2"
     }
   }

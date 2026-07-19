@@ -1,29 +1,29 @@
 /**
  * Browser-local SDK config bridge plus Browser-specific default port helpers.
  */
-import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 export {
   getRuntimeConfig,
   getRuntimeConfigSourceSnapshot,
-} from "openclaw/plugin-sdk/runtime-config-snapshot";
-export { mutateConfigFile } from "openclaw/plugin-sdk/config-mutation";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
+export { mutateConfigFile } from "@gabrielvfonseca/operator/plugin-sdk/config-mutation";
 export {
   type BrowserConfig,
   type BrowserProfileConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/config-contracts";
+} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 export {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
-} from "openclaw/plugin-sdk/plugin-config-runtime";
-export { resolveGatewayPort } from "openclaw/plugin-sdk/core";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
+export { resolveGatewayPort } from "@gabrielvfonseca/operator/plugin-sdk/core";
 export {
   CONFIG_DIR,
   escapeRegExp,
   resolveUserPath,
   shortenHomePath,
-} from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 type PortRange = { start: number; end: number };
 
 const DEFAULT_BROWSER_CDP_PORT_RANGE_START = 18800;

@@ -1,9 +1,9 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import type {
   OperatorPluginCommandDefinition,
   PluginCommandContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import { createTestPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-api";
 import { describe, expect, it, vi } from "vitest";
 
 const resolveTelegramMiniAppUrls = vi.hoisted(() => vi.fn());
@@ -69,7 +69,7 @@ describe("registerTelegramMiniAppCommand", () => {
 
   it("returns a web app button for owner DM invocations", async () => {
     resolveTelegramMiniAppUrls.mockResolvedValue({
-      pageUrl: "https://host.tailnet.ts.net/__openclaw_tg_miniapp/",
+      pageUrl: "https://host.tailnet.ts.net/__operator_tg_miniapp/",
       controlUiUrl: "https://host.tailnet.ts.net/openclaw",
       gatewayUrl: "wss://host.tailnet.ts.net",
     });
@@ -104,7 +104,7 @@ describe("registerTelegramMiniAppCommand", () => {
           {
             label: "Open dashboard",
             webApp: {
-              url: "https://host.tailnet.ts.net/__openclaw_tg_miniapp/?accountId=ops",
+              url: "https://host.tailnet.ts.net/__operator_tg_miniapp/?accountId=ops",
             },
           },
         ],

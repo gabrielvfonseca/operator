@@ -1,6 +1,6 @@
 // Signal tests cover ordered control delivery around active inbound work.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const {

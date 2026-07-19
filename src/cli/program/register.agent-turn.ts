@@ -1,5 +1,5 @@
 // Single agent-turn command registration; delegates execution to the Gateway-backed agent command.
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { Command } from "commander";
 import { formatDocsLink } from "../../../packages/terminal-core/src/links.js";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
@@ -26,7 +26,7 @@ async function loadSetVerbose(): Promise<GlobalStateModule["setVerbose"]> {
   return (await import("../../global-state.js")).setVerbose;
 }
 
-/** Register `operator agent` for one Gateway-backed agent turn. */
+/** Register `openclaw agent` for one Gateway-backed agent turn. */
 export function registerAgentTurnCommand(
   program: Command,
   args: { agentChannelOptions: string },
@@ -70,24 +70,24 @@ export function registerAgentTurnCommand(
         `
 ${theme.heading("Examples:")}
 ${formatHelpExamples([
-  ['operator agent --to +15555550123 --message "status update"', "Start a new session."],
-  ['operator agent --agent ops --message "Summarize logs"', "Use a specific agent."],
-  ["operator agent --agent ops --message-file ./task.md", "Read a multiline message file."],
+  ['openclaw agent --to +15555550123 --message "status update"', "Start a new session."],
+  ['openclaw agent --agent ops --message "Summarize logs"', "Use a specific agent."],
+  ["openclaw agent --agent ops --message-file ./task.md", "Read a multiline message file."],
   [
-    'operator agent --session-key agent:ops:incident-42 --message "Summarize status"',
+    'openclaw agent --session-key agent:ops:incident-42 --message "Summarize status"',
     "Target an exact session key.",
   ],
   [
-    'operator agent --session-id 1234 --message "Summarize inbox" --thinking medium',
+    'openclaw agent --session-id 1234 --message "Summarize inbox" --thinking medium',
     "Target a session with explicit thinking level.",
   ],
   [
-    'operator agent --to +15555550123 --message "Trace logs" --verbose on --json',
+    'openclaw agent --to +15555550123 --message "Trace logs" --verbose on --json',
     "Enable verbose logging and JSON output.",
   ],
-  ['operator agent --to +15555550123 --message "Summon reply" --deliver', "Deliver reply."],
+  ['openclaw agent --to +15555550123 --message "Summon reply" --deliver', "Deliver reply."],
   [
-    'operator agent --agent ops --message "Generate report" --deliver --reply-channel slack --reply-to "#reports"',
+    'openclaw agent --agent ops --message "Generate report" --deliver --reply-channel slack --reply-to "#reports"',
     "Send reply to a different channel/target.",
   ],
 ])}

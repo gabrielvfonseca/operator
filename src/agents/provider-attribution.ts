@@ -3,14 +3,14 @@
  *
  * Classifies provider routes so transports know which attribution headers, payload features, and endpoint policies apply.
  */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { listOperatorPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
 import { listOfficialExternalProviderEndpointManifests } from "../plugins/official-external-provider-endpoints.js";
 import { asBoolean } from "../utils/boolean.js";
@@ -143,7 +143,7 @@ function readCompatBoolean(
 }
 
 const OPERATOR_ATTRIBUTION_PRODUCT = "Operator";
-const OPERATOR_ATTRIBUTION_ORIGINATOR = "operator";
+const OPERATOR_ATTRIBUTION_ORIGINATOR = "@gabrielvfonseca/operator";
 const OPENROUTER_ATTRIBUTION_CATEGORIES =
   "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent";
 
@@ -570,7 +570,7 @@ function buildXaiAttributionPolicy(
     verification: "vendor-hidden-api-spec",
     hook: "request-headers",
     reviewNote:
-      "xAI api.x.ai accepts a standard operator User-Agent. Companion originator/version headers mirror the OpenAI attribution shape for consistency; they are not validated against an xAI-specific spec and are expected to be ignored by xAI's OpenAI-compatible surface.",
+      "xAI api.x.ai accepts a standard openclaw User-Agent. Companion originator/version headers mirror the OpenAI attribution shape for consistency; they are not validated against an xAI-specific spec and are expected to be ignored by xAI's OpenAI-compatible surface.",
     ...identity,
     headers: {
       originator: OPERATOR_ATTRIBUTION_ORIGINATOR,

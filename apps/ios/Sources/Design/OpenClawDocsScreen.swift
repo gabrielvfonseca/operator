@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct OpenClawDocsScreen: View {
-    private let docsURL = URL(string: "https://docs.openclaw.ai")!
-    private let gatewayURL = URL(string: "https://docs.openclaw.ai/gateway")!
-    private let pairingURL = URL(string: "https://docs.openclaw.ai/channels/pairing")!
-    let headerLeadingAction: OpenClawSidebarHeaderAction?
+struct OperatorDocsScreen: View {
+    private let docsURL = URL(string: "https://docs.operator.ai")!
+    private let gatewayURL = URL(string: "https://docs.operator.ai/gateway")!
+    private let pairingURL = URL(string: "https://docs.operator.ai/channels/pairing")!
+    let headerLeadingAction: OperatorSidebarHeaderAction?
     let usesNativeNavigationChrome: Bool
     let gatewayAction: (() -> Void)?
 
     init(
-        headerLeadingAction: OpenClawSidebarHeaderAction? = nil,
+        headerLeadingAction: OperatorSidebarHeaderAction? = nil,
         usesNativeNavigationChrome: Bool = false,
         gatewayAction: (() -> Void)? = nil)
     {
@@ -20,7 +20,7 @@ struct OpenClawDocsScreen: View {
 
     var body: some View {
         ZStack {
-            OpenClawProBackground()
+            OperatorProBackground()
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     if !self.usesNativeNavigationChrome {
@@ -29,7 +29,7 @@ struct OpenClawDocsScreen: View {
                     self.linkCard
                 }
                 .padding(.vertical, 18)
-                .font(OpenClawType.body)
+                .font(OperatorType.body)
             }
         }
         .navigationTitle("Docs")
@@ -40,7 +40,7 @@ struct OpenClawDocsScreen: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: gatewayAction) {
                         Image(systemName: "antenna.radiowaves.left.and.right")
-                            .font(OpenClawType.subheadSemiBold)
+                            .font(OperatorType.subheadSemiBold)
                     }
                     .accessibilityLabel("Gateway settings")
                 }
@@ -49,46 +49,46 @@ struct OpenClawDocsScreen: View {
     }
 
     private var headerCard: some View {
-        ProCard(radius: OpenClawProMetric.cardRadius) {
-            OpenClawAdaptiveHeaderRow(
+        ProCard(radius: OperatorProMetric.cardRadius) {
+            OperatorAdaptiveHeaderRow(
                 title: "Docs",
                 subtitle: "Gateway setup, pairing, channels, and mobile node reference.",
-                titleFont: OpenClawType.headline,
-                subtitleFont: OpenClawType.caption)
+                titleFont: OperatorType.headline,
+                subtitleFont: OperatorType.caption)
             {
                 HStack(alignment: .top, spacing: 12) {
                     if let headerLeadingAction {
-                        OpenClawSidebarHeaderLeadingSlot(action: headerLeadingAction)
+                        OperatorSidebarHeaderLeadingSlot(action: headerLeadingAction)
                     }
-                    ProIconBadge(systemName: "book", color: OpenClawBrand.accent)
+                    ProIconBadge(systemName: "book", color: OperatorBrand.accent)
                 }
             } accessory: {
                 self.gatewayPill
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     @ViewBuilder
     private var gatewayPill: some View {
         if let gatewayAction {
             Button(action: gatewayAction) {
-                OpenClawGatewayCompactPill()
+                OperatorGatewayCompactPill()
             }
             .buttonBorderShape(.capsule)
             .openClawGlassButton()
             .accessibilityHint("Opens Settings / Gateway")
         } else {
-            OpenClawGatewayCompactPill()
+            OperatorGatewayCompactPill()
         }
     }
 
     private var linkCard: some View {
-        ProCard(padding: 0, radius: OpenClawProMetric.cardRadius) {
+        ProCard(padding: 0, radius: OperatorProMetric.cardRadius) {
             VStack(spacing: 0) {
                 self.docsLinkRow(
                     title: "Docs Home",
-                    detail: "Browse the current OpenClaw reference.",
+                    detail: "Browse the current Operator reference.",
                     icon: "book",
                     url: self.docsURL)
                 Divider().padding(.leading, 58)
@@ -105,24 +105,24 @@ struct OpenClawDocsScreen: View {
                     url: self.pairingURL)
             }
         }
-        .padding(.horizontal, OpenClawProMetric.pagePadding)
+        .padding(.horizontal, OperatorProMetric.pagePadding)
     }
 
     private func docsLinkRow(title: String, detail: String, icon: String, url: URL) -> some View {
         Link(destination: url) {
             HStack(spacing: 12) {
-                ProIconBadge(systemName: icon, color: OpenClawBrand.accent)
+                ProIconBadge(systemName: icon, color: OperatorBrand.accent)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(OpenClawType.subheadSemiBold)
+                        .font(OperatorType.subheadSemiBold)
                     Text(detail)
-                        .font(OpenClawType.caption)
+                        .font(OperatorType.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
                 Spacer(minLength: 8)
                 Image(systemName: "arrow.up.right")
-                    .font(OpenClawType.captionBold)
+                    .font(OperatorType.captionBold)
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 14)

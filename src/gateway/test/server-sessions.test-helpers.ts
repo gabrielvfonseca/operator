@@ -5,8 +5,8 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
-import type { AssistantMessage, UserMessage } from "operator/plugin-sdk/llm";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { AssistantMessage, UserMessage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import { afterAll, beforeAll, beforeEach, expect, vi } from "vitest";
 import type { SessionEntry } from "../../config/sessions.js";
 import {

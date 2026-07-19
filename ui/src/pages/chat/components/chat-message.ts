@@ -170,7 +170,7 @@ function renderChatTimestamp(timestamp: number, interactive = false) {
   if (interactive) {
     return timeEl;
   }
-  return html`<openclaw-tooltip content=${display.label}>${timeEl}</openclaw-tooltip>`;
+  return html`<operator-tooltip content=${display.label}>${timeEl}</operator-tooltip>`;
 }
 
 function resolveMessageMetaDetails(target: EventTarget | null): HTMLDetailsElement | null {
@@ -406,7 +406,7 @@ function extractImages(message: unknown): ImageBlock[] {
             }),
           });
         }
-      } else if (b.type === "openclaw_pairing_qr") {
+      } else if (b.type === "operator_pairing_qr") {
         if (isExpiredPairingQrBlock(b)) {
           continue;
         }
@@ -456,7 +456,7 @@ function extractPairingQrExpiryNotices(
       continue;
     }
     const b = block as Record<string, unknown>;
-    if (b.type === "openclaw_pairing_qr" && isExpiredPairingQrBlock(b, nowMs)) {
+    if (b.type === "operator_pairing_qr" && isExpiredPairingQrBlock(b, nowMs)) {
       notices.push({
         title: t("chat.pairingQrExpired.title"),
         reason: t("chat.pairingQrExpired.reason"),
@@ -481,7 +481,7 @@ function resolveNearestFuturePairingQrExpiresAtMs(
       continue;
     }
     const b = block as Record<string, unknown>;
-    if (b.type !== "openclaw_pairing_qr") {
+    if (b.type !== "operator_pairing_qr") {
       continue;
     }
     const expiresAtMs = readPairingQrExpiresAtMs(b);
@@ -1069,7 +1069,7 @@ function renderMessageMeta(timestamp: number, meta: GroupMeta | null) {
   `;
 }
 
-const SKIP_DELETE_CONFIRM_KEY = "openclaw:skipDeleteConfirm";
+const SKIP_DELETE_CONFIRM_KEY = "operator:skipDeleteConfirm";
 const DELETE_CONFIRM_VIEWPORT_MARGIN_PX = 8;
 const DELETE_CONFIRM_TRIGGER_GAP_PX = 6;
 
@@ -1154,7 +1154,7 @@ function placeDeleteConfirmPopover(
 function renderDeleteButton(onDelete: () => void, side: DeleteConfirmSide) {
   return html`
     <span class="chat-delete-wrap">
-      <openclaw-tooltip .content=${t("common.delete")}>
+      <operator-tooltip .content=${t("common.delete")}>
         <button
           class="chat-group-delete"
           aria-label=${t("chat.messages.deleteMessage")}
@@ -1230,7 +1230,7 @@ function renderDeleteButton(onDelete: () => void, side: DeleteConfirmSide) {
         >
           ${icons.trash ?? icons.x}
         </button>
-      </openclaw-tooltip>
+      </operator-tooltip>
     </span>
   `;
 }
@@ -1345,7 +1345,7 @@ function renderPairingQrExpiryNotices(notices: PairingQrExpiryNotice[]) {
 
 function isLocalAssistantAttachmentSource(source: string): boolean {
   const trimmed = source.trim();
-  if (/^\/(?:__openclaw__|media|api\/chat\/media\/outgoing)\//.test(trimmed)) {
+  if (/^\/(?:__operator__|media|api\/chat\/media\/outgoing)\//.test(trimmed)) {
     return false;
   }
   return (
@@ -1472,7 +1472,7 @@ function buildAssistantAttachmentUrl(
   if (normalizedMediaTicket) {
     params.set("mediaTicket", normalizedMediaTicket);
   }
-  return `${normalizedBasePath}/__openclaw__/assistant-media?${params.toString()}`;
+  return `${normalizedBasePath}/__operator__/assistant-media?${params.toString()}`;
 }
 
 function isManagedOutgoingImageSource(source: string): boolean {
@@ -1535,7 +1535,7 @@ async function resolveManagedOutgoingImageBlobUrl(
         headers.set("Authorization", `Bearer ${authToken}`);
       }
       if (requesterSessionKey) {
-        headers.set("x-openclaw-requester-session-key", requesterSessionKey);
+        headers.set("x-operator-requester-session-key", requesterSessionKey);
       }
       const res = await fetch(fetchUrl, {
         method: "GET",
@@ -1956,7 +1956,7 @@ function renderExpandButton(
   },
 ) {
   return html`
-    <openclaw-tooltip .content=${t("chat.messages.openInCanvas")}>
+    <operator-tooltip .content=${t("chat.messages.openInCanvas")}>
       <button
         class="btn btn--xs chat-expand-btn"
         type="button"
@@ -1979,7 +1979,7 @@ function renderExpandButton(
       >
         <span class="chat-expand-btn__icon" aria-hidden="true">${icons.panelRightOpen}</span>
       </button>
-    </openclaw-tooltip>
+    </operator-tooltip>
   `;
 }
 
@@ -2032,7 +2032,7 @@ function resolveMessageActionDetails(
     shouldFetchFullMessage: Boolean(
       onOpenSidebar &&
       messageId &&
-      !record.openclawMessageToolMirror &&
+      !record.operatorMessageToolMirror &&
       (transcriptMeta?.truncated === true || markdown.includes("\n...(truncated)...")),
     ),
   };

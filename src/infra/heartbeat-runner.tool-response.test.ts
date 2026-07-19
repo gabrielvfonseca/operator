@@ -643,7 +643,7 @@ describe("runHeartbeatOnce heartbeat response tool", () => {
       session: {
         modelProvider: "anthropic",
         model: "claude-sonnet-4-6",
-        agentRuntimeOverride: "openclaw",
+        agentRuntimeOverride: "@gabrielvfonseca/operator",
       },
       expectedToolPrompt: true,
     },

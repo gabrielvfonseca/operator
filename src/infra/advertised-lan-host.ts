@@ -1,5 +1,5 @@
 // Resolves the LAN host Operator should advertise to nearby devices.
-import { isRfc1918Ipv4Address } from "@operator/net-policy/ip";
+import { isRfc1918Ipv4Address } from "@gabrielvfonseca/net-policy/ip";
 import { runCommandWithTimeout as defaultRunCommandWithTimeout } from "../process/exec.js";
 import {
   listExternalInterfaceAddresses,

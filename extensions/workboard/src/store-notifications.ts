@@ -1,7 +1,7 @@
 import type {
   WorkboardNotification,
   WorkboardNotificationSubscription,
-} from "@operator/workboard-contract";
+} from "@gabrielvfonseca/workboard-contract";
 import type { PersistedWorkboardNotificationSubscription } from "./persistence-types.js";
 import {
   cardRunId,

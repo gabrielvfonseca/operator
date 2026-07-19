@@ -11,10 +11,13 @@ import {
   parseStrictPositiveInteger,
   resolveExpiresAtMsFromDurationSeconds,
   resolveTimestampMsToIsoString,
-} from "openclaw/plugin-sdk/number-runtime";
-import { readResponseTextLimited } from "openclaw/plugin-sdk/provider-http";
-import { sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard, type SsrFPolicy } from "openclaw/plugin-sdk/ssrf-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { readResponseTextLimited } from "@gabrielvfonseca/operator/plugin-sdk/provider-http";
+import { sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import {
+  fetchWithSsrFGuard,
+  type SsrFPolicy,
+} from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
 import type { EngineLogger } from "../types.js";
 import { formatErrorMessage } from "../utils/format.js";
 

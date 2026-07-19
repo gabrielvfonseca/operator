@@ -9,12 +9,12 @@ import {
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
 import {
   openOperatorStateDatabase,
   runOperatorStateWriteTransaction,
   type OperatorStateDatabaseOptions,
-} from "../state/operator-state-db.js";
+} from "../state/openclaw-state-db.js";
 
 /** Gateway endpoint metadata persisted with node-host config. */
 export type NodeHostGatewayConfig = {
@@ -76,7 +76,7 @@ function assertNodeHostLegacyStateMigrated(env: NodeJS.ProcessEnv = process.env)
     return;
   }
   throw new Error(
-    `retired node-host state remains at ${sourcePath}; stop the node host and run \`operator doctor --fix\``,
+    `retired node-host state remains at ${sourcePath}; stop the node host and run \`openclaw doctor --fix\``,
   );
 }
 

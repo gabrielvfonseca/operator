@@ -172,7 +172,7 @@ describe("gateway bonjour advertiser", () => {
 
     expect(createService).toHaveBeenCalledTimes(1);
     const [gatewayCall] = createService.mock.calls as Array<[Record<string, unknown>]>;
-    expect(gatewayCall?.[0]?.type).toBe("openclaw-gw");
+    expect(gatewayCall?.[0]?.type).toBe("operator-gw");
     const gatewayType = asString(gatewayCall?.[0]?.type, "");
     expect(gatewayType.length).toBeLessThanOrEqual(15);
     expect(gatewayCall?.[0]?.port).toBe(18789);
@@ -252,7 +252,7 @@ describe("gateway bonjour advertiser", () => {
   it("auto-disables Bonjour on Fly Machines without Docker sentinel files", async () => {
     enableAdvertiserUnitMode();
     vi.stubEnv("FLY_MACHINE_ID", "3d8d5459a03038");
-    vi.stubEnv("FLY_APP_NAME", "openclaw-clawcks-test");
+    vi.stubEnv("FLY_APP_NAME", "operator-clawcks-test");
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.spyOn(fs, "readFileSync").mockReturnValue("10:cpuset:/\n9:perf_event:/\n8:memory:/\n0::/\n");
 
@@ -441,7 +441,7 @@ describe("gateway bonjour advertiser", () => {
       });
 
       console.log(
-        "[test._openclaw-gw._tcp.local.] failed probing with reason: Error: Can't probe for a service which is announced already. Received announcing for service test._openclaw-gw._tcp.local.. Trying again in 2 seconds!",
+        "[test._operator-gw._tcp.local.] failed probing with reason: Error: Can't probe for a service which is announced already. Received announcing for service test._operator-gw._tcp.local.. Trying again in 2 seconds!",
       );
       console.log("ordinary console line");
 
@@ -619,8 +619,8 @@ describe("gateway bonjour advertiser", () => {
     });
 
     const [gatewayCall] = createService.mock.calls as Array<[ServiceCall]>;
-    expect(gatewayCall?.[0]?.hostname).toBe("openclaw");
-    expect((gatewayCall?.[0]?.txt as Record<string, string>)?.lanHost).toBe("openclaw.local");
+    expect(gatewayCall?.[0]?.hostname).toBe("@gabrielvfonseca/operator");
+    expect((gatewayCall?.[0]?.txt as Record<string, string>)?.lanHost).toBe("operator.local");
 
     await started.stop();
   });

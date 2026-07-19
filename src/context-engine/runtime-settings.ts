@@ -92,7 +92,7 @@ export function buildContextEngineRuntimeSettings(params: {
   return {
     schemaVersion: 1,
     runtime: {
-      host: "operator",
+      host: "@gabrielvfonseca/operator",
       mode,
       harnessId: normalizeNullableString(params.harnessId),
       runtimeId: normalizeNullableString(params.runtimeId),

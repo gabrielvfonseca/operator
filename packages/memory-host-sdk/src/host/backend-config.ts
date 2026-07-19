@@ -1,11 +1,11 @@
 // Memory Host SDK module implements backend config behavior.
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   normalizeStringEntries,
   uniqueStrings,
-} from "@operator/normalization-core/string-normalization";
+} from "@gabrielvfonseca/normalization-core/string-normalization";
 import {
   MEMORY_HOST_ROOT_FILENAME,
   type MemoryBackend,
@@ -15,7 +15,7 @@ import {
   type MemoryQmdMcporterConfig,
   type MemoryQmdSearchMode,
   type MemoryQmdStartupMode,
-  type OperatorConfig,
+  type OpenClawConfig,
   resolveMemoryHostAgentWorkspaceDir,
   normalizeAgentId,
   resolveMemoryHostUserPath,
@@ -419,7 +419,7 @@ function resolveDefaultCollections(
 }
 
 export function resolveMemoryBackendConfig(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   agentId: string;
 }): ResolvedMemoryBackendConfig {
   const normalizedAgentId = normalizeAgentId(params.agentId);

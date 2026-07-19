@@ -1,7 +1,7 @@
 import AppKit
 import CoreGraphics
 import Foundation
-import OpenClawKit
+import OperatorKit
 import PeekabooAutomationKit
 import PeekabooFoundation
 @preconcurrency import ScreenCaptureKit
@@ -54,17 +54,17 @@ private final class ComputerActionCancellationState: @unchecked Sendable {
 /// older queued or suspended action before another action can start.
 @MainActor
 final class ComputerActionExecutionQueue {
-    typealias Operation = @MainActor (OpenClawComputerActParams, UInt64) async throws
-        -> OpenClawComputerActResult
+    typealias Operation = @MainActor (OperatorComputerActParams, UInt64) async throws
+        -> OperatorComputerActResult
     typealias CancellationHop = @Sendable (
         @escaping @MainActor @Sendable () -> Void) -> Void
 
     private struct QueuedAction {
         let id: UUID
-        let params: OpenClawComputerActParams
+        let params: OperatorComputerActParams
         let lifecycleGeneration: UInt64
         let operation: Operation
-        let continuation: CheckedContinuation<OpenClawComputerActResult, Error>
+        let continuation: CheckedContinuation<OperatorComputerActResult, Error>
         let cancellationState: ComputerActionCancellationState
     }
 
@@ -76,7 +76,7 @@ final class ComputerActionExecutionQueue {
     private var currentActionID: UUID?
     private var currentActionGeneration: UInt64?
     private var currentActionCancellationState: ComputerActionCancellationState?
-    private var currentActionTask: Task<OpenClawComputerActResult, Error>?
+    private var currentActionTask: Task<OperatorComputerActResult, Error>?
     private var lifecycleReleasePending = false
 
     init(
@@ -90,9 +90,9 @@ final class ComputerActionExecutionQueue {
     }
 
     func perform(
-        _ params: OpenClawComputerActParams,
+        _ params: OperatorComputerActParams,
         lifecycleGeneration: UInt64,
-        operation: @escaping Operation) async throws -> OpenClawComputerActResult
+        operation: @escaping Operation) async throws -> OperatorComputerActResult
     {
         let actionID = UUID()
         let cancellationState = ComputerActionCancellationState()
@@ -218,7 +218,7 @@ final class ComputerActionExecutionQueue {
             }
             self.currentActionTask = operationTask
 
-            let outcome: Result<OpenClawComputerActResult, Error>
+            let outcome: Result<OperatorComputerActResult, Error>
             do {
                 outcome = try await .success(operationTask.value)
             } catch {
@@ -476,8 +476,8 @@ final class ComputerActionService {
     #endif
 
     func perform(
-        _ params: OpenClawComputerActParams,
-        lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+        _ params: OperatorComputerActParams,
+        lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
     {
         try await self.executionQueue.perform(
             params,
@@ -491,8 +491,8 @@ final class ComputerActionService {
     }
 
     private func performImmediately(
-        _ params: OpenClawComputerActParams,
-        lifecycleGeneration: UInt64) async throws -> OpenClawComputerActResult
+        _ params: OperatorComputerActParams,
+        lifecycleGeneration: UInt64) async throws -> OperatorComputerActResult
     {
         try self.executionQueue.checkExecutionAllowed(lifecycleGeneration: lifecycleGeneration)
         guard self.permissions.checkAccessibilityPermission() else {
@@ -506,13 +506,13 @@ final class ComputerActionService {
             lifecycleGeneration: lifecycleGeneration)
         try self.executionQueue.checkExecutionAllowed(lifecycleGeneration: lifecycleGeneration)
         let cursor = self.automation.currentMouseLocation() ?? CGPoint.zero
-        return OpenClawComputerActResult(ok: true, cursorX: cursor.x, cursorY: cursor.y)
+        return OperatorComputerActResult(ok: true, cursorX: cursor.x, cursorY: cursor.y)
     }
 
     // MARK: - Dispatch
 
     private func dispatch(
-        _ params: OpenClawComputerActParams,
+        _ params: OperatorComputerActParams,
         display: ResolvedDisplay,
         lifecycleGeneration: UInt64) async throws
     {
@@ -599,7 +599,7 @@ final class ComputerActionService {
         }
     }
 
-    private func peekabooClick(at point: CGPoint, action: OpenClawComputerAction) async throws {
+    private func peekabooClick(at point: CGPoint, action: OperatorComputerAction) async throws {
         let clickType: ClickType = switch action {
         case .rightClick: .right
         case .doubleClick: .double
@@ -624,7 +624,7 @@ final class ComputerActionService {
     }
 
     private func performScroll(
-        _ params: OpenClawComputerActParams,
+        _ params: OperatorComputerActParams,
         display: ResolvedDisplay,
         modifiers: ComputerModifiers,
         lifecycleGeneration: UInt64) async throws
@@ -655,13 +655,13 @@ final class ComputerActionService {
     /// The target display in global points plus the capture source width used to
     /// derive the captured screenshot pixel width for coordinate scaling.
     private struct ResolvedDisplay {
-        var geometry: OpenClawComputerDisplayGeometry
+        var geometry: OperatorComputerDisplayGeometry
         var sourceWidth: Double
         var sourceHeight: Double
     }
 
     private func requiredPoint(
-        _ params: OpenClawComputerActParams,
+        _ params: OperatorComputerActParams,
         display: ResolvedDisplay) throws -> CGPoint
     {
         guard let point = try point(params.x, params.y, params: params, display: display) else {
@@ -673,7 +673,7 @@ final class ComputerActionService {
     private func point(
         _ x: Double?,
         _ y: Double?,
-        params: OpenClawComputerActParams,
+        params: OperatorComputerActParams,
         display: ResolvedDisplay) throws -> CGPoint?
     {
         if x == nil, y == nil {
@@ -689,11 +689,11 @@ final class ComputerActionService {
         // the native source width, which could turn valid screenshot pixels into a
         // deterministic misclick.
         let refWidth = try Self.requiredReferenceWidth(params)
-        let capturedWidth = OpenClawComputerInputGeometry.capturedWidth(
+        let capturedWidth = OperatorComputerInputGeometry.capturedWidth(
             refWidth: refWidth,
             sourceWidth: display.sourceWidth,
             sourceHeight: display.sourceHeight)
-        let mapped = OpenClawComputerInputGeometry.mapReferencePointToGlobal(
+        let mapped = OperatorComputerInputGeometry.mapReferencePointToGlobal(
             x: x,
             y: y,
             capturedWidthPixels: capturedWidth,
@@ -710,7 +710,7 @@ final class ComputerActionService {
         guard withinX, withinY else { throw ComputerActionError.coordinateOutOfBounds }
         // Clamp the epsilon-tolerated rounding to strictly inside the selected
         // display so a far-edge coordinate cannot post onto an adjacent screen.
-        let clamped = OpenClawComputerInputGeometry.clampToDisplay(
+        let clamped = OperatorComputerInputGeometry.clampToDisplay(
             x: mapped.x,
             y: mapped.y,
             display: geometry)
@@ -719,7 +719,7 @@ final class ComputerActionService {
 
     static func validatedCurrentCursorPoint(
         _ point: CGPoint?,
-        display: OpenClawComputerDisplayGeometry) throws -> CGPoint
+        display: OperatorComputerDisplayGeometry) throws -> CGPoint
     {
         guard let point,
               point.x >= display.originX,
@@ -731,7 +731,7 @@ final class ComputerActionService {
     }
 
     static func validateHeldButtonTransition(
-        action: OpenClawComputerAction,
+        action: OperatorComputerAction,
         leftButtonDown: Bool) throws
     {
         if action == .leftMouseUp, !leftButtonDown {
@@ -854,21 +854,21 @@ final class ComputerActionService {
 
     func typeTextForTesting(
         _ text: String,
-        lifecycleGeneration: UInt64 = 0) async throws -> OpenClawComputerActResult
+        lifecycleGeneration: UInt64 = 0) async throws -> OperatorComputerActResult
     {
-        let params = OpenClawComputerActParams(action: .type, text: text)
+        let params = OperatorComputerActParams(action: .type, text: text)
         return try await self.executionQueue.perform(
             params,
             lifecycleGeneration: lifecycleGeneration)
         { [weak self] _, generation in
             guard let self else { throw CancellationError() }
             try await self.typeText(text, lifecycleGeneration: generation)
-            return OpenClawComputerActResult(ok: true, cursorX: 0, cursorY: 0)
+            return OperatorComputerActResult(ok: true, cursorX: 0, cursorY: 0)
         }
     }
     #endif
 
-    private func resolveDisplay(params: OpenClawComputerActParams) async throws -> ResolvedDisplay {
+    private func resolveDisplay(params: OperatorComputerActParams) async throws -> ResolvedDisplay {
         // Match ScreenSnapshotService display ordering so a computer.act
         // screenIndex targets the same display the model saw in screen.snapshot.
         let content = try await SCShareableContent.current
@@ -881,7 +881,7 @@ final class ComputerActionService {
         // caps to refWidth, so together they recover the captured pixel scale and
         // the source aspect ratio needed for portrait longest-edge scaling.
         let bounds = CGDisplayBounds(displays[idx].displayID)
-        let geometry = OpenClawComputerDisplayGeometry(
+        let geometry = OperatorComputerDisplayGeometry(
             originX: bounds.origin.x,
             originY: bounds.origin.y,
             widthPoints: bounds.width,
@@ -891,7 +891,7 @@ final class ComputerActionService {
         // A display can disappear between the ScreenCaptureKit snapshot and
         // CGDisplayBounds, which returns a zero rectangle for a stale id. Reject
         // all degenerate geometry here; mapping it would collapse input to (0, 0).
-        guard OpenClawComputerInputGeometry.isValidMappingGeometry(
+        guard OperatorComputerInputGeometry.isValidMappingGeometry(
             sourceWidth: sourceWidth,
             sourceHeight: sourceHeight,
             display: geometry)
@@ -900,7 +900,7 @@ final class ComputerActionService {
         }
         if Self.usesScreenshotCoordinates(params) {
             let refWidth = try Self.requiredReferenceWidth(params)
-            let currentFrameId = OpenClawComputerInputGeometry.displayFrameId(
+            let currentFrameId = OperatorComputerInputGeometry.displayFrameId(
                 displayID: displays[idx].displayID,
                 sourceWidth: sourceWidth,
                 sourceHeight: sourceHeight,
@@ -914,11 +914,11 @@ final class ComputerActionService {
             sourceHeight: sourceHeight)
     }
 
-    private static func usesScreenshotCoordinates(_ params: OpenClawComputerActParams) -> Bool {
+    private static func usesScreenshotCoordinates(_ params: OperatorComputerActParams) -> Bool {
         params.x != nil || params.y != nil || params.fromX != nil || params.fromY != nil
     }
 
-    private static func requiredReferenceWidth(_ params: OpenClawComputerActParams) throws -> Int {
+    private static func requiredReferenceWidth(_ params: OperatorComputerActParams) throws -> Int {
         guard let refWidth = params.refWidth, refWidth > 0 else {
             throw ComputerActionError.invalidReferenceWidth
         }
@@ -926,7 +926,7 @@ final class ComputerActionService {
     }
 
     static func validateDisplayFrame(
-        _ params: OpenClawComputerActParams,
+        _ params: OperatorComputerActParams,
         currentFrameId: String) throws
     {
         guard self.usesScreenshotCoordinates(params) else { return }
@@ -947,7 +947,7 @@ final class ComputerActionService {
     }
 
     private static func scrollDirection(
-        _ direction: OpenClawComputerScrollDirection) -> PeekabooFoundation.ScrollDirection
+        _ direction: OperatorComputerScrollDirection) -> PeekabooFoundation.ScrollDirection
     {
         switch direction {
         case .up: .up
@@ -1105,7 +1105,7 @@ final class ComputerActionService {
     }
     #endif
 
-    private func rawScroll(direction: OpenClawComputerScrollDirection, amount: Int, flags: CGEventFlags) throws {
+    private func rawScroll(direction: OperatorComputerScrollDirection, amount: Int, flags: CGEventFlags) throws {
         // Line units per tick match Peekaboo's non-smooth scroll (~5 lines).
         let lines = Int32(amount * 5)
         let (wheel1, wheel2): (Int32, Int32) = switch direction {

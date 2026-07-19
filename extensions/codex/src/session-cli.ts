@@ -1,17 +1,17 @@
-// Codex CLI lists native sessions and adopts or archives idle local threads.
-import type { Command } from "commander";
 import {
   addGatewayClientOptions,
   callGatewayFromCli,
   type GatewayRpcOpts,
-} from "openclaw/plugin-sdk/gateway-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 import type {
   SessionCatalogHost as CodexSessionCatalogHost,
   SessionCatalogSession as CodexSessionCatalogSession,
-} from "openclaw/plugin-sdk/session-catalog";
-import { isRecord } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeTerminalText } from "openclaw/plugin-sdk/text-chunking";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/session-catalog";
+import { isRecord } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sanitizeTerminalText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
+// Codex CLI lists native sessions and adopts or archives idle local threads.
+import type { Command } from "commander";
 import {
   CODEX_LOCAL_SESSION_HOST_ID,
   CODEX_SESSION_CATALOG_MAX_PAGE_LIMIT,

@@ -1,25 +1,25 @@
-// Whatsapp plugin module implements monitor behavior.
-import type { WAMessageKey } from "baileys";
-import { resolveAccountEntry } from "openclaw/plugin-sdk/account-core";
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "openclaw/plugin-sdk/approval-handler-runtime";
-import { shouldDebounceTextInbound } from "openclaw/plugin-sdk/channel-inbound";
-import { resolveInboundDebounceMs } from "openclaw/plugin-sdk/channel-inbound-debounce";
-import { registerChannelRuntimeContext } from "openclaw/plugin-sdk/channel-runtime-context";
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import { drainPendingDeliveries } from "openclaw/plugin-sdk/delivery-queue-runtime";
-import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
-import { DEFAULT_GROUP_HISTORY_LIMIT } from "openclaw/plugin-sdk/reply-history";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { registerUnhandledRejectionHandler } from "openclaw/plugin-sdk/runtime-env";
-import { getChildLogger } from "openclaw/plugin-sdk/runtime-env";
+import { resolveAccountEntry } from "@gabrielvfonseca/operator/plugin-sdk/account-core";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
+import { shouldDebounceTextInbound } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound";
+import { resolveInboundDebounceMs } from "@gabrielvfonseca/operator/plugin-sdk/channel-inbound-debounce";
+import { registerChannelRuntimeContext } from "@gabrielvfonseca/operator/plugin-sdk/channel-runtime-context";
+import { formatCliCommand } from "@gabrielvfonseca/operator/plugin-sdk/cli-runtime";
+import { drainPendingDeliveries } from "@gabrielvfonseca/operator/plugin-sdk/delivery-queue-runtime";
+import { createLazyRuntimeModule } from "@gabrielvfonseca/operator/plugin-sdk/lazy-runtime";
+import { DEFAULT_GROUP_HISTORY_LIMIT } from "@gabrielvfonseca/operator/plugin-sdk/reply-history";
+import { resolveAgentRoute } from "@gabrielvfonseca/operator/plugin-sdk/routing";
+import { logVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { registerUnhandledRejectionHandler } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { getChildLogger } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import {
   defaultRuntime,
   formatDurationPrecise,
   warn,
   type RuntimeEnv,
-} from "openclaw/plugin-sdk/runtime-env";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/system-event-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { enqueueSystemEvent } from "@gabrielvfonseca/operator/plugin-sdk/system-event-runtime";
+// Whatsapp plugin module implements monitor behavior.
+import type { WAMessageKey } from "baileys";
 import { resolveWhatsAppAccount, resolveWhatsAppMediaMaxBytes } from "../accounts.js";
 import { WHATSAPP_AUTH_UNSTABLE_CODE, WhatsAppAuthUnstableError } from "../auth-store.js";
 import {

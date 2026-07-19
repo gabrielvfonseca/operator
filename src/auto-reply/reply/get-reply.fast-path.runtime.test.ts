@@ -13,7 +13,7 @@ import { loadGetReplyModuleForTest } from "./get-reply.test-loader.js";
 
 let getReplyFromConfig: typeof import("./get-reply.js").getReplyFromConfig;
 const agentMocks = createReplyRuntimeMocks();
-const { withTempHome } = createTempHomeHarness({ prefix: "openclaw-getreply-fast-" });
+const { withTempHome } = createTempHomeHarness({ prefix: "operator-getreply-fast-" });
 
 installReplyRuntimeMocks(agentMocks);
 

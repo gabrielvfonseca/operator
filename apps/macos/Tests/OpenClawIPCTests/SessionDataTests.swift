@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct SessionDataTests {
     @Test func `session kind from key detects common kinds`() {

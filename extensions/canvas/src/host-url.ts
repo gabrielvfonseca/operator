@@ -4,7 +4,7 @@
 import {
   resolveHostedPluginSurfaceUrl,
   type HostedPluginSurfaceUrlParams,
-} from "openclaw/plugin-sdk/gateway-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 
 type CanvasHostUrlParams = Omit<HostedPluginSurfaceUrlParams, "port"> & {
   canvasPort?: number;

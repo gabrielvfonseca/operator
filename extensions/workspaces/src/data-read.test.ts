@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { DATA_READ_RPC_ALLOWLIST, resolveBinding } from "./data-read.js";
 
 async function withTempStateDir<T>(run: (stateDir: string) => Promise<T>): Promise<T> {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-workspace-data-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-workspace-data-"));
   try {
     return await run(stateDir);
   } finally {

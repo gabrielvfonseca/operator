@@ -1,22 +1,22 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ModelCatalogEntry } from "../../agents/model-catalog.types.js";
 import type { createOpenAIModelRoutesResolver } from "../../agents/openai-model-routes.js";
-import type { OperatorConfig } from "../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../config/types.operator.js";
 import { withEnvAsync } from "../../test-utils/env.js";
-import { withOperatorTestState } from "../../test-utils/operator-test-state.js";
+import { withOperatorTestState } from "../../test-utils/openclaw-test-state.js";
 import { buildModelsListResult } from "./models-list-result.js";
 import type { GatewayRequestContext } from "./types.js";
 
 const WITHOUT_OPENAI_ENV_AUTH = {
   CODEX_API_KEY: undefined,
-  CODEX_HOME: "/__openclaw_models_list_test__/codex",
+  CODEX_HOME: "/__operator_models_list_test__/codex",
   OPENAI_API_KEY: undefined,
   OPENAI_BASE_URL: undefined,
   OPENAI_OAUTH_TOKEN: undefined,
   CHATGPT_OAUTH_TOKEN: undefined,
 } as const;
 const IMPLICIT_CODEX_RUNTIME = { id: "codex", source: "implicit" } as const;
-const IMPLICIT_OPERATOR_RUNTIME = { id: "openclaw", source: "implicit" } as const;
+const IMPLICIT_OPERATOR_RUNTIME = { id: "@gabrielvfonseca/operator", source: "implicit" } as const;
 
 function catalogEntry(id: string, api: ModelCatalogEntry["api"]): ModelCatalogEntry {
   return { id, name: id, provider: "openai", api };
@@ -70,7 +70,7 @@ describe("models.list OpenAI routes", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-openai-null-artifact-oauth-",
+          prefix: "operator-models-list-openai-null-artifact-oauth-",
           agentEnv: "main",
         },
         async (state) => {
@@ -249,7 +249,7 @@ describe("models.list OpenAI routes", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-openai-auth-order-",
+          prefix: "operator-models-list-openai-auth-order-",
           agentEnv: "main",
         },
         async (state) => {
@@ -418,7 +418,7 @@ describe("models.list OpenAI routes", () => {
       await withOperatorTestState(
         {
           layout: "state-only",
-          prefix: "openclaw-models-list-openai-fallback-",
+          prefix: "operator-models-list-openai-fallback-",
           agentEnv: "main",
         },
         async () => {

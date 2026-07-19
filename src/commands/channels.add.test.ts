@@ -3,7 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { getBundledChannelSetupPlugin } from "../channels/plugins/bundled.js";
 import type { ChannelPluginCatalogEntry } from "../channels/plugins/catalog.js";
 import type { ChannelPlugin } from "../channels/plugins/types.public.js";
-import type { OperatorConfig } from "../config/types.openclaw.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../plugins/runtime.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
@@ -663,7 +663,7 @@ describe("channelsAddCommand", () => {
       {
         channel: "whatsapp",
         account: "work",
-        authDir: "/tmp/openclaw-wa-auth",
+        authDir: "/tmp/operator-wa-auth",
       },
       runtime,
       { hasFlags: true },
@@ -674,7 +674,7 @@ describe("channelsAddCommand", () => {
       accounts: {
         work: {
           enabled: true,
-          authDir: "/tmp/openclaw-wa-auth",
+          authDir: "/tmp/operator-wa-auth",
         },
       },
     });
@@ -748,7 +748,7 @@ describe("channelsAddCommand", () => {
         blurb: "WhatsApp channel",
       },
       install: {
-        npmSpec: "@operator/whatsapp",
+        npmSpec: "@gabrielvfonseca/whatsapp",
       },
     };
     catalogMocks.listChannelPluginCatalogEntries.mockReturnValue([catalogEntry]);
@@ -789,7 +789,7 @@ describe("channelsAddCommand", () => {
       {
         channel: "whatsapp",
         account: "work",
-        authDir: "/tmp/openclaw-wa-auth",
+        authDir: "/tmp/operator-wa-auth",
       },
       runtime,
       { hasFlags: true },
@@ -803,7 +803,7 @@ describe("channelsAddCommand", () => {
       accounts: {
         work: {
           enabled: true,
-          authDir: "/tmp/openclaw-wa-auth",
+          authDir: "/tmp/operator-wa-auth",
         },
       },
     });

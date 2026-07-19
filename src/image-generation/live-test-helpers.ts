@@ -1,5 +1,5 @@
 /** Helpers for selecting image-generation providers and models in live tests. */
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   parseLiveCsvFilter,

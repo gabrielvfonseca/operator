@@ -2,9 +2,9 @@ import ActivityKit
 import SwiftUI
 import WidgetKit
 
-struct OpenClawLiveActivity: Widget {
+struct OperatorLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: OpenClawActivityAttributes.self) { context in
+        ActivityConfiguration(for: OperatorActivityAttributes.self) { context in
             self.lockScreenView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -13,7 +13,7 @@ struct OpenClawLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.center) {
                     self.statusText(state: context.state)
-                        .font(OpenClawActivityType.subheadSemiBold)
+                        .font(OperatorActivityType.subheadSemiBold)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                 }
@@ -30,17 +30,17 @@ struct OpenClawLiveActivity: Widget {
         }
     }
 
-    private func lockScreenView(context: ActivityViewContext<OpenClawActivityAttributes>) -> some View {
+    private func lockScreenView(context: ActivityViewContext<OperatorActivityAttributes>) -> some View {
         HStack(spacing: 10) {
             self.statusIcon(state: context.state)
                 .frame(width: 30, height: 30)
                 .background(.thinMaterial, in: Circle())
             VStack(alignment: .leading, spacing: 2) {
-                Text("OpenClaw")
-                    .font(OpenClawActivityType.subheadBold)
+                Text("Operator")
+                    .font(OperatorActivityType.subheadBold)
                     .lineLimit(1)
                 self.statusText(state: context.state)
-                    .font(OpenClawActivityType.caption)
+                    .font(OperatorActivityType.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -52,43 +52,43 @@ struct OpenClawLiveActivity: Widget {
         .padding(.vertical, 8)
     }
 
-    private func trailingView(state: OpenClawActivityAttributes.ContentState) -> some View {
+    private func trailingView(state: OperatorActivityAttributes.ContentState) -> some View {
         self.statusIcon(state: state)
-            .font(OpenClawActivityType.symbol(size: 16, weight: .semibold))
+            .font(OperatorActivityType.symbol(size: 16, weight: .semibold))
             .frame(width: 28, height: 28)
     }
 
-    private func statusDot(state: OpenClawActivityAttributes.ContentState) -> some View {
+    private func statusDot(state: OperatorActivityAttributes.ContentState) -> some View {
         Circle()
             .fill(self.dotColor(state: state))
             .frame(width: 6, height: 6)
     }
 
-    private func compactStatusIcon(state: OpenClawActivityAttributes.ContentState) -> some View {
+    private func compactStatusIcon(state: OperatorActivityAttributes.ContentState) -> some View {
         self.statusIcon(state: state)
-            .font(OpenClawActivityType.symbol(size: 12, weight: .semibold))
+            .font(OperatorActivityType.symbol(size: 12, weight: .semibold))
             .frame(width: 18, height: 18)
     }
 
     @ViewBuilder
-    private func statusIcon(state: OpenClawActivityAttributes.ContentState) -> some View {
+    private func statusIcon(state: OperatorActivityAttributes.ContentState) -> some View {
         switch state.status {
         case .connecting, .reconnecting:
             Image(systemName: "arrow.triangle.2.circlepath")
-                .foregroundStyle(OpenClawActivityStyle.info)
+                .foregroundStyle(OperatorActivityStyle.info)
         case .disconnected:
             Image(systemName: "wifi.slash")
-                .foregroundStyle(OpenClawActivityStyle.danger)
+                .foregroundStyle(OperatorActivityStyle.danger)
         case .idle:
             Image(systemName: "checkmark")
-                .foregroundStyle(OpenClawActivityStyle.ok)
+                .foregroundStyle(OperatorActivityStyle.ok)
         case .approvalNeeded, .actionRequired, .attention:
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(OpenClawActivityStyle.warn)
+                .foregroundStyle(OperatorActivityStyle.warn)
         }
     }
 
-    private func statusText(state: OpenClawActivityAttributes.ContentState) -> Text {
+    private func statusText(state: OperatorActivityAttributes.ContentState) -> Text {
         if let detail = state.verbatimDetail {
             return Text(verbatim: detail)
         }
@@ -102,21 +102,21 @@ struct OpenClawLiveActivity: Widget {
         }
     }
 
-    private func dotColor(state: OpenClawActivityAttributes.ContentState) -> Color {
+    private func dotColor(state: OperatorActivityAttributes.ContentState) -> Color {
         switch state.status {
         case .connecting, .reconnecting:
-            OpenClawActivityStyle.info
+            OperatorActivityStyle.info
         case .disconnected:
-            OpenClawActivityStyle.danger
+            OperatorActivityStyle.danger
         case .idle:
-            OpenClawActivityStyle.ok
+            OperatorActivityStyle.ok
         case .approvalNeeded, .actionRequired, .attention:
-            OpenClawActivityStyle.warn
+            OperatorActivityStyle.warn
         }
     }
 }
 
-private enum OpenClawActivityStyle {
+private enum OperatorActivityStyle {
     static let info = Color(red: 0, green: 122 / 255.0, blue: 1)
     static let danger = Color(red: 185 / 255.0, green: 28 / 255.0, blue: 28 / 255.0)
     static let ok = Color(red: 34 / 255.0, green: 197 / 255.0, blue: 94 / 255.0)

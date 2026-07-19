@@ -6,7 +6,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { AssistantMessage } from "operator/plugin-sdk/llm";
+import type { AssistantMessage } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { buildAttemptReplayMetadata } from "../embedded-agent-runner/run/incomplete-turn.js";
 import type { EmbeddedRunAttemptResult } from "../embedded-agent-runner/run/types.js";

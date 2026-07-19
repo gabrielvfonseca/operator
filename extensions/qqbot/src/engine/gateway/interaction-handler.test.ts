@@ -1,6 +1,6 @@
 // Qqbot tests cover interaction handler plugin behavior.
-import type { ApprovalResolveResult } from "openclaw/plugin-sdk/approval-gateway-runtime";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { ApprovalResolveResult } from "@gabrielvfonseca/operator/plugin-sdk/approval-gateway-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createSdkAccessAdapter } from "../../bridge/sdk-adapter.js";
 import { registerPlatformAdapter, type PlatformAdapter } from "../adapter/index.js";

@@ -7,7 +7,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { describe, expect, it } from "vitest";
 
 const ENGINE_DIR = path.resolve(import.meta.dirname);
@@ -36,7 +36,7 @@ function walkSourceFiles(dir: string, files: string[] = []): string[] {
 
 /**
  * Extract all `openclaw/...` import specifiers from source text.
- * Matches: import ... from "openclaw/...", import("openclaw/...")
+ * Matches: import ... from "@gabrielvfonseca/operator/...", import("openclaw/...")
  */
 function findOpenclawImports(source: string): string[] {
   return [
@@ -46,7 +46,7 @@ function findOpenclawImports(source: string): string[] {
 }
 
 /** Check if an import specifier is an allowed openclaw/plugin-sdk subpath. */
-const ALLOWED_PREFIX = ["openclaw", "plugin-sdk"].join("/");
+const ALLOWED_PREFIX = ["@gabrielvfonseca/operator", "plugin-sdk"].join("/");
 function isAllowedImport(specifier: string): boolean {
   return specifier.startsWith(ALLOWED_PREFIX);
 }

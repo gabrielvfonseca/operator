@@ -1,5 +1,5 @@
 // Sms plugin module implements accounts behavior.
-import { normalizeOptionalAccountId } from "openclaw/plugin-sdk/account-id";
+import { normalizeOptionalAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";
 import {
   DEFAULT_ACCOUNT_ID,
   listCombinedAccountIds,
@@ -7,13 +7,13 @@ import {
   resolveListedDefaultAccountId,
   resolveMergedAccountConfig,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/account-resolution";
-import { parseStrictInteger } from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/account-resolution";
+import { parseStrictInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
+import { normalizeStringEntries } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import { normalizeSmsAllowFrom, normalizeSmsPhoneNumber } from "./phone.js";
 import type { ResolvedSmsAccount, SmsChannelConfig } from "./types.js";
 

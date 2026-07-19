@@ -32,7 +32,7 @@ describe("generateConversationLabel", () => {
       selection: {
         provider: "openai",
         modelId: "gpt-test",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
       model: { provider: "openai", id: "gpt-test", maxTokens: 8192 },
       auth: { apiKey: "resolved-key", mode: "api-key" },
@@ -105,7 +105,7 @@ describe("generateConversationLabel", () => {
       selection: {
         provider: "openai",
         modelId: "gpt-test",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
       model: { provider: "openai", id: "gpt-test", maxTokens: 1_024 },
       auth: { apiKey: "resolved-key", mode: "api-key" },
@@ -125,7 +125,7 @@ describe("generateConversationLabel", () => {
       selection: {
         provider: "openai",
         modelId: "gpt-5.5",
-        agentDir: "/tmp/openclaw-agent",
+        agentDir: "/tmp/operator-agent",
       },
       model: {
         provider: "openai",

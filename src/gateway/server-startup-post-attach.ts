@@ -582,7 +582,7 @@ async function prewarmConfiguredPrimaryModel(params: {
   if (!explicitPrimary) {
     return;
   }
-  const { normalizeProviderId } = await import("@operator/model-catalog-core/provider-id");
+  const { normalizeProviderId } = await import("@gabrielvfonseca/model-catalog-core/provider-id");
   if (
     isConfiguredCliBackendPrimary({
       cfg: params.cfg,
@@ -845,7 +845,7 @@ export async function startGatewaySidecars(params: {
         const [{ getAcpSessionManager }, { ACP_SESSION_IDENTITY_RENDERER_VERSION }] =
           await Promise.all([
             import("../acp/control-plane/manager.js"),
-            import("@operator/acp-core/runtime/session-identifiers"),
+            import("@gabrielvfonseca/acp-core/runtime/session-identifiers"),
           ]);
         const result = await getAcpSessionManager().reconcilePendingSessionIdentities({
           cfg: params.cfg,

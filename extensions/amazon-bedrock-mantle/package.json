@@ -1,10 +1,10 @@
 {
-  "name": "@operator/amazon-bedrock-mantle-provider",
+  "name": "@gabrielvfonseca/amazon-bedrock-mantle-provider",
   "version": "2026.7.2",
   "description": "Operator Amazon Bedrock Mantle provider plugin for OpenAI-compatible model routing.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openclaw/openclaw"
+    "url": "https://github.com/gabrielvfonseca/operator"
   },
   "type": "module",
   "dependencies": {
@@ -12,14 +12,14 @@
     "@aws/bedrock-token-generator": "1.1.0"
   },
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@operator/amazon-bedrock-mantle-provider",
+      "npmSpec": "@gabrielvfonseca/amazon-bedrock-mantle-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.12-beta.1"
     },

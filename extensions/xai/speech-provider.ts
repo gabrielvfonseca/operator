@@ -2,9 +2,9 @@
 import {
   isProviderAuthProfileConfigured,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth-runtime";
+import { normalizeResolvedSecretInputString } from "@gabrielvfonseca/operator/plugin-sdk/secret-input";
 import {
   trimToUndefined,
   type SpeechDirectiveTokenParseContext,
@@ -12,11 +12,11 @@ import {
   type SpeechProviderOverrides,
   type SpeechProviderPlugin,
   type SpeechSynthesisTarget,
-} from "openclaw/plugin-sdk/speech";
+} from "@gabrielvfonseca/operator/plugin-sdk/speech";
 import {
   asFiniteNumberInRange,
   normalizeLowercaseStringOrEmpty,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   isValidXaiTtsVoice,
   listXaiTtsVoices,

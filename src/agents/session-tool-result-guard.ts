@@ -3,9 +3,9 @@
  *
  * Caps large tool results, repairs missing results, applies redaction, and emits transcript update events.
  */
-import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
-import { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { resolveIntegerOption } from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { sliceUtf16Safe, truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import {
   boundedJsonUtf8Bytes,
   firstEnumerableOwnKeys,
@@ -22,7 +22,7 @@ import type {
   PluginHookBeforeMessageWriteResult,
 } from "../plugins/types.js";
 import { emitSessionTranscriptUpdate } from "../sessions/transcript-events.js";
-import { isTranscriptOnlyOperatorAssistantModel } from "../shared/transcript-only-operator-assistant.js";
+import { isTranscriptOnlyOperatorAssistantModel } from "../shared/transcript-only-openclaw-assistant.js";
 import { formatContextLimitTruncationNotice } from "./embedded-agent-runner/context-truncation-notice.js";
 import {
   DEFAULT_MAX_LIVE_TOOL_RESULT_CHARS,

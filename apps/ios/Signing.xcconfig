@@ -4,22 +4,22 @@
 
 #include "build/Version.xcconfig"
 
-OPENCLAW_CODE_SIGN_STYLE = Manual
-OPENCLAW_CODE_SIGN_IDENTITY = Apple Development
-OPENCLAW_CODE_SIGN_ENTITLEMENTS = Sources/OpenClaw.entitlements
-OPENCLAW_DEVELOPMENT_TEAM = FWJYW4S8P8
+OPERATOR_CODE_SIGN_STYLE = Manual
+OPERATOR_CODE_SIGN_IDENTITY = Apple Development
+OPERATOR_CODE_SIGN_ENTITLEMENTS = Sources/Operator.entitlements
+OPERATOR_DEVELOPMENT_TEAM = FWJYW4S8P8
 
-OPENCLAW_APP_BUNDLE_ID = ai.openclawfoundation.app
-OPENCLAW_SHARE_BUNDLE_ID = ai.openclawfoundation.app.share
-OPENCLAW_APP_GROUP_ID = group.ai.openclawfoundation.app.shared
-OPENCLAW_WATCH_APP_BUNDLE_ID = ai.openclawfoundation.app.watchkitapp
-OPENCLAW_ACTIVITY_WIDGET_BUNDLE_ID = ai.openclawfoundation.app.activitywidget
-OPENCLAW_APNS_ENTITLEMENT_ENVIRONMENT = development
+OPERATOR_APP_BUNDLE_ID = ai.operatorfoundation.app
+OPERATOR_SHARE_BUNDLE_ID = ai.operatorfoundation.app.share
+OPERATOR_APP_GROUP_ID = group.ai.operatorfoundation.app.shared
+OPERATOR_WATCH_APP_BUNDLE_ID = ai.operatorfoundation.app.watchkitapp
+OPERATOR_ACTIVITY_WIDGET_BUNDLE_ID = ai.operatorfoundation.app.activitywidget
+OPERATOR_APNS_ENTITLEMENT_ENVIRONMENT = development
 
-OPENCLAW_APP_PROFILE = ai.openclawfoundation.app Development
-OPENCLAW_SHARE_PROFILE = ai.openclawfoundation.app.share Development
-OPENCLAW_ACTIVITY_WIDGET_PROFILE =
-OPENCLAW_WATCH_APP_PROFILE =
+OPERATOR_APP_PROFILE = ai.operatorfoundation.app Development
+OPERATOR_SHARE_PROFILE = ai.operatorfoundation.app.share Development
+OPERATOR_ACTIVITY_WIDGET_PROFILE =
+OPERATOR_WATCH_APP_PROFILE =
 
 // Keep local includes after defaults: xcconfig is evaluated top-to-bottom,
 // so later assignments in local files override the defaults above.
@@ -27,8 +27,8 @@ OPENCLAW_WATCH_APP_PROFILE =
 #include? "LocalSigning.xcconfig"
 
 // Debug products install alongside release products and keep their app-group data separate.
-OPENCLAW_DEBUG_APP_BUNDLE_ID = $(OPENCLAW_APP_BUNDLE_ID).debug
-OPENCLAW_DEBUG_SHARE_BUNDLE_ID = $(OPENCLAW_DEBUG_APP_BUNDLE_ID).share
-OPENCLAW_DEBUG_ACTIVITY_WIDGET_BUNDLE_ID = $(OPENCLAW_DEBUG_APP_BUNDLE_ID).activitywidget
-OPENCLAW_DEBUG_WATCH_APP_BUNDLE_ID = $(OPENCLAW_DEBUG_APP_BUNDLE_ID).watchkitapp
-OPENCLAW_DEBUG_APP_GROUP_ID = $(OPENCLAW_APP_GROUP_ID).debug
+OPERATOR_DEBUG_APP_BUNDLE_ID = $(OPERATOR_APP_BUNDLE_ID).debug
+OPERATOR_DEBUG_SHARE_BUNDLE_ID = $(OPERATOR_DEBUG_APP_BUNDLE_ID).share
+OPERATOR_DEBUG_ACTIVITY_WIDGET_BUNDLE_ID = $(OPERATOR_DEBUG_APP_BUNDLE_ID).activitywidget
+OPERATOR_DEBUG_WATCH_APP_BUNDLE_ID = $(OPERATOR_DEBUG_APP_BUNDLE_ID).watchkitapp
+OPERATOR_DEBUG_APP_GROUP_ID = $(OPERATOR_APP_GROUP_ID).debug

@@ -1,11 +1,11 @@
 {
-  "name": "@operator/mxc-sandbox",
+  "name": "@gabrielvfonseca/mxc-sandbox",
   "version": "2026.6.11",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
-      "name": "@operator/mxc-sandbox",
+      "name": "@gabrielvfonseca/mxc-sandbox",
       "version": "2026.6.11",
       "dependencies": {
         "@microsoft/mxc-sdk": "0.7.0",

@@ -1,11 +1,11 @@
-# OpenClaw docs i18n assets
+# Operator docs i18n assets
 
 This folder stores translation config for the source docs repo.
 
 Generated locale trees and live translation memory now live in the publish repo:
 
 - repo: `openclaw/docs`
-- local checkout: `~/Projects/openclaw-docs`
+- local checkout: `~/Projects/operator-docs`
 
 ## Source of truth
 
@@ -75,7 +75,7 @@ Fields:
 
 ## Operational notes
 
-- Sync metadata is written to `.openclaw-sync/source.json` in the publish repo.
-- Source repo secret: `OPENCLAW_DOCS_SYNC_TOKEN`
-- Publish repo secret: `OPENCLAW_DOCS_I18N_OPENAI_API_KEY`
+- Sync metadata is written to `.operator-sync/source.json` in the publish repo.
+- Source repo secret: `OPERATOR_DOCS_SYNC_TOKEN`
+- Publish repo secret: `OPERATOR_DOCS_I18N_OPENAI_API_KEY`
 - If locale output looks stale, check the `Translate All` workflow in `openclaw/docs` first.

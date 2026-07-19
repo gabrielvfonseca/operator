@@ -1,5 +1,5 @@
 /** ACP streaming and projection settings derived from config. */
-import type { AcpSessionUpdateTag } from "@operator/acp-core/runtime/types";
+import type { AcpSessionUpdateTag } from "@gabrielvfonseca/acp-core/runtime/types";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import { clampPositiveInteger, resolveEffectiveBlockStreamingConfig } from "./block-streaming.js";
 

@@ -1,7 +1,7 @@
-package ai.openclaw.app
+package ai.operator.app
 
-import ai.openclaw.app.i18n.nativeLocaleChanges
-import ai.openclaw.app.i18n.nativeString
+import ai.operator.app.i18n.nativeLocaleChanges
+import ai.operator.app.i18n.nativeString
 import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
@@ -44,7 +44,7 @@ class NodeForegroundService : Service() {
     ensureChannel()
     val initial =
       buildNotification(
-        title = nativeString("OpenClaw Node"),
+        title = nativeString("Operator Node"),
         text = nativeString("Starting…"),
       )
     startForegroundWithTypes(notification = initial)
@@ -75,7 +75,7 @@ class NodeForegroundService : Service() {
         } catch (err: CancellationException) {
           throw err
         } catch (err: Throwable) {
-          Log.e("OpenClawNodeService", "Failed to restore node runtime", err)
+          Log.e("OperatorNodeService", "Failed to restore node runtime", err)
           withContext(Dispatchers.Main) {
             runtimeRestoreJob = null
             if (!disconnectRequested && !stopSelfResult(startId)) {
@@ -132,9 +132,9 @@ class NodeForegroundService : Service() {
           val title =
             when {
               state.connected && state.mode == VoiceCaptureMode.TalkMode ->
-                nativeString("OpenClaw Node · Talk")
-              state.connected -> nativeString("OpenClaw Node · Connected")
-              else -> nativeString("OpenClaw Node")
+                nativeString("Operator Node · Talk")
+              state.connected -> nativeString("Operator Node · Connected")
+              else -> nativeString("Operator Node")
             }
           val displayStatus = gatewayConnectionStatusForDisplay(state.status)
           val text =
@@ -191,7 +191,7 @@ class NodeForegroundService : Service() {
         startForegroundWithTypes(
           notification =
             buildNotification(
-              title = nativeString("OpenClaw Node"),
+              title = nativeString("Operator Node"),
               text =
                 if (voiceCaptureMode == VoiceCaptureMode.TalkMode) {
                   nativeString("Talk mode active")
@@ -230,7 +230,7 @@ class NodeForegroundService : Service() {
         nativeString("Connection"),
         NotificationManager.IMPORTANCE_LOW,
       ).apply {
-        description = nativeString("OpenClaw node connection status")
+        description = nativeString("Operator node connection status")
         setShowBadge(false)
       }
     mgr.createNotificationChannel(channel)
@@ -293,10 +293,10 @@ class NodeForegroundService : Service() {
     private const val CHANNEL_ID = "connection"
     private const val NOTIFICATION_ID = 1
 
-    private const val ACTION_STOP = "ai.openclaw.app.action.STOP"
-    private const val ACTION_RESUME = "ai.openclaw.app.action.RESUME"
-    private const val ACTION_SET_VOICE_CAPTURE_MODE = "ai.openclaw.app.action.SET_VOICE_CAPTURE_MODE"
-    private const val EXTRA_VOICE_CAPTURE_MODE = "ai.openclaw.app.extra.VOICE_CAPTURE_MODE"
+    private const val ACTION_STOP = "ai.operator.app.action.STOP"
+    private const val ACTION_RESUME = "ai.operator.app.action.RESUME"
+    private const val ACTION_SET_VOICE_CAPTURE_MODE = "ai.operator.app.action.SET_VOICE_CAPTURE_MODE"
+    private const val EXTRA_VOICE_CAPTURE_MODE = "ai.operator.app.extra.VOICE_CAPTURE_MODE"
     private val startSuppressed = AtomicBoolean(false)
 
     fun start(context: Context) {

@@ -114,7 +114,7 @@ type WorkspaceViewState = {
 };
 
 /** localStorage flag so the first-visit onboarding banner (#5) stays dismissed across reloads. */
-const ONBOARDING_DISMISS_KEY = "openclaw:control-ui:workspace-onboarding-dismissed:v1";
+const ONBOARDING_DISMISS_KEY = "operator:control-ui:workspace-onboarding-dismissed:v1";
 
 function isOnboardingDismissed(): boolean {
   try {
@@ -731,7 +731,7 @@ function makeCallbacks(
 
 /**
  * Themed edit-title / move-to-tab dialog (#12), replacing window.prompt(). Reuses
- * the app's openclaw-modal-dialog (Escape/backdrop cancel, focus trap) and the
+ * the app's operator-modal-dialog (Escape/backdrop cancel, focus trap) and the
  * exec-approval card idiom. Move-to-tab offers a select of existing tabs.
  */
 function renderDialog(
@@ -767,7 +767,7 @@ function renderDialog(
       close();
     };
     return html`
-      <openclaw-modal-dialog label=${title} @modal-cancel=${close}>
+      <operator-modal-dialog label=${title} @modal-cancel=${close}>
         <form class="exec-approval-card" @submit=${submit}>
           <div class="exec-approval-header">
             <div class="exec-approval-title">${title}</div>
@@ -786,7 +786,7 @@ function renderDialog(
             <button class="btn" type="button" @click=${close}>${t("common.cancel")}</button>
           </div>
         </form>
-      </openclaw-modal-dialog>
+      </operator-modal-dialog>
     `;
   }
 
@@ -810,7 +810,7 @@ function renderDialog(
     close();
   };
   return html`
-    <openclaw-modal-dialog label=${title} @modal-cancel=${close}>
+    <operator-modal-dialog label=${title} @modal-cancel=${close}>
       <form class="exec-approval-card" @submit=${submit}>
         <div class="exec-approval-header">
           <div class="exec-approval-title">${title}</div>
@@ -837,7 +837,7 @@ function renderDialog(
           <button class="btn" type="button" @click=${close}>${t("common.cancel")}</button>
         </div>
       </form>
-    </openclaw-modal-dialog>
+    </operator-modal-dialog>
   `;
 }
 

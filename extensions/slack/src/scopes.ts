@@ -1,11 +1,11 @@
-// Slack plugin module implements scopes behavior.
-import type { WebClient } from "@slack/web-api";
 import {
   isRecord,
   normalizeStringEntries,
   normalizeOptionalString,
   sortUniqueStrings,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+// Slack plugin module implements scopes behavior.
+import type { WebClient } from "@slack/web-api";
 import { createSlackWebClient } from "./client.js";
 import { formatSlackError } from "./errors.js";
 

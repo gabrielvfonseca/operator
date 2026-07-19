@@ -3,7 +3,7 @@ import {
   verifyChannelMessageAdapterCapabilityProofs,
   verifyChannelMessageLiveCapabilityAdapterProofs,
   verifyChannelMessageLiveFinalizerProofs,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { OperatorConfig } from "../runtime-api.js";
 
@@ -185,7 +185,7 @@ describe("matrix channel message adapter", () => {
       | { extraContent?: Record<string, unknown> }
       | undefined;
     expect(matrixChannelData?.extraContent).toEqual({
-      "com.openclaw.presentation": {
+      "com.operator.presentation": {
         ...presentation,
         version: 1,
         type: "message.presentation",
@@ -209,7 +209,7 @@ describe("matrix channel message adapter", () => {
     expect(options.accountId).toBe("default");
     expect(options.threadId).toBe("$thread");
     expect(options.extraContent).toEqual({
-      "com.openclaw.presentation": {
+      "com.operator.presentation": {
         ...presentation,
         version: 1,
         type: "message.presentation",

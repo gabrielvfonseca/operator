@@ -1,6 +1,6 @@
 // Task gateway methods expose detached task list/get/cancel operations with
 // bounded public summaries over the runtime task registry.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   ErrorCodes,
   errorShape,

@@ -1,19 +1,19 @@
 // Feishu plugin module implements reply dispatcher behavior.
-import { formatReasoningMessage } from "openclaw/plugin-sdk/agent-runtime";
-import { logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
-import { createChannelMessageReplyPipeline } from "openclaw/plugin-sdk/channel-outbound";
+import { formatReasoningMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { logTypingFailure } from "@gabrielvfonseca/operator/plugin-sdk/channel-feedback";
+import { createChannelMessageReplyPipeline } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   formatChannelProgressDraftLineForEntry,
   isChannelProgressDraftWorkToolName,
   resolveChannelPreviewStreamMode,
   resolveChannelStreamingBlockEnabled,
-} from "openclaw/plugin-sdk/channel-outbound";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 import {
   resolveSendableOutboundReplyParts,
   resolveTextChunksWithFallback,
   sendMediaWithLeadingCaption,
-} from "openclaw/plugin-sdk/reply-payload";
-import { stripReasoningTagsFromText } from "openclaw/plugin-sdk/text-chunking";
+} from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
+import { stripReasoningTagsFromText } from "@gabrielvfonseca/operator/plugin-sdk/text-chunking";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import { resolveConfiguredHttpTimeoutMs } from "./client-timeout.js";
 import { createFeishuClient } from "./client.js";

@@ -1,10 +1,10 @@
-// Control UI adapter for Web Awesome tooltips. OpenClaw keeps its terse
+// Control UI adapter for Web Awesome tooltips. Operator keeps its terse
 // wrapper API; Web Awesome owns popup positioning, rendering, and dismissal.
 import "@awesome.me/webawesome/dist/components/tooltip/tooltip.js";
 import type WaTooltip from "@awesome.me/webawesome/dist/components/tooltip/tooltip.js";
 import { css, html } from "lit";
 import { property, query } from "lit/decorators.js";
-import { OpenClawLitElement } from "../lit/openclaw-element.ts";
+import { OperatorLitElement } from "../lit/operator-element.ts";
 
 const HOVER_DELAY = 150;
 const TOUCH_DELAY = 450;
@@ -16,14 +16,14 @@ let nextTooltipId = 0;
 
 function createTooltipId() {
   nextTooltipId += 1;
-  return `openclaw-tooltip-${nextTooltipId}`;
+  return `operator-tooltip-${nextTooltipId}`;
 }
 
 function normalizeTooltipText(text: string) {
   return text.replace(/\s+/gu, " ").trim();
 }
 
-class TooltipProvider extends OpenClawLitElement {
+class TooltipProvider extends OperatorLitElement {
   @property({ type: Number }) delay = HOVER_DELAY;
   @property({ type: Number }) skipDelay = SKIP_DELAY;
   @property({ type: Number }) touchDelay = TOUCH_DELAY;
@@ -87,7 +87,7 @@ class TooltipProvider extends OpenClawLitElement {
   }
 }
 
-class Tooltip extends OpenClawLitElement {
+class Tooltip extends OperatorLitElement {
   @property() content = "";
 
   @query("wa-tooltip") private webAwesomeTooltip?: WaTooltip;
@@ -133,7 +133,7 @@ class Tooltip extends OpenClawLitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    this.tooltipProvider = this.closest<TooltipProvider>("openclaw-tooltip-provider");
+    this.tooltipProvider = this.closest<TooltipProvider>("operator-tooltip-provider");
     this.style.display = "contents";
   }
 
@@ -150,7 +150,7 @@ class Tooltip extends OpenClawLitElement {
   }
 
   private get provider() {
-    return this.tooltipProvider ?? this.closest<TooltipProvider>("openclaw-tooltip-provider");
+    return this.tooltipProvider ?? this.closest<TooltipProvider>("operator-tooltip-provider");
   }
 
   private get hoverDelay() {
@@ -403,17 +403,17 @@ class Tooltip extends OpenClawLitElement {
   }
 }
 
-if (!customElements.get("openclaw-tooltip-provider")) {
-  customElements.define("openclaw-tooltip-provider", TooltipProvider);
+if (!customElements.get("operator-tooltip-provider")) {
+  customElements.define("operator-tooltip-provider", TooltipProvider);
 }
 
-if (!customElements.get("openclaw-tooltip")) {
-  customElements.define("openclaw-tooltip", Tooltip);
+if (!customElements.get("operator-tooltip")) {
+  customElements.define("operator-tooltip", Tooltip);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "openclaw-tooltip-provider": TooltipProvider;
-    "openclaw-tooltip": Tooltip;
+    "operator-tooltip-provider": TooltipProvider;
+    "operator-tooltip": Tooltip;
   }
 }

@@ -1,5 +1,5 @@
 // Plugin management service tests cover cold state, catalog identity, and guarded mutations.
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -95,12 +95,12 @@ function configSnapshot(config: Record<string, unknown> = {}) {
     snapshot: {
       valid: true,
       parsed: {},
-      path: "/tmp/openclaw.json",
+      path: "/tmp/operator.json",
       sourceConfig: config,
       hash: "base-hash",
     },
     writeOptions: {
-      expectedConfigPath: "/tmp/openclaw.json",
+      expectedConfigPath: "/tmp/operator.json",
       includeFileHashesForWrite: { "/tmp/plugins.json": "include-hash" },
       includeFileTargetsForWrite: { "/tmp/plugins.json": "/tmp/plugins.json" },
     },
@@ -128,14 +128,14 @@ function metadataSnapshot(params: {
     origin: params.origin ?? "bundled",
     rootDir: `/tmp/${id}`,
     source: `/tmp/${id}/index.ts`,
-    manifestPath: `/tmp/${id}/openclaw.plugin.json`,
+    manifestPath: `/tmp/${id}/operator.plugin.json`,
   };
   return {
     index: {
       plugins: [
         {
           pluginId: id,
-          packageName: `@operator/${id}`,
+          packageName: `@gabrielvfonseca/${id}`,
           origin: params.origin ?? "bundled",
           enabled: params.enabled,
         },
@@ -160,27 +160,27 @@ function emptyMetadataSnapshot() {
 }
 
 const hostedDiffsEntry = {
-  name: "@operator/diffs",
+  name: "@gabrielvfonseca/diffs",
   version: "2.0.0",
   description: "Hosted description",
-  openclaw: {
+  operator: {
     plugin: { id: "diffs", label: "Hosted Diffs" },
-    install: { clawhubSpec: "clawhub:@operator/diffs", defaultChoice: "clawhub" },
+    install: { clawhubSpec: "clawhub:@gabrielvfonseca/diffs", defaultChoice: "clawhub" },
   },
 };
 
 // Mirrors the current default ClawHub feed shape: package identity lives in a
 // source candidate while runtime/editorial metadata remains local.
 const hostedFeedDiffsEntry = {
-  id: "@operator/diffs",
+  id: "@gabrielvfonseca/diffs",
   title: "Diffs",
   state: "available",
-  publisher: { id: "openclaw", trust: "official" },
+  publisher: { id: "@gabrielvfonseca/operator", trust: "official" },
   install: {
     candidates: [
       {
         sourceRef: "public-clawhub",
-        package: "@operator/diffs",
+        package: "@gabrielvfonseca/diffs",
         version: "2026.6.11",
         integrity: `sha256:${"a".repeat(64)}`,
       },
@@ -231,7 +231,7 @@ describe("plugin management service", () => {
         version: "2.0.0",
         featured: true,
         order: 40,
-        install: { source: "clawhub", packageName: "@operator/diffs" },
+        install: { source: "clawhub", packageName: "@gabrielvfonseca/diffs" },
       }),
     ]);
   });
@@ -273,8 +273,8 @@ describe("plugin management service", () => {
         {
           ...hostedDiffsEntry,
           name: "community/impostor",
-          openclaw: {
-            ...hostedDiffsEntry.openclaw,
+          operator: {
+            ...hostedDiffsEntry.operator,
             install: { clawhubSpec: "clawhub:community/impostor", defaultChoice: "clawhub" },
           },
         },
@@ -298,14 +298,14 @@ describe("plugin management service", () => {
         entries: [
           {
             name: "community/partial",
-            openclaw: {
+            operator: {
               plugin: { id: "partial", label: "Partial" },
               catalog: { featured: "yes", order: 25 },
             },
           },
           {
             name: "community/invalid",
-            openclaw: {
+            operator: {
               plugin: { id: "invalid", label: "Invalid" },
               catalog: { featured: "yes", order: "first" },
             },
@@ -335,7 +335,7 @@ describe("plugin management service", () => {
     expect(catalog.plugins).toEqual([
       expect.objectContaining({
         id: "workboard",
-        packageName: "@operator/workboard",
+        packageName: "@gabrielvfonseca/workboard",
         installed: true,
         enabled: false,
         state: "disabled",
@@ -532,11 +532,11 @@ describe("plugin management service", () => {
       pluginId: "impostor",
       targetDir: "/tmp/extensions/impostor",
       extensions: ["index.js"],
-      packageName: "@operator/diffs",
+      packageName: "@gabrielvfonseca/diffs",
       clawhub: {
         source: "clawhub",
         clawhubUrl: "https://clawhub.ai",
-        clawhubPackage: "@operator/diffs",
+        clawhubPackage: "@gabrielvfonseca/diffs",
         clawhubFamily: "code-plugin",
       },
     });
@@ -545,7 +545,7 @@ describe("plugin management service", () => {
       installManagedPlugin({
         request: {
           source: "clawhub",
-          packageName: "@operator/diffs",
+          packageName: "@gabrielvfonseca/diffs",
           acknowledgeClawHubRisk: true,
         },
         env: {},
@@ -553,7 +553,7 @@ describe("plugin management service", () => {
     ).rejects.toThrow("expected diffs, got impostor");
     expect(mocks.clawhubInstall).toHaveBeenCalledWith(
       expect.objectContaining({
-        spec: "clawhub:@operator/diffs@2026.6.11",
+        spec: "clawhub:@gabrielvfonseca/diffs@2026.6.11",
         expectedPluginId: "diffs",
         expectedIntegrity: `sha256-${Buffer.from("a".repeat(64), "hex").toString("base64")}`,
         acknowledgeClawHubRisk: true,
@@ -565,7 +565,7 @@ describe("plugin management service", () => {
   it("does not pin a runtime id when the hosted entry only exposes its package name", async () => {
     const installRecord = {
       source: "clawhub",
-      spec: "clawhub:@operator/bluebubbles",
+      spec: "clawhub:@gabrielvfonseca/bluebubbles",
       installPath: "/tmp/extensions/bluebubbles",
     };
     mocks.readConfig.mockResolvedValue(configSnapshot());
@@ -575,12 +575,12 @@ describe("plugin management service", () => {
       // the package name, which must not become an expectedPluginId pin.
       entries: [
         {
-          id: "@operator/bluebubbles",
+          id: "@gabrielvfonseca/bluebubbles",
           title: "BlueBubbles",
           state: "available",
-          publisher: { id: "openclaw", trust: "official" },
+          publisher: { id: "@gabrielvfonseca/operator", trust: "official" },
           install: {
-            candidates: [{ sourceRef: "public-clawhub", package: "@operator/bluebubbles" }],
+            candidates: [{ sourceRef: "public-clawhub", package: "@gabrielvfonseca/bluebubbles" }],
           },
         },
       ],
@@ -592,11 +592,11 @@ describe("plugin management service", () => {
       pluginId: "bluebubbles",
       targetDir: "/tmp/extensions/bluebubbles",
       extensions: ["index.js"],
-      packageName: "@operator/bluebubbles",
+      packageName: "@gabrielvfonseca/bluebubbles",
       clawhub: {
         source: "clawhub",
         clawhubUrl: "https://clawhub.ai",
-        clawhubPackage: "@operator/bluebubbles",
+        clawhubPackage: "@gabrielvfonseca/bluebubbles",
         clawhubFamily: "code-plugin",
       },
     });
@@ -613,7 +613,7 @@ describe("plugin management service", () => {
     );
 
     const result = await installManagedPlugin({
-      request: { source: "clawhub", packageName: "@operator/bluebubbles" },
+      request: { source: "clawhub", packageName: "@gabrielvfonseca/bluebubbles" },
       env: {},
     });
 
@@ -633,8 +633,8 @@ describe("plugin management service", () => {
           id: "sonos",
           title: "Sonos",
           state: "available",
-          publisher: { id: "openclaw", trust: "official" },
-          openclaw: { plugin: { id: "sonos" } },
+          publisher: { id: "@gabrielvfonseca/operator", trust: "official" },
+          operator: { plugin: { id: "sonos" } },
           install: { candidates: [{ sourceRef: "public-clawhub", package: "sonos" }] },
         },
       ],
@@ -679,11 +679,11 @@ describe("plugin management service", () => {
       pluginId: "diffs",
       targetDir: "/tmp/extensions/diffs",
       extensions: ["index.js"],
-      packageName: "@operator/diffs",
+      packageName: "@gabrielvfonseca/diffs",
       clawhub: {
         source: "clawhub",
         clawhubUrl: "https://clawhub.ai",
-        clawhubPackage: "@operator/diffs",
+        clawhubPackage: "@gabrielvfonseca/diffs",
         clawhubFamily: "code-plugin",
       },
     });
@@ -699,7 +699,7 @@ describe("plugin management service", () => {
 
     expect(mocks.clawhubInstall).toHaveBeenCalledWith(
       expect.objectContaining({
-        spec: "clawhub:@operator/diffs@2026.6.11",
+        spec: "clawhub:@gabrielvfonseca/diffs@2026.6.11",
         expectedPluginId: "diffs",
         expectedIntegrity: `sha256-${Buffer.from("a".repeat(64), "hex").toString("base64")}`,
       }),
@@ -896,7 +896,7 @@ describe("plugin management service", () => {
   it("uninstalls an external plugin through commit, file removal, and registry refresh", async () => {
     const installRecord = {
       source: "clawhub",
-      spec: "clawhub:@operator/diffs",
+      spec: "clawhub:@gabrielvfonseca/diffs",
       installPath: "/tmp/extensions/diffs",
     };
     const prepared = configSnapshot({ plugins: { entries: { diffs: { enabled: true } } } });

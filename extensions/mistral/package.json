@@ -1,13 +1,13 @@
 {
-  "name": "@operator/mistral-provider",
+  "name": "@gabrielvfonseca/mistral-provider",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator Mistral provider plugin",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

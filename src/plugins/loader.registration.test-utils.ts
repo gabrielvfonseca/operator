@@ -349,7 +349,7 @@ describe("loadOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(scopedDir, "package.json"),
       JSON.stringify({
-        name: "@operator/scoped-provider",
+        name: "@gabrielvfonseca/scoped-provider",
         operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
@@ -376,7 +376,7 @@ describe("loadOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(unscopedDir, "package.json"),
       JSON.stringify({
-        name: "@operator/unscoped-provider",
+        name: "@gabrielvfonseca/unscoped-provider",
         operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
@@ -423,7 +423,7 @@ describe("loadOperatorPlugins", () => {
     fs.writeFileSync(
       path.join(bundledPluginDir, "package.json"),
       JSON.stringify({
-        name: "@operator/notify-host",
+        name: "@gabrielvfonseca/notify-host",
         operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
@@ -1145,7 +1145,7 @@ describe("loadOperatorPlugins", () => {
 
   it("uses discovery registration mode for non-activating loads", () => {
     useNoBundledPlugins();
-    const marker = "__operatorDiscoveryModeTest";
+    const marker = "__openclawDiscoveryModeTest";
     const plugin = writePlugin({
       id: "discovery-mode-test",
       filename: "discovery-mode-test.cjs",
@@ -1330,7 +1330,7 @@ describe("loadOperatorPlugins", () => {
   it("caches non-activating snapshots without restoring global side effects", () => {
     useNoBundledPlugins();
     clearPluginCommands();
-    const marker = "__operatorSnapshotCacheRegisterCount";
+    const marker = "__openclawSnapshotCacheRegisterCount";
     const plugin = writePlugin({
       id: "snapshot-cache",
       filename: "snapshot-cache.cjs",
@@ -1385,7 +1385,7 @@ describe("loadOperatorPlugins", () => {
 
   it("does not re-register non-bundled plugins after gateway-bindable boot loads", () => {
     useNoBundledPlugins();
-    const marker = "__operatorGatewayBootRegisterCount";
+    const marker = "__openclawGatewayBootRegisterCount";
     const plugin = writePlugin({
       id: "costclaw-boot-cache",
       filename: "costclaw-boot-cache.cjs",
@@ -1425,7 +1425,7 @@ describe("loadOperatorPlugins", () => {
 
   it("reuses a gateway-bindable cache entry for later default-mode loads", () => {
     useNoBundledPlugins();
-    const marker = "__operatorGatewayBindableCacheRegisterCount";
+    const marker = "__openclawGatewayBindableCacheRegisterCount";
     const plugin = writePlugin({
       id: "gateway-bindable-cache",
       filename: "gateway-bindable-cache.cjs",

@@ -73,7 +73,7 @@ export function registerMaintenanceCommands(program: Command) {
     )
     .option(
       "--github-issue",
-      "With --session-sqlite recover: prepare and optionally create an operator/operator issue",
+      "With --session-sqlite recover: prepare and optionally create an openclaw/openclaw issue",
       false,
     )
     .option(
@@ -134,14 +134,14 @@ export function registerMaintenanceCommands(program: Command) {
       }
       if (hasSessionSqliteOnlyDoctorOptions(opts)) {
         defaultRuntime.error(
-          "doctor session SQLite options require --session-sqlite. Use `operator doctor --session-sqlite dry-run ...`.",
+          "doctor session SQLite options ...
         );
         defaultRuntime.exit(2);
         return;
       }
       if (hasLintOnlyDoctorOptions(opts)) {
         defaultRuntime.error(
-          "doctor lint options require --lint. Use `operator doctor --lint ...`.",
+          "doctor lint options ...
         );
         defaultRuntime.exit(2);
         return;

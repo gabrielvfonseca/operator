@@ -1,5 +1,5 @@
-import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-contracts";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/dangerous-name-runtime";
+import type { DiscordAccountConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { isDangerousNameMatchingEnabled } from "@gabrielvfonseca/operator/plugin-sdk/dangerous-name-runtime";
 import { allowListMatches, normalizeDiscordAllowList } from "../monitor/allow-list.js";
 
 const ACTIVITY_ALLOWLIST_PREFIXES = ["discord:", "user:", "pk:"];

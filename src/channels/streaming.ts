@@ -1,7 +1,7 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Channel streaming config normalization and progress-draft formatting helpers.
-import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
-import { normalizeTrimmedStringList } from "@operator/normalization-core/string-normalization";
+import { normalizeOptionalLowercaseString } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeTrimmedStringList } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { formatToolDetail, resolveToolDisplay } from "../agents/tool-display.js";
 import { formatToolAggregate } from "../auto-reply/tool-meta.js";
 import type {

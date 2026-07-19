@@ -1,8 +1,8 @@
-// Creates isolated operator state directories for integration-style tests.
+// Creates isolated Operator state directories for integration-style tests.
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
+import { uniqueStrings } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { resolveAuthProfileDatabasePath } from "../agents/auth-profiles/sqlite.js";
 import { saveAuthProfileStore } from "../agents/auth-profiles/store.js";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
@@ -14,9 +14,9 @@ type ConfigRuntimeResettable = typeof configRuntime & {
   resetConfigRuntimeState?: () => void;
 };
 
-type operatorTestStateLayout = "home" | "state-only" | "split";
+type OperatorTestStateLayout = "home" | "state-only" | "split";
 
-type operatorTestStateScenario =
+type OperatorTestStateScenario =
   | "empty"
   | "minimal"
   | "update-stable"
@@ -24,11 +24,11 @@ type operatorTestStateScenario =
   | "gateway-loopback"
   | "external-service";
 
-type operatorTestStateOptions = {
+type OperatorTestStateOptions = {
   prefix?: string;
   label?: string;
-  layout?: operatorTestStateLayout;
-  scenario?: operatorTestStateScenario;
+  layout?: OperatorTestStateLayout;
+  scenario?: OperatorTestStateScenario;
   agentEnv?: "clear" | "main";
   applyEnv?: boolean;
   env?: Record<string, string | undefined>;
@@ -38,7 +38,7 @@ type operatorTestStateOptions = {
   };
 };
 
-export type operatorTestState = {
+export type OperatorTestState = {
   root: string;
   home: string;
   stateDir: string;
@@ -59,17 +59,17 @@ export type operatorTestState = {
   cleanup: () => Promise<void>;
 };
 
-const DEFAULT_PREFIX = "operator-test-state-";
+const DEFAULT_PREFIX = "openclaw-test-state-";
 const ENV_KEYS = [
   "HOME",
   "USERPROFILE",
   "HOMEDRIVE",
   "HOMEPATH",
-  "operator_HOME",
-  "operator_STATE_DIR",
-  "operator_CONFIG_PATH",
-  "operator_AGENT_DIR",
-  "operator_SERVICE_REPAIR_POLICY",
+  "OPERATOR_HOME",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_CONFIG_PATH",
+  "OPERATOR_AGENT_DIR",
+  "OPERATOR_SERVICE_REPAIR_POLICY",
 ] as const;
 
 function resetConfigRuntimeStateForTest(): void {
@@ -108,7 +108,7 @@ function resolveWindowsHomeEnv(
 
 function resolveLayout(
   root: string,
-  layout: operatorTestStateLayout,
+  layout: OperatorTestStateLayout,
 ): {
   home: string;
   stateDir: string;
@@ -144,7 +144,7 @@ function resolveLayout(
   };
 }
 
-function scenarioConfig(options: operatorTestStateOptions): Record<string, unknown> | undefined {
+function scenarioConfig(options: OperatorTestStateOptions): Record<string, unknown> | undefined {
   const scenario = options.scenario ?? "empty";
   if (scenario === "minimal" || scenario === "external-service") {
     return {};
@@ -201,17 +201,17 @@ function scenarioConfig(options: operatorTestStateOptions): Record<string, unkno
   return undefined;
 }
 
-function scenarioEnv(options: operatorTestStateOptions): Record<string, string | undefined> {
+function scenarioEnv(options: OperatorTestStateOptions): Record<string, string | undefined> {
   if ((options.scenario ?? "empty") === "external-service") {
     return {
-      operator_SERVICE_REPAIR_POLICY: "external",
+      OPERATOR_SERVICE_REPAIR_POLICY: "external",
     };
   }
   return {};
 }
 
 function buildEnvVars(params: {
-  layout: operatorTestStateLayout;
+  layout: OperatorTestStateLayout;
   home: string;
   stateDir: string;
   configPath: string;
@@ -223,14 +223,14 @@ function buildEnvVars(params: {
   const agentDirEnv =
     params.agentEnv === "main"
       ? {
-          operator_AGENT_DIR: params.agentDir,
+          OPERATOR_AGENT_DIR: params.agentDir,
         }
       : {
-          operator_AGENT_DIR: undefined,
+          OPERATOR_AGENT_DIR: undefined,
         };
   const envVars: Record<string, string | undefined> = {
-    operator_STATE_DIR: params.stateDir,
-    operator_CONFIG_PATH: params.configPath,
+    OPERATOR_STATE_DIR: params.stateDir,
+    OPERATOR_CONFIG_PATH: params.configPath,
     ...agentDirEnv,
     ...params.scenarioEnv,
     ...params.extraEnv,
@@ -239,7 +239,7 @@ function buildEnvVars(params: {
     Object.assign(envVars, {
       HOME: params.home,
       USERPROFILE: params.home,
-      operator_HOME: params.home,
+      OPERATOR_HOME: params.home,
       ...resolveWindowsHomeEnv(params.home),
     });
   }
@@ -264,9 +264,9 @@ async function writeJsonFile(filePath: string, value: unknown): Promise<string> 
   return filePath;
 }
 
-export async function createoperatorTestState(
-  options: operatorTestStateOptions = {},
-): Promise<operatorTestState> {
+export async function createOperatorTestState(
+  options: OperatorTestStateOptions = {},
+): Promise<OperatorTestState> {
   const label = normalizeLabel(options.label ?? options.scenario);
   const prefix = options.prefix ?? `${DEFAULT_PREFIX}${label}-`;
   // Canonicalize: macOS tmpdir sits behind a symlink (/var -> /private/var) and
@@ -306,7 +306,7 @@ export async function createoperatorTestState(
   const sessionsDir = (agentId = "main") =>
     path.join(paths.stateDir, "agents", agentId, "sessions");
 
-  const state: operatorTestState = {
+  const state: OperatorTestState = {
     root,
     ...paths,
     env,
@@ -335,7 +335,7 @@ export async function createoperatorTestState(
     applyEnv: () => {
       resetConfigRuntimeStateForTest();
       for (const [key, value] of Object.entries(envVars)) {
-        // Test fixtures apply a fixed operator env set, not plugin-provided host env.
+        // Test fixtures apply a fixed Operator env set, not plugin-provided host env.
         if (value === undefined) {
           Reflect.deleteProperty(process.env, key);
         } else {
@@ -369,11 +369,11 @@ export async function createoperatorTestState(
   return state;
 }
 
-export async function withoperatorTestState<T>(
-  options: operatorTestStateOptions,
-  fn: (state: operatorTestState) => Promise<T>,
+export async function withOperatorTestState<T>(
+  options: OperatorTestStateOptions,
+  fn: (state: OperatorTestState) => Promise<T>,
 ): Promise<T> {
-  const state = await createoperatorTestState(options);
+  const state = await createOperatorTestState(options);
   try {
     return await fn(state);
   } finally {

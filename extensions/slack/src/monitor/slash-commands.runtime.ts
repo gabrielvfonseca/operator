@@ -5,7 +5,7 @@ import {
   listNativeCommandSpecsForConfig as listNativeCommandSpecsForConfigImpl,
   parseCommandArgs as parseCommandArgsImpl,
   resolveCommandArgMenu as resolveCommandArgMenuImpl,
-} from "openclaw/plugin-sdk/command-auth-native";
+} from "@gabrielvfonseca/operator/plugin-sdk/command-auth-native";
 
 type BuildCommandTextFromArgs =
   typeof import("openclaw/plugin-sdk/command-auth-native").buildCommandTextFromArgs;

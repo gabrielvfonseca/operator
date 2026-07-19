@@ -6,7 +6,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { MsgContext } from "../auto-reply/templating.js";
 import { normalizeChatType } from "./chat-type.js";
 

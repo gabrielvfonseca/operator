@@ -1,5 +1,5 @@
 /** Leases and formats completed subagent results for injection into requester turns. */
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { sanitizeForPromptLiteral, wrapPromptDataBlock } from "./sanitize-for-prompt.js";
 import type {
   PendingFinalDeliveryPayload,

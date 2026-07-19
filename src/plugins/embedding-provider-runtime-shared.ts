@@ -1,5 +1,5 @@
 /** Shared runtime helpers for embedding provider lookup across core and plugin capabilities. */
-import { normalizeProviderId } from "@operator/model-catalog-core/provider-id";
+import { normalizeProviderId } from "@gabrielvfonseca/model-catalog-core/provider-id";
 import type { OperatorConfig } from "../config/types.operator.js";
 import {
   resolvePluginCapabilityProvider,

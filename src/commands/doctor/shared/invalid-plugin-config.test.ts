@@ -1,6 +1,6 @@
 // Invalid plugin config tests cover doctor diagnostics for malformed plugin configuration.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../../../config/types.openclaw.js";
+import type { OperatorConfig } from "../../../config/types.operator.js";
 
 const validationMocks = vi.hoisted(() => ({
   validateConfigObjectWithPlugins: vi.fn(),

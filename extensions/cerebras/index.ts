@@ -1,7 +1,7 @@
 /**
  * Cerebras provider plugin entrypoint.
  */
-import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";
+import { defineSingleProviderPluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/provider-entry";
 import { applyCerebrasConfig, CEREBRAS_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildCerebrasProvider } from "./provider-catalog.js";
 

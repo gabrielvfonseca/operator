@@ -1,11 +1,14 @@
 // Google Meet plugin module implements voice call gateway behavior.
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
 import {
   GatewayClient,
   startGatewayClientWhenEventLoopReady,
-} from "openclaw/plugin-sdk/gateway-runtime";
-import type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
-import { sleep } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
+import type {
+  PluginRuntime,
+  RuntimeLogger,
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
+import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import type { GoogleMeetConfig } from "./config.js";
 
 type VoiceCallGatewayClient = InstanceType<typeof GatewayClient>;

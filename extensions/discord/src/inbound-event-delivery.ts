@@ -1,9 +1,9 @@
 // Discord plugin module implements inbound event delivery behavior.
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-payload";
 import {
   asOptionalRecord as readRecord,
   normalizeOptionalString as readString,
-} from "openclaw/plugin-sdk/string-coerce-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 type DiscordInboundEventDeliveryEnd = () => void;
 

@@ -1,11 +1,15 @@
-// Line plugin module implements webhook behavior.
-import type { webhook } from "@line/bot-sdk";
-import type { NextFunction, Request, Response } from "express";
 import {
   createMessageReceiveContext,
   type MessageReceiveContext,
-} from "openclaw/plugin-sdk/channel-outbound";
-import { danger, logVerbose, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
+import {
+  danger,
+  logVerbose,
+  type RuntimeEnv,
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+// Line plugin module implements webhook behavior.
+import type { webhook } from "@line/bot-sdk";
+import type { NextFunction, Request, Response } from "express";
 import { parseLineWebhookBody, validateLineSignature } from "./webhook-utils.js";
 
 const LINE_WEBHOOK_MAX_RAW_BODY_BYTES = 64 * 1024;

@@ -2,8 +2,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { loadAuthProfileStoreWithoutExternalProfiles } from "openclaw/plugin-sdk/agent-runtime";
-import { MIGRATION_REASON_TARGET_EXISTS } from "openclaw/plugin-sdk/migration";
+import { loadAuthProfileStoreWithoutExternalProfiles } from "@gabrielvfonseca/operator/plugin-sdk/agent-runtime";
+import { MIGRATION_REASON_TARGET_EXISTS } from "@gabrielvfonseca/operator/plugin-sdk/migration";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildAuthItems } from "./auth.js";
 import { buildHermesMigrationProvider } from "./provider.js";

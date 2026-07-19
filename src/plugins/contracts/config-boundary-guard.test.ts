@@ -11,7 +11,7 @@ import {
 let tempRoots: string[] = [];
 
 function makeRepoFixture(): string {
-  const repoRoot = mkdtempSync(join(tmpdir(), "openclaw-config-boundary-"));
+  const repoRoot = mkdtempSync(join(tmpdir(), "operator-config-boundary-"));
   tempRoots.push(repoRoot);
   for (const dir of ["src", "extensions", "packages", "test", "scripts"]) {
     mkdirSync(join(repoRoot, dir), { recursive: true });
@@ -78,8 +78,8 @@ describe("config boundary guard", () => {
       repoRoot,
       "extensions/telegram/src/index.ts",
       [
-        'import type { OperatorConfig } from "openclaw/plugin-sdk/config-runtime";',
-        'import { requireRuntimeConfig } from "openclaw/plugin-sdk/config-runtime";',
+        'import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-runtime";',
+        'import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-runtime";',
         'type Loader = typeof import("openclaw/plugin-sdk/config-runtime").getRuntimeConfig;',
         "export type Config = OperatorConfig;",
         "export const load: Loader = requireRuntimeConfig;",
@@ -112,8 +112,8 @@ describe("config boundary guard", () => {
       repoRoot,
       "extensions/telegram/src/index.ts",
       [
-        'import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";',
-        'import { requireRuntimeConfig } from "openclaw/plugin-sdk/plugin-config-runtime";',
+        'import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";',
+        'import { requireRuntimeConfig } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";',
         'type Loader = typeof import("openclaw/plugin-sdk/runtime-config-snapshot").getRuntimeConfig;',
         'export const load = (cfg: OperatorConfig) => requireRuntimeConfig(cfg, "telegram");',
       ].join("\n"),

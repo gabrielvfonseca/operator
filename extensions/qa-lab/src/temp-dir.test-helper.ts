@@ -3,7 +3,7 @@ import {
   tempWorkspace,
   resolvePreferredOperatorTmpDir,
   type TempWorkspace,
-} from "openclaw/plugin-sdk/temp-path";
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 
 export function createTempDirHarness() {
   const tempDirs: TempWorkspace[] = [];

@@ -139,7 +139,7 @@ vi.mock("../plugins/doctor-contract-registry.js", () => ({
 }));
 
 async function makeTempRoot() {
-  const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-"));
+  const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "operator-doctor-"));
   tempRoots.push(root);
   return root;
 }
@@ -213,7 +213,7 @@ function readPrimaryKeyColumns(db: DatabaseSync, tableName: string): string[] {
 }
 
 function createLegacyAgentDatabaseRegistry(stateDir: string): string {
-  const stateDatabasePath = path.join(stateDir, "state", "openclaw.sqlite");
+  const stateDatabasePath = path.join(stateDir, "state", "operator.sqlite");
   fs.mkdirSync(path.dirname(stateDatabasePath), { recursive: true });
   const { DatabaseSync } = requireNodeSqlite();
   const db = new DatabaseSync(stateDatabasePath);
@@ -234,7 +234,7 @@ function createLegacyAgentDatabaseRegistry(stateDir: string): string {
         size_bytes
       ) VALUES (
         'worker-1',
-        '/legacy/worker-1/openclaw-agent.sqlite',
+        '/legacy/worker-1/operator-agent.sqlite',
         1,
         10,
         20
@@ -352,8 +352,8 @@ function writeLegacyDebugProxyCaptureSidecar(
       100,
       200,
       "proxy-run",
-      "openclaw",
-      "openclaw",
+      "@gabrielvfonseca/operator",
+      "@gabrielvfonseca/operator",
       "http://127.0.0.1:8080",
       sourcePath,
       blobDir,
@@ -367,8 +367,8 @@ function writeLegacyDebugProxyCaptureSidecar(
     ).run(
       "legacy-session",
       150,
-      "openclaw",
-      "openclaw",
+      "@gabrielvfonseca/operator",
+      "@gabrielvfonseca/operator",
       "https",
       "outbound",
       "request",
@@ -698,7 +698,7 @@ const DIR_LINK_TYPE = process.platform === "win32" ? "junction" : "dir";
 
 function getStateDirMigrationPaths(root: string) {
   return {
-    targetDir: path.join(root, ".openclaw"),
+    targetDir: path.join(root, ".operator"),
     legacyDir: path.join(root, ".clawdbot"),
   };
 }
@@ -934,7 +934,7 @@ describe("doctor legacy state migrations", () => {
 
   it("migrates the legacy shared state agent registry primary key", async () => {
     const root = await makeTempRoot();
-    const stateDir = path.join(root, ".openclaw");
+    const stateDir = path.join(root, ".operator");
     const stateDatabasePath = createLegacyAgentDatabaseRegistry(stateDir);
     const detected = await detectLegacyStateMigrations({
       cfg: {},
@@ -966,7 +966,7 @@ describe("doctor legacy state migrations", () => {
             size_bytes
           ) VALUES (
             'worker-1',
-            '/relocated/worker-1/openclaw-agent.sqlite',
+            '/relocated/worker-1/operator-agent.sqlite',
             1,
             20,
             30
@@ -983,7 +983,7 @@ describe("doctor legacy state migrations", () => {
 
   it("does not repair newer shared state schemas", async () => {
     const root = await makeTempRoot();
-    const stateDir = path.join(root, ".openclaw");
+    const stateDir = path.join(root, ".operator");
     const stateDatabasePath = createLegacyAgentDatabaseRegistry(stateDir);
     const { DatabaseSync } = requireNodeSqlite();
     const seededDb = new DatabaseSync(stateDatabasePath);
@@ -1050,7 +1050,7 @@ describe("doctor legacy state migrations", () => {
     expect(store[legacySessionKey]?.acp).toBeUndefined();
 
     const sqlite = requireNodeSqlite();
-    const db = new sqlite.DatabaseSync(path.join(root, "state", "openclaw.sqlite"));
+    const db = new sqlite.DatabaseSync(path.join(root, "state", "operator.sqlite"));
     try {
       const row = db
         .prepare(
@@ -1125,7 +1125,7 @@ describe("doctor legacy state migrations", () => {
     expect(store[legacySessionKey]?.acp).toBeUndefined();
 
     const sqlite = requireNodeSqlite();
-    const db = new sqlite.DatabaseSync(path.join(root, "state", "openclaw.sqlite"));
+    const db = new sqlite.DatabaseSync(path.join(root, "state", "operator.sqlite"));
     try {
       const row = db
         .prepare(
@@ -2041,7 +2041,7 @@ describe("doctor legacy state migrations", () => {
 
   it("ignores a legacy debug proxy override that points at shared state", async () => {
     const root = await makeTempRoot();
-    const sharedStatePath = path.join(root, "state", "openclaw.sqlite");
+    const sharedStatePath = path.join(root, "state", "operator.sqlite");
     const state = openOperatorStateDatabase({
       env: { OPERATOR_STATE_DIR: root } as NodeJS.ProcessEnv,
     });
@@ -2051,7 +2051,13 @@ describe("doctor legacy state migrations", () => {
           id, started_at, mode, source_scope, source_process
         ) VALUES (?, ?, ?, ?, ?)`,
       )
-      .run("shared-session", 100, "proxy-run", "openclaw", "openclaw");
+      .run(
+        "shared-session",
+        100,
+        "proxy-run",
+        "@gabrielvfonseca/operator",
+        "@gabrielvfonseca/operator",
+      );
     const detected = await detectLegacyStateMigrations({
       cfg: {},
       env: {
@@ -2133,7 +2139,13 @@ describe("doctor legacy state migrations", () => {
           id, started_at, mode, source_scope, source_process
         ) VALUES (?, ?, ?, ?, ?)`,
       )
-      .run("legacy-session", 999, "different", "openclaw", "openclaw");
+      .run(
+        "legacy-session",
+        999,
+        "different",
+        "@gabrielvfonseca/operator",
+        "@gabrielvfonseca/operator",
+      );
 
     const result = await runLegacyStateMigrationsForRoot(root);
 
@@ -2442,8 +2454,8 @@ describe("doctor legacy state migrations", () => {
     await writeExistingPluginInstallIndex(root, {
       discord: {
         source: "npm",
-        spec: "@operator/discord@latest",
-        resolvedName: "@operator/discord",
+        spec: "@gabrielvfonseca/discord@latest",
+        resolvedName: "@gabrielvfonseca/discord",
         resolvedVersion: "2026.6.16",
         integrity: "sha512-current",
         installedAt: "2026-06-16T12:00:00.000Z",
@@ -2452,7 +2464,7 @@ describe("doctor legacy state migrations", () => {
     const sourcePath = writeLegacyPluginInstallIndex(root, {
       discord: {
         source: "npm",
-        spec: "@operator/discord@2026.6.16",
+        spec: "@gabrielvfonseca/discord@2026.6.16",
         version: "2026.6.16",
         installedAt: "2026-06-01T12:00:00.000Z",
       },
@@ -2467,8 +2479,8 @@ describe("doctor legacy state migrations", () => {
       installRecords: {
         discord: {
           source: "npm",
-          spec: "@operator/discord@latest",
-          resolvedName: "@operator/discord",
+          spec: "@gabrielvfonseca/discord@latest",
+          resolvedName: "@gabrielvfonseca/discord",
           resolvedVersion: "2026.6.16",
           integrity: "sha512-current",
         },
@@ -2515,7 +2527,7 @@ describe("doctor legacy state migrations", () => {
   it("converges the reported plugin, update-check, and config-health conflicts", async () => {
     const root = await makeTempRoot();
     const env = { ...process.env, OPERATOR_STATE_DIR: root };
-    const configPath = path.join(root, "openclaw.json");
+    const configPath = path.join(root, "operator.json");
     const pluginSourcePath = writeLegacyPluginInstallIndex(root, {
       demo: {
         source: "npm",
@@ -2655,11 +2667,11 @@ describe("doctor legacy state migrations", () => {
       label: "name different packages",
       current: {
         source: "npm",
-        spec: "@operator/demo@1.0.0",
+        spec: "@gabrielvfonseca/demo@1.0.0",
         version: "1.0.0",
-        resolvedName: "@operator/demo",
+        resolvedName: "@gabrielvfonseca/demo",
         resolvedVersion: "1.0.0",
-        resolvedSpec: "@operator/demo@1.0.0",
+        resolvedSpec: "@gabrielvfonseca/demo@1.0.0",
       },
       legacy: {
         source: "npm",
@@ -2823,8 +2835,8 @@ describe("doctor legacy state migrations", () => {
   it("migrates default exec approvals into an explicit state dir", async () => {
     const root = await makeTempRoot();
     const stateDir = path.join(root, "custom-state");
-    const sourcePath = path.join(root, ".openclaw", "exec-approvals.json");
-    const legacySocketPath = path.join(root, ".openclaw", "exec-approvals.sock");
+    const sourcePath = path.join(root, ".operator", "exec-approvals.json");
+    const legacySocketPath = path.join(root, ".operator", "exec-approvals.sock");
     const targetPath = path.join(stateDir, "exec-approvals.json");
     const targetSocketPath = path.join(stateDir, "exec-approvals.sock");
     writeJson5(sourcePath, {
@@ -2876,7 +2888,7 @@ describe("doctor legacy state migrations", () => {
   it("skips exec approvals migration when the target appears after detection", async () => {
     const root = await makeTempRoot();
     const stateDir = path.join(root, "custom-state");
-    const sourcePath = path.join(root, ".openclaw", "exec-approvals.json");
+    const sourcePath = path.join(root, ".operator", "exec-approvals.json");
     const targetPath = path.join(stateDir, "exec-approvals.json");
     writeJson5(sourcePath, {
       version: 1,
@@ -2923,7 +2935,7 @@ describe("doctor legacy state migrations", () => {
   it("auto-migrates exec approvals without a valid config snapshot when doctor opts in", async () => {
     const root = await makeTempRoot();
     const stateDir = path.join(root, "custom-state");
-    const sourcePath = path.join(root, ".openclaw", "exec-approvals.json");
+    const sourcePath = path.join(root, ".operator", "exec-approvals.json");
     const targetPath = path.join(stateDir, "exec-approvals.json");
     writeJson5(sourcePath, {
       version: 1,
@@ -2964,7 +2976,7 @@ describe("doctor legacy state migrations", () => {
     // because OPERATOR_STATE_DIR points somewhere else.
     const root = await makeTempRoot();
     const stateDir = path.join(root, "custom-state");
-    const sourcePath = path.join(root, ".openclaw", "exec-approvals.json");
+    const sourcePath = path.join(root, ".operator", "exec-approvals.json");
     const targetPath = path.join(stateDir, "exec-approvals.json");
     writeJson5(sourcePath, {
       version: 1,
@@ -2996,7 +3008,7 @@ describe("doctor legacy state migrations", () => {
   it("keeps default exec approvals in place when autoMigrateLegacyState runs without the opt-in", async () => {
     const root = await makeTempRoot();
     const stateDir = path.join(root, "custom-state");
-    const sourcePath = path.join(root, ".openclaw", "exec-approvals.json");
+    const sourcePath = path.join(root, ".operator", "exec-approvals.json");
     const targetPath = path.join(stateDir, "exec-approvals.json");
     writeJson5(sourcePath, {
       version: 1,
@@ -3537,7 +3549,7 @@ describe("doctor legacy state migrations", () => {
       loadTaskRegistryStateFromSqlite();
       closeOperatorStateDatabaseForTest();
       const sqlite = requireNodeSqlite();
-      const db = new sqlite.DatabaseSync(path.join(root, "state", "openclaw.sqlite"));
+      const db = new sqlite.DatabaseSync(path.join(root, "state", "operator.sqlite"));
       try {
         db.prepare(
           `INSERT INTO task_runs (
@@ -3595,7 +3607,7 @@ describe("doctor legacy state migrations", () => {
 
     await withStateDir(root, async () => {
       const sqlite = requireNodeSqlite();
-      const sharedPath = path.join(root, "state", "openclaw.sqlite");
+      const sharedPath = path.join(root, "state", "operator.sqlite");
       fs.mkdirSync(path.dirname(sharedPath), { recursive: true });
       const db = new sqlite.DatabaseSync(sharedPath);
       try {

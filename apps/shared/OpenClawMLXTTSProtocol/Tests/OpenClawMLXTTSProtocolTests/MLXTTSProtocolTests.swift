@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawMLXTTSProtocol
+import OperatorMLXTTSProtocol
 import XCTest
 
 final class MLXTTSProtocolTests: XCTestCase {

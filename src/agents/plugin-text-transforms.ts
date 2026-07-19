@@ -1,4 +1,4 @@
-import { isRecord } from "@operator/normalization-core/record-coerce";
+import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 /**
  * Plugin-defined text replacement transforms for stream boundaries.
  *

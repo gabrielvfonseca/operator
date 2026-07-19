@@ -1,6 +1,6 @@
 // Github Copilot plugin entrypoint registers its Operator integration.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
   type ProviderAuthContext,
@@ -8,8 +8,8 @@ import {
   type ProviderAuthMethodNonInteractiveContext,
   type UnifiedModelCatalogEntry,
   type UnifiedModelCatalogProviderContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import type { PluginStateSyncKeyedStore } from "openclaw/plugin-sdk/plugin-state-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
+import type { PluginStateSyncKeyedStore } from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-runtime";
 import {
   applyAuthProfileConfig,
   coerceSecretRef,
@@ -19,7 +19,7 @@ import {
   normalizeOptionalSecretInput,
   resolveDefaultSecretProviderAlias,
   upsertAuthProfileWithLock,
-} from "openclaw/plugin-sdk/provider-auth";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { PUBLIC_GITHUB_COPILOT_DOMAIN, resolveGithubCopilotDomain } from "./domain.js";
 import { createGithubCopilotDynamicModelHooks } from "./dynamic-models.js";
 import { githubCopilotMemoryEmbeddingProviderAdapter } from "./embeddings.js";

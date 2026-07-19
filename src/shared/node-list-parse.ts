@@ -1,6 +1,6 @@
 // Node list parsing helpers normalize node inventory records from CLI output.
-import { asRecord } from "@operator/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { asRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type { NodeListNode, PairedNode, PairingList, PendingRequest } from "./node-list-types.js";
 
 // pending/paired rows are blind-cast from a permissive pairing file, so any scalar can be

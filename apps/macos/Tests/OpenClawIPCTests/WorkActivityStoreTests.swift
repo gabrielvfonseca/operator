@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 @MainActor
 struct WorkActivityStoreTests {

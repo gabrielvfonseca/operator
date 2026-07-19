@@ -1,9 +1,9 @@
 // Tlon plugin entrypoint registers its Operator integration.
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
-import { sleepWithAbort } from "openclaw/plugin-sdk/runtime-env";
-import { asFiniteNumber } from "openclaw/plugin-sdk/string-coerce-runtime";
-import { sliceUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
+import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import type { RuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
+import { sleepWithAbort } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { asFiniteNumber } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
+import { sliceUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import type { OperatorConfig } from "../../runtime-api.js";
 import { createLoggerBackedRuntime } from "../../runtime-api.js";
 import { getTlonRuntime } from "../runtime.js";
@@ -449,7 +449,7 @@ export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<v
             `This can leak conversation context between users.\n\n` +
             `Fix: Add to your Operator config:\n` +
             `session:\n  dmScope: "per-channel-peer"\n\n` +
-            `Docs: https://docs.openclaw.ai/concepts/session#secure-dm-mode`;
+            `Docs: https://docs.operator.ai/concepts/session#secure-dm-mode`;
 
           sendDm({
             api,

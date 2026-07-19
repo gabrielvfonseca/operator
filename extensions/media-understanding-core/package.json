@@ -1,11 +1,11 @@
 {
-  "name": "@operator/media-understanding-core",
+  "name": "@gabrielvfonseca/media-understanding-core",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator media understanding runtime package",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {}
+  "@gabrielvfonseca/operator": {}
 }

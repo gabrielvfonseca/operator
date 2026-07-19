@@ -1,6 +1,6 @@
-package ai.openclaw.app.node
+package ai.operator.app.node
 
-import ai.openclaw.app.BuildConfig
+import ai.operator.app.BuildConfig
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Looper
@@ -188,12 +188,12 @@ class CanvasController {
     withWebViewOnMain { wv ->
       if (currentUrl == null) {
         if (BuildConfig.DEBUG) {
-          Log.d("OpenClawCanvas", "load scaffold: $scaffoldAssetUrl")
+          Log.d("OperatorCanvas", "load scaffold: $scaffoldAssetUrl")
         }
         wv.loadUrl(scaffoldAssetUrl)
       } else {
         if (BuildConfig.DEBUG) {
-          Log.d("OpenClawCanvas", "load url: $currentUrl")
+          Log.d("OperatorCanvas", "load url: $currentUrl")
         }
         wv.loadUrl(currentUrl)
       }

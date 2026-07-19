@@ -1,13 +1,13 @@
 {
-  "name": "@operator/admin-http-rpc",
+  "name": "@gabrielvfonseca/admin-http-rpc",
   "version": "2026.7.2",
   "private": true,
   "description": "Operator admin HTTP RPC endpoint",
   "type": "module",
   "devDependencies": {
-    "@operator/plugin-sdk": "workspace:*"
+    "@gabrielvfonseca/plugin-sdk": "workspace:*"
   },
-  "openclaw": {
+  "@gabrielvfonseca/operator": {
     "extensions": [
       "./index.ts"
     ]

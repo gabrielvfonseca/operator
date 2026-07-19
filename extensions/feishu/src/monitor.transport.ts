@@ -1,8 +1,8 @@
 // Feishu plugin module implements monitor.transport behavior.
 import crypto from "node:crypto";
 import * as http from "node:http";
+import { truncateUtf16Safe } from "@gabrielvfonseca/operator/plugin-sdk/text-utility-runtime";
 import * as Lark from "@larksuiteoapi/node-sdk";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-utility-runtime";
 import { waitForAbortableDelay } from "./async.js";
 import { createFeishuWSClient } from "./client.js";
 import { buildFeishuWebhookRateLimitKey } from "./monitor-rate-limit-key.js";

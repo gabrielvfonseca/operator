@@ -858,7 +858,7 @@ describe("pairing setup code", () => {
       } satisfies ResolveSetupConfig,
       expected: {
         authLabel: "password",
-        url: "wss://openclaw.tailnet.ts.net",
+        url: "wss://operator.tailnet.ts.net",
         urlSource: "gateway.tailscale.mode=serve",
       },
     },

@@ -1,7 +1,7 @@
 import AppKit
-import OpenClawDiscovery
-import OpenClawIPC
-import OpenClawKit
+import OperatorDiscovery
+import OperatorIPC
+import OperatorKit
 import SwiftUI
 
 extension OnboardingView {
@@ -29,7 +29,7 @@ extension OnboardingView {
         onboardingPage {
             VStack(spacing: 18) {
                 VStack(spacing: 8) {
-                    Text("Welcome to OpenClaw")
+                    Text("Welcome to Operator")
                         .font(.largeTitle.weight(.semibold))
                     Text("Your personal AI assistant, living on your own Mac.")
                         .font(.title3)
@@ -62,7 +62,7 @@ extension OnboardingView {
 
                 Label {
                     Text(
-                        "OpenClaw can take actions using the permissions and services you enable. " +
+                        "Operator can take actions using the permissions and services you enable. " +
                             "Review prompts and only connect tools you trust.")
                 } icon: {
                     Image(systemName: "info.circle")
@@ -80,7 +80,7 @@ extension OnboardingView {
             Text("Where should your assistant live?")
                 .font(.largeTitle.weight(.semibold))
             Text(
-                "Most people pick this Mac — OpenClaw installs everything and keeps it " +
+                "Most people pick this Mac — Operator installs everything and keeps it " +
                     "running in the background. You can change this anytime in Settings.")
                 .font(.body)
                 .foregroundStyle(.secondary)
@@ -137,7 +137,7 @@ extension OnboardingView {
                 Spacer(minLength: 0)
             }
             if self.selectedConnectionMode == .unconfigured {
-                Text("OK — OpenClaw won’t start anything yet. Pick Local or Remote later in Settings → General.")
+                Text("OK — Operator won’t start anything yet. Pick Local or Remote later in Settings → General.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
@@ -147,7 +147,7 @@ extension OnboardingView {
         .disabled(self.installingCLI)
         .onChange(of: self.state.connectionMode) { _, newValue in
             // The root view's mode observer calls handleConnectionModeChange(), which
-            // retires route-owned AI/OpenClaw state. This nested observer owns probe copy only.
+            // retires route-owned AI/Operator state. This nested observer owns probe copy only.
             guard Self.shouldResetRemoteProbeFeedback(
                 for: newValue,
                 suppressReset: self.suppressRemoteProbeReset)
@@ -316,7 +316,7 @@ extension OnboardingView {
                                 .font(.callout.weight(.semibold))
                                 .frame(width: labelWidth, alignment: .leading)
                             TextField(
-                                "/Applications/OpenClaw.app/.../openclaw",
+                                "/Applications/Operator.app/.../openclaw",
                                 text: self.$state.remoteCliPath)
                                 .textFieldStyle(.roundedBorder)
                                 .frame(width: fieldWidth)
@@ -499,7 +499,7 @@ extension OnboardingView {
             if self.state.remoteTokenUnsupported {
                 Text(
                     "The current gateway.remote.token value is not plain text. "
-                        + "OpenClaw for macOS cannot use it directly; "
+                        + "Operator for macOS cannot use it directly; "
                         + "enter a plaintext token here to replace it.")
                     .font(.caption)
                     .foregroundStyle(.orange)
@@ -723,7 +723,7 @@ extension OnboardingView {
                 }
             }
             Text(
-                "These macOS permissions let OpenClaw automate apps and capture context on this Mac. " +
+                "These macOS permissions let Operator automate apps and capture context on this Mac. " +
                     "Status updates automatically.")
                 .font(.body)
                 .foregroundStyle(.secondary)
@@ -750,10 +750,10 @@ extension OnboardingView {
     func cliPage() -> some View {
         let remoteMode = self.state.connectionMode == .remote
         let detail = if remoteMode {
-            "OpenClaw is installing the matching runtime for this Mac node. " +
+            "Operator is installing the matching runtime for this Mac node. " +
                 "It will connect to your selected Gateway without starting another one here."
         } else {
-            "OpenClaw is setting up its background service on this Mac. " +
+            "Operator is setting up its background service on this Mac. " +
                 "This usually takes under a minute — no Terminal, no administrator password."
         }
         return onboardingPage {
@@ -768,7 +768,7 @@ extension OnboardingView {
 
             self.onboardingCard(spacing: 14, padding: 16) {
                 self.installStepRow(
-                    title: "Install OpenClaw",
+                    title: "Install Operator",
                     detail: self.cliInstalled
                         ? (self.cliInstallLocation ?? "Installed")
                         : "A private copy inside your user folder.",
@@ -905,7 +905,7 @@ extension OnboardingView {
                         title: "Remote gateway checklist",
                         subtitle: """
                         On your gateway host: install/update the `openclaw` package and make sure credentials exist
-                        (typically `~/.openclaw/credentials/oauth.json`). Then connect again if needed.
+                        (typically `~/.operator/credentials/oauth.json`). Then connect again if needed.
                         """,
                         systemImage: "network")
                     Divider()
@@ -913,7 +913,7 @@ extension OnboardingView {
                 }
                 self.featureRow(
                     title: "Open the menu bar panel",
-                    subtitle: "Click the OpenClaw menu bar icon for quick chat and status.",
+                    subtitle: "Click the Operator menu bar icon for quick chat and status.",
                     systemImage: "bubble.left.and.bubble.right")
                 self.featureActionRow(
                     title: "Connect Discord, Slack, Telegram, WhatsApp, …",

@@ -25,7 +25,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 /** `name` field in this plugin's `package.json`. */
-const QQBOT_PLUGIN_PKG_NAME = "@operator/qqbot";
+const QQBOT_PLUGIN_PKG_NAME = "@gabrielvfonseca/qqbot";
 
 /** Sentinel used when the version cannot be resolved. */
 const QQBOT_PLUGIN_VERSION_UNKNOWN = "unknown";

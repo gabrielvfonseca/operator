@@ -27,7 +27,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   DOCKERHUB_REGISTRY: docker.io
-  DOCKERHUB_IMAGE_NAME: openclaw/openclaw
+  DOCKERHUB_IMAGE_NAME: gabrielvfonseca/operator
 
 jobs:
   validate_manual_backfill:
@@ -183,7 +183,7 @@ jobs:
           browser_tags=()
           images=("${GHCR_IMAGE}" "${DOCKERHUB_IMAGE}")
           browser_supported=0
-          if grep -q '^ARG OPENCLAW_INSTALL_BROWSER' Dockerfile; then
+          if grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile; then
             browser_supported=1
           fi
           if [[ "${SOURCE_REF}" == refs/tags/v* ]]; then
@@ -246,8 +246,8 @@ jobs:
           cache-to: type=gha,mode=max,scope=docker-release-amd64
           build-args: |
             GIT_COMMIT=${{ needs.resolve_build_provenance.outputs.source_sha }}
-            OPENCLAW_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
-            OPENCLAW_EXTENSIONS=diagnostics-otel,codex
+            OPERATOR_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
+            OPERATOR_EXTENSIONS=diagnostics-otel,codex
           tags: ${{ steps.tags.outputs.value }}
           labels: ${{ steps.labels.outputs.value }}
           sbom: true
@@ -268,9 +268,9 @@ jobs:
           cache-to: type=gha,mode=max,scope=docker-release-browser-amd64
           build-args: |
             GIT_COMMIT=${{ needs.resolve_build_provenance.outputs.source_sha }}
-            OPENCLAW_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
-            OPENCLAW_EXTENSIONS=diagnostics-otel,codex
-            OPENCLAW_INSTALL_BROWSER=1
+            OPERATOR_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
+            OPERATOR_EXTENSIONS=diagnostics-otel,codex
+            OPERATOR_INSTALL_BROWSER=1
           tags: ${{ steps.tags.outputs.browser }}
           labels: ${{ steps.labels.outputs.value }}
           sbom: true
@@ -299,15 +299,15 @@ jobs:
             set +e
             HOME="${temp_root}/home" \
             USERPROFILE="${temp_root}/home" \
-            OPENCLAW_HOME="${temp_root}/home" \
-            OPENCLAW_NO_ONBOARD=1 \
-            OPENCLAW_SUPPRESS_NOTES=1 \
-            OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 \
-            OPENCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK=1 \
+            OPERATOR_HOME="${temp_root}/home" \
+            OPERATOR_NO_ONBOARD=1 \
+            OPERATOR_SUPPRESS_NOTES=1 \
+            OPERATOR_DISABLE_BUNDLED_PLUGINS=1 \
+            OPERATOR_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK=1 \
             AWS_EC2_METADATA_DISABLED=true \
             AWS_SHARED_CREDENTIALS_FILE="${temp_root}/home/.aws/credentials" \
             AWS_CONFIG_FILE="${temp_root}/home/.aws/config" \
-              node /app/openclaw.mjs agent --message "workspace bootstrap smoke" --session-id "workspace-bootstrap-smoke" --local --timeout 1 --json \
+              node /app/operator.mjs agent --message "workspace bootstrap smoke" --session-id "workspace-bootstrap-smoke" --local --timeout 1 --json \
               >"${temp_root}/out.log" 2>&1
             status="$?"
             set -e
@@ -315,7 +315,7 @@ jobs:
               cat "${temp_root}/out.log"
               exit 1
             fi
-            test -f "${temp_root}/home/.openclaw/workspace/HEARTBEAT.md"
+            test -f "${temp_root}/home/.operator/workspace/HEARTBEAT.md"
             if [ "${status}" -ne 0 ]; then
               cat "${temp_root}/out.log"
             fi
@@ -392,7 +392,7 @@ jobs:
           browser_tags=()
           images=("${GHCR_IMAGE}" "${DOCKERHUB_IMAGE}")
           browser_supported=0
-          if grep -q '^ARG OPENCLAW_INSTALL_BROWSER' Dockerfile; then
+          if grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile; then
             browser_supported=1
           fi
           if [[ "${SOURCE_REF}" == refs/tags/v* ]]; then
@@ -455,8 +455,8 @@ jobs:
           cache-to: type=gha,mode=max,scope=docker-release-arm64
           build-args: |
             GIT_COMMIT=${{ needs.resolve_build_provenance.outputs.source_sha }}
-            OPENCLAW_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
-            OPENCLAW_EXTENSIONS=diagnostics-otel,codex
+            OPERATOR_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
+            OPERATOR_EXTENSIONS=diagnostics-otel,codex
           tags: ${{ steps.tags.outputs.value }}
           labels: ${{ steps.labels.outputs.value }}
           sbom: true
@@ -477,9 +477,9 @@ jobs:
           cache-to: type=gha,mode=max,scope=docker-release-browser-arm64
           build-args: |
             GIT_COMMIT=${{ needs.resolve_build_provenance.outputs.source_sha }}
-            OPENCLAW_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
-            OPENCLAW_EXTENSIONS=diagnostics-otel,codex
-            OPENCLAW_INSTALL_BROWSER=1
+            OPERATOR_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}
+            OPERATOR_EXTENSIONS=diagnostics-otel,codex
+            OPERATOR_INSTALL_BROWSER=1
           tags: ${{ steps.tags.outputs.browser }}
           labels: ${{ steps.labels.outputs.value }}
           sbom: true
@@ -508,15 +508,15 @@ jobs:
             set +e
             HOME="${temp_root}/home" \
             USERPROFILE="${temp_root}/home" \
-            OPENCLAW_HOME="${temp_root}/home" \
-            OPENCLAW_NO_ONBOARD=1 \
-            OPENCLAW_SUPPRESS_NOTES=1 \
-            OPENCLAW_DISABLE_BUNDLED_PLUGINS=1 \
-            OPENCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK=1 \
+            OPERATOR_HOME="${temp_root}/home" \
+            OPERATOR_NO_ONBOARD=1 \
+            OPERATOR_SUPPRESS_NOTES=1 \
+            OPERATOR_DISABLE_BUNDLED_PLUGINS=1 \
+            OPERATOR_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK=1 \
             AWS_EC2_METADATA_DISABLED=true \
             AWS_SHARED_CREDENTIALS_FILE="${temp_root}/home/.aws/credentials" \
             AWS_CONFIG_FILE="${temp_root}/home/.aws/config" \
-              node /app/openclaw.mjs agent --message "workspace bootstrap smoke" --session-id "workspace-bootstrap-smoke" --local --timeout 1 --json \
+              node /app/operator.mjs agent --message "workspace bootstrap smoke" --session-id "workspace-bootstrap-smoke" --local --timeout 1 --json \
               >"${temp_root}/out.log" 2>&1
             status="$?"
             set -e
@@ -524,7 +524,7 @@ jobs:
               cat "${temp_root}/out.log"
               exit 1
             fi
-            test -f "${temp_root}/home/.openclaw/workspace/HEARTBEAT.md"
+            test -f "${temp_root}/home/.operator/workspace/HEARTBEAT.md"
             if [ "${status}" -ne 0 ]; then
               cat "${temp_root}/out.log"
             fi
@@ -604,7 +604,7 @@ jobs:
           dockerhub_slim_tags=()
           dockerhub_browser_tags=()
           browser_supported=0
-          if grep -q '^ARG OPENCLAW_INSTALL_BROWSER' Dockerfile; then
+          if grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile; then
             browser_supported=1
           fi
           if [[ "${SOURCE_REF}" == refs/tags/v* ]]; then
@@ -748,10 +748,10 @@ jobs:
           dockerhub_arm64_refs=()
           browser_supported=0
           if [[ "${SOURCE_REF}" == refs/tags/v* ]]; then
-            if grep -q '^ARG OPENCLAW_INSTALL_BROWSER' Dockerfile; then
+            if grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile; then
               browser_supported=1
             fi
-          elif grep -q '^ARG OPENCLAW_INSTALL_BROWSER' Dockerfile; then
+          elif grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile; then
             browser_supported=1
           fi
           if [[ "${SOURCE_REF}" == refs/tags/v* ]]; then

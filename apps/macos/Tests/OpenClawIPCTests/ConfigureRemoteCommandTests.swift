@@ -1,12 +1,12 @@
 import Foundation
 import Testing
-@testable import OpenClawMacCLI
+@testable import OperatorMacCLI
 
 @Suite(.serialized)
 struct ConfigureRemoteCommandTests {
     @Test @MainActor func `configure remote writes ssh config and app defaults`() async throws {
         let configURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-configure-remote-\(UUID().uuidString).json")
+            .appendingPathComponent("operator-configure-remote-\(UUID().uuidString).json")
         defer { try? FileManager().removeItem(at: configURL) }
 
         let defaultSuites = [
@@ -22,7 +22,7 @@ struct ConfigureRemoteCommandTests {
             }
         }
 
-        try await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configURL.path]) {
+        try await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configURL.path]) {
             let output = try configureRemote(
                 .init(
                     sshTarget: "alice@gateway.example",
@@ -55,17 +55,17 @@ struct ConfigureRemoteCommandTests {
             #expect(remote["token"] as? String == "test-token") // pragma: allowlist secret
 
             for (_, defaults) in defaultsBySuite {
-                #expect(defaults.string(forKey: "openclaw.connectionMode") == "remote")
-                #expect(defaults.string(forKey: "openclaw.remoteTarget") == "alice@gateway.example")
-                #expect(defaults.bool(forKey: "openclaw.onboardingSeen") == true)
-                #expect(defaults.string(forKey: "openclaw.remoteCliPath") == "/opt/homebrew/bin/openclaw")
+                #expect(defaults.string(forKey: "operator.connectionMode") == "remote")
+                #expect(defaults.string(forKey: "operator.remoteTarget") == "alice@gateway.example")
+                #expect(defaults.bool(forKey: "operator.onboardingSeen") == true)
+                #expect(defaults.string(forKey: "operator.remoteCliPath") == "/opt/homebrew/bin/openclaw")
             }
         }
     }
 
     @Test @MainActor func `configure remote preserves existing optional credentials when flags omitted`() async throws {
         let configURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-configure-remote-preserve-\(UUID().uuidString).json")
+            .appendingPathComponent("operator-configure-remote-preserve-\(UUID().uuidString).json")
         defer { try? FileManager().removeItem(at: configURL) }
 
         let initial: [String: Any] = [
@@ -82,7 +82,7 @@ struct ConfigureRemoteCommandTests {
         try FileManager().createDirectory(at: configURL.deletingLastPathComponent(), withIntermediateDirectories: true)
         try initialData.write(to: configURL)
 
-        try await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configURL.path]) {
+        try await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configURL.path]) {
             try configureRemote(.init(sshTarget: "alice@gateway.example"), defaultsSuites: [])
 
             let data = try Data(contentsOf: configURL)
@@ -97,7 +97,7 @@ struct ConfigureRemoteCommandTests {
 
     @Test @MainActor func `configure remote defaults SSH host key policy to strict`() async throws {
         let configURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-configure-remote-strict-\(UUID().uuidString).json")
+            .appendingPathComponent("operator-configure-remote-strict-\(UUID().uuidString).json")
         defer { try? FileManager().removeItem(at: configURL) }
 
         let initial: [String: Any] = [
@@ -111,7 +111,7 @@ struct ConfigureRemoteCommandTests {
         let initialData = try JSONSerialization.data(withJSONObject: initial, options: [.prettyPrinted])
         try initialData.write(to: configURL)
 
-        try await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configURL.path]) {
+        try await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configURL.path]) {
             let output = try configureRemote(.init(sshTarget: "gateway-alias"), defaultsSuites: [])
 
             #expect(output.sshHostKeyPolicy == "strict")
@@ -157,7 +157,7 @@ struct ConfigureRemoteCommandTests {
 
     @Test @MainActor func `configure remote can write direct private url`() async throws {
         let configURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-configure-direct-\(UUID().uuidString).json")
+            .appendingPathComponent("operator-configure-direct-\(UUID().uuidString).json")
         defer { try? FileManager().removeItem(at: configURL) }
 
         let initial: [String: Any] = [
@@ -170,7 +170,7 @@ struct ConfigureRemoteCommandTests {
         try FileManager().createDirectory(at: configURL.deletingLastPathComponent(), withIntermediateDirectories: true)
         try initialData.write(to: configURL)
 
-        try await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configURL.path]) {
+        try await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configURL.path]) {
             let output = try configureRemote(
                 .init(
                     directUrl: "ws://192.168.0.202:18789",
@@ -200,10 +200,10 @@ struct ConfigureRemoteCommandTests {
 
     @Test @MainActor func `configure remote rejects plaintext public prefix bypass`() async {
         let configURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-configure-direct-reject-\(UUID().uuidString).json")
+            .appendingPathComponent("operator-configure-direct-reject-\(UUID().uuidString).json")
         defer { try? FileManager().removeItem(at: configURL) }
 
-        _ = await TestIsolation.withIsolatedState(env: ["OPENCLAW_CONFIG_PATH": configURL.path]) {
+        _ = await TestIsolation.withIsolatedState(env: ["OPERATOR_CONFIG_PATH": configURL.path]) {
             #expect(throws: Error.self) {
                 try configureRemote(.init(directUrl: "ws://fd-example.com:18789"))
             }

@@ -1,4 +1,4 @@
-import { expectDefined } from "@operator/normalization-core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
 // Parses poll command parameters into validated polling options.
 import { readSnakeCaseParamRaw } from "./param-key.js";
 

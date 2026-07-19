@@ -1,4 +1,4 @@
-package ai.openclaw.app.ui.chat
+package ai.operator.app.ui.chat
 
 import android.annotation.SuppressLint
 import android.app.Activity

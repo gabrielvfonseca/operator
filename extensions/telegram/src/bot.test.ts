@@ -1,18 +1,21 @@
 import { rm } from "node:fs/promises";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   clearPluginInteractiveHandlers,
   registerPluginInteractiveHandler,
-} from "openclaw/plugin-sdk/plugin-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import {
   createPluginStateKeyedStoreForTests,
   createPluginStateSyncKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { listSessionEntries, upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
-import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { mockPinnedHostnameResolution } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
+import type { MsgContext } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
+import {
+  listSessionEntries,
+  upsertSessionEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
+import { appendSessionTranscriptMessageByIdentity } from "@gabrielvfonseca/operator/plugin-sdk/session-transcript-runtime";
+import { mockPinnedHostnameResolution } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildTelegramApprovalCallbackData } from "./approval-callback-data.js";
 import {
@@ -324,7 +327,7 @@ async function seedTelegramPromptContextMessages(params: {
         text: message.text,
         ...(message.legacyPromptContextTimestampMs !== undefined
           ? {
-              openclaw_prompt_context_timestamp_ms: message.legacyPromptContextTimestampMs,
+              operator_prompt_context_timestamp_ms: message.legacyPromptContextTimestampMs,
             }
           : {}),
       },
@@ -432,7 +435,7 @@ describe("createTelegramBot", () => {
         id: 999,
         is_bot: true,
         first_name: "Operator",
-        username: "openclaw_bot",
+        username: "operator_bot",
         can_join_groups: true,
         can_read_all_group_messages: false,
         can_manage_bots: false,
@@ -460,7 +463,7 @@ describe("createTelegramBot", () => {
 
     const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
     await handler({
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
       message: {
         chat: { id: -42, type: "group", title: "Ops" },
@@ -506,7 +509,7 @@ describe("createTelegramBot", () => {
         is_bot: true,
         first_name: "Provisioning",
         last_name: "Placeholder",
-        username: "openclaw_bot",
+        username: "operator_bot",
       },
       expectedSender: "Configured Agent (you)",
       omitMe: false,
@@ -542,7 +545,7 @@ describe("createTelegramBot", () => {
         id: 999,
         is_bot: true,
         first_name: "Telegram Bot Name",
-        username: "openclaw_bot",
+        username: "operator_bot",
       },
       chatId: 44,
       replyMessageId: 820,
@@ -554,7 +557,7 @@ describe("createTelegramBot", () => {
         is_bot: true,
         first_name: "Provisioning",
         last_name: "Placeholder",
-        username: "openclaw_bot",
+        username: "operator_bot",
       },
       expectedSender: "Configured Agent (you)",
       omitMe: true,
@@ -567,7 +570,7 @@ describe("createTelegramBot", () => {
     async ({ replyFrom, expectedSender, omitMe, senderBusinessBot, chatId, replyMessageId }) => {
       onSpy.mockClear();
       replySpy.mockClear();
-      const storePath = `/tmp/openclaw-telegram-self-projection-${process.pid}-${chatId}.json`;
+      const storePath = `/tmp/operator-telegram-self-projection-${process.pid}-${chatId}.json`;
       const cfg = {
         channels: {
           telegram: {
@@ -586,7 +589,7 @@ describe("createTelegramBot", () => {
           id: 999,
           is_bot: true,
           first_name: "Telegram Bot Name",
-          username: "openclaw_bot",
+          username: "operator_bot",
           can_join_groups: true,
           can_read_all_group_messages: false,
           can_manage_bots: false,
@@ -609,7 +612,7 @@ describe("createTelegramBot", () => {
                   id: 999,
                   is_bot: true,
                   first_name: "Telegram Bot Name",
-                  username: "openclaw_bot",
+                  username: "operator_bot",
                 },
               }),
           getFile: async () => ({ download: async () => new Uint8Array() }),
@@ -724,7 +727,7 @@ describe("createTelegramBot", () => {
           message_id: 11,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -738,7 +741,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-callback-authz-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-callback-authz-${process.pid}-${Date.now()}.json`;
 
     await rm(storePath, { force: true });
     try {
@@ -788,7 +791,7 @@ describe("createTelegramBot", () => {
             message_id: 19,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -806,7 +809,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-group-model-authz-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-group-model-authz-${process.pid}-${Date.now()}.json`;
 
     await rm(storePath, { force: true });
     try {
@@ -861,7 +864,7 @@ describe("createTelegramBot", () => {
             message_id: 21,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -879,7 +882,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-group-model-authz-runtime-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-group-model-authz-runtime-${process.pid}-${Date.now()}.json`;
 
     await rm(storePath, { force: true });
     try {
@@ -943,7 +946,7 @@ describe("createTelegramBot", () => {
             message_id: 22,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -1004,7 +1007,7 @@ describe("createTelegramBot", () => {
           message_id: 20,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1062,7 +1065,7 @@ describe("createTelegramBot", () => {
           ].join("\n"),
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1135,7 +1138,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1206,7 +1209,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1296,7 +1299,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1359,7 +1362,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1432,7 +1435,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1495,7 +1498,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1552,7 +1555,7 @@ describe("createTelegramBot", () => {
             text: "Approval required.",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       }),
     ).rejects.toThrow("gateway unavailable");
@@ -1603,7 +1606,7 @@ describe("createTelegramBot", () => {
           text: "Plugin approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1674,7 +1677,7 @@ describe("createTelegramBot", () => {
           text: "Plugin callback.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1722,7 +1725,7 @@ describe("createTelegramBot", () => {
           text: "Run: /approve 138e9b8c allow-once",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1770,7 +1773,7 @@ describe("createTelegramBot", () => {
             text: "Approval required.",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       }),
     ).rejects.toThrow("gateway secret detail");
@@ -1821,7 +1824,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1888,7 +1891,7 @@ describe("createTelegramBot", () => {
           text: "Legacy plugin approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -1952,7 +1955,7 @@ describe("createTelegramBot", () => {
           text: "Approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2018,7 +2021,7 @@ describe("createTelegramBot", () => {
           text: "Plugin approval required.",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2057,7 +2060,7 @@ describe("createTelegramBot", () => {
           message_id: 12,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2117,7 +2120,7 @@ describe("createTelegramBot", () => {
           message_id: 14,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2159,7 +2162,7 @@ describe("createTelegramBot", () => {
           message_id: 16,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2203,7 +2206,7 @@ describe("createTelegramBot", () => {
           message_id: 13,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2217,7 +2220,7 @@ describe("createTelegramBot", () => {
     editMessageTextSpy.mockClear();
 
     const modelId = "us.anthropic.claude-3-5-sonnet-20240620-v1:0";
-    const storePath = `/tmp/openclaw-telegram-model-compact-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-model-compact-${process.pid}-${Date.now()}.json`;
     const config: OperatorConfig = {
       agents: {
         defaults: {
@@ -2260,7 +2263,7 @@ describe("createTelegramBot", () => {
             message_id: 14,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2287,7 +2290,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-model-display-names-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-model-display-names-${process.pid}-${Date.now()}.json`;
     const buildModelsProviderDataMock =
       telegramBotDepsForTest.buildModelsProviderData as unknown as ReturnType<typeof vi.fn>;
     buildModelsProviderDataMock.mockResolvedValueOnce({
@@ -2342,7 +2345,7 @@ describe("createTelegramBot", () => {
             message_id: 23,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2373,7 +2376,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-model-default-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-model-default-${process.pid}-${Date.now()}.json`;
     const config: OperatorConfig = {
       agents: {
         defaults: {
@@ -2419,7 +2422,7 @@ describe("createTelegramBot", () => {
             message_id: 16,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2446,7 +2449,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-model-html-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-model-html-${process.pid}-${Date.now()}.json`;
 
     await rm(storePath, { force: true });
     try {
@@ -2494,7 +2497,7 @@ describe("createTelegramBot", () => {
             message_id: 17,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2508,7 +2511,7 @@ describe("createTelegramBot", () => {
       expect(editCall[0]).toBe(1234);
       expect(editCall[1]).toBe(17);
       expect(editCall[2]).toBe(
-        `${CHECK_MARK_EMOJI} Model changed to <b>openai/gpt-5.4</b>\n\nSession-only model selection. Runtime unchanged. Use /model openai/gpt-5.4 --runtime &lt;runtime&gt; to switch harnesses. The agent default in openclaw.json is unchanged; /reset or a new session may return to that default.`,
+        `${CHECK_MARK_EMOJI} Model changed to <b>openai/gpt-5.4</b>\n\nSession-only model selection. Runtime unchanged. Use /model openai/gpt-5.4 --runtime &lt;runtime&gt; to switch harnesses. The agent default in operator.json is unchanged; /reset or a new session may return to that default.`,
       );
       expect(requireRecord(editCall[3], "edit params").parse_mode).toBe("HTML");
 
@@ -2530,7 +2533,7 @@ describe("createTelegramBot", () => {
     replySpy.mockClear();
     editMessageTextSpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-model-fresh-cfg-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-model-fresh-cfg-${process.pid}-${Date.now()}.json`;
     const debounceMs = 4321;
 
     await rm(storePath, { force: true });
@@ -2600,7 +2603,7 @@ describe("createTelegramBot", () => {
             message_id: 20,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2623,7 +2626,7 @@ describe("createTelegramBot", () => {
             message_id: 21,
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -2647,7 +2650,7 @@ describe("createTelegramBot", () => {
       try {
         const replyDelivered = waitForReplyCalls(1);
         await messageHandler({
-          me: { id: 999, username: "openclaw_bot" },
+          me: { id: 999, username: "operator_bot" },
           getFile: async () => ({ download: async () => new Uint8Array() }),
           message: {
             chat: { id: 1234, type: "private" },
@@ -2739,7 +2742,7 @@ describe("createTelegramBot", () => {
           message_id: 15,
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2783,7 +2786,7 @@ describe("createTelegramBot", () => {
           username: "ada",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -2824,7 +2827,7 @@ describe("createTelegramBot", () => {
     createTelegramBot({ token: "tok" });
     const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
     const baseCtx = {
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     };
 
@@ -2864,7 +2867,7 @@ describe("createTelegramBot", () => {
       ...baseCtx,
       message: {
         chat: { id: 42, type: "group", title: "Ops" },
-        text: "@openclaw_bot thoughts?",
+        text: "@operator_bot thoughts?",
         date: 1736380920,
         message_id: 202,
         from: { id: 203, is_bot: false, first_name: "Avery" },
@@ -2923,7 +2926,7 @@ describe("createTelegramBot", () => {
     createTelegramBot({ token: "tok" });
     const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
     const baseCtx = {
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     };
 
@@ -2943,7 +2946,7 @@ describe("createTelegramBot", () => {
       ...baseCtx,
       message: {
         chat: { id: 42, type: "group", title: "Ops" },
-        text: "@openclaw_bot Hello",
+        text: "@operator_bot Hello",
         date: 1736380860,
         message_id: 502,
         from: { id: 222, is_bot: false, first_name: "Operator" },
@@ -3007,7 +3010,7 @@ describe("createTelegramBot", () => {
       createTelegramBot({ token: "tok" });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
 
@@ -3043,7 +3046,7 @@ describe("createTelegramBot", () => {
         ...baseCtx,
         message: {
           chat: { id: 42, type: "group", title: "Ops" },
-          text: "@openclaw_bot what changed?",
+          text: "@operator_bot what changed?",
           date: 1_736_380_980,
           message_id: 504,
           from: { id: 444, is_bot: false, first_name: "Pat" },
@@ -3099,7 +3102,7 @@ describe("createTelegramBot", () => {
     createTelegramBot({ token: "tok" });
     const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
     const baseCtx = {
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     };
 
@@ -3119,7 +3122,7 @@ describe("createTelegramBot", () => {
       ...baseCtx,
       message: {
         chat: { id: 42, type: "group", title: "Ops" },
-        text: "@openclaw_bot Hello",
+        text: "@operator_bot Hello",
         date: 1736380860,
         message_id: 602,
         from: { id: 222, is_bot: false, first_name: "Operator" },
@@ -3157,7 +3160,7 @@ describe("createTelegramBot", () => {
       ctx: Record<string, unknown>,
     ) => Promise<void>;
     const baseCtx = {
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     };
     const chat = { id: 42, type: "group", title: "Ops" };
@@ -3234,7 +3237,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-media-context-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-media-context-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: {
         telegram: {
@@ -3253,7 +3256,7 @@ describe("createTelegramBot", () => {
       createTelegramBot({ token: "tok", config });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
 
@@ -3322,7 +3325,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-legacy-dedupe-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-legacy-dedupe-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3361,7 +3364,7 @@ describe("createTelegramBot", () => {
 
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3390,7 +3393,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-markerless-assistant-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-markerless-assistant-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3427,7 +3430,7 @@ describe("createTelegramBot", () => {
 
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3455,7 +3458,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-visible-dedupe-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-visible-dedupe-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: {
         telegram: {
@@ -3507,7 +3510,7 @@ describe("createTelegramBot", () => {
       createTelegramBot({ token: "tok", config });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
+        me: { id: 999, is_bot: true, first_name: "Operator", username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
       await handler({
@@ -3589,7 +3592,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-incomplete-projection-${process.pid}-${parts[0]?.messageId}.json`;
+    const storePath = `/tmp/operator-telegram-dm-incomplete-projection-${process.pid}-${parts[0]?.messageId}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3632,7 +3635,7 @@ describe("createTelegramBot", () => {
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       replySpy.mockClear();
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3668,7 +3671,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-complete-multipart-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-complete-multipart-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3719,7 +3722,7 @@ describe("createTelegramBot", () => {
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       replySpy.mockClear();
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3761,7 +3764,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-invalid-projection-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-invalid-projection-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3815,7 +3818,7 @@ describe("createTelegramBot", () => {
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       replySpy.mockClear();
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3849,7 +3852,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-repeat-projection-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-repeat-projection-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3913,7 +3916,7 @@ describe("createTelegramBot", () => {
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       replySpy.mockClear();
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -3945,7 +3948,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-user-markdown-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-user-markdown-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
       session: { store: storePath },
@@ -3982,7 +3985,7 @@ describe("createTelegramBot", () => {
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       replySpy.mockClear();
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: chatId, type: "private" },
@@ -4015,7 +4018,7 @@ describe("createTelegramBot", () => {
     onSpy.mockClear();
     replySpy.mockClear();
 
-    const storePath = `/tmp/openclaw-telegram-dm-reset-context-${process.pid}-${Date.now()}.json`;
+    const storePath = `/tmp/operator-telegram-dm-reset-context-${process.pid}-${Date.now()}.json`;
     const config = {
       channels: {
         telegram: {
@@ -4044,7 +4047,7 @@ describe("createTelegramBot", () => {
 
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat: { id: 7772, type: "private" },
@@ -4094,7 +4097,7 @@ describe("createTelegramBot", () => {
           entities: [{ type: "bold", offset: 1, length: 9 }],
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -4132,7 +4135,7 @@ describe("createTelegramBot", () => {
           from: { first_name: "Ada" },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -4189,7 +4192,7 @@ describe("createTelegramBot", () => {
             from: { first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
       replyGetFileSignal = mockArg(
@@ -4258,7 +4261,7 @@ describe("createTelegramBot", () => {
             from: { first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
     } finally {
@@ -4297,7 +4300,7 @@ describe("createTelegramBot", () => {
             from: { first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       }),
     );
@@ -4345,7 +4348,7 @@ describe("createTelegramBot", () => {
         handler({
           update,
           message: update.message,
-          me: { username: "openclaw_bot" },
+          me: { username: "operator_bot" },
           getFile: async () => ({}),
         }),
       ),
@@ -4390,7 +4393,7 @@ describe("createTelegramBot", () => {
           from: { id: 1, first_name: "Kesava" },
           photo: [{ file_id: "root-photo-1" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ file_path: "media/root.jpg" }),
       });
 
@@ -4407,7 +4410,7 @@ describe("createTelegramBot", () => {
             from: { id: 1, first_name: "Kesava" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -4428,7 +4431,7 @@ describe("createTelegramBot", () => {
             from: { id: 2, first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
     } finally {
@@ -4526,7 +4529,7 @@ describe("createTelegramBot", () => {
       });
       const handler = getOnHandler("message") as (ctx: Record<string, unknown>) => Promise<void>;
       const baseCtx = {
-        me: { id: 999, is_bot: true, first_name: "Operator", username: "openclaw_bot" },
+        me: { id: 999, is_bot: true, first_name: "Operator", username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
       const chat = { id: chatId, type: "group", title: "Ops" };
@@ -4559,7 +4562,7 @@ describe("createTelegramBot", () => {
         message: {
           chat,
           message_id: 103,
-          text: "@openclaw_bot explain what went wrong",
+          text: "@operator_bot explain what went wrong",
           date: 1736380800,
           from: { id: 1, is_bot: false, first_name: "UserA" },
           reply_to_message: {
@@ -4701,7 +4704,7 @@ describe("createTelegramBot", () => {
       const chat = { id: -1007, type: "supergroup", title: "Ops", is_forum: true };
 
       await handler({
-        me: { id: 999, username: "openclaw_bot" },
+        me: { id: 999, username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
         message: {
           chat,
@@ -4848,12 +4851,12 @@ describe("createTelegramBot", () => {
         const chat = { id: chatId, type: "group", title: "Ops" };
 
         await handler({
-          me: { id: 999, username: "openclaw_bot" },
+          me: { id: 999, username: "operator_bot" },
           getFile: async () => ({ download: async () => new Uint8Array() }),
           message: {
             chat,
             message_id: 103,
-            text: "@openclaw_bot explain this",
+            text: "@operator_bot explain this",
             date: 1736380800,
             from: { id: 1, is_bot: false, first_name: "Allowed" },
             reply_to_message: {
@@ -4934,7 +4937,7 @@ describe("createTelegramBot", () => {
           from: { first_name: "Ada" },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({}),
     });
 
@@ -5001,7 +5004,7 @@ describe("createTelegramBot", () => {
             from: { first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
       await handler({
@@ -5017,7 +5020,7 @@ describe("createTelegramBot", () => {
             from: { first_name: "Ada" },
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({}),
       });
 
@@ -5065,7 +5068,7 @@ describe("createTelegramBot", () => {
           text: "summarize this",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5101,7 +5104,7 @@ describe("createTelegramBot", () => {
           from: { first_name: "Ada" },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5149,7 +5152,7 @@ describe("createTelegramBot", () => {
           },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5196,7 +5199,7 @@ describe("createTelegramBot", () => {
           },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5253,7 +5256,7 @@ describe("createTelegramBot", () => {
           },
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5293,7 +5296,7 @@ describe("createTelegramBot", () => {
           from: { id: 999, first_name: "Operator" },
         },
       },
-      me: { id: 999, username: "openclaw_bot" },
+      me: { id: 999, username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5337,7 +5340,7 @@ describe("createTelegramBot", () => {
         date: 1736380800,
         message_thread_id: 99,
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5372,7 +5375,7 @@ describe("createTelegramBot", () => {
         text: "hello",
         date: 1736380800,
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5407,7 +5410,7 @@ describe("createTelegramBot", () => {
         text: "/status",
         date: 1736380800,
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5458,7 +5461,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5508,7 +5511,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5559,7 +5562,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5583,7 +5586,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -5598,7 +5601,7 @@ describe("createTelegramBot", () => {
     const replyDone = waitForReplyCalls(1);
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler: async () => ({ handled: true, submitText: "Fix a broken tool" }),
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5620,7 +5623,7 @@ describe("createTelegramBot", () => {
       await callbackHandler({
         callbackQuery: {
           id: "cbq-smart-reply-submit",
-          data: "openclaw-smart-replies:v1:Rm14IGEgYnJva2VuIHRvb2w",
+          data: "operator-smart-replies:v1:Rm14IGEgYnJva2VuIHRvb2w",
           from: { id: 9, first_name: "Ada", username: "ada_bot" },
           message: {
             chat: { id: 9, type: "private" },
@@ -5629,7 +5632,7 @@ describe("createTelegramBot", () => {
             text: "What should I help you sharpen next?",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
       await replyDone;
@@ -5654,7 +5657,7 @@ describe("createTelegramBot", () => {
     const handler = vi.fn(async () => ({ handled: false, submitText: "Ignore this" }));
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler,
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5676,7 +5679,7 @@ describe("createTelegramBot", () => {
       await callbackHandler({
         callbackQuery: {
           id: "cbq-smart-reply-declined-submit",
-          data: "openclaw-smart-replies:v1:SWdub3JlIHRoaXM",
+          data: "operator-smart-replies:v1:SWdub3JlIHRoaXM",
           from: { id: 9, first_name: "Ada", username: "ada_bot" },
           message: {
             chat: { id: 9, type: "private" },
@@ -5685,7 +5688,7 @@ describe("createTelegramBot", () => {
             text: "Pick a direction",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
     } finally {
@@ -5695,7 +5698,7 @@ describe("createTelegramBot", () => {
     expect(handler).toHaveBeenCalledTimes(1);
     expect(replySpy).toHaveBeenCalledTimes(1);
     const payload = mockMsgContextArg(replySpy as unknown as MockCallSource, 0, 0, "replySpy call");
-    expect(payload.Body).toContain("callback_data: openclaw-smart-replies");
+    expect(payload.Body).toContain("callback_data: operator-smart-replies");
     expect(payload.Body).not.toContain("Ignore this");
     expect(editMessageReplyMarkupSpy).not.toHaveBeenCalled();
   });
@@ -5720,7 +5723,7 @@ describe("createTelegramBot", () => {
     });
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler,
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5743,7 +5746,7 @@ describe("createTelegramBot", () => {
       const callbackContext = {
         callbackQuery: {
           id: "cbq-smart-reply-policy-skip",
-          data: "openclaw-smart-replies:v1:RG8gbm90IHN1Ym1pdCB0aGlz",
+          data: "operator-smart-replies:v1:RG8gbm90IHN1Ym1pdCB0aGlz",
           from: { id: 9, first_name: "Ada", username: "ada_bot" },
           message: {
             chat: { id: 9, type: "private" },
@@ -5752,7 +5755,7 @@ describe("createTelegramBot", () => {
             text: "Pick a direction",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
 
@@ -5774,7 +5777,7 @@ describe("createTelegramBot", () => {
     const replyDone = waitForReplyCalls(1);
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler: async () => ({ handled: true, submitText: "Investigate topic callback" }),
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5799,7 +5802,7 @@ describe("createTelegramBot", () => {
       await callbackHandler({
         callbackQuery: {
           id: "cbq-smart-reply-topic-submit",
-          data: "openclaw-smart-replies:v1:SW52ZXN0aWdhdGUgdG9waWMgY2FsbGJhY2s",
+          data: "operator-smart-replies:v1:SW52ZXN0aWdhdGUgdG9waWMgY2FsbGJhY2s",
           from: { id: 9, first_name: "Ada", username: "ada_bot" },
           message: {
             chat: { id: -100987654321, type: "supergroup", title: "Forum Group", is_forum: true },
@@ -5810,7 +5813,7 @@ describe("createTelegramBot", () => {
             text: "What should I help you sharpen next?",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
       await replyDone;
@@ -5845,7 +5848,7 @@ describe("createTelegramBot", () => {
     });
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler: async () => ({ handled: true, submitText: "Make Alice funnier" }),
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5865,7 +5868,7 @@ describe("createTelegramBot", () => {
       const callbackHandler = getTelegramCallbackHandlerForTests();
       const callbackQuery = {
         id: "cbq-smart-reply-submit-retry",
-        data: "openclaw-smart-replies:v1:TWFrZSBBbGljZSBmdW5uaWVy",
+        data: "operator-smart-replies:v1:TWFrZSBBbGljZSBmdW5uaWVy",
         from: { id: 9, first_name: "Ada", username: "ada_bot" },
         message: {
           chat: { id: 9, type: "private" },
@@ -5878,7 +5881,7 @@ describe("createTelegramBot", () => {
       const callbackContext = {
         update,
         callbackQuery,
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       };
 
@@ -5920,7 +5923,7 @@ describe("createTelegramBot", () => {
     const handler = vi.fn(async () => ({ handled: true, submitText: "Try this later" }));
     registerPluginInteractiveHandler("smart-replies-plugin", {
       channel: "telegram",
-      namespace: "openclaw-smart-replies",
+      namespace: "operator-smart-replies",
       handler,
     } satisfies TelegramInteractiveHandlerRegistration);
     setTelegramPluginStateRuntimeForTests();
@@ -5942,7 +5945,7 @@ describe("createTelegramBot", () => {
         update_id: updateId,
         callbackQuery: {
           id: "cbq-smart-reply-submit-fail",
-          data: "openclaw-smart-replies:v1:VHJ5IHRoaXMgbGF0ZXI",
+          data: "operator-smart-replies:v1:VHJ5IHRoaXMgbGF0ZXI",
           from: { id: 9, first_name: "Ada", username: "ada_bot" },
           message: {
             chat: { id: 9, type: "private" },
@@ -5951,7 +5954,7 @@ describe("createTelegramBot", () => {
             text: "Pick a direction",
           },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "operator_bot" },
         getFile: async () => ({ download: async () => new Uint8Array() }),
       });
 
@@ -6019,7 +6022,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -6074,7 +6077,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -6129,7 +6132,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -6183,7 +6186,7 @@ describe("createTelegramBot", () => {
           text: "Select a thread",
         },
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "operator_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 

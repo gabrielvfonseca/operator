@@ -1,5 +1,5 @@
 // Pixverse plugin entrypoint registers its Operator integration.
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { PIXVERSE_PROVIDER_ID } from "./constants.js";
 import { buildPixVerseApiKeyAuthMethod } from "./onboard.js";
 import { buildPixVerseVideoGenerationProvider } from "./video-generation-provider.js";

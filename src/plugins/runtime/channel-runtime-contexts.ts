@@ -1,5 +1,5 @@
 // Channel runtime context helpers build plugin runtime context for channel execution.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   ChannelRuntimeContextEvent,
   ChannelRuntimeContextKey,

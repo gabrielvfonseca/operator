@@ -1,6 +1,6 @@
 // ClickClack tests cover token secret contract behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { createResolverContext } from "openclaw/plugin-sdk/secret-ref-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { createResolverContext } from "@gabrielvfonseca/operator/plugin-sdk/secret-ref-runtime";
 import { describe, expect, it } from "vitest";
 import { collectRuntimeConfigAssignments, secretTargetRegistryEntries } from "./secret-contract.js";
 

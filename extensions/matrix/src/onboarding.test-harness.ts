@@ -1,7 +1,7 @@
 // Matrix setup module handles plugin onboarding behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { OutputRuntimeEnv } from "openclaw/plugin-sdk/runtime";
-import type { ChannelSetupWizardAdapter } from "openclaw/plugin-sdk/setup";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OutputRuntimeEnv } from "@gabrielvfonseca/operator/plugin-sdk/runtime";
+import type { ChannelSetupWizardAdapter } from "@gabrielvfonseca/operator/plugin-sdk/setup";
 import { afterEach, vi } from "vitest";
 import type { RuntimeEnv, WizardPrompter } from "../runtime-api.js";
 import type { CoreConfig } from "./types.js";

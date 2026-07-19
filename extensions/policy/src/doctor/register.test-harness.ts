@@ -9,8 +9,8 @@ import {
   type HealthFinding,
   type HealthRepairContext,
   type OperatorConfig,
-} from "openclaw/plugin-sdk/health";
-import { clearHealthChecksForTest } from "openclaw/plugin-sdk/plugin-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/health";
+import { clearHealthChecksForTest } from "@gabrielvfonseca/operator/plugin-sdk/plugin-test-runtime";
 import { registerPolicyDoctorChecks } from "./register.js";
 
 export let workspaceDir: string;
@@ -110,18 +110,18 @@ export const describe0BeforeEach0 = async () => {
   workspaceDir = await fs.mkdtemp(join(tmpdir(), "policy-doctor-"));
   process.env.OPERATOR_HOME = workspaceDir;
   delete process.env.OPERATOR_STATE_DIR;
-  await fs.mkdir(join(workspaceDir, ".openclaw"), { recursive: true });
+  await fs.mkdir(join(workspaceDir, ".operator"), { recursive: true });
   try {
     await fs.symlink(
       "../exec-approvals.json",
-      join(workspaceDir, ".openclaw", "exec-approvals.json"),
+      join(workspaceDir, ".operator", "exec-approvals.json"),
     );
   } catch (err) {
     if (typeof err !== "object" || err === null || !("code" in err) || err.code !== "EPERM") {
       throw err;
     }
-    await fs.rm(join(workspaceDir, ".openclaw"), { recursive: true, force: true });
-    await fs.symlink(workspaceDir, join(workspaceDir, ".openclaw"), "junction");
+    await fs.rm(join(workspaceDir, ".operator"), { recursive: true, force: true });
+    await fs.symlink(workspaceDir, join(workspaceDir, ".operator"), "junction");
   }
 };
 

@@ -1069,7 +1069,7 @@ describe("gateway sessions patch", () => {
             defaults: {
               model: { primary: "openai/gpt-5.6-luna" },
               models: {
-                "openai/gpt-5.6-luna": { agentRuntime: { id: "openclaw" } },
+                "openai/gpt-5.6-luna": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
               },
             },
           },
@@ -1111,7 +1111,7 @@ describe("gateway sessions patch", () => {
           agents: { defaults: { model: { primary: "openai/gpt-5.6-luna" } } },
         } as OperatorConfig,
         store: mainStoreEntry({
-          agentRuntimeOverride: "openclaw",
+          agentRuntimeOverride: "@gabrielvfonseca/operator",
           agentHarnessId: "codex",
         }),
         patch: { key: MAIN_SESSION_KEY, thinkingLevel: "ultra" },
@@ -1138,7 +1138,7 @@ describe("gateway sessions patch", () => {
           defaults: {
             model: { primary: "openai/gpt-5.6-luna" },
             models: {
-              "openai/gpt-5.6-luna": { agentRuntime: { id: "openclaw" } },
+              "openai/gpt-5.6-luna": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         },
@@ -1160,7 +1160,7 @@ describe("gateway sessions patch", () => {
       cfg: {
         agents: { defaults: { model: { primary: "openai/gpt-5.6-luna" } } },
       } as OperatorConfig,
-      store: mainStoreEntry({ agentHarnessId: "openclaw" }),
+      store: mainStoreEntry({ agentHarnessId: "@gabrielvfonseca/operator" }),
       patch: { key: MAIN_SESSION_KEY, thinkingLevel: "ultra" },
       loadGatewayModelCatalog: async () => [],
     });

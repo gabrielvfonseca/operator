@@ -1,6 +1,6 @@
 // Workboard tests cover command plugin behavior.
-import { expectDefined } from "@operator/normalization-core";
-import type { OperatorPluginCommandDefinition } from "openclaw/plugin-sdk/core";
+import { expectDefined } from "@gabrielvfonseca/normalization-core";
+import type { OperatorPluginCommandDefinition } from "@gabrielvfonseca/operator/plugin-sdk/core";
 import { describe, expect, it, vi } from "vitest";
 import type { OperatorPluginApi } from "../api.js";
 import { registerWorkboardCommand } from "./command.js";

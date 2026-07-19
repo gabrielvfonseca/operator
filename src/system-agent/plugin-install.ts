@@ -13,7 +13,7 @@ export function validateSystemAgentPluginInstallSpec(spec: string): string | nul
     return "Operator plugin install accepts npm or ClawHub package specs only.";
   }
   if (!isOperatorTrustedPluginInstallSpec(trimmed)) {
-    return "Operator installs only ClawHub, bundled, or official-catalog plugins. Use `operator plugins install <spec>` in a trusted shell to review an arbitrary executable source.";
+    return "Operator installs only ClawHub, bundled, or official-catalog plugins. Use `openclaw plugins install <spec>` in a trusted shell to review an arbitrary executable source.";
   }
   return null;
 }

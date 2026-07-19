@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { redactMigrationPlan } from "openclaw/plugin-sdk/migration";
+import { redactMigrationPlan } from "@gabrielvfonseca/operator/plugin-sdk/migration";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveHomePath } from "./helpers.js";
 import { buildMemoryItems } from "./memory.js";
@@ -40,7 +40,7 @@ describe("Claude migration provider", () => {
 
   it("resolves tilde source paths against the OS home when OPERATOR_HOME is set", () => {
     const previous = process.env.OPERATOR_HOME;
-    process.env.OPERATOR_HOME = path.join(path.sep, "tmp", "openclaw-home");
+    process.env.OPERATOR_HOME = path.join(path.sep, "tmp", "operator-home");
     try {
       expect(resolveHomePath("~/.claude")).toBe(path.join(os.homedir(), ".claude"));
     } finally {

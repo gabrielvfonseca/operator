@@ -2,13 +2,13 @@
  * Prepares Google prompt-cache payloads for embedded-agent stream calls.
  */
 import crypto from "node:crypto";
-import { stripSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
+import { stripSystemPromptCacheBoundary } from "@gabrielvfonseca/ai/internal/shared";
 import {
   asDateTimestampMs,
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@operator/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { parseGeminiAuth } from "../../infra/gemini-auth.js";
 import { normalizeGoogleApiBaseUrl } from "../../infra/google-api-base-url.js";
 import { readResponseWithLimit } from "../../infra/http-body.js";

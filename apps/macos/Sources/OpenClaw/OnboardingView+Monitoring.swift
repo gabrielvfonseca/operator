@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawIPC
+import OperatorIPC
 
 extension OnboardingView {
     @MainActor
@@ -86,8 +86,8 @@ extension OnboardingView {
         installingCLI = true
         cliInstallPhase = .startingService
         OnboardingController.shared.setWindowCloseEnabled(false)
-        OnboardingController.shared.busyReason = "OpenClaw is starting the Gateway service."
-        cliStatus = "Starting OpenClaw Gateway…"
+        OnboardingController.shared.busyReason = "Operator is starting the Gateway service."
+        cliStatus = "Starting Operator Gateway…"
         Task { @MainActor in await self.finishExistingCLIActivation() }
     }
 
@@ -116,13 +116,13 @@ extension OnboardingView {
         switch result {
         case .ready:
             cliInstalled = true
-            cliStatus = "OpenClaw Gateway is ready."
+            cliStatus = "Operator Gateway is ready."
         case .deferred:
             cliInstalled = false
-            cliStatus = "OpenClaw is paused. Resume it, then retry setup to start the Gateway."
+            cliStatus = "Operator is paused. Resume it, then retry setup to start the Gateway."
         case .failed:
             cliInstalled = false
-            cliStatus = "OpenClaw is installed, but the Gateway did not start. Retry setup."
+            cliStatus = "Operator is installed, but the Gateway did not start. Retry setup."
         }
     }
 
@@ -131,7 +131,7 @@ extension OnboardingView {
         installingCLI = true
         OnboardingController.shared.setWindowCloseEnabled(false)
         // Cmd-W bypasses the disabled close button; the delegate asks first.
-        OnboardingController.shared.busyReason = "OpenClaw is installing the Gateway service."
+        OnboardingController.shared.busyReason = "Operator is installing the Gateway service."
         Task { @MainActor in await self.runCLIInstall() }
     }
 
@@ -164,21 +164,21 @@ extension OnboardingView {
         cliExecutableReady = true
         cliInstallLocation = CLIInstaller.managedExecutableLocation()
         if !Self.shouldActivateLocalGateway(afterCLIInstallFor: self.state.connectionMode) {
-            cliStatus = "OpenClaw CLI is ready for the Mac node."
+            cliStatus = "Operator CLI is ready for the Mac node."
             cliInstalled = true
             return
         }
-        cliStatus = "Starting OpenClaw Gateway…"
+        cliStatus = "Starting Operator Gateway…"
         // The step checklist shows one spinner at a time: install first,
         // then the service start.
         self.cliInstallPhase = .startingService
         switch await CLIInstaller.activateLocalGateway() {
         case .ready:
-            cliStatus = "OpenClaw Gateway is ready."
+            cliStatus = "Operator Gateway is ready."
         case .deferred:
-            cliStatus = "OpenClaw is installed. The Gateway will start when This Mac is active and resumed."
+            cliStatus = "Operator is installed. The Gateway will start when This Mac is active and resumed."
         case .failed:
-            cliStatus = "OpenClaw was installed, but the Gateway did not start. Retry setup."
+            cliStatus = "Operator was installed, but the Gateway did not start. Retry setup."
             return
         }
         cliInstalled = true
@@ -207,7 +207,7 @@ extension OnboardingView {
                 return
             }
             let command = desc.command.trimmingCharacters(in: .whitespacesAndNewlines)
-            let expectedTokens = ["node", "openclaw", "tsx", "pnpm", "bun"]
+            let expectedTokens = ["node", "@gabrielvfonseca/operator", "tsx", "pnpm", "bun"]
             let lower = command.lowercased()
             let expected = expectedTokens.contains { lower.contains($0) }
             self.localGatewayProbe = LocalGatewayProbe(

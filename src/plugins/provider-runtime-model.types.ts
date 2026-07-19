@@ -1,5 +1,5 @@
 // Defines runtime model metadata supplied by provider plugins.
-import type { Model } from "operator/plugin-sdk/llm";
+import type { Model } from "@gabrielvfonseca/operator/plugin-sdk/llm";
 import type { ModelCompatConfig, ModelMediaInputConfig } from "../config/types.models.js";
 
 /**

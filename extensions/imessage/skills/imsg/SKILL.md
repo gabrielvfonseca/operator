@@ -4,7 +4,7 @@ description: "Use the imsg CLI from Operator agents for iMessage/SMS DMs, groups
 homepage: https://imsg.to
 metadata:
   {
-    "openclaw":
+    "@gabrielvfonseca/operator":
       {
         "emoji": "📨",
         "os": ["darwin"],

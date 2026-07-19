@@ -1,5 +1,5 @@
 // Tracks active reply runs so stop, queue, and status commands can coordinate.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import {
   createAgentRunRestartAbortError,
   isAgentRunRestartAbortReason,

@@ -184,19 +184,19 @@ describe("resolveClaudeCliExecutionArgs", () => {
           "--ide",
           "--strict-mcp-config",
           "--mcp-config",
-          "/tmp/openclaw-openclaw-mcp.json",
+          "/tmp/operator-operator-mcp.json",
           "--resume",
           "native-session",
           "--tools",
           "Bash,Edit",
           "--allowedTools",
-          "mcp__openclaw__*",
+          "mcp__operator__*",
           "--disallowedTools",
           "ScheduleWakeup,mcp__other__*",
         ],
         toolAvailability: {
           native: [],
-          mcp: ["mcp__openclaw__openclaw"],
+          mcp: ["mcp__operator__openclaw"],
         },
       }),
     ).toEqual([
@@ -204,7 +204,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
       "--output-format",
       "stream-json",
       "--mcp-config",
-      "/tmp/openclaw-openclaw-mcp.json",
+      "/tmp/operator-operator-mcp.json",
       "--resume",
       "native-session",
       "--setting-sources",
@@ -217,7 +217,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
       "--tools",
       "",
       "--allowedTools",
-      "mcp__openclaw__openclaw",
+      "mcp__operator__openclaw",
     ]);
   });
 
@@ -237,11 +237,11 @@ describe("resolveClaudeCliExecutionArgs", () => {
           "--tools",
           "Bash,Edit",
           "--allowedTools",
-          "mcp__openclaw__*",
+          "mcp__operator__*",
         ],
         toolAvailability: {
           native: [],
-          mcp: ["mcp__openclaw__message"],
+          mcp: ["mcp__operator__message"],
         },
       }),
     ).toEqual([
@@ -253,7 +253,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
       "--tools",
       "",
       "--allowedTools",
-      "mcp__openclaw__message",
+      "mcp__operator__message",
     ]);
   });
 
@@ -269,7 +269,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
           "--tools",
           "Bash,Edit",
           "--allowedTools",
-          "mcp__openclaw__*",
+          "mcp__operator__*",
           "--disallowedTools",
           "mcp__other__*",
         ],
@@ -365,7 +365,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
           "-p",
           "--output-format",
           "stream-json",
-          "--allowedTools=mcp__openclaw__*",
+          "--allowedTools=mcp__operator__*",
           "--allowedTools",
           "Read",
           "Grep",
@@ -585,7 +585,7 @@ describe("normalizeClaudeBackendConfig", () => {
 
     expect(
       backend.prepareExecution?.({
-        workspaceDir: "/tmp/openclaw-claude-cli",
+        workspaceDir: "/tmp/operator-claude-cli",
         provider: "claude-cli",
         modelId: "claude-opus-4-7",
         contextTokenBudget: 100_000,

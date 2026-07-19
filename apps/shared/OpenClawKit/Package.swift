@@ -3,16 +3,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "OpenClawKit",
+    name: "OperatorKit",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
         .watchOS(.v11),
     ],
     products: [
-        .library(name: "OpenClawProtocol", targets: ["OpenClawProtocol"]),
-        .library(name: "OpenClawKit", targets: ["OpenClawKit"]),
-        .library(name: "OpenClawChatUI", targets: ["OpenClawChatUI"]),
+        .library(name: "OperatorProtocol", targets: ["OperatorProtocol"]),
+        .library(name: "OperatorKit", targets: ["OperatorKit"]),
+        .library(name: "OperatorChatUI", targets: ["OperatorChatUI"]),
     ],
     traits: [
         .trait(name: "Talk", description: "ElevenLabs cloud TTS / talk support"),
@@ -25,21 +25,21 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "OpenClawProtocol",
-            path: "Sources/OpenClawProtocol",
+            name: "OperatorProtocol",
+            path: "Sources/OperatorProtocol",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "OpenClawKit",
+            name: "OperatorKit",
             dependencies: [
-                "OpenClawProtocol",
+                "OperatorProtocol",
                 .product(
                     name: "ElevenLabsKit",
                     package: "ElevenLabsKit",
                     condition: .when(platforms: [.iOS, .macOS], traits: ["Talk"])),
             ],
-            path: "Sources/OpenClawKit",
+            path: "Sources/OperatorKit",
             resources: [
                 .process("Resources"),
             ],
@@ -47,21 +47,21 @@ let package = Package(
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "OpenClawChatUI",
+            name: "OperatorChatUI",
             dependencies: [
-                "OpenClawKit",
-                "OpenClawProtocol",
+                "OperatorKit",
+                "OperatorProtocol",
                 .product(name: "Markdown", package: "swift-markdown"),
                 .product(name: "SwiftMath", package: "SwiftMath"),
             ],
-            path: "Sources/OpenClawChatUI",
+            path: "Sources/OperatorChatUI",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "OpenClawKitTests",
-            dependencies: ["OpenClawKit", "OpenClawChatUI", "OpenClawProtocol"],
-            path: "Tests/OpenClawKitTests",
+            name: "OperatorKitTests",
+            dependencies: ["OperatorKit", "OperatorChatUI", "OperatorProtocol"],
+            path: "Tests/OperatorKitTests",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
                 .enableExperimentalFeature("SwiftTesting"),

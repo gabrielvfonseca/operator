@@ -6,7 +6,7 @@ import {
   addTimerTimeoutGraceMs,
   MAX_DATE_TIMESTAMP_MS,
   MAX_TIMER_TIMEOUT_MS,
-} from "@operator/normalization-core/number-coercion";
+} from "@gabrielvfonseca/normalization-core/number-coercion";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const callGatewayMock = vi.fn();
@@ -132,7 +132,7 @@ describe("readLatestAssistantReply", () => {
         },
         {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "gateway-injected",
           content: [{ type: "text", text: "gateway notice" }],
           timestamp: 12,
@@ -181,7 +181,7 @@ describe("readLatestAssistantReply", () => {
         },
         {
           role: "assistant",
-          provider: "openclaw",
+          provider: "@gabrielvfonseca/operator",
           model: "gateway-injected",
           content: [{ type: "text", text: "gateway notice" }],
           timestamp: 11,
@@ -535,7 +535,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
           baselineMessage,
           {
             role: "assistant",
-            provider: "openclaw",
+            provider: "@gabrielvfonseca/operator",
             model: "delivery-mirror",
             content: [{ type: "text", text: "already delivered source reply" }],
             timestamp: 42,
@@ -611,7 +611,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
             sourceTool: "sessions_send",
           },
           content: [{ type: "text", text: "forwarded request" }],
-          __openclaw: { seq: 41 },
+          __operator: { seq: 41 },
           timestamp: 41,
         },
         {
@@ -651,7 +651,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
             sourceTool: "sessions_send",
           },
           content: [{ type: "text", text: "forwarded request" }],
-          __openclaw: { seq: 41 },
+          __operator: { seq: 41 },
           timestamp: 41,
         },
         {
@@ -696,7 +696,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
             sourceTool: "sessions_send",
           },
           content: [{ type: "text", text: "new forwarded request" }],
-          __openclaw: { seq: 42 },
+          __operator: { seq: 42 },
           timestamp: 42,
         },
         {
@@ -828,7 +828,7 @@ describe("waitForAgentRunAndReadUpdatedAssistantReply", () => {
           },
           {
             role: "assistant",
-            provider: "openclaw",
+            provider: "@gabrielvfonseca/operator",
             model: "delivery-mirror",
             content: [{ type: "text", text: "already delivered source reply" }],
             timestamp: 42,

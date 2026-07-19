@@ -6,7 +6,7 @@ import {
   ensureOperatorAgentDatabasePermissions,
   isOperatorAgentDatabaseOpen,
   migrateOperatorAgentDatabaseForMaintenance,
-} from "../state/operator-agent-db.js";
+} from "../state/openclaw-agent-db.js";
 import { resolveTargetSqlitePath } from "./doctor-session-sqlite-readers.js";
 import type { DoctorSessionSqliteCompactReport } from "./doctor-session-sqlite-types.js";
 import { compactDoctorSqliteFile } from "./doctor-sqlite-compact.js";

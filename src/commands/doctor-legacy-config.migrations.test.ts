@@ -68,7 +68,7 @@ vi.mock("../secrets/target-registry.js", () => {
   const entry = {
     id: "channels.discord.token",
     targetType: "channels.discord.token",
-    configFile: "openclaw.json",
+    configFile: "operator.json",
     pathPattern: "channels.discord.token",
     secretShape: "secret_input",
     expectedResolvedValue: "string",
@@ -153,7 +153,7 @@ describe("normalizeCompatibilityConfigValues", () => {
 
   beforeAll(() => {
     previousOauthDir = process.env.OPERATOR_OAUTH_DIR;
-    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-oauth-"));
+    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "operator-oauth-"));
     process.env.OPERATOR_OAUTH_DIR = tempOauthDir;
   });
 
@@ -1054,7 +1054,7 @@ describe("normalizeCompatibilityConfigValues", () => {
             agentRuntime: { id: "claude-cli" },
             model: "anthropic/claude-opus-4-7",
             models: {
-              "anthropic/claude-opus-4-7": { agentRuntime: { id: "openclaw" } },
+              "anthropic/claude-opus-4-7": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
             },
           },
         ],
@@ -1063,7 +1063,7 @@ describe("normalizeCompatibilityConfigValues", () => {
 
     expect(res.config.agents?.list?.[0]?.agentRuntime).toEqual({ id: "claude-cli" });
     expect(res.config.agents?.list?.[0]?.models).toEqual({
-      "anthropic/claude-opus-4-7": { agentRuntime: { id: "openclaw" } },
+      "anthropic/claude-opus-4-7": { agentRuntime: { id: "@gabrielvfonseca/operator" } },
     });
     expect(res.changes).toStrictEqual([]);
   });

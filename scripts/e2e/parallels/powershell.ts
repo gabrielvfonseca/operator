@@ -1,4 +1,4 @@
-// Powershell script supports OpenClaw repository automation.
+// Powershell script supports Operator repository automation.
 import { modelProviderConfigBatchJson, providerIdFromModelId } from "./provider-auth.ts";
 
 export function psSingleQuote(value: string): string {
@@ -42,28 +42,28 @@ export function windowsAgentTurnConfigPatchScript(modelId: string): string {
     operations: batchJson ? (JSON.parse(batchJson) as unknown) : [],
     pluginId,
   });
-  return `$agentTurnConfigPatchPath = $env:OPENCLAW_CONFIG_PATH
-if (-not $agentTurnConfigPatchPath) { $agentTurnConfigPatchPath = Join-Path $env:USERPROFILE '.openclaw\\openclaw.json' }
-$agentTurnVersionText = Invoke-OpenClaw --version 2>$null | Out-String
+  return `$agentTurnConfigPatchPath = $env:OPERATOR_CONFIG_PATH
+if (-not $agentTurnConfigPatchPath) { $agentTurnConfigPatchPath = Join-Path $env:USERPROFILE '.operator\\operator.json' }
+$agentTurnVersionText = Invoke-Operator --version 2>$null | Out-String
 $agentTurnRuntimePolicySupported = $false
-if ($agentTurnVersionText -match 'OpenClaw\\s+(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})') {
+if ($agentTurnVersionText -match 'Operator\\s+(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})') {
   $agentTurnYear = [int]$Matches[1]
   $agentTurnMonth = [int]$Matches[2]
   $agentTurnDay = [int]$Matches[3]
   $agentTurnRuntimePolicySupported = ($agentTurnYear -gt 2026) -or ($agentTurnYear -eq 2026 -and (($agentTurnMonth -gt 5) -or ($agentTurnMonth -eq 5 -and $agentTurnDay -ge 9)))
 }
-$env:OPENCLAW_PARALLELS_AGENT_CONFIG_PATCH = @'
+$env:OPERATOR_PARALLELS_AGENT_CONFIG_PATCH = @'
 ${payloadJson}
 '@
-$env:OPENCLAW_PARALLELS_AGENT_CONFIG_PATH = $agentTurnConfigPatchPath
-$env:OPENCLAW_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED = if ($agentTurnRuntimePolicySupported) { '1' } else { '0' }
-$agentTurnConfigPatchScriptPath = Join-Path ([System.IO.Path]::GetTempPath()) 'openclaw-agent-turn-config-patch.cjs'
+$env:OPERATOR_PARALLELS_AGENT_CONFIG_PATH = $agentTurnConfigPatchPath
+$env:OPERATOR_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED = if ($agentTurnRuntimePolicySupported) { '1' } else { '0' }
+$agentTurnConfigPatchScriptPath = Join-Path ([System.IO.Path]::GetTempPath()) 'operator-agent-turn-config-patch.cjs'
 @'
 const fs = require("node:fs");
 const path = require("node:path");
-const configPath = process.env.OPENCLAW_PARALLELS_AGENT_CONFIG_PATH;
-const payload = JSON.parse(process.env.OPENCLAW_PARALLELS_AGENT_CONFIG_PATCH || "{}");
-const canWriteAgentRuntime = process.env.OPENCLAW_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED === "1";
+const configPath = process.env.OPERATOR_PARALLELS_AGENT_CONFIG_PATH;
+const payload = JSON.parse(process.env.OPERATOR_PARALLELS_AGENT_CONFIG_PATCH || "{}");
+const canWriteAgentRuntime = process.env.OPERATOR_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED === "1";
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\\uFEFF/u, ""));
 }
@@ -99,7 +99,7 @@ for (const op of payload.operations || []) {
 const selectedModelEntry = cfg.agents.defaults.models[payload.modelId];
 if (selectedModelEntry && typeof selectedModelEntry === "object" && !Array.isArray(selectedModelEntry)) {
   if (canWriteAgentRuntime) {
-    selectedModelEntry.agentRuntime = { id: "openclaw" };
+    selectedModelEntry.agentRuntime = { id: "@gabrielvfonseca/operator" };
   } else {
     delete selectedModelEntry.agentRuntime;
   }
@@ -123,24 +123,24 @@ fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2) + "\\n", { mode: 0o600
 node.exe $agentTurnConfigPatchScriptPath
 $agentTurnConfigPatchExit = $LASTEXITCODE
 Remove-Item $agentTurnConfigPatchScriptPath -Force -ErrorAction SilentlyContinue
-Remove-Item Env:OPENCLAW_PARALLELS_AGENT_CONFIG_PATCH -Force -ErrorAction SilentlyContinue
-Remove-Item Env:OPENCLAW_PARALLELS_AGENT_CONFIG_PATH -Force -ErrorAction SilentlyContinue
-Remove-Item Env:OPENCLAW_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED -Force -ErrorAction SilentlyContinue
+Remove-Item Env:OPERATOR_PARALLELS_AGENT_CONFIG_PATCH -Force -ErrorAction SilentlyContinue
+Remove-Item Env:OPERATOR_PARALLELS_AGENT_CONFIG_PATH -Force -ErrorAction SilentlyContinue
+Remove-Item Env:OPERATOR_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED -Force -ErrorAction SilentlyContinue
 if ($agentTurnConfigPatchExit -ne 0) { throw "agent turn config patch failed" }`;
 }
 
-export const windowsOpenClawResolver = String.raw`$portableNode = if ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'Programs\nodejs' } else { $null }
+export const windowsOperatorResolver = String.raw`$portableNode = if ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'Programs\nodejs' } else { $null }
 if ($portableNode -and (Test-Path (Join-Path $portableNode 'node.exe'))) {
   $env:PATH = "$portableNode;$env:PATH"
 }
-function Resolve-OpenClawCommand {
-  if ($script:OpenClawResolvedCommand) { return $script:OpenClawResolvedCommand }
+function Resolve-OperatorCommand {
+  if ($script:OperatorResolvedCommand) { return $script:OperatorResolvedCommand }
   $shimCandidates = @()
   if ($env:APPDATA) {
-    $shimCandidates += Join-Path $env:APPDATA 'npm\openclaw.cmd'
-    $shimCandidates += Join-Path $env:APPDATA 'npm\openclaw.ps1'
+    $shimCandidates += Join-Path $env:APPDATA 'npm\operator.cmd'
+    $shimCandidates += Join-Path $env:APPDATA 'npm\operator.ps1'
   }
-  foreach ($name in @('openclaw.cmd', 'openclaw.ps1', 'openclaw')) {
+  foreach ($name in @('operator.cmd', 'operator.ps1', 'openclaw')) {
     $command = Get-Command $name -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($command -and $command.Source) { $shimCandidates += $command.Source }
   }
@@ -149,42 +149,42 @@ function Resolve-OpenClawCommand {
     $npmPrefix = (& npm.cmd prefix -g 2>$null | Select-Object -First 1)
   } catch {}
   if ($npmPrefix) {
-    $shimCandidates += Join-Path $npmPrefix 'openclaw.cmd'
-    $shimCandidates += Join-Path $npmPrefix 'openclaw.ps1'
+    $shimCandidates += Join-Path $npmPrefix 'operator.cmd'
+    $shimCandidates += Join-Path $npmPrefix 'operator.ps1'
   }
   foreach ($candidate in $shimCandidates) {
     if ($candidate -and (Test-Path $candidate)) {
-      $script:OpenClawResolvedCommand = @{ Kind = 'shim'; Path = $candidate }
-      return $script:OpenClawResolvedCommand
+      $script:OperatorResolvedCommand = @{ Kind = 'shim'; Path = $candidate }
+      return $script:OperatorResolvedCommand
     }
   }
   $entryCandidates = @()
   if ($env:APPDATA) {
-    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\openclaw\openclaw.mjs'
+    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\openclaw\operator.mjs'
   }
   if ($npmPrefix) {
-    $entryCandidates += Join-Path $npmPrefix 'node_modules\openclaw\openclaw.mjs'
+    $entryCandidates += Join-Path $npmPrefix 'node_modules\openclaw\operator.mjs'
   }
   foreach ($candidate in $entryCandidates) {
     if ($candidate -and (Test-Path $candidate)) {
-      $script:OpenClawResolvedCommand = @{ Kind = 'node'; Path = $candidate }
-      return $script:OpenClawResolvedCommand
+      $script:OperatorResolvedCommand = @{ Kind = 'node'; Path = $candidate }
+      return $script:OperatorResolvedCommand
     }
   }
   throw 'openclaw command not found in PATH, APPDATA npm, or npm global prefix'
 }
-function Invoke-OpenClaw {
-  param([Parameter(ValueFromRemainingArguments = $true)][string[]] $OpenClawArgs)
-  $command = Resolve-OpenClawCommand
+function Invoke-Operator {
+  param([Parameter(ValueFromRemainingArguments = $true)][string[]] $OperatorArgs)
+  $command = Resolve-OperatorCommand
   $previousErrorActionPreference = $ErrorActionPreference
   $previousNativeErrorActionPreference = $PSNativeCommandUseErrorActionPreference
   $ErrorActionPreference = 'Continue'
   $PSNativeCommandUseErrorActionPreference = $false
   try {
     if ($command.Kind -eq 'node') {
-      & node.exe $command.Path @OpenClawArgs
+      & node.exe $command.Path @OperatorArgs
     } else {
-      & $command.Path @OpenClawArgs
+      & $command.Path @OperatorArgs
     }
   } finally {
     $ErrorActionPreference = $previousErrorActionPreference

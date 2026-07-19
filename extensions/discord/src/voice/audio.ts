@@ -3,6 +3,14 @@ import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import { Transform, type Readable, type TransformCallback } from "node:stream";
 import { StringDecoder } from "node:string_decoder";
+import { resolveFfmpegBin } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
+import { resamplePcm } from "@gabrielvfonseca/operator/plugin-sdk/realtime-voice";
+import { logVerbose, shouldLogVerbose } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import {
+  tempWorkspace,
+  resolvePreferredOperatorTmpDir,
+} from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
 import {
   Application,
   createDecoder as createLibopusDecoder,
@@ -10,11 +18,6 @@ import {
   type OpusDecoderHandle as LibopusDecoder,
   type OpusEncoderHandle as LibopusEncoder,
 } from "libopus-wasm";
-import { resolveFfmpegBin } from "openclaw/plugin-sdk/media-runtime";
-import { resamplePcm } from "openclaw/plugin-sdk/realtime-voice";
-import { logVerbose, shouldLogVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "openclaw/plugin-sdk/ssrf-runtime";
-import { tempWorkspace, resolvePreferredOperatorTmpDir } from "openclaw/plugin-sdk/temp-path";
 
 const SAMPLE_RATE = 48_000;
 const CHANNELS = 2;

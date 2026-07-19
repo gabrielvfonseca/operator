@@ -370,7 +370,7 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
                 data-sidebar-session-error
               >
                 <span class="callout__content">${this.sessionMutationError}</span>
-                <openclaw-tooltip .content=${t("chat.actions.dismissError")}>
+                <operator-tooltip .content=${t("chat.actions.dismissError")}>
                   <button
                     class="callout__dismiss"
                     type="button"
@@ -381,7 +381,7 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
                   >
                     ${icons.x}
                   </button>
-                </openclaw-tooltip>
+                </operator-tooltip>
               </div>
             `
           : nothing}

@@ -1,8 +1,8 @@
-package ai.openclaw.app
+package ai.operator.app
 
 import android.content.res.AssetManager
 
-internal const val ANDROID_LICENSE_ASSET_DIRECTORY = "openclaw/licenses"
+internal const val ANDROID_LICENSE_ASSET_DIRECTORY = "operator/licenses"
 
 internal data class AndroidLicenseNotice(
   val title: String,

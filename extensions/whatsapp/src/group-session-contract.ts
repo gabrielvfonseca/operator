@@ -1,5 +1,5 @@
 // Whatsapp plugin module implements group session contract behavior.
-import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 
 export function resolveLegacyGroupSessionKey(ctx: { From?: string }): {
   key: string;

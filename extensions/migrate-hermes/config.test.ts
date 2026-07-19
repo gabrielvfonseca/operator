@@ -1,6 +1,6 @@
 // Migrate Hermes tests cover config plugin behavior.
 import path from "node:path";
-import type { OperatorConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-auth";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildHermesMigrationProvider } from "./provider.js";
 import {

@@ -1,5 +1,5 @@
-import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
-import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
+import { normalizeUniqueStringEntries } from "@gabrielvfonseca/normalization-core/string-normalization";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
 import type { PairingChannel } from "./pairing-store.types.js";
 

@@ -1,4 +1,4 @@
-import { clampTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { clampTimerTimeoutMs } from "@gabrielvfonseca/normalization-core/number-coercion";
 
 type StreamStage = "responses" | "completions";
 

@@ -1,4 +1,4 @@
-package ai.openclaw.app.benchmark
+package ai.operator.app.benchmark
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -23,7 +23,7 @@ class CronJobNavigationTest {
     device.executeShellCommand("am force-stop $packageName")
     device.executeShellCommand(
       "am start -W -n $packageName/.MainActivity " +
-        "--ez openclaw.screenshotMode true --es openclaw.screenshotScene settings",
+        "--ez operator.screenshotMode true --es operator.screenshotScene settings",
     )
     assertNotNull(device.wait(Until.findObject(By.text("Settings")), waitTimeoutMs))
   }
@@ -73,7 +73,7 @@ class CronJobNavigationTest {
   }
 
   private companion object {
-    const val packageName = "ai.openclaw.app"
+    const val packageName = "ai.operator.app"
     const val waitTimeoutMs = 10_000L
     const val shortWaitMs = 1_000L
     const val maxScrolls = 6

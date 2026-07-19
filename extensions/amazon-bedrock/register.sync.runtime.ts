@@ -3,14 +3,14 @@
  * model discovery, thinking policy, guardrails, and embedding integration.
  */
 import type { BedrockClient } from "@aws-sdk/client-bedrock";
-import type { StreamFn } from "openclaw/plugin-sdk/agent-core";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { registerApiProvider, streamSimple } from "openclaw/plugin-sdk/llm";
-import { resolvePluginConfigObject } from "openclaw/plugin-sdk/plugin-config-runtime";
+import type { StreamFn } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { registerApiProvider, streamSimple } from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import { resolvePluginConfigObject } from "@gabrielvfonseca/operator/plugin-sdk/plugin-config-runtime";
 import type {
   OperatorPluginApi,
   ProviderNormalizeResolvedModelContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import {
   buildProviderReplayFamilyHooks,
   normalizeProviderId,
@@ -18,8 +18,8 @@ import {
   resolveClaudeModelIdentity,
   resolveClaudeMythos5ModelIdentity,
   resolveClaudeSonnet5ModelIdentity,
-} from "openclaw/plugin-sdk/provider-model-shared";
-import { streamWithPayloadPatch } from "openclaw/plugin-sdk/provider-stream-shared";
+} from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { streamWithPayloadPatch } from "@gabrielvfonseca/operator/plugin-sdk/provider-stream-shared";
 import { refreshAwsSharedConfigCacheForBedrock } from "./aws-credential-refresh.js";
 import { supportsBedrockPromptCaching } from "./bedrock-options.js";
 import { loadBedrockControlPlaneSdk, runBedrockControlPlaneRequest } from "./control-plane.js";

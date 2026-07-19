@@ -4,7 +4,7 @@ import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
   resolvePrimaryStringValue,
-} from "@operator/normalization-core/string-coerce";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveModelAgentRuntimeMetadata } from "../agents/agent-runtime-metadata.js";
 import {
@@ -240,7 +240,7 @@ export function noteClaudeCliHealth(
     lines.push("- Headless Claude auth: unavailable without interactive prompting.");
     fixHints.push(
       `- Fix: run ${formatCliCommand("claude auth login")}, then ${formatCliCommand(
-        "operator models auth login --provider anthropic --method cli --set-default",
+        "openclaw models auth login --provider anthropic --method cli --set-default",
       )}.`,
     );
   }
@@ -249,7 +249,7 @@ export function noteClaudeCliHealth(
     lines.push(`- Operator auth profile: missing (${CLAUDE_CLI_PROFILE_ID}) in ${authStorePath}.`);
     fixHints.push(
       `- Fix: run ${formatCliCommand(
-        "operator models auth login --provider anthropic --method cli --set-default",
+        "openclaw models auth login --provider anthropic --method cli --set-default",
       )}.`,
     );
   } else if (storedProfile.provider !== CLAUDE_CLI_PROVIDER) {
@@ -258,7 +258,7 @@ export function noteClaudeCliHealth(
     );
     fixHints.push(
       `- Fix: rerun ${formatCliCommand(
-        "operator models auth login --provider anthropic --method cli --set-default",
+        "openclaw models auth login --provider anthropic --method cli --set-default",
       )} to rewrite the profile cleanly.`,
     );
   }

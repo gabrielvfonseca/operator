@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadSessionEntry, replaceSessionEntry } from "../config/sessions/session-accessor.js";
 import type { SessionEntry } from "../config/sessions/types.js";
 import * as jsonFiles from "../infra/json-files.js";
-import { resolvePreferredOperatorTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOperatorTmpDir } from "../infra/tmp-operator-dir.js";
 import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
 import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
 import { captureEnv, setTestEnvValue } from "../test-utils/env.js";
@@ -28,7 +28,7 @@ describe("plugin host cleanup session stores", () => {
 
   it("does not rewrite session stores when cleanup scans find no plugin-owned state", async () => {
     stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-host-cleanup-noop-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-host-cleanup-noop-"),
     );
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const storePath = path.join(stateDir, "sessions.json");
@@ -51,7 +51,7 @@ describe("plugin host cleanup session stores", () => {
 
   it("can defer persistent session-state cleanup to an atomic owner", async () => {
     stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-host-cleanup-deferred-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-host-cleanup-deferred-"),
     );
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const storePath = path.join(stateDir, "sessions.json");
@@ -85,7 +85,7 @@ describe("plugin host cleanup session stores", () => {
 
   it("clears plugin-owned session state across resolved stores without touching unrelated rows", async () => {
     stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-host-cleanup-multistore-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-host-cleanup-multistore-"),
     );
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const firstStorePath = path.join(stateDir, "agents", "a", "sessions", "sessions.json");
@@ -172,7 +172,7 @@ describe("plugin host cleanup session stores", () => {
 
   it("clears shared custom SQLite stores for each resolved agent", async () => {
     stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-host-cleanup-shared-custom-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-host-cleanup-shared-custom-"),
     );
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const sharedStorePath = path.join(stateDir, "custom", "sessions.json");
@@ -222,7 +222,7 @@ describe("plugin host cleanup session stores", () => {
 
   it("preserves locked sessions for every harness owned by a disabled plugin", async () => {
     stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredOperatorTmpDir(), "openclaw-host-cleanup-locked-harness-"),
+      path.join(resolvePreferredOperatorTmpDir(), "operator-host-cleanup-locked-harness-"),
     );
     setTestEnvValue("OPERATOR_STATE_DIR", stateDir);
     const storePath = path.join(stateDir, "sessions.json");

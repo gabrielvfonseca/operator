@@ -11,8 +11,8 @@ Curated 1Password secrets broker with approval policy and SQLite audit history.
 
 ## Distribution
 
-- Package: `@operator/onepassword`
-- Install route: included in OpenClaw
+- Package: `@gabrielvfonseca/onepassword`
+- Install route: included in Operator
 
 ## Surface
 

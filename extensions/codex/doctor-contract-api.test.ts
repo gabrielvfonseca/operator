@@ -5,12 +5,15 @@ import path from "node:path";
 import {
   createPluginStateKeyedStoreForTests,
   resetPluginStateStoreForTests,
-} from "openclaw/plugin-sdk/plugin-state-test-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/plugin-state-test-runtime";
 import type {
   OpenKeyedStoreOptions,
   PluginDoctorStateMigrationContext,
-} from "openclaw/plugin-sdk/runtime-doctor";
-import { getSessionEntry, upsertSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/runtime-doctor";
+import {
+  getSessionEntry,
+  upsertSessionEntry,
+} from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   legacyConfigRules,
@@ -65,7 +68,7 @@ async function createBindingMigrationFixture(options: {
   sessionIndex?: Record<string, unknown>;
   threadId: string;
 }) {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-doctor-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-doctor-"));
   const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
   const sessionsDir = path.join(stateDir, "agents", "main", "sessions");
   const storePath = path.join(sessionsDir, "sessions.json");
@@ -126,7 +129,7 @@ describe("codex doctor contract", () => {
   it("reports the retired dynamic tools profile config key", () => {
     expect(
       legacyConfigRules[0]?.match({
-        codexDynamicToolsProfile: "openclaw-compat",
+        codexDynamicToolsProfile: "operator-compat",
         codexDynamicToolsLoading: "direct",
       }),
     ).toBe(true);
@@ -186,7 +189,7 @@ describe("codex doctor contract", () => {
           codex: {
             enabled: true,
             config: {
-              codexDynamicToolsProfile: "openclaw-compat",
+              codexDynamicToolsProfile: "operator-compat",
               codexDynamicToolsLoading: "direct",
               codexDynamicToolsExclude: ["custom_tool"],
               appServer: { mode: "guardian" },
@@ -1010,7 +1013,7 @@ describe("codex doctor contract", () => {
       name: "unknown-owner",
       threadId: "thread-unknown-owner",
     });
-    const externalDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-store-"));
+    const externalDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-store-"));
     const externalStore = path.join(externalDir, "sessions.json");
     await fs.writeFile(externalStore, contents, "utf8");
     const params = {
@@ -1035,8 +1038,8 @@ describe("codex doctor contract", () => {
   });
 
   it("does not scan above stateDir or follow escaped external store locators", async () => {
-    const outerDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-doctor-outer-"));
-    const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-codex-doctor-outside-"));
+    const outerDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-doctor-outer-"));
+    const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-doctor-outside-"));
     const stateDir = path.join(outerDir, "state");
     await fs.mkdir(stateDir, { recursive: true });
     const strayDir = path.join(outerDir, "unrelated");
@@ -1095,7 +1098,7 @@ describe("codex doctor contract", () => {
           codex: {
             enabled: true,
             config: {
-              codexDynamicToolsProfile: "openclaw-compat",
+              codexDynamicToolsProfile: "operator-compat",
               codexPlugins: {
                 enabled: true,
                 allow_destructive_actions: "on-request",

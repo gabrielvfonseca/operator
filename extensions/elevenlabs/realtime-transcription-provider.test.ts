@@ -1,7 +1,7 @@
 // Elevenlabs tests cover realtime transcription provider plugin behavior.
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it } from "vitest";
 import type WebSocket from "ws";
 import { WebSocketServer } from "ws";

@@ -1,10 +1,10 @@
 // Projects ACP runtime events into Operator-visible session update records.
-import type { AcpRuntimeEvent, AcpSessionUpdateTag } from "@operator/acp-core/runtime/types";
+import type { AcpRuntimeEvent, AcpSessionUpdateTag } from "@gabrielvfonseca/acp-core/runtime/types";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@operator/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+} from "@gabrielvfonseca/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-slice";
 import { resolveAcpToolTerminalOutcome } from "../../acp/tool-status.js";
 import { EmbeddedBlockChunker } from "../../agents/embedded-agent-block-chunker.js";
 import { formatToolSummary, resolveToolDisplay } from "../../agents/tool-display.js";

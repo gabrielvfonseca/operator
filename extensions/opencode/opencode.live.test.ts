@@ -4,8 +4,11 @@ import {
   type AssistantMessage,
   type Model,
   type Tool,
-} from "openclaw/plugin-sdk/llm";
-import { extractNonEmptyAssistantText, isLiveTestEnabled } from "openclaw/plugin-sdk/test-env";
+} from "@gabrielvfonseca/operator/plugin-sdk/llm";
+import {
+  extractNonEmptyAssistantText,
+  isLiveTestEnabled,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-env";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { buildStaticOpencodeZenProviderConfig } from "./provider-catalog.js";

@@ -1,5 +1,5 @@
 // Discord plugin module implements preflight audio behavior.
-import { transcribeFirstAudio as transcribeFirstAudioImpl } from "openclaw/plugin-sdk/media-runtime";
+import { transcribeFirstAudio as transcribeFirstAudioImpl } from "@gabrielvfonseca/operator/plugin-sdk/media-runtime";
 
 type TranscribeFirstAudio = typeof import("openclaw/plugin-sdk/media-runtime").transcribeFirstAudio;
 

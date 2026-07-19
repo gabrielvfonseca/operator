@@ -159,12 +159,12 @@ describe("resolveTaskScriptPath", () => {
     {
       name: "uses default path when OPERATOR_PROFILE is unset",
       env: { USERPROFILE: "C:\\Users\\test" },
-      expected: path.join("C:\\Users\\test", ".openclaw", "gateway.cmd"),
+      expected: path.join("C:\\Users\\test", ".operator", "gateway.cmd"),
     },
     {
       name: "uses profile-specific path when OPERATOR_PROFILE is set to a custom value",
       env: { USERPROFILE: "C:\\Users\\test", OPERATOR_PROFILE: "jbphoenix" },
-      expected: path.join("C:\\Users\\test", ".openclaw-jbphoenix", "gateway.cmd"),
+      expected: path.join("C:\\Users\\test", ".operator-jbphoenix", "gateway.cmd"),
     },
     {
       name: "prefers OPERATOR_STATE_DIR over profile-derived defaults",
@@ -178,7 +178,7 @@ describe("resolveTaskScriptPath", () => {
     {
       name: "falls back to HOME when USERPROFILE is not set",
       env: { HOME: "/home/test", OPERATOR_PROFILE: "default" },
-      expected: path.join("/home/test", ".openclaw", "gateway.cmd"),
+      expected: path.join("/home/test", ".operator", "gateway.cmd"),
     },
     {
       name: "uses a custom task script file name inside the state directory",
@@ -186,7 +186,7 @@ describe("resolveTaskScriptPath", () => {
         USERPROFILE: "C:\\Users\\test",
         OPERATOR_TASK_SCRIPT_NAME: "gateway-node.cmd",
       },
-      expected: path.join("C:\\Users\\test", ".openclaw", "gateway-node.cmd"),
+      expected: path.join("C:\\Users\\test", ".operator", "gateway-node.cmd"),
     },
   ])("$name", ({ env, expected }) => {
     expect(resolveTaskScriptPath(env)).toBe(expected);
@@ -219,7 +219,7 @@ describe("readScheduledTaskCommand", () => {
     },
     run: (env: Record<string, string | undefined>) => Promise<void>,
   ) {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-schtasks-test-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-schtasks-test-"));
     try {
       const extraEnv = typeof options.env === "function" ? options.env(tmpDir) : options.env;
       const env = {
@@ -264,13 +264,13 @@ describe("readScheduledTaskCommand", () => {
   it("reads legacy UTF-8 scripts with CJK paths written before the encoding fix", async () => {
     await withScheduledTaskScript(
       {
-        scriptLines: ["@echo off", 'cd /d "C:\\Users\\苗振\\.openclaw"', "node gateway.js"],
+        scriptLines: ["@echo off", 'cd /d "C:\\Users\\苗振\\.operator"', "node gateway.js"],
       },
       async (env) => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: ["node", "gateway.js"],
-          workingDirectory: "C:\\Users\\苗振\\.openclaw",
+          workingDirectory: "C:\\Users\\苗振\\.operator",
           sourcePath: resolveTaskScriptPath(env),
         });
       },
@@ -280,14 +280,14 @@ describe("readScheduledTaskCommand", () => {
   it("reads marked ANSI scripts with CJK paths under a CJK code page (#107416)", async () => {
     await withScheduledTaskScript(
       {
-        scriptLines: ["@echo off", 'cd /d "C:\\Users\\苗振\\.openclaw"', "node gateway.js"],
+        scriptLines: ["@echo off", 'cd /d "C:\\Users\\苗振\\.operator"', "node gateway.js"],
         scriptEncoding: "gbk",
       },
       async (env) => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: ["node", "gateway.js"],
-          workingDirectory: "C:\\Users\\苗振\\.openclaw",
+          workingDirectory: "C:\\Users\\苗振\\.operator",
           sourcePath: resolveTaskScriptPath(env),
         });
       },
@@ -299,14 +299,14 @@ describe("readScheduledTaskCommand", () => {
     // from sniffing these bytes as UTF-8 and parsing a corrupted path.
     await withScheduledTaskScript(
       {
-        scriptLines: ["@echo off", 'cd /d "C:\\Users\\隆\\.openclaw"', "node gateway.js"],
+        scriptLines: ["@echo off", 'cd /d "C:\\Users\\隆\\.operator"', "node gateway.js"],
         scriptEncoding: "gbk",
       },
       async (env) => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: ["node", "gateway.js"],
-          workingDirectory: "C:\\Users\\隆\\.openclaw",
+          workingDirectory: "C:\\Users\\隆\\.operator",
           sourcePath: resolveTaskScriptPath(env),
         });
       },

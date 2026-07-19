@@ -2,7 +2,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { hasErrnoCode } from "../infra/errors.js";
-import { resolveOperatorPackageRootSync } from "../infra/operator-root.js";
+import { resolveOperatorPackageRootSync } from "../infra/openclaw-root.js";
 
 type PluginPeerLinkLogger = {
   info?: (message: string) => void;
@@ -141,13 +141,13 @@ async function auditOperatorPeerDependency(params: {
       return {
         packageName,
         packageDir: params.packageDir,
-        reason: `missing ${path.join(nodeModulesDir, "operator")}`,
+        reason: `missing ${path.join(nodeModulesDir, "@gabrielvfonseca/operator")}`,
       };
     }
     throw error;
   }
 
-  const linkPath = path.join(nodeModulesDir, "operator");
+  const linkPath = path.join(nodeModulesDir, "@gabrielvfonseca/operator");
   const currentTarget = await safeRealpath(linkPath);
   if (!currentTarget) {
     return {
@@ -181,7 +181,7 @@ export async function auditOperatorPeerDependencyLink(params: {
     return {
       packageName,
       packageDir: params.packageDir,
-      reason: "could not locate operator package root",
+      reason: "could not locate openclaw package root",
     };
   }
   return await auditOperatorPeerDependency({
@@ -200,7 +200,7 @@ async function ensureRealNodeModulesDir(params: {
     const existing = await fs.lstat(nodeModulesDir);
     if (!existing.isDirectory() || existing.isSymbolicLink()) {
       params.logger.warn?.(
-        `Skipping operator peerDependency link because ${nodeModulesDir} is not a real directory.`,
+        `Skipping openclaw peerDependency link because ${nodeModulesDir} is not a real directory.`,
       );
       return null;
     }
@@ -215,7 +215,7 @@ async function ensureRealNodeModulesDir(params: {
   const created = await fs.lstat(nodeModulesDir);
   if (!created.isDirectory() || created.isSymbolicLink()) {
     params.logger.warn?.(
-      `Skipping operator peerDependency link because ${nodeModulesDir} is not a real directory.`,
+      `Skipping openclaw peerDependency link because ${nodeModulesDir} is not a real directory.`,
     );
     return null;
   }
@@ -252,9 +252,9 @@ async function linkOperatorPeerDependency(params: {
     });
     if (existing) {
       if (!existing.isSymbolicLink()) {
-        if (params.peerName === "operator" && existing.isDirectory()) {
+        if (params.peerName === "@gabrielvfonseca/operator" && existing.isDirectory()) {
           const existingPackageName = await readPackageName(linkPath);
-          if (existingPackageName === "operator") {
+          if (existingPackageName === "@gabrielvfonseca/operator") {
             await fs.rm(linkPath, { recursive: true, force: true });
             await fs.symlink(params.hostRoot, linkPath, "junction");
             params.logger.info?.(
@@ -264,7 +264,7 @@ async function linkOperatorPeerDependency(params: {
           }
         }
         params.logger.warn?.(
-          `Skipping operator peerDependency link because ${linkPath} already exists and is not a symlink.`,
+          `Skipping openclaw peerDependency link because ${linkPath} already exists and is not a symlink.`,
         );
         return "skipped";
       }
@@ -293,7 +293,7 @@ async function readPackageName(packageDir: string): Promise<string | undefined> 
 }
 
 /**
- * Symlink the host operator package for plugins that declare it as a peer.
+ * Symlink the host openclaw package for plugins that declare it as a peer.
  * Plugin package managers still own third-party dependencies; this only wires
  * the host SDK package into the plugin-local Node graph.
  */
@@ -302,7 +302,9 @@ export async function linkOperatorPeerDependencies(params: {
   peerDependencies: Record<string, string>;
   logger: PluginPeerLinkLogger;
 }): Promise<{ repaired: number; skipped: number }> {
-  const peers = Object.keys(params.peerDependencies).filter((name) => name === "operator");
+  const peers = Object.keys(params.peerDependencies).filter(
+    (name) => name === "@gabrielvfonseca/operator",
+  );
   if (peers.length === 0) {
     return { repaired: 0, skipped: 0 };
   }
@@ -314,7 +316,7 @@ export async function linkOperatorPeerDependencies(params: {
   });
   if (!hostRoot) {
     params.logger.warn?.(
-      "Could not locate operator package root to symlink peerDependencies; plugin may fail to resolve operator at runtime.",
+      "Could not locate openclaw package root to symlink peerDependencies; plugin may fail to resolve openclaw at runtime.",
     );
     return { repaired: 0, skipped: peers.length };
   }
@@ -347,7 +349,7 @@ export async function relinkOperatorPeerDependenciesInManagedNpmRoot(params: {
   let skipped = 0;
   for (const packageDir of await listManagedNpmRootPackageDirs(params.npmRoot)) {
     const peerDependencies = await readPackagePeerDependencies(packageDir);
-    if (!Object.hasOwn(peerDependencies, "operator")) {
+    if (!Object.hasOwn(peerDependencies, "@gabrielvfonseca/operator")) {
       continue;
     }
     checked += 1;
@@ -379,7 +381,7 @@ export async function auditOperatorPeerDependenciesInManagedNpmRoot(params: {
   const issues: OperatorPeerLinkAuditIssue[] = [];
   for (const packageDir of await listManagedNpmRootPackageDirs(params.npmRoot)) {
     const peerDependencies = await readPackagePeerDependencies(packageDir);
-    if (!Object.hasOwn(peerDependencies, "operator")) {
+    if (!Object.hasOwn(peerDependencies, "@gabrielvfonseca/operator")) {
       continue;
     }
     checked += 1;

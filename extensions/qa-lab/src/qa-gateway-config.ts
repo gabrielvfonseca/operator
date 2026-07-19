@@ -1,7 +1,7 @@
 // Qa Lab helper module supports qa gateway config behavior.
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import { uniqueStrings } from "openclaw/plugin-sdk/string-coerce-runtime";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { ModelProviderConfig } from "@gabrielvfonseca/operator/plugin-sdk/provider-model-shared";
+import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 import {
   defaultQaModelForMode,
   normalizeQaProviderMode,

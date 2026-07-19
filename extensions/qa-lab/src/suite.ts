@@ -2,12 +2,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OperatorCrablineChannelDriverSelection } from "@operator/crabline";
-import { disposeRegisteredAgentHarnesses } from "openclaw/plugin-sdk/agent-harness";
-import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import { parseStrictPositiveInteger } from "openclaw/plugin-sdk/number-runtime";
-import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
+import { disposeRegisteredAgentHarnesses } from "@gabrielvfonseca/operator/plugin-sdk/agent-harness";
+import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "@gabrielvfonseca/operator/plugin-sdk/error-runtime";
+import { parseStrictPositiveInteger } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
+import { fetchWithSsrFGuard } from "@gabrielvfonseca/operator/plugin-sdk/ssrf-runtime";
+import type { OperatorCrablineChannelDriverSelection } from "@openclaw/crabline";
 import { assertQaSuiteArtifactWritten } from "./artifact-assertion.js";
 import {
   hasQaCrablineArtifactPath,
@@ -92,7 +92,7 @@ import type { QaSuiteRuntimeEnv } from "./suite-runtime-types.js";
 import { countQaSuiteFailedScenarios, type QaSuiteSummaryJson } from "./suite-summary.js";
 import { closeQaWebSessions } from "./web-runtime.js";
 
-type QaCrablineRuntime = typeof import("@operator/crabline");
+type QaCrablineRuntime = typeof import("@openclaw/crabline");
 type QaCrablineChannelDriverSmokeResult = Awaited<
   ReturnType<QaCrablineRuntime["runOperatorCrablineChannelDriverSmoke"]>
 >;
@@ -458,7 +458,7 @@ function buildRuntimeParityScenarioResult(params: {
   result: RuntimeParityResult;
 }): QaSuiteScenarioResult {
   const driftStepStatus = isRuntimeParityPass(params.result) ? "pass" : "fail";
-  const openclawCell = params.result.cells.openclaw;
+  const openclawCell = params.result.cells.operator;
   return {
     name: params.scenarioName,
     status: driftStepStatus,
@@ -998,7 +998,7 @@ async function writeQaSuiteArtifacts(params: {
   // Non-Crabline package acceptance mounts this source without plugin-local
   // dependencies. Keep the owner runtime outside every unrelated live path.
   const crablineRuntime = crablineChannelDriverSelection
-    ? await import("@operator/crabline")
+    ? await import("@openclaw/crabline")
     : undefined;
   let crablineChannelDriverSmoke: QaCrablineChannelDriverSmokeResult | undefined;
   if (crablineChannelDriverSelection) {
@@ -1309,7 +1309,7 @@ export async function runQaFlowSuite(params?: QaSuiteRunParams): Promise<QaSuite
     ...new Set([
       ...collectQaSuitePluginIds(selectedScenarios),
       ...(params?.enabledPluginIds ?? []).map((pluginId) => pluginId.trim()).filter(Boolean),
-      ...(params?.forcedRuntime && params.forcedRuntime !== "openclaw"
+      ...(params?.forcedRuntime && params.forcedRuntime !== "@gabrielvfonseca/operator"
         ? [params.forcedRuntime]
         : []),
     ]),

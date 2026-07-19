@@ -1,5 +1,5 @@
 // Builds the canonical reviewer-safe projection for durable approvals.
-import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@gabrielvfonseca/normalization-core/string-coerce";
 import type {
   ApprovalDecision,
   ApprovalKind,

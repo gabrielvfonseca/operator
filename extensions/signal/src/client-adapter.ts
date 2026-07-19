@@ -9,7 +9,7 @@
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "openclaw/plugin-sdk/number-runtime";
+} from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import { containerCheck, containerRpcRequest, streamContainerEvents } from "./client-container.js";
 import type { SignalRpcOptions } from "./client.js";
 import {

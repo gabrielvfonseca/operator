@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { OperatorPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorPluginApi } from "@gabrielvfonseca/operator/plugin-sdk/plugin-entry";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const nodeHostMocks = vi.hoisted(() => ({
@@ -70,7 +70,7 @@ async function installFakeOpenCode(
   assistantText = "hi",
   sessionTitle = "Catalog session",
 ): Promise<string> {
-  const directory = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-opencode-catalog-"));
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), "operator-opencode-catalog-"));
   temporaryDirectories.push(directory);
   const executable = path.join(directory, "opencode");
   const session = {

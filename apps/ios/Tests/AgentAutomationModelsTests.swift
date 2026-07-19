@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawProtocol
+import OperatorProtocol
 import Testing
-@testable import OpenClaw
+@testable import Operator
 
 struct AgentAutomationModelsTests {
     @Test func `draft decodes editable gateway fields`() throws {
@@ -42,7 +42,7 @@ struct AgentAutomationModelsTests {
         let job = Self.job(
             payload: AnyCodable([
                 "kind": AnyCodable("command"),
-                "argv": AnyCodable([AnyCodable("openclaw"), AnyCodable("status")]),
+                "argv": AnyCodable([AnyCodable("@gabrielvfonseca/operator"), AnyCodable("status")]),
                 "cwd": AnyCodable("/tmp"),
             ]))
         var draft = try #require(AgentAutomationDraft(job: job))
@@ -186,7 +186,7 @@ struct AgentAutomationModelsTests {
         #expect(source.contains("guard self.pendingRunID == runID else { return }"))
         #expect(models.contains("expectedConfigRevision"))
         #expect(source.contains("Delete Automation"))
-        #expect(source.contains("OpenClawType.subheadSemiBold"))
+        #expect(source.contains("OperatorType.subheadSemiBold"))
         #expect(source.contains("!self.hasUnsavedChanges"))
 
         let tabSource = try String(

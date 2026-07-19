@@ -3,26 +3,26 @@ summary: "Current integration path for external apps, scripts, dashboards, CI jo
 title: "Gateway integrations for external apps"
 sidebarTitle: "External apps"
 read_when:
-  - You are building an external app, script, dashboard, CI job, or IDE extension that talks to OpenClaw
+  - You are building an external app, script, dashboard, CI job, or IDE extension that talks to Operator
   - You are choosing between Gateway RPC and the Plugin SDK
   - You are integrating with Gateway agent runs, sessions, events, approvals, models, or tools
   - You are pairing a hosting controller with an external wake scheduler
 ---
 
-External apps talk to OpenClaw through the Gateway protocol: WebSocket
+External apps talk to Operator through the Gateway protocol: WebSocket
 transport plus RPC methods. Use it when a script, dashboard, CI job, IDE
 extension, or another process wants to start agent runs, stream events, wait
 for results, cancel work, or inspect Gateway resources.
 
 <Warning>
-  There is no public npm client package yet. Do not add OpenClaw client package
+  There is no public npm client package yet. Do not add Operator client package
   names as application dependencies until release notes announce a published
   package and this page includes install instructions.
 </Warning>
 
 <Note>
-  This page is for code outside the OpenClaw process. Plugin code that runs
-  inside OpenClaw should use documented `openclaw/plugin-sdk/*` subpaths instead.
+  This page is for code outside the Operator process. Plugin code that runs
+  inside Operator should use documented `openclaw/plugin-sdk/*` subpaths instead.
 </Note>
 
 ## What is available today
@@ -31,8 +31,8 @@ for results, cancel work, or inspect Gateway resources.
 | --------------------------------------- | ------ | --------------------------------------------------------------------------------------------- |
 | [Gateway protocol](/gateway/protocol)   | Ready  | WebSocket transport, connect handshake, auth scopes, protocol versioning, and events.         |
 | [Gateway RPC reference](/reference/rpc) | Ready  | Current Gateway methods for agents, sessions, tasks, models, tools, artifacts, and approvals. |
-| [`openclaw agent`](/cli/agent)          | Ready  | One-shot script integration when shelling out to the CLI is enough.                           |
-| [`openclaw message`](/cli/message)      | Ready  | Sending messages or channel actions from scripts.                                             |
+| [`operator agent`](/cli/agent)          | Ready  | One-shot script integration when shelling out to the CLI is enough.                           |
+| [`operator message`](/cli/message)      | Ready  | Sending messages or channel actions from scripts.                                             |
 
 A future client library package is in progress internally, but it is not a
 public install surface yet. Treat it as preview implementation detail until a
@@ -43,8 +43,8 @@ release announces a published, versioned package.
 1. Run or discover a Gateway.
 2. Connect over the [Gateway protocol](/gateway/protocol).
 3. Call documented RPC methods from [Gateway RPC reference](/reference/rpc).
-4. Pin the OpenClaw version you test against.
-5. Recheck the RPC reference when upgrading OpenClaw.
+4. Pin the Operator version you test against.
+5. Recheck the RPC reference when upgrading Operator.
 
 For agent runs, start with the `agent` RPC and pair it with `agent.wait` for a
 terminal result. For durable conversation state, use the `sessions.*` methods.
@@ -102,7 +102,7 @@ after a successful resume returns `resumed: false`.
 A competing request ID or transient scheduler-resume failure returns retryable
 `UNAVAILABLE` with `retryAfterMs`. During scheduler recovery, prepare, status,
 and resume all return that error, the Gateway remains not-ready and
-fail-closed, and the host must not freeze or snapshot it. OpenClaw retries the
+fail-closed, and the host must not freeze or snapshot it. Operator retries the
 scheduler automatically and reopens admission only after recovery succeeds. A
 mismatched resume ID returns `INVALID_REQUEST`. Prepare shares the Gateway's
 control-plane write budget of three attempts per minute; honor the returned
@@ -110,7 +110,7 @@ retry delay. WebSocket clients are bucketed by device and IP. Admin HTTP
 controllers are bucketed by resolved client IP, so controllers behind one
 proxy can share a budget.
 
-Preparation is refuse-only: OpenClaw closes new root/session/command admission,
+Preparation is refuse-only: Operator closes new root/session/command admission,
 pauses automatic cron ticks, and inspects work synchronously. If anything is
 active, it resumes the scheduler and reopens admission before returning
 `busy`; it does not interrupt or drain that work. A ready lease lasts two
@@ -145,7 +145,7 @@ filesystem consistently; unregistered work cannot be proven idle by this first
 contract.
 
 <Tip>
-  For host wake scheduling, keep the OpenClaw-facing part in an in-process
+  For host wake scheduling, keep the Operator-facing part in an in-process
   plugin and project idempotent full snapshots to the external host adapter.
   The hosting controller should not import the Plugin SDK or reconstruct cron
   state from event deltas. See [Safe external cron
@@ -154,7 +154,7 @@ contract.
 
 ## App code vs plugin code
 
-Use Gateway RPC when code lives outside OpenClaw:
+Use Gateway RPC when code lives outside Operator:
 
 - Node scripts that start or observe agent runs
 - CI jobs that call a Gateway
@@ -163,7 +163,7 @@ Use Gateway RPC when code lives outside OpenClaw:
 - external bridges that do not need to become channel plugins
 - integration tests with fake or real Gateway transports
 
-Use the Plugin SDK when code runs inside OpenClaw:
+Use the Plugin SDK when code runs inside Operator:
 
 - provider plugins
 - channel plugins
@@ -172,7 +172,7 @@ Use the Plugin SDK when code runs inside OpenClaw:
 - trusted runtime helpers
 
 External apps should not import `openclaw/plugin-sdk/*`; those subpaths are for
-plugins loaded by OpenClaw.
+plugins loaded by Operator.
 
 ## Related
 
