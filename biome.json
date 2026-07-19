@@ -29,7 +29,9 @@
       "!docs/_layouts",
       "!**/a2ui.bundle.js",
       "!src/auto-reply/reply/export-html/template.js",
-      "!**/.openclaw-runtime-deps-copy-*"
+      "!**/.openclaw-runtime-deps-copy-*",
+      "!**/*.md",
+      "!**/*.mdx"
     ]
   },
   "formatter": {
